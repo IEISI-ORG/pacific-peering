@@ -106,3 +106,8 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   measurements: results held, and the NC -> Fiji case actually improved
   (all 3 probes now agree on AS45349, vs. 1 of 3 before hitting
   PeeringDB's rate limit).
+- `discovery.supplementary_ixps.SUPPLEMENTARY_IXPS`: this project's own
+  record for IXPs confirmed real but absent/incomplete in PeeringDB.
+  Seeded with the Solomon Islands Internet Exchange Peering Point
+  (SIIXP, operated by TCSI) — resolves Validation Rule 5, the last
+  blocked validation item.
