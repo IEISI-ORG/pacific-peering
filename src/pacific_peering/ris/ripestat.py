@@ -68,7 +68,9 @@ def fetch_bgp_state(prefix: str, timeout: float = _DEFAULT_TIMEOUT) -> list[BgpS
     ]
 
 
-def resolve_ip_to_asns(ip: str, timeout: float = _DEFAULT_TIMEOUT) -> list[int]:
+def resolve_ip_to_asns(
+    ip: str, timeout: float = _DEFAULT_TIMEOUT, max_retries: int = 2
+) -> list[int]:
     """Resolve an IP address to its holding ASN(s) via RIPEstat's `network-info` call.
 
     Used to turn Atlas traceroute hop addresses into AS-level hops so they
@@ -79,18 +81,40 @@ def resolve_ip_to_asns(ip: str, timeout: float = _DEFAULT_TIMEOUT) -> list[int]:
     "no ASN" result is itself informative (a candidate IXP-fabric hop),
     not a failure.
 
+    A transient network failure (timeout, connection error) degrades to
+    "unresolved" after retrying, rather than raising — discovered via a
+    real crash mid-analysis (loop tranche, French Polynesia -> Vanuatu
+    measurement): one slow RIPEstat response took down the entire
+    triangulation run over a single hop, which is exactly the kind of
+    fragility a recurring pipeline can't tolerate.
+
     Args:
         ip: An IPv4 or IPv6 address (not a prefix).
         timeout: Request timeout in seconds.
+        max_retries: Retries on a network error before giving up on this address.
     """
-    response = requests.get(
-        f"{RIPESTAT_BASE_URL}/network-info/data.json",
-        params={"resource": ip},
-        timeout=timeout,
-    )
-    response.raise_for_status()
-    asns = response.json()["data"].get("asns", [])
-    return [int(asn) for asn in asns]
+    for attempt in range(max_retries + 1):
+        try:
+            response = requests.get(
+                f"{RIPESTAT_BASE_URL}/network-info/data.json",
+                params={"resource": ip},
+                timeout=timeout,
+            )
+            response.raise_for_status()
+            asns = response.json()["data"].get("asns", [])
+            return [int(asn) for asn in asns]
+        except requests.exceptions.RequestException:
+            if attempt < max_retries:
+                logger.warning(
+                    "Network error resolving %s via RIPEstat, retrying (attempt %d/%d)",
+                    ip,
+                    attempt + 1,
+                    max_retries,
+                )
+                continue
+            logger.warning("RIPEstat resolution for %s failed after retries; treating as unresolved", ip)
+            return []
+    return []
 
 
 def fetch_aspaths_for_asn(

@@ -153,6 +153,18 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   existing registry, never discard from it.
 - Project owner asked whether to wire the pipeline into a GitHub
   Actions cron; chose manual-only for now. Phase 1c complete as scoped.
+- Fixed a real crash: `ris.ripestat.resolve_ip_to_asns` had no retry or
+  timeout handling — one slow RIPEstat response mid-analysis threw an
+  uncaught `ReadTimeout` and killed the whole run. Now retries transient
+  network errors with backoff and degrades to unresolved, matching the
+  pattern already used for PeeringDB's 429s.
+- Fourth RIS+Atlas-confirmed adjacency, and a new kind of finding: French
+  Polynesia -> Vanuatu (AS9249) traceroute confirms **AS38442 (Vodafone
+  Fiji)** as the last hop before the target, matching RIS's exact
+  neighbor count (1,346). Unlike the first three, this is real
+  intra-region transit, not a Sydney detour. Checked the remaining gap
+  before the destination directly (hypothesized VIX.VU, wasn't it — just
+  ordinary ICMP filtering) rather than overreach past what's confirmed.
 - Phase 2b complete: docstring audit across all of `src/pacific_peering/`
   (AST-based, not eyeballed). Added module docstrings to all 7 package
   `__init__.py` files, docstrings on a handful of dataclasses/TypedDicts

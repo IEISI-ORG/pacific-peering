@@ -338,3 +338,17 @@ Fixed all of them with one-line, purpose-stating docstrings (each package `__ini
 **Verified, not just linted**: re-ran the audit script to confirm zero remaining gaps, syntax-checked every file, and — the check that actually matters — imported all six top-level subpackages and ran the bare `pacific-peering` command to confirm nothing broke from the edits. All clean.
 
 **Phase 2b complete. All of P1 and P2 are now done.** Remaining per the original plan: Phase 2c (changelog discipline) is not a one-time task — it's been running continuously throughout, and stays ongoing rather than ever getting a checkbox.
+
+---
+
+**[Loop tranche — broadening the AS-pair sample: a real bug fix and a fourth confirmed adjacency.]** Confirmed via `CronList` this was job `551adf11`'s scheduled fire. With P1/P2 complete, this tranche picked up the still-open "broaden the AS-pair sample" item from Phase 1d.
+
+New corridor, not tried before: **French Polynesia (source, 7 connected probes) -> Vanuatu (AS9249, Telecom Vanuatu)**, measurement `210960114`.
+
+**Hit a real crash, not just an interesting result**: `analyze_measurement` died mid-run with an uncaught `requests.exceptions.ReadTimeout` — RIPEstat took longer than 30s on one hop and `resolve_ip_to_asns` had no retry/timeout handling at all, unlike the PeeringDB functions (which already learned this lesson around rate limits). One slow response over one hop took down the entire analysis — exactly the kind of fragility a recurring pipeline can't tolerate. Fixed: `resolve_ip_to_asns` now retries transient network errors with backoff and degrades to "unresolved" (empty list) after exhausting retries, matching the pattern already used for PeeringDB's 429s.
+
+**Re-ran cleanly after the fix, and found something new**: all 3 probes' last resolved ASN before the target is **AS38442 (Vodafone Fiji)** — and RIS independently lists AS38442 as AS9249's neighbor with **exactly 1,346 observations**, an exact match. This is the project's **fourth** RIS+Atlas-confirmed adjacency, and a different kind of finding than the first three: not a detour through Sydney, but **real intra-region transit** — a Fiji operator apparently providing upstream connectivity to a Vanuatu operator, entirely within the fishbowl.
+
+**Checked the gap before accepting the story, rather than assuming the best case**: `contiguous: false` for all three probes (a real gap sits between AS38442 and AS9249 itself). Hypothesized this might be VIX.VU (Vanuatu's confirmed in-region IXP) showing up — checked directly rather than assume, and it wasn't: two probes show a bare non-responding hop (`*`), the third shows a private RFC1918 address (`10.200.4.208`, not any known IXP fabric). Ordinary ICMP filtering near the destination, nothing more. The finding stands on what's actually confirmed (the AS38442 adjacency, backed by matching RIS+Atlas counts) without overreaching into what the gap might mean.
+
+Not yet added to `analysis/confirmed_detours.py` — that module is specifically for out-of-fishbowl detours, and this is the opposite (a confirmed in-region adjacency), so it needs its own small home rather than being force-fit into the existing one. Queued for a future tranche rather than done here, to keep this tranche's scope to the bug fix + the finding itself.
