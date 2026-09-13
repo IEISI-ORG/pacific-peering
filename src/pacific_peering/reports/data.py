@@ -14,6 +14,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from pacific_peering.analysis.confirmed_detours import CONFIRMED_DETOURS
+from pacific_peering.analysis.confirmed_local_transit import CONFIRMED_LOCAL_TRANSIT
 from pacific_peering.analysis.fishbowl import DEFAULT_SUMMARY_PATH
 from pacific_peering.analysis.ixp_lan_registry import DEFAULT_REGISTRY_PATH
 from pacific_peering.discovery.registry import DEFAULT_OUTPUT_PATH
@@ -60,6 +61,7 @@ class ReportData:
     economies: tuple[EconomySummary, ...]
     ixps: tuple[IxpSummary, ...]
     confirmed_detours: tuple[dict, ...]
+    confirmed_local_transit: tuple[dict, ...]
 
     def to_dict(self) -> dict:
         """Return a plain, JSON-serializable dict of this report data."""
@@ -123,6 +125,7 @@ def build_report_data(
     )
 
     confirmed_detours = tuple(asdict(detour) for detour in CONFIRMED_DETOURS)
+    confirmed_local_transit = tuple(asdict(t) for t in CONFIRMED_LOCAL_TRANSIT)
 
     return ReportData(
         generated_at=datetime.now(timezone.utc).isoformat(),
@@ -141,4 +144,5 @@ def build_report_data(
         economies=tuple(economies),
         ixps=ixps,
         confirmed_detours=confirmed_detours,
+        confirmed_local_transit=confirmed_local_transit,
     )

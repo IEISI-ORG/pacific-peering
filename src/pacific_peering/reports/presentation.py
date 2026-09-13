@@ -48,6 +48,21 @@ def render_presentation_skeleton(data: ReportData) -> str:
         for d in data.confirmed_detours
     )
 
+    transit_slides = "\n\n".join(
+        f"""## Finding: AS{t['provider_asn']} ({t['provider_name']}) -> AS{t['customer_asn']} ({t['customer_name']})
+
+- {t['note']}
+- RIS-observed neighbor count: **{t['ris_observation_count']}**
+- Confirmed by live Atlas traceroute (measurement `{t['measurement_id']}`,
+  vantage point: {t['vantage_point_cc']})
+- Unlike the detour findings above, this stays entirely in-region —
+  not everything routes out via Sydney
+
+<!-- SPEAKER NOTE: this is a good-news slide - don't let it get lost after
+     the detour findings -->"""
+        for t in data.confirmed_local_transit
+    )
+
     in_fishbowl_ixps = [ix for ix in data.ixps if ix.in_fishbowl is True]
     out_ixps = [ix for ix in data.ixps if ix.in_fishbowl is False]
 
@@ -94,6 +109,10 @@ or does it detour through Australia, the US, or elsewhere?
 ---
 
 {detour_slides}
+
+---
+
+{transit_slides}
 
 ---
 

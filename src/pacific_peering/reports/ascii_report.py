@@ -65,6 +65,21 @@ def render_ascii_report(data: ReportData) -> str:
         )
         lines.append(f"    {detour['note']}")
 
+    lines.append(_section("CONFIRMED LOCAL TRANSIT (RIS + Atlas both agree, stays in-fishbowl)"))
+    if not data.confirmed_local_transit:
+        lines.append("(none recorded yet)")
+    for transit in data.confirmed_local_transit:
+        lines.append(
+            f"AS{transit['provider_asn']} ({transit['provider_name']}, "
+            f"{transit['provider_cc']}) -> AS{transit['customer_asn']} "
+            f"({transit['customer_name']}, {transit['customer_cc']})"
+        )
+        lines.append(
+            f"    RIS observation count: {transit['ris_observation_count']}  "
+            f"[measurement {transit['measurement_id']}, vantage: {transit['vantage_point_cc']}]"
+        )
+        lines.append(f"    {transit['note']}")
+
     lines.append(_section("ECONOMIES"))
     header = f"{'CC':<4} {'Name':<32} {'Subregion':<12} {'ASNs':>5} {'Nbr':>5} {'IXP':>5} {'Fac':>5}"
     lines.append(header)

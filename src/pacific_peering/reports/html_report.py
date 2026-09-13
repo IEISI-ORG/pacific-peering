@@ -50,6 +50,10 @@ tr:hover {{ background: #f5f4f0; }}
                 margin-bottom: 10px; border-radius: 4px; }}
 .detour-card .headline {{ font-weight: 600; }}
 .detour-card .note {{ color: {_MUTED}; font-size: 0.85rem; margin-top: 4px; }}
+.transit-card {{ border-left: 4px solid {_GOOD}; background: #f0faf0; padding: 10px 14px;
+                margin-bottom: 10px; border-radius: 4px; }}
+.transit-card .headline {{ font-weight: 600; }}
+.transit-card .note {{ color: {_MUTED}; font-size: 0.85rem; margin-top: 4px; }}
 .bool-true {{ color: {_GOOD}; font-weight: 600; }}
 .bool-false {{ color: {_CRITICAL}; }}
 .viz-figure {{ margin: 1.5em 0; }}
@@ -111,6 +115,19 @@ def render_html_report(data: ReportData, viz_dir: Path | None = Path("../viz")) 
         for d in data.confirmed_detours
     ) or "<p>(none recorded yet)</p>"
 
+    transit_cards = "".join(
+        f"""<div class="transit-card">
+            <div class="headline">AS{t['provider_asn']} ({html.escape(t['provider_name'])},
+                {html.escape(t['provider_cc'])}) -&gt; AS{t['customer_asn']}
+                ({html.escape(t['customer_name'])}, {html.escape(t['customer_cc'])})</div>
+            <div>RIS observation count: {t['ris_observation_count']}
+                &middot; measurement {t['measurement_id']}
+                &middot; vantage point {html.escape(t['vantage_point_cc'])}</div>
+            <div class="note">{html.escape(t['note'])}</div>
+        </div>"""
+        for t in data.confirmed_local_transit
+    ) or "<p>(none recorded yet)</p>"
+
     economy_rows = "".join(
         f"""<tr>
             <td><span class="subregion-dot" style="background:{_SUBREGION_COLOR[e.subregion]}">
@@ -163,6 +180,9 @@ def render_html_report(data: ReportData, viz_dir: Path | None = Path("../viz")) 
 
     <h2>Confirmed sub-optimal routes (RIS + Atlas both agree)</h2>
     {detour_cards}
+
+    <h2>Confirmed local transit (RIS + Atlas both agree, stays in-fishbowl)</h2>
+    {transit_cards}
 
     {viz_html}
 

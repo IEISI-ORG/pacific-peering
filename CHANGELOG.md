@@ -153,6 +153,15 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   existing registry, never discard from it.
 - Project owner asked whether to wire the pipeline into a GitHub
   Actions cron; chose manual-only for now. Phase 1c complete as scoped.
+- `analysis.confirmed_local_transit.CONFIRMED_LOCAL_TRANSIT`: the
+  positive-finding counterpart to `confirmed_detours` (provider/customer
+  ASN pair, both in-fishbowl). Seeded with AS38442 (Vodafone Fiji) ->
+  AS9249 (Telecom Vanuatu). Wired into `ReportData` and all three report
+  renderers (new ASCII section, green HTML card, new presentation slide
+  with a speaker note not to let it get lost after the detour findings).
+  Caught and fixed a real Markdown heading bug in the presentation slide
+  (a literal newline mid-heading) by actually regenerating and reading
+  the output, not just the source.
 - Fixed a real crash: `ris.ripestat.resolve_ip_to_asns` had no retry or
   timeout handling — one slow RIPEstat response mid-analysis threw an
   uncaught `ReadTimeout` and killed the whole run. Now retries transient

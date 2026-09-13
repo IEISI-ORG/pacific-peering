@@ -1,6 +1,7 @@
 """Peering analysis: neighbor inference, IXP LAN classification, RIS/Atlas triangulation."""
 
 from .confirmed_detours import CONFIRMED_DETOURS, ConfirmedDetour
+from .confirmed_local_transit import CONFIRMED_LOCAL_TRANSIT, ConfirmedLocalTransit
 from .feasibility import (
     REFERENCE_POINTS_LATLON,
     analyze_measurement_feasibility,
@@ -34,6 +35,8 @@ from .traceroute_topology import (
 __all__ = [
     "CONFIRMED_DETOURS",
     "ConfirmedDetour",
+    "CONFIRMED_LOCAL_TRANSIT",
+    "ConfirmedLocalTransit",
     "build_fishbowl",
     "fetch_ixp_membership_for_registry",
     "infer_neighbors",
