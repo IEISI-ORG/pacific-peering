@@ -1,0 +1,21 @@
+[project]
+name = "pacific-peering"
+version = "0.1.0"
+description = "Add your description here"
+authors = [
+    { name = "Terry Sweetser", email = "tcs@ieisi.org" }
+]
+requires-python = ">=3.13"
+dependencies = [
+    "requests>=2.34.2",
+]
+
+[project.scripts]
+pacific-peering = "pacific_peering:main"
+pacific-peering-discover-asns = "pacific_peering.discovery.registry:main"
+pacific-peering-ris-smoketest = "pacific_peering.ris.smoketest:main"
+pacific-peering-fishbowl = "pacific_peering.analysis.fishbowl:main"
+
+[build-system]
+requires = ["uv_build>=0.12.5,<0.13.0"]
+build-backend = "uv_build"

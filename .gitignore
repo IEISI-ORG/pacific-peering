@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+*.egg-info/
+
+# uv
+uv.lock.tmp
+
+# Data and generated outputs (versioned separately, not in git)
+data/*
+!data/.gitkeep
+outputs/*
+!outputs/.gitkeep
+
+# Secrets
+secrets.yaml
+*.secret.yaml
+
+# Editors / OS
+.DS_Store
+.vscode/
+.idea/
