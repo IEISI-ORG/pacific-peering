@@ -13,9 +13,10 @@ See [`GOALS.md`](GOALS.md) for the full project brief and
 
 ## Status
 
-Early scaffolding — ASN discovery, RIS ingestion, and Atlas measurement
-pipelines are not yet implemented. See `task_plan.md` for phase-by-phase
-progress.
+ASN discovery, RIS ingestion, PeeringDB IXP membership, and RIPE Atlas
+traceroute measurement are implemented and have produced live results,
+including a real ASN-to-ASN adjacency confirmed by both RIS and Atlas.
+See `task_plan.md` for phase-by-phase progress and current findings.
 
 ## Project layout
 
@@ -49,4 +50,4 @@ license; contact the author to arrange one.
 ## Support
 
 If this project is useful to you, consider supporting it:
-[Buy Me a Coffee](https://www.buymeacoffee.com/PLACEHOLDER) *(link pending)*.
+[Buy Me a Coffee](https://www.buymeacoffee.com/terrysweetser).
