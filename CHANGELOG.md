@@ -153,11 +153,13 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   existing registry, never discard from it.
 - Project owner asked whether to wire the pipeline into a GitHub
   Actions cron; chose manual-only for now. Phase 1c complete as scoped.
-- Phase 1f started: `reports/data.py` (`build_report_data` ->
-  `ReportData`, the single structure both report formats will render
-  from) and `reports/ascii_report.py`. Entry point
-  `pacific-peering-report-ascii`. HTML renderer is next, consuming the
-  same `ReportData`.
+- Phase 1f complete: `reports/data.py` (`build_report_data` ->
+  `ReportData`, the single structure both report formats render from),
+  `reports/ascii_report.py`, and `reports/html_report.py` (embeds the
+  Phase 1e visualizations). Entry points `pacific-peering-report-ascii`
+  and `pacific-peering-report-html`. HTML output verified by rendering
+  it in headless Chromium and reviewing the actual screenshot, not just
+  the markup. P1 (core pipeline) is now fully complete, 1a-1f.
 - Phase 1e (visualization): `discovery.economy_coordinates`,
   `analysis.confirmed_detours`, and two chart modules under `viz/` —
   `geographic.py` (confirmed detours as bent paths vs. a direct-line
