@@ -103,13 +103,29 @@ def build_ixp_lan_registry(
     registry: dict[int, IxpLanEntry] = dict(existing)  # preserve entries not sourced from fishbowl.json
     for ix_id, meta in known_ixps.items():
         in_fishbowl = existing[ix_id].in_fishbowl if ix_id in existing else TBA
+        fetched_prefixes = prefixes_by_ix.get(ix_id, [])
+        if not fetched_prefixes and ix_id in existing and existing[ix_id].prefixes:
+            # An empty refetch can't be told apart from a failed one here
+            # (both look like []) — discovered as a real bug: a PeeringDB
+            # rate limit during a routine rebuild silently wiped out 3
+            # exchanges' already-known-good prefixes, including GU-IX's,
+            # which actually matters for the classifier. Once we've
+            # successfully fetched prefixes for an exchange, never let a
+            # later empty result erase them.
+            logger.warning(
+                "ix_id=%d refetch returned no prefixes; keeping %d already on record "
+                "(likely a transient fetch failure, not a real change)",
+                ix_id,
+                len(existing[ix_id].prefixes),
+            )
+            fetched_prefixes = list(existing[ix_id].prefixes)
         registry[ix_id] = IxpLanEntry(
             ix_id=ix_id,
             name=meta["name"],
             city=meta["city"],
             country=meta["country"],
             in_fishbowl=in_fishbowl,
-            prefixes=tuple(prefixes_by_ix.get(ix_id, [])),
+            prefixes=tuple(fetched_prefixes),
         )
 
     _save_registry(registry, registry_path)

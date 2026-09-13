@@ -220,3 +220,19 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   spoke: smaller ASNs getting transit from a national incumbent in the
   same economy) — not previously written up, and contrary to this
   graph's original assumption that such edges would be rare.
+
+### Fixed
+- `analysis.ixp_lan_registry.build_ixp_lan_registry`: a rate-limited
+  PeeringDB `ixpfx` refetch during a routine rebuild was silently
+  overwriting already-known-good `prefixes` with `[]` (the same class
+  of bug as the earlier GOREX/`in_fishbowl`-dropping issue, just in a
+  different field). Caught by treating a scheduled pipeline run as a
+  regression check rather than trusting a clean exit code: 3 exchanges
+  (including GU-IX, a confirmed in-fishbowl exchange the traceroute
+  classifier depends on) had lost their real subnet data. Fixed by
+  keeping the existing prefixes whenever a fresh fetch comes back empty
+  but prior data exists on record. Re-fetched and restored the 3
+  already-lost entries directly, then re-ran the rebuild to verify —
+  PeeringDB rate-limited again (4 different exchanges this time) and
+  the fix correctly preserved all of them; a follow-up check confirmed
+  0 of 30 exchanges have empty prefixes.

@@ -1,0 +1,30 @@
+{
+  "timestamp": "2026-09-13T221740Z",
+  "steps": {
+    "discovery": {
+      "status": "ok",
+      "summary": {
+        "economies": 20,
+        "total_asns": 163
+      }
+    },
+    "fishbowl": {
+      "status": "ok",
+      "summary": {
+        "asns": 163,
+        "with_neighbors": 124,
+        "with_ixp": 38,
+        "with_facility": 22
+      }
+    },
+    "ixp_lan_registry": {
+      "status": "ok",
+      "summary": {
+        "exchanges": 30,
+        "in_fishbowl": 10,
+        "out_of_fishbowl": 20,
+        "tba": 0
+      }
+    }
+  }
+}
