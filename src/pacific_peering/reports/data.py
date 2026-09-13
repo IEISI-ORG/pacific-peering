@@ -21,6 +21,8 @@ from pacific_peering.discovery.registry import DEFAULT_OUTPUT_PATH
 
 @dataclass(frozen=True)
 class EconomySummary:
+    """One economy's counts, as shown in the economies table of both report formats."""
+
     cc: str
     name: str
     subregion: str
@@ -32,6 +34,8 @@ class EconomySummary:
 
 @dataclass(frozen=True)
 class IxpSummary:
+    """One IXP's row in both report formats' IXP table."""
+
     ix_id: int
     name: str
     city: str
@@ -58,6 +62,7 @@ class ReportData:
     confirmed_detours: tuple[dict, ...]
 
     def to_dict(self) -> dict:
+        """Return a plain, JSON-serializable dict of this report data."""
         return asdict(self)
 
 

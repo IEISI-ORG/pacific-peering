@@ -32,6 +32,7 @@ class IpResolutionCache:
 
     @classmethod
     def load(cls, path: Path = DEFAULT_CACHE_PATH) -> "IpResolutionCache":
+        """Load a cache from `path`, or start empty if it doesn't exist yet."""
         entries = json.loads(path.read_text()) if path.exists() else {}
         return cls(path=path, entries=entries)
 
@@ -51,8 +52,10 @@ class IpResolutionCache:
     def set(
         self, ip: str, asn: int | None, source: str | None, ixp_context: dict | None = None
     ) -> None:
+        """Record a resolution result for `ip` (call `.save()` to persist it)."""
         self.entries[ip] = {"asn": asn, "source": source, "ixp_context": ixp_context}
 
     def save(self) -> None:
+        """Write all cached entries back to this cache's file."""
         self.path.parent.mkdir(parents=True, exist_ok=True)
         self.path.write_text(json.dumps(self.entries, indent=2) + "\n")

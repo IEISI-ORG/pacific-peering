@@ -1,3 +1,5 @@
+"""Peering analysis: neighbor inference, IXP LAN classification, RIS/Atlas triangulation."""
+
 from .confirmed_detours import CONFIRMED_DETOURS, ConfirmedDetour
 from .feasibility import (
     REFERENCE_POINTS_LATLON,

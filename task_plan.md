@@ -30,7 +30,7 @@ Build a system that discovers every active ASN homed in Melanesia, Polynesia, an
 
 ### P2 — Polish and dissemination (can wait)
 - [x] Phase 2a: Presentation skeleton — slide/outline template for NOGs and conferences, pulling from the latest report.
-- [ ] Phase 2b: Documentation pass — docstrings/module docs for all code, comprehensive README fleshed out beyond skeleton.
+- [x] Phase 2b: Documentation pass — docstrings/module docs for all code, comprehensive README fleshed out beyond skeleton.
 - [ ] Phase 2c: Changelog discipline — keep `CHANGELOG.md` narrating the project's journey as phases land (ongoing, not a single task).
 
 ## Fish Bowl Limitations (why the project calls it that)
@@ -326,3 +326,15 @@ Added `reports/presentation.py` (`render_presentation_skeleton`, `write_presenta
 Deliberately a **skeleton**, not finished narration: title/scope/methodology/findings/IXP-landscape/next-steps/thank-you slides, each populated with this project's real numbers (20 economies, 163 ASNs, both confirmed detours with their actual RIS counts and measurement IDs, the 10/20 in/out-of-fishbowl IXP split), but with explicit `<!-- SPEAKER NOTE -->` placeholders for judgment calls only whoever gives the talk can make (audience framing, timing, venue-specific next steps). Caught one redundant phrasing on first render (a finding bullet repeated "AS17828" twice since the note already named it) and fixed it before calling this done.
 
 **P2 status: Phase 2a done. Phase 2b partially done** — the README half is complete, but Phase 2b's other half (a systematic docstring audit across all modules) hasn't happened yet, so 2b's checklist item stays unchecked until that's done too, not marked complete on the README alone.
+
+---
+
+**[Loop tranche — Phase 2b complete: docstring audit.]** Confirmed via `CronList` this was job `551adf11`'s scheduled fire.
+
+Ran a small AST-based script over every file in `src/pacific_peering/` rather than eyeballing each one — checks for a missing module docstring or a missing docstring on any public (non-`_`-prefixed) function or class. First pass found real gaps: **all 7 package `__init__.py` files had no module docstring** (they only re-export via `__all__`), plus a handful of dataclasses/TypedDicts (`EconomyRegistryEntry`, `EconomySummary`, `IxpSummary`) and the `IpResolutionCache` accessor methods (`load`/`set`/`save`) — real, if minor, gaps. `main()` wrapper functions were excluded from the "real gap" list on purpose: a function literally named `main` that logs and calls the module's actual function needs no docstring to be understood, and adding one would just be noise per this project's "no comments that don't add value" rule.
+
+Fixed all of them with one-line, purpose-stating docstrings (each package `__init__.py` now says what that package is for in one line, matching the pattern already used in `analysis/ixp_lan_registry.py`'s module docstring). Also gave the leftover `uv init` placeholder (`src/pacific_peering/__init__.py`'s bare `main()`, still printing "Hello from pacific-peering!" since Phase 0a) a real docstring and a message that actually points somewhere useful, since the project now has 16 real entry points and that stub was the one piece of dead scaffolding nobody had touched since day one.
+
+**Verified, not just linted**: re-ran the audit script to confirm zero remaining gaps, syntax-checked every file, and — the check that actually matters — imported all six top-level subpackages and ran the bare `pacific-peering` command to confirm nothing broke from the edits. All clean.
+
+**Phase 2b complete. All of P1 and P2 are now done.** Remaining per the original plan: Phase 2c (changelog discipline) is not a one-time task — it's been running continuously throughout, and stays ongoing rather than ever getting a checkbox.

@@ -1,3 +1,5 @@
+"""ASN/economy discovery: APNIC delegated stats, PeeringDB, and the resulting registry."""
+
 from .apnic_stats import AsnAllocation, fetch_delegated_stats, parse_asn_allocations
 from .economies import ECONOMIES, ECONOMIES_BY_CC, Economy
 from .economy_coordinates import ECONOMY_LATLON, EXTERNAL_HUB_LATLON

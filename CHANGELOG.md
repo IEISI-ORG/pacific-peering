@@ -153,6 +153,15 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   existing registry, never discard from it.
 - Project owner asked whether to wire the pipeline into a GitHub
   Actions cron; chose manual-only for now. Phase 1c complete as scoped.
+- Phase 2b complete: docstring audit across all of `src/pacific_peering/`
+  (AST-based, not eyeballed). Added module docstrings to all 7 package
+  `__init__.py` files, docstrings on a handful of dataclasses/TypedDicts
+  and `IpResolutionCache`'s accessor methods, and gave the leftover
+  `uv init` placeholder package docstring/message a real purpose.
+  Verified by re-running the audit, syntax-checking every file, and
+  importing all six subpackages plus running the bare `pacific-peering`
+  command. All of P1 and P2 are now complete (2c/changelog discipline
+  stays ongoing, not a one-time task).
 - Phase 2a complete: `reports/presentation.py` (Marp-compatible Markdown
   slide deck skeleton, same `ReportData` as the other reports). Entry
   point `pacific-peering-presentation`. Real numbers plugged into a

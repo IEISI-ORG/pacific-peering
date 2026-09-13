@@ -23,6 +23,8 @@ DEFAULT_OUTPUT_PATH = Path("data/asn_registry.json")
 
 
 class EconomyRegistryEntry(TypedDict):
+    """One economy's entry in the ASN registry JSON."""
+
     name: str
     subregion: str
     asns: list[int]

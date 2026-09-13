@@ -1,3 +1,5 @@
+"""Report generation: ASCII, HTML, and a presentation skeleton, all from one shared ReportData."""
+
 from .ascii_report import render_ascii_report, write_ascii_report
 from .data import EconomySummary, IxpSummary, ReportData, build_report_data
 from .html_report import render_html_report, write_html_report

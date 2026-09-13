@@ -1,3 +1,5 @@
+"""RIPEstat ingestion: live ASPATHs and IP-to-ASN resolution, single-ASN or registry-wide."""
+
 from .bulk import fetch_aspaths_for_registry
 from .ripestat import (
     BgpStateRecord,
