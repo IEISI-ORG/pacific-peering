@@ -288,3 +288,13 @@ Added `discovery/economy_coordinates.py` (capital-city lat/lon for all 20 econom
 **Iterated per the skill's step 7 (render and look, don't assume)**: rendered both to PNG for actual visual inspection rather than trusting the SVG source. The geographic map was clean on the first pass. The AS-graph wasn't: external-ASN labels existed but the actual hub ASNs (the interesting nodes) had no labels at all, and ~49 isolated in-scope ASNs (zero observed neighbors) cluttered the layout without adding information. Fixed both: hub ASNs (degree >= 5) now get bold labels, and isolated nodes are dropped from the plotted layout with their count noted in the caption instead of scattered around the image.
 
 Both are static SVG (matplotlib + networkx, no new heavy dependency like cartopy) under `outputs/viz/` — not currently tracked in git (bulk visual output, same treatment as other generated data; the *code* to regenerate them is what's committed).
+
+---
+
+**[Loop tranche — Phase 1f started: shared report data + ASCII renderer.]** Confirmed via `CronList` this was job `551adf11`'s scheduled fire.
+
+Added `reports/data.py` (`build_report_data` -> `ReportData`, assembled from the ASN registry, `fishbowl.json`, the IXP LAN registry, and `analysis.confirmed_detours`) and `reports/ascii_report.py` (`render_ascii_report`, `write_ascii_report`). Per Phase 1f's own spec — "ASCII report and HTML report from the same underlying analysis output" — the HTML renderer due next tranche will consume this exact same `ReportData`, not a separate re-derivation, so the two formats can't drift on what they claim.
+
+Ran it: `outputs/reports/report.txt` — summary stats, the 2 confirmed detours with their RIS observation counts, a per-economy table (ASN/neighbor/IXP/facility counts), and the full 30-exchange IXP table with each one's confirmed in/out-of-fishbowl status. Read through the output; numbers are internally consistent with everything gathered so far (e.g. PNG's 39 ASNs/29 with neighbors/10 with IXP membership lines up with earlier phases' findings).
+
+Next tranche: the HTML report, rendering the same `ReportData`.
