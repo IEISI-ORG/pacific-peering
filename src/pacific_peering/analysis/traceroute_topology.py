@@ -96,10 +96,28 @@ def check_neighbor_agreement(
     ris_neighbors = fishbowl.get(str(target_asn), {}).get("neighbors", {})
 
     if target_asn not in as_sequence:
+        # Common in practice: the traceroute goes dark before a hop
+        # actually resolves to target_asn (ICMP filtering near the
+        # destination is normal). The last ASN we *did* resolve is still
+        # meaningful — if RIS independently lists it as a neighbor of
+        # target_asn, that's real corroboration of "traffic got to the
+        # right neighborhood," just weaker than a direct hit.
+        if not as_sequence:
+            return {
+                "traceroute_upstream_asn": None,
+                "ris_agrees": False,
+                "note": "no traceroute hops resolved to any ASN",
+            }
+        last_asn = as_sequence[-1]
+        ris_count = ris_neighbors.get(str(last_asn))
         return {
-            "traceroute_upstream_asn": None,
-            "ris_agrees": False,
-            "note": "target ASN not resolved anywhere in the traceroute AS sequence",
+            "traceroute_upstream_asn": last_asn,
+            "ris_agrees": ris_count is not None,
+            "ris_observation_count": ris_count,
+            "note": (
+                "target ASN never resolved (likely ICMP filtering near destination); "
+                "comparing RIS against the last ASN the traceroute did reach"
+            ),
         }
 
     target_index = as_sequence.index(target_asn)

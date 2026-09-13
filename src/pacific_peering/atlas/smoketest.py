@@ -1,17 +1,19 @@
-"""Phase 1b smoke test: prove we can run a real RIPE Atlas traceroute end-to-end.
+"""Phase 1b/1d smoke tests: prove outbound and inbound Atlas traceroutes work.
 
 Fires one cheap one-off traceroute (a handful of probes, single shot) and
 stores raw + parsed results. This is the minimal live proof before any
 larger measurement campaign — deferred deliberately (see task_plan.md),
 not an oversight.
 
-Source selection: ASN-based probe selection turned out to fail for most
-in-scope ASNs — Atlas has very sparse, often-abandoned probe coverage in
-this region (see `atlas.probes`). This smoke test instead picks the
-best-covered in-scope economy (by connected-probe count) as the source,
-and targets Papua New Guinea (AS17828), which has both a local IXP (PNG
-Neutral IX) and Sydney IXP presence per Phase 1a's data — a direct test
-of whether Pacific-to-Pacific traffic actually stays regional.
+Two directions, per Validation Rule 3 ("the fish bowl needs both
+directions"):
+- `run_smoketest` (outbound): a Pacific-hosted/country probe tracing out
+  to a target. Source selection uses country, not ASN — ASN-based
+  selection fails for most in-scope ASNs (very sparse, often-abandoned
+  Atlas probe coverage in this region; see `atlas.probes`).
+- `run_inbound_smoketest` (inbound): a probe *outside* the Pacific
+  tracing *in* to an in-scope ASN — the only way to see how external
+  traffic actually arrives, which may differ from the outbound view.
 """
 
 from __future__ import annotations
@@ -36,31 +38,16 @@ DEFAULT_PARSED_DIR = Path("data/atlas/parsed")
 
 DEFAULT_TARGET_ASN = 17828  # PNG DataCo Limited
 DEFAULT_TARGET_CC = "PG"
+DEFAULT_EXTERNAL_SOURCE_CC = "US"  # outside the Pacific and outside AU/NZ
 
 
-def run_smoketest(
-    target_asn: int = DEFAULT_TARGET_ASN,
-    target_cc: str = DEFAULT_TARGET_CC,
-    probe_count: int = 3,
+def _fire_and_persist(
+    source_type: str, source_value: int | str, target_ip: str, description: str, probe_count: int
 ) -> int:
-    """Fire one one-off traceroute toward `target_asn` and persist results.
-
-    The source economy is chosen automatically as whichever in-scope
-    economy (other than `target_cc`) has the most connected Atlas probes.
-
-    Returns:
-        The created measurement's ID.
-    """
-    source_cc = pick_best_covered_economy(exclude_cc=target_cc)
-    source_name = ECONOMIES_BY_CC[source_cc].name
-    target_ip = pick_target_ip(target_asn)
-    description = (
-        f"pacific-peering smoketest {source_cc} -> AS{target_asn} ({target_ip})"
-    )
-    logger.info("Selected source economy: %s (%s)", source_name, source_cc)
+    """Create a one-off traceroute, wait for results, and persist raw + parsed JSON."""
     measurement_id = create_traceroute_measurement(
-        source_type="country",
-        source_value=source_cc,
+        source_type=source_type,
+        source_value=source_value,
         target=target_ip,
         description=description,
         probe_count=probe_count,
@@ -92,10 +79,53 @@ def run_smoketest(
     return measurement_id
 
 
-def main() -> None:
-    logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
-    measurement_id = run_smoketest()
+def run_smoketest(
+    target_asn: int = DEFAULT_TARGET_ASN,
+    target_cc: str = DEFAULT_TARGET_CC,
+    probe_count: int = 3,
+) -> int:
+    """Fire one outbound one-off traceroute toward `target_asn` and persist results.
 
+    The source economy is chosen automatically as whichever in-scope
+    economy (other than `target_cc`) has the most connected Atlas probes.
+
+    Returns:
+        The created measurement's ID.
+    """
+    source_cc = pick_best_covered_economy(exclude_cc=target_cc)
+    source_name = ECONOMIES_BY_CC[source_cc].name
+    target_ip = pick_target_ip(target_asn)
+    description = f"pacific-peering smoketest outbound {source_cc} to AS{target_asn} {target_ip}"
+    logger.info("Selected source economy: %s (%s)", source_name, source_cc)
+    return _fire_and_persist("country", source_cc, target_ip, description, probe_count)
+
+
+def run_inbound_smoketest(
+    target_asn: int = DEFAULT_TARGET_ASN,
+    external_source_cc: str = DEFAULT_EXTERNAL_SOURCE_CC,
+    probe_count: int = 3,
+) -> int:
+    """Fire one inbound one-off traceroute from outside the Pacific into `target_asn`.
+
+    Args:
+        target_asn: The in-scope ASN to trace into.
+        external_source_cc: An ISO country code outside the study region
+            (and outside AU/NZ, to avoid conflating "the alleged hub" with
+            "an external vantage point") to source probes from.
+        probe_count: Number of probes to request.
+
+    Returns:
+        The created measurement's ID.
+    """
+    target_ip = pick_target_ip(target_asn)
+    description = (
+        f"pacific-peering smoketest inbound {external_source_cc} to AS{target_asn} {target_ip}"
+    )
+    logger.info("External source economy: %s", external_source_cc)
+    return _fire_and_persist("country", external_source_cc, target_ip, description, probe_count)
+
+
+def _log_measurement(measurement_id: int) -> None:
     parsed_path = DEFAULT_PARSED_DIR / f"{measurement_id}.json"
     parsed = json.loads(parsed_path.read_text())
     logger.info("Measurement %d: %d probe traceroutes returned", measurement_id, len(parsed))
@@ -104,6 +134,16 @@ def main() -> None:
         for hop in traceroute["hops"]:
             addrs = ", ".join(hop["addresses"]) or "*"
             logger.info("  hop %2d: %s", hop["hop"], addrs)
+
+
+def main() -> None:
+    logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
+    _log_measurement(run_smoketest())
+
+
+def main_inbound() -> None:
+    logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
+    _log_measurement(run_inbound_smoketest())
 
 
 if __name__ == "__main__":

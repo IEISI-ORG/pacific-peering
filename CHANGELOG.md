@@ -68,3 +68,21 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   observed RTT is 8.5-9.1x the direct Guam->PNG physical floor but only
   2.7-2.9x the via-Sydney-relay floor — quantitative support (not proof)
   for the Sydney-detour finding, on top of the earlier exact-IP match.
+- `atlas.smoketest.run_inbound_smoketest` (external vantage point tracing
+  *in* to an in-scope ASN — the missing direction). Entry point
+  `pacific-peering-atlas-inbound-smoketest`.
+- Fixed a real bug: Atlas rejects measurement descriptions containing
+  `<`/`>` outright ("Text contains disallowed characters") — this, not a
+  propagation delay, was the cause of an earlier "transient" 400 wrongly
+  blamed on timing. `create_traceroute_measurement` now validates this
+  upfront and raises `ValueError` instead of a confusing 400.
+- `analysis.traceroute_topology.check_neighbor_agreement` now handles the
+  common case where a traceroute never reaches a hop resolving to the
+  target ASN (ICMP filtering near the destination): it compares RIS
+  against the last ASN actually reached instead of giving up.
+- First inbound result (US -> AS17828, measurement 210913838): both
+  probes independently corroborate real RIS-observed neighbors —
+  AS58453 (China Mobile International, 129 RIS observations) and AS4637
+  (Telstra Global, 214 RIS observations, AS17828's 2nd-largest). AS17828
+  now has three RIS+Atlas-confirmed neighbors (AS6939, AS4637, AS58453)
+  from three vantage points across both directions.

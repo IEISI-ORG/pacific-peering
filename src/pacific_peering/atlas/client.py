@@ -61,14 +61,26 @@ def create_traceroute_measurement(
         source_value: The selector value (an ASN int for "asn", an ISO
             country code for "country").
         target: Destination IPv4 address or hostname.
-        description: Human-readable measurement description.
+        description: Human-readable measurement description. Must not
+            contain "<" or ">" — Atlas rejects these outright with a 400
+            ("Text contains disallowed characters"), which previously
+            surfaced as a confusing one-off failure until traced to the
+            "->" arrows this project's descriptions used to include.
         probe_count: Number of probes to request.
         api_key: RIPE Atlas API key; loaded from `secrets.yaml` if not given.
         timeout: Request timeout in seconds.
 
     Returns:
         The created measurement's ID.
+
+    Raises:
+        ValueError: If `description` contains a disallowed character.
     """
+    if "<" in description or ">" in description:
+        raise ValueError(
+            f"Atlas rejects '<'/'>' in measurement descriptions (got: {description!r}); "
+            'use "to" instead of "->", for example.'
+        )
     api_key = api_key or load_atlas_api_key()
     payload = {
         "definitions": [
