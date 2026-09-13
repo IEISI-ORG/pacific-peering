@@ -10,6 +10,7 @@ paths alone).
 from __future__ import annotations
 
 import logging
+import time
 from dataclasses import dataclass
 
 import requests
@@ -33,6 +34,56 @@ class IxpMembership:
 
 def _chunked(items: list[int], size: int = _CHUNK_SIZE) -> list[list[int]]:
     return [items[i : i + size] for i in range(0, len(items), size)]
+
+
+def resolve_ip_via_netixlan(
+    ip: str, timeout: float = _DEFAULT_TIMEOUT, max_retries: int = 2
+) -> int | None:
+    """Resolve an IXP peering-LAN address to its member ASN via PeeringDB.
+
+    This exists because RIPEstat's BGP-based IP-to-ASN lookup
+    (`ris.ripestat.resolve_ip_to_asns`) frequently returns nothing for
+    IXP fabric addresses, since they're often not announced in global
+    BGP at all — but PeeringDB's `netixlan` table records exactly which
+    member ASN holds each such address, from the IXP's own membership
+    records. Use this as a fallback when the BGP-based lookup is empty,
+    not a replacement — it only knows about IXP fabric addresses, not
+    general internet addresses.
+
+    A 429 (rate limited) degrades to "unresolved" after retrying with
+    backoff, rather than raising — this is a best-effort enrichment
+    step, not something that should crash an entire measurement's
+    analysis over PeeringDB's fair-use limits.
+
+    Args:
+        ip: An IPv4 address that might be an IXP peering-LAN address.
+        timeout: Request timeout in seconds.
+        max_retries: Retries on 429 before giving up, with a short
+            (1s, 2s, ...) backoff between attempts.
+
+    Returns:
+        The member ASN if `ip` is a known netixlan address, else None.
+    """
+    for attempt in range(max_retries + 1):
+        response = requests.get(
+            f"{PEERINGDB_BASE_URL}/netixlan", params={"ipaddr4": ip}, timeout=timeout
+        )
+        if response.status_code == 429:
+            if attempt < max_retries:
+                logger.warning(
+                    "PeeringDB rate-limited netixlan lookup for %s, retrying (attempt %d/%d)",
+                    ip,
+                    attempt + 1,
+                    max_retries,
+                )
+                time.sleep(2**attempt)
+                continue
+            logger.warning("PeeringDB still rate-limiting netixlan lookup for %s; giving up", ip)
+            return None
+        response.raise_for_status()
+        records = response.json()["data"]
+        return records[0]["asn"] if records else None
+    return None
 
 
 def _fetch_netixlan_records(asns: list[int], timeout: float = _DEFAULT_TIMEOUT) -> list[dict]:

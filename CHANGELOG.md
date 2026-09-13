@@ -86,3 +86,17 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   (Telstra Global, 214 RIS observations, AS17828's 2nd-largest). AS17828
   now has three RIS+Atlas-confirmed neighbors (AS6939, AS4637, AS58453)
   from three vantage points across both directions.
+- `discovery.peeringdb.resolve_ip_via_netixlan`: exact-IP PeeringDB
+  lookup, used as a fallback when RIPEstat's BGP-based IP-to-ASN
+  resolution returns nothing (common for IXP fabric addresses). Retries
+  with backoff on 429 before degrading to "unresolved."
+- Fixed a real bug this uncovered: `traceroute_topology`'s AS-sequence
+  extraction silently collapsed unresolved hops, which could make a
+  non-adjacent ASN look directly adjacent to the target. It now tracks
+  hop-to-hop contiguity explicitly and refuses to imply adjacency across
+  a gap. Caught via New Caledonia -> Fiji (measurement 210919078): the
+  fix correctly resolved MegaIX Sydney's fabric to AS45349 (Telecom Fiji
+  Ltd) via the new PeeringDB fallback, matching RIS's independently
+  observed neighbor (1,669 observations) exactly — a second
+  RIS+Atlas-confirmed adjacency, via a second corridor and a second
+  Sydney exchange.

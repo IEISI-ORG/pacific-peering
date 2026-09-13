@@ -83,16 +83,24 @@ def run_smoketest(
     target_asn: int = DEFAULT_TARGET_ASN,
     target_cc: str = DEFAULT_TARGET_CC,
     probe_count: int = 3,
+    source_cc: str | None = None,
 ) -> int:
     """Fire one outbound one-off traceroute toward `target_asn` and persist results.
 
-    The source economy is chosen automatically as whichever in-scope
-    economy (other than `target_cc`) has the most connected Atlas probes.
+    Args:
+        target_asn: In-scope ASN to trace toward.
+        target_cc: `target_asn`'s economy (excluded from auto source-pick).
+        probe_count: Number of probes to request.
+        source_cc: Force a specific source economy (e.g. to deliberately
+            test a particular corridor). If not given, auto-picks
+            whichever in-scope economy (other than `target_cc`) has the
+            most connected Atlas probes — which will keep re-picking the
+            same best-covered economy unless overridden here.
 
     Returns:
         The created measurement's ID.
     """
-    source_cc = pick_best_covered_economy(exclude_cc=target_cc)
+    source_cc = source_cc or pick_best_covered_economy(exclude_cc=target_cc)
     source_name = ECONOMIES_BY_CC[source_cc].name
     target_ip = pick_target_ip(target_asn)
     description = f"pacific-peering smoketest outbound {source_cc} to AS{target_asn} {target_ip}"
