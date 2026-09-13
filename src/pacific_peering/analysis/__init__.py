@@ -9,6 +9,15 @@ from .feasibility import (
 from .fishbowl import build_fishbowl
 from .ip_resolution_cache import IpResolutionCache
 from .ixp import fetch_ixp_membership_for_registry
+from .ixp_lan_registry import (
+    TBA,
+    IxpLanEntry,
+    add_or_confirm_ixp,
+    build_ixp_lan_registry,
+    classify_ixp_fabric,
+    confirm_ixp_region,
+    load_ixp_lan_registry,
+)
 from .peering import infer_neighbors, normalize_path
 from .traceroute_topology import (
     AsHop,
@@ -37,4 +46,11 @@ __all__ = [
     "compare_direct_vs_relay",
     "great_circle_km",
     "min_feasible_rtt_ms",
+    "TBA",
+    "IxpLanEntry",
+    "add_or_confirm_ixp",
+    "build_ixp_lan_registry",
+    "classify_ixp_fabric",
+    "confirm_ixp_region",
+    "load_ixp_lan_registry",
 ]

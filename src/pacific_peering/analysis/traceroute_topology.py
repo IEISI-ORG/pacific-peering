@@ -19,6 +19,12 @@ from pathlib import Path
 
 from pacific_peering.analysis.fishbowl import DEFAULT_SUMMARY_PATH
 from pacific_peering.analysis.ip_resolution_cache import DEFAULT_CACHE_PATH, IpResolutionCache
+from pacific_peering.analysis.ixp_lan_registry import (
+    DEFAULT_REGISTRY_PATH,
+    IxpLanEntry,
+    classify_ixp_fabric,
+    load_ixp_lan_registry,
+)
 from pacific_peering.discovery.peeringdb import resolve_ip_via_netixlan
 from pacific_peering.ris.ripestat import resolve_ip_to_asns
 
@@ -32,28 +38,38 @@ DEFAULT_TRIANGULATION_DIR = Path("data/analysis/triangulation")
 class HopResolution:
     """One traceroute hop resolved to whichever ASN(s) its address(es) belong to.
 
-    An empty `asns` means neither resolver could identify an owner —
-    genuinely unresolved (e.g. a private/CGNAT address), not necessarily
-    an IXP fabric address, now that `resolve_ip_via_netixlan` already
-    catches most of those (see `resolution_source`).
+    An empty `asns` means no specific member ASN could be identified.
+    `ixp_context` fills in what we still know in that case: the hop is
+    confirmed IXP fabric (exchange known, in/out-of-fishbowl per
+    `ixp_lan_registry`, possibly "TBA"), even without a member match.
+    Both being empty/None means genuinely unresolved (e.g. private/CGNAT).
     """
 
     hop: int
     addresses: tuple[str, ...]
     asns: tuple[int, ...]
     resolution_source: str | None  # "bgp", "peeringdb_netixlan", or None
+    ixp_context: dict | None = None  # {"ix_id", "name", "in_fishbowl"}, when known
 
 
-def _resolve_address(address: str, cache: IpResolutionCache) -> tuple[int | None, str | None]:
-    """Resolve one address to (asn, source), trying BGP first, then PeeringDB netixlan.
+def _resolve_address(
+    address: str, cache: IpResolutionCache, ixp_registry: dict[int, IxpLanEntry]
+) -> tuple[int | None, str | None, dict | None]:
+    """Resolve one address to (asn, source, ixp_context).
 
-    BGP-based resolution (`resolve_ip_to_asns`) is tried first since it
-    covers the general internet; PeeringDB's netixlan lookup is the
-    fallback specifically for IXP peering-LAN addresses, which are
-    frequently *not* announced in global BGP at all and so resolve to
-    nothing via the BGP path alone (discovered directly in loop tranche
-    4: `103.26.68.83` resolved to no ASN via BGP, but PeeringDB's
-    netixlan table correctly attributes it to AS45349).
+    Three tiers, in order:
+    1. BGP (`resolve_ip_to_asns`) — covers the general internet.
+    2. PeeringDB `netixlan` exact-member lookup — the fallback for IXP
+       peering-LAN addresses, which are frequently *not* announced in
+       global BGP at all (discovered in loop tranche 4: `103.26.68.83`
+       resolved to no ASN via BGP, but PeeringDB's netixlan table
+       correctly attributes it to AS45349).
+    3. This project's own IXP LAN subnet registry — when neither of the
+       above identifies a specific member ASN, check whether the address
+       still falls inside a *known* exchange's LAN prefix. If so, we
+       don't know the member, but we do know it's an IXP crossing, and
+       (once confirmed, not "TBA") whether that exchange is in- or
+       out-of-fishbowl — real information a bare unresolved gap discards.
 
     Results (including negative ones) are cached by IP across calls —
     the same backbone/IXP-fabric addresses recur across many
@@ -66,37 +82,61 @@ def _resolve_address(address: str, cache: IpResolutionCache) -> tuple[int | None
 
     bgp_asns = resolve_ip_to_asns(address)
     if len(bgp_asns) == 1:
-        result = (bgp_asns[0], "bgp")
+        result = (bgp_asns[0], "bgp", None)
     elif not bgp_asns:
         netixlan_asn = resolve_ip_via_netixlan(address)
-        result = (netixlan_asn, "peeringdb_netixlan") if netixlan_asn is not None else (None, None)
+        if netixlan_asn is not None:
+            result = (netixlan_asn, "peeringdb_netixlan", None)
+        else:
+            ixp_entry = classify_ixp_fabric(address, ixp_registry)
+            ixp_context = (
+                {
+                    "ix_id": ixp_entry.ix_id,
+                    "name": ixp_entry.name,
+                    "in_fishbowl": ixp_entry.in_fishbowl,
+                }
+                if ixp_entry is not None
+                else None
+            )
+            result = (None, "ixp_lan_registry" if ixp_entry is not None else None, ixp_context)
     else:
-        result = (None, None)  # ambiguous (multiple BGP-announcing ASNs); don't guess
+        result = (None, None, None)  # ambiguous (multiple BGP-announcing ASNs); don't guess
 
     cache.set(address, *result)
     return result
 
 
 def resolve_traceroute_hops(
-    hops: list[dict], cache_path: Path = DEFAULT_CACHE_PATH
+    hops: list[dict],
+    cache_path: Path = DEFAULT_CACHE_PATH,
+    ixp_registry_path: Path = DEFAULT_REGISTRY_PATH,
 ) -> list[HopResolution]:
-    """Resolve every hop's responding address(es) to an ASN.
+    """Resolve every hop's responding address(es) to an ASN (or IXP context).
 
     Args:
         hops: the `hops` list from one parsed Atlas traceroute record
             (each a dict with "hop" and "addresses").
         cache_path: Where to load/persist the IP-resolution cache.
+        ixp_registry_path: Where to load the IXP LAN subnet registry
+            from (see `ixp_lan_registry`); an empty registry (e.g. if it
+            hasn't been built yet) just means tier 3 never matches.
     """
     cache = IpResolutionCache.load(cache_path)
+    ixp_registry = load_ixp_lan_registry(ixp_registry_path) if ixp_registry_path.exists() else {}
     resolved: list[HopResolution] = []
     for hop in hops:
         addresses = tuple(hop.get("addresses", []))
-        resolutions = [_resolve_address(address, cache) for address in addresses]
-        asns = sorted({asn for asn, _source in resolutions if asn is not None})
-        source = next((s for _asn, s in resolutions if s is not None), None)
+        resolutions = [_resolve_address(address, cache, ixp_registry) for address in addresses]
+        asns = sorted({asn for asn, _source, _ctx in resolutions if asn is not None})
+        source = next((s for _asn, s, _ctx in resolutions if s is not None), None)
+        ixp_context = next((c for _asn, _s, c in resolutions if c is not None), None)
         resolved.append(
             HopResolution(
-                hop=hop["hop"], addresses=addresses, asns=tuple(asns), resolution_source=source
+                hop=hop["hop"],
+                addresses=addresses,
+                asns=tuple(asns),
+                resolution_source=source,
+                ixp_context=ixp_context,
             )
         )
     cache.save()
@@ -240,8 +280,18 @@ def analyze_measurement(
             }
             for entry in as_sequence
         ]
+        ixp_crossings = [
+            {"hop": h.hop, **h.ixp_context}
+            for h in resolved_hops
+            if h.ixp_context is not None and not h.asns
+        ]
         per_probe.append(
-            {"probe_id": traceroute["probe_id"], "as_sequence": as_sequence_json, **agreement}
+            {
+                "probe_id": traceroute["probe_id"],
+                "as_sequence": as_sequence_json,
+                "ixp_crossings": ixp_crossings,
+                **agreement,
+            }
         )
 
     result = {"measurement_id": measurement_id, "target_asn": target_asn, "probes": per_probe}

@@ -32,6 +32,21 @@ class IxpMembership:
     country: str
 
 
+@dataclass(frozen=True)
+class FacilityPresence:
+    """One ASN's physical colocation presence, per PeeringDB's `netfac`.
+
+    A stronger signal than IXP membership: this is equipment in a
+    building, not just a virtual peering session. An ASN can be
+    out-of-region-dependent via colocation even with zero out-of-region
+    IXP memberships.
+    """
+
+    name: str
+    city: str
+    country: str
+
+
 def _chunked(items: list[int], size: int = _CHUNK_SIZE) -> list[list[int]]:
     return [items[i : i + size] for i in range(0, len(items), size)]
 
@@ -100,7 +115,7 @@ def _fetch_netixlan_records(asns: list[int], timeout: float = _DEFAULT_TIMEOUT) 
     return records
 
 
-def _fetch_ix_records(ix_ids: list[int], timeout: float = _DEFAULT_TIMEOUT) -> dict[int, dict]:
+def fetch_ix_info(ix_ids: list[int], timeout: float = _DEFAULT_TIMEOUT) -> dict[int, dict]:
     """Fetch IXP metadata (name, city, country) for the given ix_ids, chunked."""
     ix_by_id: dict[int, dict] = {}
     for chunk in _chunked(ix_ids):
@@ -131,7 +146,7 @@ def fetch_ixp_membership(asns: list[int]) -> dict[int, list[IxpMembership]]:
     netixlan_records = _fetch_netixlan_records(unique_asns)
 
     ix_ids = sorted({record["ix_id"] for record in netixlan_records})
-    ix_by_id = _fetch_ix_records(ix_ids) if ix_ids else {}
+    ix_by_id = fetch_ix_info(ix_ids) if ix_ids else {}
 
     membership: dict[int, list[IxpMembership]] = {asn: [] for asn in unique_asns}
     seen: set[tuple[int, int]] = set()
@@ -150,3 +165,117 @@ def fetch_ixp_membership(asns: list[int]) -> dict[int, list[IxpMembership]]:
             )
         )
     return membership
+
+
+def _fetch_net_ids(asns: list[int], timeout: float = _DEFAULT_TIMEOUT) -> dict[int, int]:
+    """Map ASN -> PeeringDB internal `net` id, chunked."""
+    asn_to_net_id: dict[int, int] = {}
+    for chunk in _chunked(asns):
+        response = requests.get(
+            f"{PEERINGDB_BASE_URL}/net",
+            params={"asn__in": ",".join(str(asn) for asn in chunk)},
+            timeout=timeout,
+        )
+        response.raise_for_status()
+        for record in response.json()["data"]:
+            asn_to_net_id[record["asn"]] = record["id"]
+    return asn_to_net_id
+
+
+def fetch_facility_presence(asns: list[int]) -> dict[int, list[FacilityPresence]]:
+    """Resolve real-world colocation facility presence for a list of ASNs.
+
+    `netfac` (the facility-membership table) doesn't filter by ASN
+    directly — it's keyed by PeeringDB's internal `net_id`, so this
+    resolves ASN -> net_id via the `net` endpoint first, then queries
+    `netfac` by `net_id__in`.
+
+    Args:
+        asns: ASNs to look up (deduplicated internally).
+
+    Returns:
+        Mapping of ASN to the list of facilities it's registered at.
+        ASNs absent from PeeringDB, or with no facility presence, map to
+        an empty list.
+    """
+    unique_asns = sorted(set(asns))
+    asn_to_net_id = _fetch_net_ids(unique_asns)
+    net_id_to_asn = {net_id: asn for asn, net_id in asn_to_net_id.items()}
+
+    presence: dict[int, list[FacilityPresence]] = {asn: [] for asn in unique_asns}
+    net_ids = sorted(net_id_to_asn)
+    if not net_ids:
+        return presence
+
+    for chunk in _chunked(net_ids):
+        response = requests.get(
+            f"{PEERINGDB_BASE_URL}/netfac",
+            params={"net_id__in": ",".join(str(net_id) for net_id in chunk)},
+            timeout=_DEFAULT_TIMEOUT,
+        )
+        response.raise_for_status()
+        for record in response.json()["data"]:
+            asn = net_id_to_asn.get(record["net_id"])
+            if asn is None:
+                continue
+            presence[asn].append(
+                FacilityPresence(
+                    name=record.get("name", ""),
+                    city=record.get("city", ""),
+                    country=record.get("country", ""),
+                )
+            )
+    return presence
+
+
+def fetch_ixp_prefixes(
+    ix_ids: list[int], timeout: float = _DEFAULT_TIMEOUT, max_retries: int = 3
+) -> dict[int, list[str]]:
+    """Fetch each IXP's registered IPv4 LAN prefix(es) via PeeringDB's `ixpfx`.
+
+    Queried one `ix_id` at a time rather than batched: `ixpfx` records
+    carry `ixlan_id`, not `ix_id`, and while the two happen to match for
+    every exchange checked so far, that's not guaranteed by the schema —
+    querying one at a time avoids silently mis-attributing a prefix to
+    the wrong exchange in a batch response. A small delay between
+    requests plus retry-with-backoff on 429 — a couple dozen sequential
+    calls was enough to rate-limit this project once already.
+
+    Args:
+        ix_ids: PeeringDB exchange IDs to look up.
+        max_retries: Retries on 429 before giving up on that one ix_id.
+
+    Returns:
+        Mapping of ix_id to its list of IPv4 CIDR prefixes (IPv6 skipped
+        — this project's Atlas measurements are IPv4-only so far). An
+        ix_id that still 429s after all retries maps to an empty list
+        rather than aborting the whole batch.
+    """
+    prefixes: dict[int, list[str]] = {}
+    for ix_id in sorted(set(ix_ids)):
+        for attempt in range(max_retries + 1):
+            response = requests.get(
+                f"{PEERINGDB_BASE_URL}/ixpfx", params={"ix_id": ix_id}, timeout=timeout
+            )
+            if response.status_code == 429:
+                if attempt < max_retries:
+                    logger.warning(
+                        "PeeringDB rate-limited ixpfx lookup for ix_id=%d, retrying (%d/%d)",
+                        ix_id,
+                        attempt + 1,
+                        max_retries,
+                    )
+                    time.sleep(2**attempt)
+                    continue
+                logger.warning("PeeringDB still rate-limiting ix_id=%d; giving up", ix_id)
+                prefixes[ix_id] = []
+                break
+            response.raise_for_status()
+            prefixes[ix_id] = [
+                record["prefix"]
+                for record in response.json()["data"]
+                if record.get("protocol") == "IPv4"
+            ]
+            break
+        time.sleep(0.5)
+    return prefixes

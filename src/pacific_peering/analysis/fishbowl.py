@@ -13,6 +13,7 @@ from pathlib import Path
 
 from pacific_peering.analysis.ixp import fetch_ixp_membership_for_registry
 from pacific_peering.analysis.peering import infer_neighbors
+from pacific_peering.discovery.peeringdb import fetch_facility_presence
 from pacific_peering.discovery.registry import DEFAULT_OUTPUT_PATH
 from pacific_peering.ris.bulk import fetch_aspaths_for_registry
 
@@ -45,12 +46,14 @@ def build_fishbowl(
     aspaths_by_asn = fetch_aspaths_for_registry(registry_path=registry_path)
     neighbors_by_asn = infer_neighbors(aspaths_by_asn)
     ixp_by_asn = fetch_ixp_membership_for_registry(registry_path=registry_path)
+    facilities_by_asn = fetch_facility_presence(list(asn_to_economy))
 
     fishbowl: dict[str, dict] = {}
     for asn, economy in asn_to_economy.items():
         records = aspaths_by_asn.get(asn, [])
         neighbors = neighbors_by_asn.get(asn, {})
         ixps = ixp_by_asn.get(asn, [])
+        facilities = facilities_by_asn.get(asn, [])
         fishbowl[str(asn)] = {
             "economy": economy,
             "num_path_observations": len(records),
@@ -59,6 +62,10 @@ def build_fishbowl(
             "ixp_memberships": [
                 {"ix_id": ix.ix_id, "name": ix.name, "city": ix.city, "country": ix.country}
                 for ix in ixps
+            ],
+            "facility_presence": [
+                {"name": fac.name, "city": fac.city, "country": fac.country}
+                for fac in facilities
             ],
         }
 
@@ -75,13 +82,15 @@ def main() -> None:
     total_paths = sum(entry["num_path_observations"] for entry in fishbowl.values())
     with_neighbors = sum(1 for entry in fishbowl.values() if entry["neighbors"])
     with_ixp = sum(1 for entry in fishbowl.values() if entry["ixp_memberships"])
+    with_facility = sum(1 for entry in fishbowl.values() if entry["facility_presence"])
     logger.info(
-        "Fish bowl summary: %d ASNs, %d path observations, "
-        "%d ASNs with >=1 observed neighbor, %d ASNs with >=1 IXP membership",
+        "Fish bowl summary: %d ASNs, %d path observations, %d ASNs with >=1 observed neighbor, "
+        "%d ASNs with >=1 IXP membership, %d ASNs with >=1 facility presence",
         len(fishbowl),
         total_paths,
         with_neighbors,
         with_ixp,
+        with_facility,
     )
 
 

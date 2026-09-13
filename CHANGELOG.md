@@ -111,3 +111,21 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   Seeded with the Solomon Islands Internet Exchange Peering Point
   (SIIXP, operated by TCSI) — resolves Validation Rule 5, the last
   blocked validation item.
+- `analysis.ixp_lan_registry`: IXP LAN subnet registry, tagged
+  in-fishbowl/out-of-fishbowl. Governance rule: newly discovered
+  exchanges are never auto-classified — written as `"TBA"` until
+  explicitly confirmed via `confirm_ixp_region`/`add_or_confirm_ixp`.
+  30 exchanges registered (29 from `fishbowl.json` + GOREX, added fresh
+  since it wasn't linked to any known ASN yet); 3 confirmed in-fishbowl
+  (CAN'L IX, Guam IX, GOREX), 27 awaiting confirmation.
+- `discovery.peeringdb.fetch_ixp_prefixes` and `fetch_facility_presence`
+  (with retry-on-429, after hitting PeeringDB's rate limit again).
+  Wired the registry into `traceroute_topology` as a third hop-resolution
+  tier (exchange known, member ASN not) — regression-clean against all
+  three existing measurements.
+- `fishbowl.py` now also captures real colocation facility presence
+  (22 of 163 ASNs). Notable: AS24013 (Solomon Islands) shows facilities
+  in LA, Fremont, Hong Kong (x2), Osaka (x2), Sydney, and Tallinn,
+  Estonia — six facilities, five countries, three continents — strong
+  additional evidence for the anycast/hosting-misattribution hypothesis
+  already flagged for this ASN.

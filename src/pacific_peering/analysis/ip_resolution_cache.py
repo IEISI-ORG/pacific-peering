@@ -35,15 +35,23 @@ class IpResolutionCache:
         entries = json.loads(path.read_text()) if path.exists() else {}
         return cls(path=path, entries=entries)
 
-    def get(self, ip: str) -> tuple[int | None, str | None] | None:
-        """Return (asn, source) if `ip` is cached, else None (meaning: not yet looked up)."""
+    def get(self, ip: str) -> tuple[int | None, str | None, dict | None] | None:
+        """Return (asn, source, ixp_context) if `ip` is cached, else None (not yet looked up).
+
+        `ixp_context` (added after the cache's initial version — absent
+        on older entries, which `.get` on the raw dict handles safely)
+        is set when `asn` is None but the address is still known to fall
+        within a registered IXP LAN prefix: `{"ix_id", "name", "in_fishbowl"}`.
+        """
         entry = self.entries.get(ip)
         if entry is None:
             return None
-        return entry["asn"], entry["source"]
+        return entry["asn"], entry["source"], entry.get("ixp_context")
 
-    def set(self, ip: str, asn: int | None, source: str | None) -> None:
-        self.entries[ip] = {"asn": asn, "source": source}
+    def set(
+        self, ip: str, asn: int | None, source: str | None, ixp_context: dict | None = None
+    ) -> None:
+        self.entries[ip] = {"asn": asn, "source": source, "ixp_context": ixp_context}
 
     def save(self) -> None:
         self.path.parent.mkdir(parents=True, exist_ok=True)
