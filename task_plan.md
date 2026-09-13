@@ -308,3 +308,11 @@ Added `reports/html_report.py` (`render_html_report`, `write_html_report`) — r
 **Actually rendered and looked at it, not just trusted the markup**: used the headless Chromium already on this machine to screenshot `outputs/reports/report.html` (full page, not just the viewport) rather than assume the HTML was correct. Confirmed clean on the first pass — both embedded SVGs resolved and displayed correctly, the economies/IXP tables rendered with correct data and color-coded in-fishbowl (green) / out-of-fishbowl (red) text, matching what the ASCII report and the underlying data actually say. No fixes needed this time, unlike the AS-graph in Phase 1e — but checked anyway rather than assuming a repeat of last time's clean-first-try geographic map.
 
 **Phase 1f complete.** Both `pacific-peering-report-ascii` and `pacific-peering-report-html` are real, working entry points producing genuinely useful output from this project's actual accumulated data (2 confirmed detours, 163 ASNs, 30 classified IXPs). P1 (the core pipeline) is now fully done: 1a through 1f all checked off. Remaining: P2 (presentation skeleton, docs pass, changelog discipline — the last one already ongoing throughout).
+
+---
+
+**[Loop tranche — Phase 2b started: README rewrite.]** Confirmed via `CronList` this was job `551adf11`'s scheduled fire. P1 is fully done, so this tranche moved to P2.
+
+The README was still the early-scaffolding version from Phase 0a ("early scaffolding... not yet implemented" had already been fixed once, but it never got updated again as 15 entry points and two real findings accumulated). Rewrote it: a "Findings so far" section stating both confirmed detours plainly (matches what's in the reports/plan, not a separate claim), the full project layout reflecting `outputs/runs` (tracked) vs `outputs/viz`/`outputs/reports` (gitignored), a real Usage section listing every entry point grouped by what it actually does (pipeline vs. manual Atlas steps vs. viz/reports), and a note that most of the project needs no credentials at all (only Atlas does). Setup/License/Support sections kept as they were, already accurate.
+
+Not done yet: Phase 2a (presentation skeleton) and a docstring audit across all modules (most already have reasonable docstrings from when they were written, but no systematic pass has checked for gaps or drift) — queued for later tranches.

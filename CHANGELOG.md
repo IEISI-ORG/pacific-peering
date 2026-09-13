@@ -153,6 +153,10 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   existing registry, never discard from it.
 - Project owner asked whether to wire the pipeline into a GitHub
   Actions cron; chose manual-only for now. Phase 1c complete as scoped.
+- Phase 2b started: rewrote `README.md` (was still the Phase 0a
+  scaffolding version) — a findings section stating both confirmed
+  detours, the real project layout, and a usage section listing every
+  entry point grouped by what it does.
 - Phase 1f complete: `reports/data.py` (`build_report_data` ->
   `ReportData`, the single structure both report formats render from),
   `reports/ascii_report.py`, and `reports/html_report.py` (embeds the
