@@ -140,3 +140,14 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   Sydney PoP before handing off to Digicel Fiji's backbone — never
   touching Fiji-IXP at all. Explicitly excluded from the Australia-hub
   evidence pile (a VPN vendor's routing choice, not an ISP's).
+- Project owner confirmed the remaining 20 TBA exchanges as
+  out-of-fishbowl. IXP LAN registry fully resolved: 30 exchanges, 10
+  in-fishbowl, 20 out-of-fishbowl, 0 TBA.
+- `pacific_peering.pipeline` (Phase 1c): recurring orchestrator
+  (discovery -> fishbowl -> IXP LAN registry), versioned manifests
+  under `outputs/runs/` (now tracked in git). Deliberately does not
+  fire Atlas measurements automatically (credits + AS-pair selection
+  need a human). First run caught a real bug: rebuilding the IXP LAN
+  registry was silently dropping GOREX (added outside the normal
+  fishbowl-derived set) — fixed so rebuilds only ever add to the
+  existing registry, never discard from it.

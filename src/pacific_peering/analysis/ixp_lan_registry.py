@@ -74,7 +74,10 @@ def build_ixp_lan_registry(
     existing `in_fishbowl` value untouched (whatever a human previously
     set it to, including `"TBA"`) — only its name/city/country/prefixes
     are refreshed. An exchange new to the registry is written as `"TBA"`,
-    never auto-classified.
+    never auto-classified. Exchanges already in the registry but *not*
+    derived from `fishbowl.json` (e.g. added via `add_or_confirm_ixp` —
+    GOREX was the first case, a real exchange not yet linked to any
+    known ASN) are preserved untouched, never dropped by a rebuild.
 
     Args:
         fishbowl_path: Path to Phase 1a's `fishbowl.json`.
@@ -97,7 +100,7 @@ def build_ixp_lan_registry(
     )
     prefixes_by_ix = fetch_ixp_prefixes(list(known_ixps))
 
-    registry: dict[int, IxpLanEntry] = {}
+    registry: dict[int, IxpLanEntry] = dict(existing)  # preserve entries not sourced from fishbowl.json
     for ix_id, meta in known_ixps.items():
         in_fishbowl = existing[ix_id].in_fishbowl if ix_id in existing else TBA
         registry[ix_id] = IxpLanEntry(

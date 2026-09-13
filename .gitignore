@@ -12,6 +12,8 @@ data/*
 !data/.gitkeep
 outputs/*
 !outputs/.gitkeep
+!outputs/runs/
+!outputs/runs/**
 
 # Secrets
 secrets.yaml
