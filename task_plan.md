@@ -63,6 +63,10 @@ Set by the project owner after Phase 1b's first live result. These rules govern 
 - Economy/ASN scope: standard APNIC/UN geoscheme lists for Melanesia, Polynesia, Micronesia, **plus Guam, minus Hawaii/AU/NZ**. Working list: Fiji, PNG, Solomon Islands, Vanuatu, New Caledonia, Samoa, Tonga, French Polynesia, Guam, FSM, Palau, Marshall Islands, Kiribati, Nauru, Tuvalu, Cook Islands, Niue, American Samoa, Wallis and Futuna, N. Mariana Islands. ASNs per economy to be derived from APNIC delegated-stats/PeeringDB in Phase 0b.
 - Default update cadence: **monthly**, implemented as a configurable parameter (not hardcoded) so it can be tightened to weekly later without a redesign.
 
+## Working Agreements (apply for the rest of this project, including inside the `/loop`)
+- **Commit and push after each major change** — not just when explicitly asked in the moment. A "major change" is a completed unit of work (a new module, a real finding, a plan/methodology update worth preserving), not every intermediate edit within one.
+- **Never leak credentials or private data.** Never read `secrets.yaml`'s value into a response, never print/log the Atlas API key, never let it end up in a commit — verify `git status`/`git diff` before every commit if there's any chance a secret-bearing file changed.
+
 ## Errors Encountered
 (none yet)
 
