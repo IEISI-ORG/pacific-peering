@@ -18,6 +18,7 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from pacific_peering.analysis.fishbowl import DEFAULT_SUMMARY_PATH
+from pacific_peering.analysis.ip_resolution_cache import DEFAULT_CACHE_PATH, IpResolutionCache
 from pacific_peering.discovery.peeringdb import resolve_ip_via_netixlan
 from pacific_peering.ris.ripestat import resolve_ip_to_asns
 
@@ -43,7 +44,7 @@ class HopResolution:
     resolution_source: str | None  # "bgp", "peeringdb_netixlan", or None
 
 
-def _resolve_address(address: str) -> tuple[int | None, str | None]:
+def _resolve_address(address: str, cache: IpResolutionCache) -> tuple[int | None, str | None]:
     """Resolve one address to (asn, source), trying BGP first, then PeeringDB netixlan.
 
     BGP-based resolution (`resolve_ip_to_asns`) is tried first since it
@@ -53,28 +54,44 @@ def _resolve_address(address: str) -> tuple[int | None, str | None]:
     nothing via the BGP path alone (discovered directly in loop tranche
     4: `103.26.68.83` resolved to no ASN via BGP, but PeeringDB's
     netixlan table correctly attributes it to AS45349).
+
+    Results (including negative ones) are cached by IP across calls —
+    the same backbone/IXP-fabric addresses recur across many
+    measurements, and re-querying them every time is exactly what got
+    this project rate-limited by PeeringDB in loop tranche 4.
     """
+    cached = cache.get(address)
+    if cached is not None:
+        return cached
+
     bgp_asns = resolve_ip_to_asns(address)
     if len(bgp_asns) == 1:
-        return bgp_asns[0], "bgp"
-    if not bgp_asns:
+        result = (bgp_asns[0], "bgp")
+    elif not bgp_asns:
         netixlan_asn = resolve_ip_via_netixlan(address)
-        if netixlan_asn is not None:
-            return netixlan_asn, "peeringdb_netixlan"
-    return None, None
+        result = (netixlan_asn, "peeringdb_netixlan") if netixlan_asn is not None else (None, None)
+    else:
+        result = (None, None)  # ambiguous (multiple BGP-announcing ASNs); don't guess
+
+    cache.set(address, *result)
+    return result
 
 
-def resolve_traceroute_hops(hops: list[dict]) -> list[HopResolution]:
+def resolve_traceroute_hops(
+    hops: list[dict], cache_path: Path = DEFAULT_CACHE_PATH
+) -> list[HopResolution]:
     """Resolve every hop's responding address(es) to an ASN.
 
     Args:
         hops: the `hops` list from one parsed Atlas traceroute record
             (each a dict with "hop" and "addresses").
+        cache_path: Where to load/persist the IP-resolution cache.
     """
+    cache = IpResolutionCache.load(cache_path)
     resolved: list[HopResolution] = []
     for hop in hops:
         addresses = tuple(hop.get("addresses", []))
-        resolutions = [_resolve_address(address) for address in addresses]
+        resolutions = [_resolve_address(address, cache) for address in addresses]
         asns = sorted({asn for asn, _source in resolutions if asn is not None})
         source = next((s for _asn, s in resolutions if s is not None), None)
         resolved.append(
@@ -82,6 +99,7 @@ def resolve_traceroute_hops(hops: list[dict]) -> list[HopResolution]:
                 hop=hop["hop"], addresses=addresses, asns=tuple(asns), resolution_source=source
             )
         )
+    cache.save()
     return resolved
 
 

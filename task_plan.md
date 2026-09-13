@@ -184,3 +184,15 @@ Regression check: re-ran both earlier measurements (210901499, 210913838) throug
 **Takeaway for how this project should read its own traceroute analysis going forward: any "hidden peering" claim from `check_neighbor_agreement` must have `contiguous: true` before it means anything.** A `false` there isn't evidence of hidden peering — it's evidence the resolver couldn't see far enough, exactly as it should be labeled per the Validation Rules' "no topology claim on one source alone" spirit, now extended to "no topology claim across an unresolved gap either."
 
 Not done yet: PeeringDB's rate limiting under repeated ad-hoc lookups suggests Phase 1c's eventual bulk/recurring analysis should cache netixlan lookups locally rather than re-querying per hop per run — noted for that phase, not fixed now (would be premature given no bulk campaign exists yet). Rule 5 (Solomon Islands IXP) still the only blocked item. Committing and pushing this tranche now.
+
+---
+
+**[Loop tranche 5 — closed out tranche 4's own TODO: a persistent IP-resolution cache.]** Confirmed via `CronList` this was job `551adf11`'s scheduled fire. Deliberately lighter tranche than 3/4 (no new Atlas measurements, no new credits spent) — infrastructure, not a new finding.
+
+Added `analysis/ip_resolution_cache.py` (`IpResolutionCache`, JSON-backed, keyed by IP) and wired it into `traceroute_topology._resolve_address`/`resolve_traceroute_hops`: both positive *and negative* resolutions are cached, since a confirmed-unresolvable address (private/CGNAT) getting re-queried forever is as wasteful as re-resolving a real one.
+
+Verified by deleting the cache and re-running all three existing measurements (210901499, 210913838, 210919078) end-to-end (~87s cold). Results: all prior findings held, and **210919078 (NC -> Fiji) actually improved** — all 3 probes now agree on AS45349 (previously only 1 of 3 resolved before hitting PeeringDB's rate limit in tranche 4). Correctly still reports `contiguous: false` for that adjacency though — there's a genuine second unresolved gap between AS45349 and AS4638 itself (the `202.137.178.x` hops), so even with RIS agreeing on AS45349, the checker won't claim proven direct adjacency. That's the gap-tracking from tranche 4 doing exactly its job: agreement with RIS plus a resolved intermediate ASN is still not the same as a fully contiguous, gap-free hop chain, and the output doesn't blur that distinction.
+
+Cache now holds 63 IPs (43 resolved, 20 confirmed-unresolved) from a single cold run across 3 measurements — small, but already saves real re-querying for any future measurement that reuses common backbone/IXP addresses (which, per the findings so far, is most of them — AS6939, Sydney IXP fabric, etc. keep recurring).
+
+Rule 5 (Solomon Islands IXP) still the only blocked item. Committing and pushing this tranche now.

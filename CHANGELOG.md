@@ -100,3 +100,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   observed neighbor (1,669 observations) exactly — a second
   RIS+Atlas-confirmed adjacency, via a second corridor and a second
   Sydney exchange.
+- `analysis.ip_resolution_cache.IpResolutionCache`: persistent JSON cache
+  for IP-to-ASN resolution (positive and negative results), wired into
+  `traceroute_topology`. Verified via a cold-cache re-run of all three
+  measurements: results held, and the NC -> Fiji case actually improved
+  (all 3 probes now agree on AS45349, vs. 1 of 3 before hitting
+  PeeringDB's rate limit).

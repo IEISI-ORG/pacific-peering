@@ -7,6 +7,7 @@ from .feasibility import (
     min_feasible_rtt_ms,
 )
 from .fishbowl import build_fishbowl
+from .ip_resolution_cache import IpResolutionCache
 from .ixp import fetch_ixp_membership_for_registry
 from .peering import infer_neighbors, normalize_path
 from .traceroute_topology import (
@@ -25,6 +26,7 @@ __all__ = [
     "normalize_path",
     "AsHop",
     "HopResolution",
+    "IpResolutionCache",
     "analyze_measurement",
     "check_neighbor_agreement",
     "extract_as_sequence",
