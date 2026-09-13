@@ -129,3 +129,14 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   Estonia — six facilities, five countries, three continents — strong
   additional evidence for the anycast/hosting-misattribution hypothesis
   already flagged for this ASN.
+- Project owner confirmed 10 of the 30 registered exchanges as
+  in-fishbowl (CAN'L IX, Guam IX, GOREX, Fiji-IXP, PNG Neutral IX x3,
+  VIX.VU, GU-IX, MARIIX); 20 remain TBA.
+- Tested the "does Suva show more local peers than PeeringDB's 3 known
+  Fiji-IXP members" question (measurement 210930962) and found the
+  test unanswerable with the current vantage point: Fiji's one
+  connected Atlas probe sits behind AS53813 (Zscaler, a corporate VPN
+  gateway), and the traceroute shows Zscaler tunneling to its own
+  Sydney PoP before handing off to Digicel Fiji's backbone — never
+  touching Fiji-IXP at all. Explicitly excluded from the Australia-hub
+  evidence pile (a VPN vendor's routing choice, not an ISP's).
