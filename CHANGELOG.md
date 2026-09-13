@@ -153,6 +153,11 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   existing registry, never discard from it.
 - Project owner asked whether to wire the pipeline into a GitHub
   Actions cron; chose manual-only for now. Phase 1c complete as scoped.
+- `viz/geographic.py` now also plots `CONFIRMED_LOCAL_TRANSIT` (solid
+  green line, provider -> customer economy) alongside the existing
+  detour lines — it had fallen behind the reports, which already
+  covered both finding types. Verified by rendering to PNG and looking
+  at it before calling it done, same as every other viz change.
 - Tested a new corridor (Vanuatu -> FSM/AS38875, measurement 210970669).
   Reinforced the AS9249<->AS38442 finding from the reverse direction
   (updated its note rather than duplicating the entry). The actual
