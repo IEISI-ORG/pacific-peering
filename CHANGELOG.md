@@ -42,3 +42,15 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   First full run: 163 ASNs, 119,342 AS-path observations, 124 ASNs with an
   observed neighbor, 38 ASNs with confirmed IXP presence (MARIIX, Guam IX,
   PNG Neutral IX, CAN'L IX, VIX.VU among them).
+- `pacific_peering.atlas`: RIPE Atlas client (`secrets.py`, `client.py`,
+  `targets.py`, `probes.py`, `smoketest.py`). Entry points
+  `pacific-peering-atlas-coverage` and `pacific-peering-atlas-smoketest`.
+  Found that 5 of 20 in-scope economies (American Samoa, Nauru, Solomon
+  Islands, Wallis & Futuna, Samoa) have zero connected Atlas probes, and
+  that ASN-based probe selection fails for most in-scope ASNs — added
+  country-based selection as the practical fallback.
+- First live Atlas traceroute (measurement 210901499, Guam -> PNG DataCo):
+  ground-truthed the Phase 1a Sydney-hub finding — all 3 probes' paths hit
+  the exact IP (`45.127.172.31`) recorded as AS17828's Equinix Sydney port
+  before reaching PNG DataCo's own network. First finding to move from
+  "fish bowl signal" to "Atlas-confirmed."

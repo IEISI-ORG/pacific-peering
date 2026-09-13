@@ -19,9 +19,11 @@ Build a system that discovers every active ASN homed in Melanesia, Polynesia, an
 
 ### P1 — Core pipeline (this pass)
 - [x] Phase 1a: Full RIS analysis module — build the "fish bowl" view: all observed ASPATHs touching in-scope ASNs, peering-relationship inference, IXP-hop detection.
-- [ ] Phase 1b: RIPE Atlas measurement code — create/manage traceroute measurements between relevant probes/anchors for in-scope AS pairs; store raw + parsed results.
+- [x] Phase 1b: RIPE Atlas measurement code — create/manage traceroute measurements between relevant probes/anchors for in-scope AS pairs; store raw + parsed results.
 - [ ] Phase 1c: Scheduling/automation — recurring job (7-day or monthly) that re-runs discovery + RIS pull + Atlas measurements, versions each run's output directory, is safe to re-run/resume.
-- [ ] Phase 1d: Sub-optimal routing analysis — triangulate source/destination pairs to flag transpacific paths that detour outside the region (e.g., via US/AU) when a more direct path should exist.
+- [ ] Phase 1d: Sub-optimal routing analysis — triangulate source/destination pairs to flag transpacific paths that detour outside the region (e.g., via US/AU) when a more direct path should exist. **Settled premise, per the project owner: peering that lands outside the study area — AU, NZ, or the US — is not optimal, by definition.** That is not a hypothesis this project tests; it's a given. What's still open is establishing the specific instances and degree, which is what Phase 1b's Atlas traceroutes are for (see Fish Bowl Limitations). Candidate instances already surfaced from Phase 1a's `fishbowl.json`, awaiting Atlas corroboration on the specifics:
+  - **Australia as the de facto peering hub — ✅ ground-truthed by Atlas (Phase 1b).** Equinix Sydney + MegaIX Sydney together account for the single largest IXP cluster in the whole dataset (9 + 6 = 15 memberships), reaching more distinct in-scope economies (Cook Islands, Fiji, French Polynesia, New Caledonia, PNG, Samoa, Tonga) than any actual in-region IXP. Phase 1b's first live traceroute (Guam -> PNG, measurement 210901499) confirmed this directly: all 3 probes' paths hit `45.127.172.31` — the exact IP recorded for AS17828's Equinix Sydney port — before reaching PNG DataCo's own network. Still to do: repeat across more AS pairs/economies to establish how widespread this is, not just that it happens at least once.
+  - **AS24013 (Solomon Islands) — anycast/hosting location vs. real network location**: PeeringDB shows 7 IXP memberships, all in Germany (DE-CIX/LOCIX Frankfurt, Düsseldorf, Hamburg, Munich) plus one in Sydney, none in the Pacific. Per the project owner: this is a known pattern where anycast/hosting presence (e.g. a CDN or DNS anycast node advertised from Frankfurt) gets recorded as "the network's" IXP membership, when it has nothing to do with where that network's actual Solomon Islands traffic transits. This is a caution about *attributing* the finding correctly (don't claim AS24013's user traffic transits Germany), not a caution about the AU/NZ/US-is-suboptimal premise itself — needs an Atlas traceroute check to establish what's actually happening before it goes in any report.
 - [ ] Phase 1e: Visualization — pathway maps (geographic + AS-graph) highlighting missing/indirect routes.
 - [ ] Phase 1f: Reporting — generate ASCII report and HTML report from the same underlying analysis output, per run.
 
@@ -30,9 +32,17 @@ Build a system that discovers every active ASN homed in Melanesia, Polynesia, an
 - [ ] Phase 2b: Documentation pass — docstrings/module docs for all code, comprehensive README fleshed out beyond skeleton.
 - [ ] Phase 2c: Changelog discipline — keep `CHANGELOG.md` narrating the project's journey as phases land (ongoing, not a single task).
 
+## Fish Bowl Limitations (why the project calls it that)
+RIS + PeeringDB data is an outside-looking-in view: we can see AS-paths as reported by RIS's vantage points and IXP memberships as self-reported to PeeringDB, but we can't get in the bowl — no visibility into a network's actual internal forwarding decisions, and no guarantee that what we see from outside matches what really happens to a given packet. Concretely:
+- RIS-observed "neighbors" (Phase 1a) are only the AS-path adjacency seen by whichever RIS collector peers happened to have a route — vantage-point bias, not ground truth on real traffic paths.
+- PeeringDB `netixlan` membership records where a network's *equipment* sits at an IXP, which is not necessarily where that network's *actual regional traffic* transits — see the AS24013 case below.
+- **This is exactly why Phase 1b (RIPE Atlas traceroutes) is required, not optional**: it's the only way to ground-truth what the RIS/PeeringDB "fish bowl" view suggests. Neither source alone is sufficient; the project's sub-optimal-routing conclusions (Phase 1d) should be built on triangulation between both, not RIS/PeeringDB alone.
+
+**Note on what is and isn't in question**: per the project owner, peering that lands outside the study area — in AU, NZ, or the US — is *not optimal* by definition; that premise is settled, not a hypothesis this project is testing. What Atlas corroboration is for is establishing the specific instances and degree (which paths, how much traffic, how consistently) so the report has real evidence behind the premise, not to re-litigate whether out-of-region peering counts as sub-optimal in the first place.
+
 ## Key Questions
 1. ~~RIS data source~~ — resolved: RIPEstat API.
-2. ~~Atlas credit budget~~ — resolved: ~100M credits available on the account behind `secrets.yaml`'s API key. Still open: which probes/anchors exist in-region vs need requesting — revisit at Phase 1b.
+2. ~~Atlas credit budget~~ — resolved (after a false start): the first key in `secrets.yaml` showed a 0 balance (contradicting the ~100M figure given earlier) — turned out to be the wrong key/account. Corrected key confirmed via live `/api/v2/credits/` check: **current_balance: 95,635,574**. Still open: which probes/anchors exist in-region vs need requesting — partially answered by Phase 1b's coverage check (5 of 20 economies have zero connected probes; see Status).
 3. ~~Exact economy list~~ — resolved: standard APNIC/UN geoscheme list.
 4. ~~Update cadence~~ — resolved: monthly default, configurable.
 
@@ -72,4 +82,21 @@ Ran end-to-end against the full registry (~84s wall clock): **163 ASNs, 119,342 
 
 Deliberate scope limit: capped at 5 prefixes/ASN to bound load on the public RIPEstat API for this pass — full-prefix coverage is a refinement, not required to prove the pipeline. `data/` (raw cache + fishbowl.json, ~14MB) stays gitignored as generated data.
 
-Next: Phase 1b — RIPE Atlas measurement code (traceroutes between in-scope AS pairs), using the `secrets.yaml` API key (~100M credits available).
+IXP-membership breakdown (38 ASNs, 29 distinct IXPs) surfaced two candidate findings for Phase 1d — see that phase's entry for detail: the Sydney IXP cluster outweighing any in-region exchange, and AS24013's Germany-only IXP records (likely anycast/hosting presence, not real network location — flagged by the project owner as a worked example of why Atlas ground-truth is needed). See "Fish Bowl Limitations" above for why neither of these should be reported as conclusions yet.
+
+**Phase 1b complete**, including a live end-to-end proof. Added:
+- `atlas/secrets.py` — loads the API key from `secrets.yaml` (`ripe_atlas_key`), never logged.
+- `atlas/client.py` — `create_traceroute_measurement` (one-off traceroutes, generic `source_type`/`source_value` probe selector), `wait_for_results` (polls until terminal status), `parse_traceroute_results`.
+- `atlas/targets.py` — picks a destination IP by reusing Phase 1a's cached RIS prefixes (no extra RIPEstat calls needed).
+- `atlas/probes.py` — checks connected-probe counts per in-scope economy; `pick_best_covered_economy` for automatic source selection.
+- `atlas/smoketest.py` — end-to-end one-off traceroute test. Entry points `pacific-peering-atlas-coverage` and `pacific-peering-atlas-smoketest`.
+
+**Real, durable finding, independent of the credit false-start below**: Atlas probe coverage in-region is very sparse. `pacific-peering-atlas-coverage` (`data/atlas/probe_coverage.json`) shows **5 of 20 in-scope economies have zero connected Atlas probes** (American Samoa, Nauru, Solomon Islands, Wallis & Futuna, Samoa), and most of the rest have only 1-2. Fiji specifically: every historic probe on AS4638 is Abandoned/Disconnected/Written Off; its only connected probe today sits on a different, unrelated ASN. This is why the client had to support country-based probe selection (`source_type="country"`) as a fallback — ASN-based selection (the original design) hard-fails with "Your selected ASN is not covered by our network" for most in-scope ASNs. This coverage gap belongs in the final report as its own limitation, and answers part of Key Question 2 (which economies would need new probes requested, if the project wants better coverage later).
+
+**Credit false-start (resolved)**: the key originally in `secrets.yaml` showed a 0 balance, not the ~100M reported earlier, and belonged to an account with 4,294 prior measurements including an apparently-unrelated recurring RPKI-monitoring workload — turned out to be the wrong account/key. Neither of the two failed attempts on that key created or charged anything. The project owner corrected the key; live-verified balance on the corrected key is now **95,635,574**.
+
+**First live traceroute — first fully ground-truthed finding.** Measurement 210901499: 3 probes in Guam (source, auto-selected as best-covered economy) → a PNG DataCo (AS17828) address (103.49.207.1). All three probes' paths converge onto Hurricane Electric (AS6939) backbone addresses (184.104.x.x) and then hit **45.127.172.31 before reaching PNG DataCo's own address space (202.165.198.250)**. `45.127.172.31` is the *exact* IP Phase 1a's PeeringDB data recorded for AS17828's Equinix Sydney port. This is a real traceroute confirming, independently of RIS/PeeringDB, that Guam-to-PNG traffic physically detours through Sydney — the first Phase 1d candidate finding to graduate from "fish bowl signal" to "ground-truthed via Atlas," exactly the corroboration loop the Fish Bowl Limitations section calls for. Raw + parsed results saved to `data/atlas/raw/210901499.json` / `data/atlas/parsed/210901499.json`.
+
+Observed oddity (not yet root-caused, not blocking): the first `pacific-peering-atlas-smoketest` run after the key correction failed with a bare 400 (no useful body captured), but a near-identical request seconds later via the raw client succeeded outright — possibly a brief propagation delay right after the key was updated. Not investigated further now; if it recurs under Phase 1c's recurring scheduled runs, that phase should add basic retry-on-failure, but one transient failure isn't enough signal to build that yet.
+
+Next: Phase 1c — scheduling/automation (recurring discovery + RIS + Atlas runs), or extend Phase 1b's one-ASN-pair proof into a real AS-pair measurement campaign across the registry.

@@ -7,6 +7,7 @@ authors = [
 ]
 requires-python = ">=3.13"
 dependencies = [
+    "pyyaml>=6.0.3",
     "requests>=2.34.2",
 ]
 
@@ -15,6 +16,8 @@ pacific-peering = "pacific_peering:main"
 pacific-peering-discover-asns = "pacific_peering.discovery.registry:main"
 pacific-peering-ris-smoketest = "pacific_peering.ris.smoketest:main"
 pacific-peering-fishbowl = "pacific_peering.analysis.fishbowl:main"
+pacific-peering-atlas-smoketest = "pacific_peering.atlas.smoketest:main"
+pacific-peering-atlas-coverage = "pacific_peering.atlas.probes:main"
 
 [build-system]
 requires = ["uv_build>=0.12.5,<0.13.0"]
