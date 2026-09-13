@@ -54,3 +54,10 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   the exact IP (`45.127.172.31`) recorded as AS17828's Equinix Sydney port
   before reaching PNG DataCo's own network. First finding to move from
   "fish bowl signal" to "Atlas-confirmed."
+- `pacific_peering.ris.ripestat.resolve_ip_to_asns` + `pacific_peering.
+  analysis.traceroute_topology`: resolves traceroute hops to ASNs and
+  checks them against RIS-observed neighbors. Entry point
+  `pacific-peering-triangulate`. First result: all 3 Guam probes agree
+  AS6939 (Hurricane Electric) is AS17828's immediate upstream, matching
+  RIS's independently-observed count of 1,283 — the project's first
+  ASN-to-ASN adjacency confirmed by both sources.

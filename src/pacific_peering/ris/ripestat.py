@@ -68,6 +68,31 @@ def fetch_bgp_state(prefix: str, timeout: float = _DEFAULT_TIMEOUT) -> list[BgpS
     ]
 
 
+def resolve_ip_to_asns(ip: str, timeout: float = _DEFAULT_TIMEOUT) -> list[int]:
+    """Resolve an IP address to its holding ASN(s) via RIPEstat's `network-info` call.
+
+    Used to turn Atlas traceroute hop addresses into AS-level hops so they
+    can be compared against RIS-observed neighbors (see Validation Rules
+    in task_plan.md). Returns an empty list for addresses with no globally
+    routed covering prefix — notably including many IXP peering-LAN
+    addresses, which are often not announced in global BGP at all. That
+    "no ASN" result is itself informative (a candidate IXP-fabric hop),
+    not a failure.
+
+    Args:
+        ip: An IPv4 or IPv6 address (not a prefix).
+        timeout: Request timeout in seconds.
+    """
+    response = requests.get(
+        f"{RIPESTAT_BASE_URL}/network-info/data.json",
+        params={"resource": ip},
+        timeout=timeout,
+    )
+    response.raise_for_status()
+    asns = response.json()["data"].get("asns", [])
+    return [int(asn) for asn in asns]
+
+
 def fetch_aspaths_for_asn(
     asn: int, af: str = "v4", max_prefixes: int | None = None
 ) -> list[BgpStateRecord]:

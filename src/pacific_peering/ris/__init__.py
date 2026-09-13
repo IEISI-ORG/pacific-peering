@@ -4,6 +4,7 @@ from .ripestat import (
     fetch_aspaths_for_asn,
     fetch_bgp_state,
     fetch_originated_prefixes,
+    resolve_ip_to_asns,
 )
 
 __all__ = [
@@ -12,4 +13,5 @@ __all__ = [
     "fetch_aspaths_for_registry",
     "fetch_bgp_state",
     "fetch_originated_prefixes",
+    "resolve_ip_to_asns",
 ]
