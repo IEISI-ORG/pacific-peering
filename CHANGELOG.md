@@ -151,3 +151,15 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   registry was silently dropping GOREX (added outside the normal
   fishbowl-derived set) — fixed so rebuilds only ever add to the
   existing registry, never discard from it.
+- Project owner asked whether to wire the pipeline into a GitHub
+  Actions cron; chose manual-only for now. Phase 1c complete as scoped.
+- Phase 1e (visualization): `discovery.economy_coordinates`,
+  `analysis.confirmed_detours`, and two chart modules under `viz/` —
+  `geographic.py` (confirmed detours as bent paths vs. a direct-line
+  comparison) and `as_graph.py` (full RIS-neighbor graph, green edges
+  stay in-fishbowl, red leave it). Entry points
+  `pacific-peering-viz-detours` and `pacific-peering-viz-as-graph`.
+  Found 92 real intra-fishbowl RIS-neighbor edges (domestic hub-and-
+  spoke: smaller ASNs getting transit from a national incumbent in the
+  same economy) — not previously written up, and contrary to this
+  graph's original assumption that such edges would be rare.

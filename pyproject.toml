@@ -7,6 +7,8 @@ authors = [
 ]
 requires-python = ">=3.13"
 dependencies = [
+    "matplotlib>=3.11.2",
+    "networkx>=3.6.1",
     "pyyaml>=6.0.3",
     "requests>=2.34.2",
 ]
@@ -23,6 +25,8 @@ pacific-peering-triangulate = "pacific_peering.analysis.traceroute_topology:main
 pacific-peering-feasibility = "pacific_peering.analysis.feasibility:main"
 pacific-peering-ixp-lan-registry = "pacific_peering.analysis.ixp_lan_registry:main"
 pacific-peering-pipeline = "pacific_peering.pipeline:main"
+pacific-peering-viz-detours = "pacific_peering.viz.geographic:main"
+pacific-peering-viz-as-graph = "pacific_peering.viz.as_graph:main"
 
 [build-system]
 requires = ["uv_build>=0.12.5,<0.13.0"]

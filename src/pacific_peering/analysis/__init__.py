@@ -1,3 +1,4 @@
+from .confirmed_detours import CONFIRMED_DETOURS, ConfirmedDetour
 from .feasibility import (
     REFERENCE_POINTS_LATLON,
     analyze_measurement_feasibility,
@@ -29,6 +30,8 @@ from .traceroute_topology import (
 )
 
 __all__ = [
+    "CONFIRMED_DETOURS",
+    "ConfirmedDetour",
     "build_fishbowl",
     "fetch_ixp_membership_for_registry",
     "infer_neighbors",
