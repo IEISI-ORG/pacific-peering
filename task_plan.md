@@ -29,7 +29,7 @@ Build a system that discovers every active ASN homed in Melanesia, Polynesia, an
 - [x] Phase 1f: Reporting — generate ASCII report and HTML report from the same underlying analysis output, per run.
 
 ### P2 — Polish and dissemination (can wait)
-- [ ] Phase 2a: Presentation skeleton — slide/outline template for NOGs and conferences, pulling from the latest report.
+- [x] Phase 2a: Presentation skeleton — slide/outline template for NOGs and conferences, pulling from the latest report.
 - [ ] Phase 2b: Documentation pass — docstrings/module docs for all code, comprehensive README fleshed out beyond skeleton.
 - [ ] Phase 2c: Changelog discipline — keep `CHANGELOG.md` narrating the project's journey as phases land (ongoing, not a single task).
 
@@ -316,3 +316,13 @@ Added `reports/html_report.py` (`render_html_report`, `write_html_report`) — r
 The README was still the early-scaffolding version from Phase 0a ("early scaffolding... not yet implemented" had already been fixed once, but it never got updated again as 15 entry points and two real findings accumulated). Rewrote it: a "Findings so far" section stating both confirmed detours plainly (matches what's in the reports/plan, not a separate claim), the full project layout reflecting `outputs/runs` (tracked) vs `outputs/viz`/`outputs/reports` (gitignored), a real Usage section listing every entry point grouped by what it actually does (pipeline vs. manual Atlas steps vs. viz/reports), and a note that most of the project needs no credentials at all (only Atlas does). Setup/License/Support sections kept as they were, already accurate.
 
 Not done yet: Phase 2a (presentation skeleton) and a docstring audit across all modules (most already have reasonable docstrings from when they were written, but no systematic pass has checked for gaps or drift) — queued for later tranches.
+
+---
+
+**[Loop tranche — Phase 2a complete: presentation skeleton.]** Confirmed via `CronList` this was job `551adf11`'s scheduled fire.
+
+Added `reports/presentation.py` (`render_presentation_skeleton`, `write_presentation_skeleton`) — a third renderer over the same `ReportData` as the ASCII/HTML reports, this time as a Marp-compatible Markdown slide deck (plain Markdown, `---` slide separators, renders in VS Code's Marp extension or `marp-cli` to PDF/PPTX/HTML — a common NOG-talk format, no new heavy dependency needed to produce it). Entry point `pacific-peering-presentation`.
+
+Deliberately a **skeleton**, not finished narration: title/scope/methodology/findings/IXP-landscape/next-steps/thank-you slides, each populated with this project's real numbers (20 economies, 163 ASNs, both confirmed detours with their actual RIS counts and measurement IDs, the 10/20 in/out-of-fishbowl IXP split), but with explicit `<!-- SPEAKER NOTE -->` placeholders for judgment calls only whoever gives the talk can make (audience framing, timing, venue-specific next steps). Caught one redundant phrasing on first render (a finding bullet repeated "AS17828" twice since the note already named it) and fixed it before calling this done.
+
+**P2 status: Phase 2a done. Phase 2b partially done** — the README half is complete, but Phase 2b's other half (a systematic docstring audit across all modules) hasn't happened yet, so 2b's checklist item stays unchecked until that's done too, not marked complete on the README alone.

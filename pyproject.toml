@@ -29,6 +29,7 @@ pacific-peering-viz-detours = "pacific_peering.viz.geographic:main"
 pacific-peering-viz-as-graph = "pacific_peering.viz.as_graph:main"
 pacific-peering-report-ascii = "pacific_peering.reports.ascii_report:main"
 pacific-peering-report-html = "pacific_peering.reports.html_report:main"
+pacific-peering-presentation = "pacific_peering.reports.presentation:main"
 
 [build-system]
 requires = ["uv_build>=0.12.5,<0.13.0"]

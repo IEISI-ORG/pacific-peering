@@ -153,6 +153,11 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   existing registry, never discard from it.
 - Project owner asked whether to wire the pipeline into a GitHub
   Actions cron; chose manual-only for now. Phase 1c complete as scoped.
+- Phase 2a complete: `reports/presentation.py` (Marp-compatible Markdown
+  slide deck skeleton, same `ReportData` as the other reports). Entry
+  point `pacific-peering-presentation`. Real numbers plugged into a
+  conference-talk structure, with explicit speaker-note placeholders for
+  judgment calls only the presenter can make.
 - Phase 2b started: rewrote `README.md` (was still the Phase 0a
   scaffolding version) — a findings section stating both confirmed
   detours, the real project layout, and a usage section listing every
