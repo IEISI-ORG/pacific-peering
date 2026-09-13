@@ -61,3 +61,10 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   AS6939 (Hurricane Electric) is AS17828's immediate upstream, matching
   RIS's independently-observed count of 1,283 — the project's first
   ASN-to-ASN adjacency confirmed by both sources.
+- `atlas.client.TracerouteHop` now captures per-hop RTT.
+  `pacific_peering.analysis.feasibility`: great-circle distance,
+  speed-of-light-in-fiber floor, direct-vs-relay RTT comparison. Entry
+  point `pacific-peering-feasibility`. Applied to measurement 210901499:
+  observed RTT is 8.5-9.1x the direct Guam->PNG physical floor but only
+  2.7-2.9x the via-Sydney-relay floor — quantitative support (not proof)
+  for the Sydney-detour finding, on top of the earlier exact-IP match.

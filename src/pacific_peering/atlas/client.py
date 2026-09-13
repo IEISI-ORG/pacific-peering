@@ -28,6 +28,7 @@ class TracerouteHop:
 
     hop: int
     addresses: tuple[str, ...]
+    min_rtt_ms: float | None = None
 
 
 @dataclass(frozen=True)
@@ -146,15 +147,26 @@ def wait_for_results(
 
 
 def parse_traceroute_results(raw_results: list[dict]) -> list[TracerouteResult]:
-    """Parse raw Atlas traceroute JSON into `TracerouteResult` records."""
+    """Parse raw Atlas traceroute JSON into `TracerouteResult` records.
+
+    `min_rtt_ms` per hop is the minimum RTT across that hop's replies —
+    the standard traceroute convention, since the minimum is the closest
+    single sample to pure propagation delay (higher samples reflect
+    queueing/jitter, not a longer physical path).
+    """
     parsed: list[TracerouteResult] = []
     for result in raw_results:
         hops: list[TracerouteHop] = []
         for hop_result in result.get("result", []):
-            addresses = tuple(
-                sorted({r["from"] for r in hop_result.get("result", []) if "from" in r})
+            replies = hop_result.get("result", [])
+            addresses = tuple(sorted({r["from"] for r in replies if "from" in r}))
+            rtts = [r["rtt"] for r in replies if "rtt" in r]
+            min_rtt_ms = min(rtts) if rtts else None
+            hops.append(
+                TracerouteHop(
+                    hop=hop_result.get("hop", -1), addresses=addresses, min_rtt_ms=min_rtt_ms
+                )
             )
-            hops.append(TracerouteHop(hop=hop_result.get("hop", -1), addresses=addresses))
         parsed.append(
             TracerouteResult(
                 measurement_id=result.get("msm_id"),

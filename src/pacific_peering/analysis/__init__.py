@@ -1,3 +1,11 @@
+from .feasibility import (
+    REFERENCE_POINTS_LATLON,
+    analyze_measurement_feasibility,
+    check_path_feasibility,
+    compare_direct_vs_relay,
+    great_circle_km,
+    min_feasible_rtt_ms,
+)
 from .fishbowl import build_fishbowl
 from .ixp import fetch_ixp_membership_for_registry
 from .peering import infer_neighbors, normalize_path
@@ -17,4 +25,10 @@ __all__ = [
     "check_neighbor_agreement",
     "extract_as_sequence",
     "resolve_traceroute_hops",
+    "REFERENCE_POINTS_LATLON",
+    "analyze_measurement_feasibility",
+    "check_path_feasibility",
+    "compare_direct_vs_relay",
+    "great_circle_km",
+    "min_feasible_rtt_ms",
 ]

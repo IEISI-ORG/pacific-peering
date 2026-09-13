@@ -19,6 +19,7 @@ pacific-peering-fishbowl = "pacific_peering.analysis.fishbowl:main"
 pacific-peering-atlas-smoketest = "pacific_peering.atlas.smoketest:main"
 pacific-peering-atlas-coverage = "pacific_peering.atlas.probes:main"
 pacific-peering-triangulate = "pacific_peering.analysis.traceroute_topology:main"
+pacific-peering-feasibility = "pacific_peering.analysis.feasibility:main"
 
 [build-system]
 requires = ["uv_build>=0.12.5,<0.13.0"]

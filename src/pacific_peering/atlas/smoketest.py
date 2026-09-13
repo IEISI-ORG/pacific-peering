@@ -78,7 +78,10 @@ def run_smoketest(
             "measurement_id": r.measurement_id,
             "probe_id": r.probe_id,
             "target": r.target,
-            "hops": [{"hop": h.hop, "addresses": list(h.addresses)} for h in r.hops],
+            "hops": [
+                {"hop": h.hop, "addresses": list(h.addresses), "min_rtt_ms": h.min_rtt_ms}
+                for h in r.hops
+            ],
         }
         for r in parsed
     ]

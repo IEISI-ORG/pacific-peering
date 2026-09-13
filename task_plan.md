@@ -130,3 +130,19 @@ Next: Phase 1c — scheduling/automation (recurring discovery + RIS + Atlas runs
 **Ran it against Phase 1b's real measurement (210901499, Guam -> PNG DataCo). Result: all 3 probes agree the AS immediately upstream of AS17828 is AS6939 (Hurricane Electric) — and RIS independently observed the exact same adjacency 1,283 times (AS17828's single largest RIS-observed neighbor).** This is the project's first ASN-to-ASN adjacency to satisfy Validation Rule 1 (both RIS and Atlas agree) — a stronger, more specific result than the Sydney-hub finding, since it names the actual upstream AS rather than just the IXP. Saved to `data/analysis/triangulation/210901499.json`.
 
 Not done yet (deliberately left for later tranches, not oversights): Validation Rule 2's latency/hop-count feasibility check (no code yet), Rule 3's inbound-traceroute direction (only outbound tested so far), and Rule 5's supplementary unlisted-IXP list (blocked on the Solomons open item above). Nothing committed this tranche — holding to "only commit when the user explicitly asks," even in loop mode.
+
+---
+
+**[Loop tranche 2 — Validation Rule 2, quantitatively.]** This firing was job `551adf11`'s scheduled hourly run (confirmed via CronList before doing anything — no new scheduling needed, the fixed-interval loop is already active).
+
+*Extended the Atlas parser to capture RTT*: `atlas/client.py`'s `TracerouteHop` now carries `min_rtt_ms` (minimum across a hop's replies — the standard convention, since the minimum sample is closest to pure propagation delay). Backfilled `data/atlas/parsed/210901499.json` from the already-fetched raw JSON (no new Atlas credits spent).
+
+*Built `analysis/feasibility.py`* (Validation Rule 2): `great_circle_km` (haversine), `min_feasible_rtt_ms` (speed-of-light-in-fiber floor, ~2/3 c — a hard physical lower bound, real paths are only ever slower), `check_path_feasibility`, `compare_direct_vs_relay` (checks an observed RTT against both a direct path and a named single-relay detour), `analyze_measurement_feasibility` (applies this to every probe in a stored measurement), entry point `pacific-peering-feasibility`.
+
+**Ran it on measurement 210901499 (Guam -> PNG DataCo) using each probe's last-responding-hop RTT (~219-233ms) against direct Guam->PNG (2,559km) vs. Guam->Sydney->PNG (8,052km):**
+- Direct-path physical floor: 25.6ms. Observed RTT is **8.5-9.1x** that floor.
+- Via-Sydney-relay physical floor: 80.6ms. Observed RTT is only **2.7-2.9x** that floor.
+
+A real-world fiber path typically runs 1.3-2x its physical floor (equipment, non-great-circle cable routes, processing). ~2.7-2.9x for the Sydney-relay hypothesis is a plausible real-world overhead; ~8.5-9x for the "direct" hypothesis is not — that gap is itself evidence, on top of the exact-IP match from tranche/Phase 1b, that the path is not direct. **Caveat, stated deliberately rather than overclaimed: this is "consistent with, and quantitatively supportive of" the Sydney-detour finding, not proof** — real Pacific submarine cable geography doesn't follow great circles, so some of both ratios reflects real cable-route geography we haven't modeled, not just "detour or not." Saved to `data/analysis/feasibility/210901499.json`.
+
+Validation Rules status: Rule 1 (two-source agreement) ✅ done for one adjacency; Rule 2 (feasibility) ✅ code done, applied once; Rule 3 (inbound direction) and Rule 5 (supplementary IXP list, still blocked on the Solomons specifics) remain for later tranches. Nothing committed yet this tranche — will follow the "commit and push after each major change" working agreement before this turn ends.
