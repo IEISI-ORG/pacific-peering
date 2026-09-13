@@ -49,7 +49,16 @@ CONFIRMED_LOCAL_TRANSIT: tuple[ConfirmedLocalTransit, ...] = (
             "RIS's independently-observed neighbor count exactly. A real "
             "gap remains between AS38442 and AS9249 (checked directly: "
             "ordinary ICMP filtering, not an unlisted IXP), so the very "
-            "last hop isn't proven — but the AS38442 adjacency itself is."
+            "last hop isn't proven — but the AS38442 adjacency itself is. "
+            "Reinforced from the reverse direction by measurement 210970669 "
+            "(Vanuatu -> FSM/AS38875, sourced from Vanuatu itself): AS38442 "
+            "is the first resolved hop leaving AS9249's own network, "
+            "matching this same adjacency from the other side. That "
+            "measurement's actual target (AS38875) was not confirmed — "
+            "RIS's only neighbor for AS38875 is AS10130, not the traceroute's "
+            "last resolved hop (AS139759) — a correct negative result, not "
+            "a new finding, and recorded here only as corroboration of the "
+            "existing AS9249<->AS38442 adjacency."
         ),
     ),
 )

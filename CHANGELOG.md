@@ -153,6 +153,12 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   existing registry, never discard from it.
 - Project owner asked whether to wire the pipeline into a GitHub
   Actions cron; chose manual-only for now. Phase 1c complete as scoped.
+- Tested a new corridor (Vanuatu -> FSM/AS38875, measurement 210970669).
+  Reinforced the AS9249<->AS38442 finding from the reverse direction
+  (updated its note rather than duplicating the entry). The actual
+  target, AS38875, was correctly *not* confirmed — RIS's only neighbor
+  for it is AS10130, not the traceroute's last resolved hop — recorded
+  as a genuine negative result, not discarded.
 - `analysis.confirmed_local_transit.CONFIRMED_LOCAL_TRANSIT`: the
   positive-finding counterpart to `confirmed_detours` (provider/customer
   ASN pair, both in-fishbowl). Seeded with AS38442 (Vodafone Fiji) ->
