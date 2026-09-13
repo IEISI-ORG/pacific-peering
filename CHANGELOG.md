@@ -220,10 +220,8 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   spoke: smaller ASNs getting transit from a national incumbent in the
   same economy) — not previously written up, and contrary to this
   graph's original assumption that such edges would be rare.
-
-### Fixed
-- `analysis.ixp_lan_registry.build_ixp_lan_registry`: a rate-limited
-  PeeringDB `ixpfx` refetch during a routine rebuild was silently
+- Fixed a real regression in `analysis.ixp_lan_registry.build_ixp_lan_registry`:
+  a rate-limited PeeringDB `ixpfx` refetch during a routine rebuild was silently
   overwriting already-known-good `prefixes` with `[]` (the same class
   of bug as the earlier GOREX/`in_fishbowl`-dropping issue, just in a
   different field). Caught by treating a scheduled pipeline run as a
@@ -236,3 +234,13 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   PeeringDB rate-limited again (4 different exchanges this time) and
   the fix correctly preserved all of them; a follow-up check confirmed
   0 of 30 exchanges have empty prefixes.
+- Tested a new corridor: FSM -> Palau (AS17893, Palau NCC), measurement
+  210986430. All 3 probes show a clean direct path (source's own network
+  -> AS139759, an FSM ASN -> AS17893, no external hub in between) but
+  RIS's real neighbor list for AS17893 doesn't include AS139759, and
+  neither ASN shares a PeeringDB IXP. Recorded as a candidate hidden
+  peering, not a confirmed finding — Validation Rule 1 requires RIS and
+  Atlas to agree, and here they genuinely don't (not a missing-data
+  artifact: AS17893 has plenty of RIS-visible neighbors, just not this
+  one). Deliberately not given its own dataclass/module yet, same
+  restraint as the earlier AS38875 negative result.
