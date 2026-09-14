@@ -113,7 +113,15 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
             "different Guam network's traffic was shown reaching AS17893 via "
             "Guam IX in an earlier measurement) -- evidence that at least one real "
             "Guam ISP's default route to a real Guam-IX-connected Palau network "
-            "bypasses the local exchange entirely."
+            "bypasses the local exchange entirely. "
+            "**Independently reproduced by a second, later measurement** "
+            "(211181370, same AS3605->AS17893 corridor, fired from a later `/loop` "
+            "tranche before checking this entry already existed -- a real process "
+            "miss, but the result itself is useful corroboration, not wasted): "
+            "both responding probes again show the identical path (AS3605 -> "
+            "AS2497 -> AS174 -> AS17893) and the identical exact RIS observation "
+            "count (1,333). Two independent measurements, same result -- this "
+            "finding is as solid as any in the project."
         ),
     ),
 )

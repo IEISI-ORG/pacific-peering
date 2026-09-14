@@ -558,3 +558,14 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   retry/backoff, unlike every sibling PeeringDB call); pipeline now
   runs clean (31 exchanges, 10 in-fishbowl, 0 empty prefixes). This
   runs on every pipeline cycle going forward, not a one-time check.
+- Sourced AS3605 (Guam Cablevision) toward AS17893 (Palau NCC) using
+  its now-connected Atlas probes -- then discovered this exact corridor
+  was already confirmed in an earlier tranche (measurement 211064438,
+  in `confirmed_detours.py`). Corrected course before compounding the
+  duplicate: added the new measurement (211181370) as a corroboration
+  note on the existing entry instead (identical path, identical exact
+  RIS observation count -- real added confidence) and reverted a
+  draft addendum that would have mis-framed it as new/unconfirmed
+  content in `candidate_peering.py`. Process note added to
+  task_plan.md: grep existing findings for an ASN pair before firing a
+  new measurement toward it.

@@ -136,7 +136,12 @@ CANDIDATE_PEERING: tuple[CandidatePeering, ...] = (
             "route collectors can see it. Kept as a candidate, not promoted to "
             "confirmed, on principle -- Validation Rule 1 doesn't bend for how "
             "clean a single traceroute looks, no matter how compelling the "
-            "corroborating evidence."
+            "corroborating evidence. The reverse direction (AS3605 sourcing "
+            "toward AS17893) is already on record as a *different* finding -- "
+            "see `confirmed_detours.CONFIRMED_DETOURS`'s GU->PW entry: AS3605's "
+            "own outbound routing uses conventional Tokyo/Cogent transit, not "
+            "this GU-IX-local path, a genuine asymmetry rather than a "
+            "contradiction."
         ),
     ),
 )
