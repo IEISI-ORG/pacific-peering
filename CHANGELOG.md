@@ -462,3 +462,19 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   session's own prior findings: matches exactly. Ran the full pipeline
   end-to-end afterward -- zero rate-limit warnings this run, no data
   lost.
+- New candidate peering entry, the cleanest adjacency this project has
+  observed: AS17893 (Palau NCC, sourced directly -- the new ASN probe
+  registry found a connected probe on it) -> AS3605 (Guam Cablevision),
+  a single fully-contiguous hop crossing GU-IX. AS3605's GU-IX
+  membership is independently confirmed via PeeringDB, and this is
+  exactly the corridor AS3605's own IRR AS-SET named two tranches ago
+  -- the strongest hidden-peering candidate in the project so far, but
+  RIS still disagrees, so kept a candidate rather than promoted.
+- Recorded a durable methodology note per the project owner: use known
+  "edge of the fishbowl" chokepoints (Hawaii, Sydney, Tokyo -- all
+  three now empirically confirmed as real transit points this session)
+  as external vantage points to triangulate Pacific routing from
+  outside-in. Checked live probe availability on every external
+  chokepoint ASN already identified: University of Hawaii has 1
+  connected probe (notably the same ASN already confirmed as a GOREX
+  member) -- queued as the natural next edge-to-edge test.

@@ -138,6 +138,18 @@ or does it detour through Australia, the US, or elsewhere?
      failure — a clean traceroute alone was never enough to claim a
      finding on this project's own rules -->
 
+## Candidate: AS17893 (Palau National Communications Corp) -> AS3605 (Guam Cablevision, LLC)
+
+- The direct followup to the AS3605 lead above, this time sourced from Palau itself: a connected Atlas probe on AS17893 was found via the new ASN probe registry (`atlas.asn_probes`), letting this project source a traceroute from Palau for the first time all session. Fired AS17893 -> AS3605's own address directly. Result: the single cleanest adjacency this project has observed -- fully contiguous, *zero* gap, immediately AS17893 then AS3605, and the crossing hop lands inside **GU-IX**'s registered LAN prefix (ix_id 463, in fishbowl). Unlike most of this project's IXP-crossing evidence, AS3605's GU-IX membership isn't just inferred from the traceroute -- PeeringDB independently lists it as a real GU-IX member already. Still `ris_agrees: false`: AS3605's real RIS neighbor list (22 ASNs, none of them 17893) doesn't include this adjacency. Given (a) a fully contiguous single hop with no ambiguity at all, (b) AS3605's GU-IX presence confirmed independently of this measurement, and (c) this is exactly the corridor AS3605's own IRR AS-SET declared -- this reads as the strongest hidden-peering candidate in the project so far, per Validation Rule 4: a real, physically-instantiated local peering session at GU-IX that simply isn't announced anywhere RIS's route collectors can see it. Kept as a candidate, not promoted to confirmed, on principle -- Validation Rule 1 doesn't bend for how clean a single traceroute looks, no matter how compelling the corroborating evidence.
+- Traceroute agreement: **1/1 probe** (measurement `211067648`,
+  vantage point: PW)
+- **Not a confirmed finding** — RIS disagrees, so this stays a candidate
+  until a second independent corroboration turns up
+
+<!-- SPEAKER NOTE: frame this as the method working as designed, not a
+     failure — a clean traceroute alone was never enough to claim a
+     finding on this project's own rules -->
+
 ---
 
 ## The IXP landscape
