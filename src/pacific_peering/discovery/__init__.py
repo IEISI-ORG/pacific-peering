@@ -1,6 +1,13 @@
 """ASN/economy discovery: APNIC delegated stats, PeeringDB, and the resulting registry."""
 
 from .apnic_stats import AsnAllocation, fetch_delegated_stats, parse_asn_allocations
+from .bgp_tools import (
+    BgpToolsAsnInfo,
+    fetch_asn_names,
+    fetch_prefix_visibility,
+    fetch_tag_list,
+    fetch_tag_members,
+)
 from .economies import ECONOMIES, ECONOMIES_BY_CC, Economy
 from .economy_coordinates import ECONOMY_LATLON, EXTERNAL_HUB_LATLON
 from .irr import resolve_as_set
@@ -15,10 +22,16 @@ from .peeringdb import (
     resolve_ip_via_netixlan,
 )
 from .registry import build_registry
+from .supplementary_asns import SUPPLEMENTARY_ASNS, SupplementaryAsn
 from .supplementary_ixps import SUPPLEMENTARY_IXPS, SupplementaryIxp
 
 __all__ = [
     "AsnAllocation",
+    "BgpToolsAsnInfo",
+    "fetch_asn_names",
+    "fetch_prefix_visibility",
+    "fetch_tag_list",
+    "fetch_tag_members",
     "fetch_delegated_stats",
     "parse_asn_allocations",
     "ECONOMIES",
@@ -36,6 +49,8 @@ __all__ = [
     "resolve_ip_via_netixlan",
     "resolve_as_set",
     "build_registry",
+    "SUPPLEMENTARY_ASNS",
+    "SupplementaryAsn",
     "SUPPLEMENTARY_IXPS",
     "SupplementaryIxp",
 ]

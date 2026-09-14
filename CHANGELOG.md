@@ -373,3 +373,37 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   IRR lead isn't just untested -- it currently can't be tested via
   Atlas at all, by any probe-selection method. Folded into the
   AS154100<->AS132486 confirmed-transit entry's note.
+- Investigated AS141682 (ARENA-PAC, a Pacific research/education
+  network) per the project owner: real, peers at GOREX (Guam, already
+  in-fishbowl) and BBIX Singapore. Checking GOREX's real membership
+  surfaced University of Guam (AS395400) -- real, physically present,
+  but registered under ARIN rather than APNIC, so it never appeared in
+  this project's APNIC-delegation-based registry.
+- New `discovery.supplementary_asns` (mirroring the existing
+  `supplementary_ixps` pattern): real in-scope ASNs delegated under a
+  different RIR, merged into `registry.build_registry`. Seeded with
+  University of Guam after a live cross-RIR audit (RIPEstat's
+  `country-resource-list` against all 20 economies) surfaced 11
+  candidate ASNs across 4 economies; only this one held up under direct
+  verification. The other 10 (8 Marshall Islands, 1 Palau, 1 Vanuatu,
+  all RIPE NCC-registered) were checked and confirmed *not* real --
+  generic hosting-company holder names, facilities nowhere near the
+  Pacific (one is Amsterdam-only, another is Hong Kong/Osaka/Sydney/LA/
+  Fremont/Tallinn), independently corroborated by bgp.tools (below).
+- Fixed a real data-loss bug in `analysis.irr_leads.build_irr_leads`,
+  caught live while propagating the University of Guam addition through
+  the pipeline: an un-guarded PeeringDB rate-limited chunk silently
+  dropped 3 of 36 previously-good entries. Same fix already applied
+  twice to `ixp_lan_registry` -- load existing leads first, never let a
+  fresh fetch's gaps overwrite already-confirmed data. Restored the 3
+  lost entries and re-verified the guard holds.
+- New `discovery.bgp_tools`: a secondary, corroboration-only data
+  source (bgp.tools), per the project owner. ASN name/class/country
+  export, a live global BGP table with visibility counts, and community
+  tags (`uni`, `satnet`, `vpsh`, `vpn`, etc.) -- all cached locally per
+  bgp.tools' own posted cache-window guidance, with the required
+  identifying User-Agent. Used immediately to independently corroborate
+  the ASN-registry findings above: bgp.tools classifies all 10 rejected
+  ASNs as non-"Eyeball", and AS43357 ("Owl Limited") carries both the
+  `vpsh` and `vpn` community tags -- a third source agreeing it's a
+  hosting/VPN provider, not a real Vanuatu ISP.

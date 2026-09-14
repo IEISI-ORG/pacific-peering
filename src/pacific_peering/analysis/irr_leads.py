@@ -75,6 +75,17 @@ def build_irr_leads(
     Paced with a small delay between WHOIS queries — the same restraint
     already learned the hard way with PeeringDB's rate limits.
 
+    Preserves already-persisted leads for any ASN a rate-limited chunk
+    causes `fetch_irr_as_set_names` to skip this run — the same "never
+    let a transient upstream failure silently discard already-confirmed
+    data" fix already applied to `ixp_lan_registry` twice (once for
+    `in_fishbowl`, once for `prefixes`). Without this, a rebuild that
+    happens to catch PeeringDB mid-rate-limit would quietly drop real,
+    previously-resolved leads — confirmed this actually happened, not
+    just theoretical: a live rebuild silently dropped 3 of 36 entries
+    (AS152735, AS153053, AS154410) the first time this ran without the
+    guard.
+
     Args:
         registry_path: Path to the Phase 0b ASN registry (which ASNs
             are in scope).
@@ -82,12 +93,23 @@ def build_irr_leads(
 
     Returns:
         Mapping of ASN to its `IrrLead` (only ASNs with a non-empty
-        `irr_as_set` field are included).
+        `irr_as_set` field, current or previously-persisted, are
+        included).
     """
     asns = _all_in_scope_asns(registry_path)
     as_set_fields = fetch_irr_as_set_names(asns)
+    existing = load_irr_leads(output_path) if output_path.exists() else {}
 
-    leads: dict[int, IrrLead] = {}
+    missing = set(asns) & set(existing) - set(as_set_fields)
+    for asn in missing:
+        logger.warning(
+            "AS%d had a declared AS-SET on record but this run's PeeringDB fetch "
+            "didn't return it (likely rate-limited, not a real change) -- keeping "
+            "the existing entry",
+            asn,
+        )
+
+    leads: dict[int, IrrLead] = {asn: existing[asn] for asn in missing}
     for asn, raw_field in as_set_fields.items():
         resolved: list[ResolvedAsSet] = []
         for name in raw_field.split():

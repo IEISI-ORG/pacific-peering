@@ -1,16 +1,16 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-09-14T02:44:51.065062+00:00                  
+                 Generated: 2026-09-14T03:00:07.820129+00:00                  
 ==============================================================================
 
 SUMMARY
 ==============================================================================
 Economies in scope:            20
-ASNs in scope:                  163
-ASNs with >=1 RIS neighbor:     124
-ASNs with >=1 IXP membership:   38
-ASNs with >=1 facility presence:22
-IXP LAN registry: 10 in-fishbowl, 20 out-of-fishbowl, 0 unconfirmed
+ASNs in scope:                  164
+ASNs with >=1 RIS neighbor:     125
+ASNs with >=1 IXP membership:   39
+ASNs with >=1 facility presence:23
+IXP LAN registry: 10 in-fishbowl, 20 out-of-fishbowl, 1 unconfirmed
 
 CONFIRMED SUB-OPTIMAL ROUTES (RIS + Atlas both agree)
 ==============================================================================
@@ -47,7 +47,7 @@ AS   American Samoa                   Polynesia        2     2     1     0
 CK   Cook Islands                     Polynesia        2     2     1     0
 FJ   Fiji                             Melanesia       20    14     3     1
 FM   Micronesia, Federated States of  Micronesia       6     5     1     1
-GU   Guam                             Micronesia       9     6     4     4
+GU   Guam                             Micronesia      10     7     5     5
 KI   Kiribati                         Micronesia       5     3     0     0
 MH   Marshall Islands                 Micronesia       2     2     0     1
 MP   Northern Mariana Islands         Micronesia       2     1     1     1
@@ -83,14 +83,15 @@ Equinix San Jose             San Jose         US   False              1
 Equinix Singapore            Singapore        SG   False              1
 Equinix Sydney               Sydney           AU   False              9
 Fiji-IXP                     Suva             FJ   True               3
-GOREX                        Piti             GU   True               0
+GOREX                        Piti             GU   True               1
 GU-IX                        Guam             GU   True               1
 Guam IX                      Tamuning         GU   True               5
 IX Australia Sydney (NSW-IX) Sydney           AU   False              1
+JPIX TOKYO                   Tokyo            JP   TBA                1
 JPNAP Tokyo                  Tokyo            JP   False              1
 LOCIX DUSSELDORF             Dusseldorf       DE   False              1
 LOCIX FRANKFURT              Frankfurt am Mai DE   False              1
-MARIIX                       Mangilao         GU   True               4
+MARIIX                       Mangilao         GU   True               5
 MegaIX Dusseldorf            Dusseldorf       DE   False              1
 MegaIX Sydney                Sydney           AU   False              6
 PNG Neutral IX Hagen         Mt Hagen         PG   True               1

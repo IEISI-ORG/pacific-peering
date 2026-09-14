@@ -26,7 +26,7 @@ or does it detour through Australia, the US, or elsewhere?
 
 - **20 economies**: Melanesia, Polynesia, Micronesia + Guam
   (Australia, NZ, Hawaii excluded)
-- **163 ASNs** tracked
+- **164 ASNs** tracked
 - Public data (RIPEstat, PeeringDB) + active measurement (RIPE Atlas)
 
 ---
@@ -136,7 +136,7 @@ or does it detour through Australia, the US, or elsewhere?
      are concrete, confirmed instances, not the full extent of it yet -->
 
 - Confirmed: real Pacific-to-Pacific traffic physically routes via Sydney
-- Not yet measured: how widespread this is across all 163 ASNs —
+- Not yet measured: how widespread this is across all 164 ASNs —
   only a handful of AS pairs have been triangulated so far
 - Atlas probe coverage itself is a limiting factor: several economies have
   zero connected probes
