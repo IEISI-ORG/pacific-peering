@@ -12,6 +12,7 @@ Phase 1b has produced so far).
 
 from __future__ import annotations
 
+import ipaddress
 import json
 import logging
 from dataclasses import dataclass
@@ -52,10 +53,36 @@ class HopResolution:
     ixp_context: dict | None = None  # {"ix_id", "name", "in_fishbowl"}, when known
 
 
+def _is_private_address(address: str) -> bool:
+    """RFC1918/link-local/loopback addresses never resolve to a real ASN globally.
+
+    Common in this region's traceroutes specifically because several
+    Pacific carriers don't have enough public IPv4 space for their own
+    internal infrastructure and use private addressing for it (per the
+    project owner) — confirmed concretely in the AS9471->AS10131
+    measurement, where every hop between two publicly-routed AS9471/
+    AS10131 addresses was RFC1918. These hops carry no ASN information
+    at all, in either direction — not "unknown," just structurally
+    unknowable — so they must not be treated the same as a genuinely
+    unresolvable *public* address, which at least could plausibly be
+    some other real, undetermined AS.
+    """
+    try:
+        return ipaddress.ip_address(address).is_private
+    except ValueError:
+        return False
+
+
 def _resolve_address(
     address: str, cache: IpResolutionCache, ixp_registry: dict[int, IxpLanEntry]
 ) -> tuple[int | None, str | None, dict | None]:
     """Resolve one address to (asn, source, ixp_context).
+
+    Private addresses (see `_is_private_address`) are recognized before
+    ever touching the cache or an API — cheap, purely local, and
+    deliberately bypasses any stale cache entry from before this
+    distinction existed (private addresses used to be cached identically
+    to genuinely-unresolved ones, as `(None, None, None)`).
 
     ASN resolution, in order:
     1. BGP (`resolve_ip_to_asns`) — covers the general internet.
@@ -84,6 +111,9 @@ def _resolve_address(
     measurements, and re-querying them every time is exactly what got
     this project rate-limited by PeeringDB in loop tranche 4.
     """
+    if _is_private_address(address):
+        return None, "private", None
+
     cached = cache.get(address)
     if cached is not None:
         return cached
@@ -171,10 +201,24 @@ def extract_as_sequence(resolved_hops: list[HopResolution]) -> list[AsHop]:
     across a gap (e.g. an unresolvable IXP fabric hop, or one PeeringDB
     also can't attribute), the true intermediate AS is simply unknown,
     and treating the two sides as directly adjacent would overclaim.
+
+    Private (RFC1918/link-local) hops are the one exception, and are
+    treated as fully transparent — skipped without touching gap state
+    either way — rather than folded into the same "unresolved" bucket as
+    genuinely-unknown public hops. Per the project owner: several Pacific
+    carriers don't have enough public IPv4 for their own internal
+    infrastructure, so private addressing shows up routinely inside a
+    single already-identified AS's own network; unlike a real unresolved
+    public hop, it can never resolve to some other ASN globally, so it
+    is not evidence of an unknown intermediary and must not manufacture
+    a gap that isn't there (first concretely seen, and initially
+    mishandled, in the AS9471->AS10131 measurement — see task_plan.md).
     """
     sequence: list[AsHop] = []
     gap_pending = False
     for hop in resolved_hops:
+        if hop.resolution_source == "private":
+            continue  # transparent: can't carry ASN info in either direction, not a gap
         if len(hop.asns) != 1:
             gap_pending = True
             continue

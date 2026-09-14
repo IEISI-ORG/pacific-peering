@@ -615,3 +615,19 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   resolver gap: private-address hops and genuinely-unresolvable hops
   are currently treated identically, though they mean different
   things.
+- Fixed that flagged resolver gap, per the project owner's direct
+  guidance: RFC1918/link-local addresses can never resolve to a real
+  ASN globally, so `extract_as_sequence` now treats them as fully
+  transparent instead of gap-inducing (`traceroute_topology.py`).
+  Checked before the IP resolution cache too, so stale
+  identically-cached entries from before this distinction existed
+  don't mask the fix. Verified via full regression across all 26
+  measurements this project has ever fired: zero `ris_agrees` changes
+  anywhere, `contiguous` correctly flips false->true in exactly 4
+  (the motivating case, 3 already-inconclusive dead-ends, and one
+  already-confirmed finding). That last one required a real
+  correction: the AS38442<->AS9249 (Fiji<->Vanuatu) entry's note had
+  attributed its final-hop gap to "ordinary ICMP filtering" -- actually
+  a single RFC1918 hop. Corrected in place; the measurement is now
+  fully contiguous end to end, strengthening rather than changing
+  this project's very first confirmed finding.
