@@ -640,3 +640,11 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   solid finding -- now independently reinforced a third time, from a
   third vantage point. The real story is the detour itself: two
   islands ~1,100km apart, routed via Australia.
+- Replaced the standing hourly `/loop` job with a more directive one
+  (find + confirm + document + ship a corridor each firing). First
+  firing: sourced AS7131 (Northern Mariana Islands, PTI Pacifica Inc.)
+  for the first time, targeting its only Pacific-relevant RIS
+  neighbor, AS152735 (Guam Exchange, 381 observations). Unanimous,
+  clean, zero-hop result across all 3 probes, exact RIS match -- the
+  first-ever traceroute confirmation involving Northern Mariana
+  Islands. Added as a new ConfirmedLocalTransit entry.

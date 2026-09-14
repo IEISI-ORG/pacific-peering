@@ -347,4 +347,43 @@ CONFIRMED_LOCAL_TRANSIT: tuple[ConfirmedLocalTransit, ...] = (
             "twice-independently-applied sibling-ASN basis."
         ),
     ),
+    ConfirmedLocalTransit(
+        provider_cc="MP",
+        provider_asn=7131,
+        provider_name="PTI Pacifica Inc.",
+        customer_cc="GU",
+        customer_asn=152735,
+        customer_name="Guam Exchange",
+        measurement_id=211241814,
+        vantage_point_cc="MP",
+        ris_observation_count=381,
+        note=(
+            "Picked per the /loop instruction to find the next unknown corridor: "
+            "AS7131 (Northern Mariana Islands, 3 connected probes) had never "
+            "been used as a traceroute source all session -- every prior test "
+            "involving it was as an incidental transited hop, never a deliberate "
+            "source or target. Its own RIS neighbor list is otherwise all "
+            "generic global transit (Hurricane Electric, Arelion, Tata, Lumen, "
+            "Cogent), so the one genuinely Pacific-relevant entry -- AS152735 "
+            "(381 observations) -- stood out as the obvious, previously-untested "
+            "lead; that same adjacency was already on record from AS152735's "
+            "own side (surfaced incidentally during the GOREX/University of "
+            "Guam test several tranches ago) but had never itself been the "
+            "subject of a deliberate test in either direction. Fired directly: "
+            "AS7131 -> AS152735's own address. Result: unanimous and clean -- "
+            "all 3 probes show AS7131 immediately adjacent to AS152735, zero "
+            "intermediate hops, no external hub, no IXP crossing, and an exact "
+            "RIS observation-count match (381). A real, cleanly-confirmed "
+            "cross-economy (MP<->GU) adjacency -- the first ever traceroute "
+            "confirmation involving Northern Mariana Islands as either endpoint. "
+            "One honest caveat carried over from where this lead originally "
+            "surfaced: AS152735's own name and AS-SET (\"AS-GUAMIX\") suggest it "
+            "may be Guam IX's own route-server/infrastructure ASN rather than a "
+            "distinct eyeball or transit network -- this traceroute confirms the "
+            "adjacency is real and RIS-agreeing, but doesn't itself resolve "
+            "whether AS152735 represents real end-user traffic or exchange "
+            "infrastructure; recorded here as a confirmed adjacency either way, "
+            "with that open question stated rather than assumed."
+        ),
+    ),
 )
