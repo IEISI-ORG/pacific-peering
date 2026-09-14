@@ -350,3 +350,20 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - `outputs/reports/` and `outputs/viz/` are now tracked in git (matching
   the existing `outputs/runs/` exception), and the current generated
   reports/visualizations are committed for the first time.
+- New confirmed local-transit entry: AS154100 (BNL Tarawa) <-> AS132486
+  (Ocean Link Ltd), both Kiribati -- RIS agrees with an exact
+  362-observation match. Surfaced while testing the FM<->Kiribati IRR
+  lead from two tranches ago; country-based probe selection landed on
+  a different FSM ASN (AS139759, not AS10130), so that specific IRR
+  lead remains untested. The real, novel finding is the path itself:
+  FSM-sourced traffic to Kiribati transits Guam, an Australian carrier
+  (GSL Networks), and **Starlink** before reaching a Kiribati-registered
+  network -- this project's first observed satellite-constellation hop.
+  Not filed as a confirmed detour (no named-IXP crossing, a plain
+  carrier-to-carrier chain instead).
+- Recovered two Atlas measurement results after the backgrounded
+  wait-and-fetch step was killed twice by an unrelated environment
+  memory issue (a shared host running several other heavyweight
+  services) -- since real Atlas credits had already been spent by the
+  time each kill happened, re-ran the recovery step in the foreground
+  rather than writing the data off as lost.
