@@ -66,6 +66,7 @@ Set by the project owner after Phase 1b's first live result. These rules govern 
 ## Working Agreements (apply for the rest of this project, including inside the `/loop`)
 - **Commit and push after each major change** — not just when explicitly asked in the moment. A "major change" is a completed unit of work (a new module, a real finding, a plan/methodology update worth preserving), not every intermediate edit within one.
 - **Never leak credentials or private data.** Never read `secrets.yaml`'s value into a response, never print/log the Atlas API key, never let it end up in a commit — verify `git status`/`git diff` before every commit if there's any chance a secret-bearing file changed.
+- **When data looks strange or routing is doing something unusual, consult the project owner** — including inside an unattended `/loop` firing, not just when they're actively chatting. Investigate first (this project's own established discipline: check the raw hop data, cross-check via RIPEstat/WHOIS/bgp.tools, don't accept `contiguous: false` or a surprising number at face value), but don't resolve a genuinely anomalous or ambiguous result purely on my own judgment and quietly move to the next tranche -- surface it plainly (in the response if live, or clearly flagged in task_plan.md/CHANGELOG.md for the owner to see on return if not) rather than let a loop firing paper over something that needs a domain expert's read.
 
 ## Errors Encountered
 (none yet)
