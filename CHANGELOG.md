@@ -532,3 +532,6 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   generic transit carrier, nowhere near SES Astra's own network, and
   the ONATI hop reappearing doesn't freshly confirm that relationship
   either (a real gap sits between AS10131 and it in this traceroute).
+- Checked whether AS12684 (SES Astra) has a usable Atlas probe: zero
+  connected, all 5 ever registered are Abandoned. Sourcing from it
+  isn't possible right now by any method -- closes out this corridor.
