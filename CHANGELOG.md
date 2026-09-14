@@ -709,3 +709,13 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   job to regenerate the backlog and a replaced hourly job to pull from
   it and mark pairs tested -- the concrete form of the project owner's
   "keep track of new probes and RIS changes" standing order.
+- Proved the new system end-to-end: fired its top live pick, AS3605
+  (Guam Cablevision) -> AS4638 (Telecom Fiji), a genuinely untested
+  GU<->FJ pair. Result inconclusive but honest -- non-response near
+  the destination (ordinary ICMP filtering, not the RFC1918/Superloop
+  resolver cases), and RIS shows AS4638's real upstream is AS45349
+  (already an existing confirmed detour), not the AS4637 this
+  traceroute reached. Not filed in any dataclass, matching this
+  project's established dead-end handling. Called
+  mark_corridor_tested(3605, 4638) -- confirmed via a full regenerate
+  that the pair correctly drops out of the backlog afterward.
