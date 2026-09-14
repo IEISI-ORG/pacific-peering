@@ -14,6 +14,10 @@ outputs/*
 !outputs/.gitkeep
 !outputs/runs/
 !outputs/runs/**
+!outputs/reports/
+!outputs/reports/**
+!outputs/viz/
+!outputs/viz/**
 
 # Secrets
 secrets.yaml

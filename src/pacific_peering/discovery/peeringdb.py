@@ -167,7 +167,9 @@ def fetch_ixp_membership(asns: list[int]) -> dict[int, list[IxpMembership]]:
     return membership
 
 
-def fetch_irr_as_set_names(asns: list[int], timeout: float = _DEFAULT_TIMEOUT) -> dict[int, str]:
+def fetch_irr_as_set_names(
+    asns: list[int], timeout: float = _DEFAULT_TIMEOUT, max_retries: int = 3
+) -> dict[int, str]:
     """Fetch each ASN's PeeringDB-declared IRR AS-SET name (the `net.irr_as_set` field).
 
     Per the project owner: this is a network's own declared list of who
@@ -179,27 +181,69 @@ def fetch_irr_as_set_names(asns: list[int], timeout: float = _DEFAULT_TIMEOUT) -
     into member ASNs — this function only reads the declaration off
     PeeringDB, it doesn't resolve it.
 
+    Retries a 429 or a transient network error (timeout, connection
+    reset) with backoff, same pattern as this module's other PeeringDB
+    calls — a chunk that still fails after retries is skipped (logged,
+    not raised), so one bad chunk doesn't sink an otherwise-successful
+    sweep across the rest of the ASN list. This is exactly the class of
+    bug already fixed twice elsewhere in this project (PeeringDB rate
+    limits, `ris.ripestat.resolve_ip_to_asns`'s uncaught `ReadTimeout`) —
+    an unguarded first attempt here crashed the very first real run of
+    this function.
+
     Args:
         asns: ASNs to look up.
+        max_retries: Retries per chunk before giving up on it.
 
     Returns:
         Mapping of ASN to its declared AS-SET name. An ASN with no
         PeeringDB `net` record, or a record with no `irr_as_set`
         populated, is simply absent from the result — both common and
-        not an error.
+        not an error. A chunk that fails after all retries is also
+        simply absent, not a crash.
     """
     as_sets: dict[int, str] = {}
     for chunk in _chunked(asns):
-        response = requests.get(
-            f"{PEERINGDB_BASE_URL}/net",
-            params={"asn__in": ",".join(str(asn) for asn in chunk)},
-            timeout=timeout,
-        )
-        response.raise_for_status()
-        for record in response.json()["data"]:
-            name = record.get("irr_as_set")
-            if name:
-                as_sets[record["asn"]] = name
+        for attempt in range(max_retries + 1):
+            try:
+                response = requests.get(
+                    f"{PEERINGDB_BASE_URL}/net",
+                    params={"asn__in": ",".join(str(asn) for asn in chunk)},
+                    timeout=timeout,
+                )
+            except requests.exceptions.RequestException as exc:
+                if attempt < max_retries:
+                    logger.warning(
+                        "PeeringDB net lookup failed (%s), retrying (%d/%d)",
+                        exc,
+                        attempt + 1,
+                        max_retries,
+                    )
+                    time.sleep(2**attempt)
+                    continue
+                logger.warning(
+                    "PeeringDB net lookup still failing after %d retries; skipping this chunk: %s",
+                    max_retries,
+                    exc,
+                )
+                break
+            if response.status_code == 429:
+                if attempt < max_retries:
+                    logger.warning(
+                        "PeeringDB rate-limited net lookup, retrying (%d/%d)",
+                        attempt + 1,
+                        max_retries,
+                    )
+                    time.sleep(2**attempt)
+                    continue
+                logger.warning("PeeringDB still rate-limiting net lookup; skipping this chunk")
+                break
+            response.raise_for_status()
+            for record in response.json()["data"]:
+                name = record.get("irr_as_set")
+                if name:
+                    as_sets[record["asn"]] = name
+            break
     return as_sets
 
 

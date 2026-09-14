@@ -1,8 +1,8 @@
 """Phase 1c: recurring pipeline orchestration.
 
-Re-runs discovery, RIS/IXP/facility data, and the IXP LAN subnet
-registry in sequence, and writes a small versioned manifest recording
-what happened.
+Re-runs discovery, RIS/IXP/facility data, the IXP LAN subnet registry,
+and the IRR AS-SET leads sweep in sequence, and writes a small
+versioned manifest recording what happened.
 
 Deliberately scoped: this does NOT fire new RIPE Atlas measurements
 automatically. Atlas measurements cost real account credits and need a
@@ -27,6 +27,7 @@ from pathlib import Path
 from typing import Any, Callable
 
 from pacific_peering.analysis.fishbowl import build_fishbowl
+from pacific_peering.analysis.irr_leads import build_irr_leads
 from pacific_peering.analysis.ixp_lan_registry import build_ixp_lan_registry
 from pacific_peering.discovery.registry import build_registry
 
@@ -56,6 +57,15 @@ def _summarize(step_name: str, result: Any) -> dict:
             "out_of_fishbowl": sum(1 for e in result.values() if e.in_fishbowl is False),
             "tba": sum(1 for e in result.values() if e.in_fishbowl == "TBA"),
         }
+    if step_name == "irr_leads":
+        return {
+            "asns_with_declared_as_set": len(result),
+            "resolved_to_trusted_data": sum(
+                1
+                for lead in result.values()
+                if any(r.asns or r.nested_as_sets for r in lead.resolved)
+            ),
+        }
     return {}
 
 
@@ -63,10 +73,10 @@ def run_pipeline(runs_dir: Path = DEFAULT_RUNS_DIR) -> dict:
     """Run the recurring, free-API-only part of the pipeline and record a manifest.
 
     Steps: ASN registry -> fish bowl (RIS + IXP membership + facility
-    presence) -> IXP LAN subnet registry. Each step's failure is caught
-    and recorded rather than aborting the whole run, so a transient
-    upstream API issue in one step doesn't prevent the others from
-    completing.
+    presence) -> IXP LAN subnet registry -> IRR AS-SET leads. Each
+    step's failure is caught and recorded rather than aborting the whole
+    run, so a transient upstream API issue in one step doesn't prevent
+    the others from completing.
 
     Args:
         runs_dir: Directory to write this run's timestamped manifest under.
@@ -83,6 +93,7 @@ def run_pipeline(runs_dir: Path = DEFAULT_RUNS_DIR) -> dict:
         ("discovery", build_registry),
         ("fishbowl", build_fishbowl),
         ("ixp_lan_registry", build_ixp_lan_registry),
+        ("irr_leads", build_irr_leads),
     ]
 
     for name, step in steps:

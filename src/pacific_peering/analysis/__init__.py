@@ -13,6 +13,14 @@ from .feasibility import (
 )
 from .fishbowl import build_fishbowl
 from .ip_resolution_cache import IpResolutionCache
+from .irr_leads import (
+    DEFAULT_IRR_LEADS_PATH,
+    IrrLead,
+    ResolvedAsSet,
+    build_irr_leads,
+    find_in_scope_relationships,
+    load_irr_leads,
+)
 from .ixp import fetch_ixp_membership_for_registry
 from .ixp_lan_registry import (
     TBA,
@@ -64,4 +72,10 @@ __all__ = [
     "classify_ixp_fabric",
     "confirm_ixp_region",
     "load_ixp_lan_registry",
+    "DEFAULT_IRR_LEADS_PATH",
+    "IrrLead",
+    "ResolvedAsSet",
+    "build_irr_leads",
+    "find_in_scope_relationships",
+    "load_irr_leads",
 ]

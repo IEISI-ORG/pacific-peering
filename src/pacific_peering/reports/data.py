@@ -20,6 +20,30 @@ from pacific_peering.analysis.fishbowl import DEFAULT_SUMMARY_PATH
 from pacific_peering.analysis.ixp_lan_registry import DEFAULT_REGISTRY_PATH
 from pacific_peering.discovery.registry import DEFAULT_OUTPUT_PATH
 
+# Shared across every report format so a reader who lands on any one of
+# them (this project's own audience, or an external one — e.g. RIPE
+# NCC, if this report is used to make the case for new Atlas probes in
+# the region) gets the same explanation of this project's central
+# methodological framing, not a different one per format.
+FISHBOWL_EXPLANATION = (
+    "What is \"the fish bowl\"? RIS (BGP route-collector) data and PeeringDB "
+    "membership records are an outside-looking-in view: they show which "
+    "routes get announced and which exchanges/facilities a network claims "
+    "to join, but not how traffic actually moves once it's inside a "
+    "network -- we can see the bowl from outside, not get in it. Active "
+    "RIPE Atlas traceroutes are the only way this project can partially "
+    "see inside: a real packet, actually forwarded hop by hop. This project's "
+    "rule follows from that limit: no topology claim is accepted on one "
+    "source alone -- a finding only counts once RIS and an Atlas traceroute "
+    "independently agree (an IRR AS-SET declaration or a PeeringDB IXP "
+    "membership can support a finding, but never substitute for that "
+    "agreement). \"In-fishbowl\" / \"out-of-fishbowl\" describes whether an "
+    "exchange or ASN sits inside this project's study region (Melanesia, "
+    "Polynesia, Micronesia, and Guam) or outside it (e.g. Sydney, Los "
+    "Angeles, Tokyo) -- an out-of-fishbowl hop on a path between two "
+    "in-region economies is this project's definition of a sub-optimal route."
+)
+
 
 @dataclass(frozen=True)
 class EconomySummary:

@@ -1,0 +1,393 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Pacific Peering Report</title>
+<style>
+body { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; background: #fcfcfb;
+        color: #0b0b0b; margin: 0; padding: 24px; line-height: 1.5; }
+.wrap { max-width: 980px; margin: 0 auto; }
+h1 { font-size: 1.5rem; margin-bottom: 0.2em; }
+.meta { color: #898781; font-size: 0.85rem; margin-bottom: 1.5em; }
+h2 { font-size: 1.1rem; border-bottom: 1px solid #e1e0d9; padding-bottom: 0.3em;
+      margin-top: 2em; }
+.stat-row { display: flex; flex-wrap: wrap; gap: 12px; margin: 1em 0; }
+.stat-tile { background: white; border: 1px solid #e1e0d9; border-radius: 8px;
+              padding: 10px 16px; min-width: 140px; }
+.stat-tile .value { font-size: 1.4rem; font-weight: 600; }
+.stat-tile .label { font-size: 0.78rem; color: #898781; }
+table { border-collapse: collapse; width: 100%; font-size: 0.85rem; }
+th, td { text-align: left; padding: 5px 8px; border-bottom: 1px solid #e1e0d9; }
+th { color: #898781; font-weight: 600; font-size: 0.78rem; text-transform: uppercase; }
+tr:hover { background: #f5f4f0; }
+.subregion-dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%;
+                   margin-right: 6px; }
+.detour-card { border-left: 4px solid #d03b3b; background: #fdf1f0; padding: 10px 14px;
+                margin-bottom: 10px; border-radius: 4px; }
+.detour-card .headline { font-weight: 600; }
+.detour-card .note { color: #898781; font-size: 0.85rem; margin-top: 4px; }
+.transit-card { border-left: 4px solid #0ca30c; background: #f0faf0; padding: 10px 14px;
+                margin-bottom: 10px; border-radius: 4px; }
+.transit-card .headline { font-weight: 600; }
+.transit-card .note { color: #898781; font-size: 0.85rem; margin-top: 4px; }
+.candidate-card { border-left: 4px solid #fab219; background: #fef8e8; padding: 10px 14px;
+                margin-bottom: 10px; border-radius: 4px; }
+.candidate-card .headline { font-weight: 600; }
+.candidate-card .note { color: #898781; font-size: 0.85rem; margin-top: 4px; }
+.bool-true { color: #0ca30c; font-weight: 600; }
+.bool-false { color: #d03b3b; }
+.viz-figure { margin: 1.5em 0; }
+.viz-figure img { max-width: 100%; border: 1px solid #e1e0d9; border-radius: 6px; }
+.viz-figure figcaption { color: #898781; font-size: 0.8rem; margin-top: 6px; }
+footer.about { margin-top: 2.5em; padding-top: 1em; border-top: 1px solid #e1e0d9;
+                color: #898781; font-size: 0.82rem; line-height: 1.6; }
+footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color: #0b0b0b; }
+</style>
+</head>
+<body>
+<div class="wrap">
+    <h1>Pacific Peering — Regional Routing Report</h1>
+    <div class="meta">Generated 2026-09-14T01:46:24.912605+00:00</div>
+
+    <div class="stat-row"><div class="stat-tile"><div class="value">20</div><div class="label">Economies in scope</div></div><div class="stat-tile"><div class="value">163</div><div class="label">ASNs in scope</div></div><div class="stat-tile"><div class="value">124</div><div class="label">ASNs w/ RIS neighbor</div></div><div class="stat-tile"><div class="value">38</div><div class="label">ASNs w/ IXP membership</div></div><div class="stat-tile"><div class="value">22</div><div class="label">ASNs w/ facility presence</div></div><div class="stat-tile"><div class="value">10/20</div><div class="label">IXPs in/out of fishbowl</div></div></div>
+
+    <h2>Confirmed sub-optimal routes (RIS + Atlas both agree)</h2>
+    <div class="detour-card">
+            <div class="headline">GU -&gt; PG
+                (AS17828): detours via Equinix Sydney
+                (Sydney)</div>
+            <div>RIS observation count: 1283
+                &middot; measurement 210901499</div>
+            <div class="note">Guam -&gt; PNG DataCo (AS17828); upstream AS6939 confirmed by RIS+Atlas.</div>
+        </div><div class="detour-card">
+            <div class="headline">NC -&gt; FJ
+                (AS4638): detours via MegaIX Sydney
+                (Sydney)</div>
+            <div>RIS observation count: 1669
+                &middot; measurement 210919078</div>
+            <div class="note">New Caledonia -&gt; Telecom Fiji (AS4638); upstream AS45349 confirmed by RIS+Atlas. Also IRR-corroborated: AS45349&#x27;s own PeeringDB-declared AS-SET (AS45349:AS-TFL-TRANSIT) names AS4638 directly -- a declared transit intention, independently sourced (APNIC), matching what the traceroute actually shows.</div>
+        </div><div class="detour-card">
+            <div class="headline">NC -&gt; FJ
+                (AS45355): detours via Equinix Sydney
+                (Sydney)</div>
+            <div>RIS observation count: 1326
+                &middot; measurement 210996533</div>
+            <div class="note">New Caledonia -&gt; Digicel Fiji (AS45355); upstream AS132528 -- per the project owner, the Telstra-operated backbone ASN behind Digicel&#x27;s Pacific mobile networks, registered in PeeringDB as &#x27;Digicel Australia&#x27; -- confirmed by RIS+Atlas with an exact observation-count match (1,326) and a fully contiguous hop chain (AS18200, New Caledonia&#x27;s own incumbent -&gt; AS132528 at Equinix Sydney, exact netixlan address match -&gt; AS45355). The strongest-evidenced finding in this project so far: also IRR-corroborated on *both* sides -- AS132528&#x27;s declared AS-SET (AS-132528-PEERS) names AS45355 directly, and AS45355&#x27;s own declared AS-SET (AS-45355-PEERS) names AS132528 right back -- a mutual, independently-sourced (APNIC) declaration matching the observed adjacency exactly. AS132528 was also seen at this same Equinix Sydney fabric in an earlier, unrelated measurement (210930962, the Zscaler-proxied Fiji probe test) -- two independent measurements, two different vantage points, same exchange presence.</div>
+        </div>
+
+    <h2>Confirmed local transit (RIS + Atlas both agree, stays in-fishbowl)</h2>
+    <div class="transit-card">
+            <div class="headline">AS38442 (Vodafone Fiji,
+                FJ) -&gt; AS9249
+                (Telecom Vanuatu, VU)</div>
+            <div>RIS observation count: 1346
+                &middot; measurement 210960114
+                &middot; vantage point PF</div>
+            <div class="note">All 3 probes (sourced from French Polynesia, the best-covered available vantage point — not itself part of this adjacency) show AS38442 as the last resolved hop before AS9249, matching RIS&#x27;s independently-observed neighbor count exactly. A real gap remains between AS38442 and AS9249 (checked directly: ordinary ICMP filtering, not an unlisted IXP), so the very last hop isn&#x27;t proven — but the AS38442 adjacency itself is. Reinforced from the reverse direction by measurement 210970669 (Vanuatu -&gt; FSM/AS38875, sourced from Vanuatu itself): AS38442 is the first resolved hop leaving AS9249&#x27;s own network, matching this same adjacency from the other side. That measurement&#x27;s actual target (AS38875) was not confirmed — RIS&#x27;s only neighbor for AS38875 is AS10130, not the traceroute&#x27;s last resolved hop (AS139759) — a correct negative result, not a new finding, and recorded here only as corroboration of the existing AS9249&lt;-&gt;AS38442 adjacency. Separately, after fixing traceroute_topology._resolve_address to check IXP-fabric membership independently of ASN resolution: for 2 of the original 3 probes (French Polynesia -&gt; AS9249), the hop immediately before AS38442 is AS4637 (Telstra Global), resolved via PeeringDB netixlan, whose address also falls inside Any2West&#x27;s registered LAN prefix (Los Angeles/Silicon Valley, out-of-fishbowl). This does not touch the AS38442&lt;-&gt;AS9249 adjacency itself (still confirmed on its own terms), but it does mean the vantage point&#x27;s own path to reach Fiji transits a US exchange first -- a real, separate observation about French Polynesia&#x27;s own upstream routing, not the confirmed finding&#x27;s two endpoints. Separately, IRR-corroborated: AS38442&#x27;s own PeeringDB-declared AS-SET (AS38442:AS-ALL) names AS9249 directly among its declared peers -- a declared intention, independently sourced (APNIC), matching this adjacency on a fourth, independent axis alongside RIS, Atlas, and the reverse-direction reinforcement above.</div>
+        </div>
+
+    <h2>Candidate peering (strong traceroute signal, RIS disagrees &mdash; unconfirmed)</h2>
+    <div class="candidate-card">
+            <div class="headline">AS139759 (an FSM ASN (no PeeringDB org name on record),
+                FM) -&gt; AS17893
+                (Palau National Communications Corp, PW)</div>
+            <div>Traceroute agreement: 3/3 probes
+                &middot; measurement 210986430
+                &middot; vantage point FM</div>
+            <div class="note">All 3 probes show the same clean, contiguous path: the source&#x27;s own network -&gt; AS139759 -&gt; AS17893, with no external hub in between. But RIS&#x27;s real neighbor list for AS17893 ({174: 1333, 140627: 139, 6939: 106, 24482: 49, 2500: 5, 18106: 5, 9002: 5, 49544: 5, 35280: 5, 9498: 5, 59105: 2, 9505: 2} -- all global/regional transit ASNs) does not include AS139759, and neither ASN shares a PeeringDB IXP membership, so no shared-fabric corroboration is available either. Not a missing-data artifact: AS17893 has plenty of RIS-visible neighbors, just not this one. Sharpened after fixing traceroute_topology._resolve_address to check IXP-fabric membership independently of ASN resolution: the hop immediately before the final target (103.142.153.18, resolved via PeeringDB netixlan to AS17893 itself) also falls inside Guam IX&#x27;s registered LAN prefix (103.142.153.0/24) -- direct traceroute corroboration that AS17893 really does have a live interface at Guam IX, matching its PeeringDB-claimed membership there. That confirms AS17893&#x27;s own presence at an in-fishbowl exchange, but not that AS139759 peers with it there specifically -- AS139759 has zero PeeringDB IXP memberships on record, so its side of this adjacency remains unconfirmed either way. A bulk IRR AS-SET sweep (APNIC-sourced only) surfaced a concrete alternative/complementary hypothesis worth checking before assuming the traceroute&#x27;s AS139759 hop is the whole story: AS3605 (Guam Cablevision)&#x27;s own declared transit AS-SET (AS-KUENTOS-TRANSIT) names all three of Palau&#x27;s in-scope ASNs (17893, 58932, 133897) directly, plus AS10130 (FSM Telecommunications Corporation) and MARIIX&#x27;s own exchange ASN (23676) -- i.e. a real, independently-declared Guam-based transit relationship spanning exactly this corridor. Not yet tested by Atlas; queued as a more targeted next traceroute than a second plain FSM-&gt;Palau run would be.</div>
+        </div>
+
+    
+        <h2>Visualizations</h2>
+        <figure class="viz-figure">
+            <img src="../viz/geographic_detours.svg" alt="Geographic map of confirmed detours">
+            <figcaption>Confirmed detours: solid red = actual traceroute-confirmed path,
+                dashed = direct-line comparison.</figcaption>
+        </figure>
+        <figure class="viz-figure">
+            <img src="../viz/as_graph.svg" alt="AS dependency graph">
+            <figcaption>ASN dependency graph: green edges stay in-fishbowl,
+                red edges leave it.</figcaption>
+        </figure>
+
+    <h2>Economies</h2>
+    <table>
+        <thead><tr><th>CC</th><th>Name</th><th>Subregion</th><th>ASNs</th>
+            <th>w/ Neighbor</th><th>w/ IXP</th><th>w/ Facility</th></tr></thead>
+        <tbody><tr>
+            <td><span class="subregion-dot" style="background:#eb6834">
+                </span>AS</td>
+            <td>American Samoa</td>
+            <td>Polynesia</td>
+            <td>2</td><td>2</td>
+            <td>1</td><td>0</td>
+        </tr><tr>
+            <td><span class="subregion-dot" style="background:#eb6834">
+                </span>CK</td>
+            <td>Cook Islands</td>
+            <td>Polynesia</td>
+            <td>2</td><td>2</td>
+            <td>1</td><td>0</td>
+        </tr><tr>
+            <td><span class="subregion-dot" style="background:#2a78d6">
+                </span>FJ</td>
+            <td>Fiji</td>
+            <td>Melanesia</td>
+            <td>20</td><td>14</td>
+            <td>3</td><td>1</td>
+        </tr><tr>
+            <td><span class="subregion-dot" style="background:#1baf7a">
+                </span>FM</td>
+            <td>Micronesia, Federated States of</td>
+            <td>Micronesia</td>
+            <td>6</td><td>5</td>
+            <td>1</td><td>1</td>
+        </tr><tr>
+            <td><span class="subregion-dot" style="background:#1baf7a">
+                </span>GU</td>
+            <td>Guam</td>
+            <td>Micronesia</td>
+            <td>9</td><td>6</td>
+            <td>4</td><td>4</td>
+        </tr><tr>
+            <td><span class="subregion-dot" style="background:#1baf7a">
+                </span>KI</td>
+            <td>Kiribati</td>
+            <td>Micronesia</td>
+            <td>5</td><td>3</td>
+            <td>0</td><td>0</td>
+        </tr><tr>
+            <td><span class="subregion-dot" style="background:#1baf7a">
+                </span>MH</td>
+            <td>Marshall Islands</td>
+            <td>Micronesia</td>
+            <td>2</td><td>2</td>
+            <td>0</td><td>1</td>
+        </tr><tr>
+            <td><span class="subregion-dot" style="background:#1baf7a">
+                </span>MP</td>
+            <td>Northern Mariana Islands</td>
+            <td>Micronesia</td>
+            <td>2</td><td>1</td>
+            <td>1</td><td>1</td>
+        </tr><tr>
+            <td><span class="subregion-dot" style="background:#2a78d6">
+                </span>NC</td>
+            <td>New Caledonia</td>
+            <td>Melanesia</td>
+            <td>19</td><td>15</td>
+            <td>6</td><td>4</td>
+        </tr><tr>
+            <td><span class="subregion-dot" style="background:#1baf7a">
+                </span>NR</td>
+            <td>Nauru</td>
+            <td>Micronesia</td>
+            <td>5</td><td>4</td>
+            <td>1</td><td>1</td>
+        </tr><tr>
+            <td><span class="subregion-dot" style="background:#eb6834">
+                </span>NU</td>
+            <td>Niue</td>
+            <td>Polynesia</td>
+            <td>1</td><td>1</td>
+            <td>0</td><td>0</td>
+        </tr><tr>
+            <td><span class="subregion-dot" style="background:#eb6834">
+                </span>PF</td>
+            <td>French Polynesia</td>
+            <td>Polynesia</td>
+            <td>6</td><td>5</td>
+            <td>1</td><td>1</td>
+        </tr><tr>
+            <td><span class="subregion-dot" style="background:#2a78d6">
+                </span>PG</td>
+            <td>Papua New Guinea</td>
+            <td>Melanesia</td>
+            <td>39</td><td>29</td>
+            <td>10</td><td>3</td>
+        </tr><tr>
+            <td><span class="subregion-dot" style="background:#1baf7a">
+                </span>PW</td>
+            <td>Palau</td>
+            <td>Micronesia</td>
+            <td>3</td><td>3</td>
+            <td>1</td><td>1</td>
+        </tr><tr>
+            <td><span class="subregion-dot" style="background:#2a78d6">
+                </span>SB</td>
+            <td>Solomon Islands</td>
+            <td>Melanesia</td>
+            <td>11</td><td>10</td>
+            <td>2</td><td>1</td>
+        </tr><tr>
+            <td><span class="subregion-dot" style="background:#eb6834">
+                </span>TO</td>
+            <td>Tonga</td>
+            <td>Polynesia</td>
+            <td>5</td><td>4</td>
+            <td>1</td><td>0</td>
+        </tr><tr>
+            <td><span class="subregion-dot" style="background:#eb6834">
+                </span>TV</td>
+            <td>Tuvalu</td>
+            <td>Polynesia</td>
+            <td>3</td><td>1</td>
+            <td>0</td><td>0</td>
+        </tr><tr>
+            <td><span class="subregion-dot" style="background:#2a78d6">
+                </span>VU</td>
+            <td>Vanuatu</td>
+            <td>Melanesia</td>
+            <td>12</td><td>10</td>
+            <td>3</td><td>2</td>
+        </tr><tr>
+            <td><span class="subregion-dot" style="background:#eb6834">
+                </span>WF</td>
+            <td>Wallis and Futuna</td>
+            <td>Polynesia</td>
+            <td>1</td><td>1</td>
+            <td>0</td><td>0</td>
+        </tr><tr>
+            <td><span class="subregion-dot" style="background:#eb6834">
+                </span>WS</td>
+            <td>Samoa</td>
+            <td>Polynesia</td>
+            <td>10</td><td>6</td>
+            <td>2</td><td>1</td>
+        </tr></tbody>
+    </table>
+
+    <h2>IXPs</h2>
+    <table>
+        <thead><tr><th>Name</th><th>City</th><th>CC</th><th>Region</th>
+            <th>Members</th></tr></thead>
+        <tbody><tr>
+            <td>ABQIX</td><td>Albuquerque</td>
+            <td>US</td><td><span class="bool-false">out-of-fishbowl</span></td>
+            <td>1</td>
+        </tr><tr>
+            <td>Any2West</td><td>Los Angeles and Silicon Valley</td>
+            <td>US</td><td><span class="bool-false">out-of-fishbowl</span></td>
+            <td>4</td>
+        </tr><tr>
+            <td>BBIX Tokyo</td><td>Tokyo</td>
+            <td>JP</td><td><span class="bool-false">out-of-fishbowl</span></td>
+            <td>4</td>
+        </tr><tr>
+            <td>CAN&#x27;L IX</td><td>NOUMEA</td>
+            <td>NC</td><td><span class="bool-true">in-fishbowl</span></td>
+            <td>5</td>
+        </tr><tr>
+            <td>DE-CIX Dusseldorf</td><td>Düsseldorf</td>
+            <td>DE</td><td><span class="bool-false">out-of-fishbowl</span></td>
+            <td>1</td>
+        </tr><tr>
+            <td>DE-CIX Frankfurt</td><td>Frankfurt</td>
+            <td>DE</td><td><span class="bool-false">out-of-fishbowl</span></td>
+            <td>1</td>
+        </tr><tr>
+            <td>DE-CIX Hamburg</td><td>Hamburg</td>
+            <td>DE</td><td><span class="bool-false">out-of-fishbowl</span></td>
+            <td>1</td>
+        </tr><tr>
+            <td>DE-CIX Munich</td><td>Munich</td>
+            <td>DE</td><td><span class="bool-false">out-of-fishbowl</span></td>
+            <td>1</td>
+        </tr><tr>
+            <td>DRF IX</td><td>Honolulu</td>
+            <td>US</td><td><span class="bool-false">out-of-fishbowl</span></td>
+            <td>2</td>
+        </tr><tr>
+            <td>EdgeIX - Auckland</td><td>Auckland</td>
+            <td>NZ</td><td><span class="bool-false">out-of-fishbowl</span></td>
+            <td>1</td>
+        </tr><tr>
+            <td>Equinix Los Angeles</td><td>Los Angeles</td>
+            <td>US</td><td><span class="bool-false">out-of-fishbowl</span></td>
+            <td>1</td>
+        </tr><tr>
+            <td>Equinix San Jose</td><td>San Jose</td>
+            <td>US</td><td><span class="bool-false">out-of-fishbowl</span></td>
+            <td>1</td>
+        </tr><tr>
+            <td>Equinix Singapore</td><td>Singapore</td>
+            <td>SG</td><td><span class="bool-false">out-of-fishbowl</span></td>
+            <td>1</td>
+        </tr><tr>
+            <td>Equinix Sydney</td><td>Sydney</td>
+            <td>AU</td><td><span class="bool-false">out-of-fishbowl</span></td>
+            <td>9</td>
+        </tr><tr>
+            <td>Fiji-IXP</td><td>Suva</td>
+            <td>FJ</td><td><span class="bool-true">in-fishbowl</span></td>
+            <td>3</td>
+        </tr><tr>
+            <td>GOREX</td><td>Piti</td>
+            <td>GU</td><td><span class="bool-true">in-fishbowl</span></td>
+            <td>0</td>
+        </tr><tr>
+            <td>GU-IX</td><td>Guam</td>
+            <td>GU</td><td><span class="bool-true">in-fishbowl</span></td>
+            <td>1</td>
+        </tr><tr>
+            <td>Guam IX</td><td>Tamuning</td>
+            <td>GU</td><td><span class="bool-true">in-fishbowl</span></td>
+            <td>5</td>
+        </tr><tr>
+            <td>IX Australia Sydney (NSW-IX)</td><td>Sydney</td>
+            <td>AU</td><td><span class="bool-false">out-of-fishbowl</span></td>
+            <td>1</td>
+        </tr><tr>
+            <td>JPNAP Tokyo</td><td>Tokyo</td>
+            <td>JP</td><td><span class="bool-false">out-of-fishbowl</span></td>
+            <td>1</td>
+        </tr><tr>
+            <td>LOCIX DUSSELDORF</td><td>Dusseldorf</td>
+            <td>DE</td><td><span class="bool-false">out-of-fishbowl</span></td>
+            <td>1</td>
+        </tr><tr>
+            <td>LOCIX FRANKFURT</td><td>Frankfurt am Main</td>
+            <td>DE</td><td><span class="bool-false">out-of-fishbowl</span></td>
+            <td>1</td>
+        </tr><tr>
+            <td>MARIIX</td><td>Mangilao</td>
+            <td>GU</td><td><span class="bool-true">in-fishbowl</span></td>
+            <td>4</td>
+        </tr><tr>
+            <td>MegaIX Dusseldorf</td><td>Dusseldorf</td>
+            <td>DE</td><td><span class="bool-false">out-of-fishbowl</span></td>
+            <td>1</td>
+        </tr><tr>
+            <td>MegaIX Sydney</td><td>Sydney</td>
+            <td>AU</td><td><span class="bool-false">out-of-fishbowl</span></td>
+            <td>6</td>
+        </tr><tr>
+            <td>PNG Neutral IX Hagen</td><td>Mt Hagen</td>
+            <td>PG</td><td><span class="bool-true">in-fishbowl</span></td>
+            <td>1</td>
+        </tr><tr>
+            <td>PNG Neutral IX Lae</td><td>Lae</td>
+            <td>PG</td><td><span class="bool-true">in-fishbowl</span></td>
+            <td>2</td>
+        </tr><tr>
+            <td>PNG Neutral IX POM</td><td>Port Moresby</td>
+            <td>PG</td><td><span class="bool-true">in-fishbowl</span></td>
+            <td>9</td>
+        </tr><tr>
+            <td>SIX Seattle</td><td>Seattle</td>
+            <td>US</td><td><span class="bool-false">out-of-fishbowl</span></td>
+            <td>1</td>
+        </tr><tr>
+            <td>VIX.VU</td><td>Port Vila</td>
+            <td>VU</td><td><span class="bool-true">in-fishbowl</span></td>
+            <td>3</td>
+        </tr></tbody>
+    </table>
+
+    <footer class="about">
+        <h2>About this project</h2>
+        <p>What is &quot;the fish bowl&quot;? RIS (BGP route-collector) data and PeeringDB membership records are an outside-looking-in view: they show which routes get announced and which exchanges/facilities a network claims to join, but not how traffic actually moves once it&#x27;s inside a network -- we can see the bowl from outside, not get in it. Active RIPE Atlas traceroutes are the only way this project can partially see inside: a real packet, actually forwarded hop by hop. This project&#x27;s rule follows from that limit: no topology claim is accepted on one source alone -- a finding only counts once RIS and an Atlas traceroute independently agree (an IRR AS-SET declaration or a PeeringDB IXP membership can support a finding, but never substitute for that agreement). &quot;In-fishbowl&quot; / &quot;out-of-fishbowl&quot; describes whether an exchange or ASN sits inside this project&#x27;s study region (Melanesia, Polynesia, Micronesia, and Guam) or outside it (e.g. Sydney, Los Angeles, Tokyo) -- an out-of-fishbowl hop on a path between two in-region economies is this project&#x27;s definition of a sub-optimal route.</p>
+    </footer>
+</div>
+</body>
+</html>

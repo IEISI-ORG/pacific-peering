@@ -25,6 +25,7 @@ from pacific_peering.analysis.confirmed_detours import CONFIRMED_DETOURS
 from pacific_peering.analysis.confirmed_local_transit import CONFIRMED_LOCAL_TRANSIT
 from pacific_peering.atlas.probes import build_probe_coverage
 from pacific_peering.discovery.economies import ECONOMIES_BY_CC
+from pacific_peering.reports.data import FISHBOWL_EXPLANATION
 
 logger = logging.getLogger(__name__)
 
@@ -115,6 +116,8 @@ def render_probe_gap_report(coverage: dict[str, int]) -> str:
         lines.append(f"  {cc}  {ECONOMIES_BY_CC[cc].name} ({coverage[cc]} connected)")
     lines.append("")
     lines.append("=" * 78)
+    lines.append("")
+    lines.append(FISHBOWL_EXPLANATION)
     return "\n".join(lines)
 
 

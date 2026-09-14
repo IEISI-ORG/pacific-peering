@@ -333,3 +333,20 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   AS38800 both declare a Niue ASN. None fired as new Atlas measurements
   this tranche -- a data-gathering/cross-referencing pass, queued for
   future targeted tests rather than tested all at once.
+- `analysis.irr_leads` (`pacific-peering-irr-leads`): the IRR AS-SET
+  sweep turned into real, persisted infrastructure (`data/analysis/
+  irr_as_sets.json`), wired into `pipeline.run_pipeline` as a fourth
+  step so a monthly pipeline run refreshes it automatically, per
+  explicit project-owner instruction. Fixed a real bug hit on the first
+  live run: `fetch_irr_as_set_names` had no retry/timeout handling and
+  crashed on a single slow PeeringDB response -- now retries 429s and
+  network errors with backoff, same pattern as this project's other
+  PeeringDB calls, skipping (not crashing on) a chunk that still fails.
+- `reports.data.FISHBOWL_EXPLANATION`: one shared "what is the fish
+  bowl" explanation, added as a footer to the ASCII report, HTML report,
+  and probe-gap report (not the presentation, which already has a full
+  methodology slide covering the same ground) -- for a reader landing
+  on any of them without prior context, including an external one.
+- `outputs/reports/` and `outputs/viz/` are now tracked in git (matching
+  the existing `outputs/runs/` exception), and the current generated
+  reports/visualizations are committed for the first time.

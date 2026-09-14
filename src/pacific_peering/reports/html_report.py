@@ -13,7 +13,7 @@ import html
 import logging
 from pathlib import Path
 
-from pacific_peering.reports.data import ReportData, build_report_data
+from pacific_peering.reports.data import FISHBOWL_EXPLANATION, ReportData, build_report_data
 
 logger = logging.getLogger(__name__)
 
@@ -64,6 +64,9 @@ tr:hover {{ background: #f5f4f0; }}
 .viz-figure {{ margin: 1.5em 0; }}
 .viz-figure img {{ max-width: 100%; border: 1px solid #e1e0d9; border-radius: 6px; }}
 .viz-figure figcaption {{ color: {_MUTED}; font-size: 0.8rem; margin-top: 6px; }}
+footer.about {{ margin-top: 2.5em; padding-top: 1em; border-top: 1px solid #e1e0d9;
+                color: {_MUTED}; font-size: 0.82rem; line-height: 1.6; }}
+footer.about h2 {{ border-bottom: none; margin-top: 0; font-size: 0.95rem; color: {_INK}; }}
 """
 
 
@@ -220,6 +223,11 @@ def render_html_report(data: ReportData, viz_dir: Path | None = Path("../viz")) 
             <th>Members</th></tr></thead>
         <tbody>{ixp_rows}</tbody>
     </table>
+
+    <footer class="about">
+        <h2>About this project</h2>
+        <p>{html.escape(FISHBOWL_EXPLANATION)}</p>
+    </footer>
 </div>
 </body>
 </html>

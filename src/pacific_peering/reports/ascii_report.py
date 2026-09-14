@@ -10,7 +10,7 @@ from __future__ import annotations
 import logging
 from pathlib import Path
 
-from pacific_peering.reports.data import ReportData, build_report_data
+from pacific_peering.reports.data import FISHBOWL_EXPLANATION, ReportData, build_report_data
 
 logger = logging.getLogger(__name__)
 
@@ -119,6 +119,9 @@ def render_ascii_report(data: ReportData) -> str:
             f"{ix.name:<28.28} {ix.city:<16.16} {ix.country:<4} "
             f"{in_fishbowl_str:<12} {ix.member_count:>7}"
         )
+
+    lines.append(_section("ABOUT THIS PROJECT"))
+    lines.append(FISHBOWL_EXPLANATION)
 
     lines.append("")
     lines.append(_rule("="))

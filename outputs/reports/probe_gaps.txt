@@ -1,0 +1,34 @@
+PACIFIC PEERING -- RIPE ATLAS PROBE COVERAGE GAPS
+Sole purpose: where to request a new probe next. Not a findings report.
+==============================================================================
+
+ZERO CONNECTED PROBES (6/20) -- cannot source or target a traceroute here at all:
+  AS  American Samoa
+  NR  Nauru
+  PG  Papua New Guinea [used in a confirmed/candidate finding]
+  SB  Solomon Islands
+  WF  Wallis and Futuna
+  WS  Samoa
+
+FRAGILE -- exactly 1 connected probe (9/20) -- a single point of failure, and there's no second probe to cross-check it against:
+  CK  Cook Islands
+  FJ  Fiji [used in a confirmed/candidate finding]
+      KNOWN ISSUE: Fiji's only connected probe sits behind AS53813 (Zscaler corporate VPN) -- a traceroute sourced from it shows Zscaler's own routing, not real Fiji ISP behavior. Confirmed unusable for path analysis; a new, non-proxied probe is needed to actually study Fiji's routing.
+  MH  Marshall Islands
+  MP  Northern Mariana Islands
+  NU  Niue
+  PW  Palau [used in a confirmed/candidate finding]
+  TO  Tonga
+  TV  Tuvalu
+  VU  Vanuatu [used in a confirmed/candidate finding]
+
+ADEQUATE -- 2+ connected probes (5/20):
+  FM  Micronesia, Federated States of (3 connected)
+  GU  Guam (9 connected)
+  KI  Kiribati (2 connected)
+  NC  New Caledonia (5 connected)
+  PF  French Polynesia (7 connected)
+
+==============================================================================
+
+What is "the fish bowl"? RIS (BGP route-collector) data and PeeringDB membership records are an outside-looking-in view: they show which routes get announced and which exchanges/facilities a network claims to join, but not how traffic actually moves once it's inside a network -- we can see the bowl from outside, not get in it. Active RIPE Atlas traceroutes are the only way this project can partially see inside: a real packet, actually forwarded hop by hop. This project's rule follows from that limit: no topology claim is accepted on one source alone -- a finding only counts once RIS and an Atlas traceroute independently agree (an IRR AS-SET declaration or a PeeringDB IXP membership can support a finding, but never substitute for that agreement). "In-fishbowl" / "out-of-fishbowl" describes whether an exchange or ASN sits inside this project's study region (Melanesia, Polynesia, Micronesia, and Guam) or outside it (e.g. Sydney, Los Angeles, Tokyo) -- an out-of-fishbowl hop on a path between two in-region economies is this project's definition of a sub-optimal route.
