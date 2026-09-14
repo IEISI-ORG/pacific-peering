@@ -478,3 +478,15 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   chokepoint ASN already identified: University of Hawaii has 1
   connected probe (notably the same ASN already confirmed as a GOREX
   member) -- queued as the natural next edge-to-edge test.
+- Fired the queued Hawaii->Guam/GOREX test, plus a matching one sourced
+  from ARENA-PAC itself (also had 2 connected probes). Hawaii (AS6360)
+  -> University of Guam: RIS agrees exactly (40 observations) but a
+  real gap remains before the target, and no GOREX crossing -- not
+  added as a new entry (Hawaii is out-of-scope and this isn't an
+  intra-Pacific detour, just Guam's real external connectivity).
+  ARENA-PAC -> University of Guam: fully contiguous both probes, via
+  WIDE Project and IIJ (Japan) then Guam Cablevision -- a third
+  independent reinforcement of the existing AS3605<->AS395400 finding,
+  folded into its note. Notable: ARENA-PAC and University of Guam are
+  both confirmed GOREX members, yet this path between them still
+  doesn't cross GOREX -- same pattern as the AS3605->Cogent detour.

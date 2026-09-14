@@ -145,7 +145,21 @@ CONFIRMED_LOCAL_TRANSIT: tuple[ConfirmedLocalTransit, ...] = (
             "at the target, or at the exchange's own switch fabric, could explain "
             "it just as well as the traffic genuinely bypassing GOREX) -- it's "
             "inconclusive on the motivating question, while still yielding this "
-            "separate, real, confirmed finding along the way."
+            "separate, real, confirmed finding along the way. "
+            "Reinforced a third time, from a genuinely distant vantage point: "
+            "sourced directly from AS141682 (ARENA-PAC, the Pacific research/"
+            "education network the project owner pointed at) toward this same "
+            "target. Both probes fully contiguous end-to-end: AS141682 -> AS2500 "
+            "(WIDE Project, Japan) -> AS2497 (IIJ, Japan) -> AS3605 -> AS395400, "
+            "landing on this exact adjacency again with the same 1,091-observation "
+            "match. Notable in its own right: ARENA-PAC and University of Guam are "
+            "both *confirmed* GOREX members (see the candidate-peering module's "
+            "AS3605<->AS17893 entry for how GOREX's real membership was mapped), "
+            "yet this traceroute between two of GOREX's own members still doesn't "
+            "cross GOREX -- it goes via Japan and Guam Cablevision instead. The "
+            "same pattern as the AS3605->Cogent/Tokyo confirmed detour: a real "
+            "local exchange exists and has real, confirmed members, but real "
+            "measured traffic between those members doesn't necessarily use it."
         ),
     ),
 )
