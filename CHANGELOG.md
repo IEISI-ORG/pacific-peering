@@ -276,3 +276,25 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   measurement 210990245): reached AS3257 (GTT) and went dark before the
   target -- an honest inconclusive result, but proves the method fires
   correctly end-to-end.
+- Generalized `pick_ixp_member_target`/`run_ixp_member_probe`'s
+  `exclude_asn` to `exclude_asns` (one ASN or a set), to walk through an
+  exchange's full membership. Probed Fiji-IXP's other two members
+  (AS45349, AS45355) from the same PF vantage point: all three members
+  now show byte-for-byte identical intermediate hops, dying at AS3257
+  (GTT) every time -- read honestly as one fact observed three times
+  (PF's own fixed outbound route gets filtered before reaching Fiji-IXP
+  at all), not three independent results, and not a finding about
+  Fiji-IXP either way. Concrete argument for the next report below: this
+  corridor needs a different vantage point, not a smarter probe choice
+  among ones already known to be unusable.
+- `reports.probe_gap_report` (`pacific-peering-report-probe-gaps`): a
+  new single-purpose text report -- where to request a new RIPE Atlas
+  probe next, kept deliberately separate from the findings-oriented
+  reports and meant for its own (weekly) run cadence. Re-fetches live
+  probe coverage every run, groups economies into zero/fragile(1)/
+  adequate(2+) tiers, flags economies already load-bearing for a
+  confirmed/candidate finding, and carries a small hand-curated known-
+  issues note (Fiji's confirmed Zscaler-proxy problem). Verified by
+  running it live: 5/20 economies have zero connected probes, 10/20
+  have exactly one (four of them already central to real findings), 5/20
+  adequately covered -- matching prior hand-verified figures.

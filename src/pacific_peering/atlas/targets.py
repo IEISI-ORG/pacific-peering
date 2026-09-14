@@ -41,7 +41,9 @@ def pick_target_ip(asn: int, cache_dir: Path = DEFAULT_CACHE_DIR) -> str:
     return str(network.network_address + 1)
 
 
-def pick_ixp_member_target(ix_id: int, exclude_asn: int | None = None) -> tuple[int, str]:
+def pick_ixp_member_target(
+    ix_id: int, exclude_asns: int | set[int] | None = None
+) -> tuple[int, str]:
     """Pick one real member's peering-LAN address at a known IXP, to traceroute directly.
 
     The active counterpart to `pick_target_ip`'s incidental approach:
@@ -53,9 +55,11 @@ def pick_ixp_member_target(ix_id: int, exclude_asn: int | None = None) -> tuple[
 
     Args:
         ix_id: PeeringDB exchange ID to pick a member from.
-        exclude_asn: Skip this ASN (e.g. the measurement's own source
-            ASN, to avoid a trivially-local "target" that never leaves
-            the source's own network).
+        exclude_asns: Skip these ASN(s) — a single ASN or a set. Pass the
+            measurement's own source ASN (to avoid a trivially-local
+            "target" that never leaves the source's own network), and/or
+            every member already probed, to walk through an exchange's
+            full membership one measurement at a time.
 
     Returns:
         (member_asn, ipaddr4) for the lowest-numbered eligible member ASN
@@ -64,10 +68,13 @@ def pick_ixp_member_target(ix_id: int, exclude_asn: int | None = None) -> tuple[
 
     Raises:
         ValueError: If the exchange has no eligible members on record
-            (empty membership, or every member is `exclude_asn`).
+            (empty membership, or every member is excluded).
     """
+    excluded = (
+        {exclude_asns} if isinstance(exclude_asns, int) else set(exclude_asns or ())
+    )
     members = fetch_ixp_members(ix_id)
-    eligible = {asn: ips for asn, ips in members.items() if asn != exclude_asn and ips}
+    eligible = {asn: ips for asn, ips in members.items() if asn not in excluded and ips}
     if not eligible:
         raise ValueError(f"ix_id={ix_id} has no eligible member addresses on record")
     asn = min(eligible)

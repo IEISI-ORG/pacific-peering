@@ -136,7 +136,7 @@ def run_inbound_smoketest(
 def run_ixp_member_probe(
     ix_id: int,
     source_cc: str,
-    exclude_asn: int | None = None,
+    exclude_asns: int | set[int] | None = None,
     probe_count: int = 3,
 ) -> int:
     """Fire a traceroute from `source_cc` directly at a known IXP member's peering-LAN address.
@@ -152,14 +152,17 @@ def run_ixp_member_probe(
         ix_id: PeeringDB exchange ID to probe (see `ixp_lan_registry` for
             which ones are confirmed in-fishbowl).
         source_cc: Economy to source probes from.
-        exclude_asn: Skip this member ASN when picking a target (e.g.
-            the source economy's own ASN).
+        exclude_asns: Skip these member ASN(s) when picking a target
+            (e.g. the source economy's own ASN, and/or members already
+            probed in an earlier call — pass the growing set to walk
+            through an exchange's full membership one measurement at a
+            time).
         probe_count: Number of probes to request.
 
     Returns:
         The created measurement's ID.
     """
-    member_asn, target_ip = pick_ixp_member_target(ix_id, exclude_asn=exclude_asn)
+    member_asn, target_ip = pick_ixp_member_target(ix_id, exclude_asns=exclude_asns)
     description = (
         f"pacific-peering ixp-member-probe {source_cc} to ix_id={ix_id} "
         f"member AS{member_asn} {target_ip}"
