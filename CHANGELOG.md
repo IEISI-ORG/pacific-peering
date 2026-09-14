@@ -741,3 +741,10 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   dead-end -- neither probe reached AS9471 or its sibling AS55943,
   stopping at Hurricane Electric in Tokyo instead. Not filed in any
   dataclass; marked tested regardless.
+- Fourth hourly firing: sourced AS3605 toward AS9751 (American
+  Samoa) -- a fresh GU<->AS pair. Fully contiguous, exact RIS match
+  (1,055) via AS174 (Cogent). Third instance of the identical AS3605
+  -> Tokyo/IIJ -> Cogent shape this session (after Palau and Fiji/
+  FINTEL) -- a real, repeated routing signature, not a one-off. Added
+  as a new ConfirmedDetour entry; marked tested; backlog regenerated
+  (1293 -> 1285).

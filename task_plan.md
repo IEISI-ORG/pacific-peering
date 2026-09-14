@@ -903,3 +903,11 @@ Added as a new `ConfirmedDetour` entry. Called `mark_corridor_tested(3605, 9249)
 **Result: a genuine dead-end, not a new relationship.** Neither probe ever resolved the target ASN itself -- both reach AS3605 -> AS2497 (IIJ, Japan) -> AS6939 (Hurricane Electric, resolved via PeeringDB netixlan at JPNAP Tokyo) and go dark before reaching ONATI's own network at all. `ris_agrees: false` -- checked and this isn't the sibling-ASN nuance seen for the Niue/Cook Islands ONATI cases (those traceroutes *did* reach AS9471 or AS55943 directly, just under the "other" sibling identity); here the path never reaches either ONATI ASN, stopping at a generic Tokyo transit hop instead. A real, honest negative result -- not filed in any dataclass, matching this project's established dead-end handling.
 
 Called `mark_corridor_tested(3605, 9471)`. No report/map regeneration needed (no dataclass changed).
+
+---
+
+**[Loop tranche -- fourth hourly firing under the backlog system, normal timing, a clean third repeat of a real pattern.]** Confirmed via `CronList` this was job `33ab3487`'s scheduled fire. Pulled the top pick: **AS3605 (Guam Cablevision) -> AS9751 (American Samoa)** -- a fresh GU<->AS economy pair. American Samoa itself has zero connected probes (unchanged all session), so this is the only testable direction. Normal scheduling timing this time.
+
+**Result: fully contiguous on both probes, exact RIS match.** AS3605 -> AS2497 (IIJ, Japan) -> AS174 (Cogent Communications) -> AS9751. Upstream of the target is AS174, RIS-agreeing exactly (1,055) -- checked against AS9751's full neighbor list (`{174: 1055, 3356: 333, 11404: 267}`): its single largest relationship. **This is now the third instance of the identical AS3605 -> Tokyo/IIJ -> Cogent shape this session** (after AS17893/Palau and AS9241/FINTEL Fiji) -- no longer a one-off, a real repeated signature of how this Guam carrier routes to multiple different Pacific destinations regardless of which island it's reaching.
+
+Added as a new `ConfirmedDetour` entry. Called `mark_corridor_tested(3605, 9751)`. Verified: module imports cleanly (10 entries, up from 9); regenerated ASCII/HTML reports (renders correctly) and the geographic map (11 red `line2d` elements = 10 data lines + 1 legend swatch, matching the 10 dataclass entries). Regenerated the corridor backlog: candidate count dropped 1293 -> 1285.

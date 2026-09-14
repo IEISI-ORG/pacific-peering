@@ -1,6 +1,6 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-09-14T16:15:35.054669+00:00                  
+                 Generated: 2026-09-14T18:15:25.785427+00:00                  
 ==============================================================================
 
 SUMMARY
@@ -41,6 +41,9 @@ GU -> FJ (AS9241): detours via AS174 (Cogent Communications), via AS2497 (IIJ, J
 GU -> VU (AS9249): detours via Level 3/Lumen (AS3356) + AS4637 (Telstra Global) -- global transit, not a named exchange crossing (Sydney)
     RIS observation count: 1346  [measurement 211334940]
     Guam Cablevision (AS3605) -> Telecom Vanuatu (AS9249) -- pulled from the corridor backlog's top pick: a genuinely untested GU<->VU economy pair. Both probes: AS3605 -> AS3356 (Level 3/Lumen) -> AS4637 (Telstra Global) -> AS38442 (Vodafone Fiji) -> AS9249. Upstream of the target is AS38442, RIS-agreeing with an *exact* match (1,346) -- this project's very first confirmed finding, now independently reinforced a **sixth** time, from a sixth distinct source network (after AS18200/OPT NC, AS45345/Nautile, AS56089/OFFRATEL, AS24390/USP, and AS17828/PNG DataCo). The final AS38442->AS9249 leg shows a single silent (non-responding) hop immediately before the target on both probes -- checked directly, not assumed: the same ordinary ICMP-filtering-right-at-the-destination pattern already seen in essentially every measurement that has ever targeted AS9249 this session, not a new or unusual gap. No IXP crossing this time (`ixp_crossings` empty) -- plain Tier-1 transit (Level 3/Lumen then Telstra Global), the same no-named-exchange shape as the AS17828->AS9249 and AS3605->AS9241 entries. Six independent, differently-sourced measurements landing on one identical adjacency, all with exact observation-count matches, is about as strong a single fact as this project has produced.
+GU -> AS (AS9751): detours via AS174 (Cogent Communications), via AS2497 (IIJ, Japan) -- global transit, not a named exchange crossing (Tokyo)
+    RIS observation count: 1055  [measurement 211371732]
+    Guam Cablevision (AS3605) -> American Samoa (AS9751) -- pulled from the corridor backlog's top pick: a fresh GU<->AS economy pair. American Samoa itself has zero connected Atlas probes (unchanged all session), so this is the only direction this corridor can currently be tested from. Both probes fully contiguous end-to-end: AS3605 -> AS2497 (IIJ, Japan) -> AS174 (Cogent Communications) -> AS9751. Upstream of the target is AS174, RIS-agreeing with an *exact* match (1,055) -- checked directly against AS9751's full neighbor list (`{174: 1055, 3356: 333, 11404: 267}`): AS174 is its single largest relationship, not a minor one. **This is now the *third* instance of the identical AS3605 -> Tokyo (AS2497/IIJ) -> Cogent shape this session** (after AS17893/Palau and AS9241/FINTEL Fiji) -- no longer just a one-off pattern but a real, repeated signature of how this specific Guam carrier routes to multiple different Pacific destinations: via Japan and global Tier-1 transit, not any regional path, regardless of which island it's reaching.
 
 CONFIRMED LOCAL TRANSIT (RIS + Atlas both agree, stays in-fishbowl)
 ==============================================================================

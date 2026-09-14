@@ -323,4 +323,34 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
             "this project has produced."
         ),
     ),
+    ConfirmedDetour(
+        source_cc="GU",
+        target_cc="AS",
+        target_asn=9751,
+        detour_ix_name="AS174 (Cogent Communications), via AS2497 (IIJ, Japan) -- global "
+        "transit, not a named exchange crossing",
+        detour_hub="Tokyo",
+        measurement_id=211371732,
+        ris_observation_count=1055,
+        note=(
+            "Guam Cablevision (AS3605) -> American Samoa (AS9751) -- pulled "
+            "from the corridor backlog's top pick: a fresh GU<->AS economy "
+            "pair. American Samoa itself has zero connected Atlas probes "
+            "(unchanged all session), so this is the only direction this "
+            "corridor can currently be tested from. Both probes fully "
+            "contiguous end-to-end: AS3605 -> AS2497 (IIJ, Japan) -> AS174 "
+            "(Cogent Communications) -> AS9751. Upstream of the target is "
+            "AS174, RIS-agreeing with an *exact* match (1,055) -- checked "
+            "directly against AS9751's full neighbor list "
+            "(`{174: 1055, 3356: 333, 11404: 267}`): AS174 is its single "
+            "largest relationship, not a minor one. **This is now the "
+            "*third* instance of the identical AS3605 -> Tokyo (AS2497/IIJ) "
+            "-> Cogent shape this session** (after AS17893/Palau and "
+            "AS9241/FINTEL Fiji) -- no longer just a one-off pattern but a "
+            "real, repeated signature of how this specific Guam carrier "
+            "routes to multiple different Pacific destinations: via Japan "
+            "and global Tier-1 transit, not any regional path, regardless of "
+            "which island it's reaching."
+        ),
+    ),
 )
