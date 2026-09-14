@@ -582,3 +582,15 @@ Verified by regenerating all reports/the map/presentation and checking the new e
 **Verified three ways, not just that it loads**: (1) confirmed the log line `"PeeringDB requests authenticated via secrets.yaml"` appears and a real API call succeeds; (2) confirmed the `Authorization` header is present and correctly formatted (`api-key <value>`) without ever printing the actual key; (3) re-ran the full pipeline to check the thing this was actually meant to fix.
 
 **Honest result on (3): a real but partial improvement, not a complete fix.** The `net` endpoint (used by `irr_leads`) hit **zero** rate-limit warnings this run — every previous run this session reliably hit at least one. But the `ixpfx` endpoint (queried by `ixp_lan_registry`, one `ix_id` at a time, 31 in a row) still got rate-limited twice (`ix_id` 3794 and 4494) even authenticated — fewer than the 3-4 typically hit unauthenticated, but not zero. The already-existing "never let a failed refetch discard already-confirmed data" protections in both modules caught it correctly regardless (kept both exchanges' existing prefixes; verified afterward that 0 of 31 exchanges have empty prefixes and all 37 IRR leads are intact) — those defensive fixes remain load-bearing, not made obsolete by authentication.
+
+---
+
+**[Loop tranche — testing the queued AS3605<->Palau IRR lead properly, sourced from Guam this time rather than FSM.]** Confirmed via `CronList` this was job `551adf11`'s scheduled fire.
+
+Two tranches ago's FSM->Palau test couldn't test AS3605's own declared transit relationship with Palau, since AS3605 (Guam Cablevision) is a *Guam* ISP — testing it needed a Guam-sourced probe, not an FSM one. Fired that directly: Guam -> AS17893 (Palau NCC), measurement `211044785`.
+
+**Result: a second, independent reinforcement of AS17893's Guam IX presence, not a new confirmed adjacency.** All 3 probes reach the target in just 3-4 hops and land on the *exact same* Guam IX address (`103.142.153.18`) already confirmed twice before — this time from a different source economy (GU, not FM), a genuinely independent corroboration. The immediate upstream is AS152735 ("Guam Exchange", 2 of 3 probes) or AS17456 ("Pacific Data Systems", 1 of 3) — neither RIS-confirmed as an AS17893 neighbor, and AS152735's own name and IRR AS-SET ("AS-GUAMIX") strongly suggest it's Guam IX's own route-server/infrastructure ASN rather than a distinct peering relationship — so not given a new candidate entry of its own; folded as reinforcement into the existing AS139759<->AS17893 candidate's note instead of creating near-duplicate entries for what's really the same underlying exchange-fabric evidence.
+
+**AS3605 itself did not appear on this path** — the specific lead its own IRR AS-SET named remains untested. Noted plainly in the entry rather than treated as resolved: testing it directly would need a probe actually hosted on AS3605, which Guam's country-based selection doesn't guarantee (same limitation already documented for AS10130) — queued, not chased further this tranche.
+
+Verified by regenerating all reports and confirming the extended note renders cleanly in ASCII/HTML/presentation.

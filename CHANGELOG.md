@@ -431,3 +431,13 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   not zero). The existing "never discard already-confirmed data on a
   failed refetch" protections in `ixp_lan_registry`/`irr_leads` caught
   it correctly regardless -- verified no data was lost.
+- Tested the queued AS3605<->Palau IRR lead from Guam (not FSM, which
+  couldn't actually test it). Result: a second independent
+  reinforcement of AS17893's Guam IX presence, landing on the same
+  address confirmed twice before now from a different source economy
+  -- not a new confirmed adjacency (the immediate upstream, "Guam
+  Exchange"/AS152735, looks like Guam IX's own infrastructure ASN, not
+  a distinct peer). AS3605 itself didn't appear on this path; the
+  specific lead remains untested. Folded into the existing
+  AS139759<->AS17893 candidate's note rather than creating a
+  near-duplicate entry.
