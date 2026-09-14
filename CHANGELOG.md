@@ -367,3 +367,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   services) -- since real Atlas credits had already been spent by the
   time each kill happened, re-ran the recovery step in the foreground
   rather than writing the data off as lost.
+- Checked directly whether AS10130 has a usable Atlas probe (per the
+  project owner's ask): zero currently connected, and only one ever
+  registered against it in total (Abandoned). The AS10130<->AS132486
+  IRR lead isn't just untested -- it currently can't be tested via
+  Atlas at all, by any probe-selection method. Folded into the
+  AS154100<->AS132486 confirmed-transit entry's note.
