@@ -818,3 +818,13 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   distinct global carrier confirmed filling AS3605's Tokyo-transit
   role. Added as a new ConfirmedDetour entry; marked tested; backlog
   regenerated (1208 -> 1205).
+- Replaced the hourly corridor-testing job with a 10-minute cadence
+  (`/loop 10m`), per the project owner's request -- flagged the
+  overlap with the existing hourly job first, confirmed replacement.
+  Ran immediately: sourced AS3605 toward AS45891 (Solomon Telekom) --
+  a fresh GU<->SB pair, holder name verified as a real incumbent
+  before firing. Exact RIS match (1,652) via AS4637 (Telstra Global)
+  -> AS139609 (Solomon Islands Submarine Cable Company, SISCC) --
+  AS45891's only RIS neighbor, a clean confirmation with no
+  sibling-ASN reasoning needed. Added as a new ConfirmedDetour entry;
+  marked tested; backlog regenerated (1205 -> 1178).

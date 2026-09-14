@@ -496,4 +496,38 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
             "domestic, Telstra Global, Tata, and now Opentransit Orange)."
         ),
     ),
+    ConfirmedDetour(
+        source_cc="GU",
+        target_cc="SB",
+        target_asn=45891,
+        detour_ix_name="AS4637 (Telstra Global), via AS2497 (IIJ, Japan) -- global "
+        "transit, not a named exchange crossing",
+        detour_hub="Tokyo",
+        measurement_id=211488835,
+        ris_observation_count=1652,
+        note=(
+            "Guam Cablevision (AS3605) -> Solomon Telekom Co Ltd (AS45891) -- "
+            "a fresh GU<->SB economy pair. Checked AS45891's holder name "
+            "directly before firing, given this session's now-standard "
+            "caution after the AS24013 exclusion: \"SBT-AS-AP - Solomon "
+            "Telekom Co Ltd\", a real incumbent, and the target IP resolves "
+            "inside real APNIC space (202.1.164.0/24) -- no anomaly. Eighth "
+            "occurrence of the slow-scheduling pattern, resolved on a longer "
+            "poll as before. "
+            "Both probes: AS3605 -> AS2497 (IIJ, Japan) -> AS4637 (Telstra "
+            "Global) -> AS139609. The literal target (AS45891) never itself "
+            "resolved -- but this is not a sibling-ASN case like the FSM/"
+            "ONATI ones: AS139609 is a genuinely different, real entity, "
+            "\"Solomon Islands Submarine Cable Company\" (SISCC), the actual "
+            "operator of Solomon Islands' international submarine cable "
+            "infrastructure. Checked directly: AS45891's *only* RIS-observed "
+            "neighbor at all is AS139609 (1,652 observations), an *exact* "
+            "match to what this traceroute found -- Solomon Telekom's real, "
+            "retail-facing network depends entirely on SISCC's cable "
+            "infrastructure for international connectivity, a completely "
+            "sensible real-world relationship (retail ISP -> the country's "
+            "own submarine cable operator), cleanly confirmed without needing "
+            "any sibling-identity substitution."
+        ),
+    ),
 )
