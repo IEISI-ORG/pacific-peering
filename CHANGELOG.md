@@ -590,3 +590,12 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   via global transit, two (AS58932, AS133897) reached directly -- a
   real, mixed picture of one carrier's declared relationships, not a
   uniform one.
+- Gave `discovery.bgp_tools.fetch_prefix_visibility` its first real
+  exercise: cross-checked all 16 RIS-cached originated prefixes for
+  AS3605/AS17893/AS58932/AS133897 against bgp.tools' independent
+  global table dump. Complete agreement, zero discrepancies, healthy
+  visibility counts (744-2802) throughout -- the first cross-source
+  corroboration of this project's prefix-targeting data, not just a
+  topology cross-check. AS3605/AS17893 also showed extra prefixes
+  bgp.tools sees that RIS's deliberately-capped 5-prefix cache
+  doesn't -- expected, not a discrepancy.
