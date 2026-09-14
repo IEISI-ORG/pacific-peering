@@ -47,7 +47,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
 <body>
 <div class="wrap">
     <h1>Pacific Peering — Regional Routing Report</h1>
-    <div class="meta">Generated 2026-09-14T09:32:07.927420+00:00</div>
+    <div class="meta">Generated 2026-09-14T09:56:02.785219+00:00</div>
 
     <div class="stat-row"><div class="stat-tile"><div class="value">20</div><div class="label">Economies in scope</div></div><div class="stat-tile"><div class="value">164</div><div class="label">ASNs in scope</div></div><div class="stat-tile"><div class="value">125</div><div class="label">ASNs w/ RIS neighbor</div></div><div class="stat-tile"><div class="value">39</div><div class="label">ASNs w/ IXP membership</div></div><div class="stat-tile"><div class="value">23</div><div class="label">ASNs w/ facility presence</div></div><div class="stat-tile"><div class="value">10/21</div><div class="label">IXPs in/out of fishbowl</div></div></div>
 
@@ -131,6 +131,14 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
                 &middot; measurement 211185048
                 &middot; vantage point GU</div>
             <div class="note">Follow-up to the two already-tested Palau corridors: AS3605&#x27;s own declared transit AS-SET (AS-KUENTOS-TRANSIT) names all three of Palau&#x27;s in-scope ASNs directly (17893, 58932, 133897) -- AS17893 is a confirmed detour via Tokyo/Cogent (see confirmed_detours.py), so the other two named ASNs were the natural next check, and (per the process note from the prior tranche) grepped first to confirm neither had been tested yet. Sourced directly from AS3605&#x27;s own connected Atlas probes toward AS58932. Result: a completely different shape from the AS17893 corridor -- both responding probes show AS3605 immediately adjacent to AS58932, *zero* intermediate hops at all, no external hub, no IXP crossing. RIS agrees with an exact observation-count match (664) -- and AS58932&#x27;s entire RIS neighbor list has only two entries at all (AS24545: 704, AS3605: 664), so this is one of its two dominant relationships, not a minor one. A real, clean, direct transit relationship, distinct in kind from the AS17893 finding: AS3605 evidently serves at least one Palau network (AS58932/Palau Mobile Communications) with a direct connection rather than routing it out to global transit the way it does for AS17893 -- the same declared AS-SET names both, but the real traffic paths diverge sharply between the two named customers. AS133897 (Palau Equipment Co. Inc.) remains the one still-untested ASN from this AS-SET; its RIS data shows AS3605 as its *only* neighbor at all (662 observations, 100% of its ~662 total path observations) -- the strongest single-neighbor signal of any ASN tested this session, and the obvious next check.</div>
+        </div><div class="transit-card">
+            <div class="headline">AS3605 (Guam Cablevision, LLC,
+                GU) -&gt; AS133897
+                (Palau Equipment Co. Inc., PW)</div>
+            <div>RIS observation count: 662
+                &middot; measurement 211193440
+                &middot; vantage point GU</div>
+            <div class="note">Completes the test of all three Palau ASNs named in AS3605&#x27;s own declared transit AS-SET (AS-KUENTOS-TRANSIT): AS17893 (confirmed Tokyo/Cogent detour), AS58932 (confirmed direct transit, prior entry), and now AS133897, flagged as the obvious next check precisely because its RIS neighbor list has exactly one entry at all -- AS3605, 662 observations, 100% of its total path observations, the strongest single-neighbor signal of any ASN tested this project. Sourced directly from AS3605&#x27;s own connected Atlas probes: confirmed exactly as the RIS signal predicted -- both responding probes show AS3605 immediately adjacent to AS133897, zero intermediate hops, no external hub, no IXP crossing, and an exact RIS observation-count match (662). With this, every ASN AS3605&#x27;s own IRR declaration names for this corridor has now been traceroute-tested from AS3605&#x27;s own vantage point, with a fully consistent picture: one customer (AS17893) reached via global transit, two (AS58932, AS133897) reached directly -- a real, mixed picture of how one Guam carrier actually serves its declared Palau relationships, not assumed uniform from the IRR declaration alone.</div>
         </div>
 
     <h2>Candidate peering (strong traceroute signal, RIS disagrees &mdash; unconfirmed)</h2>

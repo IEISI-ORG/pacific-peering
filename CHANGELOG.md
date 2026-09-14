@@ -580,3 +580,13 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   entry. AS133897 (100% single-neighbor RIS signal toward AS3605) is
   flagged as the obvious next check, left untested this tranche on
   purpose.
+- Fired that flagged next check: AS3605 -> AS133897 (measurement
+  211193440), confirmed exactly as its RIS signal predicted (AS3605
+  was AS133897's *only* RIS-observed neighbor -- 662/662 observations,
+  the strongest single-neighbor signal in the project). Zero
+  intermediate hops, exact RIS match. Added as a new
+  ConfirmedLocalTransit entry. This completes the test of all three
+  Palau ASNs named in AS3605's own IRR AS-SET: one (AS17893) reached
+  via global transit, two (AS58932, AS133897) reached directly -- a
+  real, mixed picture of one carrier's declared relationships, not a
+  uniform one.

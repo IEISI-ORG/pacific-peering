@@ -729,3 +729,15 @@ Sourced AS3605's own connected probes toward AS58932 (measurement 211185048; kep
 **AS133897 (Palau Equipment Co. Inc.) is now the obvious next check, not just a leftover**: its RIS data shows AS3605 as its *only* neighbor at all -- 662 of 662 observations, a 100% single-neighbor signal, the strongest of any ASN tested this project. Left untested this tranche deliberately (one new measurement per tranche, per the working agreement) -- flagged clearly for the next `/loop` firing.
 
 Verified by regenerating ASCII/HTML reports (new entry renders correctly, no duplication) and the geographic map (SVG re-rendered; now shows 6 green confirmed-local-transit lines, matching the 6 entries in the updated dataclass, up from 5 -- confirmed by counting the rendered `line2d` elements directly rather than assuming the regeneration worked).
+
+---
+
+**[Loop tranche — completed the AS3605 IRR-lead test: fired the flagged AS133897 check, exactly as the RIS signal predicted.]** Confirmed via `CronList` this was job `551adf11`'s scheduled fire. Re-grepped for "133897" first (per the now-standing process rule) — still untested, as expected.
+
+Sourced AS3605's own connected probes toward AS133897 (measurement 211193440), using the same `max_wait=70.0` foreground pattern — completed cleanly again, no backgrounding issue. **Result: confirmed exactly as predicted by AS133897's striking RIS signal** (AS3605 was its *only* RIS-observed neighbor at all, 662/662 observations, the strongest single-neighbor signal of any ASN tested this project). Both probes: AS3605 immediately adjacent to AS133897, zero intermediate hops, no external hub, no IXP crossing, exact RIS match (662). Added as a new `ConfirmedLocalTransit` entry.
+
+**This completes the full test of AS3605's declared IRR AS-SET for Palau**, all three named ASNs now traceroute-tested from AS3605's own vantage point, with a consistent and genuinely informative picture: one customer (AS17893) reached via global Tokyo/Cogent transit, two (AS58932, AS133897) reached directly with zero intermediate hops. A real finding in its own right, not just three confirmations: a single Guam carrier's declared relationships to Palau are NOT uniformly implemented — exactly the kind of nuance this project's IRR-as-a-lead validation rule exists to surface rather than assume away.
+
+Verified: module still imports cleanly (7 entries, up from 6); regenerated ASCII/HTML reports (renders correctly); regenerated the geographic map and counted the rendered SVG elements directly — 7 green `line2d` groups plus 1 legend swatch, matching the 7 dataclass entries exactly.
+
+This closes out the AS3605/Palau IRR lead that's been tracked across four separate tranches now (FSM->Palau candidate three tranches ago -> AS17893 corroboration two tranches ago -> AS58932 confirmed last tranche -> AS133897 confirmed this tranche). No further flagged item remains open for this specific corridor.

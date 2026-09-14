@@ -260,4 +260,36 @@ CONFIRMED_LOCAL_TRANSIT: tuple[ConfirmedLocalTransit, ...] = (
             "of any ASN tested this session, and the obvious next check."
         ),
     ),
+    ConfirmedLocalTransit(
+        provider_cc="GU",
+        provider_asn=3605,
+        provider_name="Guam Cablevision, LLC",
+        customer_cc="PW",
+        customer_asn=133897,
+        customer_name="Palau Equipment Co. Inc.",
+        measurement_id=211193440,
+        vantage_point_cc="GU",
+        ris_observation_count=662,
+        note=(
+            "Completes the test of all three Palau ASNs named in AS3605's own "
+            "declared transit AS-SET (AS-KUENTOS-TRANSIT): AS17893 (confirmed "
+            "Tokyo/Cogent detour), AS58932 (confirmed direct transit, prior "
+            "entry), and now AS133897, flagged as the obvious next check "
+            "precisely because its RIS neighbor list has exactly one entry at "
+            "all -- AS3605, 662 observations, 100% of its total path "
+            "observations, the strongest single-neighbor signal of any ASN "
+            "tested this project. Sourced directly from AS3605's own connected "
+            "Atlas probes: confirmed exactly as the RIS signal predicted -- "
+            "both responding probes show AS3605 immediately adjacent to "
+            "AS133897, zero intermediate hops, no external hub, no IXP "
+            "crossing, and an exact RIS observation-count match (662). "
+            "With this, every ASN AS3605's own IRR declaration names for this "
+            "corridor has now been traceroute-tested from AS3605's own vantage "
+            "point, with a fully consistent picture: one customer (AS17893) "
+            "reached via global transit, two (AS58932, AS133897) reached "
+            "directly -- a real, mixed picture of how one Guam carrier actually "
+            "serves its declared Palau relationships, not assumed uniform from "
+            "the IRR declaration alone."
+        ),
+    ),
 )
