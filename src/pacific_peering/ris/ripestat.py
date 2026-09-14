@@ -117,6 +117,127 @@ def resolve_ip_to_asns(
     return []
 
 
+@dataclass(frozen=True)
+class RoutingVisibility:
+    """How visible an exact address is in global BGP, per RIS's own route collectors.
+
+    `network-info`/`resolve_ip_to_asns` answers "what ASN, if any" for an
+    address; this answers the sharper question "has BGP ever actually
+    carried a route for this, anywhere" — the two can disagree. An
+    address can belong to a real, WHOIS-allocated block (so it isn't a
+    bogon) while still never appearing in `ris_peers_seeing` at all,
+    because the allocation holder deliberately never announces that
+    specific sub-block (see `less_specifics` — empty means no covering
+    announcement exists either, not just the exact prefix). This is the
+    concrete, reusable version of the manual check that explained the
+    unresolved AS45345->AS3605 hops as real, unannounced Superloop
+    infrastructure space rather than an unknown intermediary AS.
+    """
+
+    ris_peers_seeing: int
+    total_ris_peers: int
+    less_specifics: tuple[str, ...]
+
+    @property
+    def ever_announced(self) -> bool:
+        """True if RIS has ever seen a BGP announcement covering this address at all."""
+        return self.ris_peers_seeing > 0 or bool(self.less_specifics)
+
+
+def fetch_routing_visibility(
+    ip: str, timeout: float = _DEFAULT_TIMEOUT, max_retries: int = 2
+) -> RoutingVisibility | None:
+    """Check whether `ip` has ever actually appeared in global BGP, via RIPEstat's `routing-status`.
+
+    Degrades to `None` on a network error after retrying, same policy as
+    `resolve_ip_to_asns` — a single flaky lookup must not take down a
+    larger analysis run.
+    """
+    for attempt in range(max_retries + 1):
+        try:
+            response = requests.get(
+                f"{RIPESTAT_BASE_URL}/routing-status/data.json",
+                params={"resource": ip},
+                timeout=timeout,
+            )
+            response.raise_for_status()
+            data = response.json()["data"]
+            visibility = data.get("visibility", {}).get("v4", {})
+            return RoutingVisibility(
+                ris_peers_seeing=visibility.get("ris_peers_seeing", 0),
+                total_ris_peers=visibility.get("total_ris_peers", 0),
+                less_specifics=tuple(data.get("less_specifics", [])),
+            )
+        except requests.exceptions.RequestException:
+            if attempt < max_retries:
+                logger.warning(
+                    "Network error fetching routing-status for %s, retrying (attempt %d/%d)",
+                    ip,
+                    attempt + 1,
+                    max_retries,
+                )
+                continue
+            logger.warning("RIPEstat routing-status for %s failed after retries", ip)
+            return None
+    return None
+
+
+@dataclass(frozen=True)
+class InetnumInfo:
+    """The WHOIS allocation record covering an address — who it really belongs to."""
+
+    inetnum: str | None
+    netname: str | None
+    descr: str | None
+    country: str | None
+    status: str | None
+
+
+def fetch_whois_inetnum(
+    ip: str, timeout: float = _DEFAULT_TIMEOUT, max_retries: int = 2
+) -> InetnumInfo | None:
+    """Look up the WHOIS allocation record covering `ip`, via RIPEstat's `whois` call.
+
+    The attribution method of last resort for a hop BGP can't explain at
+    all: even address space with zero BGP visibility is still someone's
+    real RIR allocation, and the `netname`/`descr` fields usually name
+    the actual holder plainly (e.g. `SUPERLOOP-AU`) — not proof of which
+    ASN originates traffic from it, but real corroborating context for a
+    human reading a "gap" in a traceroute.
+    """
+    for attempt in range(max_retries + 1):
+        try:
+            response = requests.get(
+                f"{RIPESTAT_BASE_URL}/whois/data.json",
+                params={"resource": ip},
+                timeout=timeout,
+            )
+            response.raise_for_status()
+            records = response.json()["data"].get("records", [])
+            if not records:
+                return None
+            fields = {kv["key"]: kv["value"] for kv in records[0] if kv.get("key")}
+            return InetnumInfo(
+                inetnum=fields.get("inetnum"),
+                netname=fields.get("netname"),
+                descr=fields.get("descr"),
+                country=fields.get("country"),
+                status=fields.get("status"),
+            )
+        except requests.exceptions.RequestException:
+            if attempt < max_retries:
+                logger.warning(
+                    "Network error fetching whois for %s, retrying (attempt %d/%d)",
+                    ip,
+                    attempt + 1,
+                    max_retries,
+                )
+                continue
+            logger.warning("RIPEstat whois for %s failed after retries", ip)
+            return None
+    return None
+
+
 def fetch_aspaths_for_asn(
     asn: int, af: str = "v4", max_prefixes: int | None = None
 ) -> list[BgpStateRecord]:

@@ -23,6 +23,7 @@ pacific-peering-atlas-inbound-smoketest = "pacific_peering.atlas.smoketest:main_
 pacific-peering-atlas-coverage = "pacific_peering.atlas.probes:main"
 pacific-peering-atlas-asn-probes = "pacific_peering.atlas.asn_probes:main"
 pacific-peering-triangulate = "pacific_peering.analysis.traceroute_topology:main"
+pacific-peering-investigate-hop = "pacific_peering.analysis.hop_investigation:main"
 pacific-peering-feasibility = "pacific_peering.analysis.feasibility:main"
 pacific-peering-ixp-lan-registry = "pacific_peering.analysis.ixp_lan_registry:main"
 pacific-peering-irr-leads = "pacific_peering.analysis.irr_leads:main"

@@ -662,3 +662,16 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   takeaway: a second, independent NC carrier also routes its
   Guam-directed traffic via Australia, reinforcing this project's
   broader NC routing pattern.
+- Turned the manual Superloop-style gap investigation into a reusable
+  helper. `ris/ripestat.py`: `fetch_routing_visibility` (RIS
+  BGP-visibility check) and `fetch_whois_inetnum` (allocation record).
+  `discovery/bgp_tools.py`: `is_prefix_routed_by_asn` (does a
+  suspected operator route this specific address?). New
+  `analysis/hop_investigation.py`: `investigate_unresolved_hop`
+  orchestrates all three, kept deliberately separate from the
+  automatic resolver (per the earlier decision not to add a
+  WHOIS-based resolver tier off one occurrence) -- a tool to reach for
+  deliberately, not a silent gap-to-confirmed upgrade. New entry point
+  `pacific-peering-investigate-hop`. Verified against both the real
+  Superloop case (matches the manual finding exactly) and a known-
+  routed address (correctly returns the opposite answer).

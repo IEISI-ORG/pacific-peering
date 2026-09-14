@@ -12,6 +12,7 @@ from .feasibility import (
     min_feasible_rtt_ms,
 )
 from .fishbowl import build_fishbowl
+from .hop_investigation import HopInvestigation, investigate_unresolved_hop
 from .ip_resolution_cache import IpResolutionCache
 from .irr_leads import (
     DEFAULT_IRR_LEADS_PATH,
@@ -49,6 +50,8 @@ __all__ = [
     "CONFIRMED_LOCAL_TRANSIT",
     "ConfirmedLocalTransit",
     "build_fishbowl",
+    "HopInvestigation",
+    "investigate_unresolved_hop",
     "fetch_ixp_membership_for_registry",
     "infer_neighbors",
     "normalize_path",

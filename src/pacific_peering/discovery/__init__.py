@@ -7,6 +7,7 @@ from .bgp_tools import (
     fetch_prefix_visibility,
     fetch_tag_list,
     fetch_tag_members,
+    is_prefix_routed_by_asn,
 )
 from .economies import ECONOMIES, ECONOMIES_BY_CC, Economy
 from .economy_coordinates import ECONOMY_LATLON, EXTERNAL_HUB_LATLON
@@ -34,6 +35,7 @@ __all__ = [
     "fetch_prefix_visibility",
     "fetch_tag_list",
     "fetch_tag_members",
+    "is_prefix_routed_by_asn",
     "fetch_delegated_stats",
     "parse_asn_allocations",
     "ECONOMIES",

@@ -38,6 +38,7 @@ to local files under `data/bgp_tools/` and only re-fetched once stale.
 
 from __future__ import annotations
 
+import ipaddress
 import json
 import logging
 import time
@@ -161,6 +162,33 @@ def fetch_prefix_visibility(
             if asn in wanted:
                 result[asn].append({"prefix": record["CIDR"], "hits": record["Hits"]})
     return result
+
+
+def is_prefix_routed_by_asn(
+    asn: int, address: str, cache_path: Path = DEFAULT_TABLE_CACHE, refresh: bool = False
+) -> bool | None:
+    """Check whether `asn`'s bgp.tools-routed prefix set actually covers `address`.
+
+    The concrete cross-check for a suspected-but-BGP-invisible attribution
+    (e.g. a WHOIS `netname` pointing at a carrier, for a hop RIS shows zero
+    visibility for): does that carrier route *any* prefix covering this
+    exact address? A `False` here is itself informative — it means the
+    suspected operator's allocation includes this space but deliberately
+    doesn't announce it (the concrete Superloop case: AS38195 routes
+    `103.200.14.0/24` and `103.200.15.0/24` but not the `.12`/`.13` /24s
+    a hop address fell inside).
+
+    Returns:
+        `True`/`False` if `asn` appears in bgp.tools' table at all;
+        `None` if `asn` originates nothing there (can't determine either
+        way, not the same as "not routed").
+    """
+    visibility = fetch_prefix_visibility([asn], cache_path=cache_path, refresh=refresh)
+    prefixes = visibility.get(asn, [])
+    if not prefixes:
+        return None
+    target = ipaddress.ip_address(address)
+    return any(target in ipaddress.ip_network(p["prefix"], strict=False) for p in prefixes)
 
 
 def fetch_tag_list(refresh: bool = False) -> dict[str, int]:
