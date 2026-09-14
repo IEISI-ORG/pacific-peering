@@ -1,15 +1,15 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-09-14T21:17:11.681706+00:00                  
+                 Generated: 2026-09-14T22:38:43.176546+00:00                  
 ==============================================================================
 
 SUMMARY
 ==============================================================================
 Economies in scope:            20
-ASNs in scope:                  164
-ASNs with >=1 RIS neighbor:     125
-ASNs with >=1 IXP membership:   39
-ASNs with >=1 facility presence:23
+ASNs in scope:                  163
+ASNs with >=1 RIS neighbor:     124
+ASNs with >=1 IXP membership:   38
+ASNs with >=1 facility presence:22
 IXP LAN registry: 10 in-fishbowl, 21 out-of-fishbowl, 0 unconfirmed
 
 CONFIRMED SUB-OPTIMAL ROUTES (RIS + Atlas both agree)
@@ -47,6 +47,9 @@ GU -> AS (AS9751): detours via AS174 (Cogent Communications), via AS2497 (IIJ, J
 GU -> WS (AS17993): detours via AS174 (Cogent Communications), via AS3356 (Level 3/Lumen) -- global transit, not a named exchange crossing (Sydney)
     RIS observation count: 1455  [measurement 211418048]
     Guam Cablevision (AS3605) -> Samoa (AS17993) -- pulled from the corridor backlog's top pick: a fresh GU<->WS economy pair. Measurement scheduled slowly again (a third occurrence of the same pattern already seen for AS9241 and AS9471 -- checked `participant_count` first, confirmed genuinely queued, resolved on a longer poll; treated as a now-recognized characteristic of AS3605's probes rather than re-investigated as a fresh anomaly). Both probes fully contiguous: AS3605 -> AS3356 (Level 3/Lumen) -> AS174 (Cogent Communications) -> AS17993. Upstream of the target is AS174, RIS-agreeing with an *exact* match (1,455) -- checked against AS17993's full neighbor list (`{174: 1455, 6939: 150, 64073: 10, ...}`): AS174 is overwhelmingly its dominant relationship. **A fourth AS3605-sourced measurement landing on Cogent as the target's real upstream** (after AS17893/Palau and AS9241/FINTEL Fiji via Tokyo/IIJ, and AS9751/American Samoa also via Tokyo/IIJ) -- this one via Level 3/Lumen instead, no Tokyo hop this time, but the same ultimate carrier. Cogent is clearly AS3605's real default path to reach multiple different Pacific island networks, via more than one specific intermediate route.
+GU -> MH (AS24439): detours via AS6453 (Tata Communications), via AS2497 (IIJ, Japan) -- global transit, not a named exchange crossing (Tokyo)
+    RIS observation count: 997  [measurement 211465536]
+    Guam Cablevision (AS3605) -> Marshall Islands NTA ISP (AS24439) -- pulled from the corridor backlog, immediately after excluding AS24013 (see task_plan.md: DNS.SB, a global anycast resolver opportunistically registered under a Solomon Islands country code, confirmed and excluded rather than tested as a corridor). Checked AS24439's own holder name directly before testing, given the session's established caution around Marshall-Islands-registered ASNs specifically (several already confirmed as offshore shell companies in `supplementary_asns.py`): "NTAMAR-AS-AP - MARSHALL ISLANDS NTA ISP AS" -- NTA is the Marshall Islands' actual National Telecommunications Authority, a real incumbent operator, not a shell; its target IP also resolves inside real APNIC space (103.202.149.0/24), unlike AS24013's RIPE-region anycast block. No anomaly here, proceeded normally. Both probes: AS3605 -> AS2497 (IIJ, Japan) -> AS6453 (Tata Communications) -- the target ASN itself never resolved (ordinary ICMP filtering near the destination, the established pattern for this situation), so RIS is checked against the last ASN the traceroute did reach, per this project's inbound-style validation method. RIS agrees with an *exact* match (997) -- checked directly against AS24439's full neighbor list: AS6453 is its *only* RIS-observed neighbor at all (997 of 997 total observations), a complete, exclusive relationship, not a partial one. Another instance of AS3605 reaching a Pacific destination via Tokyo and global Tier-1 transit rather than any regional path -- this session's fourth distinct Tier-1 carrier seen filling this exact role for AS3605 (Cogent, Telstra domestic+international, and now Tata).
 
 CONFIRMED LOCAL TRANSIT (RIS + Atlas both agree, stays in-fishbowl)
 ==============================================================================
@@ -105,7 +108,7 @@ NU   Niue                             Polynesia        1     1     0     0
 PF   French Polynesia                 Polynesia        6     5     1     1
 PG   Papua New Guinea                 Melanesia       39    29    10     3
 PW   Palau                            Micronesia       3     3     1     1
-SB   Solomon Islands                  Melanesia       11    10     2     1
+SB   Solomon Islands                  Melanesia       10     9     1     0
 TO   Tonga                            Polynesia        5     4     1     0
 TV   Tuvalu                           Polynesia        3     1     0     0
 VU   Vanuatu                          Melanesia       12    10     3     2
@@ -120,10 +123,10 @@ ABQIX                        Albuquerque      US   False              1
 Any2West                     Los Angeles and  US   False              4
 BBIX Tokyo                   Tokyo            JP   False              4
 CAN'L IX                     NOUMEA           NC   True               5
-DE-CIX Dusseldorf            Düsseldorf       DE   False              1
-DE-CIX Frankfurt             Frankfurt        DE   False              1
-DE-CIX Hamburg               Hamburg          DE   False              1
-DE-CIX Munich                Munich           DE   False              1
+DE-CIX Dusseldorf            Düsseldorf       DE   False              0
+DE-CIX Frankfurt             Frankfurt        DE   False              0
+DE-CIX Hamburg               Hamburg          DE   False              0
+DE-CIX Munich                Munich           DE   False              0
 DRF IX                       Honolulu         US   False              2
 EdgeIX - Auckland            Auckland         NZ   False              1
 Equinix Los Angeles          Los Angeles      US   False              1
@@ -137,10 +140,10 @@ Guam IX                      Tamuning         GU   True               5
 IX Australia Sydney (NSW-IX) Sydney           AU   False              1
 JPIX TOKYO                   Tokyo            JP   False              1
 JPNAP Tokyo                  Tokyo            JP   False              1
-LOCIX DUSSELDORF             Dusseldorf       DE   False              1
-LOCIX FRANKFURT              Frankfurt am Mai DE   False              1
+LOCIX DUSSELDORF             Dusseldorf       DE   False              0
+LOCIX FRANKFURT              Frankfurt am Mai DE   False              0
 MARIIX                       Mangilao         GU   True               5
-MegaIX Dusseldorf            Dusseldorf       DE   False              1
+MegaIX Dusseldorf            Dusseldorf       DE   False              0
 MegaIX Sydney                Sydney           AU   False              6
 PNG Neutral IX Hagen         Mt Hagen         PG   True               1
 PNG Neutral IX Lae           Lae              PG   True               2

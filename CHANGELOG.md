@@ -772,3 +772,21 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   Guam's traffic. Second distinct case of a regional hub within the
   fishbowl this session. Not a new entry -- corroboration note added;
   marked tested; backlog regenerated (1265 -> 1263).
+- Eighth hourly firing: the flagged AS24013 anomaly arrived.
+  Investigated before firing anything -- target IP resolved to RIPE-
+  region space, WHOIS confirmed AS24013 is DNS.SB (a global anycast
+  DNS resolver), not a Solomon Islands ISP, matching the Germany-only-
+  IXP anomaly flagged in Phase 1a and the same pattern as 8 already-
+  excluded Marshall Islands shell ASNs. Consulted the project owner
+  rather than resolving alone; decision: exclude from the registry.
+  New `discovery/excluded_asns.py` (symmetric counterpart to
+  `supplementary_asns.py`), wired into `registry.build_registry()`.
+  Rebuilt the registry (164 -> 163 ASNs) and fishbowl.json live,
+  confirmed AS24013 gone from both, regenerated the corridor backlog
+  (1263 -> 1248). Then completed the actual corridor test: AS3605 ->
+  AS24439 (Marshall Islands NTA, verified as the real incumbent
+  operator, not a shell, before testing). Result: RIS-confirmed via
+  the last-resolved-ASN method, exact match (997) via AS6453 (Tata
+  Communications) -- AS24439's only RIS neighbor at all. Added as a
+  new ConfirmedDetour entry; marked tested; backlog regenerated
+  (1248 -> 1242).

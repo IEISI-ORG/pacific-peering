@@ -25,6 +25,7 @@ from .peeringdb import (
 )
 from .registry import build_registry
 from .secrets import load_peeringdb_api_key
+from .excluded_asns import EXCLUDED_ASNS, ExcludedAsn
 from .supplementary_asns import SUPPLEMENTARY_ASNS, SupplementaryAsn
 from .supplementary_ixps import SUPPLEMENTARY_IXPS, SupplementaryIxp
 
@@ -55,6 +56,8 @@ __all__ = [
     "resolve_as_set",
     "build_registry",
     "load_peeringdb_api_key",
+    "EXCLUDED_ASNS",
+    "ExcludedAsn",
     "SUPPLEMENTARY_ASNS",
     "SupplementaryAsn",
     "SUPPLEMENTARY_IXPS",

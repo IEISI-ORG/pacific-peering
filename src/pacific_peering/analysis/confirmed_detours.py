@@ -385,4 +385,44 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
             "specific intermediate route."
         ),
     ),
+    ConfirmedDetour(
+        source_cc="GU",
+        target_cc="MH",
+        target_asn=24439,
+        detour_ix_name="AS6453 (Tata Communications), via AS2497 (IIJ, Japan) -- global "
+        "transit, not a named exchange crossing",
+        detour_hub="Tokyo",
+        measurement_id=211465536,
+        ris_observation_count=997,
+        note=(
+            "Guam Cablevision (AS3605) -> Marshall Islands NTA ISP (AS24439) -- "
+            "pulled from the corridor backlog, immediately after excluding "
+            "AS24013 (see task_plan.md: DNS.SB, a global anycast resolver "
+            "opportunistically registered under a Solomon Islands country code, "
+            "confirmed and excluded rather than tested as a corridor). Checked "
+            "AS24439's own holder name directly before testing, given the "
+            "session's established caution around Marshall-Islands-registered "
+            "ASNs specifically (several already confirmed as offshore shell "
+            "companies in `supplementary_asns.py`): \"NTAMAR-AS-AP - MARSHALL "
+            "ISLANDS NTA ISP AS\" -- NTA is the Marshall Islands' actual "
+            "National Telecommunications Authority, a real incumbent operator, "
+            "not a shell; its target IP also resolves inside real APNIC space "
+            "(103.202.149.0/24), unlike AS24013's RIPE-region anycast block. No "
+            "anomaly here, proceeded normally. "
+            "Both probes: AS3605 -> AS2497 (IIJ, Japan) -> AS6453 (Tata "
+            "Communications) -- the target ASN itself never resolved (ordinary "
+            "ICMP filtering near the destination, the established pattern for "
+            "this situation), so RIS is checked against the last ASN the "
+            "traceroute did reach, per this project's inbound-style validation "
+            "method. RIS agrees with an *exact* match (997) -- checked directly "
+            "against AS24439's full neighbor list: AS6453 is its *only* "
+            "RIS-observed neighbor at all (997 of 997 total observations), a "
+            "complete, exclusive relationship, not a partial one. Another "
+            "instance of AS3605 reaching a Pacific destination via Tokyo and "
+            "global Tier-1 transit rather than any regional path -- this "
+            "session's fourth distinct Tier-1 carrier seen filling this exact "
+            "role for AS3605 (Cogent, Telstra domestic+international, and now "
+            "Tata)."
+        ),
+    ),
 )

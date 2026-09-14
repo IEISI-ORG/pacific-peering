@@ -13,6 +13,12 @@ against all 20 economies) that this gap is real, not just theoretical,
 though narrow: of 11 candidate ASNs the audit surfaced, only one held
 up under direct verification (see that module for the other 10, and
 why they were confirmed *not* real Pacific presence rather than added).
+
+Symmetrically, it removes `discovery.excluded_asns.EXCLUDED_ASNS` —
+ASNs APNIC *does* delegate to an in-scope economy but that this
+project has individually verified aren't real Pacific networks (e.g.
+AS24013/DNS.SB, a global anycast DNS resolver opportunistically
+registered under a Solomon Islands country code).
 """
 
 from __future__ import annotations
@@ -24,6 +30,7 @@ from typing import TypedDict
 
 from pacific_peering.discovery.apnic_stats import fetch_delegated_stats, parse_asn_allocations
 from pacific_peering.discovery.economies import ECONOMIES
+from pacific_peering.discovery.excluded_asns import EXCLUDED_ASNS
 from pacific_peering.discovery.supplementary_asns import SUPPLEMENTARY_ASNS
 
 logger = logging.getLogger(__name__)
@@ -61,6 +68,9 @@ def build_registry(output_path: Path = DEFAULT_OUTPUT_PATH) -> dict[str, Economy
     for supplementary in SUPPLEMENTARY_ASNS:
         if supplementary.asn not in registry[supplementary.country_cc]["asns"]:
             registry[supplementary.country_cc]["asns"].append(supplementary.asn)
+    for excluded in EXCLUDED_ASNS:
+        if excluded.asn in registry[excluded.country_cc]["asns"]:
+            registry[excluded.country_cc]["asns"].remove(excluded.asn)
     for entry in registry.values():
         entry["asns"].sort()
 
