@@ -765,3 +765,10 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   land on Cogent as the real upstream, via a different intermediate
   route. Added as a new ConfirmedDetour entry; marked tested; backlog
   regenerated (1283 -> 1265).
+- Seventh hourly firing: sourced AS3605 toward AS23917 (Tuvalu) -- a
+  fresh GU<->TV pair. Landed on the already-confirmed AS9241<->AS23917
+  (FINTEL<->Tuvalu) adjacency, same shape as last hour's ONATI
+  corroboration -- FINTEL, an in-fishbowl Fiji carrier, transiting
+  Guam's traffic. Second distinct case of a regional hub within the
+  fishbowl this session. Not a new entry -- corroboration note added;
+  marked tested; backlog regenerated (1265 -> 1263).

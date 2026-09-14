@@ -229,7 +229,22 @@ CONFIRMED_LOCAL_TRANSIT: tuple[ConfirmedLocalTransit, ...] = (
             "total observations -- clearly the dominant relationship, not noise). "
             "Verified the fix causes no regressions: re-ran all 20 measurements "
             "this project has ever fired under the fixed logic, and every "
-            "previously-confirmed count stayed exactly the same."
+            "previously-confirmed count stayed exactly the same. "
+            "**Second independent-source corroboration, from the corridor "
+            "backlog** (measurement 211437747, GU/AS3605 -> TV/AS23917, pulled "
+            "as a fresh GU<->TV economy pair, not aimed at this relationship "
+            "deliberately): both probes reach Tuvalu via AS3605 -> AS3356 "
+            "(Level 3/Lumen) -> **AS9241** -> AS23917 -- landing on this exact "
+            "adjacency again, exact RIS match (1,009). Same shape as the "
+            "AS9471/ONATI<->Cook-Islands corroboration the tranche before this "
+            "one: FINTEL (AS9241), an in-scope, in-fishbowl Fiji carrier, "
+            "acting as a real transit waypoint for a *different* economy's "
+            "(Guam's) traffic, not just its own. **This is now the second "
+            "distinct case of an in-fishbowl Pacific carrier transiting "
+            "another economy's traffic this session** (ONATI/French Polynesia "
+            "for Guam->Cook-Islands, FINTEL/Fiji for Guam->Tuvalu) -- a real, "
+            "recurring pattern of regional hub structure within the fishbowl "
+            "itself, not a one-off."
         ),
     ),
     ConfirmedLocalTransit(
