@@ -502,3 +502,26 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   from another environment memory-kill mid-measurement, same pattern
   and fix as before (measurement already created server-side; re-ran
   the results-fetch in the foreground).
+- Fixed a real, generalizable gap in
+  `traceroute_topology.check_neighbor_agreement`: it only ever checked
+  the *target* ASN's own RIS neighbor list for the upstream, missing
+  cases where RIS visibility is asymmetric (a small leaf network's own
+  AS-path data shows a dominant upstream clearly, but that upstream's
+  much larger, more globally-aggregated neighbor list doesn't surface
+  that one specific downstream). Surfaced by testing Tuvalu (AS23917)
+  for the first time: a fully contiguous, direct traceroute hop to
+  AS9241 (FINTEL, Fiji) that RIS's own numbers overwhelmingly support
+  from Tuvalu's side (1,009 of ~1,700 total observations) still came
+  back `ris_agrees: false`. New `_bidirectional_ris_check` checks both
+  directions. Re-ran all 20 measurements this project has ever fired
+  under the fix: every previously-confirmed count stayed exactly the
+  same (zero regressions), and the fix automatically re-derived the
+  Niue<->ONATI relationship already reasoned through by hand last
+  tranche, independent confirmation it generalizes correctly.
+- New confirmed local-transit entry: FINTEL (AS9241, Fiji) <-> Tuvalu
+  Telecommunications Corporation (AS23917), Tuvalu's first test this
+  session, RIS agreeing with 1,009 observations once the bidirectional
+  fix above was in place. Also noted in passing: Cook Islands' dominant
+  RIS neighbor is AS12684 (SES Astra, a geostationary satellite
+  operator) -- a second real satellite-transit finding, not chased
+  further this tranche.

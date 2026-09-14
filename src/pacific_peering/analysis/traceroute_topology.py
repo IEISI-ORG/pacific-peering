@@ -192,10 +192,46 @@ def extract_as_sequence(resolved_hops: list[HopResolution]) -> list[AsHop]:
     return sequence
 
 
+def _bidirectional_ris_check(fishbowl: dict, asn_a: int, asn_b: int) -> tuple[bool, int | None]:
+    """Check whether RIS shows `asn_a`<->`asn_b` as neighbors, from *either* side.
+
+    RIS visibility between two ASNs isn't always symmetric — a smaller
+    "leaf" network's own AS-path data can show a dominant upstream
+    clearly, while that upstream's own neighbor list (aggregated across
+    many more customers, seen from more global vantage points) doesn't
+    surface that one specific downstream. Confirmed concretely, not just
+    theoretically: Tuvalu's AS23917 lists AS9241 (FINTEL, Fiji) as its
+    dominant neighbor (1,009 of its only ~1,700 total observations), but
+    FINTEL's own neighbor list doesn't mention AS23917 at all. Checking
+    only the target-ASN side (the original, one-directional design) would
+    silently miss real, well-supported adjacencies like this one.
+
+    Returns:
+        `(agrees, observation_count)` — `agrees` is True if either side's
+        neighbor list contains the other; `observation_count` is that
+        side's count (preferring whichever side actually has the
+        entry; if both do, the target side's, kept as the primary
+        figure other code already treats it as).
+    """
+    count_from_b = fishbowl.get(str(asn_b), {}).get("neighbors", {}).get(str(asn_a))
+    if count_from_b is not None:
+        return True, count_from_b
+    count_from_a = fishbowl.get(str(asn_a), {}).get("neighbors", {}).get(str(asn_b))
+    if count_from_a is not None:
+        return True, count_from_a
+    return False, None
+
+
 def check_neighbor_agreement(
     as_sequence: list[AsHop], target_asn: int, fishbowl_path: Path = DEFAULT_SUMMARY_PATH
 ) -> dict:
     """Check whether the traceroute-observed upstream of `target_asn` is a RIS neighbor too.
+
+    Checks both directions (does the target's own neighbor list show the
+    upstream, *or* does the upstream's own neighbor list show the
+    target) — RIS visibility between two ASNs isn't always symmetric,
+    and checking only one side can silently miss a real, well-supported
+    adjacency (see `_bidirectional_ris_check`).
 
     Args:
         as_sequence: Resolved AS-level path from `extract_as_sequence`.
@@ -206,10 +242,10 @@ def check_neighbor_agreement(
         A dict recording the traceroute-observed upstream ASN (if any),
         whether it was a *contiguous* hop (no unresolved gap in between —
         see `extract_as_sequence`) or just the nearest resolved ASN across
-        a gap, and whether RIS independently observed it as a neighbor.
+        a gap, and whether RIS independently observed it as a neighbor
+        (from either direction).
     """
     fishbowl = json.loads(fishbowl_path.read_text())
-    ris_neighbors = fishbowl.get(str(target_asn), {}).get("neighbors", {})
     asns = [entry.asn for entry in as_sequence]
 
     if target_asn not in asns:
@@ -226,12 +262,12 @@ def check_neighbor_agreement(
                 "note": "no traceroute hops resolved to any ASN",
             }
         last = as_sequence[-1]
-        ris_count = ris_neighbors.get(str(last.asn))
+        agrees, ris_count = _bidirectional_ris_check(fishbowl, last.asn, target_asn)
         return {
             "traceroute_upstream_asn": last.asn,
             "contiguous": last.contiguous_with_previous,
             "resolution_source": last.resolution_source,
-            "ris_agrees": ris_count is not None,
+            "ris_agrees": agrees,
             "ris_observation_count": ris_count,
             "note": (
                 "target ASN never resolved (likely ICMP filtering near destination); "
@@ -249,12 +285,12 @@ def check_neighbor_agreement(
 
     target_entry = as_sequence[target_index]
     upstream = as_sequence[target_index - 1]
-    ris_count = ris_neighbors.get(str(upstream.asn))
+    agrees, ris_count = _bidirectional_ris_check(fishbowl, upstream.asn, target_asn)
     result = {
         "traceroute_upstream_asn": upstream.asn,
         "contiguous": target_entry.contiguous_with_previous,
         "resolution_source": upstream.resolution_source,
-        "ris_agrees": ris_count is not None,
+        "ris_agrees": agrees,
         "ris_observation_count": ris_count,
     }
     if not target_entry.contiguous_with_previous:

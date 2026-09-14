@@ -136,6 +136,18 @@ or does it detour through Australia, the US, or elsewhere?
 <!-- SPEAKER NOTE: this is a good-news slide - don't let it get lost after
      the detour findings -->
 
+## Finding: AS9241 (FINTEL (Fiji International Telecommunications Ltd)) -> AS23917 (Tuvalu Telecommunications Corporation)
+
+- Tuvalu tested for the first time this session, via the ASN probe registry. AS23917 has only two RIS-observed neighbors at all -- AS9241/FINTEL (1,009 observations, dominant) and AS14593/SpaceX Starlink (714) -- so this was the obvious first test. Sourced directly from Tuvalu's own probe toward FINTEL: fully contiguous, a direct single AS-level hop, no gap. This is also what motivated a real fix to `check_neighbor_agreement`: the original check only looked at the *target*'s (FINTEL's) own RIS neighbor list, which doesn't mention AS23917 at all -- RIS visibility between a small leaf network and a much larger regional carrier isn't always symmetric. Fixed to check both directions; Tuvalu's own list settles it unambiguously (1,009 of its only ~1,700 total observations -- clearly the dominant relationship, not noise). Verified the fix causes no regressions: re-ran all 20 measurements this project has ever fired under the fixed logic, and every previously-confirmed count stayed exactly the same.
+- RIS-observed neighbor count: **1009**
+- Confirmed by live Atlas traceroute (measurement `211111376`,
+  vantage point: TV)
+- Unlike the detour findings above, this stays entirely in-region —
+  not everything routes out via Sydney
+
+<!-- SPEAKER NOTE: this is a good-news slide - don't let it get lost after
+     the detour findings -->
+
 ---
 
 ## Candidate: AS139759 (an FSM ASN (no PeeringDB org name on record)) -> AS17893 (Palau National Communications Corp)
