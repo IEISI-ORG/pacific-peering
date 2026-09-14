@@ -648,3 +648,17 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   clean, zero-hop result across all 3 probes, exact RIS match -- the
   first-ever traceroute confirmation involving Northern Mariana
   Islands. Added as a new ConfirmedLocalTransit entry.
+- Sourced AS45345 (Nautile, an independent New Caledonia ISP, not the
+  already-tested incumbent) toward AS3605 (Guam Cablevision) -- a
+  previously-untested NC<->GU economy pair. Real signal found (crosses
+  Any2West via Superloop/Australia) but RIS disagrees on the specific
+  upstream adjacency, so not filed as ConfirmedDetour or
+  CandidatePeering -- recorded in full prose in task_plan.md instead,
+  matching this project's established restraint for partial-evidence
+  chains. Investigated the reported traceroute gap directly: two
+  unresolved hops belong to Superloop's own unannounced address space
+  (WHOIS-attributable, not RFC1918) -- a real but distinct resolver
+  edge case, flagged (not code-fixed) for a future tranche. Durable
+  takeaway: a second, independent NC carrier also routes its
+  Guam-directed traffic via Australia, reinforcing this project's
+  broader NC routing pattern.
