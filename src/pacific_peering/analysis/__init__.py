@@ -3,6 +3,13 @@
 from .candidate_peering import CANDIDATE_PEERING, CandidatePeering
 from .confirmed_detours import CONFIRMED_DETOURS, ConfirmedDetour
 from .confirmed_local_transit import CONFIRMED_LOCAL_TRANSIT, ConfirmedLocalTransit
+from .corridor_backlog import (
+    CorridorCandidate,
+    build_corridor_backlog,
+    enumerate_candidate_corridors,
+    mark_corridor_tested,
+    pick_next_corridor,
+)
 from .feasibility import (
     REFERENCE_POINTS_LATLON,
     analyze_measurement_feasibility,
@@ -49,6 +56,11 @@ __all__ = [
     "ConfirmedDetour",
     "CONFIRMED_LOCAL_TRANSIT",
     "ConfirmedLocalTransit",
+    "CorridorCandidate",
+    "build_corridor_backlog",
+    "enumerate_candidate_corridors",
+    "mark_corridor_tested",
+    "pick_next_corridor",
     "build_fishbowl",
     "HopInvestigation",
     "investigate_unresolved_hop",

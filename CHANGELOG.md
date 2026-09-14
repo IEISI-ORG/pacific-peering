@@ -699,3 +699,13 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   Telstra's domestic and international ASNs back-to-back (no IXP
   crossing this time, plain Tier-1 transit). Added as a new
   ConfirmedDetour entry.
+- Replaced ad-hoc "find the next unknown corridor" reasoning with a
+  systematic, maintained backlog. New `analysis/corridor_backlog.py`:
+  `tested_pairs.json` (authoritative dedup record, any outcome) +
+  `corridor_backlog_snapshot.json` (diffed each run to flag genuinely
+  new probes/RIS relationships), both gitignored generated state; new
+  committed `corridor_backlog.md` (top 100 by priority). Backfilled 17
+  known ASN pairs from this session's history. Wired an 8-hourly cron
+  job to regenerate the backlog and a replaced hourly job to pull from
+  it and mark pairs tested -- the concrete form of the project owner's
+  "keep track of new probes and RIS changes" standing order.

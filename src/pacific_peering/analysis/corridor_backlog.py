@@ -1,0 +1,431 @@
+"""Systematic corridor backlog: a maintained todo list, not a fresh judgment call each tranche.
+
+Per the project owner's explicit ask: generate a todo list of untested
+corridors, work one item per `/loop` firing, refresh the list periodically
+(every ~8 hours, via a separate `CronCreate` job), and treat new Atlas
+probes / new RIS-observed neighbor relationships as a standing signal for
+what to test next -- rather than re-deriving the candidate space from
+memory each hourly tranche, which is how every prior tranche this session
+actually worked (and which doesn't scale as the project's own history
+grows).
+
+Two persisted pieces of state, both under `data/analysis/` (generated,
+gitignored -- same convention as the rest of this project's derived data):
+- `tested_pairs.json`: every `(source_asn, target_asn)` this project has
+  ever deliberately fired a traceroute between, *any* outcome. The
+  authoritative "don't re-test this" record. Needed because the finding
+  dataclasses alone don't capture inconclusive/candidate results, and
+  `ConfirmedDetour` doesn't even store a source ASN (only `source_cc`) --
+  see task_plan.md's NC->GU Superloop case, which is real, logged, and
+  genuinely untested-again-worthy of exclusion despite not living in any
+  dataclass.
+- `corridor_backlog_snapshot.json`: the probe registry + RIS neighbor sets
+  as of the last backlog regeneration, diffed against the current state
+  each time `build_corridor_backlog()` runs, to surface what's *new* since
+  last time (a probe that just came online, a RIS relationship that just
+  appeared) as high-priority candidates rather than treating the whole
+  164-ASN space as equally fresh forever.
+
+One committed, human-readable artifact: `corridor_backlog.md` at the repo
+root, alongside `task_plan.md`/`CHANGELOG.md` -- regenerated, not hand-
+edited, but git-tracked so its history is visible the same way the rest
+of this project's durable record is.
+"""
+
+from __future__ import annotations
+
+import json
+import logging
+from dataclasses import dataclass
+from datetime import datetime, timezone
+from pathlib import Path
+
+from pacific_peering.analysis.candidate_peering import CANDIDATE_PEERING
+from pacific_peering.analysis.confirmed_detours import CONFIRMED_DETOURS
+from pacific_peering.analysis.confirmed_local_transit import CONFIRMED_LOCAL_TRANSIT
+from pacific_peering.analysis.fishbowl import DEFAULT_SUMMARY_PATH
+from pacific_peering.atlas.asn_probes import DEFAULT_REGISTRY_PATH, load_asn_probe_registry
+
+logger = logging.getLogger(__name__)
+
+DEFAULT_TESTED_PAIRS_PATH = Path("data/analysis/tested_pairs.json")
+DEFAULT_SNAPSHOT_PATH = Path("data/analysis/corridor_backlog_snapshot.json")
+DEFAULT_BACKLOG_MD_PATH = Path("corridor_backlog.md")
+
+# ASNs that show up in the probe registry or fishbowl neighbor data but
+# aren't real Pacific-region candidates -- external carriers/proxies
+# incidentally surfaced by country-based probe selection or transit paths.
+# Excluded as both source and target. Extend this as more turn up (matches
+# the exclusions already applied by hand across many tranches this
+# session -- see task_plan.md).
+EXTERNAL_NON_CANDIDATE_ASNS = frozenset(
+    {
+        2200,  # Renater (France)
+        14593,  # SpaceX Starlink
+        53813,  # Zscaler (proxy artifact)
+    }
+)
+
+# Economy pairs already known to have a real result on record from before
+# this backlog system existed, but only in task_plan.md prose (not
+# recoverable from any dataclass) -- a one-time seed so the backlog
+# doesn't immediately propose re-testing something already covered.
+# Every pair tested *after* this system's introduction gets recorded via
+# `mark_corridor_tested` instead; this list should never need to grow.
+SEED_TESTED_ECONOMY_PAIRS: frozenset[tuple[str, str]] = frozenset(
+    {
+        tuple(sorted(pair))  # type: ignore[misc]
+        for pair in [
+            ("GU", "PG"),
+            ("NC", "FJ"),
+            ("GU", "PW"),
+            ("FJ", "VU"),
+            ("PF", "NU"),
+            ("FJ", "TV"),
+            ("PF", "CK"),
+            ("MP", "GU"),
+            ("FM", "PW"),
+            ("NC", "GU"),  # Superloop case: real signal, not RIS-confirmed
+            ("NC", "VU"),
+            ("PG", "VU"),
+            ("FM", "KI"),  # Starlink transit chain, real color, inconclusive
+            ("VU", "FM"),  # AS9249->AS38875 reverse test, inconclusive
+        ]
+    }
+)
+
+
+@dataclass(frozen=True)
+class CorridorCandidate:
+    """One untested (source ASN, target ASN) pair worth firing a traceroute at."""
+
+    source_asn: int
+    source_cc: str
+    source_name: str
+    target_asn: int
+    target_cc: str
+    target_name: str
+    rationale: str
+    is_new_probe: bool = False
+    is_new_ris_relationship: bool = False
+
+
+def _load_tested_pairs(path: Path = DEFAULT_TESTED_PAIRS_PATH) -> set[tuple[int, int]]:
+    if not path.exists():
+        return set()
+    data = json.loads(path.read_text())
+    return {tuple(pair) for pair in data.get("pairs", [])}  # type: ignore[misc]
+
+
+def _save_tested_pairs(pairs: set[tuple[int, int]], path: Path = DEFAULT_TESTED_PAIRS_PATH) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps({"pairs": sorted(list(p) for p in pairs)}, indent=2) + "\n")
+
+
+def mark_corridor_tested(
+    source_asn: int, target_asn: int, path: Path = DEFAULT_TESTED_PAIRS_PATH
+) -> None:
+    """Record that this ASN pair has been deliberately traceroute-tested, any outcome.
+
+    Call this from every tranche that fires a measurement, regardless of
+    whether it ends up confirmed, candidate, or just real-signal-but-
+    inconclusive -- this is the record that keeps the backlog from
+    proposing the same pair twice, which the finding dataclasses alone
+    can't do (they only record successes, and `ConfirmedDetour` doesn't
+    even store a source ASN).
+    """
+    pairs = _load_tested_pairs(path)
+    pairs.add((source_asn, target_asn))
+    _save_tested_pairs(pairs, path)
+
+
+def _tested_pairs_from_findings() -> set[tuple[int, int]]:
+    """Exact ASN pairs recoverable from the two dataclasses that store both ends."""
+    pairs: set[tuple[int, int]] = set()
+    for entry in CONFIRMED_LOCAL_TRANSIT:
+        pairs.add((entry.provider_asn, entry.customer_asn))
+    for entry in CANDIDATE_PEERING:
+        pairs.add((entry.upstream_asn, entry.target_asn))
+    return pairs
+
+
+def _tested_economy_pairs_from_findings() -> set[tuple[str, str]]:
+    """Economy-level pairs, including from `ConfirmedDetour`, which only stores `source_cc`."""
+    pairs: set[tuple[str, str]] = set(SEED_TESTED_ECONOMY_PAIRS)
+    for entry in CONFIRMED_DETOURS:
+        pairs.add(tuple(sorted((entry.source_cc, entry.target_cc))))  # type: ignore[misc]
+    for entry in CONFIRMED_LOCAL_TRANSIT:
+        pairs.add(tuple(sorted((entry.provider_cc, entry.customer_cc))))  # type: ignore[misc]
+    for entry in CANDIDATE_PEERING:
+        pairs.add(tuple(sorted((entry.upstream_cc, entry.target_cc))))  # type: ignore[misc]
+    return pairs
+
+
+def _load_snapshot(path: Path = DEFAULT_SNAPSHOT_PATH) -> dict:
+    if not path.exists():
+        return {"probe_asns": [], "fishbowl_neighbors": {}}
+    return json.loads(path.read_text())
+
+
+def _save_snapshot(
+    probe_registry: dict[int, list[int]], fishbowl: dict, path: Path = DEFAULT_SNAPSHOT_PATH
+) -> None:
+    neighbors = {asn: sorted(e.get("neighbors", {}).keys()) for asn, e in fishbowl.items()}
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(
+        json.dumps(
+            {
+                "probe_asns": sorted(int(a) for a in probe_registry),
+                "fishbowl_neighbors": neighbors,
+                "saved_at": datetime.now(timezone.utc).isoformat(),
+            },
+            indent=2,
+        )
+        + "\n"
+    )
+
+
+def detect_new_probes(previous: dict, current_registry: dict[int, list[int]]) -> set[int]:
+    """ASNs that gained their first connected probe since the last snapshot."""
+    prev_asns = set(previous.get("probe_asns", []))
+    curr_asns = {int(a) for a in current_registry}
+    return curr_asns - prev_asns
+
+
+def detect_new_ris_neighbors(previous: dict, current_fishbowl: dict) -> set[tuple[int, int]]:
+    """`(asn, neighbor_asn)` pairs that appeared in RIS data since the last snapshot."""
+    new_pairs: set[tuple[int, int]] = set()
+    prev_neighbors = previous.get("fishbowl_neighbors", {})
+    for asn_str, entry in current_fishbowl.items():
+        prev_set = {int(n) for n in prev_neighbors.get(asn_str, [])}
+        curr_set = {int(n) for n in entry.get("neighbors", {})}
+        for neighbor in curr_set - prev_set:
+            new_pairs.add((int(asn_str), neighbor))
+    return new_pairs
+
+
+def enumerate_candidate_corridors(
+    probe_registry_path: Path = DEFAULT_REGISTRY_PATH,
+    fishbowl_path: Path = DEFAULT_SUMMARY_PATH,
+    tested_pairs_path: Path = DEFAULT_TESTED_PAIRS_PATH,
+    snapshot_path: Path = DEFAULT_SNAPSHOT_PATH,
+) -> list[CorridorCandidate]:
+    """Build the ranked list of untested, cross-economy (source ASN, target ASN) pairs.
+
+    Scope, deliberately: sources are every ASN with a connected Atlas
+    probe (the only kind this project can actually traceroute from);
+    targets are every in-scope ASN with cached RIS prefix data (anything
+    in `fishbowl.json`, which mirrors the same RIS fetch `pick_target_ip`
+    relies on). Only cross-economy pairs are proposed -- domestic pairs
+    are a different, already-well-covered category this session (GU-GU,
+    KI intra, etc.), and the project owner's framing ("unknown corridor")
+    has consistently meant cross-economy in practice.
+
+    Excludes: external/proxy ASNs (`EXTERNAL_NON_CANDIDATE_ASNS`), any
+    exact ASN pair already tested (`tested_pairs.json` + the two
+    dataclasses that store both ends), and any economy pair already
+    covered by *any* finding or seeded prior result -- matching how this
+    project has actually reasoned about "next unknown corridor" all
+    session (move to a new economy pair once one is well-established,
+    rather than exhaustively testing every ASN combination within it).
+    """
+    probe_registry = load_asn_probe_registry(probe_registry_path)
+    fishbowl = json.loads(fishbowl_path.read_text())
+    tested_pairs = _load_tested_pairs(tested_pairs_path) | _tested_pairs_from_findings()
+    tested_economy_pairs = _tested_economy_pairs_from_findings()
+    snapshot = _load_snapshot(snapshot_path)
+    new_probe_asns = detect_new_probes(snapshot, probe_registry)
+    new_ris_pairs = detect_new_ris_neighbors(snapshot, fishbowl)
+
+    asn_cc: dict[int, str] = {}
+    asn_name: dict[int, str] = {}
+    for asn_str, entry in fishbowl.items():
+        asn = int(asn_str)
+        economy = entry.get("economy", {})
+        asn_cc[asn] = economy.get("cc", "??")
+        asn_name[asn] = economy.get("name", "??")
+
+    source_asns = sorted(
+        a for a in (int(x) for x in probe_registry) if a not in EXTERNAL_NON_CANDIDATE_ASNS
+    )
+    target_asns = sorted(
+        a
+        for a, entry in ((int(k), v) for k, v in fishbowl.items())
+        if a not in EXTERNAL_NON_CANDIDATE_ASNS and entry.get("num_distinct_prefixes", 0) > 0
+    )
+
+    candidates: list[CorridorCandidate] = []
+    for source_asn in source_asns:
+        source_cc = asn_cc.get(source_asn)
+        if source_cc is None:
+            continue
+        for target_asn in target_asns:
+            if source_asn == target_asn:
+                continue
+            target_cc = asn_cc.get(target_asn)
+            if target_cc is None or target_cc == source_cc:
+                continue
+            pair = (source_asn, target_asn)
+            reverse_pair = (target_asn, source_asn)
+            if pair in tested_pairs or reverse_pair in tested_pairs:
+                continue
+            economy_pair = tuple(sorted((source_cc, target_cc)))
+            if economy_pair in tested_economy_pairs:
+                continue
+            is_new_probe = source_asn in new_probe_asns
+            is_new_ris = pair in new_ris_pairs or reverse_pair in new_ris_pairs
+            if is_new_probe:
+                rationale = "source ASN just gained a connected probe since last regeneration"
+            elif is_new_ris:
+                rationale = "RIS just started observing this exact adjacency since last regeneration"
+            else:
+                rationale = "untested cross-economy pair, source has a connected probe"
+            candidates.append(
+                CorridorCandidate(
+                    source_asn=source_asn,
+                    source_cc=source_cc,
+                    source_name=asn_name.get(source_asn, "?"),
+                    target_asn=target_asn,
+                    target_cc=target_cc,
+                    target_name=asn_name.get(target_asn, "?"),
+                    rationale=rationale,
+                    is_new_probe=is_new_probe,
+                    is_new_ris_relationship=is_new_ris,
+                )
+            )
+
+    candidates.sort(
+        key=lambda c: (
+            not c.is_new_probe,
+            not c.is_new_ris_relationship,
+            c.source_asn,
+            c.target_asn,
+        )
+    )
+    return candidates
+
+
+_MAX_DISPLAYED = 100
+
+
+def _render_backlog_markdown(
+    candidates: list[CorridorCandidate], new_probe_count: int, new_ris_count: int
+) -> str:
+    now = datetime.now(timezone.utc).isoformat()
+    lines = [
+        "# Corridor Backlog",
+        "",
+        "Auto-generated by `pacific-peering-corridor-backlog` "
+        "(`analysis.corridor_backlog.build_corridor_backlog`). Regenerated roughly every "
+        "8 hours by a standing `/loop` job; each hourly tranche pulls the next item here "
+        "instead of re-deriving the candidate space from scratch. Not hand-edited -- "
+        "see `task_plan.md` for the narrative record of what each tested corridor found.",
+        "",
+        f"Last regenerated: {now}",
+        f"Candidates: {len(candidates)} | New probes since last run: {new_probe_count} | "
+        f"New RIS relationships since last run: {new_ris_count}",
+        "",
+        "## Pending",
+        "",
+    ]
+    if not candidates:
+        lines.append(
+            "*(none -- every untested cross-economy ASN pair this project can "
+            "currently reach has been tried; wait for new probes/RIS data, or "
+            "revisit the same-economy / external-ASN scope this list deliberately excludes.)*"
+        )
+    displayed = candidates[:_MAX_DISPLAYED]
+    for c in displayed:
+        flags = []
+        if c.is_new_probe:
+            flags.append("NEW PROBE")
+        if c.is_new_ris_relationship:
+            flags.append("NEW RIS RELATIONSHIP")
+        flag_str = f" **[{', '.join(flags)}]**" if flags else ""
+        lines.append(
+            f"- [ ] AS{c.source_asn} ({c.source_name}, {c.source_cc}) -> "
+            f"AS{c.target_asn} ({c.target_name}, {c.target_cc}) -- {c.rationale}{flag_str}"
+        )
+    if len(candidates) > _MAX_DISPLAYED:
+        lines.append("")
+        lines.append(
+            f"*(showing the top {_MAX_DISPLAYED} of {len(candidates)} by priority -- "
+            "new-probe and new-RIS-relationship candidates always sort first; the rest "
+            "are exact untested cross-economy ASN pairs, complete but not all listed "
+            "here for readability. Full set is always recomputable live via "
+            "`pick_next_corridor`/`enumerate_candidate_corridors`, not just from this file.)*"
+        )
+    lines.append("")
+    return "\n".join(lines)
+
+
+def build_corridor_backlog(
+    probe_registry_path: Path = DEFAULT_REGISTRY_PATH,
+    fishbowl_path: Path = DEFAULT_SUMMARY_PATH,
+    tested_pairs_path: Path = DEFAULT_TESTED_PAIRS_PATH,
+    snapshot_path: Path = DEFAULT_SNAPSHOT_PATH,
+    output_path: Path = DEFAULT_BACKLOG_MD_PATH,
+) -> list[CorridorCandidate]:
+    """Regenerate `corridor_backlog.md` and the change-detection snapshot.
+
+    The standing "every ~8 hours" refresh: re-derives the full candidate
+    list, flags anything new (a probe that just came online, a RIS
+    relationship that just appeared) as high priority, writes the
+    human-readable backlog, and saves the current state as the new
+    snapshot baseline for next time.
+    """
+    probe_registry = load_asn_probe_registry(probe_registry_path)
+    fishbowl = json.loads(fishbowl_path.read_text())
+    snapshot = _load_snapshot(snapshot_path)
+    new_probe_asns = detect_new_probes(snapshot, probe_registry)
+    new_ris_pairs = detect_new_ris_neighbors(snapshot, fishbowl)
+
+    candidates = enumerate_candidate_corridors(
+        probe_registry_path, fishbowl_path, tested_pairs_path, snapshot_path
+    )
+    output_path.write_text(
+        _render_backlog_markdown(candidates, len(new_probe_asns), len(new_ris_pairs))
+    )
+    _save_snapshot(probe_registry, fishbowl, snapshot_path)
+    logger.info(
+        "Corridor backlog regenerated: %d candidates (%d new-probe, %d new-RIS-relationship)",
+        len(candidates),
+        sum(1 for c in candidates if c.is_new_probe),
+        sum(1 for c in candidates if c.is_new_ris_relationship),
+    )
+    return candidates
+
+
+def pick_next_corridor(
+    probe_registry_path: Path = DEFAULT_REGISTRY_PATH,
+    fishbowl_path: Path = DEFAULT_SUMMARY_PATH,
+    tested_pairs_path: Path = DEFAULT_TESTED_PAIRS_PATH,
+    snapshot_path: Path = DEFAULT_SNAPSHOT_PATH,
+) -> CorridorCandidate | None:
+    """Return the single highest-priority untested corridor, or `None` if the backlog is empty.
+
+    Doesn't require `corridor_backlog.md` to exist or be current -- always
+    recomputes live from the underlying registries, so a `/loop` tranche
+    can call this directly without depending on the 8-hourly regeneration
+    having just run.
+    """
+    candidates = enumerate_candidate_corridors(
+        probe_registry_path, fishbowl_path, tested_pairs_path, snapshot_path
+    )
+    return candidates[0] if candidates else None
+
+
+def main() -> None:
+    logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
+    candidates = build_corridor_backlog()
+    for c in candidates[:10]:
+        logger.info(
+            "AS%d (%s, %s) -> AS%d (%s, %s) -- %s",
+            c.source_asn, c.source_name, c.source_cc,
+            c.target_asn, c.target_name, c.target_cc,
+            c.rationale,
+        )
+
+
+if __name__ == "__main__":
+    main()
