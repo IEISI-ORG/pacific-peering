@@ -144,4 +144,44 @@ CANDIDATE_PEERING: tuple[CandidatePeering, ...] = (
             "contradiction."
         ),
     ),
+    CandidatePeering(
+        upstream_cc="GU",
+        upstream_asn=9246,
+        upstream_name="Teleguam Holdings, LLC (GTA)",
+        target_cc="FM",
+        target_asn=38875,
+        target_name="FSM Telecommunications Corporation",
+        measurement_id=211484664,
+        vantage_point_cc="GU",
+        probe_agreement="1/1 probe",
+        note=(
+            "Pulled from the corridor backlog: AS3605 (Guam Cablevision) -> "
+            "AS38875 (FSM Telecommunications Corporation), a fresh GU<->FM "
+            "economy pair. Only 1 of 3 requested probes returned. Result is "
+            "genuinely different in kind from every other AS3605 detour this "
+            "session: fully contiguous, and it actually **crosses a real, "
+            "in-fishbowl exchange** -- AS3605 -> AS9246 (Teleguam Holdings/GTA, "
+            "resolved via PeeringDB netixlan) at **MARIIX** (ix_id 2301, "
+            "Mangilao, Guam -- in-fishbowl) -> AS139759. The literal target "
+            "(AS38875) never itself resolved; the traceroute lands on "
+            "AS139759 instead -- checked directly, and this is not a "
+            "different network: AS38875's only RIS-observed neighbor is "
+            "AS10130, and AS139759's only RIS-observed neighbor is also "
+            "AS10130 -- both are sibling ASNs of the same real operator, FSM "
+            "Telecommunications Corporation (confirmed via identical holder "
+            "strings, the same pattern already established for ONATI's two "
+            "ASNs). Even correcting for that sibling identity, RIS still "
+            "doesn't confirm this specific adjacency: neither AS38875 nor "
+            "AS139759 lists AS9246 (or AS3605) as a neighbor at all -- both "
+            "show only AS10130. A clean, fully contiguous, real-exchange "
+            "crossing that RIS simply doesn't corroborate -- exactly "
+            "Validation Rule 4's shape: a real, physically-instantiated "
+            "connection at an in-fishbowl exchange (Teleguam Holdings is a "
+            "confirmed MARIIX member) that isn't announced anywhere RIS's "
+            "route collectors can see. Kept as a candidate, not promoted, on "
+            "the same principle as every other entry here -- a single clean "
+            "traceroute doesn't satisfy Validation Rule 1 no matter how "
+            "compelling the corroborating IXP membership evidence is."
+        ),
+    ),
 )

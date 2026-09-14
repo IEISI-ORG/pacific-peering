@@ -801,3 +801,12 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   intra-corporate transit, same shape as the Wallis & Futuna->Orange
   relationship. Added as a new ConfirmedDetour entry; marked tested;
   backlog regenerated (1242 -> 1230).
+- Sourced AS3605 toward AS38875 (FSM Telecommunications Corporation)
+  -- a fresh GU<->FM pair. First AS3605 detour this session to
+  actually cross an in-fishbowl exchange: AS3605 -> AS9246 (Teleguam
+  Holdings/GTA) at MARIIX -> AS139759 (a confirmed sibling ASN of the
+  literal target, same operator as AS38875). RIS doesn't corroborate
+  the specific adjacency even correcting for the sibling identity --
+  a clean, real exchange crossing kept as a new CandidatePeering
+  entry, not ConfirmedDetour. Marked tested; backlog regenerated
+  (1230 -> 1208).
