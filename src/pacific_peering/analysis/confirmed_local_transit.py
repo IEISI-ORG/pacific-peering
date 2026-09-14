@@ -69,7 +69,12 @@ CONFIRMED_LOCAL_TRANSIT: tuple[ConfirmedLocalTransit, ...] = (
             "confirmed on its own terms), but it does mean the vantage point's "
             "own path to reach Fiji transits a US exchange first -- a real, "
             "separate observation about French Polynesia's own upstream routing, "
-            "not the confirmed finding's two endpoints."
+            "not the confirmed finding's two endpoints. "
+            "Separately, IRR-corroborated: AS38442's own PeeringDB-declared AS-SET "
+            "(AS38442:AS-ALL) names AS9249 directly among its declared peers -- a "
+            "declared intention, independently sourced (APNIC), matching this "
+            "adjacency on a fourth, independent axis alongside RIS, Atlas, and the "
+            "reverse-direction reinforcement above."
         ),
     ),
 )

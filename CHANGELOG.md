@@ -298,3 +298,24 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   running it live: 5/20 economies have zero connected probes, 10/20
   have exactly one (four of them already central to real findings), 5/20
   adequately covered -- matching prior hand-verified figures.
+- `discovery.peeringdb.fetch_irr_as_set_names` and new `discovery.irr`
+  (`resolve_as_set`): a fourth lead source alongside RIS, PeeringDB
+  IXP/facility membership, and Atlas -- a network's own IRR AS-SET
+  declared peering/transit intentions. Per explicit project-owner
+  instruction, only APNIC-sourced objects are trusted: queries
+  whois.apnic.net directly (not a third-party mirror like RADB) and
+  every response's `source:` field must read exactly APNIC or the
+  object is treated as unresolved. Verified the rejection actually
+  works by querying a known RADB/ARIN-sourced object and confirming it
+  comes back empty with a warning, not silently used.
+- Third confirmed detour: New Caledonia -> Digicel Fiji (AS45355) via
+  Equinix Sydney (measurement 210996533), upstream AS132528 (the
+  Telstra-operated backbone behind Digicel's Pacific mobile networks,
+  per the project owner). The strongest-evidenced finding so far --
+  RIS agrees with an exact 1,326-observation match, Atlas shows a fully
+  contiguous 3/3-probe hop chain through an exact PeeringDB netixlan
+  address match at Equinix Sydney, and IRR-corroborated on *both* sides
+  (AS132528's and AS45355's own declared AS-SETs name each other
+  directly). Also added the same IRR corroboration to the two existing
+  confirmed findings (AS45349's AS-SET names AS4638; AS38442's names
+  AS9249).

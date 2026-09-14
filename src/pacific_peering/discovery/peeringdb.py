@@ -167,6 +167,42 @@ def fetch_ixp_membership(asns: list[int]) -> dict[int, list[IxpMembership]]:
     return membership
 
 
+def fetch_irr_as_set_names(asns: list[int], timeout: float = _DEFAULT_TIMEOUT) -> dict[int, str]:
+    """Fetch each ASN's PeeringDB-declared IRR AS-SET name (the `net.irr_as_set` field).
+
+    Per the project owner: this is a network's own declared list of who
+    it intends to peer with or provide transit for — a lead worth
+    checking alongside RIS-observed AS-paths and PeeringDB IXP/facility
+    membership, sourced independently (APNIC/RADB/etc., not this
+    project's own data). The name itself (e.g. "AS-132528-PEERS") still
+    needs a separate WHOIS/IRR query (see `discovery.irr`) to resolve
+    into member ASNs — this function only reads the declaration off
+    PeeringDB, it doesn't resolve it.
+
+    Args:
+        asns: ASNs to look up.
+
+    Returns:
+        Mapping of ASN to its declared AS-SET name. An ASN with no
+        PeeringDB `net` record, or a record with no `irr_as_set`
+        populated, is simply absent from the result — both common and
+        not an error.
+    """
+    as_sets: dict[int, str] = {}
+    for chunk in _chunked(asns):
+        response = requests.get(
+            f"{PEERINGDB_BASE_URL}/net",
+            params={"asn__in": ",".join(str(asn) for asn in chunk)},
+            timeout=timeout,
+        )
+        response.raise_for_status()
+        for record in response.json()["data"]:
+            name = record.get("irr_as_set")
+            if name:
+                as_sets[record["asn"]] = name
+    return as_sets
+
+
 def _fetch_net_ids(asns: list[int], timeout: float = _DEFAULT_TIMEOUT) -> dict[int, int]:
     """Map ASN -> PeeringDB internal `net` id, chunked."""
     asn_to_net_id: dict[int, int] = {}
