@@ -728,3 +728,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   seen for AS3605's Palau corridor. Added as a new ConfirmedDetour
   entry; marked the pair tested; backlog regenerated (1378 -> 1330,
   the whole GU<->FJ economy pair now excluded).
+- Second hourly firing: sourced AS3605 toward AS9249 (Telecom
+  Vanuatu) -- a fresh GU<->VU pair. Converges onto AS38442<->AS9249
+  again, now confirmed from a sixth distinct source network. Added as
+  a new ConfirmedDetour entry (its own source economy, matching the
+  NC->VU/PG->VU pattern); marked tested; backlog regenerated
+  (1330 -> 1293).

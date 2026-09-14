@@ -289,4 +289,38 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
             "unambiguous on both."
         ),
     ),
+    ConfirmedDetour(
+        source_cc="GU",
+        target_cc="VU",
+        target_asn=9249,
+        detour_ix_name="Level 3/Lumen (AS3356) + AS4637 (Telstra Global) -- global "
+        "transit, not a named exchange crossing",
+        detour_hub="Sydney",
+        measurement_id=211334940,
+        ris_observation_count=1346,
+        note=(
+            "Guam Cablevision (AS3605) -> Telecom Vanuatu (AS9249) -- pulled "
+            "from the corridor backlog's top pick: a genuinely untested "
+            "GU<->VU economy pair. Both probes: AS3605 -> AS3356 (Level "
+            "3/Lumen) -> AS4637 (Telstra Global) -> AS38442 (Vodafone Fiji) "
+            "-> AS9249. Upstream of the target is AS38442, RIS-agreeing with "
+            "an *exact* match (1,346) -- this project's very first confirmed "
+            "finding, now independently reinforced a **sixth** time, from a "
+            "sixth distinct source network (after AS18200/OPT NC, "
+            "AS45345/Nautile, AS56089/OFFRATEL, AS24390/USP, and "
+            "AS17828/PNG DataCo). The final AS38442->AS9249 leg shows a "
+            "single silent (non-responding) hop immediately before the "
+            "target on both probes -- checked directly, not assumed: the "
+            "same ordinary ICMP-filtering-right-at-the-destination pattern "
+            "already seen in essentially every measurement that has ever "
+            "targeted AS9249 this session, not a new or unusual gap. No IXP "
+            "crossing this time (`ixp_crossings` empty) -- plain Tier-1 "
+            "transit (Level 3/Lumen then Telstra Global), the same "
+            "no-named-exchange shape as the AS17828->AS9249 and "
+            "AS3605->AS9241 entries. Six independent, differently-sourced "
+            "measurements landing on one identical adjacency, all with exact "
+            "observation-count matches, is about as strong a single fact as "
+            "this project has produced."
+        ),
+    ),
 )
