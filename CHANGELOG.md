@@ -748,3 +748,12 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   FINTEL) -- a real, repeated routing signature, not a one-off. Added
   as a new ConfirmedDetour entry; marked tested; backlog regenerated
   (1293 -> 1285).
+- Fifth hourly firing: sourced AS3605 toward AS10131 (Cook Islands)
+  -- a fresh GU<->CK pair. Landed on the already-confirmed
+  AS9471<->AS10131 adjacency, but as an intermediate transit hop this
+  time, not the source -- and AS9471 (ONATI) is itself an in-scope
+  Pacific carrier, not an external AU/NZ/JP/US hub the way every
+  other detour waypoint has been. Real evidence ONATI transits other
+  economies' traffic, not just its own. Not a new entry -- added as a
+  corroboration note on the existing ConfirmedLocalTransit entry;
+  marked tested; backlog regenerated (1285 -> 1283).
