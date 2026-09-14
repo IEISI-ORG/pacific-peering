@@ -124,4 +124,51 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
             "finding is as solid as any in the project."
         ),
     ),
+    ConfirmedDetour(
+        source_cc="FJ",
+        target_cc="VU",
+        target_asn=9249,
+        detour_ix_name="MegaIX Sydney",
+        detour_hub="Sydney",
+        measurement_id=211239396,
+        ris_observation_count=1346,
+        note=(
+            "Fiji -> Telecom Vanuatu (AS9249), but sourced from a genuinely "
+            "different, institutionally-motivated vantage point: AS24390, the "
+            "University of the South Pacific's own network (Fiji-based, but "
+            "with a real campus in Vanuatu -- Emalus Campus -- making this an "
+            "actual inter-campus corridor, not an arbitrary ASN pair). Picked "
+            "from the ASN probe registry precisely because AS24390's only "
+            "RIS-observed neighbor at all is AS7575 (AARNet, Australia's "
+            "research/education network) -- worth testing directly rather than "
+            "assumed, given ARENA-PAC/GOREX's Pacific-research-network "
+            "relevance surfaced earlier this session. Confirmed: the path runs "
+            "AS24390 -> AS7575 (AARNet) -> AS38442 (Vodafone Fiji, resolved via "
+            "PeeringDB netixlan) -> crosses MegaIX Sydney -> AS9249. Upstream "
+            "of the target is AS38442, matching RIS's independently-observed "
+            "count *exactly* (1,346) -- the identical count already on record "
+            "for this project's very first confirmed finding "
+            "(AS38442<->AS9249, see confirmed_local_transit.py), now "
+            "independently reinforced from a third vantage point and a "
+            "genuinely different source network. The final hop (AS38442's own "
+            "address to AS9249's) shows `contiguous: false`, but checked "
+            "directly against the raw hop data before accepting that at face "
+            "value: hop 11 returned no address at all (a true ICMP timeout, "
+            "not a private-address artifact the recent RFC1918 fix would "
+            "catch), so this is a genuine unresolved final hop, not a "
+            "resolver limitation -- consistent with how this exact adjacency's "
+            "last leg has read in every prior measurement of it. **The real, "
+            "new finding here isn't the AS38442<->AS9249 adjacency itself "
+            "(already this project's most solid) -- it's that a Pacific "
+            "regional university's own inter-campus traffic, between two "
+            "islands roughly 1,100km apart, detours all the way out to "
+            "Australia and back rather than routing directly within the "
+            "region**, exactly the kind of sub-optimal transpacific routing "
+            "this project exists to document. Only 1 of 3 requested probes "
+            "returned in time; not re-fired for the other two, since the one "
+            "result already lands on an extremely well-characterized "
+            "adjacency with an exact RIS match -- a small-tranche judgment "
+            "call, not a data gap that changes the finding."
+        ),
+    ),
 )

@@ -631,3 +631,12 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   a single RFC1918 hop. Corrected in place; the measurement is now
   fully contiguous end to end, strengthening rather than changing
   this project's very first confirmed finding.
+- Sourced AS24390 (University of the South Pacific, Fiji -- with a real
+  campus in Vanuatu) for the first time, targeting AS9249 (Telecom
+  Vanuatu). New ConfirmedDetour: USP's own inter-campus traffic
+  detours via AARNet (Australia) and MegaIX Sydney rather than routing
+  directly, landing on the exact same AS38442<->AS9249 adjacency
+  (1,346 observations, exact RIS match) already this project's most
+  solid finding -- now independently reinforced a third time, from a
+  third vantage point. The real story is the detour itself: two
+  islands ~1,100km apart, routed via Australia.
