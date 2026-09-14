@@ -556,3 +556,7 @@ Checked RIPE Atlas's own probe registry directly rather than just retrying with 
 **Verified everything by regenerating and looking at the actual output, same discipline as always**: registry rebuild confirmed 163->164 ASNs with nothing lost from the other 163; full pipeline re-run confirmed fishbowl/ixp_lan_registry/irr_leads all picked up the change cleanly; regenerated all reports/visualizations and confirmed JPIX Tokyo shows correctly as TBA in the IXP table.
 
 **Not done this tranche (queued)**: an Atlas test of whether University of Guam's own traffic actually uses GOREX/MARIIX locally, or detours to Hawaii/NZ/Japan despite the local exchanges existing — a natural, well-motivated next test given Guam already has 9 connected Atlas probes (this project's best-covered economy). Also queued: `fetch_prefix_visibility` was built but not yet exercised against any specific in-scope ASN — a good candidate for a future tranche once there's a concrete question it would answer.
+
+---
+
+**[User-directed follow-up — confirmed JPIX Tokyo as out-of-fishbowl.]** Called `confirm_ixp_region(30, False)`. Verified: `data/analysis/ixp_lan_registry.json`'s entry for ix_id 30 now reads `in_fishbowl: false`, and **zero exchanges remain unconfirmed** (10 in-fishbowl, 21 out-of-fishbowl, 0 TBA — up from 30 total exchanges to 31 this session, all now classified). Regenerated and checked all reports/the map to confirm the change propagated cleanly.

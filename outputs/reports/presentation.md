@@ -122,7 +122,7 @@ or does it detour through Australia, the US, or elsewhere?
 
 - **10 in-region exchanges** confirmed:
   CAN'L IX, Fiji-IXP, GOREX, GU-IX, Guam IX, MARIIX, PNG Neutral IX Hagen, PNG Neutral IX Lae, PNG Neutral IX POM, VIX.VU
-- **20 out-of-region exchanges** confirmed as destinations for
+- **21 out-of-region exchanges** confirmed as destinations for
   in-scope ASNs (Sydney, Tokyo, Frankfurt, Los Angeles, and others)
 - Every classification here is an explicit human decision, never
   auto-inferred from a country-code lookup

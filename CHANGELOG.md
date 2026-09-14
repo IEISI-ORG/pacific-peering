@@ -407,3 +407,6 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   ASNs as non-"Eyeball", and AS43357 ("Owl Limited") carries both the
   `vpsh` and `vpn` community tags -- a third source agreeing it's a
   hosting/VPN provider, not a real Vanuatu ISP.
+- Confirmed JPIX Tokyo (ix_id 30) as out-of-fishbowl, per the project
+  owner. Zero exchanges remain unconfirmed (10 in-fishbowl, 21
+  out-of-fishbowl, 0 TBA, of 31 total).
