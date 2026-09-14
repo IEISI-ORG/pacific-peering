@@ -102,6 +102,18 @@ or does it detour through Australia, the US, or elsewhere?
 <!-- SPEAKER NOTE: this is a good-news slide - don't let it get lost after
      the detour findings -->
 
+## Finding: AS3605 (Guam Cablevision, LLC) -> AS395400 (University of Guam)
+
+- A domestic (intra-Guam) adjacency, surfaced while testing the actual question this measurement was built for: does University of Guam's own traffic really use GOREX locally (per the project owner's ask), given its confirmed presence there? Targeted University of Guam's own GOREX netixlan address (192.35.145.18) directly from a Guam-sourced probe. Of 3 probes: one resolved nothing at all; one (probe 7385) transited AS152735 then AS7131 (Northern Mariana Islands) before going dark, RIS disagreeing (not a finding); the third (probe 329) resolved cleanly to AS3605 (Guam Cablevision) as the last hop before the target -- RIS's neighbor list for AS395400 lists AS3605 with an *exact* matching count (1,091), a real confirmed adjacency in its own right. But the actual question -- does this traffic cross GOREX's own fabric -- comes back negative: none of the 3 probes showed a hop inside GOREX's registered LAN prefix (192.35.145.0/24) before going dark. Read honestly, this doesn't confirm GOREX goes unused (ICMP filtering right at the target, or at the exchange's own switch fabric, could explain it just as well as the traffic genuinely bypassing GOREX) -- it's inconclusive on the motivating question, while still yielding this separate, real, confirmed finding along the way.
+- RIS-observed neighbor count: **1091**
+- Confirmed by live Atlas traceroute (measurement `211038772`,
+  vantage point: GU)
+- Unlike the detour findings above, this stays entirely in-region —
+  not everything routes out via Sydney
+
+<!-- SPEAKER NOTE: this is a good-news slide - don't let it get lost after
+     the detour findings -->
+
 ---
 
 ## Candidate: AS139759 (an FSM ASN (no PeeringDB org name on record)) -> AS17893 (Palau National Communications Corp)

@@ -410,3 +410,11 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - Confirmed JPIX Tokyo (ix_id 30) as out-of-fishbowl, per the project
   owner. Zero exchanges remain unconfirmed (10 in-fishbowl, 21
   out-of-fishbowl, 0 TBA, of 31 total).
+- Tested University of Guam's traffic against GOREX directly (per the
+  project owner), targeting its own GOREX netixlan address from a
+  Guam-sourced probe. New confirmed local-transit entry: AS3605 (Guam
+  Cablevision) <-> AS395400 (University of Guam), RIS agreeing with an
+  exact 1,091-observation match. The actual motivating question --
+  does this traffic cross GOREX's own fabric -- came back inconclusive:
+  no hop landed inside GOREX's registered LAN prefix before the trail
+  went dark, recorded honestly as such rather than stretched to fit.

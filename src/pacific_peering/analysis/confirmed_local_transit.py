@@ -116,4 +116,36 @@ CONFIRMED_LOCAL_TRANSIT: tuple[ConfirmedLocalTransit, ...] = (
             "worth keeping on record."
         ),
     ),
+    ConfirmedLocalTransit(
+        provider_cc="GU",
+        provider_asn=3605,
+        provider_name="Guam Cablevision, LLC",
+        customer_cc="GU",
+        customer_asn=395400,
+        customer_name="University of Guam",
+        measurement_id=211038772,
+        vantage_point_cc="GU",
+        ris_observation_count=1091,
+        note=(
+            "A domestic (intra-Guam) adjacency, surfaced while testing the actual "
+            "question this measurement was built for: does University of Guam's "
+            "own traffic really use GOREX locally (per the project owner's ask), "
+            "given its confirmed presence there? Targeted University of Guam's own "
+            "GOREX netixlan address (192.35.145.18) directly from a Guam-sourced "
+            "probe. Of 3 probes: one resolved nothing at all; one (probe 7385) "
+            "transited AS152735 then AS7131 (Northern Mariana Islands) before going "
+            "dark, RIS disagreeing (not a finding); the third (probe 329) resolved "
+            "cleanly to AS3605 (Guam Cablevision) as the last hop before the target "
+            "-- RIS's neighbor list for AS395400 lists AS3605 with an *exact* "
+            "matching count (1,091), a real confirmed adjacency in its own right. "
+            "But the actual question -- does this traffic cross GOREX's own fabric "
+            "-- comes back negative: none of the 3 probes showed a hop inside "
+            "GOREX's registered LAN prefix (192.35.145.0/24) before going dark. Read "
+            "honestly, this doesn't confirm GOREX goes unused (ICMP filtering right "
+            "at the target, or at the exchange's own switch fabric, could explain "
+            "it just as well as the traffic genuinely bypassing GOREX) -- it's "
+            "inconclusive on the motivating question, while still yielding this "
+            "separate, real, confirmed finding along the way."
+        ),
+    ),
 )

@@ -22,6 +22,11 @@ outputs/*
 # Secrets
 secrets.yaml
 *.secret.yaml
+*.swp
+*.swo
+.*.swp
+.*.swo
+*~
 
 # Editors / OS
 .DS_Store
