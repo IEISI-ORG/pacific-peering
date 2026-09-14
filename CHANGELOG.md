@@ -719,3 +719,12 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   project's established dead-end handling. Called
   mark_corridor_tested(3605, 4638) -- confirmed via a full regenerate
   that the pair correctly drops out of the backlog afterward.
+- First hourly firing under the new backlog system: sourced AS3605
+  toward AS9241 (FINTEL, Fiji). Measurement scheduled unusually slowly
+  (checked directly, confirmed as ordinary Atlas latency, not a
+  network anomaly -- not escalated). Result: AS3605 -> AS2497 (IIJ,
+  Japan) -> AS174 (Cogent) -> AS9241, exact RIS match (830, AS9241's
+  largest neighbor) -- the same Tokyo/Cogent transit shape already
+  seen for AS3605's Palau corridor. Added as a new ConfirmedDetour
+  entry; marked the pair tested; backlog regenerated (1378 -> 1330,
+  the whole GU<->FJ economy pair now excluded).

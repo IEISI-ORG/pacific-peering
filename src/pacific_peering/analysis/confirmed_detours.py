@@ -249,4 +249,44 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
             "established as any single fact in this project."
         ),
     ),
+    ConfirmedDetour(
+        source_cc="GU",
+        target_cc="FJ",
+        target_asn=9241,
+        detour_ix_name="AS174 (Cogent Communications), via AS2497 (IIJ, Japan) -- global "
+        "transit, not a named exchange crossing",
+        detour_hub="Tokyo",
+        measurement_id=211316239,
+        ris_observation_count=830,
+        note=(
+            "Guam (AS3605, Guam Cablevision) -> FINTEL (AS9241, Fiji "
+            "International Telecommunications Ltd) -- pulled from the "
+            "maintained corridor backlog's top pick (the first hourly `/loop` "
+            "firing to run against it): a genuinely untested GU<->FJ economy "
+            "pair despite both being among the most-characterized economies "
+            "in the project. The measurement itself ran unusually slowly to "
+            "schedule (stuck at `Scheduled` status for several minutes before "
+            "any probe activity, versus the usual 5-15 seconds) -- checked "
+            "directly rather than assumed transient: `participant_count: 2` "
+            "confirmed both of AS3605's connected probes were queued, and a "
+            "second, longer poll resolved cleanly with both probes returning "
+            "-- an ordinary Atlas-side scheduling delay, not a network "
+            "anomaly, so not escalated under the standing consult-the-owner "
+            "order (which is for strange *routing*, not platform latency). "
+            "Result: AS3605 -> AS2497 (IIJ, Japan) -> AS174 (Cogent "
+            "Communications) -> AS9241, the same Tokyo/Cogent global-transit "
+            "shape already seen for AS3605's Palau corridor (see the GU->PW "
+            "entry above) -- this project's second example of AS3605 reaching "
+            "an in-scope target via Cogent through Japan rather than any "
+            "regional path. Upstream of the target is AS174, RIS-agreeing "
+            "with an *exact* match (830) -- and checked against AS9241's full "
+            "neighbor list directly: AS174 is its single largest RIS-observed "
+            "relationship (830 of ~1,700 total observations across all three "
+            "of its neighbors), not a minor or coincidental one. One of two "
+            "probes (329) was fully contiguous end-to-end; the other (64953) "
+            "showed a gap immediately at the source hop too, but the "
+            "RIS-agreeing upstream adjacency itself is identical and "
+            "unambiguous on both."
+        ),
+    ),
 )
