@@ -525,3 +525,10 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   RIS neighbor is AS12684 (SES Astra, a geostationary satellite
   operator) -- a second real satellite-transit finding, not chased
   further this tranche.
+- Fired the queued Cook Islands -> SES Astra test. Honestly
+  inconclusive: real gaps throughout (AS10131 -> AS9471/ONATI -> AS6939/
+  Hurricane Electric -> target never resolved), no contiguous chain
+  anywhere. Not added as a new finding -- the trail goes cold at a
+  generic transit carrier, nowhere near SES Astra's own network, and
+  the ONATI hop reappearing doesn't freshly confirm that relationship
+  either (a real gap sits between AS10131 and it in this traceroute).
