@@ -689,3 +689,13 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   is "whichever excluded AU/NZ hub sits on the path," matching the
   Fish Bowl's own excluded-zone definition. Added as a new
   ConfirmedDetour entry.
+- Checked the RIPE Atlas credit balance: 95,715,160, net growing
+  (+63,569/day, $0 expenditure at this project's usage rate) -- no
+  concern, nothing flagged.
+- Sourced AS17828 (PNG DataCo) toward AS9249 (Telecom Vanuatu) -- a
+  fresh PG<->VU economy pair, both Melanesian. Fully contiguous,
+  zero-gap result, exact RIS match (1,346) -- AS38442<->AS9249
+  reinforced a fifth time, from a fifth distinct source network via
+  Telstra's domestic and international ASNs back-to-back (no IXP
+  crossing this time, plain Tier-1 transit). Added as a new
+  ConfirmedDetour entry.

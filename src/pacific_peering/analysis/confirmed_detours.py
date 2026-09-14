@@ -212,4 +212,41 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
             "RIS-matched."
         ),
     ),
+    ConfirmedDetour(
+        source_cc="PG",
+        target_cc="VU",
+        target_asn=9249,
+        detour_ix_name="Telstra (AS1221 domestic + AS4637 Telstra Global) -- "
+        "global transit, not a named exchange crossing",
+        detour_hub="Sydney",
+        measurement_id=211299647,
+        ris_observation_count=1346,
+        note=(
+            "PNG DataCo (AS17828) -> Telecom Vanuatu (AS9249) -- a genuinely "
+            "untested economy pair before this measurement (PG<->VU, both "
+            "Melanesian), picked to check whether regional Melanesian traffic "
+            "stays in-region or detours externally like every other corridor "
+            "tested this session. Grepped first: confirmed untested. "
+            "Result: fully contiguous, zero gaps -- AS17828 -> AS4826 (Vocus "
+            "Connect, already established as PNG DataCo's own upstream from "
+            "an earlier tranche) -> AS1221 (Telstra Limited, Australia's "
+            "domestic backbone) -> AS4637 (Telstra Global, the international "
+            "arm of the same company) -> AS38442 (Vodafone Fiji) -> AS9249. "
+            "Upstream of the target is AS38442, RIS-agreeing with an *exact* "
+            "match (1,346) -- this project's very first confirmed finding, "
+            "now independently reinforced a **fifth** time, from a fifth "
+            "distinct vantage point. Different in kind from the NC-sourced "
+            "detours to the same target: no hop landed inside any registered "
+            "IXP LAN prefix this time (`ixp_crossings` empty) -- straight "
+            "Tier-1 transit through Telstra's own network (its domestic and "
+            "international ASNs both appearing back-to-back) rather than a "
+            "named-exchange crossing, so `detour_ix_name` records that "
+            "honestly rather than implying an IXP that isn't there, same "
+            "convention already used for the AS3605->AS17893 Tokyo/Cogent "
+            "entry. Five independent measurements, five different source "
+            "networks, one identical destination adjacency -- AS38442's role "
+            "as Fiji's real gateway to Vanuatu is about as solidly "
+            "established as any single fact in this project."
+        ),
+    ),
 )
