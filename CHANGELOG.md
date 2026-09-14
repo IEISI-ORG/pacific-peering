@@ -535,3 +535,16 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - Checked whether AS12684 (SES Astra) has a usable Atlas probe: zero
   connected, all 5 ever registered are Abandoned. Sourcing from it
   isn't possible right now by any method -- closes out this corridor.
+- Tested AS17828 (PNG DataCo, this project's first-ever confirmed
+  detour target) as a source for the first time. Result splits into
+  two real findings, documented in full rather than forced into one
+  category: PNG DataCo -> AS4826 (Vocus Connect, Australia) is a solid
+  RIS+Atlas-confirmed adjacency (202 observations, exact match); the
+  next leg, AS4826 -> AS3605 (Guam Cablevision), crosses Any2West (Los
+  Angeles) with AS3605's presence there confirmed via an exact
+  PeeringDB netixlan match, but RIS doesn't confirm that specific pair.
+  Not filed as a new ConfirmedDetour (would overstate the unconfirmed
+  Any2West leg) or CandidatePeering entry (would understate the
+  genuinely solid PNG<->Vocus relationship) -- the confirmation sits on
+  the first leg of a three-ASN chain, not the leg before the target the
+  way every existing entry's evidence does.

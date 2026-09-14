@@ -676,3 +676,18 @@ Fired the test flagged last tranche: Cook Islands (AS10131) -> AS12684 (SES Astr
 ---
 
 **[User-directed follow-up — checked directly whether AS12684 (SES Astra) has a usable Atlas probe, per the project owner's ask.]** Same check already applied to AS10130 and AS395400 earlier this session: **zero currently-connected probes**, and all **5** probes ever registered against it are **Abandoned**. Sourcing directly from SES Astra isn't possible right now, by any probe-selection method — closes out this corridor for the time being. The reverse direction (Cook Islands -> SES Astra, last tranche) remains the only data on record for this pair, and it's honestly inconclusive.
+
+---
+
+**[Loop tranche — PNG DataCo tested as a source for the first time (previously only ever a target), testing symmetry of this project's very first confirmed finding.]** Confirmed via `CronList` this was job `551adf11`'s scheduled fire.
+
+AS17828 (PNG DataCo) was this project's first-ever confirmed detour target (GU->PG via Equinix Sydney, Phase 1b). It has a connected probe but had never been used as a *source* — a natural symmetry check: does PNG's own outbound traffic also show out-of-region dependency, or was the original finding one-directional? Fired PNG DataCo -> Guam Cablevision (AS3605, already well-characterized this session).
+
+**Result: fully contiguous, reaches the target directly — and splits into two distinct findings that don't fit any single existing category cleanly, so documented in full rather than forced into one.**
+
+1. **AS17828 (PNG DataCo) -> AS4826 (Vocus Connect International Backbone) is a real, solid, RIS+Atlas-confirmed adjacency**: exact match, 202 observations (PNG DataCo's own RIS neighbor list has carried this figure since Phase 1a). Vocus is Australia-based — out of scope for this project, same category as the already-excluded AU/NZ/Hawaii.
+2. **AS4826 -> AS3605 (the actual target) crosses Any2West** (Los Angeles, out-of-fishbowl) — the hop's address resolves via an exact PeeringDB netixlan match to AS3605 itself, so AS3605's presence there is a hard fact, not an inference. But `ris_agrees: false` (checked bidirectionally, per the fix two tranches ago) for the specific AS4826<->AS3605 pair.
+
+**Why this doesn't become a new `ConfirmedDetour` or `CandidatePeering` entry**: the RIS confirmation sits on the *first* leg of a three-ASN chain (source -> intermediate), not the leg immediately before the target the way every existing entry's evidence does — claiming a confirmed "PG detours to Guam via Any2West" would overstate what's actually confirmed (the Any2West leg specifically isn't RIS-backed), while a candidate-peering entry naming Vocus as "upstream" would understate the genuinely solid PG<->Vocus relationship by filing it as unconfirmed. Recorded here in full rather than stretched to fit either existing shape or invented a new one for a single data point — consistent with this project's established restraint (the AS4637/Telstra Global and Starlink transit-chain cases were handled the same way).
+
+**Notable in its own right**: this is AS3605's *third* distinct confirmed-or-independently-verified IXP presence surfaced this session (GU-IX for the Palau corridor, Any2West here, alongside its seven total PeeringDB-listed memberships) — reinforcing that AS3605 (Guam Cablevision) is a genuinely well-connected, multi-exchange regional carrier, not a single-homed network.
