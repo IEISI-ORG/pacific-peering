@@ -80,4 +80,40 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
             "measurements, two different vantage points, same exchange presence."
         ),
     ),
+    ConfirmedDetour(
+        source_cc="GU",
+        target_cc="PW",
+        target_asn=17893,
+        detour_ix_name="AS174 (Cogent Communications), via AS2497 (IIJ, Japan) -- global "
+        "transit, not a named exchange crossing",
+        detour_hub="Tokyo",
+        measurement_id=211064438,
+        ris_observation_count=1333,
+        note=(
+            "Guam (AS3605, Guam Cablevision) -> Palau NCC (AS17893). Sourced "
+            "directly from AS3605 via ASN-based probe selection (2 connected "
+            "probes exist -- the project owner asked to test this specifically "
+            "after two prior tranches could only test it indirectly, via "
+            "country-based selection that happened to land on other Guam ASNs). "
+            "Both probes: AS3605 -> AS2497 (IIJ, Japan) -> AS174 (Cogent "
+            "Communications) -> AS17893, fully contiguous, no gaps. RIS agrees "
+            "with an *exact* observation-count match (1,333). Different in kind "
+            "from this project's other three confirmed detours: no hop landed "
+            "inside any registered IXP LAN prefix (`ixp_crossings` empty for both "
+            "probes) -- this is plain global Tier-1 transit (Cogent, reached via "
+            "Japan), not a named-exchange crossing, so `detour_ix_name` records "
+            "that honestly rather than implying an IXP that isn't there. What "
+            "makes this the sharpest evidence yet for the project's actual thesis: "
+            "AS17893 (this exact target) has *confirmed, repeated* local exchange "
+            "presence at Guam IX (seen in three separate earlier measurements, two "
+            "different source economies) -- real local peering infrastructure "
+            "exists for this corridor. AS3605's own traffic to it simply doesn't "
+            "use it, defaulting instead to a transit path via Tokyo and a global "
+            "carrier. Not evidence the local exchange is unused in general (a "
+            "different Guam network's traffic was shown reaching AS17893 via "
+            "Guam IX in an earlier measurement) -- evidence that at least one real "
+            "Guam ISP's default route to a real Guam-IX-connected Palau network "
+            "bypasses the local exchange entirely."
+        ),
+    ),
 )

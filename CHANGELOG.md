@@ -441,3 +441,24 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   specific lead remains untested. Folded into the existing
   AS139759<->AS17893 candidate's note rather than creating a
   near-duplicate entry.
+- Fourth confirmed detour, sourced directly from AS3605 (2 connected
+  Atlas probes exist, unlike AS10130/AS395400): Guam (AS3605) ->
+  AS2497 (IIJ, Japan) -> AS174 (Cogent Communications) -> Palau NCC
+  (AS17893), RIS agreeing with an exact 1,333-observation match. A new
+  shape for this project -- plain global Tier-1 transit via Tokyo, not
+  a named-exchange crossing (labeled honestly as such). The sharpest
+  evidence yet for the project's thesis: this exact target has
+  confirmed, repeated local exchange presence at Guam IX, and this
+  Guam ISP's default route to it simply doesn't use it. New "Tokyo"
+  entry in `discovery.economy_coordinates.EXTERNAL_HUB_LATLON` to plot
+  it; rendered and checked before calling it done.
+- New `atlas.asn_probes` (`pacific-peering-atlas-asn-probes`): a
+  persisted, monthly-refreshed record of which specific in-scope ASNs
+  have a connected Atlas probe -- replaces three separate ad-hoc live
+  checks this session with one lookup. Realized the existing per-economy
+  probe-coverage query already returns each probe's own ASN, so this
+  needs the same 20 API calls already being made, not 164. Wired into
+  `pipeline.run_pipeline` as a fifth step. Verified against this
+  session's own prior findings: matches exactly. Ran the full pipeline
+  end-to-end afterward -- zero rate-limit warnings this run, no data
+  lost.

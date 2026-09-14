@@ -1,8 +1,8 @@
 """Phase 1c: recurring pipeline orchestration.
 
 Re-runs discovery, RIS/IXP/facility data, the IXP LAN subnet registry,
-and the IRR AS-SET leads sweep in sequence, and writes a small
-versioned manifest recording what happened.
+the IRR AS-SET leads sweep, and the ASN probe registry in sequence, and
+writes a small versioned manifest recording what happened.
 
 Deliberately scoped: this does NOT fire new RIPE Atlas measurements
 automatically. Atlas measurements cost real account credits and need a
@@ -11,7 +11,9 @@ silently spending credits on unreviewed pairs is a materially different,
 riskier decision than re-running free public-API pulls (RIPEstat,
 PeeringDB, APNIC stats all need no auth), and isn't made here without
 explicit sign-off. Atlas campaigns stay a deliberate, manually-triggered
-activity (see `atlas.smoketest`).
+activity (see `atlas.smoketest`). The ASN probe registry step is a
+read-only Atlas API lookup (which ASNs have a connected probe), not a
+measurement — no credits involved either.
 
 Safe to re-run on a schedule: every step it calls is already idempotent
 — registries rebuild in place, and IXP LAN classifications are
@@ -29,6 +31,7 @@ from typing import Any, Callable
 from pacific_peering.analysis.fishbowl import build_fishbowl
 from pacific_peering.analysis.irr_leads import build_irr_leads
 from pacific_peering.analysis.ixp_lan_registry import build_ixp_lan_registry
+from pacific_peering.atlas.asn_probes import build_asn_probe_registry
 from pacific_peering.discovery.registry import build_registry
 
 logger = logging.getLogger(__name__)
@@ -66,6 +69,11 @@ def _summarize(step_name: str, result: Any) -> dict:
                 if any(r.asns or r.nested_as_sets for r in lead.resolved)
             ),
         }
+    if step_name == "asn_probe_registry":
+        return {
+            "asns_with_connected_probe": len(result),
+            "total_connected_probes": sum(len(ids) for ids in result.values()),
+        }
     return {}
 
 
@@ -73,10 +81,10 @@ def run_pipeline(runs_dir: Path = DEFAULT_RUNS_DIR) -> dict:
     """Run the recurring, free-API-only part of the pipeline and record a manifest.
 
     Steps: ASN registry -> fish bowl (RIS + IXP membership + facility
-    presence) -> IXP LAN subnet registry -> IRR AS-SET leads. Each
-    step's failure is caught and recorded rather than aborting the whole
-    run, so a transient upstream API issue in one step doesn't prevent
-    the others from completing.
+    presence) -> IXP LAN subnet registry -> IRR AS-SET leads -> ASN
+    probe registry. Each step's failure is caught and recorded rather
+    than aborting the whole run, so a transient upstream API issue in
+    one step doesn't prevent the others from completing.
 
     Args:
         runs_dir: Directory to write this run's timestamped manifest under.
@@ -94,6 +102,7 @@ def run_pipeline(runs_dir: Path = DEFAULT_RUNS_DIR) -> dict:
         ("fishbowl", build_fishbowl),
         ("ixp_lan_registry", build_ixp_lan_registry),
         ("irr_leads", build_irr_leads),
+        ("asn_probe_registry", build_asn_probe_registry),
     ]
 
     for name, step in steps:

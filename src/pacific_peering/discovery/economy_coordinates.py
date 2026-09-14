@@ -34,4 +34,5 @@ ECONOMY_LATLON: dict[str, tuple[float, float]] = {
 # confirmed out-of-fishbowl detour hubs on the same map.
 EXTERNAL_HUB_LATLON: dict[str, tuple[float, float]] = {
     "Sydney": (-33.8688, 151.2093),
+    "Tokyo": (35.6762, 139.6503),
 }

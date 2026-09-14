@@ -1,5 +1,9 @@
 """RIPE Atlas traceroute measurements: creation, probe coverage, in/outbound smoke tests."""
 
+from .asn_probes import (
+    DEFAULT_REGISTRY_PATH as DEFAULT_ASN_PROBE_REGISTRY_PATH,
+)
+from .asn_probes import build_asn_probe_registry, has_connected_probe, load_asn_probe_registry
 from .client import (
     TracerouteHop,
     TracerouteResult,
@@ -27,4 +31,8 @@ __all__ = [
     "load_atlas_api_key",
     "pick_target_ip",
     "pick_ixp_member_target",
+    "DEFAULT_ASN_PROBE_REGISTRY_PATH",
+    "build_asn_probe_registry",
+    "has_connected_probe",
+    "load_asn_probe_registry",
 ]
