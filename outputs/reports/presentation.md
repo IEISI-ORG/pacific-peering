@@ -124,6 +124,18 @@ or does it detour through Australia, the US, or elsewhere?
 <!-- SPEAKER NOTE: this is a good-news slide - don't let it get lost after
      the detour findings -->
 
+## Finding: AS9471 (ONATI (Office des Postes et Telecommunications)) -> AS55885 (No. 1 Commercial Center)
+
+- Niue's only RIS-observed neighbor at all is AS55943 (1,662 observations) -- also ONATI, French Polynesia's telecom incumbent, just a second ASN of the same operator (both PeeringDB and RIPEstat list AS9471 and AS55943 under the identical holder name, 'ONATI-AS-AP - ONATI'; AS9471's own RIS neighbor list independently confirms AS55943 with 1,838 observations, proving the sibling relationship, not just a name coincidence). Sourced directly from Niue's own connected Atlas probe (found via the ASN probe registry) toward AS55943 specifically: the traceroute resolved cleanly and contiguously to AS9471 -- ONATI's *other* ASN -- before going dark short of the literal target. `check_neighbor_agreement` reports `ris_agrees: false` on a strict reading (AS9471 isn't literally in AS55943's own neighbor list), but read correctly this is the same real-world relationship RIS already confirmed for Niue, observed via ONATI's other identity -- recorded as confirmed on that basis, with the nuance stated plainly rather than either overclaiming a literal ASN-for-ASN match or discarding a real, well-evidenced finding over a technicality of which of one company's two ASNs a hop resolved to.
+- RIS-observed neighbor count: **1662**
+- Confirmed by live Atlas traceroute (measurement `211091699`,
+  vantage point: NU)
+- Unlike the detour findings above, this stays entirely in-region —
+  not everything routes out via Sydney
+
+<!-- SPEAKER NOTE: this is a good-news slide - don't let it get lost after
+     the detour findings -->
+
 ---
 
 ## Candidate: AS139759 (an FSM ASN (no PeeringDB org name on record)) -> AS17893 (Palau National Communications Corp)

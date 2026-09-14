@@ -490,3 +490,15 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   folded into its note. Notable: ARENA-PAC and University of Guam are
   both confirmed GOREX members, yet this path between them still
   doesn't cross GOREX -- same pattern as the AS3605->Cogent detour.
+- New confirmed local-transit entry: Niue (AS55885), tested for the
+  first time all session via the ASN probe registry. RIS shows exactly
+  one neighbor (AS55943, 1,662 observations) -- settling which of two
+  competing IRR leads (from Samoa and French Polynesia) was real before
+  any traceroute was needed. The traceroute itself resolved cleanly to
+  AS9471, a sibling ASN of the same operator (ONATI, French Polynesia's
+  telecom incumbent -- confirmed via matching PeeringDB holder names
+  and AS9471's own RIS-confirmed 1,838-observation link to AS55943).
+  Recorded with the ASN-identity nuance stated plainly. Also recovered
+  from another environment memory-kill mid-measurement, same pattern
+  and fix as before (measurement already created server-side; re-ran
+  the results-fetch in the foreground).

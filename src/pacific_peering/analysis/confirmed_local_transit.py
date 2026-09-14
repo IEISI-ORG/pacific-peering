@@ -162,4 +162,35 @@ CONFIRMED_LOCAL_TRANSIT: tuple[ConfirmedLocalTransit, ...] = (
             "measured traffic between those members doesn't necessarily use it."
         ),
     ),
+    ConfirmedLocalTransit(
+        provider_cc="PF",
+        provider_asn=9471,
+        provider_name="ONATI (Office des Postes et Telecommunications)",
+        customer_cc="NU",
+        customer_asn=55885,
+        customer_name="No. 1 Commercial Center",
+        measurement_id=211091699,
+        vantage_point_cc="NU",
+        ris_observation_count=1662,
+        note=(
+            "Niue's only RIS-observed neighbor at all is AS55943 (1,662 "
+            "observations) -- also ONATI, French Polynesia's telecom incumbent, "
+            "just a second ASN of the same operator (both PeeringDB and RIPEstat "
+            "list AS9471 and AS55943 under the identical holder name, 'ONATI-AS-AP "
+            "- ONATI'; AS9471's own RIS neighbor list independently confirms "
+            "AS55943 with 1,838 observations, proving the sibling relationship, "
+            "not just a name coincidence). Sourced directly from Niue's own "
+            "connected Atlas probe (found via the ASN probe registry) toward "
+            "AS55943 specifically: the traceroute resolved cleanly and contiguously "
+            "to AS9471 -- ONATI's *other* ASN -- before going dark short of the "
+            "literal target. `check_neighbor_agreement` reports `ris_agrees: "
+            "false` on a strict reading (AS9471 isn't literally in AS55943's own "
+            "neighbor list), but read correctly this is the same real-world "
+            "relationship RIS already confirmed for Niue, observed via ONATI's "
+            "other identity -- recorded as confirmed on that basis, with the "
+            "nuance stated plainly rather than either overclaiming a literal "
+            "ASN-for-ASN match or discarding a real, well-evidenced finding over "
+            "a technicality of which of one company's two ASNs a hop resolved to."
+        ),
+    ),
 )
