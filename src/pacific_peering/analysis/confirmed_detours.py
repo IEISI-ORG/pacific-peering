@@ -353,4 +353,36 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
             "which island it's reaching."
         ),
     ),
+    ConfirmedDetour(
+        source_cc="GU",
+        target_cc="WS",
+        target_asn=17993,
+        detour_ix_name="AS174 (Cogent Communications), via AS3356 (Level 3/Lumen) -- "
+        "global transit, not a named exchange crossing",
+        detour_hub="Sydney",
+        measurement_id=211418048,
+        ris_observation_count=1455,
+        note=(
+            "Guam Cablevision (AS3605) -> Samoa (AS17993) -- pulled from the "
+            "corridor backlog's top pick: a fresh GU<->WS economy pair. "
+            "Measurement scheduled slowly again (a third occurrence of the "
+            "same pattern already seen for AS9241 and AS9471 -- checked "
+            "`participant_count` first, confirmed genuinely queued, resolved "
+            "on a longer poll; treated as a now-recognized characteristic of "
+            "AS3605's probes rather than re-investigated as a fresh anomaly). "
+            "Both probes fully contiguous: AS3605 -> AS3356 (Level 3/Lumen) -> "
+            "AS174 (Cogent Communications) -> AS17993. Upstream of the target "
+            "is AS174, RIS-agreeing with an *exact* match (1,455) -- checked "
+            "against AS17993's full neighbor list "
+            "(`{174: 1455, 6939: 150, 64073: 10, ...}`): AS174 is overwhelmingly "
+            "its dominant relationship. **A fourth AS3605-sourced measurement "
+            "landing on Cogent as the target's real upstream** (after "
+            "AS17893/Palau and AS9241/FINTEL Fiji via Tokyo/IIJ, and "
+            "AS9751/American Samoa also via Tokyo/IIJ) -- this one via Level "
+            "3/Lumen instead, no Tokyo hop this time, but the same ultimate "
+            "carrier. Cogent is clearly AS3605's real default path to reach "
+            "multiple different Pacific island networks, via more than one "
+            "specific intermediate route."
+        ),
+    ),
 )

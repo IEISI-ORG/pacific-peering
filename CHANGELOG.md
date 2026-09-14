@@ -757,3 +757,11 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   economies' traffic, not just its own. Not a new entry -- added as a
   corroboration note on the existing ConfirmedLocalTransit entry;
   marked tested; backlog regenerated (1285 -> 1283).
+- Sixth hourly firing: sourced AS3605 toward AS17993 (Samoa) -- a
+  fresh GU<->WS pair. Third occurrence of the slow-scheduling pattern
+  (now recognized, not re-investigated). Fully contiguous, exact RIS
+  match (1,455) via AS174 (Cogent), this time via Level 3/Lumen
+  instead of Tokyo/IIJ -- the fourth AS3605-sourced measurement to
+  land on Cogent as the real upstream, via a different intermediate
+  route. Added as a new ConfirmedDetour entry; marked tested; backlog
+  regenerated (1283 -> 1265).
