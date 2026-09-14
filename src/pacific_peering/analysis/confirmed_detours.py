@@ -467,4 +467,33 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
             "from an ordinary customer-transit contract between the two."
         ),
     ),
+    ConfirmedDetour(
+        source_cc="GU",
+        target_cc="WF",
+        target_asn=45879,
+        detour_ix_name="AS5511 (Opentransit Orange S.A.), via AS2497 (IIJ, Japan) -- "
+        "global transit, not a named exchange crossing",
+        detour_hub="Tokyo",
+        measurement_id=211486369,
+        ris_observation_count=1665,
+        note=(
+            "Guam Cablevision (AS3605) -> Orange Wallis & Futuna (AS45879) -- a "
+            "fresh GU<->WF economy pair. Seventh occurrence of the "
+            "slow-scheduling pattern, resolved on a longer poll as before. "
+            "Both probes: AS3605 -> AS2497 (IIJ, Japan) -> AS5511 (Opentransit "
+            "Orange S.A.) -- the target itself never resolved (ordinary ICMP "
+            "filtering, the established pattern), so RIS is checked against "
+            "the last-reached ASN, per this project's inbound-style method. "
+            "RIS agrees with an *exact* match (1,665) -- and this is the "
+            "identical relationship and identical observation count already "
+            "on record from this session's own market-structure analysis: "
+            "AS45879's only RIS-observed neighbor at all is AS5511, Orange's "
+            "own international backbone ASN, consistent with the operator "
+            "itself being a direct Orange Group subsidiary rather than an "
+            "independent carrier peering arm's-length. This project's fifth "
+            "distinct global carrier now confirmed filling AS3605's "
+            "\"reach a Pacific destination via Tokyo\" role (Cogent, Telstra "
+            "domestic, Telstra Global, Tata, and now Opentransit Orange)."
+        ),
+    ),
 )

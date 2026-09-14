@@ -810,3 +810,11 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   a clean, real exchange crossing kept as a new CandidatePeering
   entry, not ConfirmedDetour. Marked tested; backlog regenerated
   (1230 -> 1208).
+- Sourced AS3605 toward AS45879 (Orange Wallis & Futuna) -- a fresh
+  GU<->WF pair. Exact RIS match (1,665) via AS5511 (Opentransit
+  Orange S.A.), identical to the relationship already found during
+  this session's market-concentration analysis -- the operator is a
+  direct Orange Group subsidiary on its own parent's backbone. Fifth
+  distinct global carrier confirmed filling AS3605's Tokyo-transit
+  role. Added as a new ConfirmedDetour entry; marked tested; backlog
+  regenerated (1208 -> 1205).
