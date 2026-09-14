@@ -5,6 +5,17 @@ verifiable signal for IXP-routing analysis, independent of and
 complementary to AS-path data from RIS (an IXP's route-server ASN
 typically does not appear in AS-paths, so this can't be inferred from
 paths alone).
+
+Authenticates with a PeeringDB API key when `secrets.yaml` has one
+(read-only, per the project owner — matches how it's used anyway,
+since this module only ever issues GET requests). Every request in
+this module goes through `_get`, which attaches the key once loaded.
+Falls back to unauthenticated requests if no key is configured — the
+public API works either way, just at PeeringDB's lower unauthenticated
+rate limit, which is exactly what motivated adding the key: repeated
+rate-limiting is why `ixp_lan_registry` and `irr_leads` each needed a
+"never let a failed refetch silently discard already-confirmed data"
+fix earlier in this project.
 """
 
 from __future__ import annotations
@@ -15,11 +26,40 @@ from dataclasses import dataclass
 
 import requests
 
+from pacific_peering.discovery.secrets import load_peeringdb_api_key
+
 logger = logging.getLogger(__name__)
 
 PEERINGDB_BASE_URL = "https://www.peeringdb.com/api"
 _DEFAULT_TIMEOUT = 30.0
 _CHUNK_SIZE = 50
+
+_auth_headers_cache: dict[str, str] | None = None
+
+
+def _auth_headers() -> dict[str, str]:
+    """Return the `Authorization` header for PeeringDB requests, if a key is configured.
+
+    Loaded once per process and cached — `secrets.yaml` doesn't change
+    mid-run. Missing entirely, or missing the key, degrades to an empty
+    dict (unauthenticated requests) rather than raising: this project
+    must stay usable by anyone who clones it without a PeeringDB key.
+    """
+    global _auth_headers_cache
+    if _auth_headers_cache is None:
+        try:
+            key = load_peeringdb_api_key()
+            _auth_headers_cache = {"Authorization": f"api-key {key}"}
+            logger.info("PeeringDB requests authenticated via secrets.yaml")
+        except (FileNotFoundError, KeyError):
+            _auth_headers_cache = {}
+            logger.info("No PeeringDB API key configured; requests will be unauthenticated")
+    return _auth_headers_cache
+
+
+def _get(url: str, params: dict | None = None, timeout: float = _DEFAULT_TIMEOUT) -> requests.Response:
+    """`requests.get` with the PeeringDB auth header attached, when configured."""
+    return requests.get(url, params=params, headers=_auth_headers(), timeout=timeout)
 
 
 @dataclass(frozen=True)
@@ -80,9 +120,7 @@ def resolve_ip_via_netixlan(
         The member ASN if `ip` is a known netixlan address, else None.
     """
     for attempt in range(max_retries + 1):
-        response = requests.get(
-            f"{PEERINGDB_BASE_URL}/netixlan", params={"ipaddr4": ip}, timeout=timeout
-        )
+        response = _get(f"{PEERINGDB_BASE_URL}/netixlan", params={"ipaddr4": ip}, timeout=timeout)
         if response.status_code == 429:
             if attempt < max_retries:
                 logger.warning(
@@ -105,7 +143,7 @@ def _fetch_netixlan_records(asns: list[int], timeout: float = _DEFAULT_TIMEOUT) 
     """Fetch raw netixlan records (asn <-> ix_id) for the given ASNs, chunked."""
     records: list[dict] = []
     for chunk in _chunked(asns):
-        response = requests.get(
+        response = _get(
             f"{PEERINGDB_BASE_URL}/netixlan",
             params={"asn__in": ",".join(str(asn) for asn in chunk)},
             timeout=timeout,
@@ -119,7 +157,7 @@ def fetch_ix_info(ix_ids: list[int], timeout: float = _DEFAULT_TIMEOUT) -> dict[
     """Fetch IXP metadata (name, city, country) for the given ix_ids, chunked."""
     ix_by_id: dict[int, dict] = {}
     for chunk in _chunked(ix_ids):
-        response = requests.get(
+        response = _get(
             f"{PEERINGDB_BASE_URL}/ix",
             params={"id__in": ",".join(str(ix_id) for ix_id in chunk)},
             timeout=timeout,
@@ -206,7 +244,7 @@ def fetch_irr_as_set_names(
     for chunk in _chunked(asns):
         for attempt in range(max_retries + 1):
             try:
-                response = requests.get(
+                response = _get(
                     f"{PEERINGDB_BASE_URL}/net",
                     params={"asn__in": ",".join(str(asn) for asn in chunk)},
                     timeout=timeout,
@@ -251,7 +289,7 @@ def _fetch_net_ids(asns: list[int], timeout: float = _DEFAULT_TIMEOUT) -> dict[i
     """Map ASN -> PeeringDB internal `net` id, chunked."""
     asn_to_net_id: dict[int, int] = {}
     for chunk in _chunked(asns):
-        response = requests.get(
+        response = _get(
             f"{PEERINGDB_BASE_URL}/net",
             params={"asn__in": ",".join(str(asn) for asn in chunk)},
             timeout=timeout,
@@ -288,7 +326,7 @@ def fetch_facility_presence(asns: list[int]) -> dict[int, list[FacilityPresence]
         return presence
 
     for chunk in _chunked(net_ids):
-        response = requests.get(
+        response = _get(
             f"{PEERINGDB_BASE_URL}/netfac",
             params={"net_id__in": ",".join(str(net_id) for net_id in chunk)},
             timeout=_DEFAULT_TIMEOUT,
@@ -332,9 +370,7 @@ def fetch_ixp_members(
         usable target here" rather than crashing.
     """
     for attempt in range(max_retries + 1):
-        response = requests.get(
-            f"{PEERINGDB_BASE_URL}/netixlan", params={"ix_id": ix_id}, timeout=timeout
-        )
+        response = _get(f"{PEERINGDB_BASE_URL}/netixlan", params={"ix_id": ix_id}, timeout=timeout)
         if response.status_code == 429:
             if attempt < max_retries:
                 logger.warning(
@@ -388,9 +424,7 @@ def fetch_ixp_prefixes(
     prefixes: dict[int, list[str]] = {}
     for ix_id in sorted(set(ix_ids)):
         for attempt in range(max_retries + 1):
-            response = requests.get(
-                f"{PEERINGDB_BASE_URL}/ixpfx", params={"ix_id": ix_id}, timeout=timeout
-            )
+            response = _get(f"{PEERINGDB_BASE_URL}/ixpfx", params={"ix_id": ix_id}, timeout=timeout)
             if response.status_code == 429:
                 if attempt < max_retries:
                     logger.warning(

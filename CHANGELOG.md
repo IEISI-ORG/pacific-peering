@@ -418,3 +418,16 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   does this traffic cross GOREX's own fabric -- came back inconclusive:
   no hop landed inside GOREX's registered LAN prefix before the trail
   went dark, recorded honestly as such rather than stretched to fit.
+- Wired up the PeeringDB API key (read-only, per the project owner).
+  New `discovery.secrets.load_peeringdb_api_key` (mirrors the existing
+  Atlas-key pattern exactly); `discovery.peeringdb` centralized on a
+  new `_get()` helper across all 8 of its request call sites, attaching
+  the key when present and degrading to unauthenticated otherwise.
+  Verified the header is attached correctly (without ever printing the
+  key) and re-ran the full pipeline to check the actual motivation:
+  a real but partial improvement -- the `net` endpoint hit zero
+  rate-limit warnings this run (every prior run hit at least one), but
+  `ixpfx` still got rate-limited twice (fewer than the usual 3-4,
+  not zero). The existing "never discard already-confirmed data on a
+  failed refetch" protections in `ixp_lan_registry`/`irr_leads` caught
+  it correctly regardless -- verified no data was lost.

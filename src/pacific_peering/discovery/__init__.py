@@ -22,6 +22,7 @@ from .peeringdb import (
     resolve_ip_via_netixlan,
 )
 from .registry import build_registry
+from .secrets import load_peeringdb_api_key
 from .supplementary_asns import SUPPLEMENTARY_ASNS, SupplementaryAsn
 from .supplementary_ixps import SUPPLEMENTARY_IXPS, SupplementaryIxp
 
@@ -49,6 +50,7 @@ __all__ = [
     "resolve_ip_via_netixlan",
     "resolve_as_set",
     "build_registry",
+    "load_peeringdb_api_key",
     "SUPPLEMENTARY_ASNS",
     "SupplementaryAsn",
     "SUPPLEMENTARY_IXPS",
