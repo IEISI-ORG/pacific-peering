@@ -569,3 +569,14 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   content in `candidate_peering.py`. Process note added to
   task_plan.md: grep existing findings for an ASN pair before firing a
   new measurement toward it.
+- Applied that new process rule immediately: grepped for AS58932 and
+  AS133897 (the other two Palau ASNs in AS3605's declared AS-SET)
+  first, confirmed neither was tested, then sourced AS3605 toward
+  AS58932 (measurement 211185048). Real, clean, new finding: AS3605 is
+  immediately adjacent to AS58932 with zero intermediate hops (RIS
+  exact match, 664 observations) -- a completely different shape from
+  the AS17893 corridor's Tokyo/Cogent transit path, despite both being
+  named in the same IRR AS-SET. Added as a new ConfirmedLocalTransit
+  entry. AS133897 (100% single-neighbor RIS signal toward AS3605) is
+  flagged as the obvious next check, left untested this tranche on
+  purpose.

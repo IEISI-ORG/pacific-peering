@@ -222,4 +222,42 @@ CONFIRMED_LOCAL_TRANSIT: tuple[ConfirmedLocalTransit, ...] = (
             "previously-confirmed count stayed exactly the same."
         ),
     ),
+    ConfirmedLocalTransit(
+        provider_cc="GU",
+        provider_asn=3605,
+        provider_name="Guam Cablevision, LLC",
+        customer_cc="PW",
+        customer_asn=58932,
+        customer_name="Palau Mobile Communications Inc.",
+        measurement_id=211185048,
+        vantage_point_cc="GU",
+        ris_observation_count=664,
+        note=(
+            "Follow-up to the two already-tested Palau corridors: AS3605's own "
+            "declared transit AS-SET (AS-KUENTOS-TRANSIT) names all three of "
+            "Palau's in-scope ASNs directly (17893, 58932, 133897) -- AS17893 is "
+            "a confirmed detour via Tokyo/Cogent (see confirmed_detours.py), so "
+            "the other two named ASNs were the natural next check, and (per the "
+            "process note from the prior tranche) grepped first to confirm "
+            "neither had been tested yet. Sourced directly from AS3605's own "
+            "connected Atlas probes toward AS58932. Result: a completely "
+            "different shape from the AS17893 corridor -- both responding "
+            "probes show AS3605 immediately adjacent to AS58932, *zero* "
+            "intermediate hops at all, no external hub, no IXP crossing. RIS "
+            "agrees with an exact observation-count match (664) -- and AS58932's "
+            "entire RIS neighbor list has only two entries at all (AS24545: 704, "
+            "AS3605: 664), so this is one of its two dominant relationships, not "
+            "a minor one. A real, clean, direct transit relationship, distinct "
+            "in kind from the AS17893 finding: AS3605 evidently serves at least "
+            "one Palau network (AS58932/Palau Mobile Communications) with a "
+            "direct connection rather than routing it out to global transit the "
+            "way it does for AS17893 -- the same declared AS-SET names both, but "
+            "the real traffic paths diverge sharply between the two named "
+            "customers. AS133897 (Palau Equipment Co. Inc.) remains the one "
+            "still-untested ASN from this AS-SET; its RIS data shows AS3605 as "
+            "its *only* neighbor at all (662 observations, 100% of its ~662 "
+            "total path observations) -- the strongest single-neighbor signal "
+            "of any ASN tested this session, and the obvious next check."
+        ),
+    ),
 )
