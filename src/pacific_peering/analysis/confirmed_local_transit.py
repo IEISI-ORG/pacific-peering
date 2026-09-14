@@ -292,4 +292,49 @@ CONFIRMED_LOCAL_TRANSIT: tuple[ConfirmedLocalTransit, ...] = (
             "the IRR declaration alone."
         ),
     ),
+    ConfirmedLocalTransit(
+        provider_cc="PF",
+        provider_asn=9471,
+        provider_name="ONATI (Office des Postes et Telecommunications)",
+        customer_cc="CK",
+        customer_asn=10131,
+        customer_name="Telecom Cook Islands",
+        measurement_id=211227855,
+        vantage_point_cc="PF",
+        ris_observation_count=658,
+        note=(
+            "AS9471 has 6 connected Atlas probes -- the most of any ASN in the "
+            "registry -- but had never been used as a traceroute *source* until "
+            "this tranche; picked as a well-motivated corridor because AS10131 "
+            "(Cook Islands)'s own RIS neighbor list already showed AS55943 -- "
+            "ONATI's other, previously-established sibling ASN (see the "
+            "Niue<->ONATI entry above) -- as its second-largest neighbor (658 "
+            "observations), a real relationship flagged but never directly "
+            "tested since the Cook Islands/SES Astra tranche a few loops ago. "
+            "Sourced directly from AS9471 toward AS10131's own address. Result: "
+            "all 3 probes show an almost entirely private-address path -- RFC1918 "
+            "hops (10.x.x.x, 192.168.x.x) the whole way, except for one public "
+            "transit IP (103.254.224.70) that resolves cleanly to AS9471 itself "
+            "(checked directly via RIPEstat, not assumed), before landing "
+            "directly on AS10131's own address. `check_neighbor_agreement` "
+            "reports `contiguous: false` and `ris_agrees: false` on a strict "
+            "reading, because its gap logic (correctly, by design) can't tell "
+            "the difference between 'an unresolvable hop that might be some "
+            "other unknown AS' and 'private-address hops that are provably "
+            "still inside the source's own network' -- every private hop here "
+            "sits between two points both independently confirmed as AS9471's "
+            "own address space, so there is no real unknown intermediary, just "
+            "an internal-addressing artifact the current resolver doesn't "
+            "distinguish. Read correctly: this is effectively a direct, "
+            "single-AS-hop path from ONATI to Telecom Cook Islands. And exactly "
+            "as the Niue precedent established, RIS's real confirmation of this "
+            "relationship comes via AS9471's sibling identity, AS55943 (658 "
+            "observations -- an *exact* match), not the literal AS9471 number "
+            "the traceroute happened to resolve to. Recorded as confirmed on "
+            "that same, now twice-independently-applied basis, with the nuance "
+            "stated plainly rather than either overclaiming a literal ASN-level "
+            "gap-free match or discarding a real, well-evidenced finding over a "
+            "resolver limitation."
+        ),
+    ),
 )

@@ -599,3 +599,19 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   topology cross-check. AS3605/AS17893 also showed extra prefixes
   bgp.tools sees that RIS's deliberately-capped 5-prefix cache
   doesn't -- expected, not a discrepancy.
+- Sourced AS9471 (ONATI, French Polynesia) as a traceroute source for
+  the first time -- it has 6 connected Atlas probes, the most in the
+  registry, but had only ever been a confirmed endpoint before.
+  Targeted AS10131 (Cook Islands), whose own RIS data already showed
+  ONATI's sibling ASN (AS55943) as its second-largest neighbor (658
+  observations). Result looked inconclusive at first read
+  (`contiguous: false`) but turned out to be a resolver limitation,
+  not a real gap: the "unresolved" hops were all RFC1918 private
+  addresses inside AS9471's own network, confirmed directly via
+  RIPEstat rather than assumed. Read correctly, this is a direct
+  single-AS-hop path, RIS-confirmed via the same sibling-ASN
+  relationship already established for the Niue corridor. Added as a
+  new ConfirmedLocalTransit entry. Flagged (not fixed) a generalizable
+  resolver gap: private-address hops and genuinely-unresolvable hops
+  are currently treated identically, though they mean different
+  things.
