@@ -425,4 +425,46 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
             "Tata)."
         ),
     ),
+    ConfirmedDetour(
+        source_cc="GU",
+        target_cc="TO",
+        target_asn=38198,
+        detour_ix_name="AS3356 (Level 3/Lumen) + AS4637 (Telstra Global) + AS45355 "
+        "(Digicel Fiji) -- global transit, not a named exchange crossing",
+        detour_hub="Sydney",
+        measurement_id=211478036,
+        ris_observation_count=1321,
+        note=(
+            "Guam Cablevision (AS3605) -> Digicel Tonga (AS38198) -- a fresh "
+            "GU<->TO economy pair. Sixth occurrence of the slow-scheduling "
+            "pattern (recognized, resolved on a longer poll as before). "
+            "Both probes: AS3605 -> AS3356 (Level 3/Lumen) -> AS4637 (Telstra "
+            "Global) -> AS45355 (Digicel Fiji) -> AS38198. Upstream of the "
+            "target is AS45355, RIS-agreeing with an *exact* match (1,321) -- "
+            "checked against AS38198's full neighbor list: AS45355 is its "
+            "*only* RIS-observed neighbor at all. "
+            "**Checked the traceroute's tail carefully before writing this up "
+            "as routine, since it read as more silence than usual**: both "
+            "probes actually reach a real, BGP-confirmed AS38198 address "
+            "(`202.43.12.5`) one hop after the last AS45355 hop, separated by "
+            "exactly one ordinary silent boundary hop (the same routine "
+            "pattern seen throughout this session) -- a solid, confirmed "
+            "crossing into the target's own network, not a gap. Only *after* "
+            "that does the traceroute go fully silent trying to reach the "
+            "specific queried address (`202.43.12.1`) itself, all the way to "
+            "the final hop -- read as the destination address itself not "
+            "responding to traceroute probes at all (common for "
+            "security-hardened endpoints), not evidence against the "
+            "already-confirmed AS45355<->AS38198 adjacency, which sits before "
+            "that silent stretch, not inside it. "
+            "**Worth noting in its own right**: Digicel Fiji serving as the "
+            "real upstream for Digicel Tonga -- both are regional "
+            "subsidiaries of the same corporate parent (Digicel Group). Reads "
+            "as intra-corporate regional transit, the same shape as the "
+            "Wallis & Futuna -> Orange S.A. relationship, rather than "
+            "arm's-length peering between unrelated carriers, though this "
+            "traceroute alone doesn't distinguish corporate-internal routing "
+            "from an ordinary customer-transit contract between the two."
+        ),
+    ),
 )

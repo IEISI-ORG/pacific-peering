@@ -790,3 +790,14 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   Communications) -- AS24439's only RIS neighbor at all. Added as a
   new ConfirmedDetour entry; marked tested; backlog regenerated
   (1248 -> 1242).
+- Ninth hourly firing: sourced AS3605 toward AS38198 (Digicel Tonga)
+  -- a fresh GU<->TO pair. Both probes actually cross into the target
+  network (a real, BGP-confirmed AS38198 address one hop past Digicel
+  Fiji), then go silent trying to reach the specific queried address
+  -- checked the raw hops directly before treating that as routine,
+  confirmed the adjacency itself sits before the silent stretch, not
+  inside it. Exact RIS match (1,321) via AS45355 (Digicel Fiji, its
+  only neighbor) -- both Digicel regional subsidiaries, likely
+  intra-corporate transit, same shape as the Wallis & Futuna->Orange
+  relationship. Added as a new ConfirmedDetour entry; marked tested;
+  backlog regenerated (1242 -> 1230).
