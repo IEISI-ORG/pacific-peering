@@ -80,6 +80,24 @@ def render_ascii_report(data: ReportData) -> str:
         )
         lines.append(f"    {transit['note']}")
 
+    lines.append(
+        _section("CANDIDATE PEERING (strong traceroute signal, RIS disagrees -- unconfirmed)")
+    )
+    if not data.candidate_peering:
+        lines.append("(none recorded yet)")
+    for candidate in data.candidate_peering:
+        lines.append(
+            f"AS{candidate['upstream_asn']} ({candidate['upstream_name']}, "
+            f"{candidate['upstream_cc']}) -> AS{candidate['target_asn']} "
+            f"({candidate['target_name']}, {candidate['target_cc']})"
+        )
+        lines.append(
+            f"    Traceroute agreement: {candidate['probe_agreement']}  "
+            f"[measurement {candidate['measurement_id']}, "
+            f"vantage: {candidate['vantage_point_cc']}]"
+        )
+        lines.append(f"    {candidate['note']}")
+
     lines.append(_section("ECONOMIES"))
     header = f"{'CC':<4} {'Name':<32} {'Subregion':<12} {'ASNs':>5} {'Nbr':>5} {'IXP':>5} {'Fac':>5}"
     lines.append(header)

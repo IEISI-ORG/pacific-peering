@@ -28,7 +28,7 @@ from pacific_peering.atlas.client import (
     wait_for_results,
 )
 from pacific_peering.atlas.probes import pick_best_covered_economy
-from pacific_peering.atlas.targets import pick_target_ip
+from pacific_peering.atlas.targets import pick_ixp_member_target, pick_target_ip
 from pacific_peering.discovery.economies import ECONOMIES_BY_CC
 
 logger = logging.getLogger(__name__)
@@ -131,6 +131,47 @@ def run_inbound_smoketest(
     )
     logger.info("External source economy: %s", external_source_cc)
     return _fire_and_persist("country", external_source_cc, target_ip, description, probe_count)
+
+
+def run_ixp_member_probe(
+    ix_id: int,
+    source_cc: str,
+    exclude_asn: int | None = None,
+    probe_count: int = 3,
+) -> int:
+    """Fire a traceroute from `source_cc` directly at a known IXP member's peering-LAN address.
+
+    The active method for hidden-peering discovery (as opposed to
+    `run_smoketest`'s incidental one): pick a real member address at a
+    known exchange via `pick_ixp_member_target` and target it directly,
+    so an in-fishbowl exchange's fabric can be probed deliberately
+    rather than only noticed when it happens to sit on some other
+    measurement's path.
+
+    Args:
+        ix_id: PeeringDB exchange ID to probe (see `ixp_lan_registry` for
+            which ones are confirmed in-fishbowl).
+        source_cc: Economy to source probes from.
+        exclude_asn: Skip this member ASN when picking a target (e.g.
+            the source economy's own ASN).
+        probe_count: Number of probes to request.
+
+    Returns:
+        The created measurement's ID.
+    """
+    member_asn, target_ip = pick_ixp_member_target(ix_id, exclude_asn=exclude_asn)
+    description = (
+        f"pacific-peering ixp-member-probe {source_cc} to ix_id={ix_id} "
+        f"member AS{member_asn} {target_ip}"
+    )
+    logger.info(
+        "Targeting AS%d (%s) at ix_id=%d from source economy %s",
+        member_asn,
+        target_ip,
+        ix_id,
+        source_cc,
+    )
+    return _fire_and_persist("country", source_cc, target_ip, description, probe_count)
 
 
 def _log_measurement(measurement_id: int) -> None:

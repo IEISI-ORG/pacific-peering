@@ -228,6 +228,60 @@ def fetch_facility_presence(asns: list[int]) -> dict[int, list[FacilityPresence]
     return presence
 
 
+def fetch_ixp_members(
+    ix_id: int, timeout: float = _DEFAULT_TIMEOUT, max_retries: int = 3
+) -> dict[int, list[str]]:
+    """Fetch one IXP's real member ASNs and their peering-LAN IPv4 addresses.
+
+    This is what makes the "traceroute directly at a known IXP LAN
+    address" method possible: rather than waiting for a member's address
+    to show up incidentally as a hop in some unrelated traceroute, pick
+    one deliberately from here and target it. `netixlan` supports
+    filtering by `ix_id` directly (confirmed empirically — like
+    `ixpfx`, despite records nominally keying off `ixlan_id`).
+
+    Args:
+        ix_id: PeeringDB exchange ID.
+        max_retries: Retries on 429 before giving up on this exchange.
+
+    Returns:
+        Mapping of member ASN to its IPv4 address(es) at this exchange
+        (usually one, occasionally more for route-server ports). Empty
+        dict if the exchange has no members on record or still 429s
+        after all retries — a caller should treat that the same as "no
+        usable target here" rather than crashing.
+    """
+    for attempt in range(max_retries + 1):
+        response = requests.get(
+            f"{PEERINGDB_BASE_URL}/netixlan", params={"ix_id": ix_id}, timeout=timeout
+        )
+        if response.status_code == 429:
+            if attempt < max_retries:
+                logger.warning(
+                    "PeeringDB rate-limited netixlan-members lookup for ix_id=%d, "
+                    "retrying (%d/%d)",
+                    ix_id,
+                    attempt + 1,
+                    max_retries,
+                )
+                time.sleep(2**attempt)
+                continue
+            logger.warning(
+                "PeeringDB still rate-limiting netixlan-members lookup for ix_id=%d; giving up",
+                ix_id,
+            )
+            return {}
+        response.raise_for_status()
+        members: dict[int, list[str]] = {}
+        for record in response.json()["data"]:
+            ip = record.get("ipaddr4")
+            if not ip:
+                continue
+            members.setdefault(record["asn"], []).append(ip)
+        return members
+    return {}
+
+
 def fetch_ixp_prefixes(
     ix_ids: list[int], timeout: float = _DEFAULT_TIMEOUT, max_retries: int = 3
 ) -> dict[int, list[str]]:

@@ -1,5 +1,6 @@
 """Peering analysis: neighbor inference, IXP LAN classification, RIS/Atlas triangulation."""
 
+from .candidate_peering import CANDIDATE_PEERING, CandidatePeering
 from .confirmed_detours import CONFIRMED_DETOURS, ConfirmedDetour
 from .confirmed_local_transit import CONFIRMED_LOCAL_TRANSIT, ConfirmedLocalTransit
 from .feasibility import (
@@ -33,6 +34,8 @@ from .traceroute_topology import (
 )
 
 __all__ = [
+    "CANDIDATE_PEERING",
+    "CandidatePeering",
     "CONFIRMED_DETOURS",
     "ConfirmedDetour",
     "CONFIRMED_LOCAL_TRANSIT",

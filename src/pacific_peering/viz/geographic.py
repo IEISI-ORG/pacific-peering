@@ -4,9 +4,10 @@ Plots every in-scope economy at its capital city, plus any out-of-
 fishbowl hub involved in a confirmed detour (currently just Sydney).
 Draws each `ConfirmedDetour` as an actual bent path (source -> hub ->
 target) next to a dashed straight line showing what a direct route
-would look like, and each `ConfirmedLocalTransit` as a direct solid
-green line between the two in-fishbowl economies — the same red/green
-distinction the reports use, so the map isn't just half the story.
+would look like, each `ConfirmedLocalTransit` as a direct solid green
+line between the two in-fishbowl economies, and each `CandidatePeering`
+as a dashed amber line — the same red/green/amber distinction the
+reports use, so the map isn't just half the story.
 
 No basemap/coastline library (avoids a heavy new dependency like
 cartopy for a first version) — a plain lat/lon scatter is enough to
@@ -20,6 +21,7 @@ from pathlib import Path
 
 import matplotlib.pyplot as plt
 
+from pacific_peering.analysis.candidate_peering import CANDIDATE_PEERING
 from pacific_peering.analysis.confirmed_detours import CONFIRMED_DETOURS
 from pacific_peering.analysis.confirmed_local_transit import CONFIRMED_LOCAL_TRANSIT
 from pacific_peering.discovery.economies import ECONOMIES_BY_CC
@@ -36,6 +38,7 @@ _SUBREGION_COLOR = {
 }
 _STATUS_CRITICAL = "#d03b3b"
 _STATUS_GOOD = "#0ca30c"
+_STATUS_WARNING = "#fab219"
 _MUTED = "#898781"
 _INK = "#0b0b0b"
 
@@ -113,6 +116,19 @@ def plot_confirmed_detours(output_path: Path = DEFAULT_OUTPUT_PATH) -> Path:
             [px, cx], [prov_lat, cust_lat], linestyle="-", linewidth=1.8, color=_STATUS_GOOD, zorder=2
         )
 
+    for candidate in CANDIDATE_PEERING:
+        up_lat, up_lon = ECONOMY_LATLON[candidate.upstream_cc]
+        tgt_lat, tgt_lon = ECONOMY_LATLON[candidate.target_cc]
+        ux, tx = _shifted_lon(up_lon), _shifted_lon(tgt_lon)
+        ax.plot(
+            [ux, tx],
+            [up_lat, tgt_lat],
+            linestyle=(0, (4, 3)),
+            linewidth=1.8,
+            color=_STATUS_WARNING,
+            zorder=2,
+        )
+
     ax.set_xlabel("longitude (shifted east of antimeridian)", color=_MUTED, fontsize=9)
     ax.set_ylabel("latitude", color=_MUTED, fontsize=9)
     ax.tick_params(colors=_MUTED, labelsize=8)
@@ -120,9 +136,10 @@ def plot_confirmed_detours(output_path: Path = DEFAULT_OUTPUT_PATH) -> Path:
         spine.set_color("#e1e0d9")
     ax.grid(True, color="#e1e0d9", linewidth=0.6)
     ax.set_title(
-        "Confirmed routing findings: detours vs. local transit\n"
+        "Routing findings: detours, local transit, and candidate peering\n"
         "(solid red = detour via an out-of-fishbowl hub; solid green = confirmed in-fishbowl "
-        "transit; dashed = direct-line comparison for detours)",
+        "transit; amber dashes = candidate peering, unconfirmed; grey dashed = direct-line "
+        "comparison for detours)",
         fontsize=11,
         color=_INK,
         loc="left",
@@ -150,6 +167,16 @@ def plot_confirmed_detours(output_path: Path = DEFAULT_OUTPUT_PATH) -> Path:
     )
     legend_handles.append(
         plt.Line2D([0], [0], color=_STATUS_GOOD, linewidth=2, label="confirmed local transit")
+    )
+    legend_handles.append(
+        plt.Line2D(
+            [0],
+            [0],
+            color=_STATUS_WARNING,
+            linewidth=2,
+            linestyle=(0, (4, 3)),
+            label="candidate peering (unconfirmed)",
+        )
     )
     ax.legend(handles=legend_handles, loc="lower left", fontsize=8, framealpha=0.9)
 

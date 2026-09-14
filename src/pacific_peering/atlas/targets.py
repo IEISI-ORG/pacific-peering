@@ -11,6 +11,7 @@ import ipaddress
 import json
 from pathlib import Path
 
+from pacific_peering.discovery.peeringdb import fetch_ixp_members
 from pacific_peering.ris.bulk import DEFAULT_CACHE_DIR
 
 
@@ -38,3 +39,36 @@ def pick_target_ip(asn: int, cache_dir: Path = DEFAULT_CACHE_DIR) -> str:
         raise ValueError(f"AS{asn} has no cached originated prefixes")
     network = ipaddress.ip_network(prefixes[0], strict=False)
     return str(network.network_address + 1)
+
+
+def pick_ixp_member_target(ix_id: int, exclude_asn: int | None = None) -> tuple[int, str]:
+    """Pick one real member's peering-LAN address at a known IXP, to traceroute directly.
+
+    The active counterpart to `pick_target_ip`'s incidental approach:
+    rather than waiting for a member's IXP-fabric address to turn up as
+    a hop in some unrelated traceroute, fetch the exchange's real
+    membership from PeeringDB and target one deliberately. This is the
+    method for actively probing for hidden/unlisted peering at a known
+    in-fishbowl exchange, rather than only noticing it after the fact.
+
+    Args:
+        ix_id: PeeringDB exchange ID to pick a member from.
+        exclude_asn: Skip this ASN (e.g. the measurement's own source
+            ASN, to avoid a trivially-local "target" that never leaves
+            the source's own network).
+
+    Returns:
+        (member_asn, ipaddr4) for the lowest-numbered eligible member ASN
+        — arbitrary but deterministic, so repeat runs pick the same
+        target unless the membership list itself changes.
+
+    Raises:
+        ValueError: If the exchange has no eligible members on record
+            (empty membership, or every member is `exclude_asn`).
+    """
+    members = fetch_ixp_members(ix_id)
+    eligible = {asn: ips for asn, ips in members.items() if asn != exclude_asn and ips}
+    if not eligible:
+        raise ValueError(f"ix_id={ix_id} has no eligible member addresses on record")
+    asn = min(eligible)
+    return asn, eligible[asn][0]

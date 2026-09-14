@@ -11,7 +11,7 @@ from .client import (
 )
 from .probes import build_probe_coverage, count_connected_probes, pick_best_covered_economy
 from .secrets import load_atlas_api_key
-from .targets import pick_target_ip
+from .targets import pick_ixp_member_target, pick_target_ip
 
 __all__ = [
     "TracerouteHop",
@@ -26,4 +26,5 @@ __all__ = [
     "pick_best_covered_economy",
     "load_atlas_api_key",
     "pick_target_ip",
+    "pick_ixp_member_target",
 ]

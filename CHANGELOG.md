@@ -244,3 +244,35 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   artifact: AS17893 has plenty of RIS-visible neighbors, just not this
   one). Deliberately not given its own dataclass/module yet, same
   restraint as the earlier AS38875 negative result.
+- Fixed a real gap in `traceroute_topology._resolve_address`: it only
+  checked the IXP LAN registry when BGP *and* PeeringDB netixlan both
+  failed to resolve an ASN, silently discarding cases where an address
+  resolves to a real member ASN *and* also sits inside a known
+  exchange's LAN. Found by re-examining the FSM->Palau candidate: its
+  second-to-last hop resolved cleanly via netixlan to AS17893, but also
+  falls inside Guam IX's registered LAN prefix -- direct traceroute
+  corroboration of AS17893's PeeringDB-claimed Guam IX membership that
+  the old logic never surfaced. Now checks IXP-fabric membership
+  unconditionally. Verified by clearing the entire IP resolution cache
+  and re-running all 7 measurements this project has fired: the two
+  existing confirmed detours gained explicit LAN-prefix corroboration,
+  and a new observation surfaced on the confirmed FJ->VU local-transit
+  measurement (2 of 3 probes transit AS4637/Telstra Global at Any2West,
+  Los Angeles, before reaching AS38442) -- folded into that finding's
+  note as an addendum about the vantage point's own path, not a change
+  to the confirmed adjacency itself.
+- `analysis.candidate_peering` (`CANDIDATE_PEERING`): a third finding
+  shape alongside confirmed detours/local-transit -- a clean, repeatable
+  traceroute adjacency that RIS does not independently confirm, recorded
+  as a candidate rather than forced into either existing category.
+  Wired into all three report formats (new amber "warning"-colored
+  section/card/slide) and the geographic map (dashed amber line),
+  verified by rendering each.
+- `discovery.peeringdb.fetch_ixp_members`, `atlas.targets.pick_ixp_member_target`,
+  and `atlas.smoketest.run_ixp_member_probe`: a new active data-gathering
+  method -- traceroute directly at a known PeeringDB member's peering-LAN
+  address, rather than only noticing an IXP crossing incidentally.
+  First real test (French Polynesia -> Fiji-IXP's AS38442 address,
+  measurement 210990245): reached AS3257 (GTT) and went dark before the
+  target -- an honest inconclusive result, but proves the method fires
+  correctly end-to-end.

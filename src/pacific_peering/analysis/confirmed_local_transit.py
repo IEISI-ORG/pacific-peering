@@ -58,7 +58,18 @@ CONFIRMED_LOCAL_TRANSIT: tuple[ConfirmedLocalTransit, ...] = (
             "RIS's only neighbor for AS38875 is AS10130, not the traceroute's "
             "last resolved hop (AS139759) — a correct negative result, not "
             "a new finding, and recorded here only as corroboration of the "
-            "existing AS9249<->AS38442 adjacency."
+            "existing AS9249<->AS38442 adjacency. "
+            "Separately, after fixing traceroute_topology._resolve_address to "
+            "check IXP-fabric membership independently of ASN resolution: for "
+            "2 of the original 3 probes (French Polynesia -> AS9249), the hop "
+            "immediately before AS38442 is AS4637 (Telstra Global), resolved "
+            "via PeeringDB netixlan, whose address also falls inside Any2West's "
+            "registered LAN prefix (Los Angeles/Silicon Valley, out-of-fishbowl). "
+            "This does not touch the AS38442<->AS9249 adjacency itself (still "
+            "confirmed on its own terms), but it does mean the vantage point's "
+            "own path to reach Fiji transits a US exchange first -- a real, "
+            "separate observation about French Polynesia's own upstream routing, "
+            "not the confirmed finding's two endpoints."
         ),
     ),
 )

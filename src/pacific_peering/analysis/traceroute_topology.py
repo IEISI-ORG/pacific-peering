@@ -57,19 +57,27 @@ def _resolve_address(
 ) -> tuple[int | None, str | None, dict | None]:
     """Resolve one address to (asn, source, ixp_context).
 
-    Three tiers, in order:
+    ASN resolution, in order:
     1. BGP (`resolve_ip_to_asns`) — covers the general internet.
     2. PeeringDB `netixlan` exact-member lookup — the fallback for IXP
        peering-LAN addresses, which are frequently *not* announced in
        global BGP at all (discovered in loop tranche 4: `103.26.68.83`
        resolved to no ASN via BGP, but PeeringDB's netixlan table
        correctly attributes it to AS45349).
-    3. This project's own IXP LAN subnet registry — when neither of the
-       above identifies a specific member ASN, check whether the address
-       still falls inside a *known* exchange's LAN prefix. If so, we
-       don't know the member, but we do know it's an IXP crossing, and
-       (once confirmed, not "TBA") whether that exchange is in- or
-       out-of-fishbowl — real information a bare unresolved gap discards.
+
+    IXP-fabric membership (`ixp_context`) is checked *independently* of
+    which tier resolved the ASN, not only as a last-resort tier 3 for
+    addresses neither of the above could attribute. The two facts aren't
+    mutually exclusive: a hop can resolve to a real member ASN via BGP or
+    netixlan *and* that same address can sit inside a known exchange's
+    registered LAN prefix — e.g. a member's own peering-LAN interface.
+    Missing this cost a real finding once already: a FSM->Palau
+    traceroute's second-to-last hop resolved cleanly via netixlan to
+    AS17893 (Palau NCC), so the old tier-3-only logic never even checked
+    the registry — silently discarding that this same address
+    (`103.142.153.18`) also falls inside Guam IX's registered LAN
+    (`103.142.153.0/24`), direct traceroute corroboration of AS17893's
+    PeeringDB-claimed Guam IX membership (Validation Rule 4).
 
     Results (including negative ones) are cached by IP across calls —
     the same backbone/IXP-fabric addresses recur across many
@@ -80,27 +88,28 @@ def _resolve_address(
     if cached is not None:
         return cached
 
+    ixp_entry = classify_ixp_fabric(address, ixp_registry)
+    ixp_context = (
+        {
+            "ix_id": ixp_entry.ix_id,
+            "name": ixp_entry.name,
+            "in_fishbowl": ixp_entry.in_fishbowl,
+        }
+        if ixp_entry is not None
+        else None
+    )
+
     bgp_asns = resolve_ip_to_asns(address)
     if len(bgp_asns) == 1:
-        result = (bgp_asns[0], "bgp", None)
+        result = (bgp_asns[0], "bgp", ixp_context)
     elif not bgp_asns:
         netixlan_asn = resolve_ip_via_netixlan(address)
         if netixlan_asn is not None:
-            result = (netixlan_asn, "peeringdb_netixlan", None)
+            result = (netixlan_asn, "peeringdb_netixlan", ixp_context)
         else:
-            ixp_entry = classify_ixp_fabric(address, ixp_registry)
-            ixp_context = (
-                {
-                    "ix_id": ixp_entry.ix_id,
-                    "name": ixp_entry.name,
-                    "in_fishbowl": ixp_entry.in_fishbowl,
-                }
-                if ixp_entry is not None
-                else None
-            )
             result = (None, "ixp_lan_registry" if ixp_entry is not None else None, ixp_context)
     else:
-        result = (None, None, None)  # ambiguous (multiple BGP-announcing ASNs); don't guess
+        result = (None, None, ixp_context)  # ambiguous ASN; IXP-fabric membership (if any) still stands
 
     cache.set(address, *result)
     return result
@@ -281,9 +290,9 @@ def analyze_measurement(
             for entry in as_sequence
         ]
         ixp_crossings = [
-            {"hop": h.hop, **h.ixp_context}
+            {"hop": h.hop, "member_asns": list(h.asns), **h.ixp_context}
             for h in resolved_hops
-            if h.ixp_context is not None and not h.asns
+            if h.ixp_context is not None
         ]
         per_probe.append(
             {

@@ -63,6 +63,21 @@ def render_presentation_skeleton(data: ReportData) -> str:
         for t in data.confirmed_local_transit
     )
 
+    candidate_slides = "\n\n".join(
+        f"""## Candidate: AS{c['upstream_asn']} ({c['upstream_name']}) -> AS{c['target_asn']} ({c['target_name']})
+
+- {c['note']}
+- Traceroute agreement: **{c['probe_agreement']}** (measurement `{c['measurement_id']}`,
+  vantage point: {c['vantage_point_cc']})
+- **Not a confirmed finding** — RIS disagrees, so this stays a candidate
+  until a second independent corroboration turns up
+
+<!-- SPEAKER NOTE: frame this as the method working as designed, not a
+     failure — a clean traceroute alone was never enough to claim a
+     finding on this project's own rules -->"""
+        for c in data.candidate_peering
+    )
+
     in_fishbowl_ixps = [ix for ix in data.ixps if ix.in_fishbowl is True]
     out_ixps = [ix for ix in data.ixps if ix.in_fishbowl is False]
 
@@ -113,6 +128,10 @@ or does it detour through Australia, the US, or elsewhere?
 ---
 
 {transit_slides}
+
+---
+
+{candidate_slides}
 
 ---
 

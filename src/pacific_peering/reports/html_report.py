@@ -25,6 +25,7 @@ _MUTED = "#898781"
 _SURFACE = "#fcfcfb"
 _GOOD = "#0ca30c"
 _CRITICAL = "#d03b3b"
+_WARNING = "#fab219"
 _SUBREGION_COLOR = {"Melanesia": "#2a78d6", "Polynesia": "#eb6834", "Micronesia": "#1baf7a"}
 
 _CSS = f"""
@@ -54,6 +55,10 @@ tr:hover {{ background: #f5f4f0; }}
                 margin-bottom: 10px; border-radius: 4px; }}
 .transit-card .headline {{ font-weight: 600; }}
 .transit-card .note {{ color: {_MUTED}; font-size: 0.85rem; margin-top: 4px; }}
+.candidate-card {{ border-left: 4px solid {_WARNING}; background: #fef8e8; padding: 10px 14px;
+                margin-bottom: 10px; border-radius: 4px; }}
+.candidate-card .headline {{ font-weight: 600; }}
+.candidate-card .note {{ color: {_MUTED}; font-size: 0.85rem; margin-top: 4px; }}
 .bool-true {{ color: {_GOOD}; font-weight: 600; }}
 .bool-false {{ color: {_CRITICAL}; }}
 .viz-figure {{ margin: 1.5em 0; }}
@@ -128,6 +133,19 @@ def render_html_report(data: ReportData, viz_dir: Path | None = Path("../viz")) 
         for t in data.confirmed_local_transit
     ) or "<p>(none recorded yet)</p>"
 
+    candidate_cards = "".join(
+        f"""<div class="candidate-card">
+            <div class="headline">AS{c['upstream_asn']} ({html.escape(c['upstream_name'])},
+                {html.escape(c['upstream_cc'])}) -&gt; AS{c['target_asn']}
+                ({html.escape(c['target_name'])}, {html.escape(c['target_cc'])})</div>
+            <div>Traceroute agreement: {html.escape(c['probe_agreement'])}
+                &middot; measurement {c['measurement_id']}
+                &middot; vantage point {html.escape(c['vantage_point_cc'])}</div>
+            <div class="note">{html.escape(c['note'])}</div>
+        </div>"""
+        for c in data.candidate_peering
+    ) or "<p>(none recorded yet)</p>"
+
     economy_rows = "".join(
         f"""<tr>
             <td><span class="subregion-dot" style="background:{_SUBREGION_COLOR[e.subregion]}">
@@ -183,6 +201,9 @@ def render_html_report(data: ReportData, viz_dir: Path | None = Path("../viz")) 
 
     <h2>Confirmed local transit (RIS + Atlas both agree, stays in-fishbowl)</h2>
     {transit_cards}
+
+    <h2>Candidate peering (strong traceroute signal, RIS disagrees &mdash; unconfirmed)</h2>
+    {candidate_cards}
 
     {viz_html}
 
