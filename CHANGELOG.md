@@ -675,3 +675,17 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   `pacific-peering-investigate-hop`. Verified against both the real
   Superloop case (matches the manual finding exactly) and a known-
   routed address (correctly returns the opposite answer).
+- Added standing order to task_plan.md's Working Agreements: consult
+  the project owner when data looks strange or routing is doing
+  something unusual, including during unattended /loop firings --
+  investigate first per this project's own discipline, but surface
+  genuine anomalies rather than resolving them solo.
+- Sourced AS56089 (OFFRATEL, a third distinct New Caledonia carrier)
+  toward AS9249 (Telecom Vanuatu) -- a fresh NC<->VU economy pair.
+  Fully contiguous, zero-gap result, exact RIS match (1,346) --
+  AS38442<->AS9249 reinforced a fourth time, from a fourth vantage
+  point. New color: the first measurement to show New Zealand (Spark
+  NZ) as a transit waypoint, not just Australia -- the detour pattern
+  is "whichever excluded AU/NZ hub sits on the path," matching the
+  Fish Bowl's own excluded-zone definition. Added as a new
+  ConfirmedDetour entry.

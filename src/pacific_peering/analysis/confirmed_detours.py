@@ -171,4 +171,45 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
             "call, not a data gap that changes the finding."
         ),
     ),
+    ConfirmedDetour(
+        source_cc="NC",
+        target_cc="VU",
+        target_asn=9249,
+        detour_ix_name="Equinix Sydney",
+        detour_hub="Sydney",
+        measurement_id=211285266,
+        ris_observation_count=1346,
+        note=(
+            "New Caledonia -> Telecom Vanuatu (AS9249), sourced from AS56089 "
+            "(OFFRATEL) -- a third distinct NC carrier tested this session "
+            "(after the incumbent OPT NC/AS18200 and the independent ISP "
+            "Nautile/AS45345 last tranche), continuing the same question with "
+            "a fresh target: does every NC carrier's international traffic "
+            "detour via Australia/NZ, regardless of destination or which "
+            "local ISP originates it? A genuinely untested economy pair "
+            "(NC<->VU) before this measurement. Grepped first, per the "
+            "standing process rule: confirmed untested. "
+            "Result: fully contiguous, zero gaps, all 6 hops resolved cleanly "
+            "-- AS56089 -> AS18200 (OPT NC) -> AS4648 (Spark NZ, New "
+            "Zealand's largest telecom, resolved via PeeringDB netixlan at "
+            "Equinix Sydney) -> AS6939 (Hurricane Electric, also present at "
+            "the same Equinix Sydney fabric) -> AS4637 (Telstra Global) -> "
+            "AS38442 (Vodafone Fiji) -> AS9249. Upstream of the target is "
+            "AS38442, RIS-agreeing with an *exact* match (1,346) -- the "
+            "identical count on record for this project's very first "
+            "confirmed finding (AS38442<->AS9249), now independently "
+            "reinforced a **fourth** time, from a fourth distinct vantage "
+            "point/source network. Notable in its own right: this is the "
+            "first measurement this session to show New Zealand (Spark NZ) "
+            "as a transit waypoint rather than just Australia -- the "
+            "detour pattern isn't Australia-specific, it's \"whichever "
+            "Oceania hub happens to sit on the path,\" consistent with this "
+            "project's Fish Bowl framing (AU/NZ both excluded from the study "
+            "region, both acting as external hubs the region's traffic "
+            "routes through). Only 1 of 3 requested probes returned in time; "
+            "not re-fired, same small-tranche judgment call as the USP/AS9249 "
+            "measurement -- the one result is already clean and exactly "
+            "RIS-matched."
+        ),
+    ),
 )
