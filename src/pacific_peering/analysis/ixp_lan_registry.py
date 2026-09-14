@@ -28,7 +28,12 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from pacific_peering.analysis.fishbowl import DEFAULT_SUMMARY_PATH
-from pacific_peering.discovery.peeringdb import fetch_ix_info, fetch_ixp_prefixes
+from pacific_peering.discovery.economies import ECONOMIES
+from pacific_peering.discovery.peeringdb import (
+    fetch_ix_info,
+    fetch_ixp_by_country,
+    fetch_ixp_prefixes,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -53,7 +58,13 @@ class IxpLanEntry:
 
 
 def _collect_known_ixps(fishbowl_path: Path) -> dict[int, dict]:
-    """Collect every distinct IXP referenced in the fishbowl dataset's IXP memberships."""
+    """Collect every distinct IXP referenced in the fishbowl dataset's IXP memberships.
+
+    One of two discovery paths merged by `build_ixp_lan_registry` — this
+    one only finds an exchange if one of this project's already-tracked
+    ASNs happens to be a member of it. See `_collect_ixps_by_country`
+    for the second, independent path.
+    """
     fishbowl = json.loads(fishbowl_path.read_text())
     ixps: dict[int, dict] = {}
     for entry in fishbowl.values():
@@ -64,20 +75,58 @@ def _collect_known_ixps(fishbowl_path: Path) -> dict[int, dict]:
     return ixps
 
 
+def _collect_ixps_by_country() -> dict[int, dict]:
+    """Collect every IXP PeeringDB lists directly under one of the 20 in-scope economies.
+
+    The second discovery path: finds an exchange purely from PeeringDB's
+    own country tag, independent of whether any tracked ASN is a member
+    — catching a real exchange this project doesn't yet see via
+    `_collect_known_ixps`. Verified once already (see task_plan.md):
+    running this directly found zero exchanges beyond what the
+    membership-based path had already surfaced, an exact match against
+    the confirmed in-fishbowl set — this path exists to keep that true
+    as PeeringDB's own data changes, not because a gap was found.
+    """
+    by_country = fetch_ixp_by_country([economy.cc for economy in ECONOMIES])
+    ixps: dict[int, dict] = {}
+    for cc, records in by_country.items():
+        for record in records:
+            ixps.setdefault(
+                record["id"],
+                {"name": record["name"], "city": record["city"], "country": cc},
+            )
+    return ixps
+
+
 def build_ixp_lan_registry(
     fishbowl_path: Path = DEFAULT_SUMMARY_PATH,
     registry_path: Path = DEFAULT_REGISTRY_PATH,
 ) -> dict[int, IxpLanEntry]:
-    """Build/refresh the IXP LAN subnet registry from every IXP seen in the fishbowl.
+    """Build/refresh the IXP LAN subnet registry from two merged discovery paths.
+
+    Discovers exchanges two independent ways: (1) every IXP one of this
+    project's tracked ASNs is a member of, per `fishbowl.json`
+    (`_collect_known_ixps` — can only find an exchange indirectly,
+    through membership); (2) every IXP PeeringDB lists directly under
+    one of the 20 in-scope economies' own country codes
+    (`_collect_ixps_by_country` — finds an exchange whether or not any
+    tracked ASN belongs to it). Verified once already that these agree
+    exactly for this project's confirmed in-fishbowl set — kept as two
+    paths so a real gap (a new exchange PeeringDB adds that none of our
+    ASNs are members of yet) still gets caught by path (2) even if path
+    (1) would miss it.
 
     Any exchange already present in the on-disk registry keeps its
     existing `in_fishbowl` value untouched (whatever a human previously
     set it to, including `"TBA"`) — only its name/city/country/prefixes
     are refreshed. An exchange new to the registry is written as `"TBA"`,
-    never auto-classified. Exchanges already in the registry but *not*
-    derived from `fishbowl.json` (e.g. added via `add_or_confirm_ixp` —
-    GOREX was the first case, a real exchange not yet linked to any
-    known ASN) are preserved untouched, never dropped by a rebuild.
+    never auto-classified — including one found only via its own country
+    code, which might seem safe to auto-confirm but is exactly the kind
+    of inference this project's governance rule exists to prevent.
+    Exchanges already in the registry but *not* derived from either
+    discovery path (e.g. added via `add_or_confirm_ixp` — GOREX was the
+    first case, a real exchange not yet linked to any known ASN) are
+    preserved untouched, never dropped by a rebuild.
 
     Args:
         fishbowl_path: Path to Phase 1a's `fishbowl.json`.
@@ -88,13 +137,18 @@ def build_ixp_lan_registry(
         Mapping of ix_id to its `IxpLanEntry`.
     """
     existing = load_ixp_lan_registry(registry_path) if registry_path.exists() else {}
-    known_ixps = _collect_known_ixps(fishbowl_path)
+    from_membership = _collect_known_ixps(fishbowl_path)
+    from_country = _collect_ixps_by_country()
+    known_ixps = {**from_country, **from_membership}  # membership data wins on overlap (has more fields)
     new_ix_ids = [ix_id for ix_id in known_ixps if ix_id not in existing]
+    country_only = set(from_country) - set(from_membership)
 
     logger.info(
-        "Found %d distinct IXPs in fishbowl.json (%d already in registry, %d new -> TBA); "
-        "fetching LAN prefixes",
+        "Found %d distinct IXPs (%d via tracked-ASN membership, %d via direct per-economy "
+        "search only, %d already in registry, %d new -> TBA); fetching LAN prefixes",
         len(known_ixps),
+        len(from_membership),
+        len(country_only),
         len(known_ixps) - len(new_ix_ids),
         len(new_ix_ids),
     )

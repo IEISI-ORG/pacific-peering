@@ -548,3 +548,13 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   genuinely solid PNG<->Vocus relationship) -- the confirmation sits on
   the first leg of a three-ASN chain, not the leg before the target the
   way every existing entry's evidence does.
+- Added a second, independent IXP discovery path: direct per-economy
+  PeeringDB search (`discovery.peeringdb.fetch_ixp_by_country`), merged
+  into `build_ixp_lan_registry` alongside the existing
+  membership-derived path. Answers "do we have all IXPs now?" -- a
+  direct search across all 20 economies found exactly the same 10
+  exchanges already confirmed in-fishbowl, zero gaps. Caught and fixed
+  a real 429 bug on the function's first live pipeline run (no
+  retry/backoff, unlike every sibling PeeringDB call); pipeline now
+  runs clean (31 exchanges, 10 in-fishbowl, 0 empty prefixes). This
+  runs on every pipeline cycle going forward, not a one-time check.

@@ -1,0 +1,44 @@
+{
+  "timestamp": "2026-09-14T085939Z",
+  "steps": {
+    "discovery": {
+      "status": "ok",
+      "summary": {
+        "economies": 20,
+        "total_asns": 164
+      }
+    },
+    "fishbowl": {
+      "status": "ok",
+      "summary": {
+        "asns": 164,
+        "with_neighbors": 125,
+        "with_ixp": 39,
+        "with_facility": 23
+      }
+    },
+    "ixp_lan_registry": {
+      "status": "ok",
+      "summary": {
+        "exchanges": 31,
+        "in_fishbowl": 10,
+        "out_of_fishbowl": 21,
+        "tba": 0
+      }
+    },
+    "irr_leads": {
+      "status": "ok",
+      "summary": {
+        "asns_with_declared_as_set": 37,
+        "resolved_to_trusted_data": 28
+      }
+    },
+    "asn_probe_registry": {
+      "status": "ok",
+      "summary": {
+        "asns_with_connected_probe": 18,
+        "total_connected_probes": 36
+      }
+    }
+  }
+}

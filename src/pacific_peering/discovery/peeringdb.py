@@ -168,6 +168,71 @@ def fetch_ix_info(ix_ids: list[int], timeout: float = _DEFAULT_TIMEOUT) -> dict[
     return ix_by_id
 
 
+def fetch_ixp_by_country(
+    country_codes: list[str], timeout: float = _DEFAULT_TIMEOUT, max_retries: int = 3
+) -> dict[str, list[dict]]:
+    """Fetch every IXP PeeringDB has registered directly under each country code.
+
+    A second, independent discovery path alongside `_collect_known_ixps`
+    in `analysis.ixp_lan_registry` (which only finds an exchange if one
+    of this project's already-tracked ASNs happens to be a member of
+    it). This one finds an exchange purely from PeeringDB's own country
+    tag on the `ix` record, regardless of membership — catching a real
+    exchange none of our tracked ASNs belong to (yet, or at all).
+
+    Per the project owner: worth doing directly now that PeeringDB
+    requests are authenticated. Queried one country at a time (`ix`
+    doesn't support a country list filter the way `ixpfx`/`netixlan`
+    support `id__in`/`asn__in`).
+
+    Retries a 429 with backoff, same pattern as this module's other
+    per-item PeeringDB calls (`fetch_ixp_prefixes`, `fetch_ixp_members`)
+    — the first version of this function skipped that and hit exactly
+    this failure on its very first live pipeline run, failing the whole
+    `ixp_lan_registry` step. A country that still 429s after all
+    retries is skipped (logged, not raised), so one rate-limited
+    country doesn't sink the rest of the sweep.
+
+    Args:
+        country_codes: ISO country codes to check (one PeeringDB call
+            each).
+        max_retries: Retries per country before giving up on it.
+
+    Returns:
+        Mapping of country code to the list of raw `ix` records
+        PeeringDB has for it (each carrying at least `id`, `name`,
+        `city`). An economy with no PeeringDB-listed exchange at all
+        (a real, already-known gap for e.g. the Solomon Islands) maps
+        to an empty list — same as one that still 429s after retries,
+        since a caller can't tell "genuinely none" from "couldn't
+        check" apart anyway without re-trying later.
+    """
+    by_country: dict[str, list[dict]] = {}
+    for cc in country_codes:
+        for attempt in range(max_retries + 1):
+            response = _get(f"{PEERINGDB_BASE_URL}/ix", params={"country": cc}, timeout=timeout)
+            if response.status_code == 429:
+                if attempt < max_retries:
+                    logger.warning(
+                        "PeeringDB rate-limited ix-by-country lookup for %s, retrying (%d/%d)",
+                        cc,
+                        attempt + 1,
+                        max_retries,
+                    )
+                    time.sleep(2**attempt)
+                    continue
+                logger.warning(
+                    "PeeringDB still rate-limiting ix-by-country lookup for %s; giving up", cc
+                )
+                by_country[cc] = []
+                break
+            response.raise_for_status()
+            by_country[cc] = response.json()["data"]
+            break
+        time.sleep(0.3)
+    return by_country
+
+
 def fetch_ixp_membership(asns: list[int]) -> dict[int, list[IxpMembership]]:
     """Resolve real-world IXP membership for a list of ASNs via PeeringDB.
 
