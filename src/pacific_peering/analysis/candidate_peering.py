@@ -77,7 +77,17 @@ CANDIDATE_PEERING: tuple[CandidatePeering, ...] = (
             "AS17893's own presence at an in-fishbowl exchange, but not that "
             "AS139759 peers with it there specifically -- AS139759 has zero "
             "PeeringDB IXP memberships on record, so its side of this adjacency "
-            "remains unconfirmed either way."
+            "remains unconfirmed either way. "
+            "A bulk IRR AS-SET sweep (APNIC-sourced only) surfaced a concrete "
+            "alternative/complementary hypothesis worth checking before assuming "
+            "the traceroute's AS139759 hop is the whole story: AS3605 (Guam "
+            "Cablevision)'s own declared transit AS-SET (AS-KUENTOS-TRANSIT) names "
+            "all three of Palau's in-scope ASNs (17893, 58932, 133897) directly, "
+            "plus AS10130 (FSM Telecommunications Corporation) and MARIIX's own "
+            "exchange ASN (23676) -- i.e. a real, independently-declared Guam-based "
+            "transit relationship spanning exactly this corridor. Not yet tested "
+            "by Atlas; queued as a more targeted next traceroute than a second "
+            "plain FSM->Palau run would be."
         ),
     ),
 )

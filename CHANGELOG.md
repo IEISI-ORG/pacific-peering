@@ -319,3 +319,17 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   directly). Also added the same IRR corroboration to the two existing
   confirmed findings (AS45349's AS-SET names AS4638; AS38442's names
   AS9249).
+- Ran the deferred bulk IRR sweep: 36 of 163 in-scope ASNs have a
+  declared irr_as_set; resolved all 36 (APNIC-only), handling
+  multi-name fields and SOURCE:: prefixes PeeringDB's raw field can
+  carry. Cross-referenced against the in-scope ASN list -- most matches
+  are same-economy domestic hub-and-spoke (reinforcing the existing
+  AS-graph finding), but surfaced several new cross-economy leads:
+  AS3605 (Guam Cablevision) declares transit with all three Palau ASNs
+  plus FSM's AS10130 (folded into the FSM->Palau candidate's note as an
+  alternative hypothesis); AS10130 declares transit with a Kiribati ASN
+  (a brand-new FM<->KI lead); AS45355 (Digicel Fiji) declares peers in
+  Nauru, Vanuatu, and Tonga; French Polynesia's AS55943 and Samoa's
+  AS38800 both declare a Niue ASN. None fired as new Atlas measurements
+  this tranche -- a data-gathering/cross-referencing pass, queued for
+  future targeted tests rather than tested all at once.
