@@ -893,3 +893,13 @@ Called `mark_corridor_tested(3605, 9241)`. Verified: module imports cleanly (8 e
 **Checked the final-hop gap before writing it off as routine, not just assumed** -- a single silent (non-responding) hop immediately before the target on both probes, the exact same pattern seen in essentially every AS9249-targeted measurement this session. No escalation needed; this is well-precedented, not a new or unusual gap.
 
 Added as a new `ConfirmedDetour` entry. Called `mark_corridor_tested(3605, 9249)`. Verified: module imports cleanly (9 entries, up from 8); regenerated ASCII/HTML reports (renders correctly) and the geographic map (10 red `line2d` elements = 9 data lines + 1 legend swatch, matching the 9 dataclass entries). Regenerated the corridor backlog: candidate count dropped 1330 -> 1293.
+
+---
+
+**[Loop tranche -- third hourly firing under the backlog system, a genuine dead-end, and a repeat of the "slow scheduling" pattern -- now recognized, not re-investigated from scratch.]** Confirmed via `CronList` this was job `33ab3487`'s scheduled fire. Pulled the top pick: **AS3605 (Guam Cablevision) -> AS9471 (ONATI, French Polynesia)** -- a fresh GU<->PF economy pair.
+
+**Measurement stuck at `Scheduled` for the full 70s window again** -- the same pattern as the AS3605->AS9241 firing two turns ago. Checked `participant_count` directly before assuming (2, both probes genuinely queued, same as last time), then polled again with a longer window: resolved cleanly, both probes returned. Same conclusion as last time -- ordinary Atlas-side scheduling latency, not a network anomaly, not escalated. Two occurrences now, both explained the same way and both self-resolved on a longer poll -- worth noting as a pattern (AS3605's probes specifically seem to schedule slowly sometimes) rather than two unrelated one-offs, but still not "routing doing something unusual" in the sense the standing order is for.
+
+**Result: a genuine dead-end, not a new relationship.** Neither probe ever resolved the target ASN itself -- both reach AS3605 -> AS2497 (IIJ, Japan) -> AS6939 (Hurricane Electric, resolved via PeeringDB netixlan at JPNAP Tokyo) and go dark before reaching ONATI's own network at all. `ris_agrees: false` -- checked and this isn't the sibling-ASN nuance seen for the Niue/Cook Islands ONATI cases (those traceroutes *did* reach AS9471 or AS55943 directly, just under the "other" sibling identity); here the path never reaches either ONATI ASN, stopping at a generic Tokyo transit hop instead. A real, honest negative result -- not filed in any dataclass, matching this project's established dead-end handling.
+
+Called `mark_corridor_tested(3605, 9471)`. No report/map regeneration needed (no dataclass changed).

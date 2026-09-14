@@ -734,3 +734,10 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   a new ConfirmedDetour entry (its own source economy, matching the
   NC->VU/PG->VU pattern); marked tested; backlog regenerated
   (1330 -> 1293).
+- Third hourly firing: sourced AS3605 toward AS9471 (ONATI, French
+  Polynesia) -- a fresh GU<->PF pair. Measurement scheduled slowly
+  again (same pattern as the AS9241 firing, same non-anomalous
+  explanation, resolved on a longer poll). Result: a genuine
+  dead-end -- neither probe reached AS9471 or its sibling AS55943,
+  stopping at Hurricane Electric in Tokyo instead. Not filed in any
+  dataclass; marked tested regardless.
