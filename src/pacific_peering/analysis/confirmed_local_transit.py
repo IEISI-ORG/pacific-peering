@@ -713,4 +713,38 @@ CONFIRMED_LOCAL_TRANSIT: tuple[ConfirmedLocalTransit, ...] = (
             "inter-economy."
         ),
     ),
+    ConfirmedLocalTransit(
+        provider_cc="NR",
+        provider_asn=55722,
+        provider_name="Cenpac Net Inc",
+        customer_cc="NR",
+        customer_asn=141368,
+        customer_name="ICT",
+        measurement_id=211653801,
+        vantage_point_cc="VU",
+        ris_observation_count=382,
+        note=(
+            "Sourced from AS9249 (Telecom Vanuatu) toward AS141368 -- a "
+            "fresh VU<->NR pair, and **the direct test flagged as a lead "
+            "several tranches ago** (when AS3605's own dead-end attempt "
+            "toward AS141368 surfaced its only RIS neighbor as AS55722, "
+            "itself already confirmed as PTI Pacifica/AS7131's real "
+            "Nauru customer -- flagged then as worth testing directly "
+            "rather than assumed from the indirect chain). The literal "
+            "target never resolved (ordinary ICMP filtering near the "
+            "destination), so RIS is checked against the last reached "
+            "ASN, per this project's inbound-style method. Both probes: "
+            "AS9249 -> AS38442 (Vodafone Fiji) -> AS6939 (Hurricane "
+            "Electric) -> AS7131 (PTI Pacifica) -> **AS55722 (Cenpac Net "
+            "Inc)** -- confirming the full chain in one traceroute: "
+            "AS7131's own confirmed upstream role for AS55722, now "
+            "extended one hop further to AS55722's own domestic "
+            "downstream. RIS agrees with an *exact* match (382) -- "
+            "checked directly: AS55722 is AS141368's *only* RIS-observed "
+            "neighbor at all. A domestic (intra-Nauru) adjacency, the "
+            "same shape as the Digicel Samoa<->CSL Samoa finding -- "
+            "confirms the lead exactly as flagged, closing out a loose "
+            "thread from earlier this session."
+        ),
+    ),
 )

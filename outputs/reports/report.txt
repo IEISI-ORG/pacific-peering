@@ -1,6 +1,6 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-09-15T07:46:15.502003+00:00                  
+                 Generated: 2026-09-15T07:58:53.372683+00:00                  
 ==============================================================================
 
 SUMMARY
@@ -164,6 +164,9 @@ AS154100 (BNL Tarawa, KI) -> AS134783 (Amalgamated Telecom Holdings Kiribati Ltd
 AS38800 (Digicel Samoa Ltd, WS) -> AS38227 (Computer Services Limited (CSL), WS)
     RIS observation count: 990  [measurement 211629998, vantage: VU]
     Sourced from AS9249 (Telecom Vanuatu) toward AS38227 -- a fresh VU<->WS pair, and a genuinely new adjacency this project hadn't recorded before. Both probes fully contiguous, target reached directly: AS9249 -> AS38442 (Vodafone Fiji) -> AS132528 (Digicel Australia/Telstra backbone, crossing Equinix Sydney -- a **fourth** occurrence of this same real infrastructure this session) -> **AS38800 (Digicel Samoa Ltd)** -> AS38227 (Computer Services Limited, Samoa's incumbent). Upstream of the target is AS38800, RIS-agreeing with an *exact* match (990) -- checked directly: AS38800 is AS38227's *only* RIS-observed neighbor at all. A domestic (intra-Samoa) adjacency, the same shape as the established ONATI<->Cook-Islands and FINTEL<->Tuvalu patterns: an in-fishbowl Pacific carrier (here, Digicel Samoa) acting as a real transit waypoint for another Pacific carrier's network (CSL Samoa), for traffic originating from a third economy (Vanuatu) -- another real data point for regional-hub structure within the fishbowl, this time at the intra-country level rather than inter-economy.
+AS55722 (Cenpac Net Inc, NR) -> AS141368 (ICT, NR)
+    RIS observation count: 382  [measurement 211653801, vantage: VU]
+    Sourced from AS9249 (Telecom Vanuatu) toward AS141368 -- a fresh VU<->NR pair, and **the direct test flagged as a lead several tranches ago** (when AS3605's own dead-end attempt toward AS141368 surfaced its only RIS neighbor as AS55722, itself already confirmed as PTI Pacifica/AS7131's real Nauru customer -- flagged then as worth testing directly rather than assumed from the indirect chain). The literal target never resolved (ordinary ICMP filtering near the destination), so RIS is checked against the last reached ASN, per this project's inbound-style method. Both probes: AS9249 -> AS38442 (Vodafone Fiji) -> AS6939 (Hurricane Electric) -> AS7131 (PTI Pacifica) -> **AS55722 (Cenpac Net Inc)** -- confirming the full chain in one traceroute: AS7131's own confirmed upstream role for AS55722, now extended one hop further to AS55722's own domestic downstream. RIS agrees with an *exact* match (382) -- checked directly: AS55722 is AS141368's *only* RIS-observed neighbor at all. A domestic (intra-Nauru) adjacency, the same shape as the Digicel Samoa<->CSL Samoa finding -- confirms the lead exactly as flagged, closing out a loose thread from earlier this session.
 
 CANDIDATE PEERING (strong traceroute signal, RIS disagrees -- unconfirmed)
 ==============================================================================

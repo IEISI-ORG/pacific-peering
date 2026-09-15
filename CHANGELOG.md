@@ -1278,3 +1278,11 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   signal, RIS disagrees, doesn't fit. Flagged AS132528 (already
   Nauru's own real dominant neighbor) as worth testing directly in a
   future tranche. Backlog: 945 -> 944.
+- feat(analysis): add NR(AS55722)->NR(AS141368) `ConfirmedLocalTransit`
+  entry -- the direct test of a lead flagged several tranches ago
+  (AS141368's only RIS neighbor is AS55722, itself already confirmed
+  as PTI Pacifica's Nauru customer). Confirmed the full chain in one
+  traceroute: AS7131 -> AS55722 -> AS141368 ("ICT"). RIS agrees
+  exactly (382) -- AS55722 is AS141368's only RIS-observed neighbor.
+  Domestic intra-Nauru adjacency, same shape as Digicel Samoa<->CSL
+  Samoa. Backlog: 944 -> 943.
