@@ -1410,3 +1410,8 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - docs(analysis): PF(AS9471)->NR(AS55722) third corroboration of
   AS7131's transit-waypoint role for Nauru (after MP, VU). RIS
   agrees exactly (1,528). Backlog: 809 -> 808.
+- docs(analysis): PF(AS9471)->KI(AS132486) fifth reproduction of the
+  AS154100<->AS132486 Kiribati Starlink chain (after FSM, GU, MP,
+  VU). RIS agrees exactly (362), crosses EdgeIX Auckland
+  (PeeringDB-verified), only the second real exchange crossing this
+  chain has shown. Backlog: 808 -> 807.

@@ -196,7 +196,19 @@ CONFIRMED_LOCAL_TRANSIT: tuple[ConfirmedLocalTransit, ...] = (
             "just seen two tranches ago for the AS132486 downstream chain -- "
             "now confirmed reaching BNL Tarawa's own address directly too. "
             "A fourth distinct source (Vanuatu, after Guam and CNMI) for "
-            "this specific direct relationship."
+            "this specific direct relationship. "
+            "**A fifth independent reproduction of the full downstream "
+            "chain, via a genuinely new named exchange** (measurement "
+            "211699570, PF/AS9471 -> KI/AS132486, a fresh PF<->KI pair): "
+            "all 3 probes: AS9471 -> AS6939 (Hurricane Electric) -> "
+            "AS14593 (Starlink) -> AS154100 -> target never resolved, "
+            "identical RIS match (362). One of 3 probes crosses "
+            "**EdgeIX Auckland** directly (`ixp_crossings` confirms it, "
+            "member AS14593) -- a different named exchange than the "
+            "VU-sourced entry's MegaIX Sydney, the second time this "
+            "chain has shown a real exchange crossing rather than plain "
+            "global transit. A fifth geographically distinct source "
+            "(French Polynesia, after FSM, Guam, CNMI, and Vanuatu)."
         ),
     ),
     ConfirmedLocalTransit(

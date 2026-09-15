@@ -1627,3 +1627,11 @@ Added as a new entry. Called `mark_corridor_tested(9471, 45891)`. Verified: modu
 **Third independent corroboration** of AS7131's real transit-waypoint role for Nauru's international connectivity (after MP self-sourced, and VU as a transit waypoint), now a third distinct source economy. **Caught and fixed a counting error before committing**: first draft called this "a fourth distinct source economy" -- re-counted directly (MP, VU, PF) rather than trusting the draft, corrected to "third" before staging.
 
 Extended the existing entry's note. Not a new dataclass entry -- `CONFIRMED_LOCAL_TRANSIT` count unchanged (13). Called `mark_corridor_tested(9471, 55722)`. Regenerated ASCII/HTML reports since the note text changed (render correctly); map unaffected. Regenerated the corridor backlog: candidate count dropped 809 -> 808.
+
+---
+
+**Next corridor pulled: AS9471 (ONATI, French Polynesia) -> AS132486 (Kiribati, Ocean Link Ltd).** `has_routing_loop` correctly returned `False` for all three. Fifth independent reproduction of the well-established AS154100<->AS132486 Kiribati Starlink-chain adjacency (after FSM, GU, MP, VU): all 3 probes `AS9471 -> AS6939 (Hurricane Electric) -> AS14593 (Starlink) -> AS154100`, target never resolved, RIS-agreeing with the identical exact match (362).
+
+**A genuinely new named exchange this time**: one of 3 probes crosses **EdgeIX Auckland** directly (`ixp_crossings` confirms it, member AS14593) -- verified as a real PeeringDB-declared Starlink membership before writing it up. Only the second time this chain has shown a real exchange crossing at all (after the VU entry's MegaIX Sydney); every other instance showed plain global transit via GSL Networks with no IXP crossing.
+
+Extended the existing entry's note. Not a new dataclass entry -- `CONFIRMED_LOCAL_TRANSIT` count unchanged (13). Called `mark_corridor_tested(9471, 132486)`. Regenerated ASCII/HTML reports since the note text changed (render correctly); map unaffected. Regenerated the corridor backlog: candidate count dropped 808 -> 807.
