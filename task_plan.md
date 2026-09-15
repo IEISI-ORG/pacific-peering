@@ -1497,3 +1497,9 @@ Added as a new entry per the established convention (third source economy). Call
 **No IXP crossing this time; verified Tata's real PeeringDB facility list before reusing the Tokyo hub** rather than assuming it still held -- genuine presence at both Equinix Tokyo and Sydney, consistent with the original entry's choice.
 
 Added as a new entry. Called `mark_corridor_tested(9249, 152706)`. Verified: module imports cleanly (39 entries, up from 38); regenerated ASCII/HTML reports (render correctly) and the geographic map. Regenerated the corridor backlog: candidate count dropped 933 -> 932.
+
+---
+
+**Next corridor pulled: AS9249 (Telecom Vanuatu) -> AS154100 (BNL Tarawa, targeted directly).** `has_routing_loop` correctly returned `False`. Both probes resolve cleanly to AS14593 (Starlink) as the literal last-reached ASN, identical RIS match (361) to the existing "sharpest, most direct" entry -- **via the same AS55850 (Mercury NZ) carrier just seen two tranches ago** for the AS132486 downstream-chain finding, now confirmed reaching BNL Tarawa's own address directly too.
+
+Fourth independent confirmation of this specific direct relationship, extending that entry's paragraph. Not a new dataclass entry -- `CONFIRMED_LOCAL_TRANSIT` count unchanged (13). Called `mark_corridor_tested(9249, 154100)`. Regenerated ASCII/HTML reports since the note text changed (render correctly); map unaffected. Regenerated the corridor backlog: candidate count dropped 932 -> 931.

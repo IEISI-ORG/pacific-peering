@@ -1295,3 +1295,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   via IIJ/Tokyo). RIS agrees exactly (292). No IXP crossing; verified
   Tata's real PeeringDB facility list (Tokyo and Sydney) before
   reusing the Tokyo hub. Backlog: 933 -> 932.
+- Sourced AS9249 toward AS154100 (BNL Tarawa, targeted directly) --
+  a fresh VU<->KI pair. Fourth independent confirmation of the direct
+  AS154100<->AS14593 relationship, identical exact RIS match (361),
+  via the same Mercury NZ carrier just seen two tranches ago for the
+  AS132486 downstream chain. Extended the existing entry's paragraph
+  rather than duplicating. Backlog: 932 -> 931.

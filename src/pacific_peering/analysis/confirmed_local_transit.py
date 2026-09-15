@@ -187,7 +187,16 @@ CONFIRMED_LOCAL_TRANSIT: tuple[ConfirmedLocalTransit, ...] = (
             "real named-exchange crossing rather than plain global transit "
             "(GSL Networks, in every prior instance, showed no IXP crossing "
             "at all). A fourth geographically distinct source (Vanuatu, after "
-            "FSM, Guam, and CNMI)."
+            "FSM, Guam, and CNMI). "
+            "**A fourth independent confirmation of the direct AS154100<->"
+            "AS14593 relationship itself** (measurement 211660929, VU/AS9249 "
+            "-> KI/AS154100 directly): both probes resolve cleanly to "
+            "AS14593 (Starlink) as the literal last-reached ASN, identical "
+            "RIS match (361), via the same AS55850 (Mercury NZ) carrier "
+            "just seen two tranches ago for the AS132486 downstream chain -- "
+            "now confirmed reaching BNL Tarawa's own address directly too. "
+            "A fourth distinct source (Vanuatu, after Guam and CNMI) for "
+            "this specific direct relationship."
         ),
     ),
     ConfirmedLocalTransit(
