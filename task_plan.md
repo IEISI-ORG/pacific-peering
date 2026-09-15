@@ -1309,3 +1309,11 @@ Added as a new `ConfirmedDetour` entry. Called `mark_corridor_tested(7131, 55943
 **Lands on the existing GU->CK adjacency** (AS9507/NextHop<->AS152093), a second independent confirmation, RIS-agreeing with an *exact* match (335). **All 3 probes** cross BBIX Tokyo directly this time -- `ixp_crossings` confirms it for every probe, an even stronger direct confirmation than the original's crossing.
 
 Added as a new `ConfirmedDetour` entry. Called `mark_corridor_tested(7131, 152093)`. Verified: module imports cleanly (30 entries, up from 29); regenerated ASCII/HTML reports (render correctly) and the geographic map. Regenerated the corridor backlog: candidate count dropped 1005 -> 1004.
+
+---
+
+**Next corridor pulled: AS7131 (PTI Pacifica, CNMI) -> AS154100 (BNL Tarawa itself, targeted directly).** Distinct from the two prior Kiribati tranches this session, which targeted downstream customers (AS132486, AS134783) -- this one aims straight at BNL Tarawa's own address, mirroring the "sharpest, most direct confirmation" measurement already on record from Guam. `has_routing_loop` flagged probe 60689 `True` -- checked directly: a modest, stable-ish RTT repeat, the now-familiar false-positive shape, not a real loop.
+
+**2 of 3 probes resolve cleanly to AS14593 (Starlink) as the literal last-reached ASN**, identical RIS match (361) to the original direct-confirmation entry. A third distinct source (CNMI, after Guam) confirming BNL Tarawa's own Starlink upstream directly -- extended that specific entry's paragraph rather than duplicating, distinct from the separate downstream-chain corroboration paragraph added two tranches ago.
+
+Not a new dataclass entry -- `CONFIRMED_LOCAL_TRANSIT` count unchanged (11). Called `mark_corridor_tested(7131, 154100)`. Regenerated ASCII/HTML reports since the note text changed (render correctly); map unaffected. Regenerated the corridor backlog: candidate count dropped 1004 -> 1003.

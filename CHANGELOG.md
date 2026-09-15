@@ -1128,3 +1128,11 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   than the original's crossing. One probe false-positived
   `has_routing_loop` on a modest stable-RTT repeat. Backlog:
   1005 -> 1004.
+- Sourced AS7131 toward AS154100 (BNL Tarawa itself, targeted
+  directly rather than a downstream customer) -- a fresh MP<->KI
+  pair. 2 of 3 probes resolve cleanly to AS14593 (Starlink) as the
+  literal last-reached ASN, identical RIS match (361) to the
+  existing "sharpest, most direct" GU-sourced confirmation. Third
+  distinct source (CNMI, after Guam) for this specific direct
+  relationship. Extended that entry's paragraph rather than
+  duplicating; entry count unchanged (11). Backlog: 1004 -> 1003.

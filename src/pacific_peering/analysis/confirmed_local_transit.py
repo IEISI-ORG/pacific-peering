@@ -164,7 +164,17 @@ CONFIRMED_LOCAL_TRANSIT: tuple[ConfirmedLocalTransit, ...] = (
             "A third geographically distinct source (CNMI, after FSM and Guam) "
             "reaching Kiribati via the same Australia-then-Starlink satellite "
             "path -- further reinforcing this as Kiribati's real general-"
-            "purpose ingress pattern rather than a source-specific artifact."
+            "purpose ingress pattern rather than a source-specific artifact. "
+            "**A third independent confirmation of the direct AS154100<->"
+            "AS14593 relationship itself** (measurement 211601073, MP/AS7131 "
+            "-> KI/AS154100 directly, distinct from the downstream-chain "
+            "reproductions above -- this one targets BNL Tarawa's own "
+            "address again, one hop closer than the AS132486/AS134783 "
+            "chain): 2 of 3 probes resolve cleanly to **AS14593 (Starlink) "
+            "as the literal last-reached ASN**, identical RIS match (361) "
+            "to the original direct confirmation. A third distinct source "
+            "(CNMI, after Guam) confirming BNL Tarawa's own Starlink "
+            "upstream directly, not just the chain through it."
         ),
     ),
     ConfirmedLocalTransit(
