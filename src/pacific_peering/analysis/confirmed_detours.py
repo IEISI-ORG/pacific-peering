@@ -672,4 +672,40 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
             "than implied as directly observed."
         ),
     ),
+    ConfirmedDetour(
+        source_cc="MP",
+        target_cc="NC",
+        target_asn=17480,
+        detour_ix_name="BBIX Tokyo",
+        detour_hub="Tokyo",
+        measurement_id=211549691,
+        ris_observation_count=1665,
+        note=(
+            "PTI Pacifica (AS7131, CNMI) -> a fresh, distinct New Caledonia "
+            "ASN (AS17480) -- reached directly on the first address, no "
+            "retry needed. Both probes fully contiguous: AS7131 -> AS38195 "
+            "(Superloop, resolved via PeeringDB netixlan) -- crossing "
+            "**BBIX Tokyo** (`ixp_crossings` confirms it directly, "
+            "`in_fishbowl: false`) -- -> AS18200 (OPT NC, New Caledonia's "
+            "own incumbent) -> AS17480. Upstream of the target is AS18200, "
+            "RIS-agreeing with an *exact* match (1,665). Doubly "
+            "corroborated: AS18200's own full neighbor list also directly "
+            "confirms the AS38195 hop itself (`{174: 1156, 38195: 332, "
+            "6939: 135, ...}`), not just the final leg. Notably *not* the "
+            "same shape as this session's NC->GU Superloop precedent (a "
+            "real signal that RIS couldn't corroborate at all, filed "
+            "nowhere) -- here Superloop's presence is independently "
+            "confirmed on **both** sides of it (into AS18200 from RIS's "
+            "own path data, and out of AS18200 to AS17480 with an exact "
+            "count match), a clean, fully-confirmed detour rather than an "
+            "unfileable one. Also directly explains why: AS17480's own "
+            "`fishbowl.json` entry lists a real PeeringDB facility "
+            "presence at \"Equinix SY1/SY2 - Sydney\" *and* an IXP "
+            "membership at CAN'L IX in Noumea -- but its actual traffic to "
+            "reach a source outside New Caledonia in this measurement "
+            "transits via its own incumbent (AS18200) and a Tokyo-based "
+            "carrier instead, using neither of its own registered regional "
+            "presences for this particular path."
+        ),
+    ),
 )

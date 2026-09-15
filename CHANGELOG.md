@@ -985,3 +985,14 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   match). Extended the existing `ConfirmedLocalTransit` entry's note
   rather than duplicating; entry count unchanged (11). Backlog:
   1109 -> 1107.
+- feat(analysis): confirm MP(AS7131, CNMI)->NC(AS17480) via BBIX
+  Tokyo (Superloop, AS38195, into AS18200/OPT NC). A retried second
+  address dead-ended, but re-triangulating the *first* address's
+  attempt showed it had already reached the target cleanly -- a
+  raw-hop skim isn't a substitute for running the actual
+  triangulation before writing a corridor off. RIS agrees exactly
+  (1,665) on AS18200->AS17480, and AS18200's own neighbor list
+  independently confirms the AS38195 hop too (332). Unlike this
+  session's earlier NC->GU Superloop dead end (unfileable, RIS
+  silent), this one is doubly corroborated on both sides -- a clean
+  ConfirmedDetour. Backlog: 1107 -> 1090.
