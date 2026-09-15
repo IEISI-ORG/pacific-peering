@@ -1373,3 +1373,11 @@ Not a new dataclass entry -- `CONFIRMED_LOCAL_TRANSIT` count unchanged (11). Cal
 **Third independent confirmation of the AS6453(Tata)<->AS24439 adjacency** (after the original GU entry via IIJ/Tokyo and the MP entry via Cogent): `AS9249 -> AS38442 (Vodafone Fiji) -> AS7473 (Singtel) -> AS6453`, RIS-agreeing with the identical exact match (997). Singtel is a genuinely new intermediate carrier for this adjacency. No IXP crossing this time; checked Singtel's real PeeringDB facility list before picking a hub -- genuine Tokyo presence, no Sydney -- kept `detour_hub` as Tokyo, matching the original entry rather than the second (Cogent-sourced) entry's Sydney choice.
 
 Per the established `ConfirmedDetour` convention (new entry per source economy for external-carrier adjacencies), added as a new entry rather than extending either prior one. Called `mark_corridor_tested(9249, 24439)`. Verified: module imports cleanly (32 entries, up from 31); regenerated ASCII/HTML reports (render correctly) and the geographic map. Regenerated the corridor backlog: candidate count dropped 986 -> 984.
+
+---
+
+**Next corridor pulled (first `/loop`-driven firing): AS9249 (Telecom Vanuatu) -> AS38198 (Digicel Tonga).** Both probes reach the same real, BGP-confirmed AS38198 address (`202.43.12.5`) already established across every prior measurement of this corridor. `has_routing_loop` correctly returned `False` for both.
+
+**Third independent confirmation of the AS45355(Digicel Fiji)<->AS38198 adjacency** (after GU via Level 3/Lumen+Telstra Global and MP via Hurricane Electric): `AS9249 -> AS38442 (Vodafone Fiji) -> AS132528 -> AS45355 -> AS38198`, RIS-agreeing with the identical exact match (1,321). **A third occurrence of AS132528 (Digicel Australia/Telstra backbone) at Equinix Sydney**, confirmed directly this time (`ixp_crossings` non-empty for both probes, unlike the MP-sourced entry where it only appeared as an intermediate hop).
+
+Per the established convention, added as a new entry. Called `mark_corridor_tested(9249, 38198)`. Verified: module imports cleanly (33 entries, up from 32); regenerated ASCII/HTML reports (render correctly) and the geographic map. Regenerated the corridor backlog: candidate count dropped 984 -> 980.

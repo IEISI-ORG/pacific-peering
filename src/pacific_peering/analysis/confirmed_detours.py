@@ -1066,4 +1066,32 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
             "Sydney choice."
         ),
     ),
+    ConfirmedDetour(
+        source_cc="VU",
+        target_cc="TO",
+        target_asn=38198,
+        detour_ix_name="Equinix Sydney (AS132528, Digicel Australia/Telstra-operated "
+        "backbone)",
+        detour_hub="Sydney",
+        measurement_id=211629028,
+        ris_observation_count=1321,
+        note=(
+            "Telecom Vanuatu (AS9249) -> Digicel Tonga (AS38198) -- a "
+            "fresh VU<->TO pair, a third independent confirmation of the "
+            "AS45355(Digicel Fiji)<->AS38198 adjacency (after the GU entry "
+            "via Level 3/Lumen+Telstra Global and the MP entry via "
+            "Hurricane Electric). Both probes: AS9249 -> AS38442 "
+            "(Vodafone Fiji) -> **AS132528** -> AS45355 -> AS38198. "
+            "Upstream of the target is AS45355, RIS-agreeing with the "
+            "identical *exact* match (1,321). **A third occurrence of "
+            "AS132528 (the Telstra-operated Digicel-Australia backbone) at "
+            "Equinix Sydney** -- confirmed directly this time "
+            "(`ixp_crossings` non-empty for both probes, unlike the "
+            "MP-sourced entry where it only appeared as an intermediate "
+            "hop without a direct crossing match). Both probes reach the "
+            "same real, BGP-confirmed AS38198 address (`202.43.12.5`) "
+            "already established across every prior measurement of this "
+            "corridor as its routine final-hop pattern."
+        ),
+    ),
 )

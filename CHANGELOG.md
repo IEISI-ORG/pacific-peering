@@ -1192,3 +1192,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   Singtel's real PeeringDB facility list (Tokyo, no Sydney) before
   keeping the Tokyo hub. New entry per the established
   ConfirmedDetour per-source-economy convention. Backlog: 986 -> 984.
+- feat(analysis): confirm VU(AS9249)->TO(AS38198) via Digicel Fiji
+  -- third independent confirmation of AS45355<->AS38198. RIS agrees
+  exactly (1,321). Third occurrence of AS132528 (Digicel Australia/
+  Telstra backbone) at Equinix Sydney, this time with a direct
+  ixp_crossings match. Backlog: 984 -> 980. First tranche run under
+  the newly-started dynamic /loop.
