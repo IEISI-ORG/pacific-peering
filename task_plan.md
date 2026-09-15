@@ -1922,3 +1922,11 @@ Not filed in any dataclass. Called `mark_corridor_tested(17456, 134783)`. No rep
 **Next corridor pulled: AS17456 (Pacific Data Systems, Guam) -> AS154100 (BNL Tarawa, targeted directly).** This exact pair was already tested two tranches ago as the diagnostic check (measurement 211778709) confirming the Kiribati-direction silence was direction-specific, not address-specific -- reused that existing result rather than firing a redundant duplicate traceroute. Called `mark_corridor_tested(17456, 154100)` directly.
 
 Not filed in any dataclass (same total dead-end already documented). No report/map regeneration needed. Regenerated the corridor backlog: candidate count dropped 683 -> 682. **AS17456's testable corridors are now exhausted** -- AS17828 (PNG DataCo) is the sole leading source going forward.
+
+---
+
+**Next corridor pulled: AS17828 (PNG DataCo) -> AS4638 (Telecom Fiji)** -- the first firing sourced from PNG DataCo directly. Only 1 of 3 probes returned. `has_routing_loop` correctly returned `False`.
+
+**The fifth time this session hitting the exact same known `202.137.178.x` gap zone** (after loop tranche 5, PTI Pacifica/AS7131, PF/AS9471, and CK/AS10131): hops 10-11 land on the identical addresses (`202.137.178.160`, `.55`). This time via a fresh carrier chain: `AS17828 -> AS4826 (Vocus Connect) -> AS1221 (Telstra domestic) -> AS4637 (Telstra Global)`, target technically reached at hop 15 but with real unresolved hops in between. `ris_agrees: False` -- AS4638's only real neighbor remains AS45349.
+
+Not filed in any dataclass, consistent with the established pattern. Called `mark_corridor_tested(17828, 4638)`. No report/map regeneration needed. Regenerated the corridor backlog: candidate count dropped 682 -> 681.

@@ -1584,3 +1584,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   diagnostic measurement from two tranches ago, avoiding a redundant
   duplicate traceroute. Backlog: 683 -> 682. AS17456 now exhausted;
   AS17828 (PNG DataCo) is the sole leading source.
+- docs(analysis): PG(AS17828)->FJ(AS4638) inconclusive -- fifth hit
+  on the known 202.137.178.x gap zone this session, via a fresh
+  carrier chain (Vocus Connect/Telstra). RIS disagrees; AS4638's
+  only real neighbor remains AS45349. Not filed. Backlog: 682 -> 681.
