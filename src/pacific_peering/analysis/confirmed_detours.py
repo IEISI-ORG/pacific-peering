@@ -1467,4 +1467,28 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
             "as a candidate finding minutes earlier."
         ),
     ),
+    ConfirmedDetour(
+        source_cc="PF",
+        target_cc="WF",
+        target_asn=45879,
+        detour_ix_name="AS5511 (Opentransit Orange S.A.) -- global transit, not a named "
+        "exchange crossing",
+        detour_hub="Tokyo",
+        measurement_id=211691024,
+        ris_observation_count=1665,
+        note=(
+            "ONATI (AS9471, French Polynesia) -> Orange Wallis & Futuna "
+            "(AS45879) -- a fresh PF<->WF pair, a fourth independent "
+            "confirmation of the AS5511(Opentransit Orange)<->AS45879 "
+            "adjacency (after GU, MP, and VU). All 3 probes: `AS9471 -> "
+            "AS3257 (GTT) -> AS5511` -- the target itself never resolved "
+            "(ordinary ICMP filtering near the destination), so RIS is "
+            "checked against the last reached ASN. RIS agrees with the "
+            "identical *exact* match (1,665). GTT is a genuinely new "
+            "intermediate carrier for this specific corridor. No IXP "
+            "crossing (`ixp_crossings` empty for all 3 probes); kept "
+            "`detour_hub` as Tokyo, already independently verified "
+            "against AS5511's real PeeringDB facility list."
+        ),
+    ),
 )

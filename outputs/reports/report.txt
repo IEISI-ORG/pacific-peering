@@ -1,6 +1,6 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-09-15T09:42:02.929211+00:00                  
+                 Generated: 2026-09-15T09:46:34.041086+00:00                  
 ==============================================================================
 
 SUMMARY
@@ -158,6 +158,9 @@ PF -> TO (AS38198): detours via Equinix Sydney (AS132528, Digicel Australia/Tels
 PF -> FM (AS45193): detours via Any2West (Los Angeles)
     RIS observation count: 1681  [measurement 211689659]
     ONATI (AS9471, French Polynesia) -> a third FSM Telecommunications Corporation sibling ASN (AS45193). All 3 probes: `AS9471 -> AS6939 (Hurricane Electric) -> AS9246 (Teleguam Holdings/GTA) -> AS139759 -> AS45193`, fully contiguous -- **the first traceroute this project has recorded that resolves AS45193 directly**, rather than stalling on a sibling substitution (the shape every prior FSM-corridor measurement has shown, all filed as `CandidatePeering` since RIS couldn't confirm them). This time the immediate upstream (AS139759) *does* show up in AS45193's own RIS neighbor list, with an exact match (1,681) -- RIS confirming the internal FSM sibling backbone relationship (AS139759<->AS45193) directly, closing out a pattern that had stayed candidate-only for two prior source economies (GU, MP) and one prior PF measurement toward AS38875 earlier in this same tranche. Crosses **Any2West** (`ixp_crossings` confirms it for all 3 probes, member ASN 9246) -- already verified as a real PeeringDB-declared Any2West membership for AS9246/GTA when it first surfaced as a candidate finding minutes earlier.
+PF -> WF (AS45879): detours via AS5511 (Opentransit Orange S.A.) -- global transit, not a named exchange crossing (Tokyo)
+    RIS observation count: 1665  [measurement 211691024]
+    ONATI (AS9471, French Polynesia) -> Orange Wallis & Futuna (AS45879) -- a fresh PF<->WF pair, a fourth independent confirmation of the AS5511(Opentransit Orange)<->AS45879 adjacency (after GU, MP, and VU). All 3 probes: `AS9471 -> AS3257 (GTT) -> AS5511` -- the target itself never resolved (ordinary ICMP filtering near the destination), so RIS is checked against the last reached ASN. RIS agrees with the identical *exact* match (1,665). GTT is a genuinely new intermediate carrier for this specific corridor. No IXP crossing (`ixp_crossings` empty for all 3 probes); kept `detour_hub` as Tokyo, already independently verified against AS5511's real PeeringDB facility list.
 
 CONFIRMED LOCAL TRANSIT (RIS + Atlas both agree, stays in-fishbowl)
 ==============================================================================

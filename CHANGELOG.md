@@ -1397,3 +1397,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   exactly (1,681) on AS139759<->AS45193. Promotes the previously
   candidate-only sibling corridor (GU, MP) to a confirmed detour.
   Backlog: 828 -> 819.
+- feat(analysis): confirm PF(AS9471)->WF(AS45879) via Opentransit
+  Orange -- fourth independent confirmation of AS5511<->AS45879
+  (after GU, MP, VU). RIS agrees exactly (1,665), via a genuinely
+  new intermediate carrier (GTT). Backlog: 819 -> 818.
