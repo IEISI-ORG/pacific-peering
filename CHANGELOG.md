@@ -1418,3 +1418,10 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - docs(analysis): PF(AS9471)->KI(AS134783) fourth corroboration of
   AS154100<->AS134783 (after GU, MP, VU). RIS agrees exactly
   (1,392), also crosses EdgeIX Auckland. Backlog: 807 -> 806.
+- feat(analysis): confirm PF(AS9471)->NR(AS140504) via AS12684 (SES
+  Astra) -- first-ever traceroute-confirmed SES Astra relationship
+  in the project, closing the open thread from the earlier Cook
+  Islands tranche. RIS agrees exactly (616), the previously-untested
+  half of AS140504's two-relationship neighbor list. Caught and
+  fixed a PeeringDB query bug (wrong netfac filter param) before
+  trusting hub-attribution evidence. Backlog: 806 -> 803.

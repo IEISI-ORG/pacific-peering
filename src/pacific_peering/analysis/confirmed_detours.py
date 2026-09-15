@@ -1516,4 +1516,51 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
             "Sydney crossing."
         ),
     ),
+    ConfirmedDetour(
+        source_cc="PF",
+        target_cc="NR",
+        target_asn=140504,
+        detour_ix_name="AS12684 (SES ASTRA S.A.) -- satellite operator, global transit, "
+        "not a named exchange crossing",
+        detour_hub="Los Angeles",
+        measurement_id=211706787,
+        ris_observation_count=616,
+        note=(
+            "ONATI (AS9471, French Polynesia) -> a distinct Nauru ASN "
+            "(AS140504) -- the exact lead flagged in an earlier VU-sourced "
+            "tranche this session. First address dead-ended the same way "
+            "as that prior attempt: all 3 probes resolved to AS36149 "
+            "(Hawaiian Telcom) with `ris_agrees: False`. Applied the "
+            "standing retry policy against a different cached prefix. "
+            "**The retry reached AS140504's real relationship directly**: "
+            "all 3 probes `AS9471 -> AS6939 (Hurricane Electric) -> "
+            "AS36149 (Hawaiian Telcom) -> [gap] -> AS12684`, BGP-resolved "
+            "and RIS-agreeing with an *exact* match (616) -- the second "
+            "entry in AS140504's own two-relationship RIS neighbor list "
+            "(`{132528: 1032, 12684: 616}`), leaving only AS132528 as the "
+            "still-untested one. Checked AS12684's holder identity "
+            "directly: **SES ASTRA S.A.**, a major geostationary satellite "
+            "operator -- the same carrier flagged, but never confirmed, "
+            "in an earlier Cook Islands tranche (that attempt stalled at "
+            "generic transit and never got close enough to confirm or "
+            "deny the relationship; a direct-source test was later ruled "
+            "out entirely, since AS12684 has zero connected Atlas probes, "
+            "all five ever registered against it Abandoned). **This is "
+            "the first traceroute-confirmed SES Astra relationship this "
+            "project has recorded**, closing that open thread from the "
+            "other direction instead. Hub attribution: checked AS12684's "
+            "own PeeringDB record directly first -- zero registered "
+            "facilities at all (expected for a satellite operator with no "
+            "physical colocation), so attributed the hub from AS36149's "
+            "own verified facility list instead (CoreSite LA1/LA2, Los "
+            "Angeles) -- the immediately preceding carrier in the "
+            "resolved chain. **Caught a real query bug before trusting "
+            "any of this**: an initial PeeringDB facility lookup using "
+            "`asn=` as the netfac filter silently returned unfiltered, "
+            "unrelated global data for both AS12684 and AS36149 -- "
+            "re-queried using each network's actual `net_id` (via `/api/"
+            "net?asn=`) and got correct, small, verifiable facility lists "
+            "instead."
+        ),
+    ),
 )

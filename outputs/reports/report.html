@@ -47,7 +47,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
 <body>
 <div class="wrap">
     <h1>Pacific Peering — Regional Routing Report</h1>
-    <div class="meta">Generated 2026-09-15T10:15:40.393383+00:00</div>
+    <div class="meta">Generated 2026-09-15T10:30:27.649003+00:00</div>
 
     <div class="stat-row"><div class="stat-tile"><div class="value">20</div><div class="label">Economies in scope</div></div><div class="stat-tile"><div class="value">163</div><div class="label">ASNs in scope</div></div><div class="stat-tile"><div class="value">124</div><div class="label">ASNs w/ RIS neighbor</div></div><div class="stat-tile"><div class="value">38</div><div class="label">ASNs w/ IXP membership</div></div><div class="stat-tile"><div class="value">22</div><div class="label">ASNs w/ facility presence</div></div><div class="stat-tile"><div class="value">10/21</div><div class="label">IXPs in/out of fishbowl</div></div></div>
 
@@ -402,6 +402,13 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <div>RIS observation count: 1652
                 &middot; measurement 211693982</div>
             <div class="note">ONATI (AS9471, French Polynesia) -&gt; Solomon Telekom Co Ltd (AS45891) -- a fresh PF&lt;-&gt;SB pair, a fourth independent confirmation of the AS139609(SISCC)&lt;-&gt;AS45891 adjacency (after GU, MP, and VU). All 3 probes: `AS9471 -&gt; AS6939 (Hurricane Electric) -&gt; AS139609` -- the target itself never resolved (ordinary ICMP filtering near the destination), so RIS is checked against the last reached ASN, which is AS45891&#x27;s *only* RIS-observed neighbor at all. RIS agrees with the identical *exact* match (1,652). Crosses **NSW-IX** directly (`ixp_crossings` confirms it for all 3 probes), the same named exchange as the original MP-sourced entry -- now the second confirmation of this specific Sydney fabric for this corridor, alongside the VU-sourced entry&#x27;s MegaIX Sydney crossing.</div>
+        </div><div class="detour-card">
+            <div class="headline">PF -&gt; NR
+                (AS140504): detours via AS12684 (SES ASTRA S.A.) -- satellite operator, global transit, not a named exchange crossing
+                (Los Angeles)</div>
+            <div>RIS observation count: 616
+                &middot; measurement 211706787</div>
+            <div class="note">ONATI (AS9471, French Polynesia) -&gt; a distinct Nauru ASN (AS140504) -- the exact lead flagged in an earlier VU-sourced tranche this session. First address dead-ended the same way as that prior attempt: all 3 probes resolved to AS36149 (Hawaiian Telcom) with `ris_agrees: False`. Applied the standing retry policy against a different cached prefix. **The retry reached AS140504&#x27;s real relationship directly**: all 3 probes `AS9471 -&gt; AS6939 (Hurricane Electric) -&gt; AS36149 (Hawaiian Telcom) -&gt; [gap] -&gt; AS12684`, BGP-resolved and RIS-agreeing with an *exact* match (616) -- the second entry in AS140504&#x27;s own two-relationship RIS neighbor list (`{132528: 1032, 12684: 616}`), leaving only AS132528 as the still-untested one. Checked AS12684&#x27;s holder identity directly: **SES ASTRA S.A.**, a major geostationary satellite operator -- the same carrier flagged, but never confirmed, in an earlier Cook Islands tranche (that attempt stalled at generic transit and never got close enough to confirm or deny the relationship; a direct-source test was later ruled out entirely, since AS12684 has zero connected Atlas probes, all five ever registered against it Abandoned). **This is the first traceroute-confirmed SES Astra relationship this project has recorded**, closing that open thread from the other direction instead. Hub attribution: checked AS12684&#x27;s own PeeringDB record directly first -- zero registered facilities at all (expected for a satellite operator with no physical colocation), so attributed the hub from AS36149&#x27;s own verified facility list instead (CoreSite LA1/LA2, Los Angeles) -- the immediately preceding carrier in the resolved chain. **Caught a real query bug before trusting any of this**: an initial PeeringDB facility lookup using `asn=` as the netfac filter silently returned unfiltered, unrelated global data for both AS12684 and AS36149 -- re-queried using each network&#x27;s actual `net_id` (via `/api/net?asn=`) and got correct, small, verifiable facility lists instead.</div>
         </div>
 
     <h2>Confirmed local transit (RIS + Atlas both agree, stays in-fishbowl)</h2>
