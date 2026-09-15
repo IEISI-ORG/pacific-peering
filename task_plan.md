@@ -1828,3 +1828,11 @@ Added as a new entry. Called `mark_corridor_tested(10131, 45193)`. Verified: mod
 Fifth confirmation of the AS5511(Opentransit Orange)<->AS45879 adjacency (after GU, MP, VU, PF): `AS10131 -> AS9471 (ONATI) -> AS3257 (GTT) -> AS5511`, RIS-agreeing with the identical exact match (1,665). **Same identical Orange hop addresses as the PF entry** -- ran `hop_geolocation.geolocate_hop` on all three anyway rather than assuming the earlier result still held; still `None` for each, confirming genuinely no PTR evidence exists for this carrier chain. **Also closed out the "MP sibling not yet audited" flag from earlier**: checked measurement 211577395's own Orange-adjacent hops (`216.66.41.150`, `57.35.6.64`) -- also no PTR records. Across the whole corridor, only the GU entry has real evidence for Tokyo (a genuine IIJ/Japan hop); every other source's Tokyo attribution is the carrier's known presence, not this-traceroute-confirmed geography. Kept `detour_hub` as Tokyo on the same honestly-downgraded basis as the corrected PF entry.
 
 Added as a new entry. Called `mark_corridor_tested(10131, 45879)`. Verified: module imports cleanly (61 entries, up from 60); regenerated ASCII/HTML reports (render correctly) and the geographic map. Regenerated the corridor backlog: candidate count dropped 708 -> 707.
+
+---
+
+**Next corridor pulled: AS10131 (Cook Islands) -> AS45891 (Solomon Telekom Co Ltd).** Only 1 of 3 probes returned; checked `participant_count` (1, not 3). `has_routing_loop` correctly returned `False`.
+
+Fifth confirmation of the AS139609(SISCC)<->AS45891 adjacency (after GU, MP, VU, PF): `AS10131 -> AS9471 (ONATI) -> AS6939 (Hurricane Electric) -> AS139609`, target never resolved, RIS-agreeing with the identical exact match (1,652) -- AS139609 remains AS45891's only real RIS neighbor. Crosses NSW-IX directly, the same exchange as the PF entry.
+
+Added as a new entry. Called `mark_corridor_tested(10131, 45891)`. Verified: module imports cleanly (62 entries, up from 61); regenerated ASCII/HTML reports (render correctly) and the geographic map. Regenerated the corridor backlog: candidate count dropped 707 -> 698 (AS10131's remaining cheap targets thinning; the backlog now shows **AS17456 (Guam)** as a new source ASN appearing next, a further diversification step).

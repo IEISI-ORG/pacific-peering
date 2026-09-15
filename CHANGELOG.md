@@ -1528,3 +1528,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   hops as the PF entry; also audited the MP sibling's hops -- no PTR
   evidence found either. Only the GU entry has real Tokyo evidence
   (via IIJ). Backlog: 708 -> 707.
+- feat(analysis): confirm CK(AS10131)->SB(AS45891) via NSW-IX --
+  fifth confirmation of AS139609<->AS45891 (after GU, MP, VU, PF).
+  RIS agrees exactly (1,652). Backlog: 707 -> 698 (AS17456/Guam now
+  appearing as a new source ASN).

@@ -53,7 +53,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
 <body>
 <div class="wrap">
     <h1>Pacific Peering — Regional Routing Report</h1>
-    <div class="meta">Generated 2026-09-15T12:49:40.815428+00:00</div>
+    <div class="meta">Generated 2026-09-15T12:55:06.881110+00:00</div>
 
     <div class="headline-banner">
         <span class="value">68%</span>
@@ -493,6 +493,13 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <div>RIS observation count: 1665
                 &middot; measurement 211750685</div>
             <details class="note"><summary>Cook Islands (AS10131) -&gt; Orange Wallis &amp; Futuna (AS45879) -- a fresh CK&lt;-&gt;WF pair, a fifth independent confirmation of the AS5511(Opentransit…</summary>Cook Islands (AS10131) -&gt; Orange Wallis &amp; Futuna (AS45879) -- a fresh CK&lt;-&gt;WF pair, a fifth independent confirmation of the AS5511(Opentransit Orange)&lt;-&gt;AS45879 adjacency (after GU, MP, VU, PF). Only 1 of 3 requested probes returned; checked `participant_count` directly (1, not 3) -- the same genuine single-probe pattern as every other AS10131-sourced measurement this session. Result: `AS10131 -&gt; AS9471 (ONATI) -&gt; AS3257 (GTT) -&gt; AS5511`, target never resolved, RIS-agreeing with the identical *exact* match (1,665). **Same identical Orange hop addresses as the PF entry** (`193.251.249.81`, `81.52.166.62`, `81.52.188.158`) -- ran `hop_geolocation.geolocate_hop` on all three anyway rather than assuming the earlier `None` result still held; still `None` for each, confirming no PTR evidence exists for this carrier chain, not a one-off lookup gap. **Also checked the MP-sourced sibling entry&#x27;s own hops while here** (measurement 211577395, previously flagged as not yet audited): its two distinct Orange-adjacent addresses (`216.66.41.150`, `57.35.6.64`) also have no PTR records. Across every non-GU-sourced measurement of this corridor, only the GU entry has real evidence for its Tokyo claim (via a genuine IIJ/Japan hop) -- kept `detour_hub` as Tokyo here too, on the same honestly-downgraded basis as the PF entry: the carrier&#x27;s own real, verified presence, not this specific traceroute&#x27;s own confirmed geography.</details>
+        </div><div class="detour-card">
+            <div class="headline">CK -&gt; SB
+                (AS45891): detours via IX Australia Sydney (NSW-IX)
+                (Sydney)</div>
+            <div>RIS observation count: 1652
+                &middot; measurement 211752464</div>
+            <details class="note"><summary>Cook Islands (AS10131) -&gt; Solomon Telekom Co Ltd (AS45891) -- a fresh CK&lt;-&gt;SB pair, a fifth independent confirmation of the AS139609(SISCC)&lt;-&gt;AS45891 adjacency…</summary>Cook Islands (AS10131) -&gt; Solomon Telekom Co Ltd (AS45891) -- a fresh CK&lt;-&gt;SB pair, a fifth independent confirmation of the AS139609(SISCC)&lt;-&gt;AS45891 adjacency (after GU, MP, VU, PF). Only 1 of 3 requested probes returned; checked `participant_count` directly (1, not 3) -- the same genuine single-probe pattern as every other AS10131-sourced measurement this session. Result: `AS10131 -&gt; AS9471 (ONATI) -&gt; AS6939 (Hurricane Electric) -&gt; AS139609` -- the target itself never resolved (ordinary ICMP filtering), so RIS is checked against the last reached ASN, which remains AS45891&#x27;s *only* RIS-observed neighbor at all. RIS agrees with the identical *exact* match (1,652). Crosses **NSW-IX** directly (`ixp_crossings` confirms it, a real hop-level LAN-prefix match) -- the same exchange as the PF entry.</details>
         </div>
 
     <h2>Confirmed local transit (RIS + Atlas both agree, stays in-fishbowl)</h2>

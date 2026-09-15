@@ -1886,4 +1886,29 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
             "specific traceroute's own confirmed geography."
         ),
     ),
+    ConfirmedDetour(
+        source_cc="CK",
+        target_cc="SB",
+        target_asn=45891,
+        detour_ix_name="IX Australia Sydney (NSW-IX)",
+        detour_hub="Sydney",
+        measurement_id=211752464,
+        ris_observation_count=1652,
+        note=(
+            "Cook Islands (AS10131) -> Solomon Telekom Co Ltd (AS45891) "
+            "-- a fresh CK<->SB pair, a fifth independent confirmation "
+            "of the AS139609(SISCC)<->AS45891 adjacency (after GU, MP, "
+            "VU, PF). Only 1 of 3 requested probes returned; checked "
+            "`participant_count` directly (1, not 3) -- the same "
+            "genuine single-probe pattern as every other AS10131-sourced "
+            "measurement this session. Result: `AS10131 -> AS9471 "
+            "(ONATI) -> AS6939 (Hurricane Electric) -> AS139609` -- the "
+            "target itself never resolved (ordinary ICMP filtering), so "
+            "RIS is checked against the last reached ASN, which remains "
+            "AS45891's *only* RIS-observed neighbor at all. RIS agrees "
+            "with the identical *exact* match (1,652). Crosses **NSW-IX** "
+            "directly (`ixp_crossings` confirms it, a real hop-level "
+            "LAN-prefix match) -- the same exchange as the PF entry."
+        ),
+    ),
 )
