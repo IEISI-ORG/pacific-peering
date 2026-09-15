@@ -1641,3 +1641,10 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - feat(analysis): confirm PG(AS17828)->FM(AS45193) via Any2West --
   third confirmation of the direct AS139759<->AS45193 relationship
   (after PF, CK). RIS agrees exactly (1,681). Backlog: 547 -> 514.
+- feat(analysis): confirm PG(AS17828)->WF(AS45879) via Cogent/Orange,
+  now geolocated to Los Angeles -- sixth confirmation of
+  AS5511<->AS45879 (after GU, MP, VU, PF, CK), and the first time
+  this corridor has real geographic evidence (Cogent's own
+  "orange.lax05" router hostname) rather than an inherited Tokyo
+  guess. RIS agrees exactly (1,665). Added an "sjc" pattern to
+  hop_geolocation.py. Backlog: 514 -> 513.

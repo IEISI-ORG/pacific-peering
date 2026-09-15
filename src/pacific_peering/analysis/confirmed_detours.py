@@ -2082,4 +2082,36 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
             "relationship."
         ),
     ),
+    ConfirmedDetour(
+        source_cc="PG",
+        target_cc="WF",
+        target_asn=45879,
+        detour_ix_name="AS174 (Cogent Communications), then AS5511 (Opentransit "
+        "Orange S.A.) -- global transit, not a named exchange crossing",
+        detour_hub="Los Angeles",
+        measurement_id=211976890,
+        ris_observation_count=1665,
+        note=(
+            "PNG DataCo (AS17828) -> Orange Wallis & Futuna (AS45879) -- "
+            "a fresh PG<->WF pair, a sixth independent confirmation of "
+            "the AS5511(Opentransit Orange)<->AS45879 adjacency (after "
+            "GU, MP, VU, PF, CK), and the **first time this corridor has "
+            "ever had real geographic evidence for its Orange leg**. "
+            "`AS17828 -> AS4826 (Vocus Connect) -> AS174 (Cogent) -> "
+            "AS5511`, target never resolved, RIS-agreeing with the "
+            "identical *exact* match (1,665). Cogent is a genuinely new "
+            "intermediate carrier for this adjacency (after GTT). "
+            "**Reverse-DNS'd the Cogent hops directly (via the new "
+            "`hop_geolocation` module) rather than inheriting the "
+            "existing entries' Tokyo label**: `sjc13.atlas.cogentco.com` "
+            "-> `lax01...` -> `lax05...` -> **`orange.lax05.atlas."
+            "cogentco.com`** -- a Cogent router explicitly named for "
+            "the Orange handoff, located in Los Angeles. Corrected "
+            "`detour_hub` to Los Angeles accordingly, on real evidence "
+            "rather than the carrier's generic Tokyo presence used "
+            "elsewhere in this corridor's other, still-unverified "
+            "entries. Added a new `sjc` pattern to `hop_geolocation.py` "
+            "(San Jose) while auditing these hops."
+        ),
+    ),
 )

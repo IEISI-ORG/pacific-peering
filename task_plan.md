@@ -2024,3 +2024,13 @@ Added as a new `CandidatePeering` entry. Called `mark_corridor_tested(17828, 388
 Third independent confirmation of the direct AS139759<->AS45193 adjacency (after PF, CK): `AS17828 -> AS4826 (Vocus Connect) -> AS9246 (Teleguam Holdings/GTA) -> AS139759 -> AS45193`, fully contiguous, the literal target resolving directly again. RIS-agreeing with the identical exact match (1,681). Crosses Any2West -- the same exchange as every prior confirmation.
 
 Added as a new entry. Called `mark_corridor_tested(17828, 45193)`. Verified: module imports cleanly (69 entries, up from 68); regenerated ASCII/HTML reports (render correctly) and the geographic map. Regenerated the corridor backlog: candidate count dropped 547 -> 514 (a large drop -- PNG DataCo's remaining cheap untested targets thinned significantly at once).
+
+---
+
+**[Significant finding -- first-ever real geographic evidence for the AS45879/Orange corridor's Tokyo attribution.] Next corridor pulled: AS17828 (PNG DataCo) -> AS45879 (Orange Wallis & Futuna).** `has_routing_loop` correctly returned `False`.
+
+Sixth independent confirmation of the AS5511(Opentransit Orange)<->AS45879 adjacency (after GU, MP, VU, PF, CK): `AS17828 -> AS4826 (Vocus Connect) -> AS174 (Cogent) -> AS5511`, target never resolved, RIS-agreeing with the identical exact match (1,665). Cogent is a genuinely new intermediate carrier for this adjacency (after GTT).
+
+**Reverse-DNS'd the Cogent hops directly rather than inheriting the existing entries' Tokyo label**: `sjc13.atlas.cogentco.com` -> `lax01...` -> `lax05...` -> **`orange.lax05.atlas.cogentco.com`** -- a Cogent router explicitly named for the Orange handoff, located in Los Angeles. This is the first time this whole corridor has ever had real geographic evidence for its Orange leg, rather than an inherited carrier-level guess. Filed with `detour_hub="Los Angeles"` accordingly. Added a new `sjc` pattern to `hop_geolocation.py` (San Jose) while auditing these hops.
+
+Added as a new entry. Called `mark_corridor_tested(17828, 45879)`. Verified: module imports cleanly (70 entries, up from 69); regenerated ASCII/HTML reports (render correctly) and the geographic map. Regenerated the corridor backlog: candidate count dropped 514 -> 513.

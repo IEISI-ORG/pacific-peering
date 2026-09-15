@@ -74,6 +74,20 @@ _KNOWN_PATTERNS: tuple[tuple[re.Pattern[str], HopLocation], ...] = (
         ),
     ),
     (
+        re.compile(r"(?:^|[.\-])sjc\d*(?:[.\-]|$)", re.I),
+        HopLocation(
+            city="San Jose",
+            economy_cc=None,
+            matched_pattern="sjc",
+            evidence_note=(
+                "Confirmed via Cogent (sjc13.atlas.cogentco.com, measurement "
+                "211976890, PG->AS45879) -- Cogent's IATA-code convention for "
+                "San Jose, distinct from the 'lax'/'sfo'/'pdx' codes already "
+                "on record."
+            ),
+        ),
+    ),
+    (
         re.compile(r"(?:^|[.\-])sfo\d*(?:[.\-]|$)", re.I),
         HopLocation(
             city="San Francisco",

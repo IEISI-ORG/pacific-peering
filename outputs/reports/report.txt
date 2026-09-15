@@ -1,6 +1,6 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-09-15T22:25:26.697722+00:00                  
+                 Generated: 2026-09-15T22:36:32.940817+00:00                  
 ==============================================================================
 
 SUMMARY
@@ -223,6 +223,9 @@ PG -> MH (AS24439): detours via AS174 (Cogent Communications), via AS6453 (Tata 
 PG -> FM (AS45193): detours via Any2West (Los Angeles)
     RIS observation count: 1681  [measurement 211971118]
     PNG DataCo (AS17828) -> a third FSM Telecommunications Corporation sibling ASN (AS45193) -- a fresh PG<->FM pair, a third independent confirmation of the direct AS139759<->AS45193 adjacency (after PF and CK). `AS17828 -> AS4826 (Vocus Connect) -> AS9246 (Teleguam Holdings/GTA) -> AS139759 -> AS45193`, fully contiguous -- the literal target resolves directly again, RIS-agreeing with the identical *exact* match (1,681). Crosses Any2West directly -- the same exchange as every prior confirmation of this relationship.
+PG -> WF (AS45879): detours via AS174 (Cogent Communications), then AS5511 (Opentransit Orange S.A.) -- global transit, not a named exchange crossing (Los Angeles)
+    RIS observation count: 1665  [measurement 211976890]
+    PNG DataCo (AS17828) -> Orange Wallis & Futuna (AS45879) -- a fresh PG<->WF pair, a sixth independent confirmation of the AS5511(Opentransit Orange)<->AS45879 adjacency (after GU, MP, VU, PF, CK), and the **first time this corridor has ever had real geographic evidence for its Orange leg**. `AS17828 -> AS4826 (Vocus Connect) -> AS174 (Cogent) -> AS5511`, target never resolved, RIS-agreeing with the identical *exact* match (1,665). Cogent is a genuinely new intermediate carrier for this adjacency (after GTT). **Reverse-DNS'd the Cogent hops directly (via the new `hop_geolocation` module) rather than inheriting the existing entries' Tokyo label**: `sjc13.atlas.cogentco.com` -> `lax01...` -> `lax05...` -> **`orange.lax05.atlas.cogentco.com`** -- a Cogent router explicitly named for the Orange handoff, located in Los Angeles. Corrected `detour_hub` to Los Angeles accordingly, on real evidence rather than the carrier's generic Tokyo presence used elsewhere in this corridor's other, still-unverified entries. Added a new `sjc` pattern to `hop_geolocation.py` (San Jose) while auditing these hops.
 
 CONFIRMED LOCAL TRANSIT (RIS + Atlas both agree, stays in-fishbowl)
 ==============================================================================
