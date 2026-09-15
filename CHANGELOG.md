@@ -1052,3 +1052,12 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   repeats with stable RTT -- same known heuristic limit documented
   for the AS17828 case, checked directly rather than trusted.
   Backlog: 1035 -> 1033.
+- feat(analysis): confirm MP(AS7131, CNMI)->TO(AS38198, Digicel
+  Tonga) -- second independent confirmation of the existing GU->TO
+  adjacency (AS45355/Digicel Fiji<->AS38198). RIS agrees exactly
+  (1,321). New detail: an intermediate hop resolves to AS132528, the
+  Telstra-operated Digicel-Australia backbone ASN already confirmed
+  at Equinix Sydney in the NC->FJ/AS45355 entry -- a second,
+  unrelated measurement finding the same real infrastructure. One
+  probe false-positived `has_routing_loop` on a near-destination
+  repeat, same known pattern. Backlog: 1033 -> 1029.

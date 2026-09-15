@@ -849,4 +849,37 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
             "loop."
         ),
     ),
+    ConfirmedDetour(
+        source_cc="MP",
+        target_cc="TO",
+        target_asn=38198,
+        detour_ix_name="AS6939 (Hurricane Electric) + AS132528 (Digicel Australia/"
+        "Telstra-operated backbone) -- global transit, not a named exchange "
+        "crossing",
+        detour_hub="Sydney",
+        measurement_id=211570035,
+        ris_observation_count=1321,
+        note=(
+            "PTI Pacifica (AS7131, CNMI) -> Digicel Tonga (AS38198) -- a "
+            "fresh MP<->TO pair, landing on the existing GU(AS3605)->TO "
+            "adjacency (AS45355<->AS38198), a second independent "
+            "confirmation from a different source economy. Upstream of "
+            "the target is AS45355 (Digicel Fiji), RIS-agreeing with an "
+            "*exact* match (1,321), identical to the original finding. "
+            "Genuinely new detail this time: probe 62689 resolves an "
+            "intermediate hop to **AS132528** -- the same Telstra-operated "
+            "Digicel-Australia backbone ASN already independently "
+            "confirmed at Equinix Sydney in the NC->FJ/AS45355 entry above "
+            "-- `ixp_crossings` confirms it directly at that same fabric "
+            "again here, a second, unrelated measurement finding the "
+            "identical real infrastructure. `has_routing_loop` flagged "
+            "probe 60689 `True` -- checked directly per the now-standard "
+            "process: a near-destination repeat (`202.43.12.5`, not the "
+            "literal target `202.43.12.1`) with stable RTT, the same "
+            "known ordinary-noise shape, not a real loop. All 3 probes "
+            "eventually reach the same real, BGP-confirmed AS38198 "
+            "address (`202.43.12.5`) already established in the original "
+            "entry as this corridor's routine final-hop pattern."
+        ),
+    ),
 )
