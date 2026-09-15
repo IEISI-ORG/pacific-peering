@@ -571,7 +571,16 @@ CONFIRMED_LOCAL_TRANSIT: tuple[ConfirmedLocalTransit, ...] = (
             "transit provider, not narrowly tied to one specific downstream "
             "customer -- this is the *second* distinct Kiribati ASN now "
             "confirmed reachable through it, both via the identical "
-            "Australia-then-Starlink satellite ingress path."
+            "Australia-then-Starlink satellite ingress path. "
+            "**Second independent corroboration** (measurement 211594373, "
+            "MP/AS7131 -> KI/AS134783, pulled from the corridor backlog as "
+            "a fresh MP<->KI economy pair): both probes show the identical "
+            "chain -- AS7131 -> AS7578/AS137409 (GSL Networks, Australia) "
+            "-> AS14593 (SpaceX Starlink) -> AS154100 (BNL Tarawa) -> "
+            "target never resolved, identical RIS match (1,392). A second "
+            "geographically distinct source (CNMI, after Guam) confirming "
+            "this specific adjacency, not just the general Starlink-chain "
+            "ingress pattern."
         ),
     ),
 )

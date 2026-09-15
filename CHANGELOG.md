@@ -1113,3 +1113,11 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   entry's note rather than duplicating; entry count unchanged (11).
   One of three probes was a probe-specific dead end. Backlog:
   1007 -> 1006.
+- Sourced AS7131 toward AS134783 (a distinct Kiribati ASN, ATHKL) --
+  a fresh MP<->KI pair, same Australia/Starlink chain shape but a
+  different, already-separately-confirmed adjacency than AS132486
+  (AS154100/BNL Tarawa<->AS134783, exact RIS match 1,392, not 362).
+  Second independent corroboration of this specific adjacency (after
+  Guam). Extended the existing `ConfirmedLocalTransit` entry's note
+  rather than duplicating; entry count unchanged (11). Backlog:
+  1006 -> 1005.
