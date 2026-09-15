@@ -104,6 +104,45 @@ CANDIDATE_PEERING: tuple[CandidatePeering, ...] = (
         ),
     ),
     CandidatePeering(
+        upstream_cc="MP",
+        upstream_asn=7131,
+        upstream_name="PTI Pacifica Inc.",
+        target_cc="PW",
+        target_asn=17893,
+        target_name="Palau National Communications Corp",
+        measurement_id=211555952,
+        vantage_point_cc="MP",
+        probe_agreement="3/3 probes",
+        note=(
+            "A fresh MP<->PW pair, pulled from the corridor backlog. The "
+            "single cleanest result this project has produced from this "
+            "source: all 3 probes resolve **directly** AS7131 -> AS17893, "
+            "zero intermediate ASN at all, and unusually fast (20-30ms RTT "
+            "-- an order of magnitude below every Tokyo/Sydney-detour "
+            "finding this session, consistent with a short, genuinely "
+            "regional Micronesian path rather than a transpacific one). "
+            "But `ris_agrees: false` on both sides: checked each ASN's "
+            "full RIS neighbor list directly -- AS7131's "
+            "(`{6939: 1502, 1299: 181, 6453: 66, 3356: 58, 174: 43, ...}`) "
+            "and AS17893's (`{174: 1333, 140627: 139, 6939: 106, ...}`) -- "
+            "neither lists the other at all, so this isn't a fishbowl-scope "
+            "artifact (both ends *are* in-fishbowl Pacific ASNs); RIS "
+            "genuinely has no visibility into this specific adjacency. "
+            "`ixp_crossings` is empty for all 3 probes (no hop lands inside "
+            "a registered IXP LAN prefix), but real corroborating context "
+            "exists regardless: AS7131 and AS17893 share **two** PeeringDB-"
+            "declared IXP memberships in common -- BBIX Tokyo and Guam IX -- "
+            "a plausible real venue for exactly this kind of adjacency, even "
+            "though this traceroute's own hop addresses don't land inside "
+            "either registered LAN prefix directly. Exactly Validation Rule "
+            "4's shape: a real, physically-instantiated, fast direct path "
+            "that simply isn't announced anywhere RIS's route collectors "
+            "can see -- kept as a candidate, not promoted, per the standing "
+            "principle that no single traceroute satisfies Validation Rule "
+            "1 regardless of how clean it looks."
+        ),
+    ),
+    CandidatePeering(
         upstream_cc="PW",
         upstream_asn=17893,
         upstream_name="Palau National Communications Corp",

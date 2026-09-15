@@ -1008,3 +1008,13 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   by checking the raw hops directly, documented as a known heuristic
   limit rather than silently patched (no second data point yet to
   refine against). Backlog: 1090 -> 1060.
+- feat(analysis): add MP(AS7131)->PW(AS17893) as a new
+  `CandidatePeering` entry -- a direct, single-hop, 3/3-probe-clean
+  traceroute (unusually fast RTT, ~20-30ms) with no intermediate ASN
+  at all, but RIS confirms it from neither side. Both ends are
+  in-fishbowl Pacific ASNs, so not a fishbowl-scope artifact; AS7131
+  and AS17893 do share two real PeeringDB IXP memberships (BBIX
+  Tokyo, Guam IX) as plausible context, though this traceroute
+  itself doesn't land inside either registered LAN. Kept as
+  candidate, not promoted, per Validation Rule 1. Backlog:
+  1060 -> 1056.
