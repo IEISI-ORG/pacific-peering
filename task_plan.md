@@ -1531,3 +1531,11 @@ Not filed in any dataclass, consistent with the established pattern. Called `mar
 **Third confirmation for AS9751**, via the same ultimate carrier (Cogent) as the original GU entry, but a fresh vantage point (neither GU nor VU): `AS9471 -> AS174 -> AS9751`, RIS-agreeing with the identical exact match (1,055). No IXP crossing; verified Cogent's real PeeringDB facility list before keeping the Tokyo hub -- genuine presence at both Tokyo and Sydney.
 
 Added as a new entry. Called `mark_corridor_tested(9471, 9751)`. Verified: module imports cleanly (40 entries, up from 39); regenerated ASCII/HTML reports (render correctly) and the geographic map. Regenerated the corridor backlog: candidate count dropped 929 -> 927.
+
+---
+
+**Next corridor pulled: AS9471 (ONATI, French Polynesia) -> AS17480 (a fresh New Caledonia ASN).** `has_routing_loop` correctly returned `False` for all 3. Second independent confirmation of the AS18200(OPT NC)<->AS17480 adjacency (after the MP entry via Superloop/BBIX Tokyo): `AS9471 -> AS6939 (Hurricane Electric) -> AS18200 -> AS17480`, RIS-agreeing with the identical exact match (1,665).
+
+**A genuinely different named exchange this time**: crosses Equinix Sydney directly, not BBIX Tokyo. Worth a direct callback to the original entry's own note: that measurement observed AS17480 crossing *neither* of its own registered regional presences (Equinix Sydney, CAN'L IX Noumea). This one *does* match its registered Sydney presence -- a nice confirmatory contrast showing the same target's real traffic uses genuinely different real infrastructure depending on the source.
+
+Added as a new entry. Called `mark_corridor_tested(9471, 17480)`. Verified: module imports cleanly (41 entries, up from 40); regenerated ASCII/HTML reports (render correctly) and the geographic map. Regenerated the corridor backlog: candidate count dropped 927 -> 902.

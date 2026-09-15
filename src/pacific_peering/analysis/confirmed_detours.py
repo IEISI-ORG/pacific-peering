@@ -1262,4 +1262,32 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
             "with the original entry's Tokyo choice."
         ),
     ),
+    ConfirmedDetour(
+        source_cc="PF",
+        target_cc="NC",
+        target_asn=17480,
+        detour_ix_name="Equinix Sydney",
+        detour_hub="Sydney",
+        measurement_id=211671233,
+        ris_observation_count=1665,
+        note=(
+            "ONATI (AS9471, French Polynesia) -> a fresh New Caledonia "
+            "ASN (AS17480) -- a fresh PF<->NC pair, a second independent "
+            "confirmation of the AS18200(OPT NC)<->AS17480 adjacency "
+            "(after the MP entry via Superloop/BBIX Tokyo). All 3 probes: "
+            "`AS9471 -> AS6939 (Hurricane Electric) -> AS18200 -> "
+            "AS17480`, RIS-agreeing with the identical *exact* match "
+            "(1,665). **Genuinely different named exchange this time**: "
+            "crosses **Equinix Sydney** directly (`ixp_crossings` "
+            "confirms it for all 3 probes), not BBIX Tokyo -- and "
+            "notably, this *does* match AS17480's own registered "
+            "PeeringDB facility presence at Equinix SY1/SY2 Sydney, "
+            "unlike the original MP-sourced measurement which crossed "
+            "neither of AS17480's own registered regional presences at "
+            "all. A nice confirmatory contrast: the same target's real "
+            "traffic uses different real infrastructure depending on the "
+            "source, and this time it happens to line up with its own "
+            "declared Sydney presence."
+        ),
+    ),
 )

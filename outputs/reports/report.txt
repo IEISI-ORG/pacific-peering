@@ -1,6 +1,6 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-09-15T08:35:19.685480+00:00                  
+                 Generated: 2026-09-15T08:44:21.417602+00:00                  
 ==============================================================================
 
 SUMMARY
@@ -134,6 +134,9 @@ VU -> NR (AS152706): detours via AS4637 (Telstra Global), then AS6453 (Tata Comm
 PF -> AS (AS9751): detours via AS174 (Cogent Communications) -- global transit, not a named exchange crossing (Tokyo)
     RIS observation count: 1055  [measurement 211668556]
     ONATI (AS9471, French Polynesia) -> American Samoa (AS9751) -- a fresh PF<->AS pair, the first firing genuinely sourced from AS9471 to actually reach a target. Third confirmation for this specific target, via the same ultimate carrier (Cogent) as the original GU entry, but a different vantage point than either prior instance (GU/Cogent, VU/Wave Broadband). All 3 probes: `AS9471 -> AS174 -> AS9751`, RIS-agreeing with the identical *exact* match (1,055). No IXP crossing (`ixp_crossings` empty for all three); checked Cogent's real PeeringDB facility list before keeping the hub -- genuine presence at both Tokyo and Sydney, consistent with the original entry's Tokyo choice.
+PF -> NC (AS17480): detours via Equinix Sydney (Sydney)
+    RIS observation count: 1665  [measurement 211671233]
+    ONATI (AS9471, French Polynesia) -> a fresh New Caledonia ASN (AS17480) -- a fresh PF<->NC pair, a second independent confirmation of the AS18200(OPT NC)<->AS17480 adjacency (after the MP entry via Superloop/BBIX Tokyo). All 3 probes: `AS9471 -> AS6939 (Hurricane Electric) -> AS18200 -> AS17480`, RIS-agreeing with the identical *exact* match (1,665). **Genuinely different named exchange this time**: crosses **Equinix Sydney** directly (`ixp_crossings` confirms it for all 3 probes), not BBIX Tokyo -- and notably, this *does* match AS17480's own registered PeeringDB facility presence at Equinix SY1/SY2 Sydney, unlike the original MP-sourced measurement which crossed neither of AS17480's own registered regional presences at all. A nice confirmatory contrast: the same target's real traffic uses different real infrastructure depending on the source, and this time it happens to line up with its own declared Sydney presence.
 
 CONFIRMED LOCAL TRANSIT (RIS + Atlas both agree, stays in-fishbowl)
 ==============================================================================

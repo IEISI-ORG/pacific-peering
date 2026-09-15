@@ -1334,3 +1334,10 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   and Sydney) before keeping the Tokyo hub. Also re-verified the
   just-fixed `has_routing_loop` correctly returns `False` on this
   clean traceroute. Backlog: 929 -> 927.
+- feat(analysis): confirm PF(AS9471)->NC(AS17480) via Equinix Sydney
+  -- second independent confirmation of AS18200<->AS17480 (after MP
+  via Superloop/BBIX Tokyo). RIS agrees exactly (1,665), via a
+  genuinely different named exchange this time. Notable: this
+  crossing matches AS17480's own registered Sydney facility
+  presence, unlike the original measurement which used neither of
+  its registered regional presences. Backlog: 927 -> 902.
