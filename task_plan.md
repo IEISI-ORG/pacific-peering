@@ -1852,3 +1852,11 @@ Extended the existing entry's note. Not a new dataclass entry -- `CONFIRMED_LOCA
 **The target actually resolved directly this time, but `ris_agrees: False` -- surprising enough given how heavily-confirmed this relationship already is (five prior corroborations) that it warranted checking the raw fishbowl data directly rather than accepting the disagreement at face value.** Confirmed: this is the same established ONATI sibling-ASN substitution already handled for every prior instance of this exact corridor -- AS55885's only real RIS neighbor is AS55943 (ONATI's sibling ASN), not AS9471 directly, even though both are the same real operator. Sixth independent corroboration overall (after Niue's own vantage, GU, MP, VU, and now this), and the shortest path yet: `AS10131 -> AS9471 -> AS55885`, no intermediate carrier at all -- a fifth distinct source economy, and the fourth time this session ONATI has shown up as Cook Islands' direct upstream.
 
 Extended the existing entry's note. Not a new dataclass entry -- `CONFIRMED_LOCAL_TRANSIT` count unchanged (13). Called `mark_corridor_tested(10131, 55885)`. Regenerated ASCII/HTML reports since the note text changed (render correctly); map unaffected. Regenerated the corridor backlog: candidate count dropped 697 -> 695. AS10131 now fully exhausted; AS17456 (Guam) is the sole leading source.
+
+---
+
+**Next corridor pulled: AS10131 (Cook Islands) -> AS132486 (Kiribati, Ocean Link Ltd)** -- one last AS10131 pair the backlog still had. Only 1 of 3 probes returned; checked `participant_count` (1, not 3). `has_routing_loop` correctly returned `False`.
+
+Sixth independent reproduction of the well-established AS154100<->AS132486 Kiribati Starlink chain: `AS10131 -> AS9471 (ONATI) -> AS6939 (Hurricane Electric) -> AS14593 (Starlink) -> AS154100`, target never resolved, identical exact RIS match (362). Crosses EdgeIX Auckland again -- the same exchange as the PF entry.
+
+Extended the existing entry's note. Not a new dataclass entry -- `CONFIRMED_LOCAL_TRANSIT` count unchanged (13). Called `mark_corridor_tested(10131, 132486)`. Regenerated ASCII/HTML reports since the note text changed (render correctly); map unaffected. Regenerated the corridor backlog: candidate count dropped 695 -> 694. AS17456 (Guam) is now the sole leading source.

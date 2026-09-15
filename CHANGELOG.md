@@ -1543,3 +1543,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   sibling-substitution pattern, not a real anomaly. Shortest path
   yet, no intermediate carrier. Backlog: 697 -> 695. AS10131 now
   fully exhausted; AS17456 (Guam) is the sole leading source.
+- docs(analysis): CK(AS10131)->KI(AS132486) sixth reproduction of
+  the AS154100<->AS132486 Kiribati Starlink chain (after FSM, GU,
+  MP, VU, PF). RIS agrees exactly (362), crosses EdgeIX Auckland
+  again. Backlog: 695 -> 694.
