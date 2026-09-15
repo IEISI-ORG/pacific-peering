@@ -1911,4 +1911,31 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
             "LAN-prefix match) -- the same exchange as the PF entry."
         ),
     ),
+    ConfirmedDetour(
+        source_cc="CK",
+        target_cc="NR",
+        target_asn=140504,
+        detour_ix_name="AS12684 (SES ASTRA S.A.) -- satellite operator, global transit, "
+        "not a named exchange crossing",
+        detour_hub="Los Angeles",
+        measurement_id=211765425,
+        ris_observation_count=616,
+        note=(
+            "Cook Islands (AS10131) -> a distinct Nauru ASN (AS140504) "
+            "-- a fresh CK<->NR pair, a second independent confirmation "
+            "of the AS140504<->AS12684 (SES Astra) relationship (after "
+            "PF). Fired directly at the address already confirmed to "
+            "reach SES Astra in the PF retry, rather than starting from "
+            "a fresh address and possibly needing the retry policy "
+            "again. Result: `AS10131 -> AS9471 (ONATI) -> AS6939 "
+            "(Hurricane Electric) -> AS36149 (Hawaiian Telcom) -> "
+            "AS12684`, **fully contiguous this time** (the PF entry had "
+            "a real gap before AS12684) -- the cleanest confirmation yet "
+            "of this relationship. RIS agrees with the identical exact "
+            "match (616). Kept `detour_hub` as Los Angeles, matching the "
+            "PF entry's verified attribution (from AS36149's own real "
+            "PeeringDB facility list, since AS12684 itself has zero "
+            "registered facilities)."
+        ),
+    ),
 )

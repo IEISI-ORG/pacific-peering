@@ -1,6 +1,6 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-09-15T13:25:30.954736+00:00                  
+                 Generated: 2026-09-15T13:35:38.319060+00:00                  
 ==============================================================================
 
 SUMMARY
@@ -202,6 +202,9 @@ CK -> WF (AS45879): detours via AS5511 (Opentransit Orange S.A.) -- global trans
 CK -> SB (AS45891): detours via IX Australia Sydney (NSW-IX) (Sydney)
     RIS observation count: 1652  [measurement 211752464]
     Cook Islands (AS10131) -> Solomon Telekom Co Ltd (AS45891) -- a fresh CK<->SB pair, a fifth independent confirmation of the AS139609(SISCC)<->AS45891 adjacency (after GU, MP, VU, PF). Only 1 of 3 requested probes returned; checked `participant_count` directly (1, not 3) -- the same genuine single-probe pattern as every other AS10131-sourced measurement this session. Result: `AS10131 -> AS9471 (ONATI) -> AS6939 (Hurricane Electric) -> AS139609` -- the target itself never resolved (ordinary ICMP filtering), so RIS is checked against the last reached ASN, which remains AS45891's *only* RIS-observed neighbor at all. RIS agrees with the identical *exact* match (1,652). Crosses **NSW-IX** directly (`ixp_crossings` confirms it, a real hop-level LAN-prefix match) -- the same exchange as the PF entry.
+CK -> NR (AS140504): detours via AS12684 (SES ASTRA S.A.) -- satellite operator, global transit, not a named exchange crossing (Los Angeles)
+    RIS observation count: 616  [measurement 211765425]
+    Cook Islands (AS10131) -> a distinct Nauru ASN (AS140504) -- a fresh CK<->NR pair, a second independent confirmation of the AS140504<->AS12684 (SES Astra) relationship (after PF). Fired directly at the address already confirmed to reach SES Astra in the PF retry, rather than starting from a fresh address and possibly needing the retry policy again. Result: `AS10131 -> AS9471 (ONATI) -> AS6939 (Hurricane Electric) -> AS36149 (Hawaiian Telcom) -> AS12684`, **fully contiguous this time** (the PF entry had a real gap before AS12684) -- the cleanest confirmation yet of this relationship. RIS agrees with the identical exact match (616). Kept `detour_hub` as Los Angeles, matching the PF entry's verified attribution (from AS36149's own real PeeringDB facility list, since AS12684 itself has zero registered facilities).
 
 CONFIRMED LOCAL TRANSIT (RIS + Atlas both agree, stays in-fishbowl)
 ==============================================================================

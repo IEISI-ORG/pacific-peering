@@ -1868,3 +1868,11 @@ Extended the existing entry's note. Not a new dataclass entry -- `CONFIRMED_LOCA
 Fifth independent corroboration of the AS154100<->AS134783 adjacency (after GU, MP, VU, PF): `AS10131 -> AS9471 (ONATI) -> AS6939 (Hurricane Electric) -> AS14593 (Starlink) -> AS154100`, target never resolved, identical exact RIS match (1,392). No IXP crossing this time.
 
 Extended the existing entry's note. Not a new dataclass entry -- `CONFIRMED_LOCAL_TRANSIT` count unchanged (13). Called `mark_corridor_tested(10131, 134783)`. Regenerated ASCII/HTML reports since the note text changed (render correctly); map unaffected. Regenerated the corridor backlog: candidate count dropped 694 -> 693. **AS17828 (Papua New Guinea, PNG DataCo) now also appearing as a new source ASN**, alongside AS17456 (Guam).
+
+---
+
+**Next corridor pulled: AS10131 (Cook Islands) -> AS140504 (a distinct Nauru ASN) -- the SES Astra corridor.** Fired directly at the address already confirmed to reach SES Astra in the PF retry (`43.230.6.1`), skipping the dead-end address that triggered the retry policy there. `has_routing_loop` correctly returned `False`.
+
+Second independent confirmation of the AS140504<->AS12684 (SES Astra) relationship: `AS10131 -> AS9471 (ONATI) -> AS6939 (Hurricane Electric) -> AS36149 (Hawaiian Telcom) -> AS12684`, **fully contiguous this time** (the PF entry had a real gap before AS12684) -- the cleanest confirmation yet. RIS agrees with the identical exact match (616).
+
+Added as a new entry. Called `mark_corridor_tested(10131, 140504)`. Verified: module imports cleanly (63 entries, up from 62); regenerated ASCII/HTML reports (render correctly) and the geographic map. Regenerated the corridor backlog: candidate count dropped 693 -> 690.

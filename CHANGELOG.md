@@ -1551,3 +1551,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   AS154100<->AS134783 (after GU, MP, VU, PF). RIS agrees exactly
   (1,392). Backlog: 694 -> 693. AS17828 (PNG) now also appearing as
   a new source ASN.
+- feat(analysis): confirm CK(AS10131)->NR(AS140504) via SES Astra --
+  second confirmation of the AS140504<->AS12684 satellite
+  relationship, fully contiguous this time (the PF entry had a
+  gap). RIS agrees exactly (616). Backlog: 693 -> 690.
