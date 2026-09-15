@@ -274,7 +274,16 @@ CONFIRMED_LOCAL_TRANSIT: tuple[ConfirmedLocalTransit, ...] = (
             "AS6453 (Tata) -> AS3257 (GTT) directly -- neither Telia nor this "
             "specific Telia/Tata/GTT combination had appeared for this "
             "adjacency before. Not a new entry -- same confirmed relationship, "
-            "a fourth distinct vantage point reinforcing it."
+            "a fourth distinct vantage point reinforcing it. "
+            "**Fifth independent corroboration** (measurement 211638372, "
+            "VU/AS9249 -> NU/AS55885, a fresh VU<->NU pair): again resolves "
+            "to AS9471 immediately before the target, same sibling-ASN "
+            "basis. Yet another distinct upstream path into ONATI: AS9249 "
+            "-> AS38442 (Vodafone Fiji) -> AS2914 (NTT Communications) -> "
+            "AS3257 (GTT) -> AS9471 -- NTT hadn't appeared for this "
+            "adjacency before either. A fourth distinct source economy "
+            "(Vanuatu, after Niue's own vantage point, Guam, and CNMI) "
+            "confirming the same relationship."
         ),
     ),
     ConfirmedLocalTransit(

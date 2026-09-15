@@ -1229,3 +1229,11 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   (1,528). Extended the existing `ConfirmedLocalTransit` entry's
   note rather than duplicating; entry count unchanged (12). Backlog:
   965 -> 964.
+- Sourced AS9249 toward AS55885 (Niue) -- a fresh VU<->NU pair,
+  landing on the well-established Niue<->ONATI adjacency, now a
+  fourth independent corroboration (after Niue's own vantage point,
+  Guam, and CNMI). Caught and fixed a factual error in the note
+  draft before committing -- it had fabricated "American Samoa" as a
+  prior source, corrected after checking the entry's actual history
+  directly. New upstream carrier for this adjacency: NTT
+  Communications. Backlog: 964 -> 962.
