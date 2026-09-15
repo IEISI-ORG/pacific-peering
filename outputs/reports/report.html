@@ -47,7 +47,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
 <body>
 <div class="wrap">
     <h1>Pacific Peering — Regional Routing Report</h1>
-    <div class="meta">Generated 2026-09-15T09:46:34.176150+00:00</div>
+    <div class="meta">Generated 2026-09-15T09:52:46.862350+00:00</div>
 
     <div class="stat-row"><div class="stat-tile"><div class="value">20</div><div class="label">Economies in scope</div></div><div class="stat-tile"><div class="value">163</div><div class="label">ASNs in scope</div></div><div class="stat-tile"><div class="value">124</div><div class="label">ASNs w/ RIS neighbor</div></div><div class="stat-tile"><div class="value">38</div><div class="label">ASNs w/ IXP membership</div></div><div class="stat-tile"><div class="value">22</div><div class="label">ASNs w/ facility presence</div></div><div class="stat-tile"><div class="value">10/21</div><div class="label">IXPs in/out of fishbowl</div></div></div>
 
@@ -395,6 +395,13 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <div>RIS observation count: 1665
                 &middot; measurement 211691024</div>
             <div class="note">ONATI (AS9471, French Polynesia) -&gt; Orange Wallis &amp; Futuna (AS45879) -- a fresh PF&lt;-&gt;WF pair, a fourth independent confirmation of the AS5511(Opentransit Orange)&lt;-&gt;AS45879 adjacency (after GU, MP, and VU). All 3 probes: `AS9471 -&gt; AS3257 (GTT) -&gt; AS5511` -- the target itself never resolved (ordinary ICMP filtering near the destination), so RIS is checked against the last reached ASN. RIS agrees with the identical *exact* match (1,665). GTT is a genuinely new intermediate carrier for this specific corridor. No IXP crossing (`ixp_crossings` empty for all 3 probes); kept `detour_hub` as Tokyo, already independently verified against AS5511&#x27;s real PeeringDB facility list.</div>
+        </div><div class="detour-card">
+            <div class="headline">PF -&gt; SB
+                (AS45891): detours via IX Australia Sydney (NSW-IX)
+                (Sydney)</div>
+            <div>RIS observation count: 1652
+                &middot; measurement 211693982</div>
+            <div class="note">ONATI (AS9471, French Polynesia) -&gt; Solomon Telekom Co Ltd (AS45891) -- a fresh PF&lt;-&gt;SB pair, a fourth independent confirmation of the AS139609(SISCC)&lt;-&gt;AS45891 adjacency (after GU, MP, and VU). All 3 probes: `AS9471 -&gt; AS6939 (Hurricane Electric) -&gt; AS139609` -- the target itself never resolved (ordinary ICMP filtering near the destination), so RIS is checked against the last reached ASN, which is AS45891&#x27;s *only* RIS-observed neighbor at all. RIS agrees with the identical *exact* match (1,652). Crosses **NSW-IX** directly (`ixp_crossings` confirms it for all 3 probes), the same named exchange as the original MP-sourced entry -- now the second confirmation of this specific Sydney fabric for this corridor, alongside the VU-sourced entry&#x27;s MegaIX Sydney crossing.</div>
         </div>
 
     <h2>Confirmed local transit (RIS + Atlas both agree, stays in-fishbowl)</h2>

@@ -1401,3 +1401,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   Orange -- fourth independent confirmation of AS5511<->AS45879
   (after GU, MP, VU). RIS agrees exactly (1,665), via a genuinely
   new intermediate carrier (GTT). Backlog: 819 -> 818.
+- feat(analysis): confirm PF(AS9471)->SB(AS45891) via NSW-IX --
+  fourth independent confirmation of AS139609(SISCC)<->AS45891
+  (after GU, MP, VU). RIS agrees exactly (1,652), AS139609 remains
+  AS45891's only RIS-observed neighbor. Backlog: 818 -> 809 (source
+  ASN's remaining cheap targets exhausted; AS10131/Cook Islands now
+  leads the backlog).

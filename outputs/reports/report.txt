@@ -1,6 +1,6 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-09-15T09:46:34.041086+00:00                  
+                 Generated: 2026-09-15T09:52:46.728773+00:00                  
 ==============================================================================
 
 SUMMARY
@@ -161,6 +161,9 @@ PF -> FM (AS45193): detours via Any2West (Los Angeles)
 PF -> WF (AS45879): detours via AS5511 (Opentransit Orange S.A.) -- global transit, not a named exchange crossing (Tokyo)
     RIS observation count: 1665  [measurement 211691024]
     ONATI (AS9471, French Polynesia) -> Orange Wallis & Futuna (AS45879) -- a fresh PF<->WF pair, a fourth independent confirmation of the AS5511(Opentransit Orange)<->AS45879 adjacency (after GU, MP, and VU). All 3 probes: `AS9471 -> AS3257 (GTT) -> AS5511` -- the target itself never resolved (ordinary ICMP filtering near the destination), so RIS is checked against the last reached ASN. RIS agrees with the identical *exact* match (1,665). GTT is a genuinely new intermediate carrier for this specific corridor. No IXP crossing (`ixp_crossings` empty for all 3 probes); kept `detour_hub` as Tokyo, already independently verified against AS5511's real PeeringDB facility list.
+PF -> SB (AS45891): detours via IX Australia Sydney (NSW-IX) (Sydney)
+    RIS observation count: 1652  [measurement 211693982]
+    ONATI (AS9471, French Polynesia) -> Solomon Telekom Co Ltd (AS45891) -- a fresh PF<->SB pair, a fourth independent confirmation of the AS139609(SISCC)<->AS45891 adjacency (after GU, MP, and VU). All 3 probes: `AS9471 -> AS6939 (Hurricane Electric) -> AS139609` -- the target itself never resolved (ordinary ICMP filtering near the destination), so RIS is checked against the last reached ASN, which is AS45891's *only* RIS-observed neighbor at all. RIS agrees with the identical *exact* match (1,652). Crosses **NSW-IX** directly (`ixp_crossings` confirms it for all 3 probes), the same named exchange as the original MP-sourced entry -- now the second confirmation of this specific Sydney fabric for this corridor, alongside the VU-sourced entry's MegaIX Sydney crossing.
 
 CONFIRMED LOCAL TRANSIT (RIS + Atlas both agree, stays in-fishbowl)
 ==============================================================================

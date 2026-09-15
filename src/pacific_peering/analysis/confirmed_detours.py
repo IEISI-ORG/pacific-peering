@@ -1491,4 +1491,29 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
             "against AS5511's real PeeringDB facility list."
         ),
     ),
+    ConfirmedDetour(
+        source_cc="PF",
+        target_cc="SB",
+        target_asn=45891,
+        detour_ix_name="IX Australia Sydney (NSW-IX)",
+        detour_hub="Sydney",
+        measurement_id=211693982,
+        ris_observation_count=1652,
+        note=(
+            "ONATI (AS9471, French Polynesia) -> Solomon Telekom Co Ltd "
+            "(AS45891) -- a fresh PF<->SB pair, a fourth independent "
+            "confirmation of the AS139609(SISCC)<->AS45891 adjacency "
+            "(after GU, MP, and VU). All 3 probes: `AS9471 -> AS6939 "
+            "(Hurricane Electric) -> AS139609` -- the target itself never "
+            "resolved (ordinary ICMP filtering near the destination), so "
+            "RIS is checked against the last reached ASN, which is "
+            "AS45891's *only* RIS-observed neighbor at all. RIS agrees "
+            "with the identical *exact* match (1,652). Crosses **NSW-IX** "
+            "directly (`ixp_crossings` confirms it for all 3 probes), the "
+            "same named exchange as the original MP-sourced entry -- now "
+            "the second confirmation of this specific Sydney fabric for "
+            "this corridor, alongside the VU-sourced entry's MegaIX "
+            "Sydney crossing."
+        ),
+    ),
 )
