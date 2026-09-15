@@ -1561,3 +1561,9 @@ Added as a new `ConfirmedDetour` entry. Called `mark_corridor_tested(9471, 17893
 **Next corridor pulled: AS9471 (ONATI, French Polynesia) -> AS17993 (Vodafone Samoa).** Only 2 of 3 probes returned initially; checked `participant_count` (3, confirmed genuinely queued) and polled longer for the third. `has_routing_loop` correctly returned `False` for all three. Second independent confirmation of the AS6939(Hurricane Electric)<->AS17993 adjacency (after MP): `AS9471 -> AS6939 -> AS17993`, RIS-agreeing with the identical exact match (150). Crosses Equinix Sydney directly, confirmed for all 3 probes this time (the original only had partial confirmation).
 
 Added as a new entry. Called `mark_corridor_tested(9471, 17993)`. Verified: module imports cleanly (44 entries, up from 43); regenerated ASCII/HTML reports (render correctly) and the geographic map. Regenerated the corridor backlog: candidate count dropped 860 -> 854.
+
+---
+
+**Next corridor pulled: AS9471 (ONATI, French Polynesia) -> AS23917 (Tuvalu).** Only 2 of 3 probes returned initially; confirmed `participant_count` (3) and polled longer. `has_routing_loop` correctly returned `False` for all three. Fifth independent corroboration of the well-established FINTEL<->Tuvalu adjacency (after Tuvalu's own vantage point, Guam, CNMI, and Vanuatu): RIS-agreeing with the identical exact match (1,009), via the same AS4648 (Spark NZ) carrier as the VU-sourced instance, but no IXP crossing this time -- a plainer path even via the same intermediate carrier.
+
+Extended the existing entry's note rather than duplicating. Not a new dataclass entry -- `CONFIRMED_LOCAL_TRANSIT` count unchanged (13). Called `mark_corridor_tested(9471, 23917)`. Regenerated ASCII/HTML reports since the note text changed (render correctly); map unaffected. Regenerated the corridor backlog: candidate count dropped 854 -> 852.

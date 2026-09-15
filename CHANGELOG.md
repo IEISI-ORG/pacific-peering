@@ -1358,3 +1358,10 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   -- second independent confirmation of AS6939<->AS17993 (after MP).
   RIS agrees exactly (150), crossing Equinix Sydney directly,
   confirmed for all 3 probes this time. Backlog: 860 -> 854.
+- Sourced AS9471 toward AS23917 (Tuvalu) -- a fresh PF<->TV pair,
+  landing on the well-established FINTEL<->Tuvalu adjacency, now a
+  fifth independent corroboration. Identical exact RIS match (1,009),
+  via the same Spark NZ carrier as the VU instance but no IXP
+  crossing this time. Extended the existing `ConfirmedLocalTransit`
+  entry's note rather than duplicating; entry count unchanged (13).
+  Backlog: 854 -> 852.

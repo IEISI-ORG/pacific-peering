@@ -375,7 +375,16 @@ CONFIRMED_LOCAL_TRANSIT: tuple[ConfirmedLocalTransit, ...] = (
             "appeared for this adjacency before (the prior two instances "
             "used Level 3/Lumen with no exchange, and Equinix Los Angeles). "
             "A fourth distinct source economy (Vanuatu, after Tuvalu's own "
-            "vantage point, Guam, and CNMI) confirming the same adjacency."
+            "vantage point, Guam, and CNMI) confirming the same adjacency. "
+            "**Fifth independent corroboration** (measurement 211679526, "
+            "PF/AS9471 -> TV/AS23917, a fresh PF<->TV pair): again lands "
+            "on AS9241 immediately upstream of AS23917, exact RIS match "
+            "(1,009). Same AS4648 (Spark NZ) carrier as the VU-sourced "
+            "instance, but no IXP crossing this time (`ixp_crossings` "
+            "empty for all three) -- a different, plainer path into "
+            "FINTEL even via the same intermediate carrier. A fifth "
+            "distinct source economy (French Polynesia, after Tuvalu's "
+            "own vantage point, Guam, CNMI, and Vanuatu)."
         ),
     ),
     ConfirmedLocalTransit(
