@@ -123,7 +123,18 @@ CONFIRMED_LOCAL_TRANSIT: tuple[ConfirmedLocalTransit, ...] = (
             "registered IXP LAN prefix; this is a plain carrier-to-carrier transit "
             "chain across the open internet, not a named-exchange crossing this "
             "project's ConfirmedDetour shape is built to capture), but real color "
-            "worth keeping on record."
+            "worth keeping on record. "
+            "**Independently reproduced from a second, unrelated source** "
+            "(measurement 211502707, GU/AS3605 -> KI/AS132486, pulled from the "
+            "corridor backlog as a fresh GU<->KI economy pair): both probes show "
+            "the *exact same* striking chain -- AS3605 -> AS7578/AS137409 (GSL "
+            "Networks, Australia) -> AS14593 (SpaceX Starlink) -> AS154100 (BNL "
+            "Tarawa) -> target never resolved, identical RIS match (362). Two "
+            "completely different, geographically distant sources (FSM and Guam) "
+            "both reach Kiribati via the same Australia-then-Starlink satellite "
+            "path -- real, repeated evidence this is Kiribati's actual general-"
+            "purpose ingress pattern, not an artifact specific to one source "
+            "network's own routing quirks."
         ),
     ),
     ConfirmedLocalTransit(

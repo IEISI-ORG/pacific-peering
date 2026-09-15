@@ -859,3 +859,12 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   (1,657) via AS3257 (GTT Communications), a completely different
   carrier than the earlier dead-end. Added as a new ConfirmedDetour
   entry; marked tested; backlog regenerated (1171 -> 1151).
+- Sourced AS3605 toward AS132486 (Ocean Link Ltd, Kiribati) -- a
+  fresh GU<->KI pair. Reproduced the exact same Australia->Starlink
+  satellite chain already documented for the FSM->Kiribati corridor,
+  landing on the identical AS154100<->AS132486 adjacency (exact RIS
+  match, 362). Two unrelated, distant sources now confirm the same
+  ingress pattern -- real evidence it's Kiribati's actual general
+  routing behavior, not one source's quirk. Added as a corroboration
+  note, not a new entry; marked tested; backlog regenerated
+  (1151 -> 1150).
