@@ -586,4 +586,28 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
             "uniform national pattern."
         ),
     ),
+    ConfirmedDetour(
+        source_cc="GU",
+        target_cc="NR",
+        target_asn=152706,
+        detour_ix_name="AS6453 (Tata Communications), via AS2497 (IIJ, Japan) -- global "
+        "transit, not a named exchange crossing",
+        detour_hub="Tokyo",
+        measurement_id=211520771,
+        ris_observation_count=292,
+        note=(
+            "Guam Cablevision (AS3605) -> Neotel (AS152706, Nauru). Both "
+            "probes fully contiguous to the literal target: AS3605 -> AS2497 "
+            "(IIJ, Japan) -> AS6453 (Tata Communications) -> AS152706. RIS "
+            "agrees with an *exact* match (292) -- checked against AS152706's "
+            "full neighbor list: AS6453 is its dominant relationship (292 of "
+            "roughly 333 total observations). This is the **second** distinct "
+            "instance of Tata Communications filling AS3605's Tokyo-transit "
+            "role this session (after AS24439/Marshall Islands) -- along with "
+            "the two earlier Cogent instances (Palau, Fiji/FINTEL, American "
+            "Samoa, Samoa) and Telstra's domestic+international pair, Tata is "
+            "clearly a second real, recurring carrier in this Guam network's "
+            "actual international transit mix, not a one-off."
+        ),
+    ),
 )

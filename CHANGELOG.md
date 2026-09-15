@@ -897,3 +897,10 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   AS10131 corridor's in-fishbowl ONATI transit. Two real, differently
   -shaped Cook Islands corridors now on record. Added as a new
   ConfirmedDetour entry; marked tested; backlog regenerated to 1136.
+- Sourced AS3605 toward AS152706 (Neotel, Nauru) -- closing out a run
+  of three Nauru dead-ends with a clean confirmation. Fully
+  contiguous, exact RIS match (292) via AS6453 (Tata Communications)
+  -- the second distinct instance of Tata this session, a real
+  recurring carrier in this Guam network's transit mix. Added as a
+  new ConfirmedDetour entry; marked tested; backlog regenerated
+  (1136 -> 1127).

@@ -47,7 +47,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
 <body>
 <div class="wrap">
     <h1>Pacific Peering — Regional Routing Report</h1>
-    <div class="meta">Generated 2026-09-15T01:15:41.277594+00:00</div>
+    <div class="meta">Generated 2026-09-15T01:23:50.804711+00:00</div>
 
     <div class="stat-row"><div class="stat-tile"><div class="value">20</div><div class="label">Economies in scope</div></div><div class="stat-tile"><div class="value">163</div><div class="label">ASNs in scope</div></div><div class="stat-tile"><div class="value">124</div><div class="label">ASNs w/ RIS neighbor</div></div><div class="stat-tile"><div class="value">38</div><div class="label">ASNs w/ IXP membership</div></div><div class="stat-tile"><div class="value">22</div><div class="label">ASNs w/ facility presence</div></div><div class="stat-tile"><div class="value">10/21</div><div class="label">IXPs in/out of fishbowl</div></div></div>
 
@@ -171,6 +171,13 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <div>RIS observation count: 335
                 &middot; measurement 211516729</div>
             <div class="note">Guam Cablevision (AS3605) -&gt; VakaNet Limited (AS152093, Cook Islands) -- a second, distinct Cook Islands ASN tested from Guam this session (after AS10131, reached via the in-fishbowl ONATI transit corroboration). Both probes fully contiguous to AS9507 (NextHop Pty Ltd, Australia), resolved via PeeringDB netixlan, crossing **BBIX Tokyo** (out-of-fishbowl) -- a genuine named-exchange crossing this time, not just global transit. RIS agrees with an *exact* match (335) -- checked against AS152093&#x27;s full neighbor list: AS9507 is its *only* RIS-observed neighbor at all. Notable contrast with the AS10131 corridor tested from the same source: that one reaches Cook Islands via an in-fishbowl Pacific carrier (ONATI); this one reaches a different Cook Islands operator via a conventional Australia/Tokyo exchange crossing -- two real, differently-shaped Cook Islands corridors, not a uniform national pattern.</div>
+        </div><div class="detour-card">
+            <div class="headline">GU -&gt; NR
+                (AS152706): detours via AS6453 (Tata Communications), via AS2497 (IIJ, Japan) -- global transit, not a named exchange crossing
+                (Tokyo)</div>
+            <div>RIS observation count: 292
+                &middot; measurement 211520771</div>
+            <div class="note">Guam Cablevision (AS3605) -&gt; Neotel (AS152706, Nauru). Both probes fully contiguous to the literal target: AS3605 -&gt; AS2497 (IIJ, Japan) -&gt; AS6453 (Tata Communications) -&gt; AS152706. RIS agrees with an *exact* match (292) -- checked against AS152706&#x27;s full neighbor list: AS6453 is its dominant relationship (292 of roughly 333 total observations). This is the **second** distinct instance of Tata Communications filling AS3605&#x27;s Tokyo-transit role this session (after AS24439/Marshall Islands) -- along with the two earlier Cogent instances (Palau, Fiji/FINTEL, American Samoa, Samoa) and Telstra&#x27;s domestic+international pair, Tata is clearly a second real, recurring carrier in this Guam network&#x27;s actual international transit mix, not a one-off.</div>
         </div>
 
     <h2>Confirmed local transit (RIS + Atlas both agree, stays in-fishbowl)</h2>

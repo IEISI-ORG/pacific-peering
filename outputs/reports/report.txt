@@ -1,6 +1,6 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-09-15T01:15:41.139687+00:00                  
+                 Generated: 2026-09-15T01:23:50.670861+00:00                  
 ==============================================================================
 
 SUMMARY
@@ -65,6 +65,9 @@ GU -> PF (AS55943): detours via AS3257 (GTT Communications) -- global transit, n
 GU -> CK (AS152093): detours via BBIX Tokyo (Tokyo)
     RIS observation count: 335  [measurement 211516729]
     Guam Cablevision (AS3605) -> VakaNet Limited (AS152093, Cook Islands) -- a second, distinct Cook Islands ASN tested from Guam this session (after AS10131, reached via the in-fishbowl ONATI transit corroboration). Both probes fully contiguous to AS9507 (NextHop Pty Ltd, Australia), resolved via PeeringDB netixlan, crossing **BBIX Tokyo** (out-of-fishbowl) -- a genuine named-exchange crossing this time, not just global transit. RIS agrees with an *exact* match (335) -- checked against AS152093's full neighbor list: AS9507 is its *only* RIS-observed neighbor at all. Notable contrast with the AS10131 corridor tested from the same source: that one reaches Cook Islands via an in-fishbowl Pacific carrier (ONATI); this one reaches a different Cook Islands operator via a conventional Australia/Tokyo exchange crossing -- two real, differently-shaped Cook Islands corridors, not a uniform national pattern.
+GU -> NR (AS152706): detours via AS6453 (Tata Communications), via AS2497 (IIJ, Japan) -- global transit, not a named exchange crossing (Tokyo)
+    RIS observation count: 292  [measurement 211520771]
+    Guam Cablevision (AS3605) -> Neotel (AS152706, Nauru). Both probes fully contiguous to the literal target: AS3605 -> AS2497 (IIJ, Japan) -> AS6453 (Tata Communications) -> AS152706. RIS agrees with an *exact* match (292) -- checked against AS152706's full neighbor list: AS6453 is its dominant relationship (292 of roughly 333 total observations). This is the **second** distinct instance of Tata Communications filling AS3605's Tokyo-transit role this session (after AS24439/Marshall Islands) -- along with the two earlier Cogent instances (Palau, Fiji/FINTEL, American Samoa, Samoa) and Telstra's domestic+international pair, Tata is clearly a second real, recurring carrier in this Guam network's actual international transit mix, not a one-off.
 
 CONFIRMED LOCAL TRANSIT (RIS + Atlas both agree, stays in-fishbowl)
 ==============================================================================
