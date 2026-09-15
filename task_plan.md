@@ -2086,3 +2086,11 @@ Extended the existing entry's note. Not a new dataclass entry -- `CONFIRMED_LOCA
 Third independent corroboration of the AS3605<->AS133897 adjacency (after the original entry and VU): `AS17828 -> AS4826 (Vocus Connect) -> AS2497 (IIJ, Japan) -> AS3605 -> AS133897`, fully contiguous, RIS-agreeing with the identical exact match (662). Crosses **Equinix Singapore** directly -- a genuinely new named exchange for this adjacency, and IIJ is a new intermediate carrier too.
 
 Extended the existing entry's note. Not a new dataclass entry -- `CONFIRMED_LOCAL_TRANSIT` count unchanged (13). Called `mark_corridor_tested(17828, 133897)`. Regenerated ASCII/HTML reports since the note text changed (render correctly); map unaffected. Regenerated the corridor backlog: candidate count dropped 499 -> 498. AS17828 now genuinely exhausted; AS17893 (Palau NCC) is the sole leading source.
+
+---
+
+**Next corridor pulled: AS17828 (PNG DataCo) -> AS134783 (ATHKL, Kiribati)** -- one final AS17828 pair the backlog still had. `has_routing_loop` correctly returned `False`.
+
+Sixth independent corroboration of the AS154100<->AS134783 adjacency: `AS17828 -> AS4826 (Vocus Connect) -> AS14593 (Starlink) -> AS154100`, target never resolved, identical exact RIS match (1,392). No IXP crossing this time.
+
+Extended the existing entry's note. Not a new dataclass entry -- `CONFIRMED_LOCAL_TRANSIT` count unchanged (13). Called `mark_corridor_tested(17828, 134783)`. Regenerated ASCII/HTML reports since the note text changed (render correctly); map unaffected. Regenerated the corridor backlog: candidate count dropped 498 -> 497. Now fully into AS17893 (Palau NCC).

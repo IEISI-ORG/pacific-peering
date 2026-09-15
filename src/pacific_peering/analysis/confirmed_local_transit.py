@@ -921,7 +921,14 @@ CONFIRMED_LOCAL_TRANSIT: tuple[ConfirmedLocalTransit, ...] = (
             "resolved, identical RIS match (1,392). No IXP crossing this "
             "time (`ixp_crossings` empty). A fifth distinct source "
             "economy (Cook Islands, after Guam, CNMI, Vanuatu, and "
-            "French Polynesia)."
+            "French Polynesia). "
+            "**Sixth independent corroboration** (measurement 211991435, "
+            "PG/AS17828 -> KI/AS134783, a fresh PG<->KI pair): `AS17828 "
+            "-> AS4826 (Vocus Connect) -> AS14593 (Starlink) -> "
+            "AS154100`, target never resolved, identical RIS match "
+            "(1,392). No IXP crossing this time. A sixth distinct "
+            "source economy (Papua New Guinea, after Guam, CNMI, "
+            "Vanuatu, French Polynesia, and Cook Islands)."
         ),
     ),
     ConfirmedLocalTransit(

@@ -1676,3 +1676,6 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   AS3605<->AS133897 (after the original entry and VU). RIS agrees
   exactly (662), first time crossing Equinix Singapore. Backlog:
   499 -> 498.
+- docs(analysis): PG(AS17828)->KI(AS134783) sixth corroboration of
+  AS154100<->AS134783. RIS agrees exactly (1,392). Backlog:
+  498 -> 497. Now fully into AS17893 (Palau NCC).
