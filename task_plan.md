@@ -1357,3 +1357,11 @@ Extended the existing entry's note rather than duplicating. Not a new dataclass 
 **`ris_agrees: false` on both sides** -- checked each ASN's full neighbor list directly: neither AS17993's nor AS38442's list mentions the other. Not a fishbowl-scope artifact (both genuinely in-fishbowl). **Checked AS17993's holder name before writing this up**, and it sharpened the finding considerably: "Vodafone Samoa Limited" -- the same corporate brand as AS38442's "Vodafone Fiji", the same intra-corporate shape already established for Digicel Fiji<->Digicel Tonga. A particularly well-motivated candidate, not just a generic clean-traceroute-RIS-disagrees case.
 
 **This is the `CandidatePeering` shape**, per Validation Rule 1 -- a real exchange crossing and a compelling corporate-family motivation still don't substitute for RIS confirmation. Added as a new entry. Called `mark_corridor_tested(9249, 17993)`. Verified: module imports cleanly (6 entries, up from 5); regenerated ASCII/HTML reports (render correctly) and the geographic map. Regenerated the corridor backlog: candidate count dropped 995 -> 988.
+
+---
+
+**Next corridor pulled: AS9249 (Telecom Vanuatu) -> AS23917 (Tuvalu).** `has_routing_loop` correctly returned `False`. Lands on the well-established FINTEL(AS9241)<->Tuvalu adjacency, already independently confirmed three times before (Tuvalu's own vantage point, Guam, CNMI): RIS agrees with the identical exact match (1,009).
+
+**Fourth independent corroboration, extending the existing entry's note rather than duplicating.** A third distinct upstream path into FINTEL this time: AS9249 -> AS38442 (Vodafone Fiji) -> AS4648 (Spark NZ), crossing **MegaIX Sydney** -- neither this specific exchange nor a Sydney crossing had appeared for this adjacency before (prior instances used Level 3/Lumen with no exchange, and Equinix Los Angeles). A fourth distinct source economy (Vanuatu, after Tuvalu, Guam, CNMI).
+
+Not a new dataclass entry -- `CONFIRMED_LOCAL_TRANSIT` count unchanged (11). Called `mark_corridor_tested(9249, 23917)`. Regenerated ASCII/HTML reports since the note text changed (render correctly); map unaffected. Regenerated the corridor backlog: candidate count dropped 988 -> 986.

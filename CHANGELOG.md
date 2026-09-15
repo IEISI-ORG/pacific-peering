@@ -1176,3 +1176,12 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   as the established Digicel Fiji<->Digicel Tonga intra-corporate
   pattern -- a well-motivated candidate, kept per Validation Rule 1.
   Backlog: 995 -> 988.
+- Sourced AS9249 toward AS23917 (Tuvalu) -- a fresh VU<->TV pair,
+  landing on the well-established FINTEL<->Tuvalu adjacency, now a
+  fourth independent corroboration (after Tuvalu's own vantage
+  point, Guam, and CNMI). Identical exact RIS match (1,009), via a
+  third distinct upstream path crossing MegaIX Sydney -- neither
+  this exchange nor a Sydney crossing had appeared for this
+  adjacency before. Extended the existing `ConfirmedLocalTransit`
+  entry's note rather than duplicating; entry count unchanged (11).
+  Backlog: 988 -> 986.

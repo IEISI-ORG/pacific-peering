@@ -333,7 +333,18 @@ CONFIRMED_LOCAL_TRANSIT: tuple[ConfirmedLocalTransit, ...] = (
             "3/Lumen path seen from Guam. Not a new entry -- same confirmed "
             "adjacency -- but real evidence FINTEL's transit role for "
             "Tuvalu is reached via more than one route depending on the "
-            "ultimate source."
+            "ultimate source. "
+            "**Fourth independent corroboration** (measurement 211625084, "
+            "VU/AS9249 -> TV/AS23917, a fresh VU<->TV pair): again lands on "
+            "AS9241 immediately upstream of AS23917, exact RIS match "
+            "(1,009). A third distinct upstream path this time: AS9249 -> "
+            "AS38442 (Vodafone Fiji) -> **AS4648 (Spark NZ)**, crossing "
+            "**MegaIX Sydney** (`ixp_crossings` confirms it directly) -- "
+            "neither this specific exchange nor a Sydney crossing had "
+            "appeared for this adjacency before (the prior two instances "
+            "used Level 3/Lumen with no exchange, and Equinix Los Angeles). "
+            "A fourth distinct source economy (Vanuatu, after Tuvalu's own "
+            "vantage point, Guam, and CNMI) confirming the same adjacency."
         ),
     ),
     ConfirmedLocalTransit(
