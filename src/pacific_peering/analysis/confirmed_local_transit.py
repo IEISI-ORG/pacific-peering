@@ -448,7 +448,19 @@ CONFIRMED_LOCAL_TRANSIT: tuple[ConfirmedLocalTransit, ...] = (
             "reached via global transit, two (AS58932, AS133897) reached "
             "directly -- a real, mixed picture of how one Guam carrier actually "
             "serves its declared Palau relationships, not assumed uniform from "
-            "the IRR declaration alone."
+            "the IRR declaration alone. "
+            "**Second independent corroboration, from a genuinely different "
+            "source economy** (measurement 211646713, VU/AS9249 -> "
+            "PW/AS133897, pulled from the corridor backlog as a fresh "
+            "VU<->PW pair, immediately after the same shape confirmed "
+            "AS3605<->AS58932 from Vanuatu two tranches ago): both probes "
+            "fully contiguous, target reached directly -- AS9249 -> AS38442 "
+            "(Vodafone Fiji) -> AS2914 (NTT Communications) -> **AS3605** -> "
+            "AS133897, the identical intermediate-carrier shape as the "
+            "AS58932 corroboration. RIS agrees with the identical *exact* "
+            "match (662). AS3605 confirmed once more as a genuine transit "
+            "waypoint for third-economy traffic, not just its own direct "
+            "customer relationship."
         ),
     ),
     ConfirmedLocalTransit(

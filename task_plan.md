@@ -1451,3 +1451,11 @@ Extended the existing entry's note (second edit attempt succeeded after the firs
 **A genuinely new intermediate carrier this time**: `AS9249 -> AS38442 (Vodafone Fiji) -> AS55850 (Mercury NZ Limited) -> AS14593 (Starlink) -> AS154100` -- checked AS55850's holder name directly rather than assuming. Neither Mercury NZ nor a named exchange had appeared for this specific chain before; crosses **MegaIX Sydney** directly (`ixp_crossings` confirms it) -- the first time this Kiribati chain has shown a real exchange crossing rather than plain global transit (GSL Networks, in every prior instance, showed none).
 
 Fourth independent reproduction, extending the existing entry's note. Not a new dataclass entry -- `CONFIRMED_LOCAL_TRANSIT` count unchanged (12). Called `mark_corridor_tested(9249, 132486)`. Regenerated ASCII/HTML reports since the note text changed (render correctly); map unaffected. Regenerated the corridor backlog: candidate count dropped 948 -> 947.
+
+---
+
+**Next corridor pulled: AS9249 (Telecom Vanuatu) -> AS133897 (Palau Equipment Co. Inc.).** Reached the literal target directly, both probes -- the identical path shape as the AS58932 corroboration two tranches ago (`AS9249 -> AS38442 -> AS2914 -> AS3605 -> target`). `has_routing_loop` correctly returned `False`.
+
+**Lands on the existing AS3605<->AS133897 adjacency**, RIS-agreeing with the identical exact match (662). Second independent corroboration, same shape and same reasoning already applied to the AS58932 case: AS3605 confirmed once more as a genuine transit waypoint for third-economy traffic, not just its own direct customer relationship.
+
+Extended the existing entry's note. Not a new dataclass entry -- `CONFIRMED_LOCAL_TRANSIT` count unchanged (12). Called `mark_corridor_tested(9249, 133897)`. Regenerated ASCII/HTML reports since the note text changed (render correctly, confirmed both the AS58932 and AS133897 paragraphs are present and distinct); map unaffected. Regenerated the corridor backlog: candidate count dropped 947 -> 946.

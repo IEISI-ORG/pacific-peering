@@ -1256,3 +1256,10 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   the first named-exchange crossing (MegaIX Sydney) this specific
   chain has shown -- every prior instance used GSL Networks with no
   IXP crossing. Backlog: 948 -> 947.
+- Sourced AS9249 toward AS133897 (Palau Equipment Co. Inc.) -- a
+  fresh VU<->PW pair, landing on the existing AS3605<->AS133897
+  adjacency, now a second independent corroboration, same
+  intermediate-carrier shape as the AS58932 corroboration two
+  tranches ago. Identical exact RIS match (662). Extended the
+  existing `ConfirmedLocalTransit` entry's note rather than
+  duplicating; entry count unchanged (12). Backlog: 947 -> 946.
