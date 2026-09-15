@@ -1466,3 +1466,6 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   fourth confirmation of AS174<->AS9751 (after GU, VU, PF). RIS
   agrees exactly (1,055), transiting ONATI's own network. Backlog:
   800 -> 798.
+- feat(analysis): confirm CK(AS10131)->NC(AS17480) via Equinix
+  Sydney -- third confirmation of AS18200<->AS17480 (after MP, PF).
+  RIS agrees exactly (1,665). Backlog: 798 -> 779.

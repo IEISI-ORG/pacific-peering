@@ -1705,3 +1705,11 @@ Built a new hand-curated registry, `analysis/regional_carrier_facilities.py`, mi
 Fourth confirmation of the AS174(Cogent)<->AS9751 adjacency (after GU, VU, PF): `AS10131 -> AS9471 (ONATI, French Polynesia) -> AS174 -> AS9751`, fully contiguous, RIS-agreeing with the identical exact match (1,055). Notable: Cook Islands' traffic transits ONATI's own network en route to Cogent -- the same regional-hub role already well-established for ONATI elsewhere this session.
 
 Added as a new entry. Called `mark_corridor_tested(10131, 9751)`. Verified: module imports cleanly (52 entries, up from 51); regenerated ASCII/HTML reports (render correctly) and the geographic map. Regenerated the corridor backlog: candidate count dropped 800 -> 798.
+
+---
+
+**Next corridor pulled: AS10131 (Cook Islands) -> AS17480 (a fresh New Caledonia ASN).** Only 1 of 3 probes returned; checked `participant_count` (1, not 3) -- the same genuine single-probe pattern as every other AS10131-sourced measurement this session. `has_routing_loop` correctly returned `False`.
+
+Third independent confirmation of the AS18200(OPT NC)<->AS17480 adjacency (after MP via BBIX Tokyo and PF via Equinix Sydney): `AS10131 -> AS9471 (ONATI, French Polynesia) -> AS6939 (Hurricane Electric) -> AS18200 -> AS17480`, fully contiguous, RIS-agreeing with the identical exact match (1,665). Crosses Equinix Sydney directly -- the same exchange and the same ONATI-transit path shape already seen on the AS9751 corridor earlier this tranche cycle.
+
+Added as a new entry. Called `mark_corridor_tested(10131, 17480)`. Verified: module imports cleanly (53 entries, up from 52); regenerated ASCII/HTML reports (render correctly) and the geographic map. Regenerated the corridor backlog: candidate count dropped 798 -> 779.

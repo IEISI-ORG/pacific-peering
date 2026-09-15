@@ -1591,4 +1591,31 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
             "Tokyo, matching every prior entry for this target."
         ),
     ),
+    ConfirmedDetour(
+        source_cc="CK",
+        target_cc="NC",
+        target_asn=17480,
+        detour_ix_name="Equinix Sydney",
+        detour_hub="Sydney",
+        measurement_id=211721420,
+        ris_observation_count=1665,
+        note=(
+            "Cook Islands (AS10131) -> a fresh New Caledonia ASN "
+            "(AS17480) -- a fresh CK<->NC pair, a third independent "
+            "confirmation of the AS18200(OPT NC)<->AS17480 adjacency "
+            "(after the MP entry via BBIX Tokyo and the PF entry via "
+            "Equinix Sydney). Only 1 of 3 requested probes returned; "
+            "checked `participant_count` directly (1, not 3) -- the same "
+            "genuine single-probe pattern as every other AS10131-sourced "
+            "measurement this session. Result: `AS10131 -> AS9471 (ONATI, "
+            "French Polynesia) -> AS6939 (Hurricane Electric) -> AS18200 "
+            "-> AS17480`, fully contiguous, RIS-agreeing with the "
+            "identical *exact* match (1,665). Crosses **Equinix Sydney** "
+            "directly (`ixp_crossings` confirms it) -- the same exchange "
+            "as the PF entry, and the same ONATI-then-Hurricane-Electric "
+            "path shape, since Cook Islands' own traffic transits ONATI's "
+            "network here too, matching the pattern already seen on the "
+            "AS9751 corridor this same tranche cycle."
+        ),
+    ),
 )

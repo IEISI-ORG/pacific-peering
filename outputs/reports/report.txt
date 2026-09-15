@@ -1,6 +1,6 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-09-15T11:08:54.298240+00:00                  
+                 Generated: 2026-09-15T11:15:32.175784+00:00                  
 ==============================================================================
 
 SUMMARY
@@ -172,6 +172,9 @@ PF -> NR (AS140504): detours via AS12684 (SES ASTRA S.A.) -- satellite operator,
 CK -> AS (AS9751): detours via AS174 (Cogent Communications) -- global transit, not a named exchange crossing (Tokyo)
     RIS observation count: 1055  [measurement 211719803]
     Cook Islands (AS10131) -> American Samoa (AS9751) -- a fresh CK<->AS pair, the first firing genuinely sourced from AS10131 to actually reach a target. Fourth confirmation for this specific target, via the same ultimate carrier (Cogent) as the GU and PF entries, but with a notable intermediate hop: `AS10131 -> AS9471 (ONATI, French Polynesia) -> AS174 -> AS9751` -- Cook Islands' traffic transits ONATI's own network before reaching Cogent, the same regional-hub role already established for ONATI elsewhere this session (Niue, various FSM/Kiribati corridors). Only 1 of 3 requested probes returned; checked `participant_count` directly (1, not 3) -- a genuine single-probe assignment, consistent with every other AS10131-sourced measurement this session. RIS agrees with the identical *exact* match (1,055) already on record for this adjacency. No IXP crossing; kept `detour_hub` as Tokyo, matching every prior entry for this target.
+CK -> NC (AS17480): detours via Equinix Sydney (Sydney)
+    RIS observation count: 1665  [measurement 211721420]
+    Cook Islands (AS10131) -> a fresh New Caledonia ASN (AS17480) -- a fresh CK<->NC pair, a third independent confirmation of the AS18200(OPT NC)<->AS17480 adjacency (after the MP entry via BBIX Tokyo and the PF entry via Equinix Sydney). Only 1 of 3 requested probes returned; checked `participant_count` directly (1, not 3) -- the same genuine single-probe pattern as every other AS10131-sourced measurement this session. Result: `AS10131 -> AS9471 (ONATI, French Polynesia) -> AS6939 (Hurricane Electric) -> AS18200 -> AS17480`, fully contiguous, RIS-agreeing with the identical *exact* match (1,665). Crosses **Equinix Sydney** directly (`ixp_crossings` confirms it) -- the same exchange as the PF entry, and the same ONATI-then-Hurricane-Electric path shape, since Cook Islands' own traffic transits ONATI's network here too, matching the pattern already seen on the AS9751 corridor this same tranche cycle.
 
 CONFIRMED LOCAL TRANSIT (RIS + Atlas both agree, stays in-fishbowl)
 ==============================================================================
