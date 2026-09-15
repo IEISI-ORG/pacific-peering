@@ -121,7 +121,18 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
             "both responding probes again show the identical path (AS3605 -> "
             "AS2497 -> AS174 -> AS17893) and the identical exact RIS observation "
             "count (1,333). Two independent measurements, same result -- this "
-            "finding is as solid as any in the project."
+            "finding is as solid as any in the project. "
+            "**A third independent confirmation, this time from a genuinely "
+            "different source economy** (measurement 211619574, VU/AS9249 -> "
+            "PW/AS17893, a fresh VU<->PW pair): AS9249 -> AS38442 (Vodafone "
+            "Fiji) -> AS2914 (NTT Communications) -> AS174 (Cogent "
+            "Communications) -> AS17893, fully contiguous, no gaps. RIS "
+            "agrees with the identical *exact* match (1,333). Notably a "
+            "different path into Cogent than either prior Guam-sourced "
+            "measurement -- via NTT (AS2914), not AS2497/IIJ -- but landing "
+            "on the same ultimate AS174<->AS17893 adjacency. Three "
+            "independent measurements, two different source economies, one "
+            "identical, exact-match adjacency."
         ),
     ),
     ConfirmedDetour(

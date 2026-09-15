@@ -1341,3 +1341,11 @@ Added as a new `ConfirmedDetour` entry. Called `mark_corridor_tested(9249, 9751)
 **Immediately recognized the well-established ONATI<->Cook-Islands sibling-ASN adjacency**, already independently confirmed three times before (ONATI's own vantage point, Guam, CNMI): `AS9249 -> AS38442 (Vodafone Fiji) -> AS4637 (Telstra Global) -> AS3257 (GTT) -> AS9471 -> AS10131`, same sibling-ASN basis (RIS confirms via AS55943).
 
 **A fourth independent reinforcement, extending the existing entry's note rather than duplicating.** A fourth distinct source economy (Vanuatu, after ONATI's own vantage point, Guam, and CNMI). Not a new dataclass entry -- `CONFIRMED_LOCAL_TRANSIT` count unchanged (11). Called `mark_corridor_tested(9249, 10131)`. Regenerated ASCII/HTML reports since the note text changed (render correctly); map unaffected. Regenerated the corridor backlog: candidate count dropped 999 -> 997.
+
+---
+
+**Next corridor pulled: AS9249 (Telecom Vanuatu) -> AS17893 (Palau NCC).** Reached directly, no retry needed. `has_routing_loop` correctly returned `False`.
+
+**Lands on this project's very first confirmed finding** (GU->PW/AS17893, AS174/Cogent), already independently reproduced twice before -- but both prior instances were from the same source economy (Guam/AS3605). This is the **first confirmation from a genuinely different source economy**: `AS9249 -> AS38442 (Vodafone Fiji) -> AS2914 (NTT Communications) -> AS174 (Cogent Communications) -> AS17893`, fully contiguous, RIS-agreeing with the identical *exact* match (1,333). A different path into Cogent than either Guam-sourced measurement (via NTT this time, not IIJ/Tokyo), landing on the same ultimate adjacency.
+
+Extended the existing entry's note rather than duplicating. Not a new dataclass entry -- `CONFIRMED_DETOURS` count unchanged (31). Called `mark_corridor_tested(9249, 17893)`. Regenerated ASCII/HTML reports since the note text changed (render correctly); map unaffected. Regenerated the corridor backlog: candidate count dropped 997 -> 995.

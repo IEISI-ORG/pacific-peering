@@ -1159,3 +1159,11 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   (after ONATI's own vantage point, Guam, and CNMI). Extended the
   existing `ConfirmedLocalTransit` entry's note rather than
   duplicating; entry count unchanged (11). Backlog: 999 -> 997.
+- Sourced AS9249 toward AS17893 (Palau NCC) -- a fresh VU<->PW pair,
+  landing on this project's very first confirmed finding
+  (AS174/Cogent<->AS17893), now confirmed from a genuinely different
+  source economy (Vanuatu) for the first time, not just a repeat
+  from Guam. Identical exact RIS match (1,333), via a different path
+  into Cogent (NTT instead of IIJ/Tokyo). Extended the existing
+  `ConfirmedDetour` entry's note rather than duplicating; entry
+  count unchanged (31). Backlog: 997 -> 995.
