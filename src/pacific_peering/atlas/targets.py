@@ -83,6 +83,19 @@ def has_routing_loop(hops: list[dict], target: str | None = None) -> bool:
     the resolved hops -- a repeat alongside a successful arrival at the
     real target is normal noise, not a blocking loop.
 
+    Second gap, also found live (a real, current routing loop inside
+    AS9241/FINTEL's own network, both bouncing addresses resolving to
+    the target ASN itself -- discovered from AS9471/ONATI as source):
+    a genuine 2-node routing loop shows as an *alternating* pattern
+    (A, B, A, B, ...), not consecutive repeats -- each of the two
+    routers' TTL-exceeded replies interleave with the other's, and
+    intervening hops often go unanswered (`None`) as the packet
+    round-trips an extra time, so a naive "equals the immediately
+    previous hop" check never fires even though the same two
+    addresses keep recurring. Fixed by checking each resolved address
+    against a short rolling window of the last few resolved addresses
+    (covers 2- and 3-node cycles), not just the one directly before it.
+
     Args:
         hops: the `hops` list from one parsed Atlas traceroute record.
         target: the traceroute's actual destination IP, if known -- when
@@ -91,15 +104,19 @@ def has_routing_loop(hops: list[dict], target: str | None = None) -> bool:
     """
     saw_repeat = False
     saw_target = False
-    previous: str | None = None
+    recent: list[str] = []
+    window = 3
     for hop in hops:
         addresses = hop.get("addresses") or []
         current = addresses[0] if len(addresses) == 1 else None
-        if current is not None and current == previous:
-            saw_repeat = True
+        if current is not None:
+            if current in recent:
+                saw_repeat = True
+            recent.append(current)
+            if len(recent) > window:
+                recent.pop(0)
         if target is not None and target in addresses:
             saw_target = True
-        previous = current
     if not saw_repeat:
         return False
     return not saw_target if target is not None else True

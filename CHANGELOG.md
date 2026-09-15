@@ -1308,3 +1308,22 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   real RIS neighbor (AS45349, this project's very first confirmed
   finding). Not filed, same established precedent. Backlog:
   931 -> 930.
+- fix(atlas): `has_routing_loop` missed alternating-address routing
+  loops -- caught live sourcing AS9471 (ONATI) -> AS9241 (FINTEL): a
+  real loop between two of AS9241's own routers, alternating
+  (A, B, A, B, ...) rather than repeating consecutively, so the old
+  immediate-previous-hop check never fired. Fixed by checking each
+  resolved address against a rolling window of the last 3 instead of
+  just the one before it. Regression-tested against every prior
+  recorded case (the original Hurricane Electric loop, the
+  successful AS9249 traceroute, and all four previously-documented
+  false-positive cases) -- identical results across the board, zero
+  regressions.
+- Sourced AS9471 toward AS9241 (FINTEL, Fiji) again with a different
+  address per the retry policy: took a completely different path via
+  Hurricane Electric and dead-ended at `65.19.142.246`, the exact
+  same landmark address from the original AS7131->AS9241 loop
+  discovery. A second, independent real problem at FINTEL's network
+  edge, from a different vantage point and address. Not filed in any
+  dataclass, matching the original loop's precedent. Backlog:
+  930 -> 929.
