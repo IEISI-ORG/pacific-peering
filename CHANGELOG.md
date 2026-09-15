@@ -1600,3 +1600,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - feat(analysis): confirm PG(AS17828)->NC(AS17480) via Equinix
   Sydney -- fourth confirmation of AS18200<->AS17480 (after MP, PF,
   CK). RIS agrees exactly (1,665). Backlog: 678 -> 605.
+- docs(analysis): PG(AS17828)->PW(AS17893) fourth confirmation of
+  the AS174(Cogent)<->AS17893 adjacency (after GU, GU-reproduction,
+  VU), via a new intermediate carrier (Telia). RIS agrees exactly
+  (1,333). Backlog: 605 -> 603.

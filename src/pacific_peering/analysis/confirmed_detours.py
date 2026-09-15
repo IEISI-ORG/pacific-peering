@@ -132,7 +132,17 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
             "measurement -- via NTT (AS2914), not AS2497/IIJ -- but landing "
             "on the same ultimate AS174<->AS17893 adjacency. Three "
             "independent measurements, two different source economies, one "
-            "identical, exact-match adjacency."
+            "identical, exact-match adjacency. "
+            "**A fourth independent confirmation, a third distinct source "
+            "economy** (measurement 211807422, PG/AS17828 -> PW/AS17893, a "
+            "fresh PG<->PW pair): `AS17828 -> AS4826 (Vocus Connect) -> "
+            "AS1299 (Telia) -> AS174 (Cogent Communications) -> AS17893`, "
+            "fully contiguous. RIS agrees with the identical *exact* match "
+            "(1,333). Yet another distinct intermediate carrier into "
+            "Cogent -- Telia this time, neither IIJ nor NTT -- reinforcing "
+            "that AS174 genuinely is Palau's real Cogent gateway "
+            "regardless of which regional carrier's network the traffic "
+            "transits first."
         ),
     ),
     ConfirmedDetour(

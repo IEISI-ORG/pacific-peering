@@ -1958,3 +1958,9 @@ Added as a new entry. Called `mark_corridor_tested(17828, 9751)`. Verified: modu
 Fourth independent confirmation of the AS18200(OPT NC)<->AS17480 adjacency (after MP, PF, CK): `AS17828 -> AS4826 (Vocus Connect) -> AS18200 -> AS17480`, fully contiguous, RIS-agreeing with the identical exact match (1,665). Crosses Equinix Sydney directly -- the same exchange as the CK and PF entries.
 
 Added as a new entry. Called `mark_corridor_tested(17828, 17480)`. Verified: module imports cleanly (65 entries, up from 64); regenerated ASCII/HTML reports (render correctly) and the geographic map. Regenerated the corridor backlog: candidate count dropped 678 -> 605 (a large drop -- PNG DataCo's remaining cheap untested targets thinned significantly at once).
+
+---
+
+**Next corridor pulled: AS17828 (PNG DataCo) -> AS17893 (Palau NCC).** `has_routing_loop` correctly returned `False`. Lands on the project's *other* AS17893 adjacency (AS174/Cogent, not the AS6939/Hurricane Electric one PF and CK confirmed) -- a fourth independent confirmation, a third distinct source economy (after GU, GU-reproduction, VU): `AS17828 -> AS4826 (Vocus Connect) -> AS1299 (Telia) -> AS174 -> AS17893`, fully contiguous, RIS-agreeing with the identical exact match (1,333). Telia is a genuinely new intermediate carrier into Cogent for this adjacency, after IIJ and NTT.
+
+Extended the existing entry's note. Not a new dataclass entry -- `CONFIRMED_DETOURS` count unchanged (65). Called `mark_corridor_tested(17828, 17893)`. Regenerated ASCII/HTML reports since the note text changed (render correctly); map unaffected. Regenerated the corridor backlog: candidate count dropped 605 -> 603.
