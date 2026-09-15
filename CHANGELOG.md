@@ -1415,3 +1415,6 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   VU). RIS agrees exactly (362), crosses EdgeIX Auckland
   (PeeringDB-verified), only the second real exchange crossing this
   chain has shown. Backlog: 808 -> 807.
+- docs(analysis): PF(AS9471)->KI(AS134783) fourth corroboration of
+  AS154100<->AS134783 (after GU, MP, VU). RIS agrees exactly
+  (1,392), also crosses EdgeIX Auckland. Backlog: 807 -> 806.

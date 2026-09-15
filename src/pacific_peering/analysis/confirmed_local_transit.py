@@ -717,7 +717,17 @@ CONFIRMED_LOCAL_TRANSIT: tuple[ConfirmedLocalTransit, ...] = (
             "Telstra's domestic ASN nor Vocus Connect had appeared for this "
             "specific adjacency before (Vocus Connect is already established "
             "elsewhere in this project as PNG DataCo's own upstream). A "
-            "third distinct source economy (Vanuatu, after Guam and CNMI)."
+            "third distinct source economy (Vanuatu, after Guam and CNMI). "
+            "**Fourth independent corroboration, via a genuinely new named "
+            "exchange** (measurement 211702255, PF/AS9471 -> KI/AS134783, a "
+            "fresh PF<->KI pair): all 3 probes: AS9471 -> AS6939 (Hurricane "
+            "Electric) -> AS14593 (Starlink) -> AS154100 -> target never "
+            "resolved, identical RIS match (1,392). One of 3 probes crosses "
+            "**EdgeIX Auckland** directly (`ixp_crossings` confirms it, "
+            "member AS14593) -- the same exchange just confirmed minutes "
+            "earlier for the AS132486 sibling chain, now seen for this "
+            "adjacency too. A fourth distinct source economy (French "
+            "Polynesia, after Guam, CNMI, and Vanuatu)."
         ),
     ),
     ConfirmedLocalTransit(

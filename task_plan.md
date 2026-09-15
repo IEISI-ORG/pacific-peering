@@ -1635,3 +1635,11 @@ Extended the existing entry's note. Not a new dataclass entry -- `CONFIRMED_LOCA
 **A genuinely new named exchange this time**: one of 3 probes crosses **EdgeIX Auckland** directly (`ixp_crossings` confirms it, member AS14593) -- verified as a real PeeringDB-declared Starlink membership before writing it up. Only the second time this chain has shown a real exchange crossing at all (after the VU entry's MegaIX Sydney); every other instance showed plain global transit via GSL Networks with no IXP crossing.
 
 Extended the existing entry's note. Not a new dataclass entry -- `CONFIRMED_LOCAL_TRANSIT` count unchanged (13). Called `mark_corridor_tested(9471, 132486)`. Regenerated ASCII/HTML reports since the note text changed (render correctly); map unaffected. Regenerated the corridor backlog: candidate count dropped 808 -> 807.
+
+---
+
+**Next corridor pulled: AS9471 (ONATI, French Polynesia) -> AS134783 (ATHKL, Kiribati).** `has_routing_loop` correctly returned `False` for all three. Fourth independent corroboration of the AS154100<->AS134783 adjacency (after GU, MP, VU): all 3 probes `AS9471 -> AS6939 (Hurricane Electric) -> AS14593 (Starlink) -> AS154100`, target never resolved, RIS-agreeing with the identical exact match (1,392).
+
+One of 3 probes crosses **EdgeIX Auckland** directly (`ixp_crossings` confirms it) -- the same exchange just confirmed minutes earlier for the sibling AS132486 chain, now seen on this adjacency too.
+
+Extended the existing entry's note. Not a new dataclass entry -- `CONFIRMED_LOCAL_TRANSIT` count unchanged (13). Called `mark_corridor_tested(9471, 134783)`. Regenerated ASCII/HTML reports since the note text changed (render correctly); map unaffected. Regenerated the corridor backlog: candidate count dropped 807 -> 806.
