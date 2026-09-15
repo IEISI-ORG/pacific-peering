@@ -1972,3 +1972,11 @@ Extended the existing entry's note. Not a new dataclass entry -- `CONFIRMED_DETO
 **A genuinely new candidate, distinct from the existing VU-sourced AS38442 entry for this same target**: Vocus Connect is already established elsewhere this project as PNG DataCo's own real upstream carrier -- this traceroute shows it reaching a real Equinix Sydney presence for Vodafone Samoa too, a second distinct carrier now confirmed crossing at that same exchange.
 
 Added as a new `CandidatePeering` entry. Called `mark_corridor_tested(17828, 17993)`. Verified: module imports cleanly (9 entries, up from 8); regenerated ASCII/HTML reports (render correctly); map unaffected. Regenerated the corridor backlog: candidate count dropped 603 -> 597.
+
+---
+
+**Next corridor pulled: AS17828 (PNG DataCo) -> AS23917 (Tuvalu).** Given FINTEL's own loop history, checked the raw hops directly rather than trusting the clean `has_routing_loop` flag at face value: no repeated addresses, none in the known `202.170.33.x` zone -- genuinely clean.
+
+Seventh independent corroboration of the AS9241(FINTEL)<->AS23917 adjacency (after Tuvalu's own vantage, GU, MP, VU, PF, CK): `AS17828 -> AS4826 (Vocus Connect) -> AS1299 (Telia) -> AS9241 -> AS23917`, RIS-agreeing with the identical exact match (1,009). Telia is a genuinely new intermediate carrier for this adjacency, after Level 3/Lumen, Spark NZ, and NTT.
+
+Extended the existing entry's note. Not a new dataclass entry -- `CONFIRMED_LOCAL_TRANSIT` count unchanged (13). Called `mark_corridor_tested(17828, 23917)`. Regenerated ASCII/HTML reports since the note text changed (render correctly); map unaffected. Regenerated the corridor backlog: candidate count dropped 597 -> 595.

@@ -1609,3 +1609,8 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   directly at Equinix Sydney, but RIS disagrees. A second distinct
   carrier now shown crossing that exchange for this target (after
   VU/AS38442). Kept as candidate. Backlog: 603 -> 597.
+- docs(analysis): PG(AS17828)->TV(AS23917) seventh corroboration of
+  AS9241(FINTEL)<->AS23917 (after TV, GU, MP, VU, PF, CK). RIS
+  agrees exactly (1,009), via a new carrier (Telia). Checked raw
+  hops against the known loop zone given FINTEL's history --
+  genuinely clean. Backlog: 597 -> 595.

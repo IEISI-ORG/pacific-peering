@@ -494,7 +494,22 @@ CONFIRMED_LOCAL_TRANSIT: tuple[ConfirmedLocalTransit, ...] = (
             "`202.170.33.x` loop zone -- a genuinely clean traceroute, "
             "not a near-miss. A sixth distinct source economy (Cook "
             "Islands, after Tuvalu's own vantage point, Guam, CNMI, "
-            "Vanuatu, and French Polynesia)."
+            "Vanuatu, and French Polynesia). "
+            "**Seventh independent corroboration** (measurement "
+            "211813902, PG/AS17828 -> TV/AS23917, a fresh PG<->TV "
+            "pair): again lands on AS9241 immediately upstream of "
+            "AS23917, exact RIS match (1,009). Path: `AS17828 -> "
+            "AS4826 (Vocus Connect) -> AS1299 (Telia) -> AS9241 -> "
+            "AS23917`, no IXP crossing this time. Telia is a genuinely "
+            "new intermediate carrier for this specific adjacency, "
+            "after Level 3/Lumen, Spark NZ, and NTT. Checked the raw "
+            "hops directly rather than trusting the clean "
+            "`has_routing_loop` flag at face value, given FINTEL's own "
+            "loop history: no repeated addresses anywhere in the path, "
+            "and none in the known `202.170.33.x` zone -- genuinely "
+            "clean. A seventh distinct source economy (Papua New "
+            "Guinea, after Tuvalu's own vantage point, Guam, CNMI, "
+            "Vanuatu, French Polynesia, and Cook Islands)."
         ),
     ),
     ConfirmedLocalTransit(
