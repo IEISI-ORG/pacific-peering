@@ -1263,3 +1263,11 @@ Added as a new `ConfirmedDetour` entry. Called `mark_corridor_tested(7131, 38198
 **Lands on the existing GU->WF adjacency** (AS5511/Opentransit-Orange<->AS45879), a second independent confirmation, RIS-agreeing with an *exact* match (1,665). A different path into Orange this time -- AS6939 (Hurricane Electric) directly, no Tokyo/IIJ hop unlike the original. **Checked whether the existing "Tokyo" hub still made sense rather than defaulting to a guess**: fetched AS5511's real PeeringDB facility list directly -- four separate Equinix Tokyo data centers, no Sydney presence at all -- so Tokyo remains the best-sourced location for this adjacency even though this specific traceroute's own path doesn't show a literal Tokyo hop. Noted this explicitly in the entry rather than silently reusing the value.
 
 Added as a new `ConfirmedDetour` entry. Called `mark_corridor_tested(7131, 45879)`. Verified: module imports cleanly (27 entries, up from 26); regenerated ASCII/HTML reports (render correctly) and the geographic map. Regenerated the corridor backlog: candidate count dropped 1023 -> 1022.
+
+---
+
+**Next corridor pulled: AS7131 (PTI Pacifica, CNMI) -> AS45891 (Solomon Telekom).** A transient network read-timeout hit `wait_for_results` mid-poll (RIPE Atlas API, not a data problem) -- retried cleanly and got all 3 probes. `has_routing_loop` flagged probe 65653 `True` -- checked directly: two consecutive-address repeats, both stable RTT, the now-familiar ordinary-noise shape, not a real loop.
+
+**Lands on the existing GU->SB adjacency** (AS139609/SISCC<->AS45891), a second independent confirmation, RIS-agreeing with an *exact* match (1,652). A different carrier and a **genuinely new named exchange**: AS7131 -> AS140627 (OneQode) -> AS139609, crossing **IX Australia Sydney (NSW-IX)** -- `ixp_crossings` confirms it directly, the first time this specific exchange (distinct from Equinix Sydney and MegaIX Sydney, both already on record) has appeared in this project.
+
+Added as a new `ConfirmedDetour` entry. Called `mark_corridor_tested(7131, 45891)`. Verified: module imports cleanly (28 entries, up from 27); regenerated ASCII/HTML reports (render correctly) and the geographic map. Regenerated the corridor backlog: candidate count dropped 1022 -> 1013.

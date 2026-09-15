@@ -1080,3 +1080,11 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   presence) rather than reusing it on assumption. One probe
   false-positived `has_routing_loop` on a modest, non-climbing RTT
   repeat. Backlog: 1023 -> 1022.
+- feat(analysis): confirm MP(AS7131, CNMI)->SB(AS45891, Solomon
+  Telekom) -- second independent confirmation of the existing GU->SB
+  adjacency (AS139609/SISCC<->AS45891). RIS agrees exactly (1,652),
+  via OneQode this time. Crosses a genuinely new named exchange for
+  this project: IX Australia Sydney (NSW-IX), distinct from Equinix
+  Sydney and MegaIX Sydney already on record. One probe
+  false-positived `has_routing_loop`; a transient Atlas API read
+  timeout mid-poll resolved on retry. Backlog: 1022 -> 1013.

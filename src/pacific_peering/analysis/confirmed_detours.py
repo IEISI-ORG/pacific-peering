@@ -915,4 +915,33 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
             "ordinary noise."
         ),
     ),
+    ConfirmedDetour(
+        source_cc="MP",
+        target_cc="SB",
+        target_asn=45891,
+        detour_ix_name="IX Australia Sydney (NSW-IX)",
+        detour_hub="Sydney",
+        measurement_id=211579683,
+        ris_observation_count=1652,
+        note=(
+            "PTI Pacifica (AS7131, CNMI) -> Solomon Telekom Co Ltd "
+            "(AS45891) -- a fresh MP<->SB pair, landing on the existing "
+            "GU(AS3605)->SB adjacency (AS139609/SISCC<->AS45891), a "
+            "second independent confirmation from a different source "
+            "economy. Upstream of the target is AS139609 (Solomon Islands "
+            "Submarine Cable Company), RIS-agreeing with an *exact* match "
+            "(1,652), identical to the original finding. A different "
+            "carrier and a genuinely new named exchange this time: AS7131 "
+            "-> AS140627 (OneQode, already seen once before for the "
+            "FJ/USP corridor) -> AS139609, crossing **IX Australia Sydney "
+            "(NSW-IX)** -- `ixp_crossings` confirms it directly for 2 of 3 "
+            "probes -- the first time this specific exchange (distinct "
+            "from Equinix Sydney and MegaIX Sydney, both already on "
+            "record) has appeared in this project. `has_routing_loop` "
+            "flagged probe 65653 `True` -- checked directly: two "
+            "consecutive-address repeats, both with stable, non-climbing "
+            "RTT, the same ordinary noise pattern documented for prior "
+            "false positives, not a real loop."
+        ),
+    ),
 )

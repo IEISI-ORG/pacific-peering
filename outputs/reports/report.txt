@@ -1,6 +1,6 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-09-15T04:16:59.810286+00:00                  
+                 Generated: 2026-09-15T04:26:39.859302+00:00                  
 ==============================================================================
 
 SUMMARY
@@ -95,6 +95,9 @@ MP -> TO (AS38198): detours via AS6939 (Hurricane Electric) + AS132528 (Digicel 
 MP -> WF (AS45879): detours via AS5511 (Opentransit Orange S.A.) -- global transit, not a named exchange crossing (Tokyo)
     RIS observation count: 1665  [measurement 211577395]
     PTI Pacifica (AS7131, CNMI) -> Orange Wallis & Futuna (AS45879) -- a fresh MP<->WF pair, landing on the existing GU(AS3605)->WF adjacency (AS5511<->AS45879), a second independent confirmation from a different source economy. Upstream of the target is AS5511, RIS-agreeing with an *exact* match (1,665), identical to the original finding. A different path into Orange this time: AS7131 -> AS6939 (Hurricane Electric) -> AS5511 directly, no Tokyo/IIJ hop unlike the original. Kept `detour_hub` as Tokyo anyway rather than guessing a new location: checked AS5511's real PeeringDB-registered facility presence directly (not assumed) -- four separate Equinix Tokyo data centers (TY2/TY6/TY7/TY8) and no Sydney presence at all, so Tokyo remains the best-sourced location for this adjacency even though this specific traceroute's own path doesn't show a literal Tokyo hop. `has_routing_loop` flagged probe 60689 `True` -- checked directly: a single consecutive repeat (`184.104.208.73`) early in the Hurricane Electric backbone with only a modest RTT bump (49ms -> 58ms), not the near-destination or steep-RTT-climb shape of a real loop -- ordinary noise.
+MP -> SB (AS45891): detours via IX Australia Sydney (NSW-IX) (Sydney)
+    RIS observation count: 1652  [measurement 211579683]
+    PTI Pacifica (AS7131, CNMI) -> Solomon Telekom Co Ltd (AS45891) -- a fresh MP<->SB pair, landing on the existing GU(AS3605)->SB adjacency (AS139609/SISCC<->AS45891), a second independent confirmation from a different source economy. Upstream of the target is AS139609 (Solomon Islands Submarine Cable Company), RIS-agreeing with an *exact* match (1,652), identical to the original finding. A different carrier and a genuinely new named exchange this time: AS7131 -> AS140627 (OneQode, already seen once before for the FJ/USP corridor) -> AS139609, crossing **IX Australia Sydney (NSW-IX)** -- `ixp_crossings` confirms it directly for 2 of 3 probes -- the first time this specific exchange (distinct from Equinix Sydney and MegaIX Sydney, both already on record) has appeared in this project. `has_routing_loop` flagged probe 65653 `True` -- checked directly: two consecutive-address repeats, both with stable, non-climbing RTT, the same ordinary noise pattern documented for prior false positives, not a real loop.
 
 CONFIRMED LOCAL TRANSIT (RIS + Atlas both agree, stays in-fishbowl)
 ==============================================================================
