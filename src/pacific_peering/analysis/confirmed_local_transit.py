@@ -262,7 +262,16 @@ CONFIRMED_LOCAL_TRANSIT: tuple[ConfirmedLocalTransit, ...] = (
             "routing-loop anomaly this time (`has_routing_loop` "
             "correctly `False`). A sixth distinct source (Cook Islands, "
             "after Guam, CNMI, Vanuatu, and French Polynesia) for this "
-            "specific direct relationship."
+            "specific direct relationship. "
+            "**Seventh independent confirmation** (measurement "
+            "211993733, PG/AS17828 -> KI/AS154100 directly): resolves "
+            "cleanly to AS14593 (Starlink) as the literal last-reached "
+            "ASN, identical RIS match (361), via `AS17828 -> AS4826 "
+            "(Vocus Connect) -> AS14593`. No routing-loop anomaly "
+            "(`has_routing_loop` correctly `False`). A seventh distinct "
+            "source (Papua New Guinea, after Guam, CNMI, Vanuatu, "
+            "French Polynesia, and Cook Islands) for this specific "
+            "direct relationship."
         ),
     ),
     ConfirmedLocalTransit(

@@ -2102,3 +2102,11 @@ Extended the existing entry's note. Not a new dataclass entry -- `CONFIRMED_LOCA
 **Reaches the literal target directly this time, but via a genuinely new path**: `AS17828 -> AS4826 (Vocus Connect) -> AS1221 (Telstra Limited, domestic ASN) -> AS140504`, fully contiguous -- the first time this project has reached AS140504 via anything other than its two already-confirmed relationships (AS132528/Digicel Australia, AS12684/SES Astra). `ris_agrees: False` -- checked AS140504's neighbor list directly (`{132528: 1032, 12684: 616}`), AS1221 doesn't appear; checked AS1221's own fishbowl entry too, empty. Notable: AS1221 and AS132528 (AS140504's real dominant neighbor) are both Telstra-operated -- a different ASN of the same corporate family reaching the target directly.
 
 Added as a new `CandidatePeering` entry. Called `mark_corridor_tested(17828, 140504)`. Verified: module imports cleanly (11 entries, up from 10); regenerated ASCII/HTML reports (render correctly); map unaffected. Regenerated the corridor backlog: candidate count dropped 497 -> 494. AS17828 now fully exhausted.
+
+---
+
+**Next corridor pulled: AS17828 (PNG DataCo) -> AS154100 (BNL Tarawa, targeted directly)** -- one truly final AS17828 pair. `has_routing_loop` correctly returned `False`.
+
+Seventh independent confirmation of the direct AS154100<->AS14593 relationship: `AS17828 -> AS4826 (Vocus Connect) -> AS14593`, identical exact RIS match (361).
+
+Extended the existing entry's note. Not a new dataclass entry -- `CONFIRMED_LOCAL_TRANSIT` count unchanged (13). Called `mark_corridor_tested(17828, 154100)`. Regenerated ASCII/HTML reports since the note text changed (render correctly); map unaffected. Regenerated the corridor backlog: candidate count dropped 494 -> 493. AS17828 is now genuinely, fully exhausted; AS17893 (Palau NCC) is the sole source.

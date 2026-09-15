@@ -1684,3 +1684,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   first time via anything other than its two confirmed relationships
   (AS132528, AS12684). RIS disagrees; both Telstra-operated ASNs but
   distinct. Kept as candidate. Backlog: 497 -> 494.
+- docs(analysis): PG(AS17828)->KI(AS154100) seventh confirmation of
+  the direct AS154100<->AS14593 relationship. RIS agrees exactly
+  (361). Backlog: 494 -> 493. AS17828 fully exhausted; AS17893
+  (Palau NCC) is the sole source.
