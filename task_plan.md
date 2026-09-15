@@ -2000,3 +2000,11 @@ Added as a new entry. Called `mark_corridor_tested(17828, 24390)`. Verified: mod
 Sixth independent confirmation of the AS45355(Digicel Fiji)<->AS38198 adjacency (after GU, MP, VU, PF, CK): `AS17828 -> AS4826 (Vocus Connect) -> AS1221 (Telstra domestic) -> AS45355`, RIS-agreeing with the identical exact match (1,321). **Notably no AS132528 this time** -- every prior confirmation crossed AS132528 at Equinix Sydney; this one reaches AS45355 via Telstra's domestic ASN directly, a genuinely different real path to the same carrier relationship.
 
 Added as a new entry. Called `mark_corridor_tested(17828, 38198)`. Verified: module imports cleanly (67 entries, up from 66); regenerated ASCII/HTML reports (render correctly) and the geographic map. Regenerated the corridor backlog: candidate count dropped 554 -> 550. AS24439 (Marshall Islands) remains in the backlog, genuinely untested, for a future retry.
+
+---
+
+**Retried the previously-flagged corridor: AS17828 (PNG DataCo) -> AS24439 (Marshall Islands).** Fired a fresh measurement; it scheduled and returned normally this time, confirming the earlier zero-probes-scheduled anomaly was genuinely transient. `has_routing_loop` correctly returned `False`.
+
+Sixth independent confirmation of the AS6453(Tata)<->AS24439 adjacency (after GU, MP, VU, PF, CK): `AS17828 -> AS4826 (Vocus Connect) -> AS174 (Cogent) -> AS6453`, target never resolved, RIS-agreeing with the identical exact match (997). **Geolocated with `hop_geolocation` from the start**, per the established discipline for this specific corridor: the resolved Tata hops are the exact same addresses as the already-corrected PF and CK entries -- Los Angeles, then Piti, Guam.
+
+Added as a new entry. Called `mark_corridor_tested(17828, 24439)`. Verified: module imports cleanly (68 entries, up from 67); regenerated ASCII/HTML reports (render correctly) and the geographic map. Regenerated the corridor backlog: candidate count dropped 550 -> 548.

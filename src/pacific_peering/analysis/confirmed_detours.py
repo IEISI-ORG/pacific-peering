@@ -2033,4 +2033,32 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
             "ultimate carrier relationship. No IXP crossing observed."
         ),
     ),
+    ConfirmedDetour(
+        source_cc="PG",
+        target_cc="MH",
+        target_asn=24439,
+        detour_ix_name="AS174 (Cogent Communications), via AS6453 (Tata "
+        "Communications) -- global transit, not a named exchange crossing",
+        detour_hub="Los Angeles",
+        measurement_id=211965108,
+        ris_observation_count=997,
+        note=(
+            "PNG DataCo (AS17828) -> Marshall Islands NTA ISP (AS24439) "
+            "-- a fresh PG<->MH pair, a sixth independent confirmation "
+            "of the AS6453(Tata)<->AS24439 adjacency (after GU, MP, VU, "
+            "PF, CK). `AS17828 -> AS4826 (Vocus Connect) -> AS174 "
+            "(Cogent) -> AS6453`, target never resolved, RIS-agreeing "
+            "with the identical *exact* match (997). **Geolocated with "
+            "the `hop_geolocation` module from the start**, per the "
+            "established discipline for this specific corridor: the "
+            "resolved Tata hops (`64.86.252.141`, `180.87.9.2`, "
+            "`180.87.60.178`) are the exact same addresses as the "
+            "already-corrected PF and CK entries -- Los Angeles, then "
+            "Piti, Guam. Kept `detour_hub` as Los Angeles, matching "
+            "those corrected entries. Notable: this is the retry of the "
+            "corridor that hit the earlier zero-probes-scheduled "
+            "anomaly, now confirming that failure was genuinely "
+            "transient."
+        ),
+    ),
 )

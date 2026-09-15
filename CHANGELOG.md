@@ -1628,3 +1628,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   VU, PF, CK), and the first instance not crossing AS132528. RIS
   agrees exactly (1,321). Confirms the earlier scheduling failure
   was transient/isolated. Backlog: 554 -> 550.
+- feat(analysis): confirm PG(AS17828)->MH(AS24439) via GTT/Tata --
+  the retried corridor from the earlier scheduling anomaly, now
+  confirming that failure was transient. Sixth confirmation of
+  AS6453<->AS24439 (after GU, MP, VU, PF, CK). RIS agrees exactly
+  (997). Geolocated correctly from the start (Los Angeles, then
+  Piti/Guam). Backlog: 550 -> 548.
