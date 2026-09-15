@@ -1638,3 +1638,6 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   the FSM sibling-substitution corridor (after GU, MP, PF, CK). RIS
   disagrees as expected; crosses Any2West again. Kept as candidate.
   Backlog: 548 -> 547.
+- feat(analysis): confirm PG(AS17828)->FM(AS45193) via Any2West --
+  third confirmation of the direct AS139759<->AS45193 relationship
+  (after PF, CK). RIS agrees exactly (1,681). Backlog: 547 -> 514.

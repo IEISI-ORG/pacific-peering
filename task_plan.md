@@ -2016,3 +2016,11 @@ Added as a new entry. Called `mark_corridor_tested(17828, 24439)`. Verified: mod
 Fifth independent source economy for the recurring FSM sibling-substitution corridor (after GU, MP, PF, CK): `AS17828 -> AS4826 (Vocus Connect) -> AS9246 (Teleguam Holdings/GTA) -> AS139759`, contiguous throughout, target never resolving. `ris_agrees: false` on the corrected sibling adjacency, matching every prior instance. Crosses Any2West again -- the same exchange as the PF and CK entries.
 
 Added as a new `CandidatePeering` entry. Called `mark_corridor_tested(17828, 38875)`. Verified: module imports cleanly (10 entries, up from 9); regenerated ASCII/HTML reports (render correctly); map unaffected. Regenerated the corridor backlog: candidate count dropped 548 -> 547.
+
+---
+
+**Next corridor pulled: AS17828 (PNG DataCo) -> AS45193 (a third FSM Telecommunications Corporation sibling ASN).** `has_routing_loop` correctly returned `False`.
+
+Third independent confirmation of the direct AS139759<->AS45193 adjacency (after PF, CK): `AS17828 -> AS4826 (Vocus Connect) -> AS9246 (Teleguam Holdings/GTA) -> AS139759 -> AS45193`, fully contiguous, the literal target resolving directly again. RIS-agreeing with the identical exact match (1,681). Crosses Any2West -- the same exchange as every prior confirmation.
+
+Added as a new entry. Called `mark_corridor_tested(17828, 45193)`. Verified: module imports cleanly (69 entries, up from 68); regenerated ASCII/HTML reports (render correctly) and the geographic map. Regenerated the corridor backlog: candidate count dropped 547 -> 514 (a large drop -- PNG DataCo's remaining cheap untested targets thinned significantly at once).

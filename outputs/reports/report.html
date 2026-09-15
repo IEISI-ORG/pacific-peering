@@ -53,7 +53,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
 <body>
 <div class="wrap">
     <h1>Pacific Peering — Regional Routing Report</h1>
-    <div class="meta">Generated 2026-09-15T22:15:42.977061+00:00</div>
+    <div class="meta">Generated 2026-09-15T22:25:26.834047+00:00</div>
 
     <div class="headline-banner">
         <span class="value">68%</span>
@@ -542,6 +542,13 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <div>RIS observation count: 997
                 &middot; measurement 211965108</div>
             <details class="note"><summary>PNG DataCo (AS17828) -&gt; Marshall Islands NTA ISP (AS24439) -- a fresh PG&lt;-&gt;MH pair, a sixth independent confirmation of the AS6453(Tata)&lt;-&gt;AS24439 adjacency…</summary>PNG DataCo (AS17828) -&gt; Marshall Islands NTA ISP (AS24439) -- a fresh PG&lt;-&gt;MH pair, a sixth independent confirmation of the AS6453(Tata)&lt;-&gt;AS24439 adjacency (after GU, MP, VU, PF, CK). `AS17828 -&gt; AS4826 (Vocus Connect) -&gt; AS174 (Cogent) -&gt; AS6453`, target never resolved, RIS-agreeing with the identical *exact* match (997). **Geolocated with the `hop_geolocation` module from the start**, per the established discipline for this specific corridor: the resolved Tata hops (`64.86.252.141`, `180.87.9.2`, `180.87.60.178`) are the exact same addresses as the already-corrected PF and CK entries -- Los Angeles, then Piti, Guam. Kept `detour_hub` as Los Angeles, matching those corrected entries. Notable: this is the retry of the corridor that hit the earlier zero-probes-scheduled anomaly, now confirming that failure was genuinely transient.</details>
+        </div><div class="detour-card">
+            <div class="headline">PG -&gt; FM
+                (AS45193): detours via Any2West
+                (Los Angeles)</div>
+            <div>RIS observation count: 1681
+                &middot; measurement 211971118</div>
+            <details class="note"><summary>PNG DataCo (AS17828) -&gt; a third FSM Telecommunications Corporation sibling ASN (AS45193) -- a fresh PG&lt;-&gt;FM pair, a third independent confirmation of the…</summary>PNG DataCo (AS17828) -&gt; a third FSM Telecommunications Corporation sibling ASN (AS45193) -- a fresh PG&lt;-&gt;FM pair, a third independent confirmation of the direct AS139759&lt;-&gt;AS45193 adjacency (after PF and CK). `AS17828 -&gt; AS4826 (Vocus Connect) -&gt; AS9246 (Teleguam Holdings/GTA) -&gt; AS139759 -&gt; AS45193`, fully contiguous -- the literal target resolves directly again, RIS-agreeing with the identical *exact* match (1,681). Crosses Any2West directly -- the same exchange as every prior confirmation of this relationship.</details>
         </div>
 
     <h2>Confirmed local transit (RIS + Atlas both agree, stays in-fishbowl)</h2>

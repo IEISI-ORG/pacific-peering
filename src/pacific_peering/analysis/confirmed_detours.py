@@ -2061,4 +2061,25 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
             "transient."
         ),
     ),
+    ConfirmedDetour(
+        source_cc="PG",
+        target_cc="FM",
+        target_asn=45193,
+        detour_ix_name="Any2West",
+        detour_hub="Los Angeles",
+        measurement_id=211971118,
+        ris_observation_count=1681,
+        note=(
+            "PNG DataCo (AS17828) -> a third FSM Telecommunications "
+            "Corporation sibling ASN (AS45193) -- a fresh PG<->FM pair, "
+            "a third independent confirmation of the direct AS139759<->"
+            "AS45193 adjacency (after PF and CK). `AS17828 -> AS4826 "
+            "(Vocus Connect) -> AS9246 (Teleguam Holdings/GTA) -> "
+            "AS139759 -> AS45193`, fully contiguous -- the literal "
+            "target resolves directly again, RIS-agreeing with the "
+            "identical *exact* match (1,681). Crosses Any2West directly "
+            "-- the same exchange as every prior confirmation of this "
+            "relationship."
+        ),
+    ),
 )
