@@ -1123,4 +1123,29 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
             "confirmation yet of this now-well-established infrastructure."
         ),
     ),
+    ConfirmedDetour(
+        source_cc="VU",
+        target_cc="WF",
+        target_asn=45879,
+        detour_ix_name="AS5511 (Opentransit Orange S.A.) -- global transit, not a named "
+        "exchange crossing",
+        detour_hub="Tokyo",
+        measurement_id=211633489,
+        ris_observation_count=1665,
+        note=(
+            "Telecom Vanuatu (AS9249) -> Orange Wallis & Futuna (AS45879) "
+            "-- a fresh VU<->WF pair, a third independent confirmation of "
+            "the AS5511(Opentransit Orange)<->AS45879 adjacency (after "
+            "the GU entry and the MP entry). Both probes: AS9249 -> "
+            "AS38442 (Vodafone Fiji) -> AS4637 (Telstra Global) -> AS5511 "
+            "-- the target itself never resolved (ordinary ICMP "
+            "filtering near the destination), so RIS is checked against "
+            "the last reached ASN. RIS agrees with the identical *exact* "
+            "match (1,665). No IXP crossing this time (`ixp_crossings` "
+            "empty for both probes) -- kept `detour_hub` as Tokyo, "
+            "already verified in the MP-sourced entry against AS5511's "
+            "real PeeringDB facility list (four Equinix Tokyo DCs, no "
+            "Sydney presence)."
+        ),
+    ),
 )

@@ -1403,3 +1403,9 @@ Added as a new entry. Called `mark_corridor_tested(9249, 38227)`. Verified: modu
 **A cleaner, more direct confirmation than last tranche's incidental discovery**: `AS9249 -> AS38442 (Vodafone Fiji) -> AS132528 -> AS38800`, upstream of the target is AS132528 itself directly -- the **fifth** occurrence of the Digicel-Australia/Telstra backbone ASN at Equinix Sydney this session, but the *first* time it's the literal immediate upstream of the target rather than an intermediate waypoint. RIS agrees with an *exact* match (1,656) -- checked directly: AS132528 is AS38800's *only* RIS-observed neighbor at all, not just dominant (corrected the note's wording after checking the raw fishbowl entry directly rather than assuming "dominant" from habit).
 
 Added as a new `ConfirmedDetour` entry. Called `mark_corridor_tested(9249, 38800)`. Verified: module imports cleanly (34 entries, up from 33); regenerated ASCII/HTML reports (render correctly) and the geographic map. Regenerated the corridor backlog: candidate count dropped 979 -> 975.
+
+---
+
+**Next corridor pulled: AS9249 (Telecom Vanuatu) -> AS45879 (Orange Wallis & Futuna).** `has_routing_loop` correctly returned `False`. Lands on the well-established AS5511(Opentransit Orange)<->AS45879 adjacency, already confirmed twice before (GU, MP): `AS9249 -> AS38442 (Vodafone Fiji) -> AS4637 (Telstra Global) -> AS5511`, RIS-agreeing with the identical exact match (1,665). No IXP crossing this time; reused the already-verified Tokyo hub (checked against AS5511's real PeeringDB facility list in the MP-sourced entry) rather than re-verifying from scratch.
+
+Per the established convention, added as a new entry (third source economy for this adjacency). Called `mark_corridor_tested(9249, 45879)`. Verified: module imports cleanly (35 entries, up from 34); regenerated ASCII/HTML reports (render correctly) and the geographic map. Regenerated the corridor backlog: candidate count dropped 975 -> 974.

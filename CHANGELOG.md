@@ -1213,3 +1213,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   the literal immediate upstream rather than an intermediate
   waypoint. RIS agrees exactly (1,656) -- AS132528 is AS38800's
   *only* RIS-observed neighbor. Backlog: 979 -> 975.
+- feat(analysis): confirm VU(AS9249)->WF(AS45879) via Opentransit
+  Orange -- third independent confirmation of AS5511<->AS45879
+  (after GU and MP). RIS agrees exactly (1,665). No IXP crossing;
+  reused the already-verified Tokyo hub. Backlog: 975 -> 974.
