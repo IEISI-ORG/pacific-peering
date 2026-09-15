@@ -93,6 +93,22 @@ class ReportData:
         """Return a plain, JSON-serializable dict of this report data."""
         return asdict(self)
 
+    @property
+    def ixp_registry_out_of_fishbowl_share(self) -> float:
+        """Fraction of real, in-scope-network-used peering points that sit outside the study region.
+
+        Every exchange in the registry is one at least one in-scope ASN
+        actually declares PeeringDB membership at -- this isn't a count
+        of arbitrary known IXPs, it's a count of peering points this
+        project's own networks are really using. Computed, not stored,
+        so it can never drift out of sync with the two counts it's
+        derived from.
+        """
+        total = self.ixp_registry_in_fishbowl + self.ixp_registry_out_of_fishbowl
+        if total == 0:
+            return 0.0
+        return self.ixp_registry_out_of_fishbowl / total
+
 
 def build_report_data(
     registry_path: Path = DEFAULT_OUTPUT_PATH,

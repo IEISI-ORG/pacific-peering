@@ -36,6 +36,9 @@ h1 {{ font-size: 1.5rem; margin-bottom: 0.2em; }}
 .meta {{ color: {_MUTED}; font-size: 0.85rem; margin-bottom: 1.5em; }}
 h2 {{ font-size: 1.1rem; border-bottom: 1px solid #e1e0d9; padding-bottom: 0.3em;
       margin-top: 2em; }}
+.headline-banner {{ background: #fdecec; border: 1px solid {_CRITICAL}; border-radius: 8px;
+              padding: 14px 18px; margin: 1em 0; font-size: 1.05rem; }}
+.headline-banner .value {{ font-weight: 700; color: {_CRITICAL}; }}
 .stat-row {{ display: flex; flex-wrap: wrap; gap: 12px; margin: 1em 0; }}
 .stat-tile {{ background: white; border: 1px solid #e1e0d9; border-radius: 8px;
               padding: 10px 16px; min-width: 140px; }}
@@ -196,6 +199,14 @@ def render_html_report(data: ReportData, viz_dir: Path | None = Path("../viz")) 
 <div class="wrap">
     <h1>Pacific Peering — Regional Routing Report</h1>
     <div class="meta">Generated {html.escape(data.generated_at)}</div>
+
+    <div class="headline-banner">
+        <span class="value">{data.ixp_registry_out_of_fishbowl_share:.0%}</span>
+        of the real peering points this region's own networks use sit
+        <strong>outside</strong> the fish bowl
+        ({data.ixp_registry_out_of_fishbowl} of
+        {data.ixp_registry_in_fishbowl + data.ixp_registry_out_of_fishbowl})
+    </div>
 
     <div class="stat-row">{stat_tiles}</div>
 

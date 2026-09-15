@@ -1,10 +1,12 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-09-15T10:36:01.220895+00:00                  
+                 Generated: 2026-09-15T10:51:36.049396+00:00                  
 ==============================================================================
 
 SUMMARY
 ==============================================================================
+HEADLINE: 68% of the real peering points this region's own networks use sit OUTSIDE the fish bowl (21 of 31)
+
 Economies in scope:            20
 ASNs in scope:                  163
 ASNs with >=1 RIS neighbor:     124

@@ -1438,3 +1438,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   AS4638's only real neighbor remains AS45349. Not filed. Source
   diversified to AS10131 (Cook Islands) as AS9471 ran out. Backlog:
   802 -> 801.
+- feat(reports): surface the IXP out-of-fishbowl share as the report
+  headline. 21 of 31 real peering points this project's in-scope
+  ASNs actually use (67.7%, i.e. "2/3rds") sit outside the 20-economy
+  study region -- added `ReportData.ixp_registry_out_of_fishbowl_share`
+  (computed, not stored) and a headline line/banner at the top of
+  both the ASCII and HTML reports.

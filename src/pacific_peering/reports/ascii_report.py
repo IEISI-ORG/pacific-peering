@@ -40,6 +40,13 @@ def render_ascii_report(data: ReportData) -> str:
     lines.append(_rule("="))
 
     lines.append(_section("SUMMARY"))
+    lines.append(
+        f"HEADLINE: {data.ixp_registry_out_of_fishbowl_share:.0%} of the real peering points "
+        "this region's own networks use sit OUTSIDE the fish bowl"
+        f" ({data.ixp_registry_out_of_fishbowl} of "
+        f"{data.ixp_registry_in_fishbowl + data.ixp_registry_out_of_fishbowl})"
+    )
+    lines.append("")
     lines.append(f"Economies in scope:            {data.total_economies}")
     lines.append(f"ASNs in scope:                  {data.total_asns}")
     lines.append(f"ASNs with >=1 RIS neighbor:     {data.asns_with_neighbors}")
