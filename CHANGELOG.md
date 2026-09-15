@@ -921,3 +921,8 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   back in loop tranche 5, not a new anomaly. AS4637 is an external
   carrier, not a Pacific network, so doesn't fit CandidatePeering
   either. Not filed in any dataclass; marked tested regardless.
+- Sourced AS7131 toward AS9241 (FINTEL, Fiji) -- a fresh MP<->FJ
+  pair. Complete, ordinary dead-end: zero hops resolved to any ASN,
+  only RFC1918 hops then total silence, same pattern already seen a
+  few times this session. Not filed in any dataclass; marked tested
+  regardless.

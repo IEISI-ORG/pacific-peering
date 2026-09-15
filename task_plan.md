@@ -1125,3 +1125,11 @@ Called `mark_corridor_tested(3605, 154100)`. Verified: module imports cleanly (1
 **Result: a real path, but RIS disagrees, and the gap turned out to be one already documented this session, not a new anomaly.** Both probes: AS7131 -> AS140627 (OneQode) -> AS4637 (Telstra Global) -> [gap] -> AS4638. Checked the raw hops directly before treating the gap as routine: hops 14-15 (`202.137.178.160`, `.55`) are genuinely unresolved *public* addresses -- not RFC1918, so the private-hop fix correctly doesn't touch them -- immediately followed by a run of real RFC1918 hops (correctly transparent) before the target replies. **This is the exact same `202.137.178.x` unresolved zone already flagged back in loop tranche 5**, when a different measurement (AS3605-sourced) hit the identical gap between AS45349 and AS4638's own network -- a recognized, pre-existing limitation near AS4638's boundary, not a fresh mystery. AS4638's only real RIS-confirmed neighbor remains AS45349 (already the basis of an existing `ConfirmedDetour`); AS4637 (Telstra Global) isn't in its neighbor list, and, being an external Tier-1 carrier rather than a Pacific network, doesn't fit `CandidatePeering` either -- same reasoning as the NC->GU Superloop and GU->NR/AS140504 cases.
 
 Not filed in any dataclass. Called `mark_corridor_tested(7131, 4638)`. No report/map regeneration needed (no dataclass changed).
+
+---
+
+**[Loop tranche -- a complete, ordinary dead-end.]** Confirmed via `CronList` this was job `53fb30f1`'s scheduled fire. Pulled the top pick: **AS7131 (PTI Pacifica, CNMI) -> AS9241 (FINTEL, Fiji)** -- a fresh MP<->FJ pair (distinct target from last firing's AS4638 attempt). Only 1 of 3 probes returned.
+
+**Result: zero hops resolved to any ASN at all.** Checked the raw hop data: the only two real hops are RFC1918 private addresses (correctly treated as transparent, no false gap manufactured), then total silence from hop 3 through the final hop -- the same "no ICMP visibility beyond the source's own edge" pattern already seen a few times this session (AS3605->AS55722, AS3605->AS141368). Not anomalous, not escalated -- a genuine, complete dead-end for this specific source/path.
+
+Not filed in any dataclass. Called `mark_corridor_tested(7131, 9241)`. No report/map regeneration needed (no dataclass changed).
