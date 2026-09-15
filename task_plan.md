@@ -1980,3 +1980,11 @@ Added as a new `CandidatePeering` entry. Called `mark_corridor_tested(17828, 179
 Seventh independent corroboration of the AS9241(FINTEL)<->AS23917 adjacency (after Tuvalu's own vantage, GU, MP, VU, PF, CK): `AS17828 -> AS4826 (Vocus Connect) -> AS1299 (Telia) -> AS9241 -> AS23917`, RIS-agreeing with the identical exact match (1,009). Telia is a genuinely new intermediate carrier for this adjacency, after Level 3/Lumen, Spark NZ, and NTT.
 
 Extended the existing entry's note. Not a new dataclass entry -- `CONFIRMED_LOCAL_TRANSIT` count unchanged (13). Called `mark_corridor_tested(17828, 23917)`. Regenerated ASCII/HTML reports since the note text changed (render correctly); map unaffected. Regenerated the corridor backlog: candidate count dropped 597 -> 595.
+
+---
+
+**Next corridor pulled: AS17828 (PNG DataCo) -> AS24390 (University of the South Pacific).** `has_routing_loop` correctly returned `False`.
+
+Fourth independent confirmation of the AS7575(AARNet)<->AS24390 adjacency (after MP, PF, CK): `AS17828 -> AS4826 (Vocus Connect) -> AS7575`, target never resolved, RIS-agreeing with the identical exact match (337). No IXP crossing this time -- a direct AARNet hop, unlike the CK and PF entries' Any2West crossings.
+
+Added as a new entry. Called `mark_corridor_tested(17828, 24390)`. Verified: module imports cleanly (66 entries, up from 65); regenerated ASCII/HTML reports (render correctly) and the geographic map. Regenerated the corridor backlog: candidate count dropped 595 -> 554 (a large drop -- PNG DataCo's remaining cheap untested targets thinned significantly at once).

@@ -1,6 +1,6 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-09-15T15:46:19.936631+00:00                  
+                 Generated: 2026-09-15T15:56:04.496457+00:00                  
 ==============================================================================
 
 SUMMARY
@@ -211,6 +211,9 @@ PG -> AS (AS9751): detours via Equinix San Jose (San Jose)
 PG -> NC (AS17480): detours via Equinix Sydney (Sydney)
     RIS observation count: 1665  [measurement 211802668]
     PNG DataCo (AS17828) -> a fresh New Caledonia ASN (AS17480) -- a fresh PG<->NC pair, a fourth independent confirmation of the AS18200(OPT NC)<->AS17480 adjacency (after MP, PF, CK). `AS17828 -> AS4826 (Vocus Connect) -> AS18200 -> AS17480`, fully contiguous, RIS-agreeing with the identical *exact* match (1,665). Crosses Equinix Sydney directly (`ixp_crossings` confirms it) -- the same exchange as the CK and PF entries.
+PG -> FJ (AS24390): detours via AS7575 (AARNet) -- global transit, not a named exchange crossing (Sydney)
+    RIS observation count: 337  [measurement 211816612]
+    PNG DataCo (AS17828) -> University of the South Pacific's own network (AS24390) -- a fresh PG<->FJ pair, a fourth independent confirmation of the AS7575(AARNet)<->AS24390 adjacency (after MP, PF, CK). `AS17828 -> AS4826 (Vocus Connect) -> AS7575`, target never resolved, RIS-agreeing with the identical exact match (337). No IXP crossing this time (`ixp_crossings` empty) -- a direct AARNet hop with no intermediate Sydney fabric, unlike the CK and PF entries' Any2West crossings. Kept `detour_hub` as Sydney, matching AARNet's already-established real presence there.
 
 CONFIRMED LOCAL TRANSIT (RIS + Atlas both agree, stays in-fishbowl)
 ==============================================================================

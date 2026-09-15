@@ -1614,3 +1614,6 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   agrees exactly (1,009), via a new carrier (Telia). Checked raw
   hops against the known loop zone given FINTEL's history --
   genuinely clean. Backlog: 597 -> 595.
+- feat(analysis): confirm PG(AS17828)->FJ(AS24390) via AARNet --
+  fourth confirmation of AS7575<->AS24390 (after MP, PF, CK). RIS
+  agrees exactly (337). Backlog: 595 -> 554.

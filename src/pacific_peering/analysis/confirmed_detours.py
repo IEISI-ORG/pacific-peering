@@ -1987,4 +1987,25 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
             "exchange as the CK and PF entries."
         ),
     ),
+    ConfirmedDetour(
+        source_cc="PG",
+        target_cc="FJ",
+        target_asn=24390,
+        detour_ix_name="AS7575 (AARNet) -- global transit, not a named exchange crossing",
+        detour_hub="Sydney",
+        measurement_id=211816612,
+        ris_observation_count=337,
+        note=(
+            "PNG DataCo (AS17828) -> University of the South Pacific's "
+            "own network (AS24390) -- a fresh PG<->FJ pair, a fourth "
+            "independent confirmation of the AS7575(AARNet)<->AS24390 "
+            "adjacency (after MP, PF, CK). `AS17828 -> AS4826 (Vocus "
+            "Connect) -> AS7575`, target never resolved, RIS-agreeing "
+            "with the identical exact match (337). No IXP crossing this "
+            "time (`ixp_crossings` empty) -- a direct AARNet hop with "
+            "no intermediate Sydney fabric, unlike the CK and PF "
+            "entries' Any2West crossings. Kept `detour_hub` as Sydney, "
+            "matching AARNet's already-established real presence there."
+        ),
+    ),
 )

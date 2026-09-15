@@ -53,7 +53,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
 <body>
 <div class="wrap">
     <h1>Pacific Peering — Regional Routing Report</h1>
-    <div class="meta">Generated 2026-09-15T15:46:20.072453+00:00</div>
+    <div class="meta">Generated 2026-09-15T15:56:04.633216+00:00</div>
 
     <div class="headline-banner">
         <span class="value">68%</span>
@@ -521,6 +521,13 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <div>RIS observation count: 1665
                 &middot; measurement 211802668</div>
             <details class="note"><summary>PNG DataCo (AS17828) -&gt; a fresh New Caledonia ASN (AS17480) -- a fresh PG&lt;-&gt;NC pair, a fourth independent confirmation of the AS18200(OPT NC)&lt;-&gt;AS17480…</summary>PNG DataCo (AS17828) -&gt; a fresh New Caledonia ASN (AS17480) -- a fresh PG&lt;-&gt;NC pair, a fourth independent confirmation of the AS18200(OPT NC)&lt;-&gt;AS17480 adjacency (after MP, PF, CK). `AS17828 -&gt; AS4826 (Vocus Connect) -&gt; AS18200 -&gt; AS17480`, fully contiguous, RIS-agreeing with the identical *exact* match (1,665). Crosses Equinix Sydney directly (`ixp_crossings` confirms it) -- the same exchange as the CK and PF entries.</details>
+        </div><div class="detour-card">
+            <div class="headline">PG -&gt; FJ
+                (AS24390): detours via AS7575 (AARNet) -- global transit, not a named exchange crossing
+                (Sydney)</div>
+            <div>RIS observation count: 337
+                &middot; measurement 211816612</div>
+            <details class="note"><summary>PNG DataCo (AS17828) -&gt; University of the South Pacific&#x27;s own network (AS24390) -- a fresh PG&lt;-&gt;FJ pair, a fourth independent confirmation of the…</summary>PNG DataCo (AS17828) -&gt; University of the South Pacific&#x27;s own network (AS24390) -- a fresh PG&lt;-&gt;FJ pair, a fourth independent confirmation of the AS7575(AARNet)&lt;-&gt;AS24390 adjacency (after MP, PF, CK). `AS17828 -&gt; AS4826 (Vocus Connect) -&gt; AS7575`, target never resolved, RIS-agreeing with the identical exact match (337). No IXP crossing this time (`ixp_crossings` empty) -- a direct AARNet hop with no intermediate Sydney fabric, unlike the CK and PF entries&#x27; Any2West crossings. Kept `detour_hub` as Sydney, matching AARNet&#x27;s already-established real presence there.</details>
         </div>
 
     <h2>Confirmed local transit (RIS + Atlas both agree, stays in-fishbowl)</h2>
