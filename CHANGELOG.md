@@ -1617,3 +1617,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - feat(analysis): confirm PG(AS17828)->FJ(AS24390) via AARNet --
   fourth confirmation of AS7575<->AS24390 (after MP, PF, CK). RIS
   agrees exactly (337). Backlog: 595 -> 554.
+- ops: PG(AS17828)->MH(AS24439) skipped -- two consecutive
+  measurements stuck at Scheduled with zero probes ever assigned, a
+  new failure mode distinct from the known slow-participant-count
+  pattern. Probe and credit balance both checked healthy. Flagged
+  to the project owner per the standing anomaly rule; not marked
+  tested, left genuinely open for a future retry.
