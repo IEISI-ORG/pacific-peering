@@ -1286,3 +1286,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   exactly (382) -- AS55722 is AS141368's only RIS-observed neighbor.
   Domestic intra-Nauru adjacency, same shape as Digicel Samoa<->CSL
   Samoa. Backlog: 944 -> 943.
+- feat(analysis): confirm VU(AS9249)->CK(AS152093) via Equinix
+  Sydney -- third independent confirmation of AS9507<->AS152093
+  (after GU and MP). RIS agrees exactly (335), via the shortest path
+  yet for this adjacency. Backlog: 943 -> 933.

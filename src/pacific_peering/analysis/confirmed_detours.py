@@ -1197,4 +1197,23 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
             "Tokyo and Sydney presence)."
         ),
     ),
+    ConfirmedDetour(
+        source_cc="VU",
+        target_cc="CK",
+        target_asn=152093,
+        detour_ix_name="Equinix Sydney",
+        detour_hub="Sydney",
+        measurement_id=211654723,
+        ris_observation_count=335,
+        note=(
+            "Telecom Vanuatu (AS9249) -> VakaNet Limited (AS152093, Cook "
+            "Islands) -- a fresh VU<->CK pair, a third independent "
+            "confirmation of the AS9507(NextHop)<->AS152093 adjacency "
+            "(after the GU entry and the MP entry). The shortest path yet "
+            "for this adjacency: `AS9249 -> AS38442 (Vodafone Fiji) -> "
+            "AS9507`, upstream of the target directly, RIS-agreeing with "
+            "the identical *exact* match (335). Crosses **Equinix Sydney** "
+            "directly (`ixp_crossings` confirms it for both probes)."
+        ),
+    ),
 )

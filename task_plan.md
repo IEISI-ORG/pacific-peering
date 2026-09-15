@@ -1483,3 +1483,9 @@ Called `mark_corridor_tested(9249, 140504)` for both addresses. No report/map re
 **The lead panned out cleanly.** Both probes: `AS9249 -> AS38442 (Vodafone Fiji) -> AS6939 (Hurricane Electric) -> AS7131 (PTI Pacifica) -> AS55722 (Cenpac Net Inc)`, upstream of target AS55722, RIS-agreeing with an *exact* match (382) -- checked directly: AS55722 is AS141368's *only* RIS-observed neighbor at all. The full chain confirmed in one traceroute: AS7131's already-confirmed upstream role for AS55722, now extended one hop further to AS55722's own domestic downstream (AS141368, holder-confirmed as "ICT"). A domestic (intra-Nauru) adjacency, the same shape as the Digicel Samoa<->CSL Samoa finding.
 
 Added as a new `ConfirmedLocalTransit` entry, closing out a loose thread flagged earlier this session. Called `mark_corridor_tested(9249, 141368)`. Verified: module imports cleanly (13 entries, up from 12); regenerated ASCII/HTML reports (render correctly) and the geographic map. Regenerated the corridor backlog: candidate count dropped 944 -> 943.
+
+---
+
+**Next corridor pulled: AS9249 (Telecom Vanuatu) -> AS152093 (VakaNet, Cook Islands).** `has_routing_loop` correctly returned `False`. Lands on the well-established AS9507(NextHop)<->AS152093 adjacency, already confirmed twice before (GU, MP). The shortest path yet: `AS9249 -> AS38442 (Vodafone Fiji) -> AS9507`, RIS-agreeing with the identical exact match (335). Crosses Equinix Sydney directly.
+
+Added as a new entry per the established convention (third source economy). Called `mark_corridor_tested(9249, 152093)`. Verified: module imports cleanly (38 entries, up from 37); regenerated ASCII/HTML reports (render correctly) and the geographic map. Regenerated the corridor backlog: candidate count dropped 943 -> 933.
