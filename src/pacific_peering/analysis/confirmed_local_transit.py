@@ -391,7 +391,19 @@ CONFIRMED_LOCAL_TRANSIT: tuple[ConfirmedLocalTransit, ...] = (
             "still-untested ASN from this AS-SET; its RIS data shows AS3605 as "
             "its *only* neighbor at all (662 observations, 100% of its ~662 "
             "total path observations) -- the strongest single-neighbor signal "
-            "of any ASN tested this session, and the obvious next check."
+            "of any ASN tested this session, and the obvious next check. "
+            "**Second independent corroboration, from a genuinely different "
+            "source economy** (measurement 211642250, VU/AS9249 -> "
+            "PW/AS58932, pulled from the corridor backlog as a fresh VU<->PW "
+            "pair): both probes fully contiguous, target reached directly -- "
+            "AS9249 -> AS38442 (Vodafone Fiji) -> AS2914 (NTT Communications) "
+            "-> **AS3605** -> AS58932. RIS agrees with the identical *exact* "
+            "match (664). Unlike the original entry (sourced from AS3605's "
+            "own vantage point, showing its direct customer relationship), "
+            "this measurement shows AS3605 acting as a genuine transit "
+            "waypoint for a third economy's traffic (Vanuatu) reaching "
+            "Palau Mobile -- the same regional-hub-carrier shape already "
+            "established for ONATI, FINTEL, PTI Pacifica, and Digicel Samoa."
         ),
     ),
     ConfirmedLocalTransit(

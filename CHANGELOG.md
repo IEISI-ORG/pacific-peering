@@ -1241,3 +1241,11 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   third independent confirmation of AS3257<->AS55943 (after GU and
   MP via Cogent). RIS agrees exactly (1,657). No IXP crossing;
   reused the already-verified Tokyo hub. Backlog: 962 -> 949.
+- Sourced AS9249 toward AS58932 (Palau Mobile Communications Inc.)
+  -- a fresh VU<->PW pair, landing on the existing AS3605<->AS58932
+  adjacency, now a second independent corroboration from a
+  genuinely different source economy. Identical exact RIS match
+  (664). Shows AS3605 as a real transit waypoint for third-economy
+  traffic, distinct from the original entry's direct-customer shape.
+  Extended the existing `ConfirmedLocalTransit` entry's note rather
+  than duplicating; entry count unchanged (12). Backlog: 949 -> 948.
