@@ -1644,4 +1644,33 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
             "Sydney, matching the PF entry."
         ),
     ),
+    ConfirmedDetour(
+        source_cc="CK",
+        target_cc="PW",
+        target_asn=17893,
+        detour_ix_name="BBIX Tokyo",
+        detour_hub="Tokyo",
+        measurement_id=211728762,
+        ris_observation_count=106,
+        note=(
+            "Cook Islands (AS10131) -> Palau NCC (AS17893) -- a fresh "
+            "CK<->PW pair, a second independent confirmation of the "
+            "AS6939(Hurricane Electric)<->AS17893 adjacency (after the "
+            "PF entry). Only 1 of 3 requested probes returned; checked "
+            "`participant_count` directly (1, not 3) -- the same genuine "
+            "single-probe pattern as every other AS10131-sourced "
+            "measurement this session. **Stronger evidence than the "
+            "original entry**: `AS10131 -> AS9471 (ONATI) -> AS6939 -> "
+            "AS17893`, fully contiguous -- the literal target resolves "
+            "directly this time (the PF entry never reached it, relying "
+            "on the last-reached-ASN methodology instead). RIS agrees "
+            "with the identical *exact* match (106). **Crosses BBIX "
+            "Tokyo directly** (`ixp_crossings` confirms it) -- the "
+            "PF entry showed no IXP crossing at all; verified AS17893's "
+            "real BBIX Tokyo membership via PeeringDB's netixlan API "
+            "before trusting it, matching the exchange's own already-"
+            "established presence in this project (e.g. the GU->PW "
+            "entry's Tokyo/Cogent detour)."
+        ),
+    ),
 )

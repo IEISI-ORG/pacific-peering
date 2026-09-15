@@ -1,6 +1,6 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-09-15T11:25:32.315713+00:00                  
+                 Generated: 2026-09-15T11:35:56.845662+00:00                  
 ==============================================================================
 
 SUMMARY
@@ -178,6 +178,9 @@ CK -> NC (AS17480): detours via Equinix Sydney (Sydney)
 CK -> PG (AS17828): detours via AS6939 (Hurricane Electric) -- global transit, not a named exchange crossing (Sydney)
     RIS observation count: 1283  [measurement 211725920]
     Cook Islands (AS10131) -> PNG DataCo (AS17828) -- a fresh CK<->PG pair, a fourth independent confirmation of this project's very first-ever confirmed finding (AS6939<->AS17828), after GU, MP, and PF. Only 1 of 3 requested probes returned; checked `participant_count` directly (1, not 3) -- the same genuine single-probe pattern as every other AS10131-sourced measurement this session. Result: `AS10131 -> AS9471 (ONATI, French Polynesia) -> AS6939 -> [gap] -> AS17828`, RIS-agreeing with the identical *exact* match (1,283) -- the same ONATI-transit shape already seen on both the AS9751 and AS17480 corridors this same tranche cycle, reinforcing ONATI's real role as Cook Islands' de facto regional gateway. No IXP crossing; kept `detour_hub` as Sydney, matching the PF entry.
+CK -> PW (AS17893): detours via BBIX Tokyo (Tokyo)
+    RIS observation count: 106  [measurement 211728762]
+    Cook Islands (AS10131) -> Palau NCC (AS17893) -- a fresh CK<->PW pair, a second independent confirmation of the AS6939(Hurricane Electric)<->AS17893 adjacency (after the PF entry). Only 1 of 3 requested probes returned; checked `participant_count` directly (1, not 3) -- the same genuine single-probe pattern as every other AS10131-sourced measurement this session. **Stronger evidence than the original entry**: `AS10131 -> AS9471 (ONATI) -> AS6939 -> AS17893`, fully contiguous -- the literal target resolves directly this time (the PF entry never reached it, relying on the last-reached-ASN methodology instead). RIS agrees with the identical *exact* match (106). **Crosses BBIX Tokyo directly** (`ixp_crossings` confirms it) -- the PF entry showed no IXP crossing at all; verified AS17893's real BBIX Tokyo membership via PeeringDB's netixlan API before trusting it, matching the exchange's own already-established presence in this project (e.g. the GU->PW entry's Tokyo/Cogent detour).
 
 CONFIRMED LOCAL TRANSIT (RIS + Atlas both agree, stays in-fishbowl)
 ==============================================================================

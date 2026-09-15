@@ -53,7 +53,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
 <body>
 <div class="wrap">
     <h1>Pacific Peering — Regional Routing Report</h1>
-    <div class="meta">Generated 2026-09-15T11:31:04.368479+00:00</div>
+    <div class="meta">Generated 2026-09-15T11:35:56.980409+00:00</div>
 
     <div class="headline-banner">
         <span class="value">68%</span>
@@ -444,6 +444,13 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <div>RIS observation count: 1283
                 &middot; measurement 211725920</div>
             <details class="note"><summary>Cook Islands (AS10131) -&gt; PNG DataCo (AS17828) -- a fresh CK&lt;-&gt;PG pair, a fourth independent confirmation of this project&#x27;s very first-ever confirmed finding…</summary>Cook Islands (AS10131) -&gt; PNG DataCo (AS17828) -- a fresh CK&lt;-&gt;PG pair, a fourth independent confirmation of this project&#x27;s very first-ever confirmed finding (AS6939&lt;-&gt;AS17828), after GU, MP, and PF. Only 1 of 3 requested probes returned; checked `participant_count` directly (1, not 3) -- the same genuine single-probe pattern as every other AS10131-sourced measurement this session. Result: `AS10131 -&gt; AS9471 (ONATI, French Polynesia) -&gt; AS6939 -&gt; [gap] -&gt; AS17828`, RIS-agreeing with the identical *exact* match (1,283) -- the same ONATI-transit shape already seen on both the AS9751 and AS17480 corridors this same tranche cycle, reinforcing ONATI&#x27;s real role as Cook Islands&#x27; de facto regional gateway. No IXP crossing; kept `detour_hub` as Sydney, matching the PF entry.</details>
+        </div><div class="detour-card">
+            <div class="headline">CK -&gt; PW
+                (AS17893): detours via BBIX Tokyo
+                (Tokyo)</div>
+            <div>RIS observation count: 106
+                &middot; measurement 211728762</div>
+            <details class="note"><summary>Cook Islands (AS10131) -&gt; Palau NCC (AS17893) -- a fresh CK&lt;-&gt;PW pair, a second independent confirmation of the AS6939(Hurricane Electric)&lt;-&gt;AS17893 adjacency…</summary>Cook Islands (AS10131) -&gt; Palau NCC (AS17893) -- a fresh CK&lt;-&gt;PW pair, a second independent confirmation of the AS6939(Hurricane Electric)&lt;-&gt;AS17893 adjacency (after the PF entry). Only 1 of 3 requested probes returned; checked `participant_count` directly (1, not 3) -- the same genuine single-probe pattern as every other AS10131-sourced measurement this session. **Stronger evidence than the original entry**: `AS10131 -&gt; AS9471 (ONATI) -&gt; AS6939 -&gt; AS17893`, fully contiguous -- the literal target resolves directly this time (the PF entry never reached it, relying on the last-reached-ASN methodology instead). RIS agrees with the identical *exact* match (106). **Crosses BBIX Tokyo directly** (`ixp_crossings` confirms it) -- the PF entry showed no IXP crossing at all; verified AS17893&#x27;s real BBIX Tokyo membership via PeeringDB&#x27;s netixlan API before trusting it, matching the exchange&#x27;s own already-established presence in this project (e.g. the GU-&gt;PW entry&#x27;s Tokyo/Cogent detour).</details>
         </div>
 
     <h2>Confirmed local transit (RIS + Atlas both agree, stays in-fishbowl)</h2>

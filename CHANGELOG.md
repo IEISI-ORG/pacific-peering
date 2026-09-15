@@ -1479,3 +1479,8 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   uncollapsed wall of text. Each card now shows a short preview,
   full text one click away. No data removed; report.txt and the
   underlying dataclass notes are untouched.
+- feat(analysis): confirm CK(AS10131)->PW(AS17893) via BBIX Tokyo --
+  second confirmation of AS6939<->AS17893 (after PF), and stronger
+  evidence: target resolves directly this time and crosses BBIX
+  Tokyo (PeeringDB-verified), where the PF entry had neither. RIS
+  agrees exactly (106). Backlog: 748 -> 743.
