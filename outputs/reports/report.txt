@@ -1,6 +1,6 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-09-15T12:10:14.138498+00:00                  
+                 Generated: 2026-09-15T12:11:45.242673+00:00                  
 ==============================================================================
 
 SUMMARY
@@ -184,6 +184,9 @@ CK -> PW (AS17893): detours via BBIX Tokyo (Tokyo)
 CK -> WS (AS17993): detours via Equinix Sydney (Sydney)
     RIS observation count: 150  [measurement 211731055]
     Cook Islands (AS10131) -> Vodafone Samoa Limited (AS17993) -- a fresh CK<->WS pair, a third independent confirmation of the AS6939(Hurricane Electric)<->AS17993 adjacency (after MP and PF). Only 1 of 3 requested probes returned; checked `participant_count` directly (1, not 3) -- the same genuine single-probe pattern as every other AS10131-sourced measurement this session. Result: `AS10131 -> AS9471 (ONATI) -> AS6939 -> AS17993`, fully contiguous, RIS-agreeing with the identical *exact* match (150). Crosses **Equinix Sydney** directly (`ixp_crossings` confirms it) -- the same exchange as both prior entries, and the same ONATI-transit shape now seen on every AS10131-sourced corridor tested this tranche cycle.
+CK -> FJ (AS24390): detours via Any2West (Los Angeles)
+    RIS observation count: 337  [measurement 211738209]
+    Cook Islands (AS10131) -> University of the South Pacific's own network (AS24390) -- a fresh CK<->FJ pair, a third independent confirmation of the AS7575(AARNet)<->AS24390 adjacency (after MP via OneQode and PF via Hurricane Electric/Any2West). Only 1 of 3 requested probes returned; checked `participant_count` directly (1, not 3) -- the same genuine single-probe pattern as every other AS10131-sourced measurement this session. Result: `AS10131 -> AS9471 (ONATI) -> AS6939 (Hurricane Electric) -> AS7575`, target never resolved (ordinary ICMP filtering), RIS-agreeing with the identical *exact* match (337). Crosses **Any2West** directly (`ixp_crossings` confirms it, a real hop-level LAN-prefix match, not a carrier-level guess) -- the same exchange as the PF entry, and the same ONATI-transit shape seen on every AS10131-sourced corridor this tranche cycle.
 
 CONFIRMED LOCAL TRANSIT (RIS + Atlas both agree, stays in-fishbowl)
 ==============================================================================

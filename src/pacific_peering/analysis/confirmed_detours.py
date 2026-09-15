@@ -1740,4 +1740,30 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
             "this tranche cycle."
         ),
     ),
+    ConfirmedDetour(
+        source_cc="CK",
+        target_cc="FJ",
+        target_asn=24390,
+        detour_ix_name="Any2West",
+        detour_hub="Los Angeles",
+        measurement_id=211738209,
+        ris_observation_count=337,
+        note=(
+            "Cook Islands (AS10131) -> University of the South Pacific's "
+            "own network (AS24390) -- a fresh CK<->FJ pair, a third "
+            "independent confirmation of the AS7575(AARNet)<->AS24390 "
+            "adjacency (after MP via OneQode and PF via Hurricane "
+            "Electric/Any2West). Only 1 of 3 requested probes returned; "
+            "checked `participant_count` directly (1, not 3) -- the same "
+            "genuine single-probe pattern as every other AS10131-sourced "
+            "measurement this session. Result: `AS10131 -> AS9471 (ONATI) "
+            "-> AS6939 (Hurricane Electric) -> AS7575`, target never "
+            "resolved (ordinary ICMP filtering), RIS-agreeing with the "
+            "identical *exact* match (337). Crosses **Any2West** directly "
+            "(`ixp_crossings` confirms it, a real hop-level LAN-prefix "
+            "match, not a carrier-level guess) -- the same exchange as "
+            "the PF entry, and the same ONATI-transit shape seen on every "
+            "AS10131-sourced corridor this tranche cycle."
+        ),
+    ),
 )

@@ -1504,3 +1504,6 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   entry (AS45879/Orange) has no PTR evidence either way; downgraded
   its note to say so honestly rather than replace one guess with
   another. Added "Portland" to EXTERNAL_HUB_LATLON.
+- feat(analysis): confirm CK(AS10131)->FJ(AS24390) via Any2West --
+  third confirmation of AS7575<->AS24390 (after MP, PF). RIS agrees
+  exactly (337). Backlog: 735 -> 721.
