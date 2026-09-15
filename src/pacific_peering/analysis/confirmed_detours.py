@@ -1148,4 +1148,28 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
             "Sydney presence)."
         ),
     ),
+    ConfirmedDetour(
+        source_cc="VU",
+        target_cc="SB",
+        target_asn=45891,
+        detour_ix_name="MegaIX Sydney",
+        detour_hub="Sydney",
+        measurement_id=211635580,
+        ris_observation_count=1652,
+        note=(
+            "Telecom Vanuatu (AS9249) -> Solomon Telekom Co Ltd (AS45891) "
+            "-- a fresh VU<->SB pair, a third independent confirmation of "
+            "the AS139609(SISCC)<->AS45891 adjacency (after the GU entry "
+            "and the MP entry via NSW-IX). A notably short, direct path "
+            "this time: `AS9249 -> AS38442 (Vodafone Fiji) -> AS139609` "
+            "-- the target itself never resolved (ordinary ICMP filtering "
+            "near the destination), so RIS is checked against the last "
+            "reached ASN. RIS agrees with the identical *exact* match "
+            "(1,652). Crosses **MegaIX Sydney** directly (`ixp_crossings` "
+            "confirms it for both probes) -- a different named exchange "
+            "than the MP-sourced entry's NSW-IX, a third distinct Sydney "
+            "fabric now on record for this project (alongside Equinix "
+            "Sydney and NSW-IX)."
+        ),
+    ),
 )

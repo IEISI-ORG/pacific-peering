@@ -1409,3 +1409,9 @@ Added as a new `ConfirmedDetour` entry. Called `mark_corridor_tested(9249, 38800
 **Next corridor pulled: AS9249 (Telecom Vanuatu) -> AS45879 (Orange Wallis & Futuna).** `has_routing_loop` correctly returned `False`. Lands on the well-established AS5511(Opentransit Orange)<->AS45879 adjacency, already confirmed twice before (GU, MP): `AS9249 -> AS38442 (Vodafone Fiji) -> AS4637 (Telstra Global) -> AS5511`, RIS-agreeing with the identical exact match (1,665). No IXP crossing this time; reused the already-verified Tokyo hub (checked against AS5511's real PeeringDB facility list in the MP-sourced entry) rather than re-verifying from scratch.
 
 Per the established convention, added as a new entry (third source economy for this adjacency). Called `mark_corridor_tested(9249, 45879)`. Verified: module imports cleanly (35 entries, up from 34); regenerated ASCII/HTML reports (render correctly) and the geographic map. Regenerated the corridor backlog: candidate count dropped 975 -> 974.
+
+---
+
+**Next corridor pulled: AS9249 (Telecom Vanuatu) -> AS45891 (Solomon Telekom).** `has_routing_loop` correctly returned `False`. Lands on the well-established AS139609(SISCC)<->AS45891 adjacency, already confirmed twice before (GU, MP via NSW-IX). A notably short, direct path this time: `AS9249 -> AS38442 (Vodafone Fiji) -> AS139609`, RIS-agreeing with the identical exact match (1,652).
+
+**Crosses MegaIX Sydney directly** -- a third distinct Sydney fabric now on record for this project (alongside Equinix Sydney and NSW-IX, both already seen), different from the MP-sourced entry's NSW-IX crossing for this same adjacency. Added as a new entry per the established convention. Called `mark_corridor_tested(9249, 45891)`. Verified: module imports cleanly (36 entries, up from 35); regenerated ASCII/HTML reports (render correctly) and the geographic map. Regenerated the corridor backlog: candidate count dropped 974 -> 965.

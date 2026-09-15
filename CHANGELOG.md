@@ -1217,3 +1217,8 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   Orange -- third independent confirmation of AS5511<->AS45879
   (after GU and MP). RIS agrees exactly (1,665). No IXP crossing;
   reused the already-verified Tokyo hub. Backlog: 975 -> 974.
+- feat(analysis): confirm VU(AS9249)->SB(AS45891) via MegaIX Sydney
+  -- third independent confirmation of AS139609<->AS45891 (after GU
+  and MP via NSW-IX). RIS agrees exactly (1,652). A third distinct
+  Sydney fabric now on record (alongside Equinix Sydney and NSW-IX).
+  Backlog: 974 -> 965.
