@@ -837,3 +837,12 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   this session -- flagged for a future firing to test that actual
   relationship instead of an arbitrary pair. Not filed in any
   dataclass; marked tested regardless.
+- Immediate follow-through: sourced AS7131 (PTI Pacifica, CNMI)
+  directly toward AS55722 (Nauru). Traceroute physically short and
+  only 1/3 probes returned, but the resolved upstream is the literal
+  source ASN, and RIS confirms it exactly (1,528 observations,
+  AS55722's only neighbor) -- Validation Rule 1 satisfied directly.
+  Corrects the earlier AS3605 attempt: PTI Pacifica, not Guam
+  Cablevision, is Nauru's real upstream. Added as a new
+  ConfirmedLocalTransit entry; marked tested; backlog regenerated
+  (1178 -> 1173).

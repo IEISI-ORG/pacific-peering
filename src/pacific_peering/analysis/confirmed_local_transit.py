@@ -420,4 +420,41 @@ CONFIRMED_LOCAL_TRANSIT: tuple[ConfirmedLocalTransit, ...] = (
             "with that open question stated rather than assumed."
         ),
     ),
+    ConfirmedLocalTransit(
+        provider_cc="MP",
+        provider_asn=7131,
+        provider_name="PTI Pacifica Inc.",
+        customer_cc="NR",
+        customer_asn=55722,
+        customer_name="Cenpac Net Inc",
+        measurement_id=211493119,
+        vantage_point_cc="MP",
+        ris_observation_count=1528,
+        note=(
+            "Directly requested by the project owner, following a dead-end "
+            "the corridor backlog surfaced this session: sourcing from AS3605 "
+            "(Guam) toward AS55722 (Cenpac Net, Nauru) never resolved past "
+            "AS3605's own network, but AS55722's real RIS neighbor list "
+            "showed AS7131 (PTI Pacifica, Northern Mariana Islands) as its "
+            "*only* observed neighbor at all -- a real relationship, just "
+            "untested from the correct source. Sourced directly from AS7131 "
+            "toward AS55722's own address. Result: the traceroute itself is "
+            "short -- only 1 of 3 probes returned, and it resolves cleanly "
+            "to AS7131's own network before going completely silent from hop "
+            "5 onward, never reaching AS55722 itself (checked the raw hops "
+            "directly: no intermediate carrier or IXP crossing visible, just "
+            "AS7131's own address space then total silence -- the same "
+            "short-path pattern as the AS3605 attempt, just starting one hop "
+            "closer to the real relationship). **What makes this confirmed "
+            "rather than another dead-end**: the resolved upstream (AS7131) "
+            "*is* the literal source this time, and RIS independently and "
+            "exactly confirms it as AS55722's real neighbor (1,528 "
+            "observations, its only one at all) -- Validation Rule 1 is "
+            "satisfied directly, without needing to reach further or invoke "
+            "any sibling-ASN reasoning. A clean, if physically short, "
+            "confirmation: PTI Pacifica genuinely is Nauru's real upstream "
+            "connectivity provider, not Guam Cablevision -- exactly the "
+            "correction the project owner's directed re-test was aimed at."
+        ),
+    ),
 )
