@@ -339,7 +339,22 @@ CONFIRMED_LOCAL_TRANSIT: tuple[ConfirmedLocalTransit, ...] = (
             "AS3257 (GTT) -> AS9471 -- NTT hadn't appeared for this "
             "adjacency before either. A fourth distinct source economy "
             "(Vanuatu, after Niue's own vantage point, Guam, and CNMI) "
-            "confirming the same relationship."
+            "confirming the same relationship. "
+            "**Sixth independent corroboration** (measurement 211755730, "
+            "CK/AS10131 -> NU/AS55885, a fresh CK<->NU pair): only 1 of "
+            "3 requested probes returned; checked `participant_count` "
+            "directly (1, not 3) -- the same genuine single-probe "
+            "pattern as every other AS10131-sourced measurement this "
+            "session. Fully contiguous, resolving directly to AS9471 "
+            "immediately before the target -- the same sibling-ASN "
+            "basis as every prior instance, and the shortest, most "
+            "direct path yet: `AS10131 -> AS9471 -> AS55885`, no "
+            "intermediate transit carrier at all. A fifth distinct "
+            "source economy (Cook Islands, after Niue's own vantage "
+            "point, Guam, CNMI, and Vanuatu) -- and the fourth time "
+            "this session AS9471/ONATI has shown up as the direct "
+            "upstream in a Cook Islands traceroute, further reinforcing "
+            "its role as Cook Islands' real regional gateway."
         ),
     ),
     ConfirmedLocalTransit(

@@ -1536,3 +1536,10 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   AS7131's transit-waypoint role for Nauru (after MP, VU, PF). RIS
   agrees exactly (1,528). Backlog: 698 -> 697. Source fully
   diversified to AS17456 (Guam) as AS10131's targets are exhausted.
+- docs(analysis): CK(AS10131)->NU(AS55885) sixth corroboration of
+  ONATI's real relationship with Niue via its AS55943 sibling
+  identity (after NU, GU, MP, VU). RIS "disagreement" checked
+  directly against fishbowl.json and confirmed as the established
+  sibling-substitution pattern, not a real anomaly. Shortest path
+  yet, no intermediate carrier. Backlog: 697 -> 695. AS10131 now
+  fully exhausted; AS17456 (Guam) is the sole leading source.
