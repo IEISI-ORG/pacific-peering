@@ -2114,4 +2114,38 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
             "(San Jose) while auditing these hops."
         ),
     ),
+    ConfirmedDetour(
+        source_cc="PG",
+        target_cc="SB",
+        target_asn=45891,
+        detour_ix_name="AS4637 (Telstra Global) -- global transit, not a named "
+        "exchange crossing",
+        detour_hub="Sydney",
+        measurement_id=211978965,
+        ris_observation_count=1652,
+        note=(
+            "PNG DataCo (AS17828) -> Solomon Telekom Co Ltd (AS45891) "
+            "-- a fresh PG<->SB pair, a sixth independent confirmation "
+            "of the AS139609(SISCC)<->AS45891 adjacency (after GU, MP, "
+            "VU, PF, CK). `AS17828 -> AS4826 (Vocus Connect) -> AS1221 "
+            "(Telstra domestic) -> AS4637 (Telstra Global) -> AS139609` "
+            "-- target never resolved, RIS-agreeing with the identical "
+            "*exact* match (1,652). No IXP crossing this time. "
+            "**A genuinely new routing-loop location, the fourth "
+            "distinct network this session** (after Hurricane "
+            "Electric's network, FINTEL's edge, and Starlink's own "
+            "network): `has_routing_loop` correctly returned `True`; "
+            "checked the raw hops directly and found a single address "
+            "(`103.142.98.131`) repeating at hop 11 and hop 14 with "
+            "unanswered probes in between. Resolved it directly: it "
+            "belongs to **AS139609 (SISCC) itself** -- a real, live "
+            "loop at the destination's own network edge, the same "
+            "general shape as the FINTEL case but a genuinely "
+            "different company's network. The loop sits *after* the "
+            "point (hop 10, also AS139609) already used for this "
+            "measurement's own RIS agreement, so it doesn't affect the "
+            "triangulation result here -- same as the earlier Starlink "
+            "loop case."
+        ),
+    ),
 )

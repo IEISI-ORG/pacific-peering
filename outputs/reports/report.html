@@ -53,7 +53,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
 <body>
 <div class="wrap">
     <h1>Pacific Peering — Regional Routing Report</h1>
-    <div class="meta">Generated 2026-09-15T22:36:33.075658+00:00</div>
+    <div class="meta">Generated 2026-09-15T22:46:20.523948+00:00</div>
 
     <div class="headline-banner">
         <span class="value">68%</span>
@@ -556,6 +556,13 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <div>RIS observation count: 1665
                 &middot; measurement 211976890</div>
             <details class="note"><summary>PNG DataCo (AS17828) -&gt; Orange Wallis &amp; Futuna (AS45879) -- a fresh PG&lt;-&gt;WF pair, a sixth independent confirmation of the AS5511(Opentransit Orange)&lt;-&gt;AS45879…</summary>PNG DataCo (AS17828) -&gt; Orange Wallis &amp; Futuna (AS45879) -- a fresh PG&lt;-&gt;WF pair, a sixth independent confirmation of the AS5511(Opentransit Orange)&lt;-&gt;AS45879 adjacency (after GU, MP, VU, PF, CK), and the **first time this corridor has ever had real geographic evidence for its Orange leg**. `AS17828 -&gt; AS4826 (Vocus Connect) -&gt; AS174 (Cogent) -&gt; AS5511`, target never resolved, RIS-agreeing with the identical *exact* match (1,665). Cogent is a genuinely new intermediate carrier for this adjacency (after GTT). **Reverse-DNS&#x27;d the Cogent hops directly (via the new `hop_geolocation` module) rather than inheriting the existing entries&#x27; Tokyo label**: `sjc13.atlas.cogentco.com` -&gt; `lax01...` -&gt; `lax05...` -&gt; **`orange.lax05.atlas.cogentco.com`** -- a Cogent router explicitly named for the Orange handoff, located in Los Angeles. Corrected `detour_hub` to Los Angeles accordingly, on real evidence rather than the carrier&#x27;s generic Tokyo presence used elsewhere in this corridor&#x27;s other, still-unverified entries. Added a new `sjc` pattern to `hop_geolocation.py` (San Jose) while auditing these hops.</details>
+        </div><div class="detour-card">
+            <div class="headline">PG -&gt; SB
+                (AS45891): detours via AS4637 (Telstra Global) -- global transit, not a named exchange crossing
+                (Sydney)</div>
+            <div>RIS observation count: 1652
+                &middot; measurement 211978965</div>
+            <details class="note"><summary>PNG DataCo (AS17828) -&gt; Solomon Telekom Co Ltd (AS45891) -- a fresh PG&lt;-&gt;SB pair, a sixth independent confirmation of the AS139609(SISCC)&lt;-&gt;AS45891 adjacency…</summary>PNG DataCo (AS17828) -&gt; Solomon Telekom Co Ltd (AS45891) -- a fresh PG&lt;-&gt;SB pair, a sixth independent confirmation of the AS139609(SISCC)&lt;-&gt;AS45891 adjacency (after GU, MP, VU, PF, CK). `AS17828 -&gt; AS4826 (Vocus Connect) -&gt; AS1221 (Telstra domestic) -&gt; AS4637 (Telstra Global) -&gt; AS139609` -- target never resolved, RIS-agreeing with the identical *exact* match (1,652). No IXP crossing this time. **A genuinely new routing-loop location, the fourth distinct network this session** (after Hurricane Electric&#x27;s network, FINTEL&#x27;s edge, and Starlink&#x27;s own network): `has_routing_loop` correctly returned `True`; checked the raw hops directly and found a single address (`103.142.98.131`) repeating at hop 11 and hop 14 with unanswered probes in between. Resolved it directly: it belongs to **AS139609 (SISCC) itself** -- a real, live loop at the destination&#x27;s own network edge, the same general shape as the FINTEL case but a genuinely different company&#x27;s network. The loop sits *after* the point (hop 10, also AS139609) already used for this measurement&#x27;s own RIS agreement, so it doesn&#x27;t affect the triangulation result here -- same as the earlier Starlink loop case.</details>
         </div>
 
     <h2>Confirmed local transit (RIS + Atlas both agree, stays in-fishbowl)</h2>

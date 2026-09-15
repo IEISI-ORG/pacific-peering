@@ -1648,3 +1648,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   "orange.lax05" router hostname) rather than an inherited Tokyo
   guess. RIS agrees exactly (1,665). Added an "sjc" pattern to
   hop_geolocation.py. Backlog: 514 -> 513.
+- feat(analysis): confirm PG(AS17828)->SB(AS45891) via Telstra --
+  sixth confirmation of AS139609<->AS45891 (after GU, MP, VU, PF,
+  CK). RIS agrees exactly (1,652). Also surfaced a fourth distinct
+  routing-loop location this session, inside SISCC's own network --
+  did not affect this measurement's own RIS agreement, which
+  resolved before the loop. Backlog: 513 -> 504.

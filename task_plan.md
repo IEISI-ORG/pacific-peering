@@ -2034,3 +2034,13 @@ Sixth independent confirmation of the AS5511(Opentransit Orange)<->AS45879 adjac
 **Reverse-DNS'd the Cogent hops directly rather than inheriting the existing entries' Tokyo label**: `sjc13.atlas.cogentco.com` -> `lax01...` -> `lax05...` -> **`orange.lax05.atlas.cogentco.com`** -- a Cogent router explicitly named for the Orange handoff, located in Los Angeles. This is the first time this whole corridor has ever had real geographic evidence for its Orange leg, rather than an inherited carrier-level guess. Filed with `detour_hub="Los Angeles"` accordingly. Added a new `sjc` pattern to `hop_geolocation.py` (San Jose) while auditing these hops.
 
 Added as a new entry. Called `mark_corridor_tested(17828, 45879)`. Verified: module imports cleanly (70 entries, up from 69); regenerated ASCII/HTML reports (render correctly) and the geographic map. Regenerated the corridor backlog: candidate count dropped 514 -> 513.
+
+---
+
+**[A genuinely new routing-loop location -- the fourth distinct network this session.] Next corridor pulled: AS17828 (PNG DataCo) -> AS45891 (Solomon Telekom Co Ltd).** `has_routing_loop` correctly returned `True`.
+
+**Checked the raw hops directly**: a single address (`103.142.98.131`) repeats at hop 11 and hop 14, with unanswered probes in between. Resolved it directly: it belongs to **AS139609 (SISCC) itself** -- a real, live loop at the destination's own network edge, the same general shape as the FINTEL loop but a genuinely different company's network (the fourth distinct network this session to show this pattern, after Hurricane Electric, FINTEL, and Starlink).
+
+The loop sits after the point (hop 10, also AS139609) already used for this measurement's own RIS agreement, so it doesn't corrupt the triangulation: sixth independent confirmation of the AS139609(SISCC)<->AS45891 adjacency (after GU, MP, VU, PF, CK): `AS17828 -> AS4826 (Vocus Connect) -> AS1221 (Telstra domestic) -> AS4637 (Telstra Global) -> AS139609`, RIS-agreeing with the identical exact match (1,652).
+
+Added as a new entry. Called `mark_corridor_tested(17828, 45891)`. Verified: module imports cleanly (71 entries, up from 70); regenerated ASCII/HTML reports (render correctly) and the geographic map. Regenerated the corridor backlog: candidate count dropped 513 -> 504.

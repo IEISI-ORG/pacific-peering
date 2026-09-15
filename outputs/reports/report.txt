@@ -1,6 +1,6 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-09-15T22:36:32.940817+00:00                  
+                 Generated: 2026-09-15T22:46:20.383514+00:00                  
 ==============================================================================
 
 SUMMARY
@@ -226,6 +226,9 @@ PG -> FM (AS45193): detours via Any2West (Los Angeles)
 PG -> WF (AS45879): detours via AS174 (Cogent Communications), then AS5511 (Opentransit Orange S.A.) -- global transit, not a named exchange crossing (Los Angeles)
     RIS observation count: 1665  [measurement 211976890]
     PNG DataCo (AS17828) -> Orange Wallis & Futuna (AS45879) -- a fresh PG<->WF pair, a sixth independent confirmation of the AS5511(Opentransit Orange)<->AS45879 adjacency (after GU, MP, VU, PF, CK), and the **first time this corridor has ever had real geographic evidence for its Orange leg**. `AS17828 -> AS4826 (Vocus Connect) -> AS174 (Cogent) -> AS5511`, target never resolved, RIS-agreeing with the identical *exact* match (1,665). Cogent is a genuinely new intermediate carrier for this adjacency (after GTT). **Reverse-DNS'd the Cogent hops directly (via the new `hop_geolocation` module) rather than inheriting the existing entries' Tokyo label**: `sjc13.atlas.cogentco.com` -> `lax01...` -> `lax05...` -> **`orange.lax05.atlas.cogentco.com`** -- a Cogent router explicitly named for the Orange handoff, located in Los Angeles. Corrected `detour_hub` to Los Angeles accordingly, on real evidence rather than the carrier's generic Tokyo presence used elsewhere in this corridor's other, still-unverified entries. Added a new `sjc` pattern to `hop_geolocation.py` (San Jose) while auditing these hops.
+PG -> SB (AS45891): detours via AS4637 (Telstra Global) -- global transit, not a named exchange crossing (Sydney)
+    RIS observation count: 1652  [measurement 211978965]
+    PNG DataCo (AS17828) -> Solomon Telekom Co Ltd (AS45891) -- a fresh PG<->SB pair, a sixth independent confirmation of the AS139609(SISCC)<->AS45891 adjacency (after GU, MP, VU, PF, CK). `AS17828 -> AS4826 (Vocus Connect) -> AS1221 (Telstra domestic) -> AS4637 (Telstra Global) -> AS139609` -- target never resolved, RIS-agreeing with the identical *exact* match (1,652). No IXP crossing this time. **A genuinely new routing-loop location, the fourth distinct network this session** (after Hurricane Electric's network, FINTEL's edge, and Starlink's own network): `has_routing_loop` correctly returned `True`; checked the raw hops directly and found a single address (`103.142.98.131`) repeating at hop 11 and hop 14 with unanswered probes in between. Resolved it directly: it belongs to **AS139609 (SISCC) itself** -- a real, live loop at the destination's own network edge, the same general shape as the FINTEL case but a genuinely different company's network. The loop sits *after* the point (hop 10, also AS139609) already used for this measurement's own RIS agreement, so it doesn't affect the triangulation result here -- same as the earlier Starlink loop case.
 
 CONFIRMED LOCAL TRANSIT (RIS + Atlas both agree, stays in-fishbowl)
 ==============================================================================
