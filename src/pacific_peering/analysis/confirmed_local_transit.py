@@ -812,7 +812,18 @@ CONFIRMED_LOCAL_TRANSIT: tuple[ConfirmedLocalTransit, ...] = (
             "member AS14593) -- the same exchange just confirmed minutes "
             "earlier for the AS132486 sibling chain, now seen for this "
             "adjacency too. A fourth distinct source economy (French "
-            "Polynesia, after Guam, CNMI, and Vanuatu)."
+            "Polynesia, after Guam, CNMI, and Vanuatu). "
+            "**Fifth independent corroboration** (measurement 211761618, "
+            "CK/AS10131 -> KI/AS134783, a fresh CK<->KI pair): only 1 of "
+            "3 requested probes returned; checked `participant_count` "
+            "directly (1, not 3) -- the same genuine single-probe "
+            "pattern as every other AS10131-sourced measurement this "
+            "session. `AS10131 -> AS9471 (ONATI) -> AS6939 (Hurricane "
+            "Electric) -> AS14593 (Starlink) -> AS154100`, target never "
+            "resolved, identical RIS match (1,392). No IXP crossing this "
+            "time (`ixp_crossings` empty). A fifth distinct source "
+            "economy (Cook Islands, after Guam, CNMI, Vanuatu, and "
+            "French Polynesia)."
         ),
     ),
     ConfirmedLocalTransit(

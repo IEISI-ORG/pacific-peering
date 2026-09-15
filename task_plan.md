@@ -1860,3 +1860,11 @@ Extended the existing entry's note. Not a new dataclass entry -- `CONFIRMED_LOCA
 Sixth independent reproduction of the well-established AS154100<->AS132486 Kiribati Starlink chain: `AS10131 -> AS9471 (ONATI) -> AS6939 (Hurricane Electric) -> AS14593 (Starlink) -> AS154100`, target never resolved, identical exact RIS match (362). Crosses EdgeIX Auckland again -- the same exchange as the PF entry.
 
 Extended the existing entry's note. Not a new dataclass entry -- `CONFIRMED_LOCAL_TRANSIT` count unchanged (13). Called `mark_corridor_tested(10131, 132486)`. Regenerated ASCII/HTML reports since the note text changed (render correctly); map unaffected. Regenerated the corridor backlog: candidate count dropped 695 -> 694. AS17456 (Guam) is now the sole leading source.
+
+---
+
+**Next corridor pulled: AS10131 (Cook Islands) -> AS134783 (ATHKL, Kiribati).** Only 1 of 3 probes returned; checked `participant_count` (1, not 3). `has_routing_loop` correctly returned `False`.
+
+Fifth independent corroboration of the AS154100<->AS134783 adjacency (after GU, MP, VU, PF): `AS10131 -> AS9471 (ONATI) -> AS6939 (Hurricane Electric) -> AS14593 (Starlink) -> AS154100`, target never resolved, identical exact RIS match (1,392). No IXP crossing this time.
+
+Extended the existing entry's note. Not a new dataclass entry -- `CONFIRMED_LOCAL_TRANSIT` count unchanged (13). Called `mark_corridor_tested(10131, 134783)`. Regenerated ASCII/HTML reports since the note text changed (render correctly); map unaffected. Regenerated the corridor backlog: candidate count dropped 694 -> 693. **AS17828 (Papua New Guinea, PNG DataCo) now also appearing as a new source ASN**, alongside AS17456 (Guam).

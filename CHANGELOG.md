@@ -1547,3 +1547,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   the AS154100<->AS132486 Kiribati Starlink chain (after FSM, GU,
   MP, VU, PF). RIS agrees exactly (362), crosses EdgeIX Auckland
   again. Backlog: 695 -> 694.
+- docs(analysis): CK(AS10131)->KI(AS134783) fifth corroboration of
+  AS154100<->AS134783 (after GU, MP, VU, PF). RIS agrees exactly
+  (1,392). Backlog: 694 -> 693. AS17828 (PNG) now also appearing as
+  a new source ASN.
