@@ -560,4 +560,30 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
             "first attempt was inconclusive rather than confirmed either way."
         ),
     ),
+    ConfirmedDetour(
+        source_cc="GU",
+        target_cc="CK",
+        target_asn=152093,
+        detour_ix_name="BBIX Tokyo",
+        detour_hub="Tokyo",
+        measurement_id=211516729,
+        ris_observation_count=335,
+        note=(
+            "Guam Cablevision (AS3605) -> VakaNet Limited (AS152093, Cook "
+            "Islands) -- a second, distinct Cook Islands ASN tested from Guam "
+            "this session (after AS10131, reached via the in-fishbowl ONATI "
+            "transit corroboration). Both probes fully contiguous to AS9507 "
+            "(NextHop Pty Ltd, Australia), resolved via PeeringDB netixlan, "
+            "crossing **BBIX Tokyo** (out-of-fishbowl) -- a genuine named-"
+            "exchange crossing this time, not just global transit. RIS agrees "
+            "with an *exact* match (335) -- checked against AS152093's full "
+            "neighbor list: AS9507 is its *only* RIS-observed neighbor at all. "
+            "Notable contrast with the AS10131 corridor tested from the same "
+            "source: that one reaches Cook Islands via an in-fishbowl Pacific "
+            "carrier (ONATI); this one reaches a different Cook Islands "
+            "operator via a conventional Australia/Tokyo exchange crossing -- "
+            "two real, differently-shaped Cook Islands corridors, not a "
+            "uniform national pattern."
+        ),
+    ),
 )

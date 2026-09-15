@@ -890,3 +890,10 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   tranches ago -- flagged for a future firing to test AS7131 ->
   AS141368 directly. Not filed in any dataclass; marked tested
   regardless.
+- Sourced AS3605 toward AS152093 (VakaNet Limited, Cook Islands) -- a
+  second, distinct CK ASN tested from Guam. Fully contiguous, exact
+  RIS match (335) via AS9507 (NextHop Pty Ltd, Australia), crossing
+  BBIX Tokyo -- a genuine named-exchange crossing, unlike the earlier
+  AS10131 corridor's in-fishbowl ONATI transit. Two real, differently
+  -shaped Cook Islands corridors now on record. Added as a new
+  ConfirmedDetour entry; marked tested; backlog regenerated to 1136.

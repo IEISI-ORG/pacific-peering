@@ -1,6 +1,6 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-09-15T00:45:59.252163+00:00                  
+                 Generated: 2026-09-15T01:15:41.139687+00:00                  
 ==============================================================================
 
 SUMMARY
@@ -62,6 +62,9 @@ GU -> SB (AS45891): detours via AS4637 (Telstra Global), via AS2497 (IIJ, Japan)
 GU -> PF (AS55943): detours via AS3257 (GTT Communications) -- global transit, not a named exchange crossing (Tokyo)
     RIS observation count: 1657  [measurement 211499778]
     Guam Cablevision (AS3605) -> ONATI's other ASN (AS55943, French Polynesia). GU<->PF had already been tested once this session via AS9471 (ONATI's primary identity) -- a genuine dead-end reaching only Hurricane Electric in Tokyo before going dark -- but that dead-end wasn't added to any dataclass, so it didn't exclude the economy pair; targeting ONATI's *other* ASN specifically was worth trying rather than assuming the same result. It wasn't the same result. Both probes: the target itself never resolved (ordinary ICMP filtering, the established pattern), but the last reached ASN is **AS3257 (GTT Communications)** -- a completely different carrier than the earlier AS9471 attempt's Hurricane Electric. RIS agrees with an *exact* match (1,657) -- checked against AS55943's full neighbor list: AS3257 is its dominant relationship (1,657 of 1,662 total observations). A real, clean confirmation, distinct in both target identity and carrier from the earlier dead-end -- illustrating why re-testing a different ASN within an already-attempted economy can be worth it when the first attempt was inconclusive rather than confirmed either way.
+GU -> CK (AS152093): detours via BBIX Tokyo (Tokyo)
+    RIS observation count: 335  [measurement 211516729]
+    Guam Cablevision (AS3605) -> VakaNet Limited (AS152093, Cook Islands) -- a second, distinct Cook Islands ASN tested from Guam this session (after AS10131, reached via the in-fishbowl ONATI transit corroboration). Both probes fully contiguous to AS9507 (NextHop Pty Ltd, Australia), resolved via PeeringDB netixlan, crossing **BBIX Tokyo** (out-of-fishbowl) -- a genuine named-exchange crossing this time, not just global transit. RIS agrees with an *exact* match (335) -- checked against AS152093's full neighbor list: AS9507 is its *only* RIS-observed neighbor at all. Notable contrast with the AS10131 corridor tested from the same source: that one reaches Cook Islands via an in-fishbowl Pacific carrier (ONATI); this one reaches a different Cook Islands operator via a conventional Australia/Tokyo exchange crossing -- two real, differently-shaped Cook Islands corridors, not a uniform national pattern.
 
 CONFIRMED LOCAL TRANSIT (RIS + Atlas both agree, stays in-fishbowl)
 ==============================================================================

@@ -1089,3 +1089,13 @@ Not filed in any dataclass -- a genuine, honestly-documented inconclusive result
 **Result: the same weak dead-end pattern as the earlier AS55722 attempt** -- neither probe resolves any address beyond AS3605's own network. Checked AS141368's own RIS neighbor list directly anyway: its *only* observed neighbor is **AS55722 (Cenpac Net Inc)** -- the same Nauru ASN whose real upstream (AS7131/PTI Pacifica) was directly confirmed just two tranches ago. This is a real, existing intra-Nauru relationship (AS141368<->AS55722), and by extension suggests AS141368's own international path likely also runs through PTI Pacifica -- worth a direct test in a future firing (source AS7131 toward AS141368) rather than assumed from this indirect chain.
 
 Not filed in any dataclass. Called `mark_corridor_tested(3605, 141368)`. No report/map regeneration needed (no dataclass changed).
+
+---
+
+**[Loop tranche -- a genuine named-exchange crossing (BBIX Tokyo) and a real contrast in Cook Islands routing shapes.]** Confirmed via `CronList` this was job `53fb30f1`'s scheduled fire. Pulled the top pick: **AS3605 (Guam Cablevision) -> AS152093 (VakaNet Limited, Cook Islands)** -- a second, distinct Cook Islands ASN tested from Guam this session (after AS10131, reached via the in-fishbowl ONATI transit corroboration).
+
+**Result: fully contiguous, exact RIS match, and a genuine named-exchange crossing this time.** Both probes: AS3605 -> AS9507 (NextHop Pty Ltd, Australia), resolved via PeeringDB netixlan, crossing **BBIX Tokyo** (out-of-fishbowl). RIS agrees with an *exact* match (335) -- checked against AS152093's full neighbor list: AS9507 is its *only* RIS-observed neighbor at all.
+
+**Notable contrast with the AS10131 corridor tested from the same source**: that one reaches Cook Islands via an in-fishbowl Pacific carrier (ONATI); this one reaches a different Cook Islands operator via a conventional Australia/Tokyo exchange crossing -- two real, differently-shaped corridors within the same economy, not a uniform national pattern.
+
+Added as a new `ConfirmedDetour` entry. Called `mark_corridor_tested(3605, 152093)`. Verified: module imports cleanly (17 entries, up from 16); regenerated ASCII/HTML reports (renders correctly) and the geographic map (18 red `line2d` elements = 17 data lines + 1 legend swatch, matching the 17 dataclass entries). Regenerated the corridor backlog (last explicit regeneration was at 1149, before the two intervening dead-end tranches which didn't trigger one): now 1136, reflecting both those two single-pair exclusions and the whole GU<->CK economy pair newly excluded by this tranche's confirmed finding.
