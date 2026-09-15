@@ -904,3 +904,13 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   recurring carrier in this Guam network's transit mix. Added as a
   new ConfirmedDetour entry; marked tested; backlog regenerated
   (1136 -> 1127).
+- Sourced AS3605 toward AS154100 (BNL Tarawa itself, Kiribati) --
+  targeting the provider ASN behind two already-confirmed intra-
+  Kiribati relationships directly. Cleanest confirmation yet: AS14593
+  (Starlink) is BNL Tarawa's only RIS neighbor, exact match (361).
+  Deliberately not filed as a new ConfirmedDetour -- Starlink has no
+  fixed terrestrial hub to map, unlike every other detour on record.
+  Added as a sharpening note on the existing entry instead. Marked
+  tested; backlog regenerated (1127 -> 1126). Notable: the next live
+  pick is now sourced from AS7131, not AS3605 -- the backlog is
+  diversifying sources as its cheap AS3605 targets run out.
