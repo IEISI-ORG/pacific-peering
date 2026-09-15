@@ -1618,4 +1618,30 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
             "AS9751 corridor this same tranche cycle."
         ),
     ),
+    ConfirmedDetour(
+        source_cc="CK",
+        target_cc="PG",
+        target_asn=17828,
+        detour_ix_name="AS6939 (Hurricane Electric) -- global transit, not a named "
+        "exchange crossing",
+        detour_hub="Sydney",
+        measurement_id=211725920,
+        ris_observation_count=1283,
+        note=(
+            "Cook Islands (AS10131) -> PNG DataCo (AS17828) -- a fresh "
+            "CK<->PG pair, a fourth independent confirmation of this "
+            "project's very first-ever confirmed finding (AS6939<->"
+            "AS17828), after GU, MP, and PF. Only 1 of 3 requested probes "
+            "returned; checked `participant_count` directly (1, not 3) -- "
+            "the same genuine single-probe pattern as every other "
+            "AS10131-sourced measurement this session. Result: `AS10131 "
+            "-> AS9471 (ONATI, French Polynesia) -> AS6939 -> [gap] -> "
+            "AS17828`, RIS-agreeing with the identical *exact* match "
+            "(1,283) -- the same ONATI-transit shape already seen on both "
+            "the AS9751 and AS17480 corridors this same tranche cycle, "
+            "reinforcing ONATI's real role as Cook Islands' de facto "
+            "regional gateway. No IXP crossing; kept `detour_hub` as "
+            "Sydney, matching the PF entry."
+        ),
+    ),
 )

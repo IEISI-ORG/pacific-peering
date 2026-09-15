@@ -1469,3 +1469,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - feat(analysis): confirm CK(AS10131)->NC(AS17480) via Equinix
   Sydney -- third confirmation of AS18200<->AS17480 (after MP, PF).
   RIS agrees exactly (1,665). Backlog: 798 -> 779.
+- feat(analysis): confirm CK(AS10131)->PG(AS17828) via Hurricane
+  Electric -- fourth confirmation of this project's very first
+  finding (AS6939<->AS17828), after GU, MP, PF. RIS agrees exactly
+  (1,283). Backlog: 779 -> 748.

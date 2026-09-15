@@ -50,7 +50,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
 <body>
 <div class="wrap">
     <h1>Pacific Peering — Regional Routing Report</h1>
-    <div class="meta">Generated 2026-09-15T11:15:32.312791+00:00</div>
+    <div class="meta">Generated 2026-09-15T11:25:32.462785+00:00</div>
 
     <div class="headline-banner">
         <span class="value">68%</span>
@@ -434,6 +434,13 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <div>RIS observation count: 1665
                 &middot; measurement 211721420</div>
             <div class="note">Cook Islands (AS10131) -&gt; a fresh New Caledonia ASN (AS17480) -- a fresh CK&lt;-&gt;NC pair, a third independent confirmation of the AS18200(OPT NC)&lt;-&gt;AS17480 adjacency (after the MP entry via BBIX Tokyo and the PF entry via Equinix Sydney). Only 1 of 3 requested probes returned; checked `participant_count` directly (1, not 3) -- the same genuine single-probe pattern as every other AS10131-sourced measurement this session. Result: `AS10131 -&gt; AS9471 (ONATI, French Polynesia) -&gt; AS6939 (Hurricane Electric) -&gt; AS18200 -&gt; AS17480`, fully contiguous, RIS-agreeing with the identical *exact* match (1,665). Crosses **Equinix Sydney** directly (`ixp_crossings` confirms it) -- the same exchange as the PF entry, and the same ONATI-then-Hurricane-Electric path shape, since Cook Islands&#x27; own traffic transits ONATI&#x27;s network here too, matching the pattern already seen on the AS9751 corridor this same tranche cycle.</div>
+        </div><div class="detour-card">
+            <div class="headline">CK -&gt; PG
+                (AS17828): detours via AS6939 (Hurricane Electric) -- global transit, not a named exchange crossing
+                (Sydney)</div>
+            <div>RIS observation count: 1283
+                &middot; measurement 211725920</div>
+            <div class="note">Cook Islands (AS10131) -&gt; PNG DataCo (AS17828) -- a fresh CK&lt;-&gt;PG pair, a fourth independent confirmation of this project&#x27;s very first-ever confirmed finding (AS6939&lt;-&gt;AS17828), after GU, MP, and PF. Only 1 of 3 requested probes returned; checked `participant_count` directly (1, not 3) -- the same genuine single-probe pattern as every other AS10131-sourced measurement this session. Result: `AS10131 -&gt; AS9471 (ONATI, French Polynesia) -&gt; AS6939 -&gt; [gap] -&gt; AS17828`, RIS-agreeing with the identical *exact* match (1,283) -- the same ONATI-transit shape already seen on both the AS9751 and AS17480 corridors this same tranche cycle, reinforcing ONATI&#x27;s real role as Cook Islands&#x27; de facto regional gateway. No IXP crossing; kept `detour_hub` as Sydney, matching the PF entry.</div>
         </div>
 
     <h2>Confirmed local transit (RIS + Atlas both agree, stays in-fishbowl)</h2>

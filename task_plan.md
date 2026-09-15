@@ -1713,3 +1713,11 @@ Added as a new entry. Called `mark_corridor_tested(10131, 9751)`. Verified: modu
 Third independent confirmation of the AS18200(OPT NC)<->AS17480 adjacency (after MP via BBIX Tokyo and PF via Equinix Sydney): `AS10131 -> AS9471 (ONATI, French Polynesia) -> AS6939 (Hurricane Electric) -> AS18200 -> AS17480`, fully contiguous, RIS-agreeing with the identical exact match (1,665). Crosses Equinix Sydney directly -- the same exchange and the same ONATI-transit path shape already seen on the AS9751 corridor earlier this tranche cycle.
 
 Added as a new entry. Called `mark_corridor_tested(10131, 17480)`. Verified: module imports cleanly (53 entries, up from 52); regenerated ASCII/HTML reports (render correctly) and the geographic map. Regenerated the corridor backlog: candidate count dropped 798 -> 779.
+
+---
+
+**Next corridor pulled: AS10131 (Cook Islands) -> AS17828 (PNG DataCo).** Only 1 of 3 probes returned; checked `participant_count` (1, not 3) -- the same genuine single-probe pattern as every other AS10131-sourced measurement this session. `has_routing_loop` correctly returned `False`.
+
+Fourth independent confirmation of this project's very first-ever confirmed finding (AS6939<->AS17828), after GU, MP, and PF: `AS10131 -> AS9471 (ONATI, French Polynesia) -> AS6939 -> [gap] -> AS17828`, RIS-agreeing with the identical exact match (1,283) -- the same ONATI-transit shape already seen on both the AS9751 and AS17480 corridors this tranche cycle, reinforcing ONATI's real role as Cook Islands' de facto regional gateway to international transit.
+
+Added as a new entry. Called `mark_corridor_tested(10131, 17828)`. Verified: module imports cleanly (54 entries, up from 53); regenerated ASCII/HTML reports (render correctly) and the geographic map. Regenerated the corridor backlog: candidate count dropped 779 -> 748.
