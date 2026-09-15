@@ -970,4 +970,32 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
             "now-familiar ordinary-noise shape, not a real loop."
         ),
     ),
+    ConfirmedDetour(
+        source_cc="MP",
+        target_cc="CK",
+        target_asn=152093,
+        detour_ix_name="BBIX Tokyo",
+        detour_hub="Tokyo",
+        measurement_id=211596810,
+        ris_observation_count=335,
+        note=(
+            "PTI Pacifica (AS7131, CNMI) -> VakaNet Limited (AS152093, "
+            "Cook Islands) -- a fresh MP<->CK pair, landing on the "
+            "existing GU(AS3605)->CK adjacency (AS9507/NextHop<->AS152093), "
+            "a second independent confirmation from a different source "
+            "economy. All 3 probes: AS7131 -> AS9507 (NextHop Pty Ltd, "
+            "Australia, resolved via PeeringDB netixlan) -- the literal "
+            "target itself never resolved (ordinary ICMP filtering near "
+            "the destination), so RIS is checked against the last reached "
+            "ASN. RIS agrees with an *exact* match (335), identical to the "
+            "original finding -- AS9507 remains AS152093's *only* "
+            "RIS-observed neighbor at all. **All 3 probes** cross **BBIX "
+            "Tokyo** directly this time (`ixp_crossings` confirms it for "
+            "every probe), an even stronger direct confirmation than the "
+            "original's crossing. `has_routing_loop` flagged probe 60689 "
+            "`True` -- checked directly: a single consecutive repeat with "
+            "modest, stable RTT, the now-familiar ordinary-noise shape, "
+            "not a real loop."
+        ),
+    ),
 )

@@ -47,7 +47,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
 <body>
 <div class="wrap">
     <h1>Pacific Peering — Regional Routing Report</h1>
-    <div class="meta">Generated 2026-09-15T05:06:18.248458+00:00</div>
+    <div class="meta">Generated 2026-09-15T05:15:32.199825+00:00</div>
 
     <div class="stat-row"><div class="stat-tile"><div class="value">20</div><div class="label">Economies in scope</div></div><div class="stat-tile"><div class="value">163</div><div class="label">ASNs in scope</div></div><div class="stat-tile"><div class="value">124</div><div class="label">ASNs w/ RIS neighbor</div></div><div class="stat-tile"><div class="value">38</div><div class="label">ASNs w/ IXP membership</div></div><div class="stat-tile"><div class="value">22</div><div class="label">ASNs w/ facility presence</div></div><div class="stat-tile"><div class="value">10/21</div><div class="label">IXPs in/out of fishbowl</div></div></div>
 
@@ -255,6 +255,13 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <div>RIS observation count: 1657
                 &middot; measurement 211585981</div>
             <div class="note">PTI Pacifica (AS7131, CNMI) -&gt; ONATI&#x27;s other ASN (AS55943, French Polynesia) -- a fresh MP&lt;-&gt;PF pair, landing on the existing GU(AS3605)-&gt;PF adjacency (AS3257/GTT&lt;-&gt;AS55943), a second independent confirmation from a different source economy. All 3 probes: AS7131 -&gt; AS174 (Cogent Communications) -&gt; AS3257 (GTT Communications) -- the literal target itself never resolved (ordinary ICMP filtering near the destination, the established pattern), so RIS is checked against the last reached ASN. RIS agrees with an *exact* match (1,657), identical to the original finding -- AS3257 remains AS55943&#x27;s dominant relationship. `has_routing_loop` flagged probe 60689 `True` -- checked directly: two consecutive-address repeats early in the path, both with modest, stable RTT, the now-familiar ordinary-noise shape, not a real loop.</div>
+        </div><div class="detour-card">
+            <div class="headline">MP -&gt; CK
+                (AS152093): detours via BBIX Tokyo
+                (Tokyo)</div>
+            <div>RIS observation count: 335
+                &middot; measurement 211596810</div>
+            <div class="note">PTI Pacifica (AS7131, CNMI) -&gt; VakaNet Limited (AS152093, Cook Islands) -- a fresh MP&lt;-&gt;CK pair, landing on the existing GU(AS3605)-&gt;CK adjacency (AS9507/NextHop&lt;-&gt;AS152093), a second independent confirmation from a different source economy. All 3 probes: AS7131 -&gt; AS9507 (NextHop Pty Ltd, Australia, resolved via PeeringDB netixlan) -- the literal target itself never resolved (ordinary ICMP filtering near the destination), so RIS is checked against the last reached ASN. RIS agrees with an *exact* match (335), identical to the original finding -- AS9507 remains AS152093&#x27;s *only* RIS-observed neighbor at all. **All 3 probes** cross **BBIX Tokyo** directly this time (`ixp_crossings` confirms it for every probe), an even stronger direct confirmation than the original&#x27;s crossing. `has_routing_loop` flagged probe 60689 `True` -- checked directly: a single consecutive repeat with modest, stable RTT, the now-familiar ordinary-noise shape, not a real loop.</div>
         </div>
 
     <h2>Confirmed local transit (RIS + Atlas both agree, stays in-fishbowl)</h2>

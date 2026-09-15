@@ -1121,3 +1121,10 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   Guam). Extended the existing `ConfirmedLocalTransit` entry's note
   rather than duplicating; entry count unchanged (11). Backlog:
   1006 -> 1005.
+- feat(analysis): confirm MP(AS7131, CNMI)->CK(AS152093, VakaNet) --
+  second independent confirmation of the existing GU->CK adjacency
+  (AS9507/NextHop<->AS152093). RIS agrees exactly (335). All 3 probes
+  cross BBIX Tokyo directly this time, an even stronger confirmation
+  than the original's crossing. One probe false-positived
+  `has_routing_loop` on a modest stable-RTT repeat. Backlog:
+  1005 -> 1004.
