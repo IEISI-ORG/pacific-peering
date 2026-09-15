@@ -883,3 +883,10 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   AS132528 (the same Digicel-family Telstra backbone ASN already seen
   for Digicel Fiji) and AS12684 (SES Astra, no connected probes).
   Not filed in any dataclass; marked tested regardless.
+- Sourced AS3605 toward AS141368 ("ICT", Nauru) -- a fresh GU<->NR
+  pair. Same weak dead-end pattern as the earlier AS55722 attempt.
+  Real lead surfaced: AS141368's only RIS neighbor is AS55722, whose
+  own real upstream (AS7131/PTI Pacifica) was directly confirmed two
+  tranches ago -- flagged for a future firing to test AS7131 ->
+  AS141368 directly. Not filed in any dataclass; marked tested
+  regardless.

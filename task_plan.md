@@ -1081,3 +1081,11 @@ Added as a new `ConfirmedLocalTransit` entry. Called `mark_corridor_tested(3605,
 **Real color worth keeping, though**: AS140504's actual RIS-confirmed relationships are AS132528 (1,032 observations -- the same Telstra-operated "Digicel Australia" backbone ASN already confirmed as Digicel Fiji's real upstream in the NC->FJ detour, and by extension part of the same Digicel-family pattern noted for Digicel Tonga) and AS12684 (616, SES Astra -- the satellite operator already known to have zero connected Atlas probes, so untestable directly). Another real instance of Digicel's own regional subsidiaries interconnecting through shared corporate infrastructure rather than this specific traceroute's path.
 
 Not filed in any dataclass -- a genuine, honestly-documented inconclusive result. Called `mark_corridor_tested(3605, 140504)`. No report/map regeneration needed (no dataclass changed).
+
+---
+
+**[Loop tranche -- another weak Nauru dead-end, with a lead connecting straight back to an already-confirmed relationship.]** Confirmed via `CronList` this was job `53fb30f1`'s scheduled fire. Pulled the top pick: **AS3605 (Guam Cablevision) -> AS141368 ("ICT", Nauru)** -- a fresh GU<->NR pair.
+
+**Result: the same weak dead-end pattern as the earlier AS55722 attempt** -- neither probe resolves any address beyond AS3605's own network. Checked AS141368's own RIS neighbor list directly anyway: its *only* observed neighbor is **AS55722 (Cenpac Net Inc)** -- the same Nauru ASN whose real upstream (AS7131/PTI Pacifica) was directly confirmed just two tranches ago. This is a real, existing intra-Nauru relationship (AS141368<->AS55722), and by extension suggests AS141368's own international path likely also runs through PTI Pacifica -- worth a direct test in a future firing (source AS7131 toward AS141368) rather than assumed from this indirect chain.
+
+Not filed in any dataclass. Called `mark_corridor_tested(3605, 141368)`. No report/map regeneration needed (no dataclass changed).
