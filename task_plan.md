@@ -2070,3 +2070,11 @@ Extended the existing entry's note. Not a new dataclass entry -- `CONFIRMED_LOCA
 **Next corridor pulled: AS17828 (PNG DataCo) -> AS58932 (Palau Mobile Communications).** `has_routing_loop` correctly returned `False`. Third independent corroboration of the AS3605<->AS58932 adjacency (after the original AS3605-sourced entry and the VU-sourced corroboration): `AS17828 -> AS4826 (Vocus Connect) -> AS3605 -> AS58932`, fully contiguous, RIS-agreeing with the identical exact match (664). **Crosses Any2West directly** -- the first time this specific adjacency has shown a named exchange crossing.
 
 Extended the existing entry's note. Not a new dataclass entry -- `CONFIRMED_LOCAL_TRANSIT` count unchanged (13). Called `mark_corridor_tested(17828, 58932)`. Regenerated ASCII/HTML reports since the note text changed (render correctly); map unaffected. Regenerated the corridor backlog: candidate count dropped 501 -> 500. **AS17828 is now fully exhausted** -- source has moved to AS17893 (Palau NCC).
+
+---
+
+**Next corridor pulled: AS17828 (PNG DataCo) -> AS132486 (Kiribati, Ocean Link Ltd)** -- one last AS17828 pair the backlog still had. `has_routing_loop` correctly returned `False`.
+
+Seventh independent reproduction of the well-established AS154100<->AS132486 Kiribati Starlink chain: `AS17828 -> AS4826 (Vocus Connect) -> AS14593 (Starlink) -> AS154100`, target never resolved, identical exact RIS match (362). No IXP crossing this time.
+
+Extended the existing entry's note. Not a new dataclass entry -- `CONFIRMED_LOCAL_TRANSIT` count unchanged (13). Called `mark_corridor_tested(17828, 132486)`. Regenerated ASCII/HTML reports since the note text changed (render correctly); map unaffected. Regenerated the corridor backlog: candidate count dropped 500 -> 499. AS17828 is now genuinely exhausted; AS17893 (Palau NCC) is the sole leading source.

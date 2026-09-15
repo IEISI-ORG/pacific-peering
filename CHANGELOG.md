@@ -1669,3 +1669,6 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   exactly (664), first time crossing a named exchange (Any2West).
   Backlog: 501 -> 500. PG now fully exhausted; source moves to
   AS17893 (Palau NCC).
+- docs(analysis): PG(AS17828)->KI(AS132486) seventh reproduction of
+  the Kiribati Starlink chain. RIS agrees exactly (362). Backlog:
+  500 -> 499. AS17828 genuinely exhausted now.
