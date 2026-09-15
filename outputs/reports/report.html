@@ -47,7 +47,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
 <body>
 <div class="wrap">
     <h1>Pacific Peering — Regional Routing Report</h1>
-    <div class="meta">Generated 2026-09-15T04:04:40.665369+00:00</div>
+    <div class="meta">Generated 2026-09-15T04:16:59.946891+00:00</div>
 
     <div class="stat-row"><div class="stat-tile"><div class="value">20</div><div class="label">Economies in scope</div></div><div class="stat-tile"><div class="value">163</div><div class="label">ASNs in scope</div></div><div class="stat-tile"><div class="value">124</div><div class="label">ASNs w/ RIS neighbor</div></div><div class="stat-tile"><div class="value">38</div><div class="label">ASNs w/ IXP membership</div></div><div class="stat-tile"><div class="value">22</div><div class="label">ASNs w/ facility presence</div></div><div class="stat-tile"><div class="value">10/21</div><div class="label">IXPs in/out of fishbowl</div></div></div>
 
@@ -234,6 +234,13 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <div>RIS observation count: 1321
                 &middot; measurement 211570035</div>
             <div class="note">PTI Pacifica (AS7131, CNMI) -&gt; Digicel Tonga (AS38198) -- a fresh MP&lt;-&gt;TO pair, landing on the existing GU(AS3605)-&gt;TO adjacency (AS45355&lt;-&gt;AS38198), a second independent confirmation from a different source economy. Upstream of the target is AS45355 (Digicel Fiji), RIS-agreeing with an *exact* match (1,321), identical to the original finding. Genuinely new detail this time: probe 62689 resolves an intermediate hop to **AS132528** -- the same Telstra-operated Digicel-Australia backbone ASN already independently confirmed at Equinix Sydney in the NC-&gt;FJ/AS45355 entry above -- `ixp_crossings` confirms it directly at that same fabric again here, a second, unrelated measurement finding the identical real infrastructure. `has_routing_loop` flagged probe 60689 `True` -- checked directly per the now-standard process: a near-destination repeat (`202.43.12.5`, not the literal target `202.43.12.1`) with stable RTT, the same known ordinary-noise shape, not a real loop. All 3 probes eventually reach the same real, BGP-confirmed AS38198 address (`202.43.12.5`) already established in the original entry as this corridor&#x27;s routine final-hop pattern.</div>
+        </div><div class="detour-card">
+            <div class="headline">MP -&gt; WF
+                (AS45879): detours via AS5511 (Opentransit Orange S.A.) -- global transit, not a named exchange crossing
+                (Tokyo)</div>
+            <div>RIS observation count: 1665
+                &middot; measurement 211577395</div>
+            <div class="note">PTI Pacifica (AS7131, CNMI) -&gt; Orange Wallis &amp; Futuna (AS45879) -- a fresh MP&lt;-&gt;WF pair, landing on the existing GU(AS3605)-&gt;WF adjacency (AS5511&lt;-&gt;AS45879), a second independent confirmation from a different source economy. Upstream of the target is AS5511, RIS-agreeing with an *exact* match (1,665), identical to the original finding. A different path into Orange this time: AS7131 -&gt; AS6939 (Hurricane Electric) -&gt; AS5511 directly, no Tokyo/IIJ hop unlike the original. Kept `detour_hub` as Tokyo anyway rather than guessing a new location: checked AS5511&#x27;s real PeeringDB-registered facility presence directly (not assumed) -- four separate Equinix Tokyo data centers (TY2/TY6/TY7/TY8) and no Sydney presence at all, so Tokyo remains the best-sourced location for this adjacency even though this specific traceroute&#x27;s own path doesn&#x27;t show a literal Tokyo hop. `has_routing_loop` flagged probe 60689 `True` -- checked directly: a single consecutive repeat (`184.104.208.73`) early in the Hurricane Electric backbone with only a modest RTT bump (49ms -&gt; 58ms), not the near-destination or steep-RTT-climb shape of a real loop -- ordinary noise.</div>
         </div>
 
     <h2>Confirmed local transit (RIS + Atlas both agree, stays in-fishbowl)</h2>

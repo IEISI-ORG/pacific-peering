@@ -1070,3 +1070,13 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   actual AS7131->AS10130 leg itself -- same shape as the existing
   GU->FM MARIIX candidate entry, at a different exchange. Kept as
   candidate per Validation Rule 1. Backlog: 1029 -> 1023.
+- feat(analysis): confirm MP(AS7131, CNMI)->WF(AS45879, Orange
+  Wallis & Futuna) -- second independent confirmation of the
+  existing GU->WF adjacency (AS5511/Opentransit Orange<->AS45879).
+  RIS agrees exactly (1,665), via Hurricane Electric directly this
+  time rather than the original's Tokyo/IIJ path. Verified the
+  "Tokyo" hub still holds by checking AS5511's real PeeringDB
+  facility list directly (four Equinix Tokyo DCs, no Sydney
+  presence) rather than reusing it on assumption. One probe
+  false-positived `has_routing_loop` on a modest, non-climbing RTT
+  repeat. Backlog: 1023 -> 1022.

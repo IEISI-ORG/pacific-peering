@@ -882,4 +882,37 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
             "entry as this corridor's routine final-hop pattern."
         ),
     ),
+    ConfirmedDetour(
+        source_cc="MP",
+        target_cc="WF",
+        target_asn=45879,
+        detour_ix_name="AS5511 (Opentransit Orange S.A.) -- global transit, not a named "
+        "exchange crossing",
+        detour_hub="Tokyo",
+        measurement_id=211577395,
+        ris_observation_count=1665,
+        note=(
+            "PTI Pacifica (AS7131, CNMI) -> Orange Wallis & Futuna "
+            "(AS45879) -- a fresh MP<->WF pair, landing on the existing "
+            "GU(AS3605)->WF adjacency (AS5511<->AS45879), a second "
+            "independent confirmation from a different source economy. "
+            "Upstream of the target is AS5511, RIS-agreeing with an "
+            "*exact* match (1,665), identical to the original finding. A "
+            "different path into Orange this time: AS7131 -> AS6939 "
+            "(Hurricane Electric) -> AS5511 directly, no Tokyo/IIJ hop "
+            "unlike the original. Kept `detour_hub` as Tokyo anyway rather "
+            "than guessing a new location: checked AS5511's real "
+            "PeeringDB-registered facility presence directly (not "
+            "assumed) -- four separate Equinix Tokyo data centers "
+            "(TY2/TY6/TY7/TY8) and no Sydney presence at all, so Tokyo "
+            "remains the best-sourced location for this adjacency even "
+            "though this specific traceroute's own path doesn't show a "
+            "literal Tokyo hop. `has_routing_loop` flagged probe 60689 "
+            "`True` -- checked directly: a single consecutive repeat "
+            "(`184.104.208.73`) early in the Hurricane Electric backbone "
+            "with only a modest RTT bump (49ms -> 58ms), not the "
+            "near-destination or steep-RTT-climb shape of a real loop -- "
+            "ordinary noise."
+        ),
+    ),
 )
