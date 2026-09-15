@@ -47,7 +47,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
 <body>
 <div class="wrap">
     <h1>Pacific Peering — Regional Routing Report</h1>
-    <div class="meta">Generated 2026-09-15T08:49:27.868061+00:00</div>
+    <div class="meta">Generated 2026-09-15T08:54:32.283045+00:00</div>
 
     <div class="stat-row"><div class="stat-tile"><div class="value">20</div><div class="label">Economies in scope</div></div><div class="stat-tile"><div class="value">163</div><div class="label">ASNs in scope</div></div><div class="stat-tile"><div class="value">124</div><div class="label">ASNs w/ RIS neighbor</div></div><div class="stat-tile"><div class="value">38</div><div class="label">ASNs w/ IXP membership</div></div><div class="stat-tile"><div class="value">22</div><div class="label">ASNs w/ facility presence</div></div><div class="stat-tile"><div class="value">10/21</div><div class="label">IXPs in/out of fishbowl</div></div></div>
 
@@ -346,6 +346,13 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <div>RIS observation count: 1283
                 &middot; measurement 211672420</div>
             <div class="note">ONATI (AS9471, French Polynesia) -&gt; PNG DataCo (AS17828) -- a fresh PF&lt;-&gt;PG pair, a third independent confirmation of this project&#x27;s very first-ever confirmed finding (AS6939&lt;-&gt;AS17828), from a genuinely different source economy (after GU and MP). All 3 probes: `AS9471 -&gt; AS6939 -&gt; [gap] -&gt; AS17828`, RIS-agreeing with the identical *exact* match (1,283). No IXP crossing this time (`ixp_crossings` empty for all three). All 3 probes reach the same real near-destination address (`202.165.198.250`) already established from the GU-sourced entry as this corridor&#x27;s routine last-hop pattern before the literal target goes silent.</div>
+        </div><div class="detour-card">
+            <div class="headline">PF -&gt; PW
+                (AS17893): detours via AS6939 (Hurricane Electric) -- global transit, not a named exchange crossing
+                (Sydney)</div>
+            <div>RIS observation count: 106
+                &middot; measurement 211674609</div>
+            <div class="note">ONATI (AS9471, French Polynesia) -&gt; Palau NCC (AS17893) -- a fresh PF&lt;-&gt;PW pair. All 3 probes: `AS9471 -&gt; AS6939 -&gt; [gap] -&gt; AS17893` -- the literal target never resolved (ordinary ICMP filtering near the destination), so RIS is checked against the last reached ASN. RIS agrees with an *exact* match (106). **The first direct traceroute confirmation of this specific adjacency**: AS6939 already appeared in AS17893&#x27;s own neighbor list (`{174: 1333, 140627: 139, 6939: 106, ...}`) as quoted context in the existing `CandidatePeering` entries for AS17893, but had never itself been the traceroute-confirmed upstream until now -- a real, if minor, relationship (106 of ~1,483 total observations), not noise. No IXP crossing (`ixp_crossings` empty for all three); checked Hurricane Electric&#x27;s real PeeringDB facility list -- genuine Sydney presence, consistent with the Sydney hub already used for Hurricane Electric elsewhere in this project.</div>
         </div>
 
     <h2>Confirmed local transit (RIS + Atlas both agree, stays in-fishbowl)</h2>

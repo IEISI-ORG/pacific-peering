@@ -1347,3 +1347,10 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   exactly (1,283). All 3 probes reach the same real near-destination
   address already established from the GU entry. Backlog:
   902 -> 868.
+- feat(analysis): confirm PF(AS9471)->PW(AS17893) via Hurricane
+  Electric -- the first direct traceroute confirmation of
+  AS6939<->AS17893. AS6939 had only ever appeared as quoted context
+  in AS17893's neighbor list inside the existing CandidatePeering
+  entries, never itself confirmed. RIS agrees exactly (106), a real
+  if minor relationship. No IXP crossing; verified Hurricane
+  Electric's real Sydney presence. Backlog: 868 -> 860.

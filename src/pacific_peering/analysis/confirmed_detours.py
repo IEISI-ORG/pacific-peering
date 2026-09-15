@@ -1314,4 +1314,34 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
             "silent."
         ),
     ),
+    ConfirmedDetour(
+        source_cc="PF",
+        target_cc="PW",
+        target_asn=17893,
+        detour_ix_name="AS6939 (Hurricane Electric) -- global transit, not a named "
+        "exchange crossing",
+        detour_hub="Sydney",
+        measurement_id=211674609,
+        ris_observation_count=106,
+        note=(
+            "ONATI (AS9471, French Polynesia) -> Palau NCC (AS17893) -- "
+            "a fresh PF<->PW pair. All 3 probes: `AS9471 -> AS6939 -> "
+            "[gap] -> AS17893` -- the literal target never resolved "
+            "(ordinary ICMP filtering near the destination), so RIS is "
+            "checked against the last reached ASN. RIS agrees with an "
+            "*exact* match (106). **The first direct traceroute "
+            "confirmation of this specific adjacency**: AS6939 already "
+            "appeared in AS17893's own neighbor list "
+            "(`{174: 1333, 140627: 139, 6939: 106, ...}`) as quoted "
+            "context in the existing `CandidatePeering` entries for "
+            "AS17893, but had never itself been the traceroute-confirmed "
+            "upstream until now -- a real, if minor, relationship "
+            "(106 of ~1,483 total observations), not noise. No IXP "
+            "crossing (`ixp_crossings` empty for all three); checked "
+            "Hurricane Electric's real PeeringDB facility list -- "
+            "genuine Sydney presence, consistent with the Sydney hub "
+            "already used for Hurricane Electric elsewhere in this "
+            "project."
+        ),
+    ),
 )
