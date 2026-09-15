@@ -53,7 +53,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
 <body>
 <div class="wrap">
     <h1>Pacific Peering — Regional Routing Report</h1>
-    <div class="meta">Generated 2026-09-15T12:16:29.945938+00:00</div>
+    <div class="meta">Generated 2026-09-15T12:25:35.772736+00:00</div>
 
     <div class="headline-banner">
         <span class="value">68%</span>
@@ -472,6 +472,13 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <div>RIS observation count: 997
                 &middot; measurement 211741326</div>
             <details class="note"><summary>Cook Islands (AS10131) -&gt; Marshall Islands NTA ISP (AS24439) -- a fresh CK&lt;-&gt;MH pair, a fifth independent confirmation of the AS6453(Tata)&lt;-&gt;AS24439 adjacency…</summary>Cook Islands (AS10131) -&gt; Marshall Islands NTA ISP (AS24439) -- a fresh CK&lt;-&gt;MH pair, a fifth independent confirmation of the AS6453(Tata)&lt;-&gt;AS24439 adjacency (after GU via IIJ, MP via Cogent, VU via Singtel, and PF via this identical GTT/Tata chain). Only 1 of 3 requested probes returned; checked `participant_count` directly (1, not 3) -- the same genuine single-probe pattern as every other AS10131-sourced measurement this session. Result: `AS10131 -&gt; AS9471 (ONATI) -&gt; AS3257 (GTT) -&gt; AS6453`, target never resolved, RIS-agreeing with the identical *exact* match (997). **Geolocated with the new `hop_geolocation` module from the start this time, rather than inheriting a hub label**: the resolved Tata hops (`64.86.197.98`, `180.87.9.2`, `180.87.60.178`) are the exact same addresses as the PF-sourced entry&#x27;s now-corrected path -- Los Angeles, then Piti, Guam (Tata&#x27;s confirmed facility in `regional_carrier_facilities.py`). Kept `detour_hub` as Los Angeles, matching the corrected PF entry, not the old Tokyo mislabeling.</details>
+        </div><div class="detour-card">
+            <div class="headline">CK -&gt; TO
+                (AS38198): detours via Equinix Sydney (AS132528, Digicel Australia/Telstra-operated backbone)
+                (Sydney)</div>
+            <div>RIS observation count: 1321
+                &middot; measurement 211743576</div>
+            <details class="note"><summary>Cook Islands (AS10131) -&gt; Digicel Tonga (AS38198) -- a fresh CK&lt;-&gt;TO pair, a fifth independent confirmation of the AS45355(Digicel Fiji)&lt;-&gt;AS38198 adjacency…</summary>Cook Islands (AS10131) -&gt; Digicel Tonga (AS38198) -- a fresh CK&lt;-&gt;TO pair, a fifth independent confirmation of the AS45355(Digicel Fiji)&lt;-&gt;AS38198 adjacency (after GU, MP, VU, and PF). Only 1 of 3 requested probes returned; checked `participant_count` directly (1, not 3) -- the same genuine single-probe pattern as every other AS10131-sourced measurement this session. Result: `AS10131 -&gt; AS9471 (ONATI) -&gt; AS6939 (Hurricane Electric) -&gt; AS132528 -&gt; AS45355 -&gt; AS38198`, RIS-agreeing with the identical *exact* match (1,321). **A seventh occurrence of AS132528** (Digicel Australia/Telstra backbone) at Equinix Sydney this session, confirmed directly via a real hop-level LAN-prefix match (`ixp_crossings`), not a carrier-facility guess -- unaffected by the Tokyo-hub issue fixed earlier this tranche cycle.</details>
         </div>
 
     <h2>Confirmed local transit (RIS + Atlas both agree, stays in-fishbowl)</h2>

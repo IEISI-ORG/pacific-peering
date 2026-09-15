@@ -1512,3 +1512,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   agrees exactly (997). Geolocated correctly from the start using
   hop_geolocation.py (Los Angeles, then Piti/Guam) rather than
   inheriting a hub label. Backlog: 721 -> 719.
+- feat(analysis): confirm CK(AS10131)->TO(AS38198) via Digicel Fiji
+  -- fifth confirmation of AS45355<->AS38198 (after GU, MP, VU, PF).
+  RIS agrees exactly (1,321). Seventh occurrence of AS132528 at
+  Equinix Sydney this session. Backlog: 719 -> 715.

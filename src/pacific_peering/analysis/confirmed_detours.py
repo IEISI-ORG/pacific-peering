@@ -1797,4 +1797,30 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
             "Tokyo mislabeling."
         ),
     ),
+    ConfirmedDetour(
+        source_cc="CK",
+        target_cc="TO",
+        target_asn=38198,
+        detour_ix_name="Equinix Sydney (AS132528, Digicel Australia/Telstra-operated "
+        "backbone)",
+        detour_hub="Sydney",
+        measurement_id=211743576,
+        ris_observation_count=1321,
+        note=(
+            "Cook Islands (AS10131) -> Digicel Tonga (AS38198) -- a "
+            "fresh CK<->TO pair, a fifth independent confirmation of the "
+            "AS45355(Digicel Fiji)<->AS38198 adjacency (after GU, MP, VU, "
+            "and PF). Only 1 of 3 requested probes returned; checked "
+            "`participant_count` directly (1, not 3) -- the same genuine "
+            "single-probe pattern as every other AS10131-sourced "
+            "measurement this session. Result: `AS10131 -> AS9471 (ONATI) "
+            "-> AS6939 (Hurricane Electric) -> AS132528 -> AS45355 -> "
+            "AS38198`, RIS-agreeing with the identical *exact* match "
+            "(1,321). **A seventh occurrence of AS132528** (Digicel "
+            "Australia/Telstra backbone) at Equinix Sydney this session, "
+            "confirmed directly via a real hop-level LAN-prefix match "
+            "(`ixp_crossings`), not a carrier-facility guess -- unaffected "
+            "by the Tokyo-hub issue fixed earlier this tranche cycle."
+        ),
+    ),
 )

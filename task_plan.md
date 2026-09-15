@@ -1796,3 +1796,11 @@ Added as a new entry. Called `mark_corridor_tested(10131, 24390)`. Verified: mod
 Fifth confirmation of the AS6453(Tata)<->AS24439 adjacency (after GU, MP, VU, PF): `AS10131 -> AS9471 (ONATI) -> AS3257 (GTT) -> AS6453`, RIS-agreeing with the identical exact match (997). **Geolocated with the new `hop_geolocation` module from the start this time**, rather than inheriting any hub label: the resolved Tata hops are the exact same addresses as the just-corrected PF entry -- Los Angeles, then Piti, Guam. Kept `detour_hub` as Los Angeles, matching the corrected PF entry.
 
 Added as a new entry. Called `mark_corridor_tested(10131, 24439)`. Verified: module imports cleanly (58 entries, up from 57); regenerated ASCII/HTML reports (render correctly) and the geographic map. Regenerated the corridor backlog: candidate count dropped 721 -> 719.
+
+---
+
+**Next corridor pulled: AS10131 (Cook Islands) -> AS38198 (Digicel Tonga).** Only 1 of 3 probes returned; checked `participant_count` (1, not 3) -- the same genuine single-probe pattern as every other AS10131-sourced measurement this session. `has_routing_loop` correctly returned `False`.
+
+Fifth confirmation of the AS45355(Digicel Fiji)<->AS38198 adjacency (after GU, MP, VU, PF): `AS10131 -> AS9471 (ONATI) -> AS6939 (Hurricane Electric) -> AS132528 -> AS45355 -> AS38198`, RIS-agreeing with the identical exact match (1,321). A seventh occurrence of AS132528 at Equinix Sydney this session -- confirmed via a real hop-level LAN-prefix match, unaffected by the Tokyo-hub issue fixed earlier.
+
+Added as a new entry. Called `mark_corridor_tested(10131, 38198)`. Verified: module imports cleanly (59 entries, up from 58); regenerated ASCII/HTML reports (render correctly) and the geographic map. Regenerated the corridor backlog: candidate count dropped 719 -> 715.
