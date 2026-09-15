@@ -1448,3 +1448,11 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   FINTEL routing loop (202.170.33.17/.11, both AS9241 itself),
   after the original MP discovery and PF reproduction. Not filed.
   Backlog: 801 -> 800.
+- docs(analysis): confirmed a project-owner-flagged lead -- the
+  earlier MP(AS7131)->FJ(AS4638) detour genuinely transits OneQode's
+  real Guam infrastructure (PTR: gu-gnc-rt1-----Vlan756.hk-mgi-rt1.
+  oneqode.net, matching OneQode's PeeringDB-listed RTI Guam GNC
+  facility exactly) before continuing to Hong Kong. Addendum to the
+  existing entry; classification unchanged (OneQode isn't a
+  Guam-registered ASN regardless of equipment location, and RIS
+  still disagrees on AS4637).
