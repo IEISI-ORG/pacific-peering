@@ -1570,3 +1570,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   contiguous to the literal target this time, transiting through
   AS3605 (Guam Cablevision) first. Same established sibling-ASN
   basis. Backlog: 687 -> 685.
+- docs(analysis): GU(AS17456)->KI(AS132486) inconclusive -- identical
+  total dead-end for both the target address and a diagnostic direct
+  AS154100 test, ruling out a single bad address. Same probe traced
+  20 hops to Niue moments earlier, so the silence is genuinely
+  direction-specific toward Kiribati/Starlink, not probe-wide. Not
+  filed. Backlog: 685 -> 684.
