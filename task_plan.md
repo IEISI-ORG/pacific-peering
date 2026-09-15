@@ -1876,3 +1876,11 @@ Extended the existing entry's note. Not a new dataclass entry -- `CONFIRMED_LOCA
 Second independent confirmation of the AS140504<->AS12684 (SES Astra) relationship: `AS10131 -> AS9471 (ONATI) -> AS6939 (Hurricane Electric) -> AS36149 (Hawaiian Telcom) -> AS12684`, **fully contiguous this time** (the PF entry had a real gap before AS12684) -- the cleanest confirmation yet. RIS agrees with the identical exact match (616).
 
 Added as a new entry. Called `mark_corridor_tested(10131, 140504)`. Verified: module imports cleanly (63 entries, up from 62); regenerated ASCII/HTML reports (render correctly) and the geographic map. Regenerated the corridor backlog: candidate count dropped 693 -> 690.
+
+---
+
+**Next corridor pulled: AS10131 (Cook Islands) -> AS154100 (BNL Tarawa, targeted directly).** Only 1 of 3 probes returned; checked `participant_count` (1, not 3). `has_routing_loop` correctly returned `False` -- no repeat of the Starlink loop anomaly this time.
+
+Sixth independent confirmation of the direct AS154100<->AS14593 relationship (after GU, CNMI, Vanuatu, PF, and this session's own downstream-chain measurement): `AS10131 -> AS9471 (ONATI) -> AS6939 (Hurricane Electric) -> AS14593`, target never resolved, identical exact RIS match (361).
+
+Extended the existing entry's note. Not a new dataclass entry -- `CONFIRMED_LOCAL_TRANSIT` count unchanged (13). Called `mark_corridor_tested(10131, 154100)`. Regenerated ASCII/HTML reports since the note text changed (render correctly); map unaffected. Regenerated the corridor backlog: candidate count dropped 690 -> 689. **AS10131's corridors are now fully exhausted** -- the backlog has moved to AS17828 (PNG DataCo).

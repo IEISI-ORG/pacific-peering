@@ -242,6 +242,18 @@ CONFIRMED_LOCAL_TRANSIT: tuple[ConfirmedLocalTransit, ...] = (
             "rather than only logged. A fifth distinct source (French "
             "Polynesia, after Guam, CNMI, Vanuatu, and reproduced within "
             "this same tranche's downstream-chain measurement) for this "
+            "specific direct relationship. "
+            "**Sixth independent confirmation** (measurement 211767908, "
+            "CK/AS10131 -> KI/AS154100 directly): only 1 of 3 requested "
+            "probes returned; checked `participant_count` directly (1, "
+            "not 3) -- the same genuine single-probe pattern as every "
+            "other AS10131-sourced measurement this session. Resolves "
+            "cleanly to AS14593 (Starlink) as the literal last-reached "
+            "ASN, identical RIS match (361), via `AS10131 -> AS9471 "
+            "(ONATI) -> AS6939 (Hurricane Electric) -> AS14593`. No "
+            "routing-loop anomaly this time (`has_routing_loop` "
+            "correctly `False`). A sixth distinct source (Cook Islands, "
+            "after Guam, CNMI, Vanuatu, and French Polynesia) for this "
             "specific direct relationship."
         ),
     ),

@@ -1555,3 +1555,8 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   second confirmation of the AS140504<->AS12684 satellite
   relationship, fully contiguous this time (the PF entry had a
   gap). RIS agrees exactly (616). Backlog: 693 -> 690.
+- docs(analysis): CK(AS10131)->KI(AS154100) sixth confirmation of
+  the direct AS154100<->AS14593 relationship (after GU, MP, VU, PF).
+  RIS agrees exactly (361), no loop anomaly this time. Backlog:
+  690 -> 689. AS10131's corridors now fully exhausted; source moves
+  to AS17828 (PNG DataCo).
