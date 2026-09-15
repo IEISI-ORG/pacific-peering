@@ -1663,3 +1663,11 @@ Added as a new `ConfirmedDetour` entry. Called `mark_corridor_tested(9471, 14050
 All 2 clean probes: `AS9471 -> AS6939 (Hurricane Electric) -> AS14593`, target never resolved, RIS-agreeing with the identical exact match (361) -- fifth independent confirmation of the direct AS154100<->AS14593 relationship (after GU, MP, VU, and this same tranche's own AS132486 downstream-chain measurement). One probe crosses EdgeIX Auckland.
 
 Extended the existing entry's note. Not a new dataclass entry -- `CONFIRMED_LOCAL_TRANSIT` count unchanged (13). Called `mark_corridor_tested(9471, 154100)`. Regenerated ASCII/HTML reports since the note text changed (render correctly); map unaffected. Regenerated the corridor backlog: candidate count dropped 803 -> 802.
+
+---
+
+**Source diversified: AS9471's cheap remaining targets are exhausted; the backlog now pulls from AS10131 (Cook Islands), as anticipated several tranches ago.** Next corridor pulled: AS10131 (Cook Islands) -> AS4638 (Telecom Fiji). Only 1 of 3 probes returned; checked `participant_count` directly (1, not 3) -- a genuine single-probe assignment this time, not the usual slow-reporting "Scheduled" pattern, so proceeded with the one result rather than polling longer for probes that were never queued. `has_routing_loop` correctly returned `False`.
+
+**The fourth time this session hitting the exact same known `202.137.178.x` gap zone** (after loop tranche 5, the PTI Pacifica/AS7131 attempt, and the PF/AS9471 attempt): hops 15-16 land on the identical addresses (`202.137.178.160`, `.55`) already flagged as a recognized unresolved zone near AS4638's boundary. This time routed via a fourth distinct carrier chain: `AS10131 -> AS9471 (ONATI) -> AS3257 (GTT) -> AS7474 (SingTel Optus)`, target technically reached at hop 20 but with real unresolved hops in between (`contiguous: False`). `ris_agrees: False` -- checked AS4638's neighbor list directly: still exactly one real entry, AS45349 (1,669), not AS7474.
+
+Not filed in any dataclass, consistent with the established pattern. Called `mark_corridor_tested(10131, 4638)`. No report/map regeneration needed (no dataclass changed). Regenerated the corridor backlog: candidate count dropped 802 -> 801.

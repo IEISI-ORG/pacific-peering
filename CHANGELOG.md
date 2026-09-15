@@ -1432,3 +1432,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   the project owner per the standing anomaly rule; did not affect
   this probe's own RIS agreement, which resolved before the loop.
   Backlog: 803 -> 802.
+- docs(analysis): CK(AS10131)->FJ(AS4638) inconclusive -- fourth
+  hit on the known 202.137.178.x gap zone this session, via a
+  fourth distinct carrier chain (SingTel Optus). RIS disagrees;
+  AS4638's only real neighbor remains AS45349. Not filed. Source
+  diversified to AS10131 (Cook Islands) as AS9471 ran out. Backlog:
+  802 -> 801.
