@@ -868,3 +868,10 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   routing behavior, not one source's quirk. Added as a corroboration
   note, not a new entry; marked tested; backlog regenerated
   (1151 -> 1150).
+- Sourced AS3605 toward AS134783 (ATHKL's other ASN, Kiribati) --
+  third instance of the identical Australia/Starlink chain, but this
+  time a genuinely new adjacency: AS154100 (BNL Tarawa) is AS134783's
+  own dominant RIS neighbor too (exact match, 1,392), a second
+  distinct Kiribati ASN confirmed reachable through it. Added as a
+  new ConfirmedLocalTransit entry; marked tested; backlog regenerated
+  (1150 -> 1149).

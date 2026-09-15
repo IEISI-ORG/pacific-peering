@@ -482,4 +482,33 @@ CONFIRMED_LOCAL_TRANSIT: tuple[ConfirmedLocalTransit, ...] = (
             "correction the project owner's directed re-test was aimed at."
         ),
     ),
+    ConfirmedLocalTransit(
+        provider_cc="KI",
+        provider_asn=154100,
+        provider_name="BNL Tarawa",
+        customer_cc="KI",
+        customer_asn=134783,
+        customer_name="Amalgamated Telecom Holdings Kiribati Ltd",
+        measurement_id=211506747,
+        vantage_point_cc="GU",
+        ris_observation_count=1392,
+        note=(
+            "Pulled from the corridor backlog: AS3605 (Guam Cablevision) -> "
+            "AS134783 (ATHKL's other ASN, sibling of AS4865) -- a fresh GU<->KI "
+            "pair, distinct from the AS132486 target tested last firing. "
+            "**A third instance of the identical Australia/Starlink satellite "
+            "chain**: AS3605 -> AS7578/AS137409 (GSL Networks, Australia) -> "
+            "AS14593 (SpaceX Starlink) -> AS154100 (BNL Tarawa) -> target never "
+            "resolved. This time, though, it's a **genuinely new confirmed "
+            "adjacency**, not a repeat corroboration of the AS132486 pair: "
+            "checked AS134783's own RIS neighbor list directly -- AS154100 is "
+            "its dominant relationship (1,392 of roughly 1,806 total "
+            "observations), an *exact* match to what this traceroute found. "
+            "BNL Tarawa is evidently a real, general-purpose intra-Kiribati "
+            "transit provider, not narrowly tied to one specific downstream "
+            "customer -- this is the *second* distinct Kiribati ASN now "
+            "confirmed reachable through it, both via the identical "
+            "Australia-then-Starlink satellite ingress path."
+        ),
+    ),
 )
