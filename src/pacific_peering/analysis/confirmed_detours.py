@@ -1849,4 +1849,41 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
             "AS10131-sourced corridor this tranche cycle."
         ),
     ),
+    ConfirmedDetour(
+        source_cc="CK",
+        target_cc="WF",
+        target_asn=45879,
+        detour_ix_name="AS5511 (Opentransit Orange S.A.) -- global transit, not a named "
+        "exchange crossing",
+        detour_hub="Tokyo",
+        measurement_id=211750685,
+        ris_observation_count=1665,
+        note=(
+            "Cook Islands (AS10131) -> Orange Wallis & Futuna (AS45879) "
+            "-- a fresh CK<->WF pair, a fifth independent confirmation of "
+            "the AS5511(Opentransit Orange)<->AS45879 adjacency (after "
+            "GU, MP, VU, PF). Only 1 of 3 requested probes returned; "
+            "checked `participant_count` directly (1, not 3) -- the same "
+            "genuine single-probe pattern as every other AS10131-sourced "
+            "measurement this session. Result: `AS10131 -> AS9471 (ONATI) "
+            "-> AS3257 (GTT) -> AS5511`, target never resolved, "
+            "RIS-agreeing with the identical *exact* match (1,665). "
+            "**Same identical Orange hop addresses as the PF entry** "
+            "(`193.251.249.81`, `81.52.166.62`, `81.52.188.158`) -- ran "
+            "`hop_geolocation.geolocate_hop` on all three anyway rather "
+            "than assuming the earlier `None` result still held; still "
+            "`None` for each, confirming no PTR evidence exists for this "
+            "carrier chain, not a one-off lookup gap. **Also checked the "
+            "MP-sourced sibling entry's own hops while here** (measurement "
+            "211577395, previously flagged as not yet audited): its two "
+            "distinct Orange-adjacent addresses (`216.66.41.150`, "
+            "`57.35.6.64`) also have no PTR records. Across every "
+            "non-GU-sourced measurement of this corridor, only the "
+            "GU entry has real evidence for its Tokyo claim (via a "
+            "genuine IIJ/Japan hop) -- kept `detour_hub` as Tokyo here "
+            "too, on the same honestly-downgraded basis as the PF entry: "
+            "the carrier's own real, verified presence, not this "
+            "specific traceroute's own confirmed geography."
+        ),
+    ),
 )

@@ -1523,3 +1523,8 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - feat(analysis): confirm CK(AS10131)->FM(AS45193) via Any2West --
   second confirmation of the direct AS139759<->AS45193 relationship
   (after PF). RIS agrees exactly (1,681). Backlog: 714 -> 708.
+- docs(analysis): CK(AS10131)->WF(AS45879) fifth confirmation of
+  AS5511<->AS45879 (after GU, MP, VU, PF). Same unresolvable Orange
+  hops as the PF entry; also audited the MP sibling's hops -- no PTR
+  evidence found either. Only the GU entry has real Tokyo evidence
+  (via IIJ). Backlog: 708 -> 707.
