@@ -1539,3 +1539,11 @@ Added as a new entry. Called `mark_corridor_tested(9471, 9751)`. Verified: modul
 **A genuinely different named exchange this time**: crosses Equinix Sydney directly, not BBIX Tokyo. Worth a direct callback to the original entry's own note: that measurement observed AS17480 crossing *neither* of its own registered regional presences (Equinix Sydney, CAN'L IX Noumea). This one *does* match its registered Sydney presence -- a nice confirmatory contrast showing the same target's real traffic uses genuinely different real infrastructure depending on the source.
 
 Added as a new entry. Called `mark_corridor_tested(9471, 17480)`. Verified: module imports cleanly (41 entries, up from 40); regenerated ASCII/HTML reports (render correctly) and the geographic map. Regenerated the corridor backlog: candidate count dropped 927 -> 902.
+
+---
+
+**Next corridor pulled: AS9471 (ONATI, French Polynesia) -> AS17828 (PNG DataCo).** Only 1 of 3 probes returned initially; checked `participant_count` (3, confirmed genuinely queued) and polled longer for the rest. `has_routing_loop` correctly returned `False` for all three.
+
+**Third independent confirmation of this project's very first-ever finding** (AS6939<->AS17828, after GU and MP): all 3 probes `AS9471 -> AS6939 -> [gap] -> AS17828`, RIS-agreeing with the identical exact match (1,283). All 3 reach the same real near-destination address (`202.165.198.250`) already established from the GU entry as this corridor's routine last-hop pattern.
+
+Added as a new entry. Called `mark_corridor_tested(9471, 17828)`. Verified: module imports cleanly (42 entries, up from 41); regenerated ASCII/HTML reports (render correctly) and the geographic map. Regenerated the corridor backlog: candidate count dropped 902 -> 868.

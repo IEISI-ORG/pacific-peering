@@ -1341,3 +1341,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   crossing matches AS17480's own registered Sydney facility
   presence, unlike the original measurement which used neither of
   its registered regional presences. Backlog: 927 -> 902.
+- feat(analysis): confirm PF(AS9471)->PG(AS17828) via Hurricane
+  Electric -- third independent confirmation of this project's very
+  first-ever finding (AS6939<->AS17828), after GU and MP. RIS agrees
+  exactly (1,283). All 3 probes reach the same real near-destination
+  address already established from the GU entry. Backlog:
+  902 -> 868.

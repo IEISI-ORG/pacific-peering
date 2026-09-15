@@ -1290,4 +1290,28 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
             "declared Sydney presence."
         ),
     ),
+    ConfirmedDetour(
+        source_cc="PF",
+        target_cc="PG",
+        target_asn=17828,
+        detour_ix_name="AS6939 (Hurricane Electric) -- global transit, not a named "
+        "exchange crossing",
+        detour_hub="Sydney",
+        measurement_id=211672420,
+        ris_observation_count=1283,
+        note=(
+            "ONATI (AS9471, French Polynesia) -> PNG DataCo (AS17828) -- "
+            "a fresh PF<->PG pair, a third independent confirmation of "
+            "this project's very first-ever confirmed finding "
+            "(AS6939<->AS17828), from a genuinely different source "
+            "economy (after GU and MP). All 3 probes: `AS9471 -> AS6939 "
+            "-> [gap] -> AS17828`, RIS-agreeing with the identical *exact* "
+            "match (1,283). No IXP crossing this time (`ixp_crossings` "
+            "empty for all three). All 3 probes reach the same real "
+            "near-destination address (`202.165.198.250`) already "
+            "established from the GU-sourced entry as this corridor's "
+            "routine last-hop pattern before the literal target goes "
+            "silent."
+        ),
+    ),
 )

@@ -1,6 +1,6 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-09-15T08:44:21.417602+00:00                  
+                 Generated: 2026-09-15T08:49:27.734819+00:00                  
 ==============================================================================
 
 SUMMARY
@@ -137,6 +137,9 @@ PF -> AS (AS9751): detours via AS174 (Cogent Communications) -- global transit, 
 PF -> NC (AS17480): detours via Equinix Sydney (Sydney)
     RIS observation count: 1665  [measurement 211671233]
     ONATI (AS9471, French Polynesia) -> a fresh New Caledonia ASN (AS17480) -- a fresh PF<->NC pair, a second independent confirmation of the AS18200(OPT NC)<->AS17480 adjacency (after the MP entry via Superloop/BBIX Tokyo). All 3 probes: `AS9471 -> AS6939 (Hurricane Electric) -> AS18200 -> AS17480`, RIS-agreeing with the identical *exact* match (1,665). **Genuinely different named exchange this time**: crosses **Equinix Sydney** directly (`ixp_crossings` confirms it for all 3 probes), not BBIX Tokyo -- and notably, this *does* match AS17480's own registered PeeringDB facility presence at Equinix SY1/SY2 Sydney, unlike the original MP-sourced measurement which crossed neither of AS17480's own registered regional presences at all. A nice confirmatory contrast: the same target's real traffic uses different real infrastructure depending on the source, and this time it happens to line up with its own declared Sydney presence.
+PF -> PG (AS17828): detours via AS6939 (Hurricane Electric) -- global transit, not a named exchange crossing (Sydney)
+    RIS observation count: 1283  [measurement 211672420]
+    ONATI (AS9471, French Polynesia) -> PNG DataCo (AS17828) -- a fresh PF<->PG pair, a third independent confirmation of this project's very first-ever confirmed finding (AS6939<->AS17828), from a genuinely different source economy (after GU and MP). All 3 probes: `AS9471 -> AS6939 -> [gap] -> AS17828`, RIS-agreeing with the identical *exact* match (1,283). No IXP crossing this time (`ixp_crossings` empty for all three). All 3 probes reach the same real near-destination address (`202.165.198.250`) already established from the GU-sourced entry as this corridor's routine last-hop pattern before the literal target goes silent.
 
 CONFIRMED LOCAL TRANSIT (RIS + Atlas both agree, stays in-fishbowl)
 ==============================================================================
