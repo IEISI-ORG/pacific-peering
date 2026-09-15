@@ -2044,3 +2044,7 @@ Added as a new entry. Called `mark_corridor_tested(17828, 45879)`. Verified: mod
 The loop sits after the point (hop 10, also AS139609) already used for this measurement's own RIS agreement, so it doesn't corrupt the triangulation: sixth independent confirmation of the AS139609(SISCC)<->AS45891 adjacency (after GU, MP, VU, PF, CK): `AS17828 -> AS4826 (Vocus Connect) -> AS1221 (Telstra domestic) -> AS4637 (Telstra Global) -> AS139609`, RIS-agreeing with the identical exact match (1,652).
 
 Added as a new entry. Called `mark_corridor_tested(17828, 45891)`. Verified: module imports cleanly (71 entries, up from 70); regenerated ASCII/HTML reports (render correctly) and the geographic map. Regenerated the corridor backlog: candidate count dropped 513 -> 504.
+
+---
+
+**[Standing 8-hourly backlog regeneration check, user-directed.]** Ran `pacific-peering-corridor-backlog` directly. Result: 504 candidates, **0 new-probe, 0 new-RIS-relationship** flags -- diffed `corridor_backlog.md` directly to confirm: the only change is the regeneration timestamp, nothing else in the file differs from the state already produced by the last tranche's own implicit regeneration. Nothing strange, nothing anomalous, nothing warranting owner consultation this cycle.
