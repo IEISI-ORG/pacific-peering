@@ -926,3 +926,29 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   only RFC1918 hops then total silence, same pattern already seen a
   few times this session. Not filed in any dataclass; marked tested
   regardless.
+- **Correction, prompted by the project owner's own direct field
+  testing**: the AS7131->AS9241 "ordinary dead-end" above was wrong.
+  Retried against a different AS9241 prefix's address (the original
+  `pick_target_ip` only ever surfaces the first cached prefix) and
+  found a real routing loop entirely inside AS6939 (Hurricane
+  Electric)'s backbone -- the same address repeating across
+  consecutive hops, RTT climbing past 300ms, never reaching AS9241 at
+  all. Confirmed via RIPEstat that all three repeating addresses
+  belong to AS6939.
+- feat(atlas): add `list_target_ips` (every cached prefix's address,
+  not just the first) and `has_routing_loop` (repeat-plus-never-
+  reached-target heuristic) to `atlas/targets.py`, exported from
+  `atlas/__init__.py`. Built directly off the correction above so
+  future dead-end corridors get retried against an alternate address
+  instead of being written off. First version of `has_routing_loop`
+  flagged any consecutive repeat and produced a live false positive
+  against a real successful traceroute (one benign repeated hop,
+  ECMP noise); refined to require the target never appearing in the
+  hops at all, re-verified against both real measurements.
+- feat(analysis): confirm MP(AS7131, CNMI)->VU(AS9249, Telecom
+  Vanuatu) via AS38442 (Vodafone Fiji) -- a fresh MP<->VU pair, and
+  the corridor actually queued next this tranche. RIS agrees exactly
+  (1,346) -- the project's very first confirmed finding, now
+  independently reinforced a seventh time, first time from CNMI as
+  source. Backlog: 1126 -> 1113 (both AS9241 and AS9249 marked
+  tested).

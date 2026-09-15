@@ -1,6 +1,6 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-09-15T01:36:09.083500+00:00                  
+                 Generated: 2026-09-15T02:09:24.787047+00:00                  
 ==============================================================================
 
 SUMMARY
@@ -68,6 +68,9 @@ GU -> CK (AS152093): detours via BBIX Tokyo (Tokyo)
 GU -> NR (AS152706): detours via AS6453 (Tata Communications), via AS2497 (IIJ, Japan) -- global transit, not a named exchange crossing (Tokyo)
     RIS observation count: 292  [measurement 211520771]
     Guam Cablevision (AS3605) -> Neotel (AS152706, Nauru). Both probes fully contiguous to the literal target: AS3605 -> AS2497 (IIJ, Japan) -> AS6453 (Tata Communications) -> AS152706. RIS agrees with an *exact* match (292) -- checked against AS152706's full neighbor list: AS6453 is its dominant relationship (292 of roughly 333 total observations). This is the **second** distinct instance of Tata Communications filling AS3605's Tokyo-transit role this session (after AS24439/Marshall Islands) -- along with the two earlier Cogent instances (Palau, Fiji/FINTEL, American Samoa, Samoa) and Telstra's domestic+international pair, Tata is clearly a second real, recurring carrier in this Guam network's actual international transit mix, not a one-off.
+MP -> VU (AS9249): detours via AS4637 (Telstra Global) -- global transit, not a named exchange crossing (Sydney)
+    RIS observation count: 1346  [measurement 211537368]
+    PTI Pacifica (AS7131, CNMI) -> Telecom Vanuatu (AS9249) -- a fresh MP<->VU pair, retried against a second target address after the first AS9249 IP had produced a routing loop for a *different* target (AS9241) on this same source ASN two tranches earlier -- worth firing cleanly here rather than assuming the same problem. It didn't recur: probe 60689 fully contiguous end-to-end -- AS7131 -> AS6939 (Hurricane Electric) -> AS4637 (Telstra Global) -> AS38442 (Vodafone Fiji) -> AS9249. Upstream of the target is AS38442, RIS-agreeing with an *exact* match (1,346) -- this project's very first confirmed finding, now independently reinforced a **seventh** time, and the first from CNMI as a source. Probe 62689 shows the same adjacency but with a gap right before the literal target (ordinary silence, the well-established pattern for this specific corridor).
 
 CONFIRMED LOCAL TRANSIT (RIS + Atlas both agree, stays in-fishbowl)
 ==============================================================================

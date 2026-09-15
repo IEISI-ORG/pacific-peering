@@ -610,4 +610,30 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
             "actual international transit mix, not a one-off."
         ),
     ),
+    ConfirmedDetour(
+        source_cc="MP",
+        target_cc="VU",
+        target_asn=9249,
+        detour_ix_name="AS4637 (Telstra Global) -- global transit, not a named exchange "
+        "crossing",
+        detour_hub="Sydney",
+        measurement_id=211537368,
+        ris_observation_count=1346,
+        note=(
+            "PTI Pacifica (AS7131, CNMI) -> Telecom Vanuatu (AS9249) -- a fresh "
+            "MP<->VU pair, retried against a second target address after the "
+            "first AS9249 IP had produced a routing loop for a *different* "
+            "target (AS9241) on this same source ASN two tranches earlier -- "
+            "worth firing cleanly here rather than assuming the same problem. "
+            "It didn't recur: probe 60689 fully contiguous end-to-end -- "
+            "AS7131 -> AS6939 (Hurricane Electric) -> AS4637 (Telstra Global) "
+            "-> AS38442 (Vodafone Fiji) -> AS9249. Upstream of the target is "
+            "AS38442, RIS-agreeing with an *exact* match (1,346) -- this "
+            "project's very first confirmed finding, now independently "
+            "reinforced a **seventh** time, and the first from CNMI as a "
+            "source. Probe 62689 shows the same adjacency but with a gap "
+            "right before the literal target (ordinary silence, the "
+            "well-established pattern for this specific corridor)."
+        ),
+    ),
 )
