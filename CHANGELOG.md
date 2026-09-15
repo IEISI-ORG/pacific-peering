@@ -1249,3 +1249,10 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   traffic, distinct from the original entry's direct-customer shape.
   Extended the existing `ConfirmedLocalTransit` entry's note rather
   than duplicating; entry count unchanged (12). Backlog: 949 -> 948.
+- Sourced AS9249 toward AS132486 (Kiribati) -- a fresh VU<->KI pair,
+  landing on the well-established Kiribati Starlink-chain, now a
+  fourth independent reproduction. Identical exact RIS match (362),
+  via a genuinely new intermediate carrier (Mercury NZ Limited) and
+  the first named-exchange crossing (MegaIX Sydney) this specific
+  chain has shown -- every prior instance used GSL Networks with no
+  IXP crossing. Backlog: 948 -> 947.

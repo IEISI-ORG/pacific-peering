@@ -174,7 +174,20 @@ CONFIRMED_LOCAL_TRANSIT: tuple[ConfirmedLocalTransit, ...] = (
             "as the literal last-reached ASN**, identical RIS match (361) "
             "to the original direct confirmation. A third distinct source "
             "(CNMI, after Guam) confirming BNL Tarawa's own Starlink "
-            "upstream directly, not just the chain through it."
+            "upstream directly, not just the chain through it. "
+            "**A fourth independent reproduction of the full downstream "
+            "chain, via a genuinely new intermediate carrier** (measurement "
+            "211644932, VU/AS9249 -> KI/AS132486, a fresh VU<->KI pair): both "
+            "probes: AS9249 -> AS38442 (Vodafone Fiji) -> **AS55850 (Mercury "
+            "NZ Limited)** -> AS14593 (Starlink) -> AS154100 -> target never "
+            "resolved, identical RIS match (362). Neither Mercury NZ nor a "
+            "named exchange had appeared for this adjacency before -- crosses "
+            "**MegaIX Sydney** directly (`ixp_crossings` confirms it for both "
+            "probes), the first time this specific Kiribati chain has shown a "
+            "real named-exchange crossing rather than plain global transit "
+            "(GSL Networks, in every prior instance, showed no IXP crossing "
+            "at all). A fourth geographically distinct source (Vanuatu, after "
+            "FSM, Guam, and CNMI)."
         ),
     ),
     ConfirmedLocalTransit(
