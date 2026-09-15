@@ -1555,3 +1555,9 @@ Added as a new entry. Called `mark_corridor_tested(9471, 17828)`. Verified: modu
 **The first direct traceroute confirmation of this specific adjacency**: AS6939 already appeared in AS17893's own neighbor list as quoted context inside the existing `CandidatePeering` entries (`{174: 1333, 140627: 139, 6939: 106, ...}`), but had never itself been the traceroute-confirmed upstream until now -- a real, minor relationship, not noise. No IXP crossing; checked Hurricane Electric's real PeeringDB facility list before picking Sydney -- genuine presence, consistent with the Sydney hub already used for this carrier elsewhere.
 
 Added as a new `ConfirmedDetour` entry. Called `mark_corridor_tested(9471, 17893)`. Verified: module imports cleanly (43 entries, up from 42); regenerated ASCII/HTML reports (render correctly) and the geographic map. Regenerated the corridor backlog: candidate count dropped 868 -> 860.
+
+---
+
+**Next corridor pulled: AS9471 (ONATI, French Polynesia) -> AS17993 (Vodafone Samoa).** Only 2 of 3 probes returned initially; checked `participant_count` (3, confirmed genuinely queued) and polled longer for the third. `has_routing_loop` correctly returned `False` for all three. Second independent confirmation of the AS6939(Hurricane Electric)<->AS17993 adjacency (after MP): `AS9471 -> AS6939 -> AS17993`, RIS-agreeing with the identical exact match (150). Crosses Equinix Sydney directly, confirmed for all 3 probes this time (the original only had partial confirmation).
+
+Added as a new entry. Called `mark_corridor_tested(9471, 17993)`. Verified: module imports cleanly (44 entries, up from 43); regenerated ASCII/HTML reports (render correctly) and the geographic map. Regenerated the corridor backlog: candidate count dropped 860 -> 854.

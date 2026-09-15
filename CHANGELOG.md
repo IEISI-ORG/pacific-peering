@@ -1354,3 +1354,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   entries, never itself confirmed. RIS agrees exactly (106), a real
   if minor relationship. No IXP crossing; verified Hurricane
   Electric's real Sydney presence. Backlog: 868 -> 860.
+- feat(analysis): confirm PF(AS9471)->WS(AS17993) via Equinix Sydney
+  -- second independent confirmation of AS6939<->AS17993 (after MP).
+  RIS agrees exactly (150), crossing Equinix Sydney directly,
+  confirmed for all 3 probes this time. Backlog: 860 -> 854.

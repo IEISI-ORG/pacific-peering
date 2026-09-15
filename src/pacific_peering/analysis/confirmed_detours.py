@@ -1344,4 +1344,24 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
             "project."
         ),
     ),
+    ConfirmedDetour(
+        source_cc="PF",
+        target_cc="WS",
+        target_asn=17993,
+        detour_ix_name="Equinix Sydney",
+        detour_hub="Sydney",
+        measurement_id=211677101,
+        ris_observation_count=150,
+        note=(
+            "ONATI (AS9471, French Polynesia) -> Vodafone Samoa Limited "
+            "(AS17993) -- a fresh PF<->WS pair, a second independent "
+            "confirmation of the AS6939(Hurricane Electric)<->AS17993 "
+            "adjacency (after the MP entry). All 3 probes: `AS9471 -> "
+            "AS6939 -> AS17993`, RIS-agreeing with the identical *exact* "
+            "match (150). Crosses **Equinix Sydney** directly "
+            "(`ixp_crossings` confirms it for all three probes) -- the "
+            "same exchange as the original entry, now confirmed for the "
+            "full probe set."
+        ),
+    ),
 )
