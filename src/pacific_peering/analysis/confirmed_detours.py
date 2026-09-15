@@ -1172,4 +1172,29 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
             "Sydney and NSW-IX)."
         ),
     ),
+    ConfirmedDetour(
+        source_cc="VU",
+        target_cc="PF",
+        target_asn=55943,
+        detour_ix_name="AS4637 (Telstra Global), then AS3257 (GTT Communications) -- "
+        "global transit, not a named exchange crossing",
+        detour_hub="Tokyo",
+        measurement_id=211640827,
+        ris_observation_count=1657,
+        note=(
+            "Telecom Vanuatu (AS9249) -> ONATI's other ASN (AS55943, "
+            "French Polynesia) -- a fresh VU<->PF pair, a third "
+            "independent confirmation of the AS3257(GTT)<->AS55943 "
+            "adjacency (after the GU entry and the MP entry via Cogent). "
+            "Both probes: AS9249 -> AS38442 (Vodafone Fiji) -> AS4637 "
+            "(Telstra Global) -> AS3257 -- the literal target never "
+            "resolved (ordinary ICMP filtering near the destination), so "
+            "RIS is checked against the last reached ASN. RIS agrees with "
+            "the identical *exact* match (1,657). No IXP crossing this "
+            "time (`ixp_crossings` empty for both probes) -- kept "
+            "`detour_hub` as Tokyo, already verified against GTT's real "
+            "PeeringDB facility list in the MP-sourced entry (genuine "
+            "Tokyo and Sydney presence)."
+        ),
+    ),
 )

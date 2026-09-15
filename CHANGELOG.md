@@ -1237,3 +1237,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   prior source, corrected after checking the entry's actual history
   directly. New upstream carrier for this adjacency: NTT
   Communications. Backlog: 964 -> 962.
+- feat(analysis): confirm VU(AS9249)->PF(AS55943) via GTT/Telstra --
+  third independent confirmation of AS3257<->AS55943 (after GU and
+  MP via Cogent). RIS agrees exactly (1,657). No IXP crossing;
+  reused the already-verified Tokyo hub. Backlog: 962 -> 949.
