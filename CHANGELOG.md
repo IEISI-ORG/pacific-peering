@@ -1407,3 +1407,6 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   AS45891's only RIS-observed neighbor. Backlog: 818 -> 809 (source
   ASN's remaining cheap targets exhausted; AS10131/Cook Islands now
   leads the backlog).
+- docs(analysis): PF(AS9471)->NR(AS55722) third corroboration of
+  AS7131's transit-waypoint role for Nauru (after MP, VU). RIS
+  agrees exactly (1,528). Backlog: 809 -> 808.

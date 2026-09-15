@@ -647,7 +647,17 @@ CONFIRMED_LOCAL_TRANSIT: tuple[ConfirmedLocalTransit, ...] = (
             "AS7131 itself sourcing this time -- AS7131 appears as a "
             "genuine transit waypoint for a third economy's traffic, "
             "the same regional-hub shape already established for ONATI, "
-            "FINTEL, and Digicel Samoa."
+            "FINTEL, and Digicel Samoa. "
+            "**Third independent corroboration** (measurement 211696549, "
+            "PF/AS9471 -> NR/AS55722, pulled from the corridor backlog "
+            "as a fresh PF<->NR pair): all 3 probes: AS9471 -> AS6939 "
+            "(Hurricane Electric) -> **AS7131** -> target never resolved "
+            "(the same short-path silence pattern as every prior "
+            "instance). RIS agrees with the identical *exact* match "
+            "(1,528). A third distinct source economy (ONATI/French "
+            "Polynesia, after MP and VU) now confirming AS7131's real "
+            "transit-waypoint role for Nauru's international "
+            "connectivity."
         ),
     ),
     ConfirmedLocalTransit(
