@@ -1487,3 +1487,8 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - feat(analysis): confirm CK(AS10131)->WS(AS17993) via Equinix
   Sydney -- third confirmation of AS6939<->AS17993 (after MP, PF).
   RIS agrees exactly (150). Backlog: 743 -> 737.
+- docs(analysis): CK(AS10131)->TV(AS23917) sixth corroboration of
+  AS9241(FINTEL)<->AS23917 (after TV, GU, MP, VU, PF). RIS agrees
+  exactly (1,009), crosses Equinix Los Angeles. Checked raw hops
+  directly against FINTEL's known loop zone (202.170.33.x) given
+  its history this session -- genuinely clean. Backlog: 737 -> 735.

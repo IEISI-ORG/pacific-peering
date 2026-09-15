@@ -1745,3 +1745,13 @@ Added as a new entry. Called `mark_corridor_tested(10131, 17893)`. Verified: mod
 Third independent confirmation of the AS6939(Hurricane Electric)<->AS17993 adjacency (after MP and PF): `AS10131 -> AS9471 (ONATI) -> AS6939 -> AS17993`, fully contiguous, RIS-agreeing with the identical exact match (150). Crosses Equinix Sydney directly -- the same exchange as both prior entries, and the same ONATI-transit shape now seen on every AS10131-sourced corridor this tranche cycle.
 
 Added as a new entry. Called `mark_corridor_tested(10131, 17993)`. Verified: module imports cleanly (56 entries, up from 55); regenerated ASCII/HTML reports (render correctly) and the geographic map. Regenerated the corridor backlog: candidate count dropped 743 -> 737.
+
+---
+
+**Next corridor pulled: AS10131 (Cook Islands) -> AS23917 (Tuvalu Telecommunications Corporation).** Only 1 of 3 probes returned; checked `participant_count` (1, not 3) -- the same genuine single-probe pattern as every other AS10131-sourced measurement this session.
+
+**Given AS9241/FINTEL's own live routing-loop anomaly (reproduced three times elsewhere this session), checked the raw hops directly rather than trusting the clean `has_routing_loop` flag at face value**: no repeated addresses anywhere in the path, and none of the hop addresses fall in the known `202.170.33.x` loop zone -- a genuinely clean traceroute, not a near-miss.
+
+Sixth independent corroboration of the AS9241(FINTEL)<->AS23917(Tuvalu) adjacency (after Tuvalu's own vantage, Guam, CNMI, Vanuatu, French Polynesia): `AS10131 -> AS9471 (ONATI) -> AS6939 (Hurricane Electric) -> AS4648 (Spark NZ) -> AS9241 -> AS23917`, RIS-agreeing with the identical exact match (1,009). Crosses Equinix Los Angeles -- the same exchange as the MP entry, not the VU/PF entries' MegaIX Sydney or no-crossing paths.
+
+Extended the existing entry's note. Not a new dataclass entry -- `CONFIRMED_LOCAL_TRANSIT` count unchanged (13). Called `mark_corridor_tested(10131, 23917)`. Regenerated ASCII/HTML reports since the note text changed (render correctly); map unaffected. Regenerated the corridor backlog: candidate count dropped 737 -> 735.
