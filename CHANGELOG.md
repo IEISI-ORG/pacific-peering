@@ -975,3 +975,13 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   AS9751's own registered DRF IX Honolulu PeeringDB presence, not a
   directly-observed crossing in this traceroute -- noted explicitly
   in the entry). Backlog: 1111 -> 1109.
+- Sourced AS7131 toward AS10131 (Cook Islands) -- a fresh MP<->CK
+  pair, reached directly on the first address. Landed on an
+  already-confirmed adjacency (AS9471/ONATI -> AS10131), now a third
+  independently-corroborated source economy for it (after ONATI's
+  own vantage point and Guam). RIS "disagrees" on the literal AS9471
+  number for the same reason as every prior instance: the real
+  confirmation is via ONATI's sibling ASN, AS55943 (658, exact
+  match). Extended the existing `ConfirmedLocalTransit` entry's note
+  rather than duplicating; entry count unchanged (11). Backlog:
+  1109 -> 1107.

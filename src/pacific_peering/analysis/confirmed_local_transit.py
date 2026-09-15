@@ -421,7 +421,16 @@ CONFIRMED_LOCAL_TRANSIT: tuple[ConfirmedLocalTransit, ...] = (
             "small but genuine data point for regional-hub structure within "
             "the fishbowl itself. Not a new entry -- the confirmed adjacency "
             "is identical to the one already on record here -- but real, "
-            "independent reinforcement from a second, unrelated source path."
+            "independent reinforcement from a second, unrelated source path. "
+            "**A third, independent reinforcement** (measurement 211546477, "
+            "MP/AS7131 -> CK/AS10131, pulled from the corridor backlog as a "
+            "fresh MP<->CK economy pair): both probes land on the identical "
+            "adjacency again -- AS7131 -> AS174 (Cogent) -> AS3257 (GTT) -> "
+            "**AS9471** -> AS10131 -- a third distinct source economy (after "
+            "ONATI's own vantage point and Guam) confirming the same last-leg "
+            "transit through French Polynesia's network. Not a new entry; "
+            "same sibling-ASN basis (RIS confirms via AS55943, 658 "
+            "observations, exact match)."
         ),
     ),
     ConfirmedLocalTransit(
