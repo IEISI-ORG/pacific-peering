@@ -1942,3 +1942,11 @@ Not filed in any dataclass, consistent with the established pattern. Called `mar
 **Checked the raw hops directly**: identical alternating pattern between `202.170.33.11` and `202.170.33.17`, both already confirmed as AS9241 itself. A fourth independent vantage point (PNG, after MP's original discovery, PF's reproduction, and CK's reproduction) reproducing this same live anomaly inside FINTEL's own network edge.
 
 Not filed in any dataclass, matching the established precedent. Called `mark_corridor_tested(17828, 9241)`. No report/map regeneration needed. Regenerated the corridor backlog: candidate count dropped 681 -> 680.
+
+---
+
+**Next corridor pulled: AS17828 (PNG DataCo) -> AS9751 (American Samoa).** The first firing genuinely sourced from PNG DataCo to reach a target. `has_routing_loop` correctly returned `False`.
+
+Third independent confirmation of the Wave-Broadband(AS11404)<->AS9751 adjacency (after MP and VU): `AS17828 -> AS4826 (Vocus Connect) -> AS11404`, RIS-agreeing with the identical exact match (267). Crosses Equinix San Jose directly -- the same exchange as the VU entry.
+
+Added as a new entry. Called `mark_corridor_tested(17828, 9751)`. Verified: module imports cleanly (64 entries, up from 63); regenerated ASCII/HTML reports (render correctly) and the geographic map. Regenerated the corridor backlog: candidate count dropped 680 -> 678.

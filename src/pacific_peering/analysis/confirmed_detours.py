@@ -1938,4 +1938,24 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
             "registered facilities)."
         ),
     ),
+    ConfirmedDetour(
+        source_cc="PG",
+        target_cc="AS",
+        target_asn=9751,
+        detour_ix_name="Equinix San Jose",
+        detour_hub="San Jose",
+        measurement_id=211800054,
+        ris_observation_count=267,
+        note=(
+            "PNG DataCo (AS17828) -> American Samoa (AS9751) -- the "
+            "first firing genuinely sourced from PNG DataCo to reach a "
+            "target. Third independent confirmation of the "
+            "Wave-Broadband(AS11404)<->AS9751 adjacency (after MP and "
+            "VU): `AS17828 -> AS4826 (Vocus Connect) -> AS11404`, RIS-"
+            "agreeing with the identical *exact* match (267). Crosses "
+            "**Equinix San Jose** directly (`ixp_crossings` confirms "
+            "it) -- the same exchange as the VU entry, a second "
+            "confirmation of this specific crossing."
+        ),
+    ),
 )

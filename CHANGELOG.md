@@ -1594,3 +1594,6 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - docs(analysis): PG(AS17828)->FJ(AS9241) fourth reproduction of the
   FINTEL routing loop (202.170.33.11/.17, both AS9241 itself), after
   MP, PF, CK. Not filed. Backlog: 681 -> 680.
+- feat(analysis): confirm PG(AS17828)->AS(AS9751) via Equinix San
+  Jose -- third confirmation of AS11404(Wave Broadband)<->AS9751
+  (after MP, VU). RIS agrees exactly (267). Backlog: 680 -> 678.

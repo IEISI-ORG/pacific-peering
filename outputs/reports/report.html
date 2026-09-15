@@ -53,7 +53,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
 <body>
 <div class="wrap">
     <h1>Pacific Peering — Regional Routing Report</h1>
-    <div class="meta">Generated 2026-09-15T14:05:56.146547+00:00</div>
+    <div class="meta">Generated 2026-09-15T15:06:20.759838+00:00</div>
 
     <div class="headline-banner">
         <span class="value">68%</span>
@@ -507,6 +507,13 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <div>RIS observation count: 616
                 &middot; measurement 211765425</div>
             <details class="note"><summary>Cook Islands (AS10131) -&gt; a distinct Nauru ASN (AS140504) -- a fresh CK&lt;-&gt;NR pair, a second independent confirmation of the AS140504&lt;-&gt;AS12684 (SES Astra)…</summary>Cook Islands (AS10131) -&gt; a distinct Nauru ASN (AS140504) -- a fresh CK&lt;-&gt;NR pair, a second independent confirmation of the AS140504&lt;-&gt;AS12684 (SES Astra) relationship (after PF). Fired directly at the address already confirmed to reach SES Astra in the PF retry, rather than starting from a fresh address and possibly needing the retry policy again. Result: `AS10131 -&gt; AS9471 (ONATI) -&gt; AS6939 (Hurricane Electric) -&gt; AS36149 (Hawaiian Telcom) -&gt; AS12684`, **fully contiguous this time** (the PF entry had a real gap before AS12684) -- the cleanest confirmation yet of this relationship. RIS agrees with the identical exact match (616). Kept `detour_hub` as Los Angeles, matching the PF entry&#x27;s verified attribution (from AS36149&#x27;s own real PeeringDB facility list, since AS12684 itself has zero registered facilities).</details>
+        </div><div class="detour-card">
+            <div class="headline">PG -&gt; AS
+                (AS9751): detours via Equinix San Jose
+                (San Jose)</div>
+            <div>RIS observation count: 267
+                &middot; measurement 211800054</div>
+            <details class="note"><summary>PNG DataCo (AS17828) -&gt; American Samoa (AS9751) -- the first firing genuinely sourced from PNG DataCo to reach a target…</summary>PNG DataCo (AS17828) -&gt; American Samoa (AS9751) -- the first firing genuinely sourced from PNG DataCo to reach a target. Third independent confirmation of the Wave-Broadband(AS11404)&lt;-&gt;AS9751 adjacency (after MP and VU): `AS17828 -&gt; AS4826 (Vocus Connect) -&gt; AS11404`, RIS-agreeing with the identical *exact* match (267). Crosses **Equinix San Jose** directly (`ixp_crossings` confirms it) -- the same exchange as the VU entry, a second confirmation of this specific crossing.</details>
         </div>
 
     <h2>Confirmed local transit (RIS + Atlas both agree, stays in-fishbowl)</h2>

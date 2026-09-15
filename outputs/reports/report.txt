@@ -1,6 +1,6 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-09-15T14:05:56.007158+00:00                  
+                 Generated: 2026-09-15T15:06:20.610888+00:00                  
 ==============================================================================
 
 SUMMARY
@@ -205,6 +205,9 @@ CK -> SB (AS45891): detours via IX Australia Sydney (NSW-IX) (Sydney)
 CK -> NR (AS140504): detours via AS12684 (SES ASTRA S.A.) -- satellite operator, global transit, not a named exchange crossing (Los Angeles)
     RIS observation count: 616  [measurement 211765425]
     Cook Islands (AS10131) -> a distinct Nauru ASN (AS140504) -- a fresh CK<->NR pair, a second independent confirmation of the AS140504<->AS12684 (SES Astra) relationship (after PF). Fired directly at the address already confirmed to reach SES Astra in the PF retry, rather than starting from a fresh address and possibly needing the retry policy again. Result: `AS10131 -> AS9471 (ONATI) -> AS6939 (Hurricane Electric) -> AS36149 (Hawaiian Telcom) -> AS12684`, **fully contiguous this time** (the PF entry had a real gap before AS12684) -- the cleanest confirmation yet of this relationship. RIS agrees with the identical exact match (616). Kept `detour_hub` as Los Angeles, matching the PF entry's verified attribution (from AS36149's own real PeeringDB facility list, since AS12684 itself has zero registered facilities).
+PG -> AS (AS9751): detours via Equinix San Jose (San Jose)
+    RIS observation count: 267  [measurement 211800054]
+    PNG DataCo (AS17828) -> American Samoa (AS9751) -- the first firing genuinely sourced from PNG DataCo to reach a target. Third independent confirmation of the Wave-Broadband(AS11404)<->AS9751 adjacency (after MP and VU): `AS17828 -> AS4826 (Vocus Connect) -> AS11404`, RIS-agreeing with the identical *exact* match (267). Crosses **Equinix San Jose** directly (`ixp_crossings` confirms it) -- the same exchange as the VU entry, a second confirmation of this specific crossing.
 
 CONFIRMED LOCAL TRANSIT (RIS + Atlas both agree, stays in-fishbowl)
 ==============================================================================
