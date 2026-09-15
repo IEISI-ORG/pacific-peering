@@ -1588,3 +1588,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   on the known 202.137.178.x gap zone this session, via a fresh
   carrier chain (Vocus Connect/Telstra). RIS disagrees; AS4638's
   only real neighbor remains AS45349. Not filed. Backlog: 682 -> 681.
+- chore: standing corridor backlog regeneration check, user-directed
+  -- 681 candidates, 0 new-probe, 0 new-RIS-relationship flags,
+  byte-identical to the prior state besides the timestamp.
+- docs(analysis): PG(AS17828)->FJ(AS9241) fourth reproduction of the
+  FINTEL routing loop (202.170.33.11/.17, both AS9241 itself), after
+  MP, PF, CK. Not filed. Backlog: 681 -> 680.

@@ -1934,3 +1934,11 @@ Not filed in any dataclass, consistent with the established pattern. Called `mar
 ---
 
 **[Standing 8-hourly backlog regeneration check, user-directed.]** Ran `pacific-peering-corridor-backlog` directly. Result: 681 candidates, **0 new-probe, 0 new-RIS-relationship** flags -- diffed `corridor_backlog.md` directly to confirm: the only change is the regeneration timestamp, candidate count and the full pending list are byte-identical to the state already produced by the last tranche's own implicit regeneration. Nothing strange, nothing anomalous, nothing warranting owner consultation this cycle -- a genuinely uneventful check, logged per the standing "keep track of new probes and RIS changes" order.
+
+---
+
+**Next corridor pulled: AS17828 (PNG DataCo) -> AS9241 (FINTEL, Fiji).** Avoided the known-loop-prone `202.170.32.x` address, starting from `113.20.64.1` instead. `has_routing_loop` correctly returned `True`.
+
+**Checked the raw hops directly**: identical alternating pattern between `202.170.33.11` and `202.170.33.17`, both already confirmed as AS9241 itself. A fourth independent vantage point (PNG, after MP's original discovery, PF's reproduction, and CK's reproduction) reproducing this same live anomaly inside FINTEL's own network edge.
+
+Not filed in any dataclass, matching the established precedent. Called `mark_corridor_tested(17828, 9241)`. No report/map regeneration needed. Regenerated the corridor backlog: candidate count dropped 681 -> 680.
