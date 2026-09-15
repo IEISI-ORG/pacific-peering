@@ -1884,3 +1884,11 @@ Added as a new entry. Called `mark_corridor_tested(10131, 140504)`. Verified: mo
 Sixth independent confirmation of the direct AS154100<->AS14593 relationship (after GU, CNMI, Vanuatu, PF, and this session's own downstream-chain measurement): `AS10131 -> AS9471 (ONATI) -> AS6939 (Hurricane Electric) -> AS14593`, target never resolved, identical exact RIS match (361).
 
 Extended the existing entry's note. Not a new dataclass entry -- `CONFIRMED_LOCAL_TRANSIT` count unchanged (13). Called `mark_corridor_tested(10131, 154100)`. Regenerated ASCII/HTML reports since the note text changed (render correctly); map unaffected. Regenerated the corridor backlog: candidate count dropped 690 -> 689. **AS10131's corridors are now fully exhausted** -- the backlog has moved to AS17828 (PNG DataCo).
+
+---
+
+**Next corridor pulled: AS17456 (Pacific Data Systems, Guam) -> AS23917 (Tuvalu)** -- the first firing sourced from this new Guam ASN. Checked its holder identity directly before sourcing from it: "PDSGUAM-USTRANSPORT-AS-GU-AP - Pacific Data Systems." Result: complete dead-end -- only 1 of 3 requested probes connected; the single traceroute resolved just its own private gateway (`10.175.20.1`) then total silence from hop 2 onward. `has_routing_loop` correctly returned `False` (no repeated address at all, just silence).
+
+**Applied the retry policy against a different cached prefix** rather than accepting the dead-end at face value. Identical result: same private gateway, then total silence, same shape exactly. Two different destination addresses, byte-for-byte identical dead-end pattern -- reads as this specific probe's own network filtering outbound traceroute traffic entirely, not a hidden loop at the target's end (a real loop would show *some* resolvable intermediate hop before or during the cycle; this shows none at all, on either attempt).
+
+Not filed in any dataclass, consistent with the established treatment of genuine dead-ends. Called `mark_corridor_tested(17456, 23917)` for both addresses. No report/map regeneration needed (no dataclass changed). Regenerated the corridor backlog: candidate count dropped 689 -> 687.

@@ -1560,3 +1560,8 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   RIS agrees exactly (361), no loop anomaly this time. Backlog:
   690 -> 689. AS10131's corridors now fully exhausted; source moves
   to AS17828 (PNG DataCo).
+- docs(analysis): GU(AS17456/Pacific Data Systems)->TV(AS23917)
+  inconclusive -- complete dead-end on both the original and retried
+  addresses, identical shape (own gateway then total silence). Reads
+  as probe-side filtering, not a hidden loop. Not filed. Backlog:
+  689 -> 687.
