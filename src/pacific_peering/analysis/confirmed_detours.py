@@ -1364,4 +1364,27 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
             "full probe set."
         ),
     ),
+    ConfirmedDetour(
+        source_cc="PF",
+        target_cc="FJ",
+        target_asn=24390,
+        detour_ix_name="Any2West",
+        detour_hub="Los Angeles",
+        measurement_id=211682462,
+        ris_observation_count=337,
+        note=(
+            "ONATI (AS9471, French Polynesia) -> University of the South "
+            "Pacific's own network (AS24390) -- a fresh PF<->FJ pair, a "
+            "second independent confirmation of the AS7575(AARNet)<->"
+            "AS24390 adjacency (after the MP entry via OneQode). This "
+            "time via Hurricane Electric (AS6939) directly, and crossing "
+            "a **real named exchange**: **Any2West** (`ixp_crossings` "
+            "confirms it for all 3 probes) -- Any2West is based in Los "
+            "Angeles/Silicon Valley, genuinely distinct from the "
+            "existing San Jose hub (~550km away), so added a fifth "
+            "external hub (`\"Los Angeles\": (34.0522, -118.2437)`) "
+            "rather than conflating the two. RIS agrees with the "
+            "identical *exact* match (337)."
+        ),
+    ),
 )

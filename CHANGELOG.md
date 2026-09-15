@@ -1365,3 +1365,12 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   crossing this time. Extended the existing `ConfirmedLocalTransit`
   entry's note rather than duplicating; entry count unchanged (13).
   Backlog: 854 -> 852.
+- feat(analysis): confirm PF(AS9471)->FJ(AS24390) via Any2West --
+  second independent confirmation of AS7575<->AS24390 (after MP via
+  OneQode), this time via Hurricane Electric and a real named
+  exchange crossing (Any2West). RIS agrees exactly (337). Caught and
+  fixed a hub-attribution error before committing: first draft
+  guessed "Honolulu" from memory; corrected after re-verifying
+  Any2West's actual location (LA/Silicon Valley), too far from the
+  existing San Jose hub to reuse -- added a genuine fifth hub
+  ("Los Angeles") instead of either error. Backlog: 852 -> 835.

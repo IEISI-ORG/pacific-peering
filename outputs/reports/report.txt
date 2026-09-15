@@ -1,6 +1,6 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-09-15T09:09:48.645981+00:00                  
+                 Generated: 2026-09-15T09:14:40.422315+00:00                  
 ==============================================================================
 
 SUMMARY
@@ -146,6 +146,9 @@ PF -> PW (AS17893): detours via AS6939 (Hurricane Electric) -- global transit, n
 PF -> WS (AS17993): detours via Equinix Sydney (Sydney)
     RIS observation count: 150  [measurement 211677101]
     ONATI (AS9471, French Polynesia) -> Vodafone Samoa Limited (AS17993) -- a fresh PF<->WS pair, a second independent confirmation of the AS6939(Hurricane Electric)<->AS17993 adjacency (after the MP entry). All 3 probes: `AS9471 -> AS6939 -> AS17993`, RIS-agreeing with the identical *exact* match (150). Crosses **Equinix Sydney** directly (`ixp_crossings` confirms it for all three probes) -- the same exchange as the original entry, now confirmed for the full probe set.
+PF -> FJ (AS24390): detours via Any2West (Los Angeles)
+    RIS observation count: 337  [measurement 211682462]
+    ONATI (AS9471, French Polynesia) -> University of the South Pacific's own network (AS24390) -- a fresh PF<->FJ pair, a second independent confirmation of the AS7575(AARNet)<->AS24390 adjacency (after the MP entry via OneQode). This time via Hurricane Electric (AS6939) directly, and crossing a **real named exchange**: **Any2West** (`ixp_crossings` confirms it for all 3 probes) -- Any2West is based in Los Angeles/Silicon Valley, genuinely distinct from the existing San Jose hub (~550km away), so added a fifth external hub (`"Los Angeles": (34.0522, -118.2437)`) rather than conflating the two. RIS agrees with the identical *exact* match (337).
 
 CONFIRMED LOCAL TRANSIT (RIS + Atlas both agree, stays in-fishbowl)
 ==============================================================================

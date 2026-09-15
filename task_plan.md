@@ -1567,3 +1567,11 @@ Added as a new entry. Called `mark_corridor_tested(9471, 17993)`. Verified: modu
 **Next corridor pulled: AS9471 (ONATI, French Polynesia) -> AS23917 (Tuvalu).** Only 2 of 3 probes returned initially; confirmed `participant_count` (3) and polled longer. `has_routing_loop` correctly returned `False` for all three. Fifth independent corroboration of the well-established FINTEL<->Tuvalu adjacency (after Tuvalu's own vantage point, Guam, CNMI, and Vanuatu): RIS-agreeing with the identical exact match (1,009), via the same AS4648 (Spark NZ) carrier as the VU-sourced instance, but no IXP crossing this time -- a plainer path even via the same intermediate carrier.
 
 Extended the existing entry's note rather than duplicating. Not a new dataclass entry -- `CONFIRMED_LOCAL_TRANSIT` count unchanged (13). Called `mark_corridor_tested(9471, 23917)`. Regenerated ASCII/HTML reports since the note text changed (render correctly); map unaffected. Regenerated the corridor backlog: candidate count dropped 854 -> 852.
+
+---
+
+**Next corridor pulled: AS9471 (ONATI, French Polynesia) -> AS24390 (USP, Fiji).** `has_routing_loop` correctly returned `False`. Second independent confirmation of the AS7575(AARNet)<->AS24390 adjacency (after the MP entry via OneQode): `AS9471 -> AS6939 (Hurricane Electric) -> AS7575`, RIS-agreeing with the identical exact match (337) -- this time via Hurricane Electric directly.
+
+**Crosses a real named exchange this time**: Any2West, confirmed directly for all 3 probes. **Caught and fixed a real error in the first draft before committing**: initially assigned `detour_hub="Honolulu"` from memory without checking -- caught it by re-verifying Any2West's actual location (Los Angeles/Silicon Valley, already established elsewhere in this project's own `candidate_peering.py`), which is neither Honolulu nor close enough to the existing San Jose hub (~550km away) to reuse without misrepresenting the map. Added a genuine fifth external hub (`"Los Angeles": (34.0522, -118.2437)`) rather than either error.
+
+Added as a new entry. Called `mark_corridor_tested(9471, 24390)`. Verified: module imports cleanly (45 entries, up from 44); regenerated ASCII/HTML reports (render correctly, confirms "Los Angeles" hub label) and the geographic map. Regenerated the corridor backlog: candidate count dropped 852 -> 835.
