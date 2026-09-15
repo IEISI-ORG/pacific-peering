@@ -1061,3 +1061,12 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   unrelated measurement finding the same real infrastructure. One
   probe false-positived `has_routing_loop` on a near-destination
   repeat, same known pattern. Backlog: 1033 -> 1029.
+- feat(analysis): add MP(AS7131)->FM(AS38875) as a new
+  `CandidatePeering` entry -- an unusually fast (9-21ms), genuinely
+  regional path crossing Guam IX directly, the first *in-fishbowl*
+  IXP crossing this project has recorded. RIS confirms the internal
+  FSM sibling relationship crossed there (AS10130<->AS38875/AS139759,
+  both siblings list AS10130 as their only neighbor) but not the
+  actual AS7131->AS10130 leg itself -- same shape as the existing
+  GU->FM MARIIX candidate entry, at a different exchange. Kept as
+  candidate per Validation Rule 1. Backlog: 1029 -> 1023.

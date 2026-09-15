@@ -223,4 +223,45 @@ CANDIDATE_PEERING: tuple[CandidatePeering, ...] = (
             "compelling the corroborating IXP membership evidence is."
         ),
     ),
+    CandidatePeering(
+        upstream_cc="MP",
+        upstream_asn=7131,
+        upstream_name="PTI Pacifica Inc.",
+        target_cc="FM",
+        target_asn=38875,
+        target_name="FSM Telecommunications Corporation",
+        measurement_id=211572946,
+        vantage_point_cc="MP",
+        probe_agreement="2/2 probes",
+        note=(
+            "A fresh MP<->FM pair, pulled from the corridor backlog. "
+            "Unusually fast for this source (9-21ms RTT, a genuinely "
+            "regional path, not a Tokyo/Sydney detour). Both probes cross "
+            "**Guam IX** directly -- `ixp_crossings` confirms it, and "
+            "unlike every other IXP crossing this project has recorded, "
+            "this one is **in-fishbowl** (`in_fishbowl: true`): the member "
+            "ASN is AS10130, itself one of FSM Telecommunications "
+            "Corporation's own sibling ASNs (alongside AS38875 and "
+            "AS139759, all sharing the same real operator, established "
+            "earlier this session). The literal target (AS38875) never "
+            "resolved; the traceroute lands on sibling AS139759 instead -- "
+            "the same substitution already seen for this operator's other "
+            "corridors. Applying the sibling-identity correction and "
+            "checking both siblings' own RIS neighbor lists directly: "
+            "AS38875's only neighbor is AS10130 (1,014 observations) and "
+            "AS139759's only neighbor is also AS10130 (1,009) -- so RIS "
+            "*does* confirm the internal FSM sibling relationship crossed "
+            "here. But that's not the same as confirming *this* adjacency: "
+            "AS10130 itself has zero RIS-observed neighbors on record, and "
+            "AS7131's own neighbor list doesn't include AS10130 either -- "
+            "so the actual traceroute-observed leg (AS7131 -> AS10130) "
+            "remains unconfirmed by RIS from either side, exactly the same "
+            "shape as the earlier GU(AS3605)->FM(AS38875) MARIIX entry "
+            "above, just at a different in-fishbowl exchange. Kept as a "
+            "candidate, not promoted, per Validation Rule 1 -- a real "
+            "in-fishbowl crossing and a real sibling-confirmed downstream "
+            "relationship still don't add up to RIS confirming the "
+            "specific source-to-target leg itself."
+        ),
+    ),
 )
