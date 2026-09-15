@@ -914,3 +914,10 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   tested; backlog regenerated (1127 -> 1126). Notable: the next live
   pick is now sourced from AS7131, not AS3605 -- the backlog is
   diversifying sources as its cheap AS3605 targets run out.
+- First firing sourced from a diversified ASN: AS7131 (PTI Pacifica,
+  CNMI) toward AS4638 (Telecom Fiji) -- a fresh MP<->FJ pair. Real
+  path (via Telstra Global) but RIS disagrees; the gap turned out to
+  be the exact same 202.137.178.x unresolved zone already flagged
+  back in loop tranche 5, not a new anomaly. AS4637 is an external
+  carrier, not a Pacific network, so doesn't fit CandidatePeering
+  either. Not filed in any dataclass; marked tested regardless.
