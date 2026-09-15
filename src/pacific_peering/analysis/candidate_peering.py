@@ -300,4 +300,45 @@ CANDIDATE_PEERING: tuple[CandidatePeering, ...] = (
             "principle."
         ),
     ),
+    CandidatePeering(
+        upstream_cc="GU",
+        upstream_asn=9246,
+        upstream_name="Teleguam Holdings, LLC (GTA)",
+        target_cc="FM",
+        target_asn=38875,
+        target_name="FSM Telecommunications Corporation",
+        measurement_id=211688231,
+        vantage_point_cc="PF",
+        probe_agreement="3/3 probes",
+        note=(
+            "A third independent source economy for this project's recurring "
+            "FSM sibling-substitution corridor (after GU and MP), this time "
+            "sourced from AS9471 (ONATI, French Polynesia). All 3 probes show "
+            "the identical clean shape: AS9471 -> AS6939 (Hurricane Electric) "
+            "-> AS9246 (Teleguam Holdings/GTA) -> AS139759, contiguous "
+            "throughout. The literal target (AS38875) never itself resolved "
+            "-- the same substitution already established twice: AS38875's "
+            "only RIS-observed neighbor is AS10130, and AS139759's only "
+            "RIS-observed neighbor is also AS10130, so both are confirmed "
+            "sibling ASNs of the same real operator. `ris_agrees: false` on "
+            "the corrected adjacency regardless: neither sibling lists AS9246 "
+            "as a neighbor, matching the GU- and MP-sourced instances. "
+            "**Genuinely different infrastructure this time**: `ixp_crossings` "
+            "confirms AS9246 crosses at **Any2West** (all 3 probes), not "
+            "MARIIX (the GU entry) or Guam IX (the MP entry) -- checked "
+            "directly via PeeringDB's netixlan API before trusting the "
+            "resolution: AS9246 genuinely holds a real Any2West membership "
+            "(alongside SIX Seattle, MARIIX, and BBIX Tokyo), so this is a "
+            "real, physically-instantiated crossing, not an artifact. Unlike "
+            "the prior two entries, Any2West is **out-of-fishbowl** -- the "
+            "first time this specific FSM corridor has shown a crossing "
+            "outside the region's own exchanges rather than at MARIIX or "
+            "Guam IX. Kept as a candidate, not promoted, per the standing "
+            "principle: three independent source economies and a "
+            "PeeringDB-verified real exchange crossing still don't satisfy "
+            "Validation Rule 1 on their own -- RIS's own neighbor lists for "
+            "both siblings remain the deciding evidence, and they still "
+            "don't include AS9246."
+        ),
+    ),
 )

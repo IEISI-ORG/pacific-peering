@@ -1384,3 +1384,10 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   MP, VU). RIS agrees exactly (1,321). Sixth occurrence of AS132528
   (Digicel Australia/Telstra backbone) at Equinix Sydney this
   session. Backlog: 833 -> 829.
+- docs(analysis): PF(AS9471)->FM(AS38875) candidate peering -- third
+  source economy (after GU, MP) for the FSM sibling-substitution
+  corridor (AS38875/AS139759 share AS10130 as their only RIS
+  neighbor). RIS disagrees on AS9246 (Teleguam/GTA) as expected, but
+  this instance crosses Any2West (PeeringDB-verified), the first
+  out-of-fishbowl exchange seen for this corridor vs. MARIIX/Guam IX
+  previously. Backlog: 829 -> 828.

@@ -1589,3 +1589,13 @@ Added as a new entry. Called `mark_corridor_tested(9471, 24439)`. Verified: modu
 **Fourth independent confirmation of the AS45355(Digicel Fiji)<->AS38198 adjacency** (after GU, MP, VU): `AS9471 -> AS6939 (Hurricane Electric) -> AS132528 -> AS45355 -> AS38198`, RIS-agreeing with the identical exact match (1,321). **A sixth occurrence of AS132528** (Digicel Australia/Telstra backbone) at Equinix Sydney this session, confirmed directly for all 3 probes.
 
 Added as a new entry. Called `mark_corridor_tested(9471, 38198)`. Verified: module imports cleanly (47 entries, up from 46); regenerated ASCII/HTML reports (render correctly) and the geographic map. Regenerated the corridor backlog: candidate count dropped 833 -> 829.
+
+---
+
+**Next corridor pulled: AS9471 (ONATI, French Polynesia) -> AS38875 (FSM Telecommunications Corporation).** All 3 probes returned. First save attempt wrote the raw Atlas API response instead of the parsed shape `analyze_measurement` expects (a `KeyError: 'hops'`) -- caught immediately from the traceback, fixed by re-fetching via `fetch_raw_results` + `parse_traceroute_results` and saving the dataclass shape instead. `has_routing_loop` correctly returned `False` for all three once re-checked against the corrected file.
+
+**Lands on the same FSM sibling-substitution shape already established twice this session** (GU and MP sourced): the literal target (AS38875) never itself resolved; all 3 probes land on sibling AS139759 instead, via `AS9471 -> AS6939 (Hurricane Electric) -> AS9246 (Teleguam Holdings/GTA) -> AS139759`, contiguous throughout. `ris_agrees: False` on the corrected adjacency, matching both prior instances (neither sibling lists AS9246 as a neighbor).
+
+**Genuinely new infrastructure this time**: `ixp_crossings` confirms AS9246 crosses at **Any2West**, not MARIIX (GU entry) or Guam IX (MP entry) -- verified directly via PeeringDB's netixlan API before trusting it: AS9246 holds a real Any2West membership (alongside SIX Seattle, MARIIX, BBIX Tokyo). Unlike the prior two in-fishbowl crossings, Any2West is out-of-fishbowl -- the first time this FSM corridor has shown a crossing outside the region's own exchanges.
+
+Added as a new `CandidatePeering` entry (third source economy for this specific corridor shape). Called `mark_corridor_tested(9471, 38875)`. Verified: module imports cleanly (7 entries, up from 6); regenerated ASCII/HTML reports (render correctly); map unaffected (candidate_peering doesn't feed it). Regenerated the corridor backlog: candidate count dropped 829 -> 828.
