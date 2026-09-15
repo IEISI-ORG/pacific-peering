@@ -1672,3 +1672,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - docs(analysis): PG(AS17828)->KI(AS132486) seventh reproduction of
   the Kiribati Starlink chain. RIS agrees exactly (362). Backlog:
   500 -> 499. AS17828 genuinely exhausted now.
+- docs(analysis): PG(AS17828)->PW(AS133897) third corroboration of
+  AS3605<->AS133897 (after the original entry and VU). RIS agrees
+  exactly (662), first time crossing Equinix Singapore. Backlog:
+  499 -> 498.

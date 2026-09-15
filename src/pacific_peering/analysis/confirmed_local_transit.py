@@ -634,7 +634,17 @@ CONFIRMED_LOCAL_TRANSIT: tuple[ConfirmedLocalTransit, ...] = (
             "AS58932 corroboration. RIS agrees with the identical *exact* "
             "match (662). AS3605 confirmed once more as a genuine transit "
             "waypoint for third-economy traffic, not just its own direct "
-            "customer relationship."
+            "customer relationship. "
+            "**Third independent corroboration** (measurement 211989545, "
+            "PG/AS17828 -> PW/AS133897, a fresh PG<->PW pair): fully "
+            "contiguous, target reached directly -- `AS17828 -> AS4826 "
+            "(Vocus Connect) -> AS2497 (IIJ, Japan) -> AS3605 -> "
+            "AS133897`. RIS agrees with the identical *exact* match "
+            "(662). **Crosses Equinix Singapore directly** "
+            "(`ixp_crossings` confirms it) -- a genuinely new named "
+            "exchange for this adjacency, and IIJ is a new intermediate "
+            "carrier too (after NTT). AS3605 confirmed a third time as "
+            "a genuine transit waypoint for third-economy traffic."
         ),
     ),
     ConfirmedLocalTransit(
