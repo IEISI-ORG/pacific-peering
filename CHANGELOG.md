@@ -964,3 +964,14 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   sibling AS55943. Same shape as the NC->GU Superloop precedent --
   real signal, doesn't fit either dataclass. Not filed; marked
   tested. Backlog: 1113 -> 1111.
+- feat(analysis): confirm MP(AS7131, CNMI)->AS(AS9751, American
+  Samoa) via AS11404 (Wave Broadband) -- a fresh MP<->AS pair,
+  retried against a second address after the first dead-ended past a
+  private hop. RIS agrees exactly (267), matching AS9751's own
+  fishbowl neighbor list already on record from the existing
+  GU(AS3605)->AS9751 Cogent/Tokyo entry -- a genuinely different
+  carrier confirmed reaching the same target. Added "Honolulu" to
+  `economy_coordinates.EXTERNAL_HUB_LATLON` (new hub, sourced from
+  AS9751's own registered DRF IX Honolulu PeeringDB presence, not a
+  directly-observed crossing in this traceroute -- noted explicitly
+  in the entry). Backlog: 1111 -> 1109.

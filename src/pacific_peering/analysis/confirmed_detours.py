@@ -636,4 +636,40 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
             "well-established pattern for this specific corridor)."
         ),
     ),
+    ConfirmedDetour(
+        source_cc="MP",
+        target_cc="AS",
+        target_asn=9751,
+        detour_ix_name="AS11404 (Wave Broadband) -- global transit, not a named exchange "
+        "crossing",
+        detour_hub="Honolulu",
+        measurement_id=211542695,
+        ris_observation_count=267,
+        note=(
+            "PTI Pacifica (AS7131, CNMI) -> American Samoa (AS9751) -- a "
+            "fresh MP<->AS pair. First target address (`list_target_ips`' "
+            "default first prefix) dead-ended past a private hop; retried "
+            "against the next candidate address per the new retry policy and "
+            "both probes reached the target cleanly this time. Path: AS7131 "
+            "-> AS6939 (Hurricane Electric) -> AS11404 (Wave Broadband) -> "
+            "AS9751, contiguous on probe 60689 (probe 62689 shows the same "
+            "adjacency but with an unresolved gap before AS6939). Upstream "
+            "of the target is AS11404, RIS-agreeing with an *exact* match "
+            "(267) -- checked against AS9751's full neighbor list "
+            "(`{174: 1055, 3356: 333, 11404: 267}`, already on record from "
+            "the earlier AS3605->AS9751 Cogent/Tokyo entry above): AS11404 "
+            "is a real, minority-but-genuine relationship, not a fluke. A "
+            "**different** carrier reaching the same target than the "
+            "existing GU->AS entry (Cogent via Tokyo) -- American Samoa's "
+            "real transit mix includes at least two distinct Tier-1/backbone "
+            "providers. No IXP crossing observed in this traceroute "
+            "(`ixp_crossings` empty for both probes) -- `detour_hub` is "
+            "Honolulu on the strength of AS9751's own registered PeeringDB "
+            "presence at DRF IX, Honolulu (see its `fishbowl.json` entry), "
+            "the standard Pacific cable hub for American Samoa's "
+            "international connectivity, not a confirmed crossing point for "
+            "*this specific* traceroute -- flagged here explicitly rather "
+            "than implied as directly observed."
+        ),
+    ),
 )

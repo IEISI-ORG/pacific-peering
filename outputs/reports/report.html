@@ -47,7 +47,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
 <body>
 <div class="wrap">
     <h1>Pacific Peering — Regional Routing Report</h1>
-    <div class="meta">Generated 2026-09-15T02:09:24.935350+00:00</div>
+    <div class="meta">Generated 2026-09-15T02:24:12.699874+00:00</div>
 
     <div class="stat-row"><div class="stat-tile"><div class="value">20</div><div class="label">Economies in scope</div></div><div class="stat-tile"><div class="value">163</div><div class="label">ASNs in scope</div></div><div class="stat-tile"><div class="value">124</div><div class="label">ASNs w/ RIS neighbor</div></div><div class="stat-tile"><div class="value">38</div><div class="label">ASNs w/ IXP membership</div></div><div class="stat-tile"><div class="value">22</div><div class="label">ASNs w/ facility presence</div></div><div class="stat-tile"><div class="value">10/21</div><div class="label">IXPs in/out of fishbowl</div></div></div>
 
@@ -185,6 +185,13 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <div>RIS observation count: 1346
                 &middot; measurement 211537368</div>
             <div class="note">PTI Pacifica (AS7131, CNMI) -&gt; Telecom Vanuatu (AS9249) -- a fresh MP&lt;-&gt;VU pair, retried against a second target address after the first AS9249 IP had produced a routing loop for a *different* target (AS9241) on this same source ASN two tranches earlier -- worth firing cleanly here rather than assuming the same problem. It didn&#x27;t recur: probe 60689 fully contiguous end-to-end -- AS7131 -&gt; AS6939 (Hurricane Electric) -&gt; AS4637 (Telstra Global) -&gt; AS38442 (Vodafone Fiji) -&gt; AS9249. Upstream of the target is AS38442, RIS-agreeing with an *exact* match (1,346) -- this project&#x27;s very first confirmed finding, now independently reinforced a **seventh** time, and the first from CNMI as a source. Probe 62689 shows the same adjacency but with a gap right before the literal target (ordinary silence, the well-established pattern for this specific corridor).</div>
+        </div><div class="detour-card">
+            <div class="headline">MP -&gt; AS
+                (AS9751): detours via AS11404 (Wave Broadband) -- global transit, not a named exchange crossing
+                (Honolulu)</div>
+            <div>RIS observation count: 267
+                &middot; measurement 211542695</div>
+            <div class="note">PTI Pacifica (AS7131, CNMI) -&gt; American Samoa (AS9751) -- a fresh MP&lt;-&gt;AS pair. First target address (`list_target_ips`&#x27; default first prefix) dead-ended past a private hop; retried against the next candidate address per the new retry policy and both probes reached the target cleanly this time. Path: AS7131 -&gt; AS6939 (Hurricane Electric) -&gt; AS11404 (Wave Broadband) -&gt; AS9751, contiguous on probe 60689 (probe 62689 shows the same adjacency but with an unresolved gap before AS6939). Upstream of the target is AS11404, RIS-agreeing with an *exact* match (267) -- checked against AS9751&#x27;s full neighbor list (`{174: 1055, 3356: 333, 11404: 267}`, already on record from the earlier AS3605-&gt;AS9751 Cogent/Tokyo entry above): AS11404 is a real, minority-but-genuine relationship, not a fluke. A **different** carrier reaching the same target than the existing GU-&gt;AS entry (Cogent via Tokyo) -- American Samoa&#x27;s real transit mix includes at least two distinct Tier-1/backbone providers. No IXP crossing observed in this traceroute (`ixp_crossings` empty for both probes) -- `detour_hub` is Honolulu on the strength of AS9751&#x27;s own registered PeeringDB presence at DRF IX, Honolulu (see its `fishbowl.json` entry), the standard Pacific cable hub for American Samoa&#x27;s international connectivity, not a confirmed crossing point for *this specific* traceroute -- flagged here explicitly rather than implied as directly observed.</div>
         </div>
 
     <h2>Confirmed local transit (RIS + Atlas both agree, stays in-fishbowl)</h2>
