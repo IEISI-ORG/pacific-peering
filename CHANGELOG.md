@@ -1532,3 +1532,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   fifth confirmation of AS139609<->AS45891 (after GU, MP, VU, PF).
   RIS agrees exactly (1,652). Backlog: 707 -> 698 (AS17456/Guam now
   appearing as a new source ASN).
+- docs(analysis): CK(AS10131)->NR(AS55722) fourth corroboration of
+  AS7131's transit-waypoint role for Nauru (after MP, VU, PF). RIS
+  agrees exactly (1,528). Backlog: 698 -> 697. Source fully
+  diversified to AS17456 (Guam) as AS10131's targets are exhausted.
