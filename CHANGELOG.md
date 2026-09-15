@@ -1576,3 +1576,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   20 hops to Niue moments earlier, so the silence is genuinely
   direction-specific toward Kiribati/Starlink, not probe-wide. Not
   filed. Backlog: 685 -> 684.
+- docs(analysis): GU(AS17456)->KI(AS134783) inconclusive -- third
+  reproduction of the identical dead-end pattern toward Kiribati
+  from this probe, now well-established as direction-specific
+  rather than a one-off. Not filed. Backlog: 684 -> 683.

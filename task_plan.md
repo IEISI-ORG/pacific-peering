@@ -1908,3 +1908,11 @@ Extended the existing entry's note. Not a new dataclass entry -- `CONFIRMED_LOCA
 **Only one known address exists for AS132486, so the standard retry-a-different-prefix policy wasn't directly applicable** -- fired a diagnostic traceroute toward AS154100 (BNL Tarawa, Starlink's own direct address) instead, to check whether the entire Kiribati/Starlink direction is unreachable from this probe or just this one target address. **Identical total dead-end shape again.** Given this same probe successfully traced a full 20 hops to Niue just one tranche earlier, this rules out a general probe-wide filtering issue -- the silence is genuinely direction-specific toward Kiribati/Starlink from this particular Guam ISP, not an artifact of one address or a broken probe.
 
 Not filed in any dataclass -- no hop resolved to any ASN in either attempt, so there's no real signal to characterize, just informative silence. Called `mark_corridor_tested(17456, 132486)`. No report/map regeneration needed (no dataclass changed). Regenerated the corridor backlog: candidate count dropped 685 -> 684.
+
+---
+
+**Next corridor pulled: AS17456 (Pacific Data Systems, Guam) -> AS134783 (ATHKL, Kiribati).** Identical dead-end shape a third time: only the private gateway resolved, total silence from hop 2 onward. `has_routing_loop` correctly returned `False`.
+
+**This is now a robust, three-times-reproduced pattern** (AS132486, the AS154100 diagnostic, and now AS134783 -- all Kiribati-direction targets, all from this same probe), while the same probe cleanly traced 20 hops toward Niue. A genuine, reproducible direction-specific silence from AS17456 toward Kiribati, not a one-off artifact.
+
+Not filed in any dataclass. Called `mark_corridor_tested(17456, 134783)`. No report/map regeneration needed. Regenerated the corridor backlog: candidate count dropped 684 -> 683.
