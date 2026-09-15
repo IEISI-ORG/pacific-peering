@@ -1105,3 +1105,11 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   Sydney presence) before reusing it. One probe false-positived
   `has_routing_loop` on modest stable-RTT repeats. Backlog:
   1011 -> 1007.
+- Sourced AS7131 toward AS132486 (Kiribati) -- a fresh MP<->KI pair,
+  landing on the well-established Kiribati Starlink-chain pattern
+  (AS7578/GSL -> AS14593/Starlink -> AS154100/BNL Tarawa), now a
+  third independent reproduction after FSM and Guam. Identical exact
+  RIS match (362). Extended the existing `ConfirmedLocalTransit`
+  entry's note rather than duplicating; entry count unchanged (11).
+  One of three probes was a probe-specific dead end. Backlog:
+  1007 -> 1006.

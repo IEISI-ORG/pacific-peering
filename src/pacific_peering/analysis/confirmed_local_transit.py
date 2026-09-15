@@ -152,7 +152,19 @@ CONFIRMED_LOCAL_TRANSIT: tuple[ConfirmedLocalTransit, ...] = (
             "what's actually been confirmed. Recorded here instead, directly "
             "against the relationship it sharpens: BNL Tarawa's real, sole "
             "international upstream is a satellite constellation, confirmed "
-            "as cleanly as any adjacency in this project."
+            "as cleanly as any adjacency in this project. "
+            "**A third independent reproduction of the full downstream chain** "
+            "(measurement 211588374, MP/AS7131 -> KI/AS132486, pulled from the "
+            "corridor backlog as a fresh MP<->KI economy pair, first probe "
+            "AS7131 as source): both working probes (a third, 65653, was a "
+            "complete dead end from the first hop, a probe-specific issue) show "
+            "the identical striking path -- AS7131 -> AS7578/AS137409 (GSL "
+            "Networks, Australia) -> AS14593 (SpaceX Starlink) -> AS154100 "
+            "(BNL Tarawa) -> target never resolved, identical RIS match (362). "
+            "A third geographically distinct source (CNMI, after FSM and Guam) "
+            "reaching Kiribati via the same Australia-then-Starlink satellite "
+            "path -- further reinforcing this as Kiribati's real general-"
+            "purpose ingress pattern rather than a source-specific artifact."
         ),
     ),
     ConfirmedLocalTransit(

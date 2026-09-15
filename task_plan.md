@@ -1287,3 +1287,11 @@ Not a new dataclass entry -- `CONFIRMED_LOCAL_TRANSIT` count unchanged (11). Cal
 **Lands on the existing GU->PF adjacency** (AS3257/GTT<->AS55943), a second independent confirmation, RIS-agreeing with an *exact* match (1,657). Same upstream carrier (GTT) but via Cogent (AS174) rather than the original's path. **Checked whether "Tokyo" still held before reusing it** (same discipline as the Orange/WF case): fetched GTT's real PeeringDB facility list directly -- genuine presence at both Tokyo (multiple DCs) and Sydney -- so Tokyo remains well-sourced and consistent with the original entry.
 
 Added as a new `ConfirmedDetour` entry. Called `mark_corridor_tested(7131, 55943)`. Verified: module imports cleanly (29 entries, up from 28); regenerated ASCII/HTML reports (render correctly) and the geographic map. Regenerated the corridor backlog: candidate count dropped 1011 -> 1007.
+
+---
+
+**Next corridor pulled: AS7131 (PTI Pacifica, CNMI) -> AS132486 (Kiribati, Ocean Link Ltd).** One of three probes (65653) was a complete dead end from the first hop, unrelated to the corridor. `has_routing_loop` correctly returned `False` for both working probes.
+
+**Immediately recognized the well-established Kiribati Starlink-chain pattern** (documented in the AS154100/BNL-Tarawa<->AS132486 `ConfirmedLocalTransit` entry, already reproduced twice before -- FSM and Guam): both working probes show the identical striking path -- AS7131 -> AS7578/AS137409 (GSL Networks, Australia) -> AS14593 (SpaceX Starlink) -> AS154100 (BNL Tarawa) -> target never resolved. RIS agrees with the identical exact match (362) already on record.
+
+**A third independent reproduction, extending the existing entry's note rather than duplicating.** A third geographically distinct source (CNMI, after FSM and Guam) reaching Kiribati via the same Australia-then-Starlink satellite path -- further reinforcing this as Kiribati's real general-purpose ingress pattern. Not a new dataclass entry -- `CONFIRMED_LOCAL_TRANSIT` count unchanged (11). Called `mark_corridor_tested(7131, 132486)`. Regenerated ASCII/HTML reports since the note text changed (render correctly); map unaffected. Regenerated the corridor backlog: candidate count dropped 1007 -> 1006.
