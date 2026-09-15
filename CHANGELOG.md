@@ -1516,3 +1516,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   -- fifth confirmation of AS45355<->AS38198 (after GU, MP, VU, PF).
   RIS agrees exactly (1,321). Seventh occurrence of AS132528 at
   Equinix Sydney this session. Backlog: 719 -> 715.
+- docs(analysis): CK(AS10131)->FM(AS38875) fourth source economy
+  for the FSM sibling-substitution corridor (after GU, MP, PF). RIS
+  disagrees as expected; crosses Any2West again. Kept as candidate.
+  Backlog: 715 -> 714.

@@ -1804,3 +1804,11 @@ Added as a new entry. Called `mark_corridor_tested(10131, 24439)`. Verified: mod
 Fifth confirmation of the AS45355(Digicel Fiji)<->AS38198 adjacency (after GU, MP, VU, PF): `AS10131 -> AS9471 (ONATI) -> AS6939 (Hurricane Electric) -> AS132528 -> AS45355 -> AS38198`, RIS-agreeing with the identical exact match (1,321). A seventh occurrence of AS132528 at Equinix Sydney this session -- confirmed via a real hop-level LAN-prefix match, unaffected by the Tokyo-hub issue fixed earlier.
 
 Added as a new entry. Called `mark_corridor_tested(10131, 38198)`. Verified: module imports cleanly (59 entries, up from 58); regenerated ASCII/HTML reports (render correctly) and the geographic map. Regenerated the corridor backlog: candidate count dropped 719 -> 715.
+
+---
+
+**Next corridor pulled: AS10131 (Cook Islands) -> AS38875 (FSM Telecommunications Corporation).** Only 1 of 3 probes returned; checked `participant_count` (1, not 3) -- the same genuine single-probe pattern as every other AS10131-sourced measurement this session. `has_routing_loop` correctly returned `False`.
+
+Fourth independent source economy for the recurring FSM sibling-substitution corridor (after GU, MP, PF): `AS10131 -> AS9471 (ONATI) -> AS6939 (Hurricane Electric) -> AS9246 (Teleguam Holdings/GTA) -> AS139759`, contiguous throughout, target never resolving. `ris_agrees: false` on the corrected sibling adjacency, matching every prior instance. Crosses Any2West again -- the same exchange as the PF entry.
+
+Added as a new `CandidatePeering` entry (not promoted, per the standing principle). Called `mark_corridor_tested(10131, 38875)`. Verified: module imports cleanly (8 entries, up from 7); regenerated ASCII/HTML reports (render correctly); map unaffected (candidate_peering doesn't feed it). Regenerated the corridor backlog: candidate count dropped 715 -> 714.

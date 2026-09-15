@@ -1,6 +1,6 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-09-15T12:25:35.635350+00:00                  
+                 Generated: 2026-09-15T12:35:50.920971+00:00                  
 ==============================================================================
 
 SUMMARY
@@ -259,6 +259,9 @@ AS38442 (Vodafone Fiji, FJ) -> AS17993 (Vodafone Samoa Limited, WS)
 AS9246 (Teleguam Holdings, LLC (GTA), GU) -> AS38875 (FSM Telecommunications Corporation, FM)
     Traceroute agreement: 3/3 probes  [measurement 211688231, vantage: PF]
     A third independent source economy for this project's recurring FSM sibling-substitution corridor (after GU and MP), this time sourced from AS9471 (ONATI, French Polynesia). All 3 probes show the identical clean shape: AS9471 -> AS6939 (Hurricane Electric) -> AS9246 (Teleguam Holdings/GTA) -> AS139759, contiguous throughout. The literal target (AS38875) never itself resolved -- the same substitution already established twice: AS38875's only RIS-observed neighbor is AS10130, and AS139759's only RIS-observed neighbor is also AS10130, so both are confirmed sibling ASNs of the same real operator. `ris_agrees: false` on the corrected adjacency regardless: neither sibling lists AS9246 as a neighbor, matching the GU- and MP-sourced instances. **Genuinely different infrastructure this time**: `ixp_crossings` confirms AS9246 crosses at **Any2West** (all 3 probes), not MARIIX (the GU entry) or Guam IX (the MP entry) -- checked directly via PeeringDB's netixlan API before trusting the resolution: AS9246 genuinely holds a real Any2West membership (alongside SIX Seattle, MARIIX, and BBIX Tokyo), so this is a real, physically-instantiated crossing, not an artifact. Unlike the prior two entries, Any2West is **out-of-fishbowl** -- the first time this specific FSM corridor has shown a crossing outside the region's own exchanges rather than at MARIIX or Guam IX. Kept as a candidate, not promoted, per the standing principle: three independent source economies and a PeeringDB-verified real exchange crossing still don't satisfy Validation Rule 1 on their own -- RIS's own neighbor lists for both siblings remain the deciding evidence, and they still don't include AS9246.
+AS9246 (Teleguam Holdings, LLC (GTA), GU) -> AS38875 (FSM Telecommunications Corporation, FM)
+    Traceroute agreement: 1/3 probes  [measurement 211746507, vantage: CK]
+    A fourth independent source economy for this project's recurring FSM sibling-substitution corridor (after GU, MP, and PF), this time sourced from AS10131 (Cook Islands). Only 1 of 3 requested probes returned; checked `participant_count` directly (1, not 3) -- the same genuine single-probe pattern as every other AS10131-sourced measurement this session. Identical shape to the PF-sourced instance: `AS10131 -> AS9471 (ONATI) -> AS6939 (Hurricane Electric) -> AS9246 (Teleguam Holdings/GTA) -> AS139759`, contiguous throughout, the literal target never resolving. `ris_agrees: false` on the corrected sibling adjacency, matching every prior instance. Crosses **Any2West** again (`ixp_crossings` confirms it) -- the same exchange as the PF entry, and the same ONATI-transit shape seen on every AS10131-sourced corridor this tranche cycle. Kept as a candidate, not promoted, per the standing principle.
 
 ECONOMIES
 ==============================================================================

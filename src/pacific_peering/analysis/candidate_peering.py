@@ -341,4 +341,33 @@ CANDIDATE_PEERING: tuple[CandidatePeering, ...] = (
             "don't include AS9246."
         ),
     ),
+    CandidatePeering(
+        upstream_cc="GU",
+        upstream_asn=9246,
+        upstream_name="Teleguam Holdings, LLC (GTA)",
+        target_cc="FM",
+        target_asn=38875,
+        target_name="FSM Telecommunications Corporation",
+        measurement_id=211746507,
+        vantage_point_cc="CK",
+        probe_agreement="1/3 probes",
+        note=(
+            "A fourth independent source economy for this project's "
+            "recurring FSM sibling-substitution corridor (after GU, MP, "
+            "and PF), this time sourced from AS10131 (Cook Islands). Only "
+            "1 of 3 requested probes returned; checked `participant_count` "
+            "directly (1, not 3) -- the same genuine single-probe pattern "
+            "as every other AS10131-sourced measurement this session. "
+            "Identical shape to the PF-sourced instance: `AS10131 -> "
+            "AS9471 (ONATI) -> AS6939 (Hurricane Electric) -> AS9246 "
+            "(Teleguam Holdings/GTA) -> AS139759`, contiguous throughout, "
+            "the literal target never resolving. `ris_agrees: false` on "
+            "the corrected sibling adjacency, matching every prior "
+            "instance. Crosses **Any2West** again (`ixp_crossings` "
+            "confirms it) -- the same exchange as the PF entry, and the "
+            "same ONATI-transit shape seen on every AS10131-sourced "
+            "corridor this tranche cycle. Kept as a candidate, not "
+            "promoted, per the standing principle."
+        ),
+    ),
 )
