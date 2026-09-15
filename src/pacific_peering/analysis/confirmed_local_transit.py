@@ -570,7 +570,20 @@ CONFIRMED_LOCAL_TRANSIT: tuple[ConfirmedLocalTransit, ...] = (
             "any sibling-ASN reasoning. A clean, if physically short, "
             "confirmation: PTI Pacifica genuinely is Nauru's real upstream "
             "connectivity provider, not Guam Cablevision -- exactly the "
-            "correction the project owner's directed re-test was aimed at."
+            "correction the project owner's directed re-test was aimed at. "
+            "**Second independent corroboration, from an entirely different "
+            "source economy** (measurement 211636601, VU/AS9249 -> "
+            "NR/AS55722, pulled from the corridor backlog as a fresh "
+            "VU<->NR pair -- coincidentally noticed transiting through "
+            "AS7131's own network before checking further): both probes: "
+            "AS9249 -> AS38442 (Vodafone Fiji) -> AS6939 (Hurricane "
+            "Electric) -> **AS7131** -> target never resolved (same "
+            "short-path silence pattern as both prior instances). RIS "
+            "agrees with the identical *exact* match (1,528). Not "
+            "AS7131 itself sourcing this time -- AS7131 appears as a "
+            "genuine transit waypoint for a third economy's traffic, "
+            "the same regional-hub shape already established for ONATI, "
+            "FINTEL, and Digicel Samoa."
         ),
     ),
     ConfirmedLocalTransit(

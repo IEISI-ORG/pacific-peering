@@ -1222,3 +1222,10 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   and MP via NSW-IX). RIS agrees exactly (1,652). A third distinct
   Sydney fabric now on record (alongside Equinix Sydney and NSW-IX).
   Backlog: 974 -> 965.
+- Sourced AS9249 toward AS55722 (Cenpac Net Inc, Nauru) -- a fresh
+  VU<->NR pair, landing on the existing AS7131(PTI Pacifica)<->
+  AS55722 adjacency, now a second independent corroboration from a
+  genuinely different source economy. Identical exact RIS match
+  (1,528). Extended the existing `ConfirmedLocalTransit` entry's
+  note rather than duplicating; entry count unchanged (12). Backlog:
+  965 -> 964.
