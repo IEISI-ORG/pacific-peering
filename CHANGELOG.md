@@ -1301,3 +1301,10 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   via the same Mercury NZ carrier just seen two tranches ago for the
   AS132486 downstream chain. Extended the existing entry's paragraph
   rather than duplicating. Backlog: 932 -> 931.
+- Sourced AS9471 (ONATI, French Polynesia) toward AS4638 (Telecom
+  Fiji) -- the first firing genuinely sourced from AS9471. Hits the
+  well-known 202.137.178.x gap zone already flagged twice before,
+  this time via SingTel Optus (AS7474), which doesn't match AS4638's
+  real RIS neighbor (AS45349, this project's very first confirmed
+  finding). Not filed, same established precedent. Backlog:
+  931 -> 930.

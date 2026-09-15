@@ -1503,3 +1503,11 @@ Added as a new entry. Called `mark_corridor_tested(9249, 152706)`. Verified: mod
 **Next corridor pulled: AS9249 (Telecom Vanuatu) -> AS154100 (BNL Tarawa, targeted directly).** `has_routing_loop` correctly returned `False`. Both probes resolve cleanly to AS14593 (Starlink) as the literal last-reached ASN, identical RIS match (361) to the existing "sharpest, most direct" entry -- **via the same AS55850 (Mercury NZ) carrier just seen two tranches ago** for the AS132486 downstream-chain finding, now confirmed reaching BNL Tarawa's own address directly too.
 
 Fourth independent confirmation of this specific direct relationship, extending that entry's paragraph. Not a new dataclass entry -- `CONFIRMED_LOCAL_TRANSIT` count unchanged (13). Called `mark_corridor_tested(9249, 154100)`. Regenerated ASCII/HTML reports since the note text changed (render correctly); map unaffected. Regenerated the corridor backlog: candidate count dropped 932 -> 931.
+
+---
+
+**Next corridor pulled: AS9471 (ONATI, French Polynesia) -> AS4638 (Telecom Fiji)** -- the first firing genuinely sourced from AS9471, per the diversification already flagged several tranches ago. All 3 probes reached the literal target directly. `has_routing_loop` correctly returned `False` for all three.
+
+**Recognized this as the same well-known 202.137.178.x gap zone already flagged twice before this session** (loop tranche 5, and the earlier AS7131->AS4638 tranche): upstream of target is AS7474 -- checked its holder name directly, "SingTel Optus Pty Ltd" (Australia), a genuinely different carrier than either prior instance. But `ris_agrees: False` -- checked AS4638's own fishbowl neighbor list directly: its dominant/only real relationship is AS45349 (1,669, already this project's very first confirmed finding), not AS7474/Optus. Same precedent as both prior AS4638 attempts: real signal, hits the known gap, external carrier doesn't match the real RIS relationship.
+
+Not filed in any dataclass, consistent with the established pattern. Called `mark_corridor_tested(9471, 4638)`. No report/map regeneration needed (no dataclass changed). Regenerated the corridor backlog: candidate count dropped 931 -> 930.
