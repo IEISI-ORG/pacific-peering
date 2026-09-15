@@ -1597,3 +1597,6 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - feat(analysis): confirm PG(AS17828)->AS(AS9751) via Equinix San
   Jose -- third confirmation of AS11404(Wave Broadband)<->AS9751
   (after MP, VU). RIS agrees exactly (267). Backlog: 680 -> 678.
+- feat(analysis): confirm PG(AS17828)->NC(AS17480) via Equinix
+  Sydney -- fourth confirmation of AS18200<->AS17480 (after MP, PF,
+  CK). RIS agrees exactly (1,665). Backlog: 678 -> 605.

@@ -1958,4 +1958,23 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
             "confirmation of this specific crossing."
         ),
     ),
+    ConfirmedDetour(
+        source_cc="PG",
+        target_cc="NC",
+        target_asn=17480,
+        detour_ix_name="Equinix Sydney",
+        detour_hub="Sydney",
+        measurement_id=211802668,
+        ris_observation_count=1665,
+        note=(
+            "PNG DataCo (AS17828) -> a fresh New Caledonia ASN "
+            "(AS17480) -- a fresh PG<->NC pair, a fourth independent "
+            "confirmation of the AS18200(OPT NC)<->AS17480 adjacency "
+            "(after MP, PF, CK). `AS17828 -> AS4826 (Vocus Connect) -> "
+            "AS18200 -> AS17480`, fully contiguous, RIS-agreeing with "
+            "the identical *exact* match (1,665). Crosses Equinix "
+            "Sydney directly (`ixp_crossings` confirms it) -- the same "
+            "exchange as the CK and PF entries."
+        ),
+    ),
 )

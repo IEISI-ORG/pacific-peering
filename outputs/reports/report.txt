@@ -1,6 +1,6 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-09-15T15:06:20.610888+00:00                  
+                 Generated: 2026-09-15T15:15:57.446972+00:00                  
 ==============================================================================
 
 SUMMARY
@@ -208,6 +208,9 @@ CK -> NR (AS140504): detours via AS12684 (SES ASTRA S.A.) -- satellite operator,
 PG -> AS (AS9751): detours via Equinix San Jose (San Jose)
     RIS observation count: 267  [measurement 211800054]
     PNG DataCo (AS17828) -> American Samoa (AS9751) -- the first firing genuinely sourced from PNG DataCo to reach a target. Third independent confirmation of the Wave-Broadband(AS11404)<->AS9751 adjacency (after MP and VU): `AS17828 -> AS4826 (Vocus Connect) -> AS11404`, RIS-agreeing with the identical *exact* match (267). Crosses **Equinix San Jose** directly (`ixp_crossings` confirms it) -- the same exchange as the VU entry, a second confirmation of this specific crossing.
+PG -> NC (AS17480): detours via Equinix Sydney (Sydney)
+    RIS observation count: 1665  [measurement 211802668]
+    PNG DataCo (AS17828) -> a fresh New Caledonia ASN (AS17480) -- a fresh PG<->NC pair, a fourth independent confirmation of the AS18200(OPT NC)<->AS17480 adjacency (after MP, PF, CK). `AS17828 -> AS4826 (Vocus Connect) -> AS18200 -> AS17480`, fully contiguous, RIS-agreeing with the identical *exact* match (1,665). Crosses Equinix Sydney directly (`ixp_crossings` confirms it) -- the same exchange as the CK and PF entries.
 
 CONFIRMED LOCAL TRANSIT (RIS + Atlas both agree, stays in-fishbowl)
 ==============================================================================

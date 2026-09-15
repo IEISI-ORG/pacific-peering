@@ -1950,3 +1950,11 @@ Not filed in any dataclass, matching the established precedent. Called `mark_cor
 Third independent confirmation of the Wave-Broadband(AS11404)<->AS9751 adjacency (after MP and VU): `AS17828 -> AS4826 (Vocus Connect) -> AS11404`, RIS-agreeing with the identical exact match (267). Crosses Equinix San Jose directly -- the same exchange as the VU entry.
 
 Added as a new entry. Called `mark_corridor_tested(17828, 9751)`. Verified: module imports cleanly (64 entries, up from 63); regenerated ASCII/HTML reports (render correctly) and the geographic map. Regenerated the corridor backlog: candidate count dropped 680 -> 678.
+
+---
+
+**Next corridor pulled: AS17828 (PNG DataCo) -> AS17480 (a fresh New Caledonia ASN).** `has_routing_loop` correctly returned `False`.
+
+Fourth independent confirmation of the AS18200(OPT NC)<->AS17480 adjacency (after MP, PF, CK): `AS17828 -> AS4826 (Vocus Connect) -> AS18200 -> AS17480`, fully contiguous, RIS-agreeing with the identical exact match (1,665). Crosses Equinix Sydney directly -- the same exchange as the CK and PF entries.
+
+Added as a new entry. Called `mark_corridor_tested(17828, 17480)`. Verified: module imports cleanly (65 entries, up from 64); regenerated ASCII/HTML reports (render correctly) and the geographic map. Regenerated the corridor backlog: candidate count dropped 678 -> 605 (a large drop -- PNG DataCo's remaining cheap untested targets thinned significantly at once).
