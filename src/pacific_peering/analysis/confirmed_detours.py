@@ -1238,4 +1238,28 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
             "so kept `detour_hub` as Tokyo, matching the original entry."
         ),
     ),
+    ConfirmedDetour(
+        source_cc="PF",
+        target_cc="AS",
+        target_asn=9751,
+        detour_ix_name="AS174 (Cogent Communications) -- global transit, not a named "
+        "exchange crossing",
+        detour_hub="Tokyo",
+        measurement_id=211668556,
+        ris_observation_count=1055,
+        note=(
+            "ONATI (AS9471, French Polynesia) -> American Samoa (AS9751) "
+            "-- a fresh PF<->AS pair, the first firing genuinely sourced "
+            "from AS9471 to actually reach a target. Third confirmation "
+            "for this specific target, via the same ultimate carrier "
+            "(Cogent) as the original GU entry, but a different vantage "
+            "point than either prior instance (GU/Cogent, VU/Wave "
+            "Broadband). All 3 probes: `AS9471 -> AS174 -> AS9751`, "
+            "RIS-agreeing with the identical *exact* match (1,055). No "
+            "IXP crossing (`ixp_crossings` empty for all three); checked "
+            "Cogent's real PeeringDB facility list before keeping the "
+            "hub -- genuine presence at both Tokyo and Sydney, consistent "
+            "with the original entry's Tokyo choice."
+        ),
+    ),
 )

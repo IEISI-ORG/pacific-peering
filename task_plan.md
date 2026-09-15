@@ -1523,3 +1523,11 @@ Not filed in any dataclass, consistent with the established pattern. Called `mar
 **Applied the retry policy anyway** (per the standing rule, and because the first address never reached the target at all): fired against `202.170.32.1`, a different AS9241 prefix. Took a completely different path this time -- via Hurricane Electric (`184.104.x.x`, `72.52.x.x`) -- and dead-ended in total silence at `65.19.142.246`, **the exact same landmark address already identified in the original AS7131->AS9241 loop discovery** several sessions ago (also AS6939/Hurricane Electric space). Two different vantage points (AS7131/CNMI, AS9471/French Polynesia), two different addresses, both surfacing real problems at FINTEL's network edge -- not a one-off artifact of a single source or address.
 
 **Not filed in any dataclass**, matching the established precedent for the original loop finding (a real, live network anomaly documented in prose, not forced into `ConfirmedDetour`/`CandidatePeering`). Called `mark_corridor_tested(9471, 9241)` for both addresses. No report/map regeneration needed. Regenerated the corridor backlog: candidate count dropped 930 -> 929.
+
+---
+
+**Next corridor pulled: AS9471 (ONATI, French Polynesia) -> AS9751 (American Samoa)** -- the first AS9471-sourced firing to actually reach a target. All 3 probes reached directly. Re-checked `has_routing_loop` with the just-fixed detector: correctly `False` for all three, confirming the fix doesn't over-flag a genuinely clean traceroute.
+
+**Third confirmation for AS9751**, via the same ultimate carrier (Cogent) as the original GU entry, but a fresh vantage point (neither GU nor VU): `AS9471 -> AS174 -> AS9751`, RIS-agreeing with the identical exact match (1,055). No IXP crossing; verified Cogent's real PeeringDB facility list before keeping the Tokyo hub -- genuine presence at both Tokyo and Sydney.
+
+Added as a new entry. Called `mark_corridor_tested(9471, 9751)`. Verified: module imports cleanly (40 entries, up from 39); regenerated ASCII/HTML reports (render correctly) and the geographic map. Regenerated the corridor backlog: candidate count dropped 929 -> 927.

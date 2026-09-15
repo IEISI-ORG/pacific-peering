@@ -1327,3 +1327,10 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   edge, from a different vantage point and address. Not filed in any
   dataclass, matching the original loop's precedent. Backlog:
   930 -> 929.
+- feat(analysis): confirm PF(AS9471)->AS(AS9751) via Cogent -- third
+  confirmation for this target, same ultimate carrier as the original
+  GU entry, fresh vantage point. RIS agrees exactly (1,055). No IXP
+  crossing; verified Cogent's real PeeringDB facility list (Tokyo
+  and Sydney) before keeping the Tokyo hub. Also re-verified the
+  just-fixed `has_routing_loop` correctly returns `False` on this
+  clean traceroute. Backlog: 929 -> 927.
