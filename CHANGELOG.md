@@ -1136,3 +1136,12 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   distinct source (CNMI, after Guam) for this specific direct
   relationship. Extended that entry's paragraph rather than
   duplicating; entry count unchanged (11). Backlog: 1004 -> 1003.
+- Sourced AS9249 (Telecom Vanuatu) toward AS9471 (ONATI, French
+  Polynesia) -- the first firing genuinely sourced from AS9249,
+  source diversification having fully shifted off AS7131. Only 1
+  connected probe available. First address dead-ended; retry reached
+  the target and landed on the same shape already established for
+  the earlier AS7131->AS9471 tranche: AS6939 (Hurricane Electric)
+  immediately upstream, RIS disagrees, AS9471's fishbowl neighbor
+  list only shows its ONATI sibling. Not filed in any dataclass, per
+  that precedent. Backlog: 1003 -> 1001.
