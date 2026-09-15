@@ -63,4 +63,23 @@ REGIONAL_CARRIER_FACILITIES: tuple[RegionalCarrierFacility, ...] = (
             "hop -- add a second entry here if/when a traceroute hits it."
         ),
     ),
+    RegionalCarrierFacility(
+        asn=6453,
+        carrier_name="Tata Communications Ltd",
+        facility_name="TATA Communications - Piti Cable Landing Station",
+        economy_cc="GU",
+        hostname_pattern="piti",
+        evidence_note=(
+            "Confirmed via the PF(AS9471)->MH(AS24439) traceroute "
+            "(measurement 211683854): two hops (180.87.9.2, 180.87.60.178) "
+            "have PTR records 'if-bundle-*.qhar*.pv4-piti.as6453.net' -- "
+            "routers explicitly named for Piti, matching Tata's own "
+            "PeeringDB-listed facility (net_id 437) of the same name -- the "
+            "same physical cable-landing-station location OneQode's own "
+            "Guam facility list separately references. Surfaced while "
+            "auditing the PF->'Tokyo' hub-attribution errors (see "
+            "hop_geolocation.py and task_plan.md): the traceroute actually "
+            "reaches Los Angeles then this Piti facility, not Tokyo at all."
+        ),
+    ),
 )

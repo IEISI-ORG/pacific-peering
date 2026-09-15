@@ -1492,3 +1492,15 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   exactly (1,009), crosses Equinix Los Angeles. Checked raw hops
   directly against FINTEL's known loop zone (202.170.33.x) given
   its history this session -- genuinely clean. Backlog: 737 -> 735.
+- feat(analysis): add hop_geolocation.py -- a hand-curated,
+  evidence-gated hostname-pattern registry for geolocating
+  traceroute hops from their real PTR records, instead of picking a
+  facility off a carrier's PeeringDB list. Used it to fix two
+  PF-sourced ConfirmedDetour entries mislabeled "Tokyo": AS9751
+  (Cogent) corrected to Portland (real path: lax01/sfo01/pdx02, all
+  US West Coast); AS24439 (Tata) corrected to Los Angeles (real
+  path: LA then Piti/Guam -- added as a second entry in
+  regional_carrier_facilities.py, PeeringDB-verified). A third
+  entry (AS45879/Orange) has no PTR evidence either way; downgraded
+  its note to say so honestly rather than replace one guess with
+  another. Added "Portland" to EXTERNAL_HUB_LATLON.

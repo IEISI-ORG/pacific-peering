@@ -1244,7 +1244,7 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
         target_asn=9751,
         detour_ix_name="AS174 (Cogent Communications) -- global transit, not a named "
         "exchange crossing",
-        detour_hub="Tokyo",
+        detour_hub="Portland",
         measurement_id=211668556,
         ris_observation_count=1055,
         note=(
@@ -1256,10 +1256,20 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
             "point than either prior instance (GU/Cogent, VU/Wave "
             "Broadband). All 3 probes: `AS9471 -> AS174 -> AS9751`, "
             "RIS-agreeing with the identical *exact* match (1,055). No "
-            "IXP crossing (`ixp_crossings` empty for all three); checked "
-            "Cogent's real PeeringDB facility list before keeping the "
-            "hub -- genuine presence at both Tokyo and Sydney, consistent "
-            "with the original entry's Tokyo choice."
+            "IXP crossing (`ixp_crossings` empty for all three). "
+            "**Hub corrected from an original draft's \"Tokyo\"**: the "
+            "original choice was carried over from Cogent's real but "
+            "generic PeeringDB facility list (Cogent genuinely has both "
+            "Tokyo and Sydney presence) without checking what this "
+            "specific traceroute's own hops actually show -- caught when "
+            "the project owner questioned whether a direct PF-Japan path "
+            "was real. Reverse-DNS'd the resolved Cogent hops directly "
+            "(via the new `hop_geolocation` module): `be2728.ccr42.lax01."
+            "atlas.cogentco.com` -> `be5991.ccr22.sfo01.atlas.cogentco.com` "
+            "-> `be2467.ccr51.pdx02.atlas.cogentco.com` -- Los Angeles, "
+            "San Francisco, then Portland, entirely US West Coast, "
+            "nowhere near Japan. Kept `detour_hub` as Portland, the "
+            "last confirmed location before the destination replies."
         ),
     ),
     ConfirmedDetour(
@@ -1393,7 +1403,7 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
         target_asn=24439,
         detour_ix_name="AS3257 (GTT Communications), via AS6453 (Tata "
         "Communications) -- global transit, not a named exchange crossing",
-        detour_hub="Tokyo",
+        detour_hub="Los Angeles",
         measurement_id=211683854,
         ris_observation_count=997,
         note=(
@@ -1406,9 +1416,26 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
             "destination), so RIS is checked against the last reached "
             "ASN. RIS agrees with the identical *exact* match (997). "
             "GTT is a genuinely new intermediate carrier for this "
-            "adjacency. No IXP crossing; kept `detour_hub` as Tokyo, "
-            "already verified against Tata's real PeeringDB facility "
-            "list (Tokyo and Sydney) in the earlier NR-sourced entry."
+            "adjacency. No IXP crossing. "
+            "**Hub corrected from an original draft's \"Tokyo\"**: the "
+            "original choice reused Tata's known Tokyo/Sydney PeeringDB "
+            "presence from an earlier NR-sourced entry, without checking "
+            "what this specific traceroute's own hops show -- caught when "
+            "the project owner questioned whether a direct PF-Japan path "
+            "was real. Reverse-DNS'd the resolved Tata hops directly (via "
+            "the new `hop_geolocation` module): `ix-bundle-23.qcore2.lvw-"
+            "losangeles.as6453.net` -> `if-bundle-41-2.qhar2.pv4-piti."
+            "as6453.net` (twice) -- Los Angeles, then **Piti, Guam** -- "
+            "not Tokyo at all. The Piti hop is itself a genuine, "
+            "PeeringDB-confirmed Tata facility (net_id 437, \"TATA "
+            "Communications - Piti Cable Landing Station\"), now recorded "
+            "in `analysis/regional_carrier_facilities.py` as Tata's "
+            "second confirmed in-fishbowl facility after OneQode's -- but "
+            "since the traffic still transits external LA infrastructure "
+            "first, this remains a genuine detour rather than a purely "
+            "in-region path; kept `detour_hub` as Los Angeles, the "
+            "confirmed external touchpoint, with the later Guam leg noted "
+            "here rather than driving the hub choice."
         ),
     ),
     ConfirmedDetour(
@@ -1486,9 +1513,25 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
             "checked against the last reached ASN. RIS agrees with the "
             "identical *exact* match (1,665). GTT is a genuinely new "
             "intermediate carrier for this specific corridor. No IXP "
-            "crossing (`ixp_crossings` empty for all 3 probes); kept "
-            "`detour_hub` as Tokyo, already independently verified "
-            "against AS5511's real PeeringDB facility list."
+            "crossing (`ixp_crossings` empty for all 3 probes). "
+            "**Hub confidence downgraded, not silently kept as fact**: "
+            "unlike the Cogent (AS9751) and Tata (AS24439) PF-sourced "
+            "entries, this one's resolved Orange hops (`193.251.249.81`, "
+            "`81.52.166.62`, `81.52.188.158`) have **no PTR records at "
+            "all** -- `hop_geolocation.geolocate_hop` returns `None` for "
+            "each, honestly, rather than guessing. \"Tokyo\" here is "
+            "*inherited* from AS5511's known PeeringDB facility list, not "
+            "independently confirmed by this specific traceroute's own "
+            "hops (contrast the sibling GU-sourced entry, whose path "
+            "genuinely transits AS2497/IIJ, a real Japanese carrier -- "
+            "actual evidence, not an inherited label). RTT jumps "
+            "~99ms -> ~263ms at the last resolved hop, consistent with a "
+            "long-haul link, but that alone doesn't establish which city. "
+            "Kept `detour_hub` as Tokyo for now (still the carrier's own "
+            "real, verified presence, and the best available guess absent "
+            "contrary evidence), but this entry -- and its MP/VU siblings, "
+            "not yet audited the same way -- remain open items for a "
+            "future geolocation pass, not settled facts."
         ),
     ),
     ConfirmedDetour(
