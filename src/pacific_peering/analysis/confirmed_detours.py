@@ -757,4 +757,32 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
             "false-positive fix)."
         ),
     ),
+    ConfirmedDetour(
+        source_cc="MP",
+        target_cc="WS",
+        target_asn=17993,
+        detour_ix_name="Equinix Sydney",
+        detour_hub="Sydney",
+        measurement_id=211558417,
+        ris_observation_count=150,
+        note=(
+            "PTI Pacifica (AS7131, CNMI) -> Samoa (AS17993) -- a fresh "
+            "MP<->WS pair. All 3 probes: AS7131 -> AS6939 (Hurricane "
+            "Electric) -> [gap] -> AS17993, upstream of target AS6939, "
+            "RIS-agreeing with an *exact* match (150). A **different** "
+            "carrier than the existing GU(AS3605)->WS entry (AS174/Cogent "
+            "+ AS3356/Level3, count 1,455) -- checked against AS17993's "
+            "full neighbor list (`{174: 1455, 6939: 150, 64073: 10, ...}`, "
+            "already on record from that earlier entry): AS6939 is a real, "
+            "minor-but-genuine relationship, not the dominant one, "
+            "confirming Samoa's real transit mix includes at least two "
+            "distinct Tier-1 carriers, the same shape already seen for "
+            "American Samoa (AS9751, Cogent vs. Wave Broadband). Real IXP "
+            "crossing confirmed directly this time -- `ixp_crossings` "
+            "non-empty for all 3 probes, all landing on Equinix Sydney "
+            "(one shows both AS6939 and AS17993 as members at the same "
+            "hop, the other two resolve AS17993 itself there via "
+            "PeeringDB netixlan)."
+        ),
+    ),
 )

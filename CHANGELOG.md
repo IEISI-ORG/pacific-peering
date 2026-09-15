@@ -1018,3 +1018,11 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   itself doesn't land inside either registered LAN. Kept as
   candidate, not promoted, per Validation Rule 1. Backlog:
   1060 -> 1056.
+- feat(analysis): confirm MP(AS7131, CNMI)->WS(AS17993, Samoa) via
+  Equinix Sydney (Hurricane Electric, AS6939). A different carrier
+  than the existing GU->WS entry's dominant AS174/Cogent relationship
+  -- RIS agrees exactly (150), matching AS17993's own neighbor list
+  already on record from that earlier entry. Real IXP crossing
+  confirmed directly (`ixp_crossings` non-empty, Equinix Sydney, all
+  3 probes). Ninth occurrence of AS7131's slow-scheduling pattern,
+  resolved on a longer background poll. Backlog: 1056 -> 1050.
