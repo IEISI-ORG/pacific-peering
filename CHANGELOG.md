@@ -1153,3 +1153,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   original found no crossing at all. Added a fourth external hub
   (San Jose) to `economy_coordinates.EXTERNAL_HUB_LATLON`. Backlog:
   1001 -> 999.
+- Sourced AS9249 toward AS10131 (Telecom Cook Islands) -- a fresh
+  VU<->CK pair, landing on the well-established ONATI<->Cook-Islands
+  sibling-ASN adjacency, now a fourth independent reinforcement
+  (after ONATI's own vantage point, Guam, and CNMI). Extended the
+  existing `ConfirmedLocalTransit` entry's note rather than
+  duplicating; entry count unchanged (11). Backlog: 999 -> 997.

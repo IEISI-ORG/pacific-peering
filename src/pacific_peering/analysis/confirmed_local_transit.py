@@ -476,7 +476,14 @@ CONFIRMED_LOCAL_TRANSIT: tuple[ConfirmedLocalTransit, ...] = (
             "ONATI's own vantage point and Guam) confirming the same last-leg "
             "transit through French Polynesia's network. Not a new entry; "
             "same sibling-ASN basis (RIS confirms via AS55943, 658 "
-            "observations, exact match)."
+            "observations, exact match). "
+            "**A fourth, independent reinforcement** (measurement 211616908, "
+            "VU/AS9249 -> CK/AS10131, the first AS9249-sourced firing to "
+            "reach a target directly): AS9249 -> AS38442 (Vodafone Fiji) -> "
+            "AS4637 (Telstra Global) -> AS3257 (GTT) -> **AS9471** -> "
+            "AS10131, landing on the identical adjacency a fourth time, "
+            "from a fourth distinct source economy (Vanuatu, after ONATI's "
+            "own vantage point, Guam, and CNMI). Same sibling-ASN basis."
         ),
     ),
     ConfirmedLocalTransit(

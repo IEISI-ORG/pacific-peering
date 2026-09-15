@@ -1333,3 +1333,11 @@ Not a new dataclass entry -- `CONFIRMED_LOCAL_TRANSIT` count unchanged (11). Cal
 **Lands on the existing MP(AS7131)->AS adjacency** (Wave Broadband<->AS9751), a second independent confirmation, RIS-agreeing with an *exact* match (267). **A genuine improvement on the original finding**: this traceroute directly crosses a real, named exchange -- Equinix San Jose (`ixp_crossings` confirms it) -- where the original found no crossing at all. Added a fourth external hub (`"San Jose": (37.3382, -121.8863)`) to `economy_coordinates.EXTERNAL_HUB_LATLON`, directly observed this time rather than inferred from PeeringDB facility lists like the last two new-hub cases.
 
 Added as a new `ConfirmedDetour` entry. Called `mark_corridor_tested(9249, 9751)`. Verified: module imports cleanly (31 entries, up from 30); regenerated ASCII/HTML reports (render correctly) and the geographic map. Regenerated the corridor backlog: candidate count dropped 1001 -> 999.
+
+---
+
+**Next corridor pulled: AS9249 (Telecom Vanuatu) -> AS10131 (Telecom Cook Islands).** Reached directly, no retry needed -- passing through `103.254.224.70`, already independently established as ONATI's own address space from the very first ONATI<->Cook-Islands measurement. `has_routing_loop` correctly returned `False`.
+
+**Immediately recognized the well-established ONATI<->Cook-Islands sibling-ASN adjacency**, already independently confirmed three times before (ONATI's own vantage point, Guam, CNMI): `AS9249 -> AS38442 (Vodafone Fiji) -> AS4637 (Telstra Global) -> AS3257 (GTT) -> AS9471 -> AS10131`, same sibling-ASN basis (RIS confirms via AS55943).
+
+**A fourth independent reinforcement, extending the existing entry's note rather than duplicating.** A fourth distinct source economy (Vanuatu, after ONATI's own vantage point, Guam, and CNMI). Not a new dataclass entry -- `CONFIRMED_LOCAL_TRANSIT` count unchanged (11). Called `mark_corridor_tested(9249, 10131)`. Regenerated ASCII/HTML reports since the note text changed (render correctly); map unaffected. Regenerated the corridor backlog: candidate count dropped 999 -> 997.
