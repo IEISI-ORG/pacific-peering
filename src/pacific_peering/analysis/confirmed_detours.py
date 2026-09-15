@@ -1766,4 +1766,35 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
             "AS10131-sourced corridor this tranche cycle."
         ),
     ),
+    ConfirmedDetour(
+        source_cc="CK",
+        target_cc="MH",
+        target_asn=24439,
+        detour_ix_name="AS3257 (GTT Communications), via AS6453 (Tata "
+        "Communications) -- global transit, not a named exchange crossing",
+        detour_hub="Los Angeles",
+        measurement_id=211741326,
+        ris_observation_count=997,
+        note=(
+            "Cook Islands (AS10131) -> Marshall Islands NTA ISP (AS24439) "
+            "-- a fresh CK<->MH pair, a fifth independent confirmation of "
+            "the AS6453(Tata)<->AS24439 adjacency (after GU via IIJ, MP "
+            "via Cogent, VU via Singtel, and PF via this identical "
+            "GTT/Tata chain). Only 1 of 3 requested probes returned; "
+            "checked `participant_count` directly (1, not 3) -- the same "
+            "genuine single-probe pattern as every other AS10131-sourced "
+            "measurement this session. Result: `AS10131 -> AS9471 (ONATI) "
+            "-> AS3257 (GTT) -> AS6453`, target never resolved, "
+            "RIS-agreeing with the identical *exact* match (997). "
+            "**Geolocated with the new `hop_geolocation` module from the "
+            "start this time, rather than inheriting a hub label**: the "
+            "resolved Tata hops (`64.86.197.98`, `180.87.9.2`, "
+            "`180.87.60.178`) are the exact same addresses as the "
+            "PF-sourced entry's now-corrected path -- Los Angeles, then "
+            "Piti, Guam (Tata's confirmed facility in "
+            "`regional_carrier_facilities.py`). Kept `detour_hub` as Los "
+            "Angeles, matching the corrected PF entry, not the old "
+            "Tokyo mislabeling."
+        ),
+    ),
 )

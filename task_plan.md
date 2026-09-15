@@ -1788,3 +1788,11 @@ Verified: all modules import cleanly (`CONFIRMED_DETOURS` unchanged at 56 -- the
 Third independent confirmation of the AS7575(AARNet)<->AS24390 adjacency (after MP via OneQode and PF via Hurricane Electric/Any2West): `AS10131 -> AS9471 (ONATI) -> AS6939 (Hurricane Electric) -> AS7575`, target never resolved, RIS-agreeing with the identical exact match (337). Crosses Any2West directly -- the same exchange as the PF entry, and the same ONATI-transit shape seen on every AS10131-sourced corridor this tranche cycle. (Note: this `ixp_crossings` signal is a real hop-level LAN-prefix match against Any2West's registered subnet, not a carrier-level facility guess -- unaffected by the Tokyo-hub issue just fixed.)
 
 Added as a new entry. Called `mark_corridor_tested(10131, 24390)`. Verified: module imports cleanly (57 entries, up from 56); regenerated ASCII/HTML reports (render correctly) and the geographic map. Regenerated the corridor backlog: candidate count dropped 735 -> 721.
+
+---
+
+**Next corridor pulled: AS10131 (Cook Islands) -> AS24439 (Marshall Islands NTA).** Same target as the just-corrected Tata mislabeling. Only 1 of 3 probes returned; checked `participant_count` (1, not 3) -- the same genuine single-probe pattern as every other AS10131-sourced measurement this session. `has_routing_loop` correctly returned `False`.
+
+Fifth confirmation of the AS6453(Tata)<->AS24439 adjacency (after GU, MP, VU, PF): `AS10131 -> AS9471 (ONATI) -> AS3257 (GTT) -> AS6453`, RIS-agreeing with the identical exact match (997). **Geolocated with the new `hop_geolocation` module from the start this time**, rather than inheriting any hub label: the resolved Tata hops are the exact same addresses as the just-corrected PF entry -- Los Angeles, then Piti, Guam. Kept `detour_hub` as Los Angeles, matching the corrected PF entry.
+
+Added as a new entry. Called `mark_corridor_tested(10131, 24439)`. Verified: module imports cleanly (58 entries, up from 57); regenerated ASCII/HTML reports (render correctly) and the geographic map. Regenerated the corridor backlog: candidate count dropped 721 -> 719.

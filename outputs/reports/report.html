@@ -53,7 +53,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
 <body>
 <div class="wrap">
     <h1>Pacific Peering — Regional Routing Report</h1>
-    <div class="meta">Generated 2026-09-15T12:11:45.381187+00:00</div>
+    <div class="meta">Generated 2026-09-15T12:16:29.945938+00:00</div>
 
     <div class="headline-banner">
         <span class="value">68%</span>
@@ -465,6 +465,13 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <div>RIS observation count: 337
                 &middot; measurement 211738209</div>
             <details class="note"><summary>Cook Islands (AS10131) -&gt; University of the South Pacific&#x27;s own network (AS24390) -- a fresh CK&lt;-&gt;FJ pair, a third independent confirmation of the…</summary>Cook Islands (AS10131) -&gt; University of the South Pacific&#x27;s own network (AS24390) -- a fresh CK&lt;-&gt;FJ pair, a third independent confirmation of the AS7575(AARNet)&lt;-&gt;AS24390 adjacency (after MP via OneQode and PF via Hurricane Electric/Any2West). Only 1 of 3 requested probes returned; checked `participant_count` directly (1, not 3) -- the same genuine single-probe pattern as every other AS10131-sourced measurement this session. Result: `AS10131 -&gt; AS9471 (ONATI) -&gt; AS6939 (Hurricane Electric) -&gt; AS7575`, target never resolved (ordinary ICMP filtering), RIS-agreeing with the identical *exact* match (337). Crosses **Any2West** directly (`ixp_crossings` confirms it, a real hop-level LAN-prefix match, not a carrier-level guess) -- the same exchange as the PF entry, and the same ONATI-transit shape seen on every AS10131-sourced corridor this tranche cycle.</details>
+        </div><div class="detour-card">
+            <div class="headline">CK -&gt; MH
+                (AS24439): detours via AS3257 (GTT Communications), via AS6453 (Tata Communications) -- global transit, not a named exchange crossing
+                (Los Angeles)</div>
+            <div>RIS observation count: 997
+                &middot; measurement 211741326</div>
+            <details class="note"><summary>Cook Islands (AS10131) -&gt; Marshall Islands NTA ISP (AS24439) -- a fresh CK&lt;-&gt;MH pair, a fifth independent confirmation of the AS6453(Tata)&lt;-&gt;AS24439 adjacency…</summary>Cook Islands (AS10131) -&gt; Marshall Islands NTA ISP (AS24439) -- a fresh CK&lt;-&gt;MH pair, a fifth independent confirmation of the AS6453(Tata)&lt;-&gt;AS24439 adjacency (after GU via IIJ, MP via Cogent, VU via Singtel, and PF via this identical GTT/Tata chain). Only 1 of 3 requested probes returned; checked `participant_count` directly (1, not 3) -- the same genuine single-probe pattern as every other AS10131-sourced measurement this session. Result: `AS10131 -&gt; AS9471 (ONATI) -&gt; AS3257 (GTT) -&gt; AS6453`, target never resolved, RIS-agreeing with the identical *exact* match (997). **Geolocated with the new `hop_geolocation` module from the start this time, rather than inheriting a hub label**: the resolved Tata hops (`64.86.197.98`, `180.87.9.2`, `180.87.60.178`) are the exact same addresses as the PF-sourced entry&#x27;s now-corrected path -- Los Angeles, then Piti, Guam (Tata&#x27;s confirmed facility in `regional_carrier_facilities.py`). Kept `detour_hub` as Los Angeles, matching the corrected PF entry, not the old Tokyo mislabeling.</details>
         </div>
 
     <h2>Confirmed local transit (RIS + Atlas both agree, stays in-fishbowl)</h2>

@@ -1507,3 +1507,8 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - feat(analysis): confirm CK(AS10131)->FJ(AS24390) via Any2West --
   third confirmation of AS7575<->AS24390 (after MP, PF). RIS agrees
   exactly (337). Backlog: 735 -> 721.
+- feat(analysis): confirm CK(AS10131)->MH(AS24439) via GTT/Tata --
+  fifth confirmation of AS6453<->AS24439 (after GU, MP, VU, PF). RIS
+  agrees exactly (997). Geolocated correctly from the start using
+  hop_geolocation.py (Los Angeles, then Piti/Guam) rather than
+  inheriting a hub label. Backlog: 721 -> 719.
