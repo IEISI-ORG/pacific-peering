@@ -47,7 +47,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
 <body>
 <div class="wrap">
     <h1>Pacific Peering — Regional Routing Report</h1>
-    <div class="meta">Generated 2026-09-15T06:39:58.363090+00:00</div>
+    <div class="meta">Generated 2026-09-15T06:44:30.699062+00:00</div>
 
     <div class="stat-row"><div class="stat-tile"><div class="value">20</div><div class="label">Economies in scope</div></div><div class="stat-tile"><div class="value">163</div><div class="label">ASNs in scope</div></div><div class="stat-tile"><div class="value">124</div><div class="label">ASNs w/ RIS neighbor</div></div><div class="stat-tile"><div class="value">38</div><div class="label">ASNs w/ IXP membership</div></div><div class="stat-tile"><div class="value">22</div><div class="label">ASNs w/ facility presence</div></div><div class="stat-tile"><div class="value">10/21</div><div class="label">IXPs in/out of fishbowl</div></div></div>
 
@@ -374,6 +374,14 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
                 &middot; measurement 211506747
                 &middot; vantage point GU</div>
             <div class="note">Pulled from the corridor backlog: AS3605 (Guam Cablevision) -&gt; AS134783 (ATHKL&#x27;s other ASN, sibling of AS4865) -- a fresh GU&lt;-&gt;KI pair, distinct from the AS132486 target tested last firing. **A third instance of the identical Australia/Starlink satellite chain**: AS3605 -&gt; AS7578/AS137409 (GSL Networks, Australia) -&gt; AS14593 (SpaceX Starlink) -&gt; AS154100 (BNL Tarawa) -&gt; target never resolved. This time, though, it&#x27;s a **genuinely new confirmed adjacency**, not a repeat corroboration of the AS132486 pair: checked AS134783&#x27;s own RIS neighbor list directly -- AS154100 is its dominant relationship (1,392 of roughly 1,806 total observations), an *exact* match to what this traceroute found. BNL Tarawa is evidently a real, general-purpose intra-Kiribati transit provider, not narrowly tied to one specific downstream customer -- this is the *second* distinct Kiribati ASN now confirmed reachable through it, both via the identical Australia-then-Starlink satellite ingress path. **Second independent corroboration** (measurement 211594373, MP/AS7131 -&gt; KI/AS134783, pulled from the corridor backlog as a fresh MP&lt;-&gt;KI economy pair): both probes show the identical chain -- AS7131 -&gt; AS7578/AS137409 (GSL Networks, Australia) -&gt; AS14593 (SpaceX Starlink) -&gt; AS154100 (BNL Tarawa) -&gt; target never resolved, identical RIS match (1,392). A second geographically distinct source (CNMI, after Guam) confirming this specific adjacency, not just the general Starlink-chain ingress pattern.</div>
+        </div><div class="transit-card">
+            <div class="headline">AS38800 (Digicel Samoa Ltd,
+                WS) -&gt; AS38227
+                (Computer Services Limited (CSL), WS)</div>
+            <div>RIS observation count: 990
+                &middot; measurement 211629998
+                &middot; vantage point VU</div>
+            <div class="note">Sourced from AS9249 (Telecom Vanuatu) toward AS38227 -- a fresh VU&lt;-&gt;WS pair, and a genuinely new adjacency this project hadn&#x27;t recorded before. Both probes fully contiguous, target reached directly: AS9249 -&gt; AS38442 (Vodafone Fiji) -&gt; AS132528 (Digicel Australia/Telstra backbone, crossing Equinix Sydney -- a **fourth** occurrence of this same real infrastructure this session) -&gt; **AS38800 (Digicel Samoa Ltd)** -&gt; AS38227 (Computer Services Limited, Samoa&#x27;s incumbent). Upstream of the target is AS38800, RIS-agreeing with an *exact* match (990) -- checked directly: AS38800 is AS38227&#x27;s *only* RIS-observed neighbor at all. A domestic (intra-Samoa) adjacency, the same shape as the established ONATI&lt;-&gt;Cook-Islands and FINTEL&lt;-&gt;Tuvalu patterns: an in-fishbowl Pacific carrier (here, Digicel Samoa) acting as a real transit waypoint for another Pacific carrier&#x27;s network (CSL Samoa), for traffic originating from a third economy (Vanuatu) -- another real data point for regional-hub structure within the fishbowl, this time at the intra-country level rather than inter-economy.</div>
         </div>
 
     <h2>Candidate peering (strong traceroute signal, RIS disagrees &mdash; unconfirmed)</h2>

@@ -1381,3 +1381,13 @@ Per the established `ConfirmedDetour` convention (new entry per source economy f
 **Third independent confirmation of the AS45355(Digicel Fiji)<->AS38198 adjacency** (after GU via Level 3/Lumen+Telstra Global and MP via Hurricane Electric): `AS9249 -> AS38442 (Vodafone Fiji) -> AS132528 -> AS45355 -> AS38198`, RIS-agreeing with the identical exact match (1,321). **A third occurrence of AS132528 (Digicel Australia/Telstra backbone) at Equinix Sydney**, confirmed directly this time (`ixp_crossings` non-empty for both probes, unlike the MP-sourced entry where it only appeared as an intermediate hop).
 
 Per the established convention, added as a new entry. Called `mark_corridor_tested(9249, 38198)`. Verified: module imports cleanly (33 entries, up from 32); regenerated ASCII/HTML reports (render correctly) and the geographic map. Regenerated the corridor backlog: candidate count dropped 984 -> 980.
+
+---
+
+**Next corridor pulled: AS9249 (Telecom Vanuatu) -> AS38227 (a distinct Samoa ASN).** Reached the literal target directly, both probes. `has_routing_loop` correctly returned `False`.
+
+**A genuinely new adjacency, not seen before**: `AS9249 -> AS38442 (Vodafone Fiji) -> AS132528 (Digicel Australia/Telstra backbone, crossing Equinix Sydney -- a **fourth** occurrence of this infrastructure this session) -> AS38800 -> AS38227`. Checked both ASNs' holder names before writing this up: AS38800 is **Digicel Samoa Ltd**, AS38227 is **Computer Services Limited (CSL)**, Samoa's incumbent -- a domestic (intra-Samoa) relationship. RIS agrees with an *exact* match (990) -- AS38800 is AS38227's *only* RIS-observed neighbor at all.
+
+**Recognized this as the `ConfirmedLocalTransit` shape**: an in-fishbowl Pacific carrier (Digicel Samoa) acting as a real transit waypoint for another Pacific carrier's network (CSL Samoa), for traffic originating from a third economy (Vanuatu) -- the same pattern already established for ONATI<->Cook-Islands and FINTEL<->Tuvalu, but at the intra-country level rather than inter-economy, a new variant worth keeping distinct.
+
+Added as a new entry. Called `mark_corridor_tested(9249, 38227)`. Verified: module imports cleanly (12 entries, up from 11); regenerated ASCII/HTML reports (render correctly) and the geographic map (renders as a short/zero-length line since both endpoints are Samoa, consistent with the existing intra-Kiribati entries' pattern). Regenerated the corridor backlog: candidate count dropped 980 -> 979.

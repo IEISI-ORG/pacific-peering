@@ -1198,3 +1198,10 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   Telstra backbone) at Equinix Sydney, this time with a direct
   ixp_crossings match. Backlog: 984 -> 980. First tranche run under
   the newly-started dynamic /loop.
+- feat(analysis): add WS(AS38800)->WS(AS38227) `ConfirmedLocalTransit`
+  entry, a genuinely new domestic adjacency -- Digicel Samoa acting
+  as real transit for CSL Samoa (Samoa's incumbent), for traffic
+  from a third economy (Vanuatu). RIS agrees exactly (990). Fourth
+  occurrence of AS132528 (Digicel Australia/Telstra backbone) at
+  Equinix Sydney this session, further up the same path. Backlog:
+  980 -> 979.

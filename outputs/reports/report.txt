@@ -1,6 +1,6 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-09-15T06:39:58.213082+00:00                  
+                 Generated: 2026-09-15T06:44:30.554831+00:00                  
 ==============================================================================
 
 SUMMARY
@@ -149,6 +149,9 @@ AS7131 (PTI Pacifica Inc., MP) -> AS55722 (Cenpac Net Inc, NR)
 AS154100 (BNL Tarawa, KI) -> AS134783 (Amalgamated Telecom Holdings Kiribati Ltd, KI)
     RIS observation count: 1392  [measurement 211506747, vantage: GU]
     Pulled from the corridor backlog: AS3605 (Guam Cablevision) -> AS134783 (ATHKL's other ASN, sibling of AS4865) -- a fresh GU<->KI pair, distinct from the AS132486 target tested last firing. **A third instance of the identical Australia/Starlink satellite chain**: AS3605 -> AS7578/AS137409 (GSL Networks, Australia) -> AS14593 (SpaceX Starlink) -> AS154100 (BNL Tarawa) -> target never resolved. This time, though, it's a **genuinely new confirmed adjacency**, not a repeat corroboration of the AS132486 pair: checked AS134783's own RIS neighbor list directly -- AS154100 is its dominant relationship (1,392 of roughly 1,806 total observations), an *exact* match to what this traceroute found. BNL Tarawa is evidently a real, general-purpose intra-Kiribati transit provider, not narrowly tied to one specific downstream customer -- this is the *second* distinct Kiribati ASN now confirmed reachable through it, both via the identical Australia-then-Starlink satellite ingress path. **Second independent corroboration** (measurement 211594373, MP/AS7131 -> KI/AS134783, pulled from the corridor backlog as a fresh MP<->KI economy pair): both probes show the identical chain -- AS7131 -> AS7578/AS137409 (GSL Networks, Australia) -> AS14593 (SpaceX Starlink) -> AS154100 (BNL Tarawa) -> target never resolved, identical RIS match (1,392). A second geographically distinct source (CNMI, after Guam) confirming this specific adjacency, not just the general Starlink-chain ingress pattern.
+AS38800 (Digicel Samoa Ltd, WS) -> AS38227 (Computer Services Limited (CSL), WS)
+    RIS observation count: 990  [measurement 211629998, vantage: VU]
+    Sourced from AS9249 (Telecom Vanuatu) toward AS38227 -- a fresh VU<->WS pair, and a genuinely new adjacency this project hadn't recorded before. Both probes fully contiguous, target reached directly: AS9249 -> AS38442 (Vodafone Fiji) -> AS132528 (Digicel Australia/Telstra backbone, crossing Equinix Sydney -- a **fourth** occurrence of this same real infrastructure this session) -> **AS38800 (Digicel Samoa Ltd)** -> AS38227 (Computer Services Limited, Samoa's incumbent). Upstream of the target is AS38800, RIS-agreeing with an *exact* match (990) -- checked directly: AS38800 is AS38227's *only* RIS-observed neighbor at all. A domestic (intra-Samoa) adjacency, the same shape as the established ONATI<->Cook-Islands and FINTEL<->Tuvalu patterns: an in-fishbowl Pacific carrier (here, Digicel Samoa) acting as a real transit waypoint for another Pacific carrier's network (CSL Samoa), for traffic originating from a third economy (Vanuatu) -- another real data point for regional-hub structure within the fishbowl, this time at the intra-country level rather than inter-economy.
 
 CANDIDATE PEERING (strong traceroute signal, RIS disagrees -- unconfirmed)
 ==============================================================================

@@ -611,4 +611,37 @@ CONFIRMED_LOCAL_TRANSIT: tuple[ConfirmedLocalTransit, ...] = (
             "ingress pattern."
         ),
     ),
+    ConfirmedLocalTransit(
+        provider_cc="WS",
+        provider_asn=38800,
+        provider_name="Digicel Samoa Ltd",
+        customer_cc="WS",
+        customer_asn=38227,
+        customer_name="Computer Services Limited (CSL)",
+        measurement_id=211629998,
+        vantage_point_cc="VU",
+        ris_observation_count=990,
+        note=(
+            "Sourced from AS9249 (Telecom Vanuatu) toward AS38227 -- a "
+            "fresh VU<->WS pair, and a genuinely new adjacency this "
+            "project hadn't recorded before. Both probes fully "
+            "contiguous, target reached directly: AS9249 -> AS38442 "
+            "(Vodafone Fiji) -> AS132528 (Digicel Australia/Telstra "
+            "backbone, crossing Equinix Sydney -- a **fourth** occurrence "
+            "of this same real infrastructure this session) -> "
+            "**AS38800 (Digicel Samoa Ltd)** -> AS38227 (Computer "
+            "Services Limited, Samoa's incumbent). Upstream of the target "
+            "is AS38800, RIS-agreeing with an *exact* match (990) -- "
+            "checked directly: AS38800 is AS38227's *only* RIS-observed "
+            "neighbor at all. A domestic (intra-Samoa) adjacency, the "
+            "same shape as the established ONATI<->Cook-Islands and "
+            "FINTEL<->Tuvalu patterns: an in-fishbowl Pacific carrier "
+            "(here, Digicel Samoa) acting as a real transit waypoint for "
+            "another Pacific carrier's network (CSL Samoa), for traffic "
+            "originating from a third economy (Vanuatu) -- another real "
+            "data point for regional-hub structure within the fishbowl, "
+            "this time at the intra-country level rather than "
+            "inter-economy."
+        ),
+    ),
 )
