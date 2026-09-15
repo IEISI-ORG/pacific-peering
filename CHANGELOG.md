@@ -1580,3 +1580,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   reproduction of the identical dead-end pattern toward Kiribati
   from this probe, now well-established as direction-specific
   rather than a one-off. Not filed. Backlog: 684 -> 683.
+- chore: GU(AS17456)->KI(AS154100) marked tested using the existing
+  diagnostic measurement from two tranches ago, avoiding a redundant
+  duplicate traceroute. Backlog: 683 -> 682. AS17456 now exhausted;
+  AS17828 (PNG DataCo) is the sole leading source.

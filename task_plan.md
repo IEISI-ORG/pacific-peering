@@ -1916,3 +1916,9 @@ Not filed in any dataclass -- no hop resolved to any ASN in either attempt, so t
 **This is now a robust, three-times-reproduced pattern** (AS132486, the AS154100 diagnostic, and now AS134783 -- all Kiribati-direction targets, all from this same probe), while the same probe cleanly traced 20 hops toward Niue. A genuine, reproducible direction-specific silence from AS17456 toward Kiribati, not a one-off artifact.
 
 Not filed in any dataclass. Called `mark_corridor_tested(17456, 134783)`. No report/map regeneration needed. Regenerated the corridor backlog: candidate count dropped 684 -> 683.
+
+---
+
+**Next corridor pulled: AS17456 (Pacific Data Systems, Guam) -> AS154100 (BNL Tarawa, targeted directly).** This exact pair was already tested two tranches ago as the diagnostic check (measurement 211778709) confirming the Kiribati-direction silence was direction-specific, not address-specific -- reused that existing result rather than firing a redundant duplicate traceroute. Called `mark_corridor_tested(17456, 154100)` directly.
+
+Not filed in any dataclass (same total dead-end already documented). No report/map regeneration needed. Regenerated the corridor backlog: candidate count dropped 683 -> 682. **AS17456's testable corridors are now exhausted** -- AS17828 (PNG DataCo) is the sole leading source going forward.
