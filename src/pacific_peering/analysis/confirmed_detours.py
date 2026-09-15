@@ -708,4 +708,53 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
             "presences for this particular path."
         ),
     ),
+    ConfirmedDetour(
+        source_cc="MP",
+        target_cc="PG",
+        target_asn=17828,
+        detour_ix_name="Equinix Sydney",
+        detour_hub="Sydney",
+        measurement_id=211552535,
+        ris_observation_count=1283,
+        note=(
+            "PTI Pacifica (AS7131, CNMI) -> PNG DataCo (AS17828) -- a fresh "
+            "MP<->PG pair, landing on this project's very first-ever "
+            "confirmed finding (originally GU/AS3605->PG/AS17828, "
+            "measurement 210901499), now independently reinforced a "
+            "**second** time from a genuinely different source economy. "
+            "Three probes requested; one (65653) was a complete dead end "
+            "from the very first hop (only its own private address "
+            "resolved, then total silence for the rest of that probe's own "
+            "path) -- checked directly rather than assumed corridor-wide: "
+            "the other two probes both worked cleanly, so this reads as a "
+            "probe-specific local issue, not a property of the corridor "
+            "itself. Both working probes: AS7131 -> AS6939 (Hurricane "
+            "Electric) -> [gap] -> AS17828, upstream of target AS6939, "
+            "RIS-agreeing with an *exact* match (1,283) -- identical count "
+            "to the original finding. **Real IXP crossing confirmed "
+            "directly this time** (`ixp_crossings` non-empty for both "
+            "probes): probe 60689 shows both AS6939 and AS17828 as members "
+            "at the same Equinix Sydney fabric hop; probe 62689 "
+            "independently resolves AS17828 itself via a PeeringDB netixlan "
+            "match at the same exchange. `has_routing_loop` flagged probe "
+            "60689 `True` on a first pass -- checked directly before "
+            "trusting it: the 'repeat' is a single near-destination address "
+            "(202.165.198.250, inside AS17828's own announced range) "
+            "replying at two consecutive hops with stable, non-climbing "
+            "RTT (229ms/240ms) right before the literal queried address "
+            "goes dark -- the same ordinary near-destination ICMP-silence "
+            "shape seen throughout this session, not the AS9241/Hurricane-"
+            "Electric loop signature (which showed RTT climbing well past "
+            "290ms across *multiple* consecutive hops). A real limit of "
+            "the current heuristic worth noting for next time: it only "
+            "clears a repeat as safe when the *literal* queried address "
+            "appears somewhere in the hops, but a near-destination address "
+            "inside the target's own announced range that still isn't the "
+            "literal target can trigger a false positive -- caught here by "
+            "checking the underlying hop data directly rather than trusting "
+            "the flag at face value, not by a code change (no live "
+            "second data point to refine against yet, unlike the original "
+            "false-positive fix)."
+        ),
+    ),
 )

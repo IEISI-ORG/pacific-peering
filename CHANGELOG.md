@@ -996,3 +996,15 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   session's earlier NC->GU Superloop dead end (unfileable, RIS
   silent), this one is doubly corroborated on both sides -- a clean
   ConfirmedDetour. Backlog: 1107 -> 1090.
+- feat(analysis): confirm MP(AS7131, CNMI)->PG(AS17828) via Equinix
+  Sydney -- a second independent confirmation of this project's
+  very first-ever finding (AS6939<->AS17828), from a genuinely
+  different source economy. RIS agrees exactly (1,283), and
+  `ixp_crossings` directly confirms both ASNs as members at the same
+  Sydney fabric hop this time. One of three probes was a
+  probe-specific dead end from the first hop, unrelated to the
+  corridor. `has_routing_loop` false-positived on a near-destination
+  (but not literal-target) repeated address with stable RTT -- caught
+  by checking the raw hops directly, documented as a known heuristic
+  limit rather than silently patched (no second data point yet to
+  refine against). Backlog: 1090 -> 1060.
