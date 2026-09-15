@@ -1634,3 +1634,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   AS6453<->AS24439 (after GU, MP, VU, PF, CK). RIS agrees exactly
   (997). Geolocated correctly from the start (Los Angeles, then
   Piti/Guam). Backlog: 550 -> 548.
+- docs(analysis): PG(AS17828)->FM(AS38875) fifth source economy for
+  the FSM sibling-substitution corridor (after GU, MP, PF, CK). RIS
+  disagrees as expected; crosses Any2West again. Kept as candidate.
+  Backlog: 548 -> 547.

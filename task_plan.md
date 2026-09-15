@@ -2008,3 +2008,11 @@ Added as a new entry. Called `mark_corridor_tested(17828, 38198)`. Verified: mod
 Sixth independent confirmation of the AS6453(Tata)<->AS24439 adjacency (after GU, MP, VU, PF, CK): `AS17828 -> AS4826 (Vocus Connect) -> AS174 (Cogent) -> AS6453`, target never resolved, RIS-agreeing with the identical exact match (997). **Geolocated with `hop_geolocation` from the start**, per the established discipline for this specific corridor: the resolved Tata hops are the exact same addresses as the already-corrected PF and CK entries -- Los Angeles, then Piti, Guam.
 
 Added as a new entry. Called `mark_corridor_tested(17828, 24439)`. Verified: module imports cleanly (68 entries, up from 67); regenerated ASCII/HTML reports (render correctly) and the geographic map. Regenerated the corridor backlog: candidate count dropped 550 -> 548.
+
+---
+
+**Next corridor pulled: AS17828 (PNG DataCo) -> AS38875 (FSM Telecommunications Corporation).** `has_routing_loop` correctly returned `False`.
+
+Fifth independent source economy for the recurring FSM sibling-substitution corridor (after GU, MP, PF, CK): `AS17828 -> AS4826 (Vocus Connect) -> AS9246 (Teleguam Holdings/GTA) -> AS139759`, contiguous throughout, target never resolving. `ris_agrees: false` on the corrected sibling adjacency, matching every prior instance. Crosses Any2West again -- the same exchange as the PF and CK entries.
+
+Added as a new `CandidatePeering` entry. Called `mark_corridor_tested(17828, 38875)`. Verified: module imports cleanly (10 entries, up from 9); regenerated ASCII/HTML reports (render correctly); map unaffected. Regenerated the corridor backlog: candidate count dropped 548 -> 547.

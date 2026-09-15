@@ -408,4 +408,28 @@ CANDIDATE_PEERING: tuple[CandidatePeering, ...] = (
             "principle."
         ),
     ),
+    CandidatePeering(
+        upstream_cc="GU",
+        upstream_asn=9246,
+        upstream_name="Teleguam Holdings, LLC (GTA)",
+        target_cc="FM",
+        target_asn=38875,
+        target_name="FSM Telecommunications Corporation",
+        measurement_id=211968044,
+        vantage_point_cc="PG",
+        probe_agreement="1/3 probes",
+        note=(
+            "A fifth independent source economy for this project's "
+            "recurring FSM sibling-substitution corridor (after GU, MP, "
+            "PF, and CK), this time sourced from AS17828 (PNG DataCo). "
+            "Identical shape to every prior instance: `AS17828 -> "
+            "AS4826 (Vocus Connect) -> AS9246 (Teleguam Holdings/GTA) "
+            "-> AS139759`, contiguous throughout, the literal target "
+            "never resolving. `ris_agrees: false` on the corrected "
+            "sibling adjacency, matching every prior instance. Crosses "
+            "**Any2West** again (`ixp_crossings` confirms it) -- the "
+            "same exchange as the PF and CK entries. Kept as a "
+            "candidate, not promoted, per the standing principle."
+        ),
+    ),
 )
