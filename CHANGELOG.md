@@ -846,3 +846,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   Cablevision, is Nauru's real upstream. Added as a new
   ConfirmedLocalTransit entry; marked tested; backlog regenerated
   (1178 -> 1173).
+- Sourced AS3605 toward AS55885 (Niue) -- a fresh GU<->NU pair.
+  Fully contiguous to the literal target via AS9471 (ONATI), landing
+  on the already-confirmed Niue<->ONATI relationship (third
+  independent-source confirmation of it this session). Added as a
+  corroboration note, not a new entry; marked tested; backlog
+  regenerated (1173 -> 1171).

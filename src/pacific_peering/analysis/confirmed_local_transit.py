@@ -200,7 +200,21 @@ CONFIRMED_LOCAL_TRANSIT: tuple[ConfirmedLocalTransit, ...] = (
             "other identity -- recorded as confirmed on that basis, with the "
             "nuance stated plainly rather than either overclaiming a literal "
             "ASN-for-ASN match or discarding a real, well-evidenced finding over "
-            "a technicality of which of one company's two ASNs a hop resolved to."
+            "a technicality of which of one company's two ASNs a hop resolved to. "
+            "**Third independent-source corroboration, from the corridor "
+            "backlog** (measurement 211495010, GU/AS3605 -> NU/AS55885, pulled "
+            "as a fresh GU<->NU economy pair): both probes fully contiguous all "
+            "the way to the literal target -- AS3605 -> AS3356 (Level 3/Lumen) "
+            "-> AS3257 (GTT) -> **AS9471** -> AS55885, landing directly on this "
+            "exact adjacency again, same sibling-ASN basis (`ris_agrees: false` "
+            "on the strict AS9471/AS55885 pair, same as every prior instance). "
+            "Same pattern as the AS9471/ONATI<->Cook-Islands and "
+            "AS9241/FINTEL<->Tuvalu corroborations from two tranches ago -- a "
+            "**third** distinct case this session of an in-fishbowl Pacific "
+            "carrier (here, ONATI reaching its own direct customer rather than "
+            "transiting to a further target) confirmed from an independent "
+            "source network, reinforcing rather than merely repeating the "
+            "original finding."
         ),
     ),
     ConfirmedLocalTransit(
