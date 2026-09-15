@@ -50,7 +50,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
 <body>
 <div class="wrap">
     <h1>Pacific Peering — Regional Routing Report</h1>
-    <div class="meta">Generated 2026-09-15T10:51:36.182921+00:00</div>
+    <div class="meta">Generated 2026-09-15T11:08:54.441643+00:00</div>
 
     <div class="headline-banner">
         <span class="value">68%</span>
@@ -420,6 +420,13 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <div>RIS observation count: 616
                 &middot; measurement 211706787</div>
             <div class="note">ONATI (AS9471, French Polynesia) -&gt; a distinct Nauru ASN (AS140504) -- the exact lead flagged in an earlier VU-sourced tranche this session. First address dead-ended the same way as that prior attempt: all 3 probes resolved to AS36149 (Hawaiian Telcom) with `ris_agrees: False`. Applied the standing retry policy against a different cached prefix. **The retry reached AS140504&#x27;s real relationship directly**: all 3 probes `AS9471 -&gt; AS6939 (Hurricane Electric) -&gt; AS36149 (Hawaiian Telcom) -&gt; [gap] -&gt; AS12684`, BGP-resolved and RIS-agreeing with an *exact* match (616) -- the second entry in AS140504&#x27;s own two-relationship RIS neighbor list (`{132528: 1032, 12684: 616}`), leaving only AS132528 as the still-untested one. Checked AS12684&#x27;s holder identity directly: **SES ASTRA S.A.**, a major geostationary satellite operator -- the same carrier flagged, but never confirmed, in an earlier Cook Islands tranche (that attempt stalled at generic transit and never got close enough to confirm or deny the relationship; a direct-source test was later ruled out entirely, since AS12684 has zero connected Atlas probes, all five ever registered against it Abandoned). **This is the first traceroute-confirmed SES Astra relationship this project has recorded**, closing that open thread from the other direction instead. Hub attribution: checked AS12684&#x27;s own PeeringDB record directly first -- zero registered facilities at all (expected for a satellite operator with no physical colocation), so attributed the hub from AS36149&#x27;s own verified facility list instead (CoreSite LA1/LA2, Los Angeles) -- the immediately preceding carrier in the resolved chain. **Caught a real query bug before trusting any of this**: an initial PeeringDB facility lookup using `asn=` as the netfac filter silently returned unfiltered, unrelated global data for both AS12684 and AS36149 -- re-queried using each network&#x27;s actual `net_id` (via `/api/net?asn=`) and got correct, small, verifiable facility lists instead.</div>
+        </div><div class="detour-card">
+            <div class="headline">CK -&gt; AS
+                (AS9751): detours via AS174 (Cogent Communications) -- global transit, not a named exchange crossing
+                (Tokyo)</div>
+            <div>RIS observation count: 1055
+                &middot; measurement 211719803</div>
+            <div class="note">Cook Islands (AS10131) -&gt; American Samoa (AS9751) -- a fresh CK&lt;-&gt;AS pair, the first firing genuinely sourced from AS10131 to actually reach a target. Fourth confirmation for this specific target, via the same ultimate carrier (Cogent) as the GU and PF entries, but with a notable intermediate hop: `AS10131 -&gt; AS9471 (ONATI, French Polynesia) -&gt; AS174 -&gt; AS9751` -- Cook Islands&#x27; traffic transits ONATI&#x27;s own network before reaching Cogent, the same regional-hub role already established for ONATI elsewhere this session (Niue, various FSM/Kiribati corridors). Only 1 of 3 requested probes returned; checked `participant_count` directly (1, not 3) -- a genuine single-probe assignment, consistent with every other AS10131-sourced measurement this session. RIS agrees with the identical *exact* match (1,055) already on record for this adjacency. No IXP crossing; kept `detour_hub` as Tokyo, matching every prior entry for this target.</div>
         </div>
 
     <h2>Confirmed local transit (RIS + Atlas both agree, stays in-fishbowl)</h2>

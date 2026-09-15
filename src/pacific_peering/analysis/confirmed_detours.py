@@ -1563,4 +1563,32 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
             "instead."
         ),
     ),
+    ConfirmedDetour(
+        source_cc="CK",
+        target_cc="AS",
+        target_asn=9751,
+        detour_ix_name="AS174 (Cogent Communications) -- global transit, not a named "
+        "exchange crossing",
+        detour_hub="Tokyo",
+        measurement_id=211719803,
+        ris_observation_count=1055,
+        note=(
+            "Cook Islands (AS10131) -> American Samoa (AS9751) -- a fresh "
+            "CK<->AS pair, the first firing genuinely sourced from AS10131 "
+            "to actually reach a target. Fourth confirmation for this "
+            "specific target, via the same ultimate carrier (Cogent) as "
+            "the GU and PF entries, but with a notable intermediate hop: "
+            "`AS10131 -> AS9471 (ONATI, French Polynesia) -> AS174 -> "
+            "AS9751` -- Cook Islands' traffic transits ONATI's own network "
+            "before reaching Cogent, the same regional-hub role already "
+            "established for ONATI elsewhere this session (Niue, various "
+            "FSM/Kiribati corridors). Only 1 of 3 requested probes "
+            "returned; checked `participant_count` directly (1, not 3) -- "
+            "a genuine single-probe assignment, consistent with every "
+            "other AS10131-sourced measurement this session. RIS agrees "
+            "with the identical *exact* match (1,055) already on record "
+            "for this adjacency. No IXP crossing; kept `detour_hub` as "
+            "Tokyo, matching every prior entry for this target."
+        ),
+    ),
 )

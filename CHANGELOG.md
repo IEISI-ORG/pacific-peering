@@ -1462,3 +1462,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   addendum above. Scoped narrowly to the specific confirmed
   facility, not the whole carrier, mirroring `ixp_lan_registry.py`'s
   governance style.
+- feat(analysis): confirm CK(AS10131)->AS(AS9751) via Cogent --
+  fourth confirmation of AS174<->AS9751 (after GU, VU, PF). RIS
+  agrees exactly (1,055), transiting ONATI's own network. Backlog:
+  800 -> 798.
