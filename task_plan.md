@@ -1930,3 +1930,7 @@ Not filed in any dataclass (same total dead-end already documented). No report/m
 **The fifth time this session hitting the exact same known `202.137.178.x` gap zone** (after loop tranche 5, PTI Pacifica/AS7131, PF/AS9471, and CK/AS10131): hops 10-11 land on the identical addresses (`202.137.178.160`, `.55`). This time via a fresh carrier chain: `AS17828 -> AS4826 (Vocus Connect) -> AS1221 (Telstra domestic) -> AS4637 (Telstra Global)`, target technically reached at hop 15 but with real unresolved hops in between. `ris_agrees: False` -- AS4638's only real neighbor remains AS45349.
 
 Not filed in any dataclass, consistent with the established pattern. Called `mark_corridor_tested(17828, 4638)`. No report/map regeneration needed. Regenerated the corridor backlog: candidate count dropped 682 -> 681.
+
+---
+
+**[Standing 8-hourly backlog regeneration check, user-directed.]** Ran `pacific-peering-corridor-backlog` directly. Result: 681 candidates, **0 new-probe, 0 new-RIS-relationship** flags -- diffed `corridor_backlog.md` directly to confirm: the only change is the regeneration timestamp, candidate count and the full pending list are byte-identical to the state already produced by the last tranche's own implicit regeneration. Nothing strange, nothing anomalous, nothing warranting owner consultation this cycle -- a genuinely uneventful check, logged per the standing "keep track of new probes and RIS changes" order.
