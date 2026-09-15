@@ -1425,3 +1425,10 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   half of AS140504's two-relationship neighbor list. Caught and
   fixed a PeeringDB query bug (wrong netfac filter param) before
   trusting hub-attribution evidence. Backlog: 806 -> 803.
+- docs(analysis): PF(AS9471)->KI(AS154100) fifth corroboration of
+  the direct AS154100<->AS14593 relationship. RIS agrees exactly
+  (361). Also surfaced a third distinct routing loop this session,
+  this time inside Starlink's own network (AS14593) -- flagged to
+  the project owner per the standing anomaly rule; did not affect
+  this probe's own RIS agreement, which resolved before the loop.
+  Backlog: 803 -> 802.
