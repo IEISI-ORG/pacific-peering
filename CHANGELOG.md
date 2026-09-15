@@ -852,3 +852,10 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   independent-source confirmation of it this session). Added as a
   corroboration note, not a new entry; marked tested; backlog
   regenerated (1173 -> 1171).
+- Sourced AS3605 toward AS55943 (ONATI's other ASN, French
+  Polynesia) -- GU<->PF had a dead-end via AS9471 earlier this
+  session, but that never excluded the economy pair, so retesting the
+  sibling ASN was worthwhile. Real, different result: exact RIS match
+  (1,657) via AS3257 (GTT Communications), a completely different
+  carrier than the earlier dead-end. Added as a new ConfirmedDetour
+  entry; marked tested; backlog regenerated (1171 -> 1151).

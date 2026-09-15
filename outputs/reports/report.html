@@ -47,7 +47,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
 <body>
 <div class="wrap">
     <h1>Pacific Peering — Regional Routing Report</h1>
-    <div class="meta">Generated 2026-09-15T00:15:44.553209+00:00</div>
+    <div class="meta">Generated 2026-09-15T00:25:46.085620+00:00</div>
 
     <div class="stat-row"><div class="stat-tile"><div class="value">20</div><div class="label">Economies in scope</div></div><div class="stat-tile"><div class="value">163</div><div class="label">ASNs in scope</div></div><div class="stat-tile"><div class="value">124</div><div class="label">ASNs w/ RIS neighbor</div></div><div class="stat-tile"><div class="value">38</div><div class="label">ASNs w/ IXP membership</div></div><div class="stat-tile"><div class="value">22</div><div class="label">ASNs w/ facility presence</div></div><div class="stat-tile"><div class="value">10/21</div><div class="label">IXPs in/out of fishbowl</div></div></div>
 
@@ -157,6 +157,13 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <div>RIS observation count: 1652
                 &middot; measurement 211488835</div>
             <div class="note">Guam Cablevision (AS3605) -&gt; Solomon Telekom Co Ltd (AS45891) -- a fresh GU&lt;-&gt;SB economy pair. Checked AS45891&#x27;s holder name directly before firing, given this session&#x27;s now-standard caution after the AS24013 exclusion: &quot;SBT-AS-AP - Solomon Telekom Co Ltd&quot;, a real incumbent, and the target IP resolves inside real APNIC space (202.1.164.0/24) -- no anomaly. Eighth occurrence of the slow-scheduling pattern, resolved on a longer poll as before. Both probes: AS3605 -&gt; AS2497 (IIJ, Japan) -&gt; AS4637 (Telstra Global) -&gt; AS139609. The literal target (AS45891) never itself resolved -- but this is not a sibling-ASN case like the FSM/ONATI ones: AS139609 is a genuinely different, real entity, &quot;Solomon Islands Submarine Cable Company&quot; (SISCC), the actual operator of Solomon Islands&#x27; international submarine cable infrastructure. Checked directly: AS45891&#x27;s *only* RIS-observed neighbor at all is AS139609 (1,652 observations), an *exact* match to what this traceroute found -- Solomon Telekom&#x27;s real, retail-facing network depends entirely on SISCC&#x27;s cable infrastructure for international connectivity, a completely sensible real-world relationship (retail ISP -&gt; the country&#x27;s own submarine cable operator), cleanly confirmed without needing any sibling-identity substitution.</div>
+        </div><div class="detour-card">
+            <div class="headline">GU -&gt; PF
+                (AS55943): detours via AS3257 (GTT Communications) -- global transit, not a named exchange crossing
+                (Tokyo)</div>
+            <div>RIS observation count: 1657
+                &middot; measurement 211499778</div>
+            <div class="note">Guam Cablevision (AS3605) -&gt; ONATI&#x27;s other ASN (AS55943, French Polynesia). GU&lt;-&gt;PF had already been tested once this session via AS9471 (ONATI&#x27;s primary identity) -- a genuine dead-end reaching only Hurricane Electric in Tokyo before going dark -- but that dead-end wasn&#x27;t added to any dataclass, so it didn&#x27;t exclude the economy pair; targeting ONATI&#x27;s *other* ASN specifically was worth trying rather than assuming the same result. It wasn&#x27;t the same result. Both probes: the target itself never resolved (ordinary ICMP filtering, the established pattern), but the last reached ASN is **AS3257 (GTT Communications)** -- a completely different carrier than the earlier AS9471 attempt&#x27;s Hurricane Electric. RIS agrees with an *exact* match (1,657) -- checked against AS55943&#x27;s full neighbor list: AS3257 is its dominant relationship (1,657 of 1,662 total observations). A real, clean confirmation, distinct in both target identity and carrier from the earlier dead-end -- illustrating why re-testing a different ASN within an already-attempted economy can be worth it when the first attempt was inconclusive rather than confirmed either way.</div>
         </div>
 
     <h2>Confirmed local transit (RIS + Atlas both agree, stays in-fishbowl)</h2>

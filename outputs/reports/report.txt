@@ -1,6 +1,6 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-09-15T00:15:44.419512+00:00                  
+                 Generated: 2026-09-15T00:25:45.949439+00:00                  
 ==============================================================================
 
 SUMMARY
@@ -59,6 +59,9 @@ GU -> WF (AS45879): detours via AS5511 (Opentransit Orange S.A.), via AS2497 (II
 GU -> SB (AS45891): detours via AS4637 (Telstra Global), via AS2497 (IIJ, Japan) -- global transit, not a named exchange crossing (Tokyo)
     RIS observation count: 1652  [measurement 211488835]
     Guam Cablevision (AS3605) -> Solomon Telekom Co Ltd (AS45891) -- a fresh GU<->SB economy pair. Checked AS45891's holder name directly before firing, given this session's now-standard caution after the AS24013 exclusion: "SBT-AS-AP - Solomon Telekom Co Ltd", a real incumbent, and the target IP resolves inside real APNIC space (202.1.164.0/24) -- no anomaly. Eighth occurrence of the slow-scheduling pattern, resolved on a longer poll as before. Both probes: AS3605 -> AS2497 (IIJ, Japan) -> AS4637 (Telstra Global) -> AS139609. The literal target (AS45891) never itself resolved -- but this is not a sibling-ASN case like the FSM/ONATI ones: AS139609 is a genuinely different, real entity, "Solomon Islands Submarine Cable Company" (SISCC), the actual operator of Solomon Islands' international submarine cable infrastructure. Checked directly: AS45891's *only* RIS-observed neighbor at all is AS139609 (1,652 observations), an *exact* match to what this traceroute found -- Solomon Telekom's real, retail-facing network depends entirely on SISCC's cable infrastructure for international connectivity, a completely sensible real-world relationship (retail ISP -> the country's own submarine cable operator), cleanly confirmed without needing any sibling-identity substitution.
+GU -> PF (AS55943): detours via AS3257 (GTT Communications) -- global transit, not a named exchange crossing (Tokyo)
+    RIS observation count: 1657  [measurement 211499778]
+    Guam Cablevision (AS3605) -> ONATI's other ASN (AS55943, French Polynesia). GU<->PF had already been tested once this session via AS9471 (ONATI's primary identity) -- a genuine dead-end reaching only Hurricane Electric in Tokyo before going dark -- but that dead-end wasn't added to any dataclass, so it didn't exclude the economy pair; targeting ONATI's *other* ASN specifically was worth trying rather than assuming the same result. It wasn't the same result. Both probes: the target itself never resolved (ordinary ICMP filtering, the established pattern), but the last reached ASN is **AS3257 (GTT Communications)** -- a completely different carrier than the earlier AS9471 attempt's Hurricane Electric. RIS agrees with an *exact* match (1,657) -- checked against AS55943's full neighbor list: AS3257 is its dominant relationship (1,657 of 1,662 total observations). A real, clean confirmation, distinct in both target identity and carrier from the earlier dead-end -- illustrating why re-testing a different ASN within an already-attempted economy can be worth it when the first attempt was inconclusive rather than confirmed either way.
 
 CONFIRMED LOCAL TRANSIT (RIS + Atlas both agree, stays in-fishbowl)
 ==============================================================================

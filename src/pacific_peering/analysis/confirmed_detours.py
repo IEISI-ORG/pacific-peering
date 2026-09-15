@@ -530,4 +530,34 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
             "any sibling-identity substitution."
         ),
     ),
+    ConfirmedDetour(
+        source_cc="GU",
+        target_cc="PF",
+        target_asn=55943,
+        detour_ix_name="AS3257 (GTT Communications) -- global transit, not a named "
+        "exchange crossing",
+        detour_hub="Tokyo",
+        measurement_id=211499778,
+        ris_observation_count=1657,
+        note=(
+            "Guam Cablevision (AS3605) -> ONATI's other ASN (AS55943, French "
+            "Polynesia). GU<->PF had already been tested once this session via "
+            "AS9471 (ONATI's primary identity) -- a genuine dead-end reaching "
+            "only Hurricane Electric in Tokyo before going dark -- but that "
+            "dead-end wasn't added to any dataclass, so it didn't exclude the "
+            "economy pair; targeting ONATI's *other* ASN specifically was "
+            "worth trying rather than assuming the same result. It wasn't the "
+            "same result. Both probes: the target itself never resolved "
+            "(ordinary ICMP filtering, the established pattern), but the last "
+            "reached ASN is **AS3257 (GTT Communications)** -- a completely "
+            "different carrier than the earlier AS9471 attempt's Hurricane "
+            "Electric. RIS agrees with an *exact* match (1,657) -- checked "
+            "against AS55943's full neighbor list: AS3257 is its dominant "
+            "relationship (1,657 of 1,662 total observations). A real, clean "
+            "confirmation, distinct in both target identity and carrier from "
+            "the earlier dead-end -- illustrating why re-testing a different "
+            "ASN within an already-attempted economy can be worth it when the "
+            "first attempt was inconclusive rather than confirmed either way."
+        ),
+    ),
 )
