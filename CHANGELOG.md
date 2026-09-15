@@ -1391,3 +1391,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   this instance crosses Any2West (PeeringDB-verified), the first
   out-of-fishbowl exchange seen for this corridor vs. MARIIX/Guam IX
   previously. Backlog: 829 -> 828.
+- feat(analysis): confirm PF(AS9471)->FM(AS45193) via Any2West --
+  first traceroute to reach an FSM Telecom sibling ASN directly
+  instead of stalling on the AS139759 substitution. RIS agrees
+  exactly (1,681) on AS139759<->AS45193. Promotes the previously
+  candidate-only sibling corridor (GU, MP) to a confirmed detour.
+  Backlog: 828 -> 819.

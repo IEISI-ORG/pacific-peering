@@ -1436,4 +1436,35 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
             "corridor."
         ),
     ),
+    ConfirmedDetour(
+        source_cc="PF",
+        target_cc="FM",
+        target_asn=45193,
+        detour_ix_name="Any2West",
+        detour_hub="Los Angeles",
+        measurement_id=211689659,
+        ris_observation_count=1681,
+        note=(
+            "ONATI (AS9471, French Polynesia) -> a third FSM "
+            "Telecommunications Corporation sibling ASN (AS45193). "
+            "All 3 probes: `AS9471 -> AS6939 (Hurricane Electric) -> "
+            "AS9246 (Teleguam Holdings/GTA) -> AS139759 -> AS45193`, "
+            "fully contiguous -- **the first traceroute this project has "
+            "recorded that resolves AS45193 directly**, rather than "
+            "stalling on a sibling substitution (the shape every prior "
+            "FSM-corridor measurement has shown, all filed as "
+            "`CandidatePeering` since RIS couldn't confirm them). This "
+            "time the immediate upstream (AS139759) *does* show up in "
+            "AS45193's own RIS neighbor list, with an exact match "
+            "(1,681) -- RIS confirming the internal FSM sibling backbone "
+            "relationship (AS139759<->AS45193) directly, closing out a "
+            "pattern that had stayed candidate-only for two prior source "
+            "economies (GU, MP) and one prior PF measurement toward "
+            "AS38875 earlier in this same tranche. Crosses **Any2West** "
+            "(`ixp_crossings` confirms it for all 3 probes, member ASN "
+            "9246) -- already verified as a real PeeringDB-declared "
+            "Any2West membership for AS9246/GTA when it first surfaced "
+            "as a candidate finding minutes earlier."
+        ),
+    ),
 )
