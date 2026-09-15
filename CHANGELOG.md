@@ -1097,3 +1097,11 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   count unchanged (11). Backlog: 1013 -> 1011. Notable: the next live
   pick is now sourced from AS9249 (Vanuatu), not AS7131 -- the same
   source-diversification pattern seen once before with AS3605.
+- feat(analysis): confirm MP(AS7131, CNMI)->PF(AS55943, ONATI's
+  other ASN) -- second independent confirmation of the existing
+  GU->PF adjacency (AS3257/GTT<->AS55943). RIS agrees exactly
+  (1,657), via Cogent this time. Verified "Tokyo" still holds by
+  checking GTT's real PeeringDB facility list (genuine Tokyo and
+  Sydney presence) before reusing it. One probe false-positived
+  `has_routing_loop` on modest stable-RTT repeats. Backlog:
+  1011 -> 1007.

@@ -944,4 +944,30 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
             "false positives, not a real loop."
         ),
     ),
+    ConfirmedDetour(
+        source_cc="MP",
+        target_cc="PF",
+        target_asn=55943,
+        detour_ix_name="AS174 (Cogent Communications), then AS3257 (GTT "
+        "Communications) -- global transit, not a named exchange crossing",
+        detour_hub="Tokyo",
+        measurement_id=211585981,
+        ris_observation_count=1657,
+        note=(
+            "PTI Pacifica (AS7131, CNMI) -> ONATI's other ASN (AS55943, "
+            "French Polynesia) -- a fresh MP<->PF pair, landing on the "
+            "existing GU(AS3605)->PF adjacency (AS3257/GTT<->AS55943), a "
+            "second independent confirmation from a different source "
+            "economy. All 3 probes: AS7131 -> AS174 (Cogent Communications) "
+            "-> AS3257 (GTT Communications) -- the literal target itself "
+            "never resolved (ordinary ICMP filtering near the destination, "
+            "the established pattern), so RIS is checked against the last "
+            "reached ASN. RIS agrees with an *exact* match (1,657), "
+            "identical to the original finding -- AS3257 remains AS55943's "
+            "dominant relationship. `has_routing_loop` flagged probe "
+            "60689 `True` -- checked directly: two consecutive-address "
+            "repeats early in the path, both with modest, stable RTT, the "
+            "now-familiar ordinary-noise shape, not a real loop."
+        ),
+    ),
 )
