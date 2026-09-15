@@ -53,7 +53,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
 <body>
 <div class="wrap">
     <h1>Pacific Peering — Regional Routing Report</h1>
-    <div class="meta">Generated 2026-09-15T23:44:27.922904+00:00</div>
+    <div class="meta">Generated 2026-09-15T23:49:26.288267+00:00</div>
 
     <div class="headline-banner">
         <span class="value">68%</span>
@@ -753,6 +753,14 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
                 &middot; measurement 211968044
                 &middot; vantage point PG</div>
             <details class="note"><summary>A fifth independent source economy for this project&#x27;s recurring FSM sibling-substitution corridor (after GU, MP, PF, and CK), this time sourced from AS17828…</summary>A fifth independent source economy for this project&#x27;s recurring FSM sibling-substitution corridor (after GU, MP, PF, and CK), this time sourced from AS17828 (PNG DataCo). Identical shape to every prior instance: `AS17828 -&gt; AS4826 (Vocus Connect) -&gt; AS9246 (Teleguam Holdings/GTA) -&gt; AS139759`, contiguous throughout, the literal target never resolving. `ris_agrees: false` on the corrected sibling adjacency, matching every prior instance. Crosses **Any2West** again (`ixp_crossings` confirms it) -- the same exchange as the PF and CK entries. Kept as a candidate, not promoted, per the standing principle.</details>
+        </div><div class="candidate-card">
+            <div class="headline">AS1221 (Telstra Limited (domestic ASN),
+                PG) -&gt; AS140504
+                (Digicel Nauru Corporation, NR)</div>
+            <div>Traceroute agreement: 1/1 probe
+                &middot; measurement 211992510
+                &middot; vantage point PG</div>
+            <details class="note"><summary>Sourced from AS17828 (PNG DataCo) toward AS140504 (Digicel Nauru) -- a fresh PG&lt;-&gt;NR pair…</summary>Sourced from AS17828 (PNG DataCo) toward AS140504 (Digicel Nauru) -- a fresh PG&lt;-&gt;NR pair. Clean, direct traceroute, fully contiguous: `AS17828 -&gt; AS4826 (Vocus Connect) -&gt; AS1221 (Telstra Limited, domestic ASN) -&gt; AS140504`, the literal target resolving directly -- the first time this project has reached AS140504 via anything other than its two already-confirmed relationships (AS132528/Digicel Australia and AS12684/SES Astra). But `ris_agrees: false`: checked AS140504&#x27;s full RIS neighbor list directly -- `{132528: 1032, 12684: 616}` -- AS1221 doesn&#x27;t appear at all (checked AS1221&#x27;s own fishbowl entry too: empty neighbor list, no RIS visibility into it from any direction). Not a fishbowl-scope artifact (both ends are genuinely in-fishbowl Pacific/Nauru ASNs -- Telstra itself isn&#x27;t in-fishbowl, but the shape matches Validation Rule 4 regardless). Notable: AS1221 and AS132528 (AS140504&#x27;s real dominant neighbor) are both Telstra-operated -- a genuinely different ASN of the same corporate family reaching the same target directly, rather than the already-confirmed backbone ASN specifically. Kept as a candidate, not promoted, per the standing principle.</details>
         </div>
 
     

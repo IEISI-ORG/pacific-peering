@@ -1,6 +1,6 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-09-15T23:44:27.788356+00:00                  
+                 Generated: 2026-09-15T23:49:26.151788+00:00                  
 ==============================================================================
 
 SUMMARY
@@ -304,6 +304,9 @@ AS4826 (Vocus Connect (PNG DataCo's own known upstream), PG) -> AS17993 (Vodafon
 AS9246 (Teleguam Holdings, LLC (GTA), GU) -> AS38875 (FSM Telecommunications Corporation, FM)
     Traceroute agreement: 1/3 probes  [measurement 211968044, vantage: PG]
     A fifth independent source economy for this project's recurring FSM sibling-substitution corridor (after GU, MP, PF, and CK), this time sourced from AS17828 (PNG DataCo). Identical shape to every prior instance: `AS17828 -> AS4826 (Vocus Connect) -> AS9246 (Teleguam Holdings/GTA) -> AS139759`, contiguous throughout, the literal target never resolving. `ris_agrees: false` on the corrected sibling adjacency, matching every prior instance. Crosses **Any2West** again (`ixp_crossings` confirms it) -- the same exchange as the PF and CK entries. Kept as a candidate, not promoted, per the standing principle.
+AS1221 (Telstra Limited (domestic ASN), PG) -> AS140504 (Digicel Nauru Corporation, NR)
+    Traceroute agreement: 1/1 probe  [measurement 211992510, vantage: PG]
+    Sourced from AS17828 (PNG DataCo) toward AS140504 (Digicel Nauru) -- a fresh PG<->NR pair. Clean, direct traceroute, fully contiguous: `AS17828 -> AS4826 (Vocus Connect) -> AS1221 (Telstra Limited, domestic ASN) -> AS140504`, the literal target resolving directly -- the first time this project has reached AS140504 via anything other than its two already-confirmed relationships (AS132528/Digicel Australia and AS12684/SES Astra). But `ris_agrees: false`: checked AS140504's full RIS neighbor list directly -- `{132528: 1032, 12684: 616}` -- AS1221 doesn't appear at all (checked AS1221's own fishbowl entry too: empty neighbor list, no RIS visibility into it from any direction). Not a fishbowl-scope artifact (both ends are genuinely in-fishbowl Pacific/Nauru ASNs -- Telstra itself isn't in-fishbowl, but the shape matches Validation Rule 4 regardless). Notable: AS1221 and AS132528 (AS140504's real dominant neighbor) are both Telstra-operated -- a genuinely different ASN of the same corporate family reaching the same target directly, rather than the already-confirmed backbone ASN specifically. Kept as a candidate, not promoted, per the standing principle.
 
 ECONOMIES
 ==============================================================================

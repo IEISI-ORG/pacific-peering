@@ -1679,3 +1679,8 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - docs(analysis): PG(AS17828)->KI(AS134783) sixth corroboration of
   AS154100<->AS134783. RIS agrees exactly (1,392). Backlog:
   498 -> 497. Now fully into AS17893 (Palau NCC).
+- docs(analysis): PG(AS17828)->NR(AS140504) new candidate peering --
+  AS1221 (Telstra domestic) reaches the target directly for the
+  first time via anything other than its two confirmed relationships
+  (AS132528, AS12684). RIS disagrees; both Telstra-operated ASNs but
+  distinct. Kept as candidate. Backlog: 497 -> 494.

@@ -432,4 +432,38 @@ CANDIDATE_PEERING: tuple[CandidatePeering, ...] = (
             "candidate, not promoted, per the standing principle."
         ),
     ),
+    CandidatePeering(
+        upstream_cc="PG",
+        upstream_asn=1221,
+        upstream_name="Telstra Limited (domestic ASN)",
+        target_cc="NR",
+        target_asn=140504,
+        target_name="Digicel Nauru Corporation",
+        measurement_id=211992510,
+        vantage_point_cc="PG",
+        probe_agreement="1/1 probe",
+        note=(
+            "Sourced from AS17828 (PNG DataCo) toward AS140504 (Digicel "
+            "Nauru) -- a fresh PG<->NR pair. Clean, direct traceroute, "
+            "fully contiguous: `AS17828 -> AS4826 (Vocus Connect) -> "
+            "AS1221 (Telstra Limited, domestic ASN) -> AS140504`, the "
+            "literal target resolving directly -- the first time this "
+            "project has reached AS140504 via anything other than its "
+            "two already-confirmed relationships (AS132528/Digicel "
+            "Australia and AS12684/SES Astra). But `ris_agrees: false`: "
+            "checked AS140504's full RIS neighbor list directly -- "
+            "`{132528: 1032, 12684: 616}` -- AS1221 doesn't appear at "
+            "all (checked AS1221's own fishbowl entry too: empty "
+            "neighbor list, no RIS visibility into it from any "
+            "direction). Not a fishbowl-scope artifact (both ends are "
+            "genuinely in-fishbowl Pacific/Nauru ASNs -- Telstra itself "
+            "isn't in-fishbowl, but the shape matches Validation Rule "
+            "4 regardless). Notable: AS1221 and AS132528 (AS140504's "
+            "real dominant neighbor) are both Telstra-operated -- a "
+            "genuinely different ASN of the same corporate family "
+            "reaching the same target directly, rather than the "
+            "already-confirmed backbone ASN specifically. Kept as a "
+            "candidate, not promoted, per the standing principle."
+        ),
+    ),
 )
