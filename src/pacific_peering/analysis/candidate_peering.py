@@ -264,4 +264,40 @@ CANDIDATE_PEERING: tuple[CandidatePeering, ...] = (
             "specific source-to-target leg itself."
         ),
     ),
+    CandidatePeering(
+        upstream_cc="FJ",
+        upstream_asn=38442,
+        upstream_name="Vodafone Fiji",
+        target_cc="WS",
+        target_asn=17993,
+        target_name="Vodafone Samoa Limited",
+        measurement_id=211622554,
+        vantage_point_cc="VU",
+        probe_agreement="1/1 probe",
+        note=(
+            "Sourced from AS9249 (Telecom Vanuatu) toward AS17993 -- a "
+            "fresh VU<->WS pair. Clean, direct traceroute: AS9249 -> "
+            "AS38442 (Vodafone Fiji) -> AS17993, contiguous. The final hop "
+            "resolves via PeeringDB netixlan and lands directly inside "
+            "AS17993's own registered LAN prefix at **Equinix Sydney** "
+            "(`ixp_crossings` confirms it, AS17993 itself as the member) "
+            "-- a real, physically-instantiated presence, not an inferred "
+            "one. But `ris_agrees: false` on both sides: checked each "
+            "ASN's full RIS neighbor list directly -- AS17993's "
+            "(`{174: 1455, 6939: 150, 64073: 10, ...}`) and AS38442's "
+            "(`{4637: 707, 7473: 697, 6939: 177, 2914: 46, ...}`) -- "
+            "neither lists the other. Not a fishbowl-scope artifact (both "
+            "ends are genuinely in-fishbowl Pacific ASNs). **A "
+            "particularly well-motivated candidate, holder-name confirmed**: "
+            "AS17993 is literally \"Vodafone Samoa Limited\" -- the same "
+            "corporate brand as AS38442's \"Vodafone Fiji\", the same "
+            "shape as the already-established Digicel Fiji<->Digicel Tonga "
+            "intra-corporate transit pattern (see the GU->TO/AS38198 "
+            "`ConfirmedDetour` entry). Exactly Validation Rule 4's shape: "
+            "a real, physically-instantiated connection at a real exchange "
+            "that isn't announced anywhere RIS's route collectors can see "
+            "-- kept as a candidate, not promoted, per the standing "
+            "principle."
+        ),
+    ),
 )

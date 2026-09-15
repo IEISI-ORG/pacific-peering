@@ -1167,3 +1167,12 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   into Cogent (NTT instead of IIJ/Tokyo). Extended the existing
   `ConfirmedDetour` entry's note rather than duplicating; entry
   count unchanged (31). Backlog: 997 -> 995.
+- feat(analysis): add VU(AS9249)->WS(AS17993) CandidatePeering --
+  Vodafone Fiji directly reaching Vodafone Samoa, a clean contiguous
+  traceroute crossing a real Equinix Sydney presence (AS17993 as the
+  IXP member, confirmed via PeeringDB netixlan). RIS disagrees from
+  both sides despite both ends being in-fishbowl. Holder-name
+  confirmed as the same corporate brand on both ends, the same shape
+  as the established Digicel Fiji<->Digicel Tonga intra-corporate
+  pattern -- a well-motivated candidate, kept per Validation Rule 1.
+  Backlog: 995 -> 988.
