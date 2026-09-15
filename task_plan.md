@@ -2048,3 +2048,11 @@ Added as a new entry. Called `mark_corridor_tested(17828, 45891)`. Verified: mod
 ---
 
 **[Standing 8-hourly backlog regeneration check, user-directed.]** Ran `pacific-peering-corridor-backlog` directly. Result: 504 candidates, **0 new-probe, 0 new-RIS-relationship** flags -- diffed `corridor_backlog.md` directly to confirm: the only change is the regeneration timestamp, nothing else in the file differs from the state already produced by the last tranche's own implicit regeneration. Nothing strange, nothing anomalous, nothing warranting owner consultation this cycle.
+
+---
+
+**Next corridor pulled: AS17828 (PNG DataCo) -> AS55722 (Cenpac Net Inc, Nauru).** `has_routing_loop` correctly returned `False`.
+
+Fifth independent corroboration of AS7131's real transit-waypoint role for Nauru's international connectivity (after MP self-sourced, VU, PF, CK): `AS17828 -> AS4826 (Vocus Connect) -> AS140627 (OneQode) -> AS7131`, target never resolved, RIS-agreeing with the identical exact match (1,528). A genuinely new intermediate carrier (OneQode, after Hurricane Electric), crossing **NSW-IX Sydney** directly -- a new named exchange for this specific corridor.
+
+Extended the existing entry's note. Not a new dataclass entry -- `CONFIRMED_LOCAL_TRANSIT` count unchanged (13). Called `mark_corridor_tested(17828, 55722)`. Regenerated ASCII/HTML reports since the note text changed (render correctly); map unaffected. Regenerated the corridor backlog: candidate count dropped 504 -> 503. **AS17893 (Palau) now also appearing as a new source ASN** in the backlog.

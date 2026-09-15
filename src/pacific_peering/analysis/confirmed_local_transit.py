@@ -798,7 +798,20 @@ CONFIRMED_LOCAL_TRANSIT: tuple[ConfirmedLocalTransit, ...] = (
             "the third time this session that AS9471/ONATI itself has "
             "shown up as the intermediate carrier for a Cook Islands "
             "traceroute, reinforcing its role as Cook Islands' de facto "
-            "regional gateway."
+            "regional gateway. "
+            "**Fifth independent corroboration** (measurement "
+            "211980812, PG/AS17828 -> NR/AS55722, a fresh PG<->NR "
+            "pair): `AS17828 -> AS4826 (Vocus Connect) -> AS140627 "
+            "(OneQode) -> AS7131` -> target never resolved (the same "
+            "short-path silence pattern as every prior instance). RIS "
+            "agrees with the identical *exact* match (1,528). A "
+            "genuinely new intermediate carrier for this adjacency "
+            "(OneQode, after Hurricane Electric), crossing **NSW-IX "
+            "Sydney** directly (`ixp_crossings` confirms it, a real "
+            "hop-level LAN-prefix match) -- a new named exchange for "
+            "this specific corridor. A fifth distinct source economy "
+            "(Papua New Guinea, after MP, VU, French Polynesia, and "
+            "Cook Islands)."
         ),
     ),
     ConfirmedLocalTransit(

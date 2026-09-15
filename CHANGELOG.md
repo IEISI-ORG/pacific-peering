@@ -1654,3 +1654,8 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   routing-loop location this session, inside SISCC's own network --
   did not affect this measurement's own RIS agreement, which
   resolved before the loop. Backlog: 513 -> 504.
+- docs(analysis): PG(AS17828)->NR(AS55722) fifth corroboration of
+  AS7131's transit-waypoint role for Nauru (after MP, VU, PF, CK),
+  via a new intermediate carrier (OneQode) crossing NSW-IX Sydney.
+  RIS agrees exactly (1,528). Backlog: 504 -> 503. AS17893 (Palau)
+  now also appearing as a new source ASN.
