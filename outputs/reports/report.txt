@@ -1,6 +1,6 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-09-15T03:26:13.320074+00:00                  
+                 Generated: 2026-09-15T03:34:32.223256+00:00                  
 ==============================================================================
 
 SUMMARY
@@ -83,6 +83,9 @@ MP -> PG (AS17828): detours via Equinix Sydney (Sydney)
 MP -> WS (AS17993): detours via Equinix Sydney (Sydney)
     RIS observation count: 150  [measurement 211558417]
     PTI Pacifica (AS7131, CNMI) -> Samoa (AS17993) -- a fresh MP<->WS pair. All 3 probes: AS7131 -> AS6939 (Hurricane Electric) -> [gap] -> AS17993, upstream of target AS6939, RIS-agreeing with an *exact* match (150). A **different** carrier than the existing GU(AS3605)->WS entry (AS174/Cogent + AS3356/Level3, count 1,455) -- checked against AS17993's full neighbor list (`{174: 1455, 6939: 150, 64073: 10, ...}`, already on record from that earlier entry): AS6939 is a real, minor-but-genuine relationship, not the dominant one, confirming Samoa's real transit mix includes at least two distinct Tier-1 carriers, the same shape already seen for American Samoa (AS9751, Cogent vs. Wave Broadband). Real IXP crossing confirmed directly this time -- `ixp_crossings` non-empty for all 3 probes, all landing on Equinix Sydney (one shows both AS6939 and AS17993 as members at the same hop, the other two resolve AS17993 itself there via PeeringDB netixlan).
+MP -> FJ (AS24390): detours via AS140627 (OneQode) -- global transit, not a named exchange crossing (Sydney)
+    RIS observation count: 337  [measurement 211564127]
+    PTI Pacifica (AS7131, CNMI) -> University of the South Pacific's own network (AS24390) -- a fresh MP<->FJ pair, and the first time this project has targeted AS24390 directly as the destination (it was previously only ever the *source* of the FJ->VU/AS9249 detour, see the AS24390 entry above). Both probes: AS7131 -> AS140627 (OneQode) -> AS7575 (AARNet, Australia's research/education network, resolved via PeeringDB netixlan) -- the literal target itself never resolved (ordinary ICMP filtering near the destination, the established pattern), so RIS is checked against the last reached ASN, per this project's inbound-style method. RIS agrees with an *exact* match (337) -- and this is the identical relationship and count already on record from the AS24390->AS9249 entry's own note: AS7575 is AS24390's *only* RIS-observed neighbor at all. No IXP crossing this time (`ixp_crossings` empty for both probes) -- plain global transit through OneQode, a carrier already seen once before this session (AS17893's and AS7131's own fishbowl neighbor lists both already listed it as a minor relationship).
 
 CONFIRMED LOCAL TRANSIT (RIS + Atlas both agree, stays in-fishbowl)
 ==============================================================================

@@ -1036,3 +1036,10 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   duplicating; entry count unchanged (11). One of three probes was a
   probe-specific dead end, unrelated to the corridor. Backlog:
   1050 -> 1048.
+- feat(analysis): confirm MP(AS7131, CNMI)->FJ(AS24390, USP) via
+  AS140627 (OneQode) -> AS7575 (AARNet). First time AS24390 has been
+  targeted directly as a destination rather than only as a source
+  (see the existing FJ->VU/AS9249 entry). RIS agrees exactly (337)
+  via the last-reached-ASN method -- the identical AS7575 count
+  already on record from that entry's own note, now independently
+  confirmed from the opposite direction. Backlog: 1048 -> 1035.

@@ -785,4 +785,35 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
             "PeeringDB netixlan)."
         ),
     ),
+    ConfirmedDetour(
+        source_cc="MP",
+        target_cc="FJ",
+        target_asn=24390,
+        detour_ix_name="AS140627 (OneQode) -- global transit, not a named exchange "
+        "crossing",
+        detour_hub="Sydney",
+        measurement_id=211564127,
+        ris_observation_count=337,
+        note=(
+            "PTI Pacifica (AS7131, CNMI) -> University of the South "
+            "Pacific's own network (AS24390) -- a fresh MP<->FJ pair, and "
+            "the first time this project has targeted AS24390 directly as "
+            "the destination (it was previously only ever the *source* of "
+            "the FJ->VU/AS9249 detour, see the AS24390 entry above). Both "
+            "probes: AS7131 -> AS140627 (OneQode) -> AS7575 (AARNet, "
+            "Australia's research/education network, resolved via "
+            "PeeringDB netixlan) -- the literal target itself never "
+            "resolved (ordinary ICMP filtering near the destination, the "
+            "established pattern), so RIS is checked against the last "
+            "reached ASN, per this project's inbound-style method. RIS "
+            "agrees with an *exact* match (337) -- and this is the "
+            "identical relationship and count already on record from the "
+            "AS24390->AS9249 entry's own note: AS7575 is AS24390's *only* "
+            "RIS-observed neighbor at all. No IXP crossing this time "
+            "(`ixp_crossings` empty for both probes) -- plain global "
+            "transit through OneQode, a carrier already seen once before "
+            "this session (AS17893's and AS7131's own fishbowl neighbor "
+            "lists both already listed it as a minor relationship)."
+        ),
+    ),
 )
