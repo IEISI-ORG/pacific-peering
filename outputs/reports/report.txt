@@ -1,6 +1,6 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-09-15T09:18:35.746019+00:00                  
+                 Generated: 2026-09-15T09:26:03.197043+00:00                  
 ==============================================================================
 
 SUMMARY
@@ -152,6 +152,9 @@ PF -> FJ (AS24390): detours via Any2West (Los Angeles)
 PF -> MH (AS24439): detours via AS3257 (GTT Communications), via AS6453 (Tata Communications) -- global transit, not a named exchange crossing (Tokyo)
     RIS observation count: 997  [measurement 211683854]
     ONATI (AS9471, French Polynesia) -> Marshall Islands NTA ISP (AS24439) -- a fresh PF<->MH pair, a fourth independent confirmation of the AS6453(Tata)<->AS24439 adjacency (after GU via IIJ/Tokyo, MP via Cogent, and VU via Singtel). `AS9471 -> AS3257 (GTT) -> AS6453` -- the target itself never resolved (ordinary ICMP filtering near the destination), so RIS is checked against the last reached ASN. RIS agrees with the identical *exact* match (997). GTT is a genuinely new intermediate carrier for this adjacency. No IXP crossing; kept `detour_hub` as Tokyo, already verified against Tata's real PeeringDB facility list (Tokyo and Sydney) in the earlier NR-sourced entry.
+PF -> TO (AS38198): detours via Equinix Sydney (AS132528, Digicel Australia/Telstra-operated backbone) (Sydney)
+    RIS observation count: 1321  [measurement 211684890]
+    ONATI (AS9471, French Polynesia) -> Digicel Tonga (AS38198) -- a fresh PF<->TO pair, a fourth independent confirmation of the AS45355(Digicel Fiji)<->AS38198 adjacency (after GU, MP, and VU). All 3 probes: `AS9471 -> AS6939 (Hurricane Electric) -> AS132528 -> AS45355 -> AS38198`. Upstream of the target is AS45355, RIS-agreeing with the identical *exact* match (1,321). **A sixth occurrence of AS132528** (Digicel Australia/Telstra backbone) at Equinix Sydney this session, confirmed directly (`ixp_crossings` non-empty for all 3 probes). All 3 probes reach the same real, BGP-confirmed AS38198 address (`202.43.12.5`) already established across every prior measurement of this corridor.
 
 CONFIRMED LOCAL TRANSIT (RIS + Atlas both agree, stays in-fishbowl)
 ==============================================================================

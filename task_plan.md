@@ -1581,3 +1581,11 @@ Added as a new entry. Called `mark_corridor_tested(9471, 24390)`. Verified: modu
 **Next corridor pulled: AS9471 (ONATI, French Polynesia) -> AS24439 (Marshall Islands NTA).** `has_routing_loop` correctly returned `False` for all three. Fourth independent confirmation of the AS6453(Tata)<->AS24439 adjacency (after GU via IIJ/Tokyo, MP via Cogent, and VU via Singtel): `AS9471 -> AS3257 (GTT) -> AS6453`, RIS-agreeing with the identical exact match (997). GTT is a genuinely new intermediate carrier for this adjacency. No IXP crossing; reused the already-verified Tokyo hub for Tata.
 
 Added as a new entry. Called `mark_corridor_tested(9471, 24439)`. Verified: module imports cleanly (46 entries, up from 45); regenerated ASCII/HTML reports (render correctly) and the geographic map. Regenerated the corridor backlog: candidate count dropped 835 -> 833.
+
+---
+
+**Next corridor pulled: AS9471 (ONATI, French Polynesia) -> AS38198 (Digicel Tonga).** Stuck at `Scheduled` (recognized pattern); resolved on a longer poll. All 3 probes reach the same real, BGP-confirmed AS38198 address (`202.43.12.5`) already established across every prior measurement of this corridor. `has_routing_loop` correctly returned `False`.
+
+**Fourth independent confirmation of the AS45355(Digicel Fiji)<->AS38198 adjacency** (after GU, MP, VU): `AS9471 -> AS6939 (Hurricane Electric) -> AS132528 -> AS45355 -> AS38198`, RIS-agreeing with the identical exact match (1,321). **A sixth occurrence of AS132528** (Digicel Australia/Telstra backbone) at Equinix Sydney this session, confirmed directly for all 3 probes.
+
+Added as a new entry. Called `mark_corridor_tested(9471, 38198)`. Verified: module imports cleanly (47 entries, up from 46); regenerated ASCII/HTML reports (render correctly) and the geographic map. Regenerated the corridor backlog: candidate count dropped 833 -> 829.

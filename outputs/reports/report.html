@@ -47,7 +47,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
 <body>
 <div class="wrap">
     <h1>Pacific Peering — Regional Routing Report</h1>
-    <div class="meta">Generated 2026-09-15T09:18:35.883462+00:00</div>
+    <div class="meta">Generated 2026-09-15T09:26:03.331551+00:00</div>
 
     <div class="stat-row"><div class="stat-tile"><div class="value">20</div><div class="label">Economies in scope</div></div><div class="stat-tile"><div class="value">163</div><div class="label">ASNs in scope</div></div><div class="stat-tile"><div class="value">124</div><div class="label">ASNs w/ RIS neighbor</div></div><div class="stat-tile"><div class="value">38</div><div class="label">ASNs w/ IXP membership</div></div><div class="stat-tile"><div class="value">22</div><div class="label">ASNs w/ facility presence</div></div><div class="stat-tile"><div class="value">10/21</div><div class="label">IXPs in/out of fishbowl</div></div></div>
 
@@ -374,6 +374,13 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <div>RIS observation count: 997
                 &middot; measurement 211683854</div>
             <div class="note">ONATI (AS9471, French Polynesia) -&gt; Marshall Islands NTA ISP (AS24439) -- a fresh PF&lt;-&gt;MH pair, a fourth independent confirmation of the AS6453(Tata)&lt;-&gt;AS24439 adjacency (after GU via IIJ/Tokyo, MP via Cogent, and VU via Singtel). `AS9471 -&gt; AS3257 (GTT) -&gt; AS6453` -- the target itself never resolved (ordinary ICMP filtering near the destination), so RIS is checked against the last reached ASN. RIS agrees with the identical *exact* match (997). GTT is a genuinely new intermediate carrier for this adjacency. No IXP crossing; kept `detour_hub` as Tokyo, already verified against Tata&#x27;s real PeeringDB facility list (Tokyo and Sydney) in the earlier NR-sourced entry.</div>
+        </div><div class="detour-card">
+            <div class="headline">PF -&gt; TO
+                (AS38198): detours via Equinix Sydney (AS132528, Digicel Australia/Telstra-operated backbone)
+                (Sydney)</div>
+            <div>RIS observation count: 1321
+                &middot; measurement 211684890</div>
+            <div class="note">ONATI (AS9471, French Polynesia) -&gt; Digicel Tonga (AS38198) -- a fresh PF&lt;-&gt;TO pair, a fourth independent confirmation of the AS45355(Digicel Fiji)&lt;-&gt;AS38198 adjacency (after GU, MP, and VU). All 3 probes: `AS9471 -&gt; AS6939 (Hurricane Electric) -&gt; AS132528 -&gt; AS45355 -&gt; AS38198`. Upstream of the target is AS45355, RIS-agreeing with the identical *exact* match (1,321). **A sixth occurrence of AS132528** (Digicel Australia/Telstra backbone) at Equinix Sydney this session, confirmed directly (`ixp_crossings` non-empty for all 3 probes). All 3 probes reach the same real, BGP-confirmed AS38198 address (`202.43.12.5`) already established across every prior measurement of this corridor.</div>
         </div>
 
     <h2>Confirmed local transit (RIS + Atlas both agree, stays in-fishbowl)</h2>

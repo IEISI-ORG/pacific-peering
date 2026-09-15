@@ -1411,4 +1411,29 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
             "list (Tokyo and Sydney) in the earlier NR-sourced entry."
         ),
     ),
+    ConfirmedDetour(
+        source_cc="PF",
+        target_cc="TO",
+        target_asn=38198,
+        detour_ix_name="Equinix Sydney (AS132528, Digicel Australia/Telstra-operated "
+        "backbone)",
+        detour_hub="Sydney",
+        measurement_id=211684890,
+        ris_observation_count=1321,
+        note=(
+            "ONATI (AS9471, French Polynesia) -> Digicel Tonga (AS38198) "
+            "-- a fresh PF<->TO pair, a fourth independent confirmation "
+            "of the AS45355(Digicel Fiji)<->AS38198 adjacency (after GU, "
+            "MP, and VU). All 3 probes: `AS9471 -> AS6939 (Hurricane "
+            "Electric) -> AS132528 -> AS45355 -> AS38198`. Upstream of "
+            "the target is AS45355, RIS-agreeing with the identical "
+            "*exact* match (1,321). **A sixth occurrence of AS132528** "
+            "(Digicel Australia/Telstra backbone) at Equinix Sydney this "
+            "session, confirmed directly (`ixp_crossings` non-empty for "
+            "all 3 probes). All 3 probes reach the same real, "
+            "BGP-confirmed AS38198 address (`202.43.12.5`) already "
+            "established across every prior measurement of this "
+            "corridor."
+        ),
+    ),
 )

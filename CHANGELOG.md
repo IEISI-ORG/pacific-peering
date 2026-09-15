@@ -1379,3 +1379,8 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   VU). RIS agrees exactly (997), via a genuinely new intermediate
   carrier (GTT). No IXP crossing; reused the already-verified Tokyo
   hub. Backlog: 835 -> 833.
+- feat(analysis): confirm PF(AS9471)->TO(AS38198) via Digicel Fiji
+  -- fourth independent confirmation of AS45355<->AS38198 (after GU,
+  MP, VU). RIS agrees exactly (1,321). Sixth occurrence of AS132528
+  (Digicel Australia/Telstra backbone) at Equinix Sydney this
+  session. Backlog: 833 -> 829.
