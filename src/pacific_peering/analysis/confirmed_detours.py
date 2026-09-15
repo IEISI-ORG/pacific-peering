@@ -1094,4 +1094,33 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
             "corridor as its routine final-hop pattern."
         ),
     ),
+    ConfirmedDetour(
+        source_cc="VU",
+        target_cc="WS",
+        target_asn=38800,
+        detour_ix_name="Equinix Sydney (AS132528, Digicel Australia/Telstra-operated "
+        "backbone)",
+        detour_hub="Sydney",
+        measurement_id=211632578,
+        ris_observation_count=1656,
+        note=(
+            "Telecom Vanuatu (AS9249) -> Digicel Samoa Ltd (AS38800) -- "
+            "targeting Digicel Samoa directly, immediately after last "
+            "tranche's corridor happened to transit through it on the way "
+            "to CSL Samoa (AS38227). Both probes fully contiguous: AS9249 "
+            "-> AS38442 (Vodafone Fiji) -> **AS132528** -> AS38800. "
+            "Upstream of the target is AS132528 itself directly -- the "
+            "**fifth** occurrence of this Telstra-operated Digicel-"
+            "Australia backbone ASN at Equinix Sydney this session, but "
+            "the *first* time it's the literal immediate upstream of the "
+            "target rather than an intermediate waypoint before further "
+            "Pacific infrastructure. RIS agrees with an *exact* match "
+            "(1,656) -- checked directly against AS38800's full neighbor "
+            "list: AS132528 is its *only* RIS-observed neighbor at all "
+            "(1,656 of 1,656 total observations), confirming Digicel "
+            "Samoa's real international upstream is exclusively Digicel's "
+            "own Australia-based backbone. The cleanest, most direct "
+            "confirmation yet of this now-well-established infrastructure."
+        ),
+    ),
 )

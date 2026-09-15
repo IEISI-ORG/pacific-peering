@@ -1205,3 +1205,11 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   occurrence of AS132528 (Digicel Australia/Telstra backbone) at
   Equinix Sydney this session, further up the same path. Backlog:
   980 -> 979.
+- chore: regenerate corridor backlog (979 candidates, 0 new probes,
+  0 new RIS relationships) -- standing user-requested check.
+- feat(analysis): confirm VU(AS9249)->WS(AS38800, Digicel Samoa)
+  directly via Equinix Sydney -- fifth occurrence of AS132528
+  (Digicel Australia/Telstra backbone) this session, first time as
+  the literal immediate upstream rather than an intermediate
+  waypoint. RIS agrees exactly (1,656) -- AS132528 is AS38800's
+  *only* RIS-observed neighbor. Backlog: 979 -> 975.

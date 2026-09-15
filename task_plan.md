@@ -1395,3 +1395,11 @@ Added as a new entry. Called `mark_corridor_tested(9249, 38227)`. Verified: modu
 ---
 
 **Standing backlog-regeneration check (user-requested, independent of the per-corridor `/loop` cadence).** Ran `pacific-peering-corridor-backlog` directly. Result: `979 candidates (0 new-probe, 0 new-RIS-relationship)` -- diffed `corridor_backlog.md` directly to confirm rather than trusting the summary line alone: the only change is the `Last regenerated` timestamp, candidate count unchanged at 979. Nothing flagged as genuinely new data (no new connected Atlas probes, no new RIS-observed neighbor relationships) since the last regeneration a few minutes earlier in this same session. Nothing strange or unusual in the diff -- no escalation needed under the standing consult-the-owner order this time.
+
+---
+
+**`/loop` fired again (explicit user re-invocation, dynamic mode): AS9249 (Telecom Vanuatu) -> AS38800 (Digicel Samoa, targeted directly).** Both probes reached the target directly. `has_routing_loop` correctly returned `False`.
+
+**A cleaner, more direct confirmation than last tranche's incidental discovery**: `AS9249 -> AS38442 (Vodafone Fiji) -> AS132528 -> AS38800`, upstream of the target is AS132528 itself directly -- the **fifth** occurrence of the Digicel-Australia/Telstra backbone ASN at Equinix Sydney this session, but the *first* time it's the literal immediate upstream of the target rather than an intermediate waypoint. RIS agrees with an *exact* match (1,656) -- checked directly: AS132528 is AS38800's *only* RIS-observed neighbor at all, not just dominant (corrected the note's wording after checking the raw fishbowl entry directly rather than assuming "dominant" from habit).
+
+Added as a new `ConfirmedDetour` entry. Called `mark_corridor_tested(9249, 38800)`. Verified: module imports cleanly (34 entries, up from 33); regenerated ASCII/HTML reports (render correctly) and the geographic map. Regenerated the corridor backlog: candidate count dropped 979 -> 975.
