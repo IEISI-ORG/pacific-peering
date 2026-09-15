@@ -395,7 +395,20 @@ CONFIRMED_LOCAL_TRANSIT: tuple[ConfirmedLocalTransit, ...] = (
             "(after AS3605/Guam Cablevision), interestingly transiting "
             "through AS3605 itself before reaching ONATI -- Guam's own "
             "carriers routing through each other domestically before "
-            "continuing internationally."
+            "continuing internationally. "
+            "**Eighth independent corroboration** (measurement "
+            "211983058, PG/AS17828 -> NU/AS55885, a fresh PG<->NU "
+            "pair): fully contiguous all the way to the literal target "
+            "again: `AS17828 -> AS4826 (Vocus Connect) -> AS174 "
+            "(Cogent) -> AS3257 (GTT) -> AS9471 -> AS55885`. Same "
+            "sibling-ASN basis as every prior instance (`ris_agrees: "
+            "false` on the strict AS9471/AS55885 pair, resolved via "
+            "AS55943). Both Cogent and GTT appearing together as "
+            "sequential intermediate carriers is a genuinely new "
+            "combination for this adjacency. A seventh distinct source "
+            "economy (Papua New Guinea, after Niue's own vantage "
+            "point, Guam, CNMI, Vanuatu, French Polynesia, and Cook "
+            "Islands)."
         ),
     ),
     ConfirmedLocalTransit(

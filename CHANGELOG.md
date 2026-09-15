@@ -1659,3 +1659,8 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   via a new intermediate carrier (OneQode) crossing NSW-IX Sydney.
   RIS agrees exactly (1,528). Backlog: 504 -> 503. AS17893 (Palau)
   now also appearing as a new source ASN.
+- docs(analysis): PG(AS17828)->NU(AS55885) eighth corroboration of
+  ONATI's Niue relationship (after NU, GU, MP, VU, PF, CK, and
+  GU-reproduction). Same sibling-ASN basis. Caught and fixed a
+  source-economy count error before committing (sixth -> seventh).
+  Backlog: 503 -> 501.

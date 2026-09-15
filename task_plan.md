@@ -2056,3 +2056,11 @@ Added as a new entry. Called `mark_corridor_tested(17828, 45891)`. Verified: mod
 Fifth independent corroboration of AS7131's real transit-waypoint role for Nauru's international connectivity (after MP self-sourced, VU, PF, CK): `AS17828 -> AS4826 (Vocus Connect) -> AS140627 (OneQode) -> AS7131`, target never resolved, RIS-agreeing with the identical exact match (1,528). A genuinely new intermediate carrier (OneQode, after Hurricane Electric), crossing **NSW-IX Sydney** directly -- a new named exchange for this specific corridor.
 
 Extended the existing entry's note. Not a new dataclass entry -- `CONFIRMED_LOCAL_TRANSIT` count unchanged (13). Called `mark_corridor_tested(17828, 55722)`. Regenerated ASCII/HTML reports since the note text changed (render correctly); map unaffected. Regenerated the corridor backlog: candidate count dropped 504 -> 503. **AS17893 (Palau) now also appearing as a new source ASN** in the backlog.
+
+---
+
+**Next corridor pulled: AS17828 (PNG DataCo) -> AS55885 (Niue).** `has_routing_loop` correctly returned `False`. Same established ONATI/AS55943 sibling-substitution pattern; target resolves directly, `ris_agrees: False` on the strict pair is expected. Eighth corroboration overall: `AS17828 -> AS4826 (Vocus Connect) -> AS174 (Cogent) -> AS3257 (GTT) -> AS9471 -> AS55885`, fully contiguous. Both Cogent and GTT appearing together sequentially is a genuinely new carrier combination for this adjacency.
+
+**Caught and fixed a source-economy counting error before committing**: first draft wrote "sixth distinct source economy," but the "after ..." list named six prior economies (Niue, Guam, CNMI, Vanuatu, French Polynesia, Cook Islands) -- re-counted directly and corrected to "seventh" before staging.
+
+Extended the existing entry's note. Not a new dataclass entry -- `CONFIRMED_LOCAL_TRANSIT` count unchanged (13). Called `mark_corridor_tested(17828, 55885)`. Regenerated ASCII/HTML reports since the note text changed (render correctly); map unaffected. Regenerated the corridor backlog: candidate count dropped 503 -> 501. AS17828's remaining targets are nearly exhausted (only AS154100 left); AS17893 (Palau) is already queued as the next source.
