@@ -1473,3 +1473,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   Electric -- fourth confirmation of this project's very first
   finding (AS6939<->AS17828), after GU, MP, PF. RIS agrees exactly
   (1,283). Backlog: 779 -> 748.
+- fix(reports): collapse HTML report notes behind native
+  `<details>`/`<summary>` elements -- notes now run 2-8KB per entry
+  after repeated corroboration extensions, rendering as an
+  uncollapsed wall of text. Each card now shows a short preview,
+  full text one click away. No data removed; report.txt and the
+  underlying dataclass notes are untouched.

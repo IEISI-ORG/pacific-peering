@@ -62,6 +62,9 @@ tr:hover {{ background: #f5f4f0; }}
                 margin-bottom: 10px; border-radius: 4px; }}
 .candidate-card .headline {{ font-weight: 600; }}
 .candidate-card .note {{ color: {_MUTED}; font-size: 0.85rem; margin-top: 4px; }}
+.note summary {{ cursor: pointer; user-select: none; }}
+.note summary:hover {{ color: {_INK}; }}
+.note[open] summary {{ margin-bottom: 6px; }}
 .bool-true {{ color: {_GOOD}; font-weight: 600; }}
 .bool-false {{ color: {_CRITICAL}; }}
 .viz-figure {{ margin: 1.5em 0; }}
@@ -77,6 +80,31 @@ def _stat_tile(value: object, label: str) -> str:
     return (
         f'<div class="stat-tile"><div class="value">{html.escape(str(value))}</div>'
         f'<div class="label">{html.escape(label)}</div></div>'
+    )
+
+
+_NOTE_PREVIEW_LEN = 160
+
+
+def _note_block(note: str) -> str:
+    """Render a note as a collapsed `<details>` block with a short preview.
+
+    Notes accumulate one paragraph per independent corroboration as a
+    corridor gets re-tested from new vantage points — some now run to
+    several thousand characters. Full text stays in the page (and in
+    `report.txt`, unabridged) but collapsed by default via native
+    HTML5 `<details>`, no JS required, so the page doesn't render as
+    one continuous wall of text.
+    """
+    escaped = html.escape(note)
+    preview = note.split(". ", 1)[0]
+    if len(preview) > _NOTE_PREVIEW_LEN:
+        preview = preview[:_NOTE_PREVIEW_LEN].rsplit(" ", 1)[0]
+    preview_escaped = html.escape(preview)
+    ellipsis = "…" if len(preview) < len(note) else ""
+    return (
+        f'<details class="note"><summary>{preview_escaped}{ellipsis}</summary>'
+        f"{escaped}</details>"
     )
 
 
@@ -121,7 +149,7 @@ def render_html_report(data: ReportData, viz_dir: Path | None = Path("../viz")) 
                 ({html.escape(d['detour_hub'])})</div>
             <div>RIS observation count: {d['ris_observation_count']}
                 &middot; measurement {d['measurement_id']}</div>
-            <div class="note">{html.escape(d['note'])}</div>
+            {_note_block(d['note'])}
         </div>"""
         for d in data.confirmed_detours
     ) or "<p>(none recorded yet)</p>"
@@ -134,7 +162,7 @@ def render_html_report(data: ReportData, viz_dir: Path | None = Path("../viz")) 
             <div>RIS observation count: {t['ris_observation_count']}
                 &middot; measurement {t['measurement_id']}
                 &middot; vantage point {html.escape(t['vantage_point_cc'])}</div>
-            <div class="note">{html.escape(t['note'])}</div>
+            {_note_block(t['note'])}
         </div>"""
         for t in data.confirmed_local_transit
     ) or "<p>(none recorded yet)</p>"
@@ -147,7 +175,7 @@ def render_html_report(data: ReportData, viz_dir: Path | None = Path("../viz")) 
             <div>Traceroute agreement: {html.escape(c['probe_agreement'])}
                 &middot; measurement {c['measurement_id']}
                 &middot; vantage point {html.escape(c['vantage_point_cc'])}</div>
-            <div class="note">{html.escape(c['note'])}</div>
+            {_note_block(c['note'])}
         </div>"""
         for c in data.candidate_peering
     ) or "<p>(none recorded yet)</p>"
