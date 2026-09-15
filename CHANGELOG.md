@@ -828,3 +828,12 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   AS45891's only RIS neighbor, a clean confirmation with no
   sibling-ASN reasoning needed. Added as a new ConfirmedDetour entry;
   marked tested; backlog regenerated (1205 -> 1178).
+- First firing under the 10-minute cadence: sourced AS3605 toward
+  AS55722 (Cenpac Net Inc, Nauru) -- a fresh GU<->NR pair. Genuine
+  dead-end (weaker than usual -- no intermediate carrier ever
+  resolved, not just silence near the destination). Real lead
+  surfaced anyway: AS55722's only RIS neighbor is AS7131 (PTI
+  Pacifica, Northern Mariana Islands), already a confirmed source
+  this session -- flagged for a future firing to test that actual
+  relationship instead of an arbitrary pair. Not filed in any
+  dataclass; marked tested regardless.
