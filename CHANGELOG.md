@@ -1452,7 +1452,13 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   earlier MP(AS7131)->FJ(AS4638) detour genuinely transits OneQode's
   real Guam infrastructure (PTR: gu-gnc-rt1-----Vlan756.hk-mgi-rt1.
   oneqode.net, matching OneQode's PeeringDB-listed RTI Guam GNC
-  facility exactly) before continuing to Hong Kong. Addendum to the
-  existing entry; classification unchanged (OneQode isn't a
-  Guam-registered ASN regardless of equipment location, and RIS
-  still disagrees on AS4637).
+  facility exactly) before continuing to Hong Kong.
+- feat(analysis): add `regional_carrier_facilities.py` -- a new
+  hand-curated, evidence-gated registry for external carriers'
+  specific in-region facilities. Per the project owner, OneQode's
+  confirmed Guam facility (RTI Guam GNC) now counts as in-fishbowl
+  for hops that match it, while OneQode's other PoPs stay
+  out-of-fishbowl -- corrects the classification call made in the
+  addendum above. Scoped narrowly to the specific confirmed
+  facility, not the whole carrier, mirroring `ixp_lan_registry.py`'s
+  governance style.
