@@ -1263,3 +1263,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   tranches ago. Identical exact RIS match (662). Extended the
   existing `ConfirmedLocalTransit` entry's note rather than
   duplicating; entry count unchanged (12). Backlog: 947 -> 946.
+- Sourced AS9249 toward AS134783 (ATHKL, Kiribati) -- a fresh VU<->KI
+  pair, landing on the well-established AS154100<->AS134783
+  adjacency, now a third independent corroboration. Identical exact
+  RIS match (1,392), via genuinely new carriers (Telstra domestic,
+  Vocus Connect) neither seen for this adjacency before. Backlog:
+  946 -> 945.

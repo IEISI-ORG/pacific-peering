@@ -1459,3 +1459,11 @@ Fourth independent reproduction, extending the existing entry's note. Not a new 
 **Lands on the existing AS3605<->AS133897 adjacency**, RIS-agreeing with the identical exact match (662). Second independent corroboration, same shape and same reasoning already applied to the AS58932 case: AS3605 confirmed once more as a genuine transit waypoint for third-economy traffic, not just its own direct customer relationship.
 
 Extended the existing entry's note. Not a new dataclass entry -- `CONFIRMED_LOCAL_TRANSIT` count unchanged (12). Called `mark_corridor_tested(9249, 133897)`. Regenerated ASCII/HTML reports since the note text changed (render correctly, confirmed both the AS58932 and AS133897 paragraphs are present and distinct); map unaffected. Regenerated the corridor backlog: candidate count dropped 947 -> 946.
+
+---
+
+**Next corridor pulled: AS9249 (Telecom Vanuatu) -> AS134783 (ATHKL, Kiribati).** Stuck at `Scheduled` again (recognized pattern); resolved on a longer poll. `has_routing_loop` correctly returned `False`. Lands on the well-established AS154100<->AS134783 adjacency, already confirmed twice before (GU, MP), RIS-agreeing with the identical exact match (1,392).
+
+**Genuinely new carriers this time**: `AS9249 -> AS38442 (Vodafone Fiji) -> AS4637 (Telstra Global) -> AS1221 (Telstra domestic) -> AS4826 (Vocus Connect) -> AS14593 (Starlink) -> AS154100`. Neither Telstra's domestic ASN nor Vocus Connect had appeared for this specific adjacency before -- Vocus Connect is already established elsewhere in this project as PNG DataCo's own upstream, a notable cross-reference.
+
+Third independent corroboration, extending the existing entry's note. Not a new dataclass entry -- `CONFIRMED_LOCAL_TRANSIT` count unchanged (12). Called `mark_corridor_tested(9249, 134783)`. Regenerated ASCII/HTML reports since the note text changed (render correctly); map unaffected. Regenerated the corridor backlog: candidate count dropped 946 -> 945.

@@ -667,7 +667,17 @@ CONFIRMED_LOCAL_TRANSIT: tuple[ConfirmedLocalTransit, ...] = (
             "target never resolved, identical RIS match (1,392). A second "
             "geographically distinct source (CNMI, after Guam) confirming "
             "this specific adjacency, not just the general Starlink-chain "
-            "ingress pattern."
+            "ingress pattern. "
+            "**Third independent corroboration, via genuinely new carriers** "
+            "(measurement 211648499, VU/AS9249 -> KI/AS134783, a fresh "
+            "VU<->KI pair): both probes: AS9249 -> AS38442 (Vodafone Fiji) "
+            "-> AS4637 (Telstra Global) -> **AS1221 (Telstra domestic)** -> "
+            "**AS4826 (Vocus Connect)** -> AS14593 (Starlink) -> AS154100 "
+            "-> target never resolved, identical RIS match (1,392). Neither "
+            "Telstra's domestic ASN nor Vocus Connect had appeared for this "
+            "specific adjacency before (Vocus Connect is already established "
+            "elsewhere in this project as PNG DataCo's own upstream). A "
+            "third distinct source economy (Vanuatu, after Guam and CNMI)."
         ),
     ),
     ConfirmedLocalTransit(
