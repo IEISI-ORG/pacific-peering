@@ -1444,3 +1444,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   study region -- added `ReportData.ixp_registry_out_of_fishbowl_share`
   (computed, not stored) and a headline line/banner at the top of
   both the ASCII and HTML reports.
+- docs(analysis): CK(AS10131)->FJ(AS9241) third reproduction of the
+  FINTEL routing loop (202.170.33.17/.11, both AS9241 itself),
+  after the original MP discovery and PF reproduction. Not filed.
+  Backlog: 801 -> 800.
