@@ -2064,3 +2064,9 @@ Extended the existing entry's note. Not a new dataclass entry -- `CONFIRMED_LOCA
 **Caught and fixed a source-economy counting error before committing**: first draft wrote "sixth distinct source economy," but the "after ..." list named six prior economies (Niue, Guam, CNMI, Vanuatu, French Polynesia, Cook Islands) -- re-counted directly and corrected to "seventh" before staging.
 
 Extended the existing entry's note. Not a new dataclass entry -- `CONFIRMED_LOCAL_TRANSIT` count unchanged (13). Called `mark_corridor_tested(17828, 55885)`. Regenerated ASCII/HTML reports since the note text changed (render correctly); map unaffected. Regenerated the corridor backlog: candidate count dropped 503 -> 501. AS17828's remaining targets are nearly exhausted (only AS154100 left); AS17893 (Palau) is already queued as the next source.
+
+---
+
+**Next corridor pulled: AS17828 (PNG DataCo) -> AS58932 (Palau Mobile Communications).** `has_routing_loop` correctly returned `False`. Third independent corroboration of the AS3605<->AS58932 adjacency (after the original AS3605-sourced entry and the VU-sourced corroboration): `AS17828 -> AS4826 (Vocus Connect) -> AS3605 -> AS58932`, fully contiguous, RIS-agreeing with the identical exact match (664). **Crosses Any2West directly** -- the first time this specific adjacency has shown a named exchange crossing.
+
+Extended the existing entry's note. Not a new dataclass entry -- `CONFIRMED_LOCAL_TRANSIT` count unchanged (13). Called `mark_corridor_tested(17828, 58932)`. Regenerated ASCII/HTML reports since the note text changed (render correctly); map unaffected. Regenerated the corridor backlog: candidate count dropped 501 -> 500. **AS17828 is now fully exhausted** -- source has moved to AS17893 (Palau NCC).

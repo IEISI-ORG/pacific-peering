@@ -1664,3 +1664,8 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   GU-reproduction). Same sibling-ASN basis. Caught and fixed a
   source-economy count error before committing (sixth -> seventh).
   Backlog: 503 -> 501.
+- docs(analysis): PG(AS17828)->PW(AS58932) third corroboration of
+  AS3605<->AS58932 (after the original entry and VU). RIS agrees
+  exactly (664), first time crossing a named exchange (Any2West).
+  Backlog: 501 -> 500. PG now fully exhausted; source moves to
+  AS17893 (Palau NCC).

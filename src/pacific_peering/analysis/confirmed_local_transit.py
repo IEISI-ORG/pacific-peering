@@ -572,7 +572,17 @@ CONFIRMED_LOCAL_TRANSIT: tuple[ConfirmedLocalTransit, ...] = (
             "this measurement shows AS3605 acting as a genuine transit "
             "waypoint for a third economy's traffic (Vanuatu) reaching "
             "Palau Mobile -- the same regional-hub-carrier shape already "
-            "established for ONATI, FINTEL, PTI Pacifica, and Digicel Samoa."
+            "established for ONATI, FINTEL, PTI Pacifica, and Digicel Samoa. "
+            "**Third independent corroboration** (measurement 211985306, "
+            "PG/AS17828 -> PW/AS58932, a fresh PG<->PW pair): fully "
+            "contiguous, target reached directly -- `AS17828 -> AS4826 "
+            "(Vocus Connect) -> AS3605 -> AS58932`. RIS agrees with the "
+            "identical *exact* match (664). **Crosses Any2West directly** "
+            "(`ixp_crossings` confirms it, a real hop-level LAN-prefix "
+            "match) -- the first time this specific adjacency has shown a "
+            "named exchange crossing, reinforcing AS3605's role as a "
+            "genuine transit waypoint for a third economy's (Papua New "
+            "Guinea's) traffic too."
         ),
     ),
     ConfirmedLocalTransit(
