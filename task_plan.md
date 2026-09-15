@@ -1892,3 +1892,11 @@ Extended the existing entry's note. Not a new dataclass entry -- `CONFIRMED_LOCA
 **Applied the retry policy against a different cached prefix** rather than accepting the dead-end at face value. Identical result: same private gateway, then total silence, same shape exactly. Two different destination addresses, byte-for-byte identical dead-end pattern -- reads as this specific probe's own network filtering outbound traceroute traffic entirely, not a hidden loop at the target's end (a real loop would show *some* resolvable intermediate hop before or during the cycle; this shows none at all, on either attempt).
 
 Not filed in any dataclass, consistent with the established treatment of genuine dead-ends. Called `mark_corridor_tested(17456, 23917)` for both addresses. No report/map regeneration needed (no dataclass changed). Regenerated the corridor backlog: candidate count dropped 689 -> 687.
+
+---
+
+**Next corridor pulled: AS17456 (Pacific Data Systems, Guam) -> AS55885 (Niue).** This time reached a full 20-hop traceroute (not the same probe-wide dead-end as the AS23917 attempt) -- confirms the earlier Tuvalu dead-end was corridor-specific, not a general probe-filtering issue. `has_routing_loop` correctly returned `False`.
+
+**Fully contiguous all the way to the literal target** -- unlike most prior instances of this corridor, which stopped at AS9471 without resolving AS55885 itself: `AS17456 -> AS3605 (Guam Cablevision) -> AS2914 (NTT Communications) -> AS3257 (GTT) -> AS9471 -> AS55885`. Same established sibling-ASN basis as every prior instance (`ris_agrees: false` on the strict AS9471/AS55885 pair, resolves via AS55943). Seventh independent corroboration overall, and a second distinct Guam-based carrier now confirming this relationship (after AS3605/Guam Cablevision) -- notably transiting through AS3605 itself before reaching ONATI, Guam's own carriers routing through each other domestically before continuing internationally.
+
+Extended the existing entry's note. Not a new dataclass entry -- `CONFIRMED_LOCAL_TRANSIT` count unchanged (13). Called `mark_corridor_tested(17456, 55885)`. Regenerated ASCII/HTML reports since the note text changed (render correctly); map unaffected. Regenerated the corridor backlog: candidate count dropped 687 -> 685.

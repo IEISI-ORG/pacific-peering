@@ -1565,3 +1565,8 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   addresses, identical shape (own gateway then total silence). Reads
   as probe-side filtering, not a hidden loop. Not filed. Backlog:
   689 -> 687.
+- docs(analysis): GU(AS17456)->NU(AS55885) seventh corroboration of
+  ONATI's Niue relationship, second distinct Guam carrier. Fully
+  contiguous to the literal target this time, transiting through
+  AS3605 (Guam Cablevision) first. Same established sibling-ASN
+  basis. Backlog: 687 -> 685.
