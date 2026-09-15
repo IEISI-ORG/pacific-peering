@@ -287,7 +287,22 @@ CONFIRMED_LOCAL_TRANSIT: tuple[ConfirmedLocalTransit, ...] = (
             "another economy's traffic this session** (ONATI/French Polynesia "
             "for Guam->Cook-Islands, FINTEL/Fiji for Guam->Tuvalu) -- a real, "
             "recurring pattern of regional hub structure within the fishbowl "
-            "itself, not a one-off."
+            "itself, not a one-off. "
+            "**Third independent corroboration** (measurement 211561414, "
+            "MP/AS7131 -> TV/AS23917, a fresh MP<->TV pair): both working "
+            "probes (a third, 65653, was a complete dead end from the first "
+            "hop -- a probe-specific issue, unrelated to the corridor) "
+            "again land on AS9241 immediately upstream of AS23917, exact "
+            "RIS match (1,009). Notably different upstream path this time, "
+            "though: AS7131 -> AS6939 (Hurricane Electric) -> **AS4648 "
+            "(Spark NZ)**, crossing **Equinix Los Angeles** "
+            "(`ixp_crossings` confirms it directly, `in_fishbowl: false`) "
+            "-- a genuinely new external hub and a new intermediate carrier "
+            "for this specific FINTEL<->Tuvalu adjacency, not the Level "
+            "3/Lumen path seen from Guam. Not a new entry -- same confirmed "
+            "adjacency -- but real evidence FINTEL's transit role for "
+            "Tuvalu is reached via more than one route depending on the "
+            "ultimate source."
         ),
     ),
     ConfirmedLocalTransit(

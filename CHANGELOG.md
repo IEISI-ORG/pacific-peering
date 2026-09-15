@@ -1026,3 +1026,13 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   confirmed directly (`ixp_crossings` non-empty, Equinix Sydney, all
   3 probes). Ninth occurrence of AS7131's slow-scheduling pattern,
   resolved on a longer background poll. Backlog: 1056 -> 1050.
+- Sourced AS7131 toward AS23917 (Tuvalu) -- a fresh MP<->TV pair,
+  landing on the existing FINTEL(AS9241)<->Tuvalu adjacency, now a
+  third independent corroboration. Same exact RIS match (1,009) but
+  a genuinely new upstream path into FINTEL this time: AS6939 ->
+  AS4648 (Spark NZ), crossing Equinix Los Angeles -- neither the hub
+  nor the carrier had appeared for this adjacency before. Extended
+  the existing `ConfirmedLocalTransit` entry's note rather than
+  duplicating; entry count unchanged (11). One of three probes was a
+  probe-specific dead end, unrelated to the corridor. Backlog:
+  1050 -> 1048.
