@@ -53,7 +53,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
 <body>
 <div class="wrap">
     <h1>Pacific Peering — Regional Routing Report</h1>
-    <div class="meta">Generated 2026-09-15T15:26:09.288651+00:00</div>
+    <div class="meta">Generated 2026-09-15T15:36:22.854656+00:00</div>
 
     <div class="headline-banner">
         <span class="value">68%</span>
@@ -695,6 +695,14 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
                 &middot; measurement 211746507
                 &middot; vantage point CK</div>
             <details class="note"><summary>A fourth independent source economy for this project&#x27;s recurring FSM sibling-substitution corridor (after GU, MP, and PF), this time sourced from AS10131 (Cook…</summary>A fourth independent source economy for this project&#x27;s recurring FSM sibling-substitution corridor (after GU, MP, and PF), this time sourced from AS10131 (Cook Islands). Only 1 of 3 requested probes returned; checked `participant_count` directly (1, not 3) -- the same genuine single-probe pattern as every other AS10131-sourced measurement this session. Identical shape to the PF-sourced instance: `AS10131 -&gt; AS9471 (ONATI) -&gt; AS6939 (Hurricane Electric) -&gt; AS9246 (Teleguam Holdings/GTA) -&gt; AS139759`, contiguous throughout, the literal target never resolving. `ris_agrees: false` on the corrected sibling adjacency, matching every prior instance. Crosses **Any2West** again (`ixp_crossings` confirms it) -- the same exchange as the PF entry, and the same ONATI-transit shape seen on every AS10131-sourced corridor this tranche cycle. Kept as a candidate, not promoted, per the standing principle.</details>
+        </div><div class="candidate-card">
+            <div class="headline">AS4826 (Vocus Connect (PNG DataCo&#x27;s own known upstream),
+                PG) -&gt; AS17993
+                (Vodafone Samoa Limited, WS)</div>
+            <div>Traceroute agreement: 1/1 probe
+                &middot; measurement 211810792
+                &middot; vantage point PG</div>
+            <details class="note"><summary>Sourced from AS17828 (PNG DataCo) toward AS17993 -- a fresh PG&lt;-&gt;WS pair…</summary>Sourced from AS17828 (PNG DataCo) toward AS17993 -- a fresh PG&lt;-&gt;WS pair. Clean, direct traceroute: AS17828 -&gt; AS4826 (Vocus Connect) -&gt; AS17993, fully contiguous. The final hop resolves via PeeringDB netixlan and lands directly inside AS17993&#x27;s own registered LAN prefix at **Equinix Sydney** (`ixp_crossings` confirms it, AS17993 itself as the member) -- the same real exchange already established for this target&#x27;s other candidate entry (VU/AS38442), but via a genuinely different upstream carrier this time. But `ris_agrees: false`: checked AS17993&#x27;s full RIS neighbor list directly -- `{174: 1455, 6939: 150, 64073: 10, ...}` -- AS4826 doesn&#x27;t appear at all (checked AS4826&#x27;s own fishbowl entry too: empty neighbor list, no RIS visibility into it from any direction). Not a fishbowl-scope artifact (both ends are genuinely in-fishbowl Pacific ASNs). Vocus Connect is already established elsewhere in this project as PNG DataCo&#x27;s own real upstream carrier -- this traceroute shows that same carrier also reaching a real Equinix Sydney presence for Vodafone Samoa specifically, a second distinct carrier now shown crossing at the identical exchange for this target. Exactly Validation Rule 4&#x27;s shape: a real, physically-instantiated connection at a real exchange that isn&#x27;t announced anywhere RIS&#x27;s route collectors can see -- kept as a candidate, not promoted, per the standing principle.</details>
         </div>
 
     

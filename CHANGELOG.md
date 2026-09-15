@@ -1604,3 +1604,8 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   the AS174(Cogent)<->AS17893 adjacency (after GU, GU-reproduction,
   VU), via a new intermediate carrier (Telia). RIS agrees exactly
   (1,333). Backlog: 605 -> 603.
+- docs(analysis): PG(AS17828)->WS(AS17993) new candidate peering --
+  AS4826 (Vocus Connect, PNG DataCo's own upstream) reaches AS17993
+  directly at Equinix Sydney, but RIS disagrees. A second distinct
+  carrier now shown crossing that exchange for this target (after
+  VU/AS38442). Kept as candidate. Backlog: 603 -> 597.

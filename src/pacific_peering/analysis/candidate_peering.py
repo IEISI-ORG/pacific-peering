@@ -370,4 +370,42 @@ CANDIDATE_PEERING: tuple[CandidatePeering, ...] = (
             "promoted, per the standing principle."
         ),
     ),
+    CandidatePeering(
+        upstream_cc="PG",
+        upstream_asn=4826,
+        upstream_name="Vocus Connect (PNG DataCo's own known upstream)",
+        target_cc="WS",
+        target_asn=17993,
+        target_name="Vodafone Samoa Limited",
+        measurement_id=211810792,
+        vantage_point_cc="PG",
+        probe_agreement="1/1 probe",
+        note=(
+            "Sourced from AS17828 (PNG DataCo) toward AS17993 -- a fresh "
+            "PG<->WS pair. Clean, direct traceroute: AS17828 -> AS4826 "
+            "(Vocus Connect) -> AS17993, fully contiguous. The final hop "
+            "resolves via PeeringDB netixlan and lands directly inside "
+            "AS17993's own registered LAN prefix at **Equinix Sydney** "
+            "(`ixp_crossings` confirms it, AS17993 itself as the member) "
+            "-- the same real exchange already established for this "
+            "target's other candidate entry (VU/AS38442), but via a "
+            "genuinely different upstream carrier this time. But "
+            "`ris_agrees: false`: checked AS17993's full RIS neighbor "
+            "list directly -- `{174: 1455, 6939: 150, 64073: 10, ...}` "
+            "-- AS4826 doesn't appear at all (checked AS4826's own "
+            "fishbowl entry too: empty neighbor list, no RIS visibility "
+            "into it from any direction). Not a fishbowl-scope artifact "
+            "(both ends are genuinely in-fishbowl Pacific ASNs). Vocus "
+            "Connect is already established elsewhere in this project as "
+            "PNG DataCo's own real upstream carrier -- this traceroute "
+            "shows that same carrier also reaching a real Equinix Sydney "
+            "presence for Vodafone Samoa specifically, a second distinct "
+            "carrier now shown crossing at the identical exchange for "
+            "this target. Exactly Validation Rule 4's shape: a real, "
+            "physically-instantiated connection at a real exchange that "
+            "isn't announced anywhere RIS's route collectors can see -- "
+            "kept as a candidate, not promoted, per the standing "
+            "principle."
+        ),
+    ),
 )

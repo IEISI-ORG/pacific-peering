@@ -1964,3 +1964,11 @@ Added as a new entry. Called `mark_corridor_tested(17828, 17480)`. Verified: mod
 **Next corridor pulled: AS17828 (PNG DataCo) -> AS17893 (Palau NCC).** `has_routing_loop` correctly returned `False`. Lands on the project's *other* AS17893 adjacency (AS174/Cogent, not the AS6939/Hurricane Electric one PF and CK confirmed) -- a fourth independent confirmation, a third distinct source economy (after GU, GU-reproduction, VU): `AS17828 -> AS4826 (Vocus Connect) -> AS1299 (Telia) -> AS174 -> AS17893`, fully contiguous, RIS-agreeing with the identical exact match (1,333). Telia is a genuinely new intermediate carrier into Cogent for this adjacency, after IIJ and NTT.
 
 Extended the existing entry's note. Not a new dataclass entry -- `CONFIRMED_DETOURS` count unchanged (65). Called `mark_corridor_tested(17828, 17893)`. Regenerated ASCII/HTML reports since the note text changed (render correctly); map unaffected. Regenerated the corridor backlog: candidate count dropped 605 -> 603.
+
+---
+
+**Next corridor pulled: AS17828 (PNG DataCo) -> AS17993 (Vodafone Samoa).** `has_routing_loop` correctly returned `False`. Reaches the literal target directly, fully contiguous, crossing Equinix Sydney -- but via **AS4826 (Vocus Connect)**, not the established AS6939 (Hurricane Electric) relationship. `ris_agrees: False` -- checked AS17993's neighbor list directly (`{174: 1455, 6939: 150, ...}`), no AS4826; checked AS4826's own fishbowl entry too, empty neighbor list.
+
+**A genuinely new candidate, distinct from the existing VU-sourced AS38442 entry for this same target**: Vocus Connect is already established elsewhere this project as PNG DataCo's own real upstream carrier -- this traceroute shows it reaching a real Equinix Sydney presence for Vodafone Samoa too, a second distinct carrier now confirmed crossing at that same exchange.
+
+Added as a new `CandidatePeering` entry. Called `mark_corridor_tested(17828, 17993)`. Verified: module imports cleanly (9 entries, up from 8); regenerated ASCII/HTML reports (render correctly); map unaffected. Regenerated the corridor backlog: candidate count dropped 603 -> 597.
