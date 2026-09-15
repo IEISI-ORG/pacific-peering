@@ -243,7 +243,16 @@ CONFIRMED_LOCAL_TRANSIT: tuple[ConfirmedLocalTransit, ...] = (
             "carrier (here, ONATI reaching its own direct customer rather than "
             "transiting to a further target) confirmed from an independent "
             "source network, reinforcing rather than merely repeating the "
-            "original finding."
+            "original finding. "
+            "**Fourth independent corroboration** (measurement 211582548, "
+            "MP/AS7131 -> NU/AS55885, a fresh MP<->NU pair): both probes again "
+            "resolve to AS9471 immediately before the target, same sibling-ASN "
+            "basis. Genuinely different upstream mix this time -- one probe via "
+            "AS1299 (Telia) -> AS6453 (Tata) -> AS3257 (GTT), the other via "
+            "AS6453 (Tata) -> AS3257 (GTT) directly -- neither Telia nor this "
+            "specific Telia/Tata/GTT combination had appeared for this "
+            "adjacency before. Not a new entry -- same confirmed relationship, "
+            "a fourth distinct vantage point reinforcing it."
         ),
     ),
     ConfirmedLocalTransit(

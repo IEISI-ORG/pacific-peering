@@ -1271,3 +1271,11 @@ Added as a new `ConfirmedDetour` entry. Called `mark_corridor_tested(7131, 45879
 **Lands on the existing GU->SB adjacency** (AS139609/SISCC<->AS45891), a second independent confirmation, RIS-agreeing with an *exact* match (1,652). A different carrier and a **genuinely new named exchange**: AS7131 -> AS140627 (OneQode) -> AS139609, crossing **IX Australia Sydney (NSW-IX)** -- `ixp_crossings` confirms it directly, the first time this specific exchange (distinct from Equinix Sydney and MegaIX Sydney, both already on record) has appeared in this project.
 
 Added as a new `ConfirmedDetour` entry. Called `mark_corridor_tested(7131, 45891)`. Verified: module imports cleanly (28 entries, up from 27); regenerated ASCII/HTML reports (render correctly) and the geographic map. Regenerated the corridor backlog: candidate count dropped 1022 -> 1013.
+
+---
+
+**Next corridor pulled: AS7131 (PTI Pacifica, CNMI) -> AS55885 (Niue).** `has_routing_loop` correctly returned `False` for both probes. Both resolve to AS9471 (ONATI) immediately before the target -- the well-established Niue<->ONATI sibling-ASN adjacency, already independently confirmed three times before (Niue's own vantage point, then Guam).
+
+**Fourth independent corroboration**, extending the existing `ConfirmedLocalTransit` entry rather than duplicating: same sibling-ASN basis (AS55943, 1,662, exact match, confirmed directly against AS55885's own fishbowl neighbor list), but a genuinely different upstream carrier mix this time -- Telia (AS1299) and Tata (AS6453) both appearing for this adjacency for the first time, alongside the already-seen GTT (AS3257).
+
+Not a new dataclass entry -- `CONFIRMED_LOCAL_TRANSIT` count unchanged (11). Called `mark_corridor_tested(7131, 55885)`. Regenerated ASCII/HTML reports since the note text changed (render correctly); map unaffected. Regenerated the corridor backlog: candidate count dropped 1013 -> 1011. **Notable: the next live pick is now sourced from AS9249 (Vanuatu), not AS7131** -- the same diversification pattern already seen once before when AS3605's cheap untested targets ran out; AS7131's own untested cross-economy pairs appear to be thinning out similarly.

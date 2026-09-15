@@ -1088,3 +1088,12 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   Sydney and MegaIX Sydney already on record. One probe
   false-positived `has_routing_loop`; a transient Atlas API read
   timeout mid-poll resolved on retry. Backlog: 1022 -> 1013.
+- Sourced AS7131 toward AS55885 (Niue) -- a fresh MP<->NU pair,
+  landing on the existing Niue<->ONATI adjacency, now a fourth
+  independent corroboration. Same sibling-ASN basis (AS55943, 1,662,
+  exact match), but Telia (AS1299) and Tata (AS6453) both appear for
+  this adjacency for the first time. Extended the existing
+  `ConfirmedLocalTransit` entry's note rather than duplicating; entry
+  count unchanged (11). Backlog: 1013 -> 1011. Notable: the next live
+  pick is now sourced from AS9249 (Vanuatu), not AS7131 -- the same
+  source-diversification pattern seen once before with AS3605.
