@@ -1269,3 +1269,12 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   RIS match (1,392), via genuinely new carriers (Telstra domestic,
   Vocus Connect) neither seen for this adjacency before. Backlog:
   946 -> 945.
+- Sourced AS9249 toward AS140504 (a distinct Nauru ASN) -- a fresh
+  VU<->NR pair. First address dead-ended on AS36149 (Hawaiian
+  Telcom), which doesn't match either of AS140504's real RIS
+  neighbors (AS132528, AS12684). Retry reached the target but landed
+  on the same non-matching carrier with an unresolved gap. Not filed
+  in any dataclass, matching the NC->GU Superloop precedent -- real
+  signal, RIS disagrees, doesn't fit. Flagged AS132528 (already
+  Nauru's own real dominant neighbor) as worth testing directly in a
+  future tranche. Backlog: 945 -> 944.
