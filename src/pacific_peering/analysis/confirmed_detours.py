@@ -1823,4 +1823,30 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
             "by the Tokyo-hub issue fixed earlier this tranche cycle."
         ),
     ),
+    ConfirmedDetour(
+        source_cc="CK",
+        target_cc="FM",
+        target_asn=45193,
+        detour_ix_name="Any2West",
+        detour_hub="Los Angeles",
+        measurement_id=211749873,
+        ris_observation_count=1681,
+        note=(
+            "Cook Islands (AS10131) -> a third FSM Telecommunications "
+            "Corporation sibling ASN (AS45193) -- a fresh CK<->FM pair, "
+            "a second independent confirmation of the direct AS139759<->"
+            "AS45193 adjacency (after the PF entry). Only 1 of 3 "
+            "requested probes returned; checked `participant_count` "
+            "directly (1, not 3) -- the same genuine single-probe "
+            "pattern as every other AS10131-sourced measurement this "
+            "session. Result: `AS10131 -> AS9471 (ONATI) -> AS6939 "
+            "(Hurricane Electric) -> AS9246 (Teleguam Holdings/GTA) -> "
+            "AS139759 -> AS45193`, fully contiguous -- the literal target "
+            "resolves directly again, RIS-agreeing with the identical "
+            "*exact* match (1,681). Crosses **Any2West** directly "
+            "(`ixp_crossings` confirms it) -- the same exchange as the "
+            "PF entry, and the same ONATI-transit shape seen on every "
+            "AS10131-sourced corridor this tranche cycle."
+        ),
+    ),
 )

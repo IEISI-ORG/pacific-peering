@@ -1812,3 +1812,11 @@ Added as a new entry. Called `mark_corridor_tested(10131, 38198)`. Verified: mod
 Fourth independent source economy for the recurring FSM sibling-substitution corridor (after GU, MP, PF): `AS10131 -> AS9471 (ONATI) -> AS6939 (Hurricane Electric) -> AS9246 (Teleguam Holdings/GTA) -> AS139759`, contiguous throughout, target never resolving. `ris_agrees: false` on the corrected sibling adjacency, matching every prior instance. Crosses Any2West again -- the same exchange as the PF entry.
 
 Added as a new `CandidatePeering` entry (not promoted, per the standing principle). Called `mark_corridor_tested(10131, 38875)`. Verified: module imports cleanly (8 entries, up from 7); regenerated ASCII/HTML reports (render correctly); map unaffected (candidate_peering doesn't feed it). Regenerated the corridor backlog: candidate count dropped 715 -> 714.
+
+---
+
+**Next corridor pulled: AS10131 (Cook Islands) -> AS45193 (a third FSM Telecommunications Corporation sibling ASN).** Only 1 of 3 probes returned; checked `participant_count` (1, not 3) -- the same genuine single-probe pattern as every other AS10131-sourced measurement this session. `has_routing_loop` correctly returned `False`.
+
+Second independent confirmation of the direct AS139759<->AS45193 adjacency (after PF): `AS10131 -> AS9471 (ONATI) -> AS6939 (Hurricane Electric) -> AS9246 (Teleguam Holdings/GTA) -> AS139759 -> AS45193`, fully contiguous, the literal target resolving directly again. RIS-agreeing with the identical exact match (1,681). Crosses Any2West -- the same exchange as the PF entry.
+
+Added as a new entry. Called `mark_corridor_tested(10131, 45193)`. Verified: module imports cleanly (60 entries, up from 59); regenerated ASCII/HTML reports (render correctly) and the geographic map. Regenerated the corridor backlog: candidate count dropped 714 -> 708.
