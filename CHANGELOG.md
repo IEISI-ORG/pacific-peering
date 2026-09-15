@@ -1043,3 +1043,12 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   via the last-reached-ASN method -- the identical AS7575 count
   already on record from that entry's own note, now independently
   confirmed from the opposite direction. Backlog: 1048 -> 1035.
+- feat(analysis): confirm MP(AS7131, CNMI)->MH(AS24439) via AS174
+  (Cogent) -> AS6453 (Tata Communications) -- second independent
+  confirmation of the existing GU->MH adjacency, via a different
+  path (Cogent direct, not the original's IIJ/Tokyo route). RIS
+  agrees exactly (997) via the last-reached-ASN method. Two of
+  three probes false-positived `has_routing_loop` on near-destination
+  repeats with stable RTT -- same known heuristic limit documented
+  for the AS17828 case, checked directly rather than trusted.
+  Backlog: 1035 -> 1033.

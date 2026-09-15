@@ -816,4 +816,37 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
             "lists both already listed it as a minor relationship)."
         ),
     ),
+    ConfirmedDetour(
+        source_cc="MP",
+        target_cc="MH",
+        target_asn=24439,
+        detour_ix_name="AS174 (Cogent Communications), via AS6453 (Tata Communications) "
+        "-- global transit, not a named exchange crossing",
+        detour_hub="Sydney",
+        measurement_id=211567329,
+        ris_observation_count=997,
+        note=(
+            "PTI Pacifica (AS7131, CNMI) -> Marshall Islands NTA ISP "
+            "(AS24439) -- a fresh MP<->MH pair, landing on the existing "
+            "GU(AS3605)->MH `ConfirmedDetour` adjacency (AS6453<->AS24439), "
+            "now a second independent confirmation from a different source "
+            "economy. All 3 probes: AS7131 -> AS174 (Cogent Communications) "
+            "-> AS6453 (Tata Communications) -- the target itself never "
+            "resolved (ordinary ICMP filtering near the destination, the "
+            "established pattern), so RIS is checked against the last "
+            "reached ASN. RIS agrees with an *exact* match (997), "
+            "identical to the original finding -- checked directly: AS6453 "
+            "is still AS24439's *only* RIS-observed neighbor at all. A "
+            "**different** path into Tata than the original (which went via "
+            "AS2497/IIJ and Tokyo) -- this one via Cogent directly, no "
+            "Tokyo hop. `has_routing_loop` flagged 2 of 3 probes `True` on "
+            "a first pass -- checked directly before trusting it, per the "
+            "now-established process from the AS17828 case: both "
+            "'repeats' are near-destination addresses (`180.87.180.33`, "
+            "`209.58.61.40` -- inside Tata's own transit space, not the "
+            "literal target) replying at consecutive hops with stable, "
+            "non-climbing RTT, the same ordinary noise pattern, not a real "
+            "loop."
+        ),
+    ),
 )

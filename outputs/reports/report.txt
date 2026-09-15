@@ -1,6 +1,6 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-09-15T03:34:32.223256+00:00                  
+                 Generated: 2026-09-15T03:45:56.776814+00:00                  
 ==============================================================================
 
 SUMMARY
@@ -86,6 +86,9 @@ MP -> WS (AS17993): detours via Equinix Sydney (Sydney)
 MP -> FJ (AS24390): detours via AS140627 (OneQode) -- global transit, not a named exchange crossing (Sydney)
     RIS observation count: 337  [measurement 211564127]
     PTI Pacifica (AS7131, CNMI) -> University of the South Pacific's own network (AS24390) -- a fresh MP<->FJ pair, and the first time this project has targeted AS24390 directly as the destination (it was previously only ever the *source* of the FJ->VU/AS9249 detour, see the AS24390 entry above). Both probes: AS7131 -> AS140627 (OneQode) -> AS7575 (AARNet, Australia's research/education network, resolved via PeeringDB netixlan) -- the literal target itself never resolved (ordinary ICMP filtering near the destination, the established pattern), so RIS is checked against the last reached ASN, per this project's inbound-style method. RIS agrees with an *exact* match (337) -- and this is the identical relationship and count already on record from the AS24390->AS9249 entry's own note: AS7575 is AS24390's *only* RIS-observed neighbor at all. No IXP crossing this time (`ixp_crossings` empty for both probes) -- plain global transit through OneQode, a carrier already seen once before this session (AS17893's and AS7131's own fishbowl neighbor lists both already listed it as a minor relationship).
+MP -> MH (AS24439): detours via AS174 (Cogent Communications), via AS6453 (Tata Communications) -- global transit, not a named exchange crossing (Sydney)
+    RIS observation count: 997  [measurement 211567329]
+    PTI Pacifica (AS7131, CNMI) -> Marshall Islands NTA ISP (AS24439) -- a fresh MP<->MH pair, landing on the existing GU(AS3605)->MH `ConfirmedDetour` adjacency (AS6453<->AS24439), now a second independent confirmation from a different source economy. All 3 probes: AS7131 -> AS174 (Cogent Communications) -> AS6453 (Tata Communications) -- the target itself never resolved (ordinary ICMP filtering near the destination, the established pattern), so RIS is checked against the last reached ASN. RIS agrees with an *exact* match (997), identical to the original finding -- checked directly: AS6453 is still AS24439's *only* RIS-observed neighbor at all. A **different** path into Tata than the original (which went via AS2497/IIJ and Tokyo) -- this one via Cogent directly, no Tokyo hop. `has_routing_loop` flagged 2 of 3 probes `True` on a first pass -- checked directly before trusting it, per the now-established process from the AS17828 case: both 'repeats' are near-destination addresses (`180.87.180.33`, `209.58.61.40` -- inside Tata's own transit space, not the literal target) replying at consecutive hops with stable, non-climbing RTT, the same ordinary noise pattern, not a real loop.
 
 CONFIRMED LOCAL TRANSIT (RIS + Atlas both agree, stays in-fishbowl)
 ==============================================================================
