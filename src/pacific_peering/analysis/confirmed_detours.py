@@ -1673,4 +1673,28 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
             "entry's Tokyo/Cogent detour)."
         ),
     ),
+    ConfirmedDetour(
+        source_cc="CK",
+        target_cc="WS",
+        target_asn=17993,
+        detour_ix_name="Equinix Sydney",
+        detour_hub="Sydney",
+        measurement_id=211731055,
+        ris_observation_count=150,
+        note=(
+            "Cook Islands (AS10131) -> Vodafone Samoa Limited (AS17993) "
+            "-- a fresh CK<->WS pair, a third independent confirmation "
+            "of the AS6939(Hurricane Electric)<->AS17993 adjacency "
+            "(after MP and PF). Only 1 of 3 requested probes returned; "
+            "checked `participant_count` directly (1, not 3) -- the same "
+            "genuine single-probe pattern as every other AS10131-sourced "
+            "measurement this session. Result: `AS10131 -> AS9471 (ONATI) "
+            "-> AS6939 -> AS17993`, fully contiguous, RIS-agreeing with "
+            "the identical *exact* match (150). Crosses **Equinix "
+            "Sydney** directly (`ixp_crossings` confirms it) -- the same "
+            "exchange as both prior entries, and the same ONATI-transit "
+            "shape now seen on every AS10131-sourced corridor tested "
+            "this tranche cycle."
+        ),
+    ),
 )

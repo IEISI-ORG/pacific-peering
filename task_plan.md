@@ -1737,3 +1737,11 @@ Added as a new entry. Called `mark_corridor_tested(10131, 17828)`. Verified: mod
 Second independent confirmation of the AS6939(Hurricane Electric)<->AS17893 adjacency (after the PF entry) -- **and genuinely stronger evidence this time**: `AS10131 -> AS9471 (ONATI) -> AS6939 -> AS17893`, fully contiguous, the literal target resolving directly (the PF entry never reached it). RIS agrees with the identical exact match (106). Crosses **BBIX Tokyo** directly (`ixp_crossings` confirms it) -- the PF entry showed no IXP crossing at all; verified AS17893's real BBIX Tokyo membership via PeeringDB before trusting it.
 
 Added as a new entry. Called `mark_corridor_tested(10131, 17893)`. Verified: module imports cleanly (55 entries, up from 54); regenerated ASCII/HTML reports (render correctly) and the geographic map. Regenerated the corridor backlog: candidate count dropped 748 -> 743.
+
+---
+
+**Next corridor pulled: AS10131 (Cook Islands) -> AS17993 (Vodafone Samoa).** Only 1 of 3 probes returned; checked `participant_count` (1, not 3) -- the same genuine single-probe pattern as every other AS10131-sourced measurement this session. `has_routing_loop` correctly returned `False`.
+
+Third independent confirmation of the AS6939(Hurricane Electric)<->AS17993 adjacency (after MP and PF): `AS10131 -> AS9471 (ONATI) -> AS6939 -> AS17993`, fully contiguous, RIS-agreeing with the identical exact match (150). Crosses Equinix Sydney directly -- the same exchange as both prior entries, and the same ONATI-transit shape now seen on every AS10131-sourced corridor this tranche cycle.
+
+Added as a new entry. Called `mark_corridor_tested(10131, 17993)`. Verified: module imports cleanly (56 entries, up from 55); regenerated ASCII/HTML reports (render correctly) and the geographic map. Regenerated the corridor backlog: candidate count dropped 743 -> 737.

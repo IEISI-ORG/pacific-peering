@@ -1484,3 +1484,6 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   evidence: target resolves directly this time and crosses BBIX
   Tokyo (PeeringDB-verified), where the PF entry had neither. RIS
   agrees exactly (106). Backlog: 748 -> 743.
+- feat(analysis): confirm CK(AS10131)->WS(AS17993) via Equinix
+  Sydney -- third confirmation of AS6939<->AS17993 (after MP, PF).
+  RIS agrees exactly (150). Backlog: 743 -> 737.
