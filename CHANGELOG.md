@@ -875,3 +875,11 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   distinct Kiribati ASN confirmed reachable through it. Added as a
   new ConfirmedLocalTransit entry; marked tested; backlog regenerated
   (1150 -> 1149).
+- Sourced AS3605 toward AS140504 (Digicel Nauru Corporation) -- a
+  fresh GU<->NR pair. Real signal (crosses Level 3/Global Crossing)
+  but RIS disagrees, and the upstream isn't a Pacific network -- fits
+  neither ConfirmedDetour nor CandidatePeering, same reasoning as the
+  NC->GU Superloop case. Real color: AS140504's actual neighbors are
+  AS132528 (the same Digicel-family Telstra backbone ASN already seen
+  for Digicel Fiji) and AS12684 (SES Astra, no connected probes).
+  Not filed in any dataclass; marked tested regardless.
