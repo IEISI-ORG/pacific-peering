@@ -2008,4 +2008,29 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
             "matching AARNet's already-established real presence there."
         ),
     ),
+    ConfirmedDetour(
+        source_cc="PG",
+        target_cc="TO",
+        target_asn=38198,
+        detour_ix_name="AS1221 (Telstra domestic) -- global transit, not a named "
+        "exchange crossing",
+        detour_hub="Sydney",
+        measurement_id=211962193,
+        ris_observation_count=1321,
+        note=(
+            "PNG DataCo (AS17828) -> Digicel Tonga (AS38198) -- a fresh "
+            "PG<->TO pair, a sixth independent confirmation of the "
+            "AS45355(Digicel Fiji)<->AS38198 adjacency (after GU, MP, "
+            "VU, PF, CK). `AS17828 -> AS4826 (Vocus Connect) -> AS1221 "
+            "(Telstra domestic) -> AS45355`, target technically reached "
+            "at the end of the chain but with a real unresolved gap "
+            "before AS38198 itself. RIS-agreeing with the identical "
+            "*exact* match (1,321). **Notably no AS132528 this time** "
+            "-- every prior confirmation of this adjacency crossed "
+            "AS132528 (Digicel Australia/Telstra backbone) at Equinix "
+            "Sydney; this one reaches AS45355 via Telstra's domestic "
+            "ASN directly, a genuinely different real path to the same "
+            "ultimate carrier relationship. No IXP crossing observed."
+        ),
+    ),
 )

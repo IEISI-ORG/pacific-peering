@@ -1,6 +1,6 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-09-15T15:56:04.496457+00:00                  
+                 Generated: 2026-09-15T22:03:26.939263+00:00                  
 ==============================================================================
 
 SUMMARY
@@ -214,6 +214,9 @@ PG -> NC (AS17480): detours via Equinix Sydney (Sydney)
 PG -> FJ (AS24390): detours via AS7575 (AARNet) -- global transit, not a named exchange crossing (Sydney)
     RIS observation count: 337  [measurement 211816612]
     PNG DataCo (AS17828) -> University of the South Pacific's own network (AS24390) -- a fresh PG<->FJ pair, a fourth independent confirmation of the AS7575(AARNet)<->AS24390 adjacency (after MP, PF, CK). `AS17828 -> AS4826 (Vocus Connect) -> AS7575`, target never resolved, RIS-agreeing with the identical exact match (337). No IXP crossing this time (`ixp_crossings` empty) -- a direct AARNet hop with no intermediate Sydney fabric, unlike the CK and PF entries' Any2West crossings. Kept `detour_hub` as Sydney, matching AARNet's already-established real presence there.
+PG -> TO (AS38198): detours via AS1221 (Telstra domestic) -- global transit, not a named exchange crossing (Sydney)
+    RIS observation count: 1321  [measurement 211962193]
+    PNG DataCo (AS17828) -> Digicel Tonga (AS38198) -- a fresh PG<->TO pair, a sixth independent confirmation of the AS45355(Digicel Fiji)<->AS38198 adjacency (after GU, MP, VU, PF, CK). `AS17828 -> AS4826 (Vocus Connect) -> AS1221 (Telstra domestic) -> AS45355`, target technically reached at the end of the chain but with a real unresolved gap before AS38198 itself. RIS-agreeing with the identical *exact* match (1,321). **Notably no AS132528 this time** -- every prior confirmation of this adjacency crossed AS132528 (Digicel Australia/Telstra backbone) at Equinix Sydney; this one reaches AS45355 via Telstra's domestic ASN directly, a genuinely different real path to the same ultimate carrier relationship. No IXP crossing observed.
 
 CONFIRMED LOCAL TRANSIT (RIS + Atlas both agree, stays in-fishbowl)
 ==============================================================================

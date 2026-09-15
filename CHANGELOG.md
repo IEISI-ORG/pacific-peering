@@ -1623,3 +1623,8 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   pattern. Probe and credit balance both checked healthy. Flagged
   to the project owner per the standing anomaly rule; not marked
   tested, left genuinely open for a future retry.
+- feat(analysis): confirm PG(AS17828)->TO(AS38198) via Telstra
+  domestic -- sixth confirmation of AS45355<->AS38198 (after GU, MP,
+  VU, PF, CK), and the first instance not crossing AS132528. RIS
+  agrees exactly (1,321). Confirms the earlier scheduling failure
+  was transient/isolated. Backlog: 554 -> 550.
