@@ -1374,3 +1374,8 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   Any2West's actual location (LA/Silicon Valley), too far from the
   existing San Jose hub to reuse -- added a genuine fifth hub
   ("Los Angeles") instead of either error. Backlog: 852 -> 835.
+- feat(analysis): confirm PF(AS9471)->MH(AS24439) via GTT/Tata --
+  fourth independent confirmation of AS6453<->AS24439 (after GU, MP,
+  VU). RIS agrees exactly (997), via a genuinely new intermediate
+  carrier (GTT). No IXP crossing; reused the already-verified Tokyo
+  hub. Backlog: 835 -> 833.

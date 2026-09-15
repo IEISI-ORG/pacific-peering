@@ -1575,3 +1575,9 @@ Extended the existing entry's note rather than duplicating. Not a new dataclass 
 **Crosses a real named exchange this time**: Any2West, confirmed directly for all 3 probes. **Caught and fixed a real error in the first draft before committing**: initially assigned `detour_hub="Honolulu"` from memory without checking -- caught it by re-verifying Any2West's actual location (Los Angeles/Silicon Valley, already established elsewhere in this project's own `candidate_peering.py`), which is neither Honolulu nor close enough to the existing San Jose hub (~550km away) to reuse without misrepresenting the map. Added a genuine fifth external hub (`"Los Angeles": (34.0522, -118.2437)`) rather than either error.
 
 Added as a new entry. Called `mark_corridor_tested(9471, 24390)`. Verified: module imports cleanly (45 entries, up from 44); regenerated ASCII/HTML reports (render correctly, confirms "Los Angeles" hub label) and the geographic map. Regenerated the corridor backlog: candidate count dropped 852 -> 835.
+
+---
+
+**Next corridor pulled: AS9471 (ONATI, French Polynesia) -> AS24439 (Marshall Islands NTA).** `has_routing_loop` correctly returned `False` for all three. Fourth independent confirmation of the AS6453(Tata)<->AS24439 adjacency (after GU via IIJ/Tokyo, MP via Cogent, and VU via Singtel): `AS9471 -> AS3257 (GTT) -> AS6453`, RIS-agreeing with the identical exact match (997). GTT is a genuinely new intermediate carrier for this adjacency. No IXP crossing; reused the already-verified Tokyo hub for Tata.
+
+Added as a new entry. Called `mark_corridor_tested(9471, 24439)`. Verified: module imports cleanly (46 entries, up from 45); regenerated ASCII/HTML reports (render correctly) and the geographic map. Regenerated the corridor backlog: candidate count dropped 835 -> 833.

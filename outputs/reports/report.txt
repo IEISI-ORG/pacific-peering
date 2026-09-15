@@ -1,6 +1,6 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-09-15T09:14:40.422315+00:00                  
+                 Generated: 2026-09-15T09:18:35.746019+00:00                  
 ==============================================================================
 
 SUMMARY
@@ -149,6 +149,9 @@ PF -> WS (AS17993): detours via Equinix Sydney (Sydney)
 PF -> FJ (AS24390): detours via Any2West (Los Angeles)
     RIS observation count: 337  [measurement 211682462]
     ONATI (AS9471, French Polynesia) -> University of the South Pacific's own network (AS24390) -- a fresh PF<->FJ pair, a second independent confirmation of the AS7575(AARNet)<->AS24390 adjacency (after the MP entry via OneQode). This time via Hurricane Electric (AS6939) directly, and crossing a **real named exchange**: **Any2West** (`ixp_crossings` confirms it for all 3 probes) -- Any2West is based in Los Angeles/Silicon Valley, genuinely distinct from the existing San Jose hub (~550km away), so added a fifth external hub (`"Los Angeles": (34.0522, -118.2437)`) rather than conflating the two. RIS agrees with the identical *exact* match (337).
+PF -> MH (AS24439): detours via AS3257 (GTT Communications), via AS6453 (Tata Communications) -- global transit, not a named exchange crossing (Tokyo)
+    RIS observation count: 997  [measurement 211683854]
+    ONATI (AS9471, French Polynesia) -> Marshall Islands NTA ISP (AS24439) -- a fresh PF<->MH pair, a fourth independent confirmation of the AS6453(Tata)<->AS24439 adjacency (after GU via IIJ/Tokyo, MP via Cogent, and VU via Singtel). `AS9471 -> AS3257 (GTT) -> AS6453` -- the target itself never resolved (ordinary ICMP filtering near the destination), so RIS is checked against the last reached ASN. RIS agrees with the identical *exact* match (997). GTT is a genuinely new intermediate carrier for this adjacency. No IXP crossing; kept `detour_hub` as Tokyo, already verified against Tata's real PeeringDB facility list (Tokyo and Sydney) in the earlier NR-sourced entry.
 
 CONFIRMED LOCAL TRANSIT (RIS + Atlas both agree, stays in-fishbowl)
 ==============================================================================

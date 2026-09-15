@@ -1387,4 +1387,28 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
             "identical *exact* match (337)."
         ),
     ),
+    ConfirmedDetour(
+        source_cc="PF",
+        target_cc="MH",
+        target_asn=24439,
+        detour_ix_name="AS3257 (GTT Communications), via AS6453 (Tata "
+        "Communications) -- global transit, not a named exchange crossing",
+        detour_hub="Tokyo",
+        measurement_id=211683854,
+        ris_observation_count=997,
+        note=(
+            "ONATI (AS9471, French Polynesia) -> Marshall Islands NTA ISP "
+            "(AS24439) -- a fresh PF<->MH pair, a fourth independent "
+            "confirmation of the AS6453(Tata)<->AS24439 adjacency (after "
+            "GU via IIJ/Tokyo, MP via Cogent, and VU via Singtel). "
+            "`AS9471 -> AS3257 (GTT) -> AS6453` -- the target itself "
+            "never resolved (ordinary ICMP filtering near the "
+            "destination), so RIS is checked against the last reached "
+            "ASN. RIS agrees with the identical *exact* match (997). "
+            "GTT is a genuinely new intermediate carrier for this "
+            "adjacency. No IXP crossing; kept `detour_hub` as Tokyo, "
+            "already verified against Tata's real PeeringDB facility "
+            "list (Tokyo and Sydney) in the earlier NR-sourced entry."
+        ),
+    ),
 )
