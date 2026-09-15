@@ -1216,4 +1216,26 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
             "directly (`ixp_crossings` confirms it for both probes)."
         ),
     ),
+    ConfirmedDetour(
+        source_cc="VU",
+        target_cc="NR",
+        target_asn=152706,
+        detour_ix_name="AS4637 (Telstra Global), then AS6453 (Tata "
+        "Communications) -- global transit, not a named exchange crossing",
+        detour_hub="Tokyo",
+        measurement_id=211657025,
+        ris_observation_count=292,
+        note=(
+            "Telecom Vanuatu (AS9249) -> Neotel (AS152706, Nauru) -- a "
+            "fresh VU<->NR pair, a second independent confirmation of the "
+            "AS6453(Tata)<->AS152706 adjacency (after the GU entry via "
+            "IIJ/Tokyo). Path: `AS9249 -> AS38442 (Vodafone Fiji) -> "
+            "AS4637 (Telstra Global) -> AS6453`, upstream of the target, "
+            "RIS-agreeing with the identical *exact* match (292). No IXP "
+            "crossing this time (`ixp_crossings` empty for both probes); "
+            "checked Tata's real PeeringDB facility list before keeping "
+            "the hub -- genuine presence at both Equinix Tokyo and Sydney, "
+            "so kept `detour_hub` as Tokyo, matching the original entry."
+        ),
+    ),
 )

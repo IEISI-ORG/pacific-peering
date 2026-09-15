@@ -1290,3 +1290,8 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   Sydney -- third independent confirmation of AS9507<->AS152093
   (after GU and MP). RIS agrees exactly (335), via the shortest path
   yet for this adjacency. Backlog: 943 -> 933.
+- feat(analysis): confirm VU(AS9249)->NR(AS152706) via Telstra/Tata
+  -- second independent confirmation of AS6453<->AS152706 (after GU
+  via IIJ/Tokyo). RIS agrees exactly (292). No IXP crossing; verified
+  Tata's real PeeringDB facility list (Tokyo and Sydney) before
+  reusing the Tokyo hub. Backlog: 933 -> 932.

@@ -1,6 +1,6 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-09-15T08:04:14.011659+00:00                  
+                 Generated: 2026-09-15T08:09:50.566111+00:00                  
 ==============================================================================
 
 SUMMARY
@@ -128,6 +128,9 @@ VU -> PF (AS55943): detours via AS4637 (Telstra Global), then AS3257 (GTT Commun
 VU -> CK (AS152093): detours via Equinix Sydney (Sydney)
     RIS observation count: 335  [measurement 211654723]
     Telecom Vanuatu (AS9249) -> VakaNet Limited (AS152093, Cook Islands) -- a fresh VU<->CK pair, a third independent confirmation of the AS9507(NextHop)<->AS152093 adjacency (after the GU entry and the MP entry). The shortest path yet for this adjacency: `AS9249 -> AS38442 (Vodafone Fiji) -> AS9507`, upstream of the target directly, RIS-agreeing with the identical *exact* match (335). Crosses **Equinix Sydney** directly (`ixp_crossings` confirms it for both probes).
+VU -> NR (AS152706): detours via AS4637 (Telstra Global), then AS6453 (Tata Communications) -- global transit, not a named exchange crossing (Tokyo)
+    RIS observation count: 292  [measurement 211657025]
+    Telecom Vanuatu (AS9249) -> Neotel (AS152706, Nauru) -- a fresh VU<->NR pair, a second independent confirmation of the AS6453(Tata)<->AS152706 adjacency (after the GU entry via IIJ/Tokyo). Path: `AS9249 -> AS38442 (Vodafone Fiji) -> AS4637 (Telstra Global) -> AS6453`, upstream of the target, RIS-agreeing with the identical *exact* match (292). No IXP crossing this time (`ixp_crossings` empty for both probes); checked Tata's real PeeringDB facility list before keeping the hub -- genuine presence at both Equinix Tokyo and Sydney, so kept `detour_hub` as Tokyo, matching the original entry.
 
 CONFIRMED LOCAL TRANSIT (RIS + Atlas both agree, stays in-fishbowl)
 ==============================================================================

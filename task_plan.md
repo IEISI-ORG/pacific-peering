@@ -1489,3 +1489,11 @@ Added as a new `ConfirmedLocalTransit` entry, closing out a loose thread flagged
 **Next corridor pulled: AS9249 (Telecom Vanuatu) -> AS152093 (VakaNet, Cook Islands).** `has_routing_loop` correctly returned `False`. Lands on the well-established AS9507(NextHop)<->AS152093 adjacency, already confirmed twice before (GU, MP). The shortest path yet: `AS9249 -> AS38442 (Vodafone Fiji) -> AS9507`, RIS-agreeing with the identical exact match (335). Crosses Equinix Sydney directly.
 
 Added as a new entry per the established convention (third source economy). Called `mark_corridor_tested(9249, 152093)`. Verified: module imports cleanly (38 entries, up from 37); regenerated ASCII/HTML reports (render correctly) and the geographic map. Regenerated the corridor backlog: candidate count dropped 943 -> 933.
+
+---
+
+**Next corridor pulled: AS9249 (Telecom Vanuatu) -> AS152706 (Neotel, Nauru).** Reached the literal target directly, both probes. `has_routing_loop` correctly returned `False`. Lands on the existing GU->NR adjacency (AS6453/Tata<->AS152706), a second independent confirmation, RIS-agreeing with the identical exact match (292).
+
+**No IXP crossing this time; verified Tata's real PeeringDB facility list before reusing the Tokyo hub** rather than assuming it still held -- genuine presence at both Equinix Tokyo and Sydney, consistent with the original entry's choice.
+
+Added as a new entry. Called `mark_corridor_tested(9249, 152706)`. Verified: module imports cleanly (39 entries, up from 38); regenerated ASCII/HTML reports (render correctly) and the geographic map. Regenerated the corridor backlog: candidate count dropped 933 -> 932.

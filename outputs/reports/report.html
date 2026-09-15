@@ -47,7 +47,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
 <body>
 <div class="wrap">
     <h1>Pacific Peering — Regional Routing Report</h1>
-    <div class="meta">Generated 2026-09-15T08:04:14.146803+00:00</div>
+    <div class="meta">Generated 2026-09-15T08:09:50.705541+00:00</div>
 
     <div class="stat-row"><div class="stat-tile"><div class="value">20</div><div class="label">Economies in scope</div></div><div class="stat-tile"><div class="value">163</div><div class="label">ASNs in scope</div></div><div class="stat-tile"><div class="value">124</div><div class="label">ASNs w/ RIS neighbor</div></div><div class="stat-tile"><div class="value">38</div><div class="label">ASNs w/ IXP membership</div></div><div class="stat-tile"><div class="value">22</div><div class="label">ASNs w/ facility presence</div></div><div class="stat-tile"><div class="value">10/21</div><div class="label">IXPs in/out of fishbowl</div></div></div>
 
@@ -318,6 +318,13 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <div>RIS observation count: 335
                 &middot; measurement 211654723</div>
             <div class="note">Telecom Vanuatu (AS9249) -&gt; VakaNet Limited (AS152093, Cook Islands) -- a fresh VU&lt;-&gt;CK pair, a third independent confirmation of the AS9507(NextHop)&lt;-&gt;AS152093 adjacency (after the GU entry and the MP entry). The shortest path yet for this adjacency: `AS9249 -&gt; AS38442 (Vodafone Fiji) -&gt; AS9507`, upstream of the target directly, RIS-agreeing with the identical *exact* match (335). Crosses **Equinix Sydney** directly (`ixp_crossings` confirms it for both probes).</div>
+        </div><div class="detour-card">
+            <div class="headline">VU -&gt; NR
+                (AS152706): detours via AS4637 (Telstra Global), then AS6453 (Tata Communications) -- global transit, not a named exchange crossing
+                (Tokyo)</div>
+            <div>RIS observation count: 292
+                &middot; measurement 211657025</div>
+            <div class="note">Telecom Vanuatu (AS9249) -&gt; Neotel (AS152706, Nauru) -- a fresh VU&lt;-&gt;NR pair, a second independent confirmation of the AS6453(Tata)&lt;-&gt;AS152706 adjacency (after the GU entry via IIJ/Tokyo). Path: `AS9249 -&gt; AS38442 (Vodafone Fiji) -&gt; AS4637 (Telstra Global) -&gt; AS6453`, upstream of the target, RIS-agreeing with the identical *exact* match (292). No IXP crossing this time (`ixp_crossings` empty for both probes); checked Tata&#x27;s real PeeringDB facility list before keeping the hub -- genuine presence at both Equinix Tokyo and Sydney, so kept `detour_hub` as Tokyo, matching the original entry.</div>
         </div>
 
     <h2>Confirmed local transit (RIS + Atlas both agree, stays in-fishbowl)</h2>
