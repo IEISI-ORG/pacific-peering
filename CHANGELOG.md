@@ -1145,3 +1145,11 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   immediately upstream, RIS disagrees, AS9471's fishbowl neighbor
   list only shows its ONATI sibling. Not filed in any dataclass, per
   that precedent. Backlog: 1003 -> 1001.
+- feat(analysis): confirm VU(AS9249)->AS(AS9751) via Equinix San
+  Jose -- second independent confirmation of the existing
+  MP->AS/AS9751 adjacency (Wave Broadband). RIS agrees exactly
+  (267). Improves on the original entry: this traceroute directly
+  crosses a real named exchange (Equinix San Jose) where the
+  original found no crossing at all. Added a fourth external hub
+  (San Jose) to `economy_coordinates.EXTERNAL_HUB_LATLON`. Backlog:
+  1001 -> 999.

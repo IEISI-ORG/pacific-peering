@@ -1325,3 +1325,11 @@ Not a new dataclass entry -- `CONFIRMED_LOCAL_TRANSIT` count unchanged (11). Cal
 **Applied the retry policy**: fired against the next `list_target_ips(9471)` candidate. This time the target was reached directly. Triangulated: `AS9249 -> AS38442 (Vodafone Fiji) -> AS6939 (Hurricane Electric) -> [gap] -> AS9471`, upstream of target AS6939, `ris_agrees: False`. **Recognized this as the identical shape already established for the AS7131->AS9471 tranche several firings ago**: an external, non-Pacific carrier (Hurricane Electric) sits immediately upstream of the target, and AS9471's own fishbowl neighbor list only shows its ONATI sibling (AS55943) -- RIS's Pacific-scoped fishbowl was never going to corroborate an external carrier's adjacency, this isn't a fresh disagreement to investigate further.
 
 **Not filed in any dataclass**, per that same precedent (NC->GU Superloop shape: real signal, external carrier, doesn't fit `ConfirmedDetour` or `CandidatePeering`). Called `mark_corridor_tested(9249, 9471)` for both the dead-end and retry addresses. No report/map regeneration needed (no dataclass changed). Regenerated the corridor backlog: candidate count dropped 1003 -> 1001.
+
+---
+
+**Next corridor pulled: AS9249 (Telecom Vanuatu) -> AS9751 (American Samoa).** Reached directly, no retry needed. Path: AS9249 -> AS38442 (Vodafone Fiji) -> AS4637 (Telstra Global) -> AS11404 (Wave Broadband) -> AS9751.
+
+**Lands on the existing MP(AS7131)->AS adjacency** (Wave Broadband<->AS9751), a second independent confirmation, RIS-agreeing with an *exact* match (267). **A genuine improvement on the original finding**: this traceroute directly crosses a real, named exchange -- Equinix San Jose (`ixp_crossings` confirms it) -- where the original found no crossing at all. Added a fourth external hub (`"San Jose": (37.3382, -121.8863)`) to `economy_coordinates.EXTERNAL_HUB_LATLON`, directly observed this time rather than inferred from PeeringDB facility lists like the last two new-hub cases.
+
+Added as a new `ConfirmedDetour` entry. Called `mark_corridor_tested(9249, 9751)`. Verified: module imports cleanly (31 entries, up from 30); regenerated ASCII/HTML reports (render correctly) and the geographic map. Regenerated the corridor backlog: candidate count dropped 1001 -> 999.

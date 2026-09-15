@@ -47,7 +47,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
 <body>
 <div class="wrap">
     <h1>Pacific Peering — Regional Routing Report</h1>
-    <div class="meta">Generated 2026-09-15T05:26:04.157033+00:00</div>
+    <div class="meta">Generated 2026-09-15T05:44:20.875982+00:00</div>
 
     <div class="stat-row"><div class="stat-tile"><div class="value">20</div><div class="label">Economies in scope</div></div><div class="stat-tile"><div class="value">163</div><div class="label">ASNs in scope</div></div><div class="stat-tile"><div class="value">124</div><div class="label">ASNs w/ RIS neighbor</div></div><div class="stat-tile"><div class="value">38</div><div class="label">ASNs w/ IXP membership</div></div><div class="stat-tile"><div class="value">22</div><div class="label">ASNs w/ facility presence</div></div><div class="stat-tile"><div class="value">10/21</div><div class="label">IXPs in/out of fishbowl</div></div></div>
 
@@ -262,6 +262,13 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <div>RIS observation count: 335
                 &middot; measurement 211596810</div>
             <div class="note">PTI Pacifica (AS7131, CNMI) -&gt; VakaNet Limited (AS152093, Cook Islands) -- a fresh MP&lt;-&gt;CK pair, landing on the existing GU(AS3605)-&gt;CK adjacency (AS9507/NextHop&lt;-&gt;AS152093), a second independent confirmation from a different source economy. All 3 probes: AS7131 -&gt; AS9507 (NextHop Pty Ltd, Australia, resolved via PeeringDB netixlan) -- the literal target itself never resolved (ordinary ICMP filtering near the destination), so RIS is checked against the last reached ASN. RIS agrees with an *exact* match (335), identical to the original finding -- AS9507 remains AS152093&#x27;s *only* RIS-observed neighbor at all. **All 3 probes** cross **BBIX Tokyo** directly this time (`ixp_crossings` confirms it for every probe), an even stronger direct confirmation than the original&#x27;s crossing. `has_routing_loop` flagged probe 60689 `True` -- checked directly: a single consecutive repeat with modest, stable RTT, the now-familiar ordinary-noise shape, not a real loop.</div>
+        </div><div class="detour-card">
+            <div class="headline">VU -&gt; AS
+                (AS9751): detours via Equinix San Jose
+                (San Jose)</div>
+            <div>RIS observation count: 267
+                &middot; measurement 211613571</div>
+            <div class="note">Telecom Vanuatu (AS9249) -&gt; American Samoa (AS9751) -- the first corridor genuinely sourced from AS9249 to reach the target (the previous AS9249 firing, toward AS9471, dead-ended on the first address). Path: AS9249 -&gt; AS38442 (Vodafone Fiji) -&gt; AS4637 (Telstra Global) -&gt; AS11404 (Wave Broadband) -&gt; AS9751. Upstream of the target is AS11404, RIS-agreeing with an *exact* match (267) -- landing on the existing MP(AS7131)-&gt;AS adjacency (Wave Broadband&lt;-&gt;AS9751), a second independent confirmation. **A genuine improvement on that original entry**: this traceroute directly crosses a real, named exchange -- **Equinix San Jose** (`ixp_crossings` confirms it, `in_fishbowl: false`) -- where the original found no IXP crossing at all. A new external hub for this project (added `&quot;San Jose&quot;: (37.3382, -121.8863)` to `economy_coordinates.EXTERNAL_HUB_LATLON`), directly observed rather than inferred.</div>
         </div>
 
     <h2>Confirmed local transit (RIS + Atlas both agree, stays in-fishbowl)</h2>

@@ -998,4 +998,31 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
             "not a real loop."
         ),
     ),
+    ConfirmedDetour(
+        source_cc="VU",
+        target_cc="AS",
+        target_asn=9751,
+        detour_ix_name="Equinix San Jose",
+        detour_hub="San Jose",
+        measurement_id=211613571,
+        ris_observation_count=267,
+        note=(
+            "Telecom Vanuatu (AS9249) -> American Samoa (AS9751) -- the "
+            "first corridor genuinely sourced from AS9249 to reach the "
+            "target (the previous AS9249 firing, toward AS9471, dead-ended "
+            "on the first address). Path: AS9249 -> AS38442 (Vodafone "
+            "Fiji) -> AS4637 (Telstra Global) -> AS11404 (Wave Broadband) "
+            "-> AS9751. Upstream of the target is AS11404, RIS-agreeing "
+            "with an *exact* match (267) -- landing on the existing "
+            "MP(AS7131)->AS adjacency (Wave Broadband<->AS9751), a second "
+            "independent confirmation. **A genuine improvement on that "
+            "original entry**: this traceroute directly crosses a real, "
+            "named exchange -- **Equinix San Jose** (`ixp_crossings` "
+            "confirms it, `in_fishbowl: false`) -- where the original "
+            "found no IXP crossing at all. A new external hub for this "
+            "project (added `\"San Jose\": (37.3382, -121.8863)` to "
+            "`economy_coordinates.EXTERNAL_HUB_LATLON`), directly observed "
+            "rather than inferred."
+        ),
+    ),
 )
