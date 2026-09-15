@@ -952,3 +952,15 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   independently reinforced a seventh time, first time from CNMI as
   source. Backlog: 1126 -> 1113 (both AS9241 and AS9249 marked
   tested).
+- Sourced AS7131 toward AS9471 (French Polynesia) -- a fresh MP<->PF
+  pair. First address dead-ended past a private hop
+  (`has_routing_loop` correctly said "not a loop"); retried with the
+  next `list_target_ips` candidate per the new policy and it reached
+  the target cleanly on both probes -- confirms the first address's
+  silence was address-specific, not structural. RIS disagrees, but
+  for a legible reason: the observed upstream is AS6939 (Hurricane
+  Electric), an external carrier outside `fishbowl.json`'s
+  Pacific-only scope, and AS9471's only fishbowl neighbor is its own
+  sibling AS55943. Same shape as the NC->GU Superloop precedent --
+  real signal, doesn't fit either dataclass. Not filed; marked
+  tested. Backlog: 1113 -> 1111.
