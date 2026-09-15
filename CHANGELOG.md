@@ -1185,3 +1185,10 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   adjacency before. Extended the existing `ConfirmedLocalTransit`
   entry's note rather than duplicating; entry count unchanged (11).
   Backlog: 988 -> 986.
+- feat(analysis): confirm VU(AS9249)->MH(AS24439) via Singtel/Tata --
+  third independent confirmation of AS6453<->AS24439 (after GU via
+  IIJ/Tokyo and MP via Cogent). RIS agrees exactly (997). Genuinely
+  new intermediate carrier (Singtel). No IXP crossing; verified
+  Singtel's real PeeringDB facility list (Tokyo, no Sydney) before
+  keeping the Tokyo hub. New entry per the established
+  ConfirmedDetour per-source-economy convention. Backlog: 986 -> 984.

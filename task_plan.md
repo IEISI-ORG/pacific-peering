@@ -1365,3 +1365,11 @@ Extended the existing entry's note rather than duplicating. Not a new dataclass 
 **Fourth independent corroboration, extending the existing entry's note rather than duplicating.** A third distinct upstream path into FINTEL this time: AS9249 -> AS38442 (Vodafone Fiji) -> AS4648 (Spark NZ), crossing **MegaIX Sydney** -- neither this specific exchange nor a Sydney crossing had appeared for this adjacency before (prior instances used Level 3/Lumen with no exchange, and Equinix Los Angeles). A fourth distinct source economy (Vanuatu, after Tuvalu, Guam, CNMI).
 
 Not a new dataclass entry -- `CONFIRMED_LOCAL_TRANSIT` count unchanged (11). Called `mark_corridor_tested(9249, 23917)`. Regenerated ASCII/HTML reports since the note text changed (render correctly); map unaffected. Regenerated the corridor backlog: candidate count dropped 988 -> 986.
+
+---
+
+**Next corridor pulled: AS9249 (Telecom Vanuatu) -> AS24439 (Marshall Islands NTA).** Stuck at `Scheduled` (a new probe ID, 1008536, appeared this firing -- AS9249's own slow-scheduling behavior, the same recognized pattern already established for AS7131). Resolved on a longer poll, both probes returned. `has_routing_loop` correctly returned `False` for both.
+
+**Third independent confirmation of the AS6453(Tata)<->AS24439 adjacency** (after the original GU entry via IIJ/Tokyo and the MP entry via Cogent): `AS9249 -> AS38442 (Vodafone Fiji) -> AS7473 (Singtel) -> AS6453`, RIS-agreeing with the identical exact match (997). Singtel is a genuinely new intermediate carrier for this adjacency. No IXP crossing this time; checked Singtel's real PeeringDB facility list before picking a hub -- genuine Tokyo presence, no Sydney -- kept `detour_hub` as Tokyo, matching the original entry rather than the second (Cogent-sourced) entry's Sydney choice.
+
+Per the established `ConfirmedDetour` convention (new entry per source economy for external-carrier adjacencies), added as a new entry rather than extending either prior one. Called `mark_corridor_tested(9249, 24439)`. Verified: module imports cleanly (32 entries, up from 31); regenerated ASCII/HTML reports (render correctly) and the geographic map. Regenerated the corridor backlog: candidate count dropped 986 -> 984.

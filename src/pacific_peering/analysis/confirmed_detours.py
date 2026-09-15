@@ -1036,4 +1036,34 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
             "rather than inferred."
         ),
     ),
+    ConfirmedDetour(
+        source_cc="VU",
+        target_cc="MH",
+        target_asn=24439,
+        detour_ix_name="AS7473 (Singtel), via AS6453 (Tata Communications) -- global "
+        "transit, not a named exchange crossing",
+        detour_hub="Tokyo",
+        measurement_id=211627606,
+        ris_observation_count=997,
+        note=(
+            "Telecom Vanuatu (AS9249) -> Marshall Islands NTA ISP "
+            "(AS24439) -- a fresh VU<->MH pair, a third independent "
+            "confirmation of the AS6453(Tata)<->AS24439 adjacency (after "
+            "the original GU entry via IIJ/Tokyo and the MP entry via "
+            "Cogent). Both probes: AS9249 -> AS38442 (Vodafone Fiji) -> "
+            "AS7473 (Singapore Telecommunications Ltd) -> AS6453 -- the "
+            "target itself never resolved (ordinary ICMP filtering near "
+            "the destination), so RIS is checked against the last reached "
+            "ASN. RIS agrees with an *exact* match (997), identical to "
+            "both prior instances -- AS6453 remains AS24439's *only* "
+            "RIS-observed neighbor. A genuinely new intermediate carrier "
+            "(Singtel) for this adjacency, not previously seen. No IXP "
+            "crossing this time (`ixp_crossings` empty for both probes) -- "
+            "checked Singtel's real PeeringDB facility list before "
+            "picking a hub: genuine presence at Equinix Tokyo, no Sydney "
+            "presence, so kept `detour_hub` as Tokyo, matching the "
+            "original entry rather than the Cogent-sourced second one's "
+            "Sydney choice."
+        ),
+    ),
 )
