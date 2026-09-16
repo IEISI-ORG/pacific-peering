@@ -2224,3 +2224,11 @@ Seventh independent confirmation of the AS45355(Digicel Fiji)<->AS38198 adjacenc
 Telia is a genuinely new intermediate carrier for this adjacency (after Level 3/Lumen, Vocus Connect, Telstra domestic, Hurricane Electric, and SES ASTRA on prior entries). Telstra Global's own hop confirms Sydney directly (`sydp-core04.telstraglobal.net`), extra confirmation of the already-established `detour_hub`.
 
 Added as a new entry. Called `mark_corridor_tested(17893, 38198)`. Verified: module imports cleanly (78 entries, up from 77); regenerated ASCII/HTML reports and the geographic map. Regenerated the corridor backlog: candidate count dropped 414 -> 410 (0 new-probe, 0 new-RIS-relationship).
+
+---
+
+**Next corridor pulled: AS17893 (Palau NCC) -> AS45495 (Vanuatu, Interchange Ltd.).** Checked holder name up front (a real registered Vanuatu ISP, no shell-company concern). `has_routing_loop` correctly returned `False`.
+
+Only touched one real ASN the whole way: BBIX Tokyo's fabric ASN (AS38195) at hop 3, via `peeringdb_netixlan`. Hops 4-7 never resolved to any ASN (genuinely dark middle, not private addressing), and the target itself never responded. `ris_agrees: false`, `ris_observation_count: null` -- checked AS45495's real fishbowl-recorded neighbor list directly: its only RIS-observed neighbor is AS15830 (Equinix's own route-server/fabric ASN, 336 observations), which never appeared anywhere in this traceroute either. No real carrier chain revealed by this measurement at all -- just a generic IXP-fabric touch followed by silence.
+
+Not filed in any dataclass (no clean, contiguous evidence of any kind, worse than the usual "dark middle, live ends" inconclusive case -- here neither middle nor end resolved to a real carrier). Called `mark_corridor_tested(17893, 45495)`. No report/map regeneration needed (no dataclass changed). Regenerated the corridor backlog: candidate count dropped 410 -> 409.

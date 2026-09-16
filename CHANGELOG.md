@@ -1759,3 +1759,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   intermediate carrier for this adjacency; Telstra Global's own hop
   reconfirms Sydney directly. RIS agrees exactly (1,321). Backlog:
   414 -> 410.
+- docs(analysis): PW(AS17893)->VU(AS45495) inconclusive -- only
+  touched BBIX Tokyo's fabric ASN, then went dark with no other ASN
+  ever resolving, target never reached. AS45495's real RIS neighbor
+  (AS15830, Equinix) never appeared. Not filed. Backlog: 410 -> 409.
