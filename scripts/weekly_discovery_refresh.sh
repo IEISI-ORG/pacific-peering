@@ -21,6 +21,15 @@
 # auto_classify.write_reverification_queue()/run_batch() for how the
 # nightly job actually drains this queue.
 #
+# Also re-checks every candidate_peering finding against Cloudflare Radar's
+# ASPA data (an ASPA record is the target AS's own cryptographically-signed
+# statement of its authorized providers -- see analysis/cloudflare_radar and
+# auto_classify.recheck_aspa_candidates()), promoting any newly-confirmed
+# ones to confirmed_local_transit. Unlike reverification this needs no Atlas
+# credits at all (one cached snapshot lookup), so it isn't rationed across
+# nightly runs -- it just re-checks anything not already checked in the
+# last 30 days, every time this script runs.
+#
 # cron runs with a minimal environment (no ~/.local/bin on PATH, no shell
 # profile), so this uses uv's full path and cd's into the repo before
 # anything else -- secrets.yaml and pyproject.toml are both resolved
@@ -38,13 +47,20 @@ echo "=== weekly discovery refresh: $(date -u +%Y-%m-%dT%H:%M:%SZ) ==="
 "$UV" run pacific-peering-pipeline
 "$UV" run pacific-peering-corridor-backlog
 "$UV" run pacific-peering-reverify-enqueue
+"$UV" run pacific-peering-aspa-recheck
 
-# Only these two paths are git-tracked outputs of the steps above --
-# data/* (the registries themselves) is gitignored by design. Scoped
-# `git add`, not `-A`, so this unattended job can never sweep in unrelated
-# in-progress work sitting in the tree.
-if ! git diff --quiet -- corridor_backlog.md || [ -n "$(git status --porcelain -- outputs/runs)" ]; then
-    git add corridor_backlog.md outputs/runs
+# Git-tracked outputs of the steps above -- data/* (the registries and the
+# SQLite store itself) is gitignored by design. A promoted ASPA finding
+# touches findings_export.jsonl and the reports/viz derived from it, same
+# as the nightly job's own tracked-paths list; a plain candidate recheck
+# with zero promotions still touches findings_export.jsonl (every checked
+# finding's aspa_checked_at moves) even though the reports/backlog only
+# get their timestamp line bumped. Scoped `git add`, not `-A`, so this
+# unattended job can never sweep in unrelated in-progress work sitting in
+# the tree.
+TRACK_PATHS=(corridor_backlog.md outputs/runs findings_export.jsonl outputs/reports outputs/viz)
+if [ -n "$(git status --porcelain -- "${TRACK_PATHS[@]}")" ]; then
+    git add "${TRACK_PATHS[@]}"
     git commit -m "$(cat <<EOF
 chore(pipeline): weekly discovery refresh ($(date -u +%Y-%m-%dT%H:%M:%SZ))
 

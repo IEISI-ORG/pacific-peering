@@ -39,6 +39,7 @@ pacific-peering-findings-export = "pacific_peering.analysis.store:main"
 pacific-peering-auto-classify = "pacific_peering.analysis.auto_classify:main"
 pacific-peering-auto-classify-batch = "pacific_peering.analysis.auto_classify:main_batch"
 pacific-peering-reverify-enqueue = "pacific_peering.analysis.auto_classify:main_reverify_enqueue"
+pacific-peering-aspa-recheck = "pacific_peering.analysis.auto_classify:main_aspa_recheck"
 
 [build-system]
 requires = ["uv_build>=0.12.5,<0.13.0"]

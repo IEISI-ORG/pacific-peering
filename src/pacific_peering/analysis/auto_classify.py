@@ -74,6 +74,7 @@ from pacific_peering.atlas.asn_probes import (
 )
 from pacific_peering.atlas.smoketest import run_smoketest
 from pacific_peering.atlas.targets import has_routing_loop, list_target_ips
+from pacific_peering.discovery import cloudflare_radar
 from pacific_peering.discovery.bgp_tools import fetch_asn_names
 from pacific_peering.discovery.economies import ECONOMIES_BY_CC
 from pacific_peering.discovery.economy_coordinates import EXTERNAL_HUB_LATLON
@@ -86,6 +87,7 @@ DEFAULT_REVERIFY_QUEUE_PATH = Path("data/analysis/reverify_queue.json")
 _PROBE_COUNT = 3
 _MAX_TARGET_IP_ATTEMPTS = 2  # primary + one alternate prefix, per the retry-on-deadend feedback
 _REVERIFY_FRACTION = 0.25  # oldest quarter each week -> full rotation roughly every 4 weeks
+_ASPA_RECHECK_MAX_AGE_DAYS = 30  # project owner's own cadence choice
 
 
 @dataclass
@@ -517,6 +519,73 @@ def write_reverification_queue(
     return len(finding_ids)
 
 
+def recheck_aspa_candidates(
+    max_age_days: int = _ASPA_RECHECK_MAX_AGE_DAYS, regenerate: bool = True
+) -> dict[str, int]:
+    """Re-check every `candidate_peering` finding not ASPA-checked in the
+    last `max_age_days` against Cloudflare Radar's current ASPA snapshot,
+    promoting any whose upstream is now an ASPA-authorized provider of the
+    target ASN to `confirmed_local_transit` -- see
+    `store.mark_aspa_checked`/`discovery.cloudflare_radar`.
+
+    Cheap and local (one cached snapshot fetch, then in-memory lookups),
+    unlike Atlas-backed reverification -- there's no reason to ration this
+    across nightly runs the way `select_reverification_batch` does.
+    `max_age_days` exists only so a routine weekly call doesn't redundantly
+    re-touch findings checked a few days ago, not to spread out real cost.
+    """
+    conn = _store.connect()
+    try:
+        due = _store.find_candidates_due_for_aspa_recheck(conn, max_age_days=max_age_days)
+        if not due:
+            logger.info("No candidate_peering findings due for an ASPA recheck")
+            return {"checked": 0, "promoted": 0}
+        checked_at = datetime.now(timezone.utc).isoformat()
+        promoted = 0
+        for finding in due:
+            providers = cloudflare_radar.get_aspa_providers(finding.target_asn)
+            confirmed = providers is not None and finding.source_asn in providers
+            note = None
+            if confirmed:
+                note = (
+                    "\n\n---\n\n"
+                    f"**ASPA-confirmed {checked_at}**: AS{finding.target_asn}'s own "
+                    f"published ASPA record (RFC 9582, via Cloudflare Radar) lists "
+                    f"AS{finding.source_asn} among its authorized providers "
+                    f"{providers} -- a cryptographically-signed statement from the "
+                    f"target itself, promoted from candidate_peering on that basis "
+                    f"rather than RIS agreement."
+                )
+            did_promote = _store.mark_aspa_checked(
+                conn, finding.id, confirmed=confirmed, checked_at=checked_at, promotion_note=note,
+            )
+            if did_promote:
+                promoted += 1
+                logger.info(
+                    "AS%d -> AS%d: ASPA-confirmed, promoted candidate_peering -> confirmed_local_transit",
+                    finding.source_asn, finding.target_asn,
+                )
+            elif confirmed:
+                logger.warning(
+                    "AS%d -> AS%d: ASPA confirms this upstream but an existing "
+                    "confirmed_local_transit finding already occupies this "
+                    "(source_asn, target_asn) pair -- left as candidate_peering, "
+                    "needs a human look",
+                    finding.source_asn, finding.target_asn,
+                )
+        logger.info("ASPA recheck: %d checked, %d promoted", len(due), promoted)
+    finally:
+        conn.close()
+    if regenerate:
+        # Always re-export, even with zero promotions -- every checked
+        # finding's aspa_checked_at moved, and that has to reach the
+        # committed JSONL (the source of truth) or it's lost the next
+        # time the local, gitignored findings.db gets rebuilt from it,
+        # defeating the whole point of the 30-day gate.
+        _regenerate_artifacts()
+    return {"checked": len(due), "promoted": promoted}
+
+
 def _any_probe_asn_for_cc(cc: str) -> int | None:
     """Any currently-connected probe ASN for this economy -- used only as a
     firing-bookkeeping fallback when a finding's original vantage-point ASN
@@ -746,6 +815,28 @@ def main_reverify_enqueue() -> None:
     )
     args = parser.parse_args()
     write_reverification_queue(fraction=args.fraction)
+
+
+def main_aspa_recheck() -> None:
+    """`uv run pacific-peering-aspa-recheck [--max-age-days N]` -- re-check
+    `candidate_peering` findings against Cloudflare Radar's ASPA data,
+    promoting any now-confirmed ones. Cheap and local (no Atlas credits) --
+    run from the weekly discovery refresh, alongside the reverification
+    enqueue step. See `recheck_aspa_candidates`."""
+    logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
+    parser = argparse.ArgumentParser(description="Re-check candidate_peering findings against ASPA.")
+    parser.add_argument(
+        "--max-age-days", type=int, default=_ASPA_RECHECK_MAX_AGE_DAYS,
+        help=(
+            "only recheck findings not already checked within this many "
+            f"days (default: {_ASPA_RECHECK_MAX_AGE_DAYS})"
+        ),
+    )
+    args = parser.parse_args()
+    result = recheck_aspa_candidates(max_age_days=args.max_age_days)
+    logger.info(
+        "ASPA recheck done: %d checked, %d promoted", result["checked"], result["promoted"]
+    )
 
 
 if __name__ == "__main__":

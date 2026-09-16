@@ -59,7 +59,7 @@ from __future__ import annotations
 import json
 import sqlite3
 from dataclasses import dataclass
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 DEFAULT_DB_PATH = Path("data/analysis/findings.db")
@@ -95,6 +95,14 @@ CREATE TABLE IF NOT EXISTS findings (
     detour_hub TEXT,               -- confirmed_detour only
     probe_agreement TEXT,          -- candidate_peering only, e.g. "3/3 probes"
     legacy_note TEXT,              -- verbatim pre-migration narrative, if any
+    -- ASPA (RFC 9582) recheck state -- see analysis/cloudflare_radar
+    -- lookup and auto_classify.recheck_aspa_candidates(). aspa_checked_at
+    -- NULL means never checked, not "checked and found nothing": ASPA
+    -- adoption is still early, so a target with no record today may
+    -- publish one later -- same "absence of evidence" posture this
+    -- project already takes for RIS-invisible prefixes elsewhere.
+    aspa_confirmed INTEGER NOT NULL DEFAULT 0,
+    aspa_checked_at TEXT,
     created_at TEXT NOT NULL
 );
 
@@ -161,6 +169,8 @@ class Finding:
     probe_agreement: str | None
     legacy_note: str | None
     created_at: str
+    aspa_confirmed: bool = False
+    aspa_checked_at: str | None = None
     corroboration_count: int = 0
 
 
@@ -222,6 +232,88 @@ def find_by_target(conn: sqlite3.Connection, target_asn: int) -> list[Finding]:
     return [_row_to_finding(r) for r in rows]
 
 
+def find_candidates_due_for_aspa_recheck(
+    conn: sqlite3.Connection, max_age_days: int = 30
+) -> list[Finding]:
+    """`candidate_peering` findings never ASPA-checked, or checked more
+    than `max_age_days` ago.
+
+    ASPA adoption is still growing -- a target with no ASPA record today
+    may publish one later, so "not confirmed yet" is never a terminal
+    state for a candidate, just due for another look on the same rolling
+    cadence this project already uses for reverification.
+    """
+    cutoff = (datetime.now(timezone.utc) - timedelta(days=max_age_days)).isoformat()
+    rows = conn.execute(
+        "SELECT f.*, (SELECT COUNT(*) FROM corroborations c WHERE c.finding_id = f.id) AS corroboration_count "
+        "FROM findings f WHERE f.kind = ? AND (f.aspa_checked_at IS NULL OR f.aspa_checked_at < ?) "
+        "ORDER BY (f.aspa_checked_at IS NOT NULL), f.aspa_checked_at",
+        (KIND_CANDIDATE_PEERING, cutoff),
+    ).fetchall()
+    return [_row_to_finding(r) for r in rows]
+
+
+def mark_aspa_checked(
+    conn: sqlite3.Connection,
+    finding_id: int,
+    *,
+    confirmed: bool,
+    checked_at: str | None = None,
+    promotion_note: str | None = None,
+) -> bool:
+    """Record the outcome of an ASPA recheck for one `candidate_peering` finding.
+
+    If `confirmed`, promotes the finding's `kind` to `confirmed_local_transit`
+    -- an ASPA record is the target AS's own cryptographically-signed
+    statement of its authorized providers, at least as strong a signal as
+    the RIS-agreement check that kind is otherwise reached through.
+    `promotion_note`, if given, is *appended* to the finding's existing
+    `legacy_note` (never overwritten -- the original investigation narrative
+    is preserved) so the auto-generated corroboration-based note (see
+    `_note_for`), which would otherwise keep printing stale "RIS disagrees"
+    text from before the promotion, is superseded by an explicit
+    explanation instead.
+
+    Returns:
+        True if the promotion happened, False if this was just a checked_at
+        touch (not confirmed) or the promotion hit an identity collision
+        (an existing `confirmed_local_transit` finding already occupies
+        this exact (source_asn, target_asn) pair -- logged by the caller,
+        not silently resolved here, since that's an escalation-worthy
+        oddity: the same upstream already independently confirmed under
+        the other kind for the same target).
+    """
+    checked_at = checked_at or datetime.now(timezone.utc).isoformat()
+    if not confirmed:
+        conn.execute(
+            "UPDATE findings SET aspa_checked_at = ? WHERE id = ?",
+            (checked_at, finding_id),
+        )
+        conn.commit()
+        return False
+    try:
+        conn.execute(
+            "UPDATE findings SET aspa_confirmed = 1, aspa_checked_at = ?, "
+            "kind = ?, legacy_note = COALESCE(legacy_note, '') || ? WHERE id = ?",
+            (
+                checked_at,
+                KIND_CONFIRMED_LOCAL_TRANSIT,
+                promotion_note or "",
+                finding_id,
+            ),
+        )
+        conn.commit()
+        return True
+    except sqlite3.IntegrityError:
+        conn.rollback()
+        conn.execute(
+            "UPDATE findings SET aspa_checked_at = ? WHERE id = ?",
+            (checked_at, finding_id),
+        )
+        conn.commit()
+        return False
+
+
 def _row_to_finding(row: sqlite3.Row) -> Finding:
     return Finding(
         id=row["id"],
@@ -237,6 +329,8 @@ def _row_to_finding(row: sqlite3.Row) -> Finding:
         probe_agreement=row["probe_agreement"],
         legacy_note=row["legacy_note"],
         created_at=row["created_at"],
+        aspa_confirmed=bool(row["aspa_confirmed"]),
+        aspa_checked_at=row["aspa_checked_at"],
         corroboration_count=row["corroboration_count"],
     )
 
@@ -255,6 +349,8 @@ def create_finding(
     detour_hub: str | None = None,
     probe_agreement: str | None = None,
     legacy_note: str | None = None,
+    aspa_confirmed: bool = False,
+    aspa_checked_at: str | None = None,
     created_at: str | None = None,
 ) -> int:
     if kind not in VALID_KINDS:
@@ -262,11 +358,13 @@ def create_finding(
     cur = conn.execute(
         "INSERT INTO findings (kind, source_cc, source_asn, source_name, target_cc, "
         "target_asn, target_name, detour_ix_name, detour_hub, probe_agreement, "
-        "legacy_note, created_at) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)",
+        "legacy_note, aspa_confirmed, aspa_checked_at, created_at) "
+        "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
         (
             kind, source_cc, source_asn, source_name, target_cc, target_asn,
             target_name, detour_ix_name, detour_hub, probe_agreement,
-            legacy_note, created_at or datetime.now(timezone.utc).isoformat(),
+            legacy_note, int(aspa_confirmed), aspa_checked_at,
+            created_at or datetime.now(timezone.utc).isoformat(),
         ),
     )
     conn.commit()
@@ -351,6 +449,8 @@ def export_jsonl(conn: sqlite3.Connection, path: Path = DEFAULT_EXPORT_PATH) -> 
                     "detour_hub": f.detour_hub,
                     "probe_agreement": f.probe_agreement,
                     "legacy_note": f.legacy_note,
+                    "aspa_confirmed": f.aspa_confirmed,
+                    "aspa_checked_at": f.aspa_checked_at,
                     "created_at": f.created_at,
                     "corroborations": [
                         {
@@ -401,6 +501,8 @@ def import_jsonl(path: Path = DEFAULT_EXPORT_PATH, db_path: Path = DEFAULT_DB_PA
             detour_hub=obj.get("detour_hub"),
             probe_agreement=obj.get("probe_agreement"),
             legacy_note=obj.get("legacy_note"),
+            aspa_confirmed=obj.get("aspa_confirmed", False),
+            aspa_checked_at=obj.get("aspa_checked_at"),
             created_at=obj.get("created_at"),
         )
         for c in obj.get("corroborations", []):
