@@ -2781,6 +2781,32 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
         ),
     ),
     ConfirmedDetour(
+        source_cc="FJ",
+        target_cc="FM",
+        target_asn=45193,
+        detour_ix_name="Any2West",
+        detour_hub="Los Angeles",
+        measurement_id=212097709,
+        ris_observation_count=1681,
+        note=(
+            "University of the South Pacific (AS24390, Fiji) -> a "
+            "fourth FSM Telecommunications Corporation sibling ASN "
+            "(AS45193) -- a fresh FJ<->FM pair, a fifth independent "
+            "confirmation of the direct AS139759<->AS45193 adjacency "
+            "(after PF, CK, PG, TV). `AS24390 -> AS7575 (AARNet) -> "
+            "AS9246 (Teleguam Holdings/GTA) -> AS139759 -> AS45193`, "
+            "fully contiguous -- the literal target resolves directly "
+            "again, RIS-agreeing with the identical exact match (1,681). "
+            "Crosses Any2West directly, the same exchange as every "
+            "prior confirmation. Notable: this same tranche's prior "
+            "corridor (FJ->AS38875, FSM's other sibling) landed on the "
+            "identical AS9246->AS139759 chain but stayed unconfirmed "
+            "(candidate only), the same structural distinction already "
+            "documented for the TV-sourced pair. `has_routing_loop` "
+            "correctly returned `False`."
+        ),
+    ),
+    ConfirmedDetour(
         source_cc="TV",
         target_cc="VU",
         target_asn=45495,
@@ -2830,6 +2856,30 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
             "Los Angeles per the established convention for this "
             "adjacency, since the HE transit hops describe the path to "
             "Orange, not Orange's own touchpoint."
+        ),
+    ),
+    ConfirmedDetour(
+        source_cc="FJ",
+        target_cc="WF",
+        target_asn=45879,
+        detour_ix_name="AS2914 (NTT), then AS5511 (Opentransit Orange S.A.) "
+        "-- global transit, not a named exchange crossing",
+        detour_hub="Los Angeles",
+        measurement_id=212097710,
+        ris_observation_count=1665,
+        note=(
+            "University of the South Pacific (AS24390, Fiji) -> Orange "
+            "Wallis & Futuna (AS45879) -- a fresh FJ<->WF pair, a ninth "
+            "independent confirmation of the AS5511(Opentransit "
+            "Orange)<->AS45879 adjacency (after GU, MP, VU, PF, CK, PG, "
+            "PW, TV): `AS24390 -> AS7575 (AARNet) -> AS2914 (NTT) -> "
+            "AS5511`, target never resolved, RIS-agreeing with the "
+            "identical exact match (1,665). NTT is a genuinely new "
+            "intermediate carrier for this adjacency (every prior entry "
+            "used Hurricane Electric or Cogent). Kept `detour_hub` as "
+            "Los Angeles, matching the established convention for this "
+            "adjacency (Orange itself has no PTR evidence on any prior "
+            "entry). `has_routing_loop` correctly returned `False`."
         ),
     ),
     ConfirmedDetour(

@@ -1915,3 +1915,8 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   Digicel Fiji confirmation; AS38201(TO) first-ever confirmation,
   a second satellite operator (Kacific) for this project. Backlog:
   275 -> 269.
+- feat(analysis): FJ(AS24390) tranche - AS38875(FM) seventh candidate
+  (FSM sibling, RIS disagrees), AS45193(FM) fifth confirmed (direct
+  target reached), AS45879(WF) ninth Orange confirmation (new NTT
+  carrier). Backlog: 269 -> 249 (larger drop: same-economy-pair dedup
+  pruned other untested FJ->FM/WF candidates, not an anomaly).

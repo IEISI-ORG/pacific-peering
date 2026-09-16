@@ -1,6 +1,6 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-09-16T07:03:15.304483+00:00                  
+                 Generated: 2026-09-16T07:13:44.599018+00:00                  
 ==============================================================================
 
 SUMMARY
@@ -41,8 +41,8 @@ AS7131    PTI Pacifica Inc.                        2        0       6      yes
 AS9471    ONATI (Office des Postes et Tele         2        0      10      yes
     Dependent: CK, NU
     Vantage-only: (none)
-AS45355   Digicel Fiji                             1        9       9      yes
-    Dependent: TO
+AS5511    Opentransit Orange S.A.                  1        9       9       no
+    Dependent: WF
     Vantage-only: CK, FJ, GU, MP, PF, PG, PW, TV, VU
 
 AS9241 (FINTEL, Fiji) doesn't crack the table above by dependent-economy count (just Tuvalu), but is the starkest single-point-of-failure finding this project has confirmed: it's Tuvalu's *only* RIS-observed neighbor of consequence, reconfirmed by 8 independent vantage points across the region. Every measured path into Tuvalu -- from every direction this project has tested -- passes through one single carrier.
@@ -72,9 +72,9 @@ The mirror image of the regional hubs above: the real external cities where conf
 
 City           Entries  Share Carriers Subregions reached            
 ------------------------------------------------------------------------------
-Sydney              50    51%       15 Melanesia, Micronesia, Polynesia
+Sydney              50    50%       15 Melanesia, Micronesia, Polynesia
     Dependent economies: AS, CK, FJ, MH, NC, PG, PW, SB, TO, VU, WS
-Los Angeles         22    22%        7 Melanesia, Micronesia, Polynesia
+Los Angeles         24    24%        7 Melanesia, Micronesia, Polynesia
     Dependent economies: FJ, FM, GU, MH, NR, PF, WF
 Tokyo               21    21%        8 Melanesia, Micronesia, Polynesia
     Dependent economies: AS, CK, FJ, MH, NC, NR, PW, SB, VU, WF
@@ -389,12 +389,18 @@ FJ -> TO (AS38198): detours via AS132528 (Digicel Australia/Telstra-operated bac
 TV -> FM (AS45193): detours via Any2West (Los Angeles)
     RIS observation count: 1681  [measurement 212067642]
     Tuvalu (AS23917) -> a fourth FSM Telecommunications Corporation sibling ASN (AS45193) -- a fresh TV<->FM pair, a fourth independent confirmation of the direct AS139759<->AS45193 adjacency (after PF, CK, PG). `AS23917 -> AS9241 (FINTEL) -> AS6939 (Hurricane Electric) -> AS9246 (Teleguam Holdings/GTA) -> AS139759 -> AS45193`, fully contiguous -- the literal target resolves directly again, RIS-agreeing with the identical exact match (1,681). Crosses Any2West directly -- the same exchange as every prior confirmation of this relationship. Notable: this same tranche's prior corridor (TV->AS38875, FSM's other sibling) landed on the identical AS9246->AS139759 chain but stayed unconfirmed (candidate only, since AS38875's real RIS neighbor is AS10130, not AS139759) -- here the direct AS139759<->AS45193 pair is genuinely RIS-confirmed instead, the structural difference between this project's `Confirmed` and `Candidate` shapes made concrete in one back-to-back pair of measurements.
+FJ -> FM (AS45193): detours via Any2West (Los Angeles)
+    RIS observation count: 1681  [measurement 212097709]
+    University of the South Pacific (AS24390, Fiji) -> a fourth FSM Telecommunications Corporation sibling ASN (AS45193) -- a fresh FJ<->FM pair, a fifth independent confirmation of the direct AS139759<->AS45193 adjacency (after PF, CK, PG, TV). `AS24390 -> AS7575 (AARNet) -> AS9246 (Teleguam Holdings/GTA) -> AS139759 -> AS45193`, fully contiguous -- the literal target resolves directly again, RIS-agreeing with the identical exact match (1,681). Crosses Any2West directly, the same exchange as every prior confirmation. Notable: this same tranche's prior corridor (FJ->AS38875, FSM's other sibling) landed on the identical AS9246->AS139759 chain but stayed unconfirmed (candidate only), the same structural distinction already documented for the TV-sourced pair. `has_routing_loop` correctly returned `False`.
 TV -> VU (AS45495): detours via Equinix Sydney (Sydney)
     RIS observation count: 336  [measurement 212070753]
     Tuvalu (AS23917) -> Interchange Ltd (AS45495) -- **first-ever confirmation with AS45495 as the actual target** (its only prior appearance in this dataclass was as an intermediate hop in the PW->AS45935/Wantok entry, and an earlier PW->AS45495 measurement this session went dark with no real signal at all). `AS23917 -> AS9241 (FINTEL) -> AS6939 (Hurricane Electric) -> AS15830 (Equinix)`, target never resolved, but both AS6939 and AS15830 resolve via `peeringdb_netixlan` directly at **Equinix Sydney** (`ixp_crossings` confirms both hops), RIS-agreeing with the identical exact match (336) -- AS15830 (Equinix's own route-server/fabric ASN) is exactly the real neighbor already identified for AS45495 when the earlier PW measurement was investigated and found inconclusive. This measurement resolves that gap with real evidence.
 TV -> WF (AS45879): detours via AS6939 (Hurricane Electric), then AS5511 (Opentransit Orange S.A.) -- global transit, not a named exchange crossing (Los Angeles)
     RIS observation count: 1665  [measurement 212072564]
     Tuvalu (AS23917) -> Orange Wallis & Futuna (AS45879) -- a fresh TV<->WF pair, an eighth independent confirmation of the AS5511(Opentransit Orange)<->AS45879 adjacency (after GU, MP, VU, PF, CK, PG, PW): `AS23917 -> AS9241 (FINTEL) -> AS6939 (Hurricane Electric) -> AS5511`, target never resolved, RIS-agreeing with the identical exact match (1,665). Hurricane Electric's own hops show a real Palo Alto -> Ashburn transit (`pao1.he.net`, `ash1.he.net`) before handing off to Orange, which as usual has no PTR evidence at all for its own hops -- kept `detour_hub` as Los Angeles per the established convention for this adjacency, since the HE transit hops describe the path to Orange, not Orange's own touchpoint.
+FJ -> WF (AS45879): detours via AS2914 (NTT), then AS5511 (Opentransit Orange S.A.) -- global transit, not a named exchange crossing (Los Angeles)
+    RIS observation count: 1665  [measurement 212097710]
+    University of the South Pacific (AS24390, Fiji) -> Orange Wallis & Futuna (AS45879) -- a fresh FJ<->WF pair, a ninth independent confirmation of the AS5511(Opentransit Orange)<->AS45879 adjacency (after GU, MP, VU, PF, CK, PG, PW, TV): `AS24390 -> AS7575 (AARNet) -> AS2914 (NTT) -> AS5511`, target never resolved, RIS-agreeing with the identical exact match (1,665). NTT is a genuinely new intermediate carrier for this adjacency (every prior entry used Hurricane Electric or Cogent). Kept `detour_hub` as Los Angeles, matching the established convention for this adjacency (Orange itself has no PTR evidence on any prior entry). `has_routing_loop` correctly returned `False`.
 TV -> SB (AS45891): detours via MegaIX Sydney (Sydney)
     RIS observation count: 1652  [measurement 212073454]
     Tuvalu (AS23917) -> Solomon Telekom Co Ltd (AS45891) -- a fresh TV<->SB pair, an eighth independent confirmation of the AS139609(SISCC)<->AS45891 adjacency (after GU, MP, VU, PF, CK, PG, PW): `AS23917 -> AS9241 (FINTEL) -> [unresolved hop] -> AS139609`, target never resolved, RIS-agreeing with the identical exact match (1,652). Reaches the known SISCC address `103.142.98.131` (the same one previously found alternating in a live routing loop this session) but only once, then goes cleanly dark -- `has_routing_loop` correctly returned `False`. Crosses **MegaIX Sydney** directly (`ixp_crossings` confirms it) -- a different named exchange than the Equinix Sydney crossing most other entries for this adjacency use, matching the VU entry's crossing instead.
@@ -488,6 +494,9 @@ AS17893 (Palau National Communications Corp, PW) -> AS55722 (Cenpac Net Inc, NR)
 AS9246 (Teleguam Holdings, LLC (GTA), GU) -> AS38875 (FSM Telecommunications Corporation, FM)
     Traceroute agreement: 1/1 probe  [measurement 212065242, vantage: TV]
     Sourced from AS23917 (Tuvalu) toward AS38875 (FSM Telecommunications Corporation) -- a fresh TV<->FM pair. Only 1 of 3 requested probes returned (Tuvalu's usual single-probe pattern). Fully contiguous: `AS23917 -> AS9241 (FINTEL) -> AS6939 (Hurricane Electric) -> AS9246 (Teleguam Holdings/GTA, resolved via PeeringDB netixlan) -> AS139759`. The final crossing into AS9246's own registered LAN prefix happens at **Any2West** (`ixp_crossings` confirms it) -- unlike the prior GU-sourced entries for this same target, which crossed the in-fishbowl **MARIIX** instead; this is the first time this specific AS9246<->AS38875(sibling) corridor has been reached via an out-of-fishbowl exchange rather than an in-region one. The literal target (AS38875) never resolved; the traceroute lands on sibling AS139759 instead -- the same substitution already established for this operator (GU and MP entries above): AS38875's only RIS-observed neighbor is AS10130 (1,014 observations), not the literal AS139759 the traceroute resolves to. Same shape as every prior entry for this target: a real, repeatable signal, but not RIS-confirmed on the strict pair. Kept as a candidate, not promoted, per the standing principle.
+AS9246 (Teleguam Holdings, LLC (GTA), GU) -> AS38875 (FSM Telecommunications Corporation, FM)
+    Traceroute agreement: 1/1 probe  [measurement 212097708, vantage: FJ]
+    Sourced from AS24390 (University of the South Pacific, Fiji) toward AS38875 (FSM Telecommunications Corporation) -- a fresh FJ<->FM pair. Fully contiguous: `AS24390 -> AS7575 (AARNet) -> AS9246 (Teleguam Holdings/GTA, resolved via PeeringDB netixlan) -> AS139759`. Crosses **Any2West** directly (`ixp_crossings` confirms it) -- the same out-of-fishbowl exchange as the TV entry, not the in-fishbowl MARIIX seen on the earlier GU entries. The literal target (AS38875) never resolved; the traceroute lands on sibling AS139759 instead, the same substitution as every prior entry for this target -- AS38875's only RIS-observed neighbor is AS10130, not AS139759. Same shape as every prior entry: a real, repeatable signal, but not RIS-confirmed on the strict pair. Kept as a candidate, not promoted, per the standing principle. `has_routing_loop` correctly returned `False`.
 
 ECONOMIES
 ==============================================================================

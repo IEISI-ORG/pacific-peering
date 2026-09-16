@@ -56,7 +56,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
 <body>
 <div class="wrap">
     <h1>Pacific Peering — Regional Routing Report</h1>
-    <div class="meta">Generated 2026-09-16T07:03:15.459641+00:00</div>
+    <div class="meta">Generated 2026-09-16T07:13:44.754913+00:00</div>
 
     <div class="headline-banner">
         <span class="value">68%</span>
@@ -130,11 +130,11 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <td>10</td>
             <td>yes</td>
         </tr><tr>
-            <td>AS45355</td><td>Digicel Fiji</td>
-            <td>TO</td>
+            <td>AS5511</td><td>Opentransit Orange S.A.</td>
+            <td>WF</td>
             <td>CK, FJ, GU, MP, PF, PG, PW, TV, VU</td>
             <td>9</td>
-            <td>yes</td>
+            <td>no</td>
         </tr></tbody>
     </table>
     <div class="callout"><strong>AS9241 (FINTEL, Fiji)</strong> doesn't
@@ -209,14 +209,14 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
         <tbody><tr>
             <td>Sydney</td>
             <td>50</td>
-            <td>51%</td>
+            <td>50%</td>
             <td>15</td>
             <td>Melanesia, Micronesia, Polynesia</td>
             <td>AS, CK, FJ, MH, NC, PG, PW, SB, TO, VU, WS</td>
         </tr><tr>
             <td>Los Angeles</td>
-            <td>22</td>
-            <td>22%</td>
+            <td>24</td>
+            <td>24%</td>
             <td>7</td>
             <td>Melanesia, Micronesia, Polynesia</td>
             <td>FJ, FM, GU, MH, NR, PF, WF</td>
@@ -959,6 +959,13 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
                 &middot; measurement 212067642</div>
             <details class="note"><summary>Tuvalu (AS23917) -&gt; a fourth FSM Telecommunications Corporation sibling ASN (AS45193) -- a fresh TV&lt;-&gt;FM pair, a fourth independent confirmation of the direct…</summary>Tuvalu (AS23917) -&gt; a fourth FSM Telecommunications Corporation sibling ASN (AS45193) -- a fresh TV&lt;-&gt;FM pair, a fourth independent confirmation of the direct AS139759&lt;-&gt;AS45193 adjacency (after PF, CK, PG). `AS23917 -&gt; AS9241 (FINTEL) -&gt; AS6939 (Hurricane Electric) -&gt; AS9246 (Teleguam Holdings/GTA) -&gt; AS139759 -&gt; AS45193`, fully contiguous -- the literal target resolves directly again, RIS-agreeing with the identical exact match (1,681). Crosses Any2West directly -- the same exchange as every prior confirmation of this relationship. Notable: this same tranche&#x27;s prior corridor (TV-&gt;AS38875, FSM&#x27;s other sibling) landed on the identical AS9246-&gt;AS139759 chain but stayed unconfirmed (candidate only, since AS38875&#x27;s real RIS neighbor is AS10130, not AS139759) -- here the direct AS139759&lt;-&gt;AS45193 pair is genuinely RIS-confirmed instead, the structural difference between this project&#x27;s `Confirmed` and `Candidate` shapes made concrete in one back-to-back pair of measurements.</details>
         </div><div class="detour-card">
+            <div class="headline">FJ -&gt; FM
+                (AS45193): detours via Any2West
+                (Los Angeles)</div>
+            <div>RIS observation count: 1681
+                &middot; measurement 212097709</div>
+            <details class="note"><summary>University of the South Pacific (AS24390, Fiji) -&gt; a fourth FSM Telecommunications Corporation sibling ASN (AS45193) -- a fresh FJ&lt;-&gt;FM pair, a fifth…</summary>University of the South Pacific (AS24390, Fiji) -&gt; a fourth FSM Telecommunications Corporation sibling ASN (AS45193) -- a fresh FJ&lt;-&gt;FM pair, a fifth independent confirmation of the direct AS139759&lt;-&gt;AS45193 adjacency (after PF, CK, PG, TV). `AS24390 -&gt; AS7575 (AARNet) -&gt; AS9246 (Teleguam Holdings/GTA) -&gt; AS139759 -&gt; AS45193`, fully contiguous -- the literal target resolves directly again, RIS-agreeing with the identical exact match (1,681). Crosses Any2West directly, the same exchange as every prior confirmation. Notable: this same tranche&#x27;s prior corridor (FJ-&gt;AS38875, FSM&#x27;s other sibling) landed on the identical AS9246-&gt;AS139759 chain but stayed unconfirmed (candidate only), the same structural distinction already documented for the TV-sourced pair. `has_routing_loop` correctly returned `False`.</details>
+        </div><div class="detour-card">
             <div class="headline">TV -&gt; VU
                 (AS45495): detours via Equinix Sydney
                 (Sydney)</div>
@@ -972,6 +979,13 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <div>RIS observation count: 1665
                 &middot; measurement 212072564</div>
             <details class="note"><summary>Tuvalu (AS23917) -&gt; Orange Wallis &amp; Futuna (AS45879) -- a fresh TV&lt;-&gt;WF pair, an eighth independent confirmation of the AS5511(Opentransit Orange)&lt;-&gt;AS45879…</summary>Tuvalu (AS23917) -&gt; Orange Wallis &amp; Futuna (AS45879) -- a fresh TV&lt;-&gt;WF pair, an eighth independent confirmation of the AS5511(Opentransit Orange)&lt;-&gt;AS45879 adjacency (after GU, MP, VU, PF, CK, PG, PW): `AS23917 -&gt; AS9241 (FINTEL) -&gt; AS6939 (Hurricane Electric) -&gt; AS5511`, target never resolved, RIS-agreeing with the identical exact match (1,665). Hurricane Electric&#x27;s own hops show a real Palo Alto -&gt; Ashburn transit (`pao1.he.net`, `ash1.he.net`) before handing off to Orange, which as usual has no PTR evidence at all for its own hops -- kept `detour_hub` as Los Angeles per the established convention for this adjacency, since the HE transit hops describe the path to Orange, not Orange&#x27;s own touchpoint.</details>
+        </div><div class="detour-card">
+            <div class="headline">FJ -&gt; WF
+                (AS45879): detours via AS2914 (NTT), then AS5511 (Opentransit Orange S.A.) -- global transit, not a named exchange crossing
+                (Los Angeles)</div>
+            <div>RIS observation count: 1665
+                &middot; measurement 212097710</div>
+            <details class="note"><summary>University of the South Pacific (AS24390, Fiji) -&gt; Orange Wallis &amp; Futuna (AS45879) -- a fresh FJ&lt;-&gt;WF pair, a ninth independent confirmation of the…</summary>University of the South Pacific (AS24390, Fiji) -&gt; Orange Wallis &amp; Futuna (AS45879) -- a fresh FJ&lt;-&gt;WF pair, a ninth independent confirmation of the AS5511(Opentransit Orange)&lt;-&gt;AS45879 adjacency (after GU, MP, VU, PF, CK, PG, PW, TV): `AS24390 -&gt; AS7575 (AARNet) -&gt; AS2914 (NTT) -&gt; AS5511`, target never resolved, RIS-agreeing with the identical exact match (1,665). NTT is a genuinely new intermediate carrier for this adjacency (every prior entry used Hurricane Electric or Cogent). Kept `detour_hub` as Los Angeles, matching the established convention for this adjacency (Orange itself has no PTR evidence on any prior entry). `has_routing_loop` correctly returned `False`.</details>
         </div><div class="detour-card">
             <div class="headline">TV -&gt; SB
                 (AS45891): detours via MegaIX Sydney
@@ -1207,6 +1221,14 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
                 &middot; measurement 212065242
                 &middot; vantage point TV</div>
             <details class="note"><summary>Sourced from AS23917 (Tuvalu) toward AS38875 (FSM Telecommunications Corporation) -- a fresh TV&lt;-&gt;FM pair…</summary>Sourced from AS23917 (Tuvalu) toward AS38875 (FSM Telecommunications Corporation) -- a fresh TV&lt;-&gt;FM pair. Only 1 of 3 requested probes returned (Tuvalu&#x27;s usual single-probe pattern). Fully contiguous: `AS23917 -&gt; AS9241 (FINTEL) -&gt; AS6939 (Hurricane Electric) -&gt; AS9246 (Teleguam Holdings/GTA, resolved via PeeringDB netixlan) -&gt; AS139759`. The final crossing into AS9246&#x27;s own registered LAN prefix happens at **Any2West** (`ixp_crossings` confirms it) -- unlike the prior GU-sourced entries for this same target, which crossed the in-fishbowl **MARIIX** instead; this is the first time this specific AS9246&lt;-&gt;AS38875(sibling) corridor has been reached via an out-of-fishbowl exchange rather than an in-region one. The literal target (AS38875) never resolved; the traceroute lands on sibling AS139759 instead -- the same substitution already established for this operator (GU and MP entries above): AS38875&#x27;s only RIS-observed neighbor is AS10130 (1,014 observations), not the literal AS139759 the traceroute resolves to. Same shape as every prior entry for this target: a real, repeatable signal, but not RIS-confirmed on the strict pair. Kept as a candidate, not promoted, per the standing principle.</details>
+        </div><div class="candidate-card">
+            <div class="headline">AS9246 (Teleguam Holdings, LLC (GTA),
+                GU) -&gt; AS38875
+                (FSM Telecommunications Corporation, FM)</div>
+            <div>Traceroute agreement: 1/1 probe
+                &middot; measurement 212097708
+                &middot; vantage point FJ</div>
+            <details class="note"><summary>Sourced from AS24390 (University of the South Pacific, Fiji) toward AS38875 (FSM Telecommunications Corporation) -- a fresh FJ&lt;-&gt;FM pair…</summary>Sourced from AS24390 (University of the South Pacific, Fiji) toward AS38875 (FSM Telecommunications Corporation) -- a fresh FJ&lt;-&gt;FM pair. Fully contiguous: `AS24390 -&gt; AS7575 (AARNet) -&gt; AS9246 (Teleguam Holdings/GTA, resolved via PeeringDB netixlan) -&gt; AS139759`. Crosses **Any2West** directly (`ixp_crossings` confirms it) -- the same out-of-fishbowl exchange as the TV entry, not the in-fishbowl MARIIX seen on the earlier GU entries. The literal target (AS38875) never resolved; the traceroute lands on sibling AS139759 instead, the same substitution as every prior entry for this target -- AS38875&#x27;s only RIS-observed neighbor is AS10130, not AS139759. Same shape as every prior entry: a real, repeatable signal, but not RIS-confirmed on the strict pair. Kept as a candidate, not promoted, per the standing principle. `has_routing_loop` correctly returned `False`.</details>
         </div>
 
     

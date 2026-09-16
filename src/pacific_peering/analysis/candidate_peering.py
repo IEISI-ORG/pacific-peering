@@ -534,4 +534,33 @@ CANDIDATE_PEERING: tuple[CandidatePeering, ...] = (
             "promoted, per the standing principle."
         ),
     ),
+    CandidatePeering(
+        upstream_cc="GU",
+        upstream_asn=9246,
+        upstream_name="Teleguam Holdings, LLC (GTA)",
+        target_cc="FM",
+        target_asn=38875,
+        target_name="FSM Telecommunications Corporation",
+        measurement_id=212097708,
+        vantage_point_cc="FJ",
+        probe_agreement="1/1 probe",
+        note=(
+            "Sourced from AS24390 (University of the South Pacific, "
+            "Fiji) toward AS38875 (FSM Telecommunications Corporation) "
+            "-- a fresh FJ<->FM pair. Fully contiguous: `AS24390 -> "
+            "AS7575 (AARNet) -> AS9246 (Teleguam Holdings/GTA, resolved "
+            "via PeeringDB netixlan) -> AS139759`. Crosses **Any2West** "
+            "directly (`ixp_crossings` confirms it) -- the same "
+            "out-of-fishbowl exchange as the TV entry, not the "
+            "in-fishbowl MARIIX seen on the earlier GU entries. The "
+            "literal target (AS38875) never resolved; the traceroute "
+            "lands on sibling AS139759 instead, the same substitution "
+            "as every prior entry for this target -- AS38875's only "
+            "RIS-observed neighbor is AS10130, not AS139759. Same shape "
+            "as every prior entry: a real, repeatable signal, but not "
+            "RIS-confirmed on the strict pair. Kept as a candidate, not "
+            "promoted, per the standing principle. `has_routing_loop` "
+            "correctly returned `False`."
+        ),
+    ),
 )
