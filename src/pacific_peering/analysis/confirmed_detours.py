@@ -2171,4 +2171,32 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
             "matching that corrected entry."
         ),
     ),
+    ConfirmedDetour(
+        source_cc="PW",
+        target_cc="NC",
+        target_asn=17480,
+        detour_ix_name="BBIX Tokyo",
+        detour_hub="Tokyo",
+        measurement_id=212001808,
+        ris_observation_count=1665,
+        note=(
+            "Palau NCC (AS17893) -> a fresh New Caledonia ASN "
+            "(AS17480) -- a fresh PW<->NC pair, a fifth independent "
+            "confirmation of the AS18200(OPT NC)<->AS17480 adjacency "
+            "(after MP, PF, CK, PG), and the first of the five to cross "
+            "**BBIX Tokyo** rather than Equinix Sydney. Only one probe "
+            "responded (Palau's usual low-participant-count pattern), "
+            "and it went dark after the target's own edge address -- "
+            "but `202.171.64.251` resolves directly to AS17480 by RIS "
+            "BGP lookup (PTR `canl.nc`), and the immediately preceding "
+            "hop `202.87.128.134` resolves directly to AS18200, so the "
+            "adjacency is fully contiguous despite the destination IP "
+            "itself never answering. `AS17893 -> AS38195 (BBIX Tokyo) "
+            "-> AS18200 -> AS17480`, RIS-agreeing with the identical "
+            "*exact* match (1,665). The BBIX Tokyo crossing (`ixp_crossings` "
+            "confirms it, ix_id 126) is a real IXP-LAN address match, not "
+            "a carrier-facility guess -- unlike the Cogent/Tata Tokyo "
+            "mislabeling caught earlier this session, this hub is solid."
+        ),
+    ),
 )

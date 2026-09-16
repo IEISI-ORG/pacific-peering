@@ -2134,3 +2134,13 @@ Not filed in any dataclass, matching the established precedent. Called `mark_cor
 Fifth independent confirmation of the AS174(Cogent)<->AS9751 adjacency (after GU, VU, PF, CK): `AS17893 -> AS174 -> AS9751`, RIS-agreeing with the identical exact match (1,055). **Geolocated with `hop_geolocation` from the start**: `lax01` -> `sjc13` -> `sfo01` -> `pdx01` -> `pdx02` -- the identical US West Coast chain already established for the corrected PF entry, ending at Portland.
 
 Added as a new entry. Called `mark_corridor_tested(17893, 9751)`. Verified: module imports cleanly (72 entries, up from 71); regenerated ASCII/HTML reports (render correctly) and the geographic map. Regenerated the corridor backlog: candidate count dropped 491 -> 489.
+
+---
+
+**Next corridor pulled: AS17893 (Palau NCC) -> AS17480 (New Caledonia).** `has_routing_loop` correctly returned `False`.
+
+Only one probe reported (Palau's usual low-participant-count pattern) and the traceroute went dark after hop 7 (`202.171.64.251`), never getting a reply from the destination IP itself. Per the retry-on-dead-end policy, checked whether this was hiding a real anomaly before accepting it: the dark hop is not a loop, and reverse-DNS on the last two live hops (`202.87.128.134`, `202.171.64.251` -> PTR `canl.nc`) plus a direct RIS BGP lookup showed the second-to-last hop resolves to AS18200 and the last live hop resolves directly to the target ASN, AS17480 itself -- so the adjacency is fully contiguous even though the destination address never answered.
+
+Fifth independent confirmation of the AS18200(OPT NC)<->AS17480 adjacency (after MP, PF, CK, PG) -- and the first of the five to cross **BBIX Tokyo** instead of Equinix Sydney: `AS17893 -> AS38195 (BBIX Tokyo) -> AS18200 -> AS17480`, RIS-agreeing with the identical exact match (1,665). The Tokyo hub here is a real IXP-LAN address match confirmed via `ixp_crossings` (ix_id 126), not a carrier-facility guess -- a stronger evidentiary basis than the Cogent/Tata Tokyo mislabeling caught and corrected earlier this session.
+
+Added as a new entry. Called `mark_corridor_tested(17893, 17480)`. Verified: module imports cleanly (73 entries, up from 72); regenerated ASCII/HTML reports and the geographic map. Regenerated the corridor backlog: candidate count dropped 489 -> 468 (0 new-probe, 0 new-RIS-relationship).

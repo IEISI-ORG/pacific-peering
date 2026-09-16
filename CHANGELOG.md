@@ -1700,3 +1700,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   geolocated to Portland from the start -- fifth confirmation of
   AS174<->AS9751 (after GU, VU, PF, CK). RIS agrees exactly (1,055).
   Backlog: 491 -> 489.
+- feat(analysis): confirm PW(AS17893)->NC(AS17480) via BBIX Tokyo --
+  fifth confirmation of AS18200(OPT NC)<->AS17480 (after MP, PF, CK,
+  PG), first of the five crossing Tokyo instead of Sydney. Dead-end
+  final hop resolved via RIS BGP lookup on the second-to-last hop
+  (target ASN itself, PTR canl.nc) rather than the unresponsive
+  destination IP. RIS agrees exactly (1,665). Backlog: 489 -> 468.

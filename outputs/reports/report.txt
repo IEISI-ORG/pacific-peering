@@ -1,6 +1,6 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-09-16T00:16:02.397935+00:00                  
+                 Generated: 2026-09-16T00:34:59.632205+00:00                  
 ==============================================================================
 
 SUMMARY
@@ -232,6 +232,9 @@ PG -> SB (AS45891): detours via AS4637 (Telstra Global) -- global transit, not a
 PW -> AS (AS9751): detours via AS174 (Cogent Communications) -- global transit, not a named exchange crossing (Portland)
     RIS observation count: 1055  [measurement 211998672]
     Palau NCC (AS17893) -> American Samoa (AS9751) -- the first firing genuinely sourced from Palau to reach a target. Fifth independent confirmation of the AS174(Cogent)<->AS9751 adjacency (after GU, VU, PF, CK): `AS17893 -> AS174 -> AS9751`, RIS-agreeing with the identical *exact* match (1,055). **Geolocated with `hop_geolocation` from the start**: `lax01` -> `sjc13` -> `sfo01` -> `pdx01` -> `pdx02` -- the identical US West Coast chain already established for the corrected PF entry, ending at Portland. Kept `detour_hub` as Portland, matching that corrected entry.
+PW -> NC (AS17480): detours via BBIX Tokyo (Tokyo)
+    RIS observation count: 1665  [measurement 212001808]
+    Palau NCC (AS17893) -> a fresh New Caledonia ASN (AS17480) -- a fresh PW<->NC pair, a fifth independent confirmation of the AS18200(OPT NC)<->AS17480 adjacency (after MP, PF, CK, PG), and the first of the five to cross **BBIX Tokyo** rather than Equinix Sydney. Only one probe responded (Palau's usual low-participant-count pattern), and it went dark after the target's own edge address -- but `202.171.64.251` resolves directly to AS17480 by RIS BGP lookup (PTR `canl.nc`), and the immediately preceding hop `202.87.128.134` resolves directly to AS18200, so the adjacency is fully contiguous despite the destination IP itself never answering. `AS17893 -> AS38195 (BBIX Tokyo) -> AS18200 -> AS17480`, RIS-agreeing with the identical *exact* match (1,665). The BBIX Tokyo crossing (`ixp_crossings` confirms it, ix_id 126) is a real IXP-LAN address match, not a carrier-facility guess -- unlike the Cogent/Tata Tokyo mislabeling caught earlier this session, this hub is solid.
 
 CONFIRMED LOCAL TRANSIT (RIS + Atlas both agree, stays in-fishbowl)
 ==============================================================================
