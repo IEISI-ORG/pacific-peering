@@ -1,6 +1,6 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-09-16T09:06:11.792020+00:00                  
+                 Generated: 2026-09-16T09:12:53.304322+00:00                  
 ==============================================================================
 
 SUMMARY
@@ -95,15 +95,21 @@ ASN        Operator                       Subregions reached
 ------------------------------------------------------------------------------
 AS14593    SpaceX Starlink                Micronesia, Polynesia       
     RIS economies: KI, TV
-    Traceroute-confirmed: KI, TV
+    Traceroute-confirmed (served): KI, TV
+    Tested from (vantage points): FM, GU, TV
 AS12684    SES ASTRA S.A.                 Melanesia, Micronesia, Polynesia
     RIS economies: CK, KI, NR, PG
-    Traceroute-confirmed: CK, NR, PF, TV
+    Traceroute-confirmed (served): NR
+    Tested from (vantage points): CK, FJ, PF, PG, TV
 AS135409   Kacific Broadband Satellites   Melanesia, Polynesia        
     RIS economies: PG, TO
-    Traceroute-confirmed: FJ, NC, TO
+    Traceroute-confirmed (served): TO
+    Tested from (vantage points): FJ, NC
 
-**The Kacific gap**: Kacific Broadband Satellites (AS135409), a real PeeringDB-registered Pacific-focused GEO satellite ISP, has RIS-observed BGP relationships with at least three in-scope economies (Papua New Guinea, Tonga, and -- visible only from Kacific's own neighbor list, not from the target's side, a real instance of RIS's asymmetric visibility -- Solomon Islands). Despite that, **no traceroute this project has ever run has touched Kacific's network at all**. AS38201 (Tonga, Kacific-linked) sits untested in the current corridor backlog -- a natural next target if a Kacific-transiting path is ever going to surface. Starlink and SES ASTRA, by contrast, have both been directly traceroute-confirmed (Tuvalu/Kiribati for Starlink; Cook Islands/Nauru for SES ASTRA).
+Per-operator evidence summary, computed fresh from the current finding dataclasses every regeneration -- "served" means the economy's own reachability was confirmed to depend on this operator; "vantage points" just means a traceroute was fired from there, which is a measure of testing breadth, not reach:
+- AS14593 (SpaceX Starlink) is traceroute-confirmed reaching Kiribati (KI), Tuvalu (TV), tested from 3 distinct vantage points (Micronesia, Federated States of (FM), Guam (GU), Tuvalu (TV)).
+- AS12684 (SES ASTRA S.A.) is traceroute-confirmed reaching Nauru (NR), tested from 5 distinct vantage points (Cook Islands (CK), Fiji (FJ), French Polynesia (PF), Papua New Guinea (PG), Tuvalu (TV)). Still untested: Cook Islands (CK), Kiribati (KI), Papua New Guinea (PG) -- a real RIS-observed relationship this project has never traceroute-confirmed.
+- AS135409 (Kacific Broadband Satellites) is traceroute-confirmed reaching Tonga (TO), tested from 2 distinct vantage points (Fiji (FJ), New Caledonia (NC)). Still untested: Papua New Guinea (PG) -- a real RIS-observed relationship this project has never traceroute-confirmed.
 
 CONFIRMED SUB-OPTIMAL ROUTES (RIS + Atlas both agree)
 ==============================================================================

@@ -1953,3 +1953,13 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   AS38201(TO) second Kacific confirmation. All 3 corridors showed
   routine, already-recognized IXP-fabric/intra-carrier loops, not
   escalated. Backlog: 215 -> 203.
+- fix(reports): satellite section's "Kacific gap" callout was a
+  hardcoded, never-updated paragraph claiming Kacific had zero
+  traceroute confirmations -- false since two tranches ago. Replaced
+  with `describe_satellite_pathway()`, computed fresh from current
+  data every regeneration. Also fixed a real conflation in
+  `SatellitePathway.traceroute_confirmed_economies`: source/vantage
+  economies were being mixed into the same set as the actual
+  served/target economies. Added `traceroute_vantage_economies` as a
+  separate field, wired through both renderers with a new table
+  column. Both `report.txt`/`report.html` regenerated and spot-checked.

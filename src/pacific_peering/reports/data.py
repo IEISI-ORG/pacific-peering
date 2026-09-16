@@ -375,18 +375,33 @@ class SatellitePathway:
       takes (the same fishbowl-vs-traceroute distinction this whole
       project is built around).
     - `traceroute_confirmed_economies`: an Atlas traceroute has actually
-      been observed transiting this operator's ASN on a path to/from
-      that economy (mentioned in a `ConfirmedDetour` or
-      `ConfirmedLocalTransit` entry's note) -- real packets, not just an
-      announced relationship.
+      been observed transiting this operator's ASN on a path *to* that
+      economy -- i.e. the economy is the demand side (a `ConfirmedDetour`
+      `target_cc` or `ConfirmedLocalTransit` `customer_cc`), the one
+      whose own reachability genuinely depends on this operator. This is
+      deliberately NOT the same set as "every economy that ever sourced
+      a traceroute which happened to transit this operator" -- a probe
+      fired from Fiji toward a Tongan target doesn't mean Fiji's own
+      connectivity runs through the satellite, only Tonga's does. See
+      `traceroute_vantage_economies` for that other axis.
     - `candidate_only_economies`: mentioned only in an unconfirmed
-      `CandidatePeering` note -- a real traceroute signal RIS doesn't
-      corroborate.
+      `CandidatePeering` note, same target-side convention as above --
+      a real traceroute signal RIS doesn't corroborate.
+    - `traceroute_vantage_economies`: every economy that has been used
+      as a traceroute *source* to test this operator at all (regardless
+      of outcome) -- a measure of how broadly this project's evidence
+      base is, not a claim about who the operator serves. Deliberately
+      kept separate from the two fields above so a reader can't mistake
+      "we tested this operator from N places" for "this operator serves
+      N economies".
 
     An operator can have RIS-visible relationships with economies this
-    project has never traceroute-confirmed at all -- exactly the
-    Kacific case: registered, real BGP relationships, zero traceroute
-    evidence so far.
+    project has never traceroute-confirmed at all -- e.g. the Kacific
+    case when this dataclass was first built: registered, real BGP
+    relationships, zero traceroute evidence. That's not assumed to be
+    permanently true of any operator here -- see
+    `describe_satellite_pathway` below, which reads current data rather
+    than asserting a fixed narrative.
     """
 
     asn: int
@@ -394,6 +409,7 @@ class SatellitePathway:
     ris_economies: tuple[str, ...]
     traceroute_confirmed_economies: tuple[str, ...]
     candidate_only_economies: tuple[str, ...]
+    traceroute_vantage_economies: tuple[str, ...]
 
 
 def _compute_satellite_pathways(
@@ -407,12 +423,18 @@ def _compute_satellite_pathways(
     (string-keyed in the cached JSON, unlike everywhere else in this
     module that works with the live registry) -- this catches real BGP
     relationships even when this project has never fired a traceroute
-    anywhere near them, which is the whole point of the Kacific finding.
+    anywhere near them.
+
     `traceroute_confirmed_economies`/`candidate_only_economies` scan the
     note text of every entry in all three finding dataclasses for a
     literal "AS<n>" mention, since satellite legs are typically described
     as an intermediate hop in another entry's prose, not stored as their
-    own structured provider/target relationship.
+    own structured provider/target relationship. Only the demand-side
+    economy (`target_cc`/`customer_cc`) is counted as "confirmed" or
+    "candidate" -- the source/vantage economy that merely happened to
+    fire the traceroute goes into `traceroute_vantage_economies`
+    instead, so the two axes (who's served vs. who tested it) can't get
+    conflated in whatever consumes this data.
     """
     pathways = []
     for sat_asn, sat_name in _SATELLITE_OPERATORS.items():
@@ -425,9 +447,11 @@ def _compute_satellite_pathways(
 
         marker = f"AS{sat_asn}"
         confirmed_ccs: set[str] = set()
+        vantage_ccs: set[str] = set()
         for detour in CONFIRMED_DETOURS:
             if marker in detour.note or marker in detour.detour_ix_name:
-                confirmed_ccs.update({detour.source_cc, detour.target_cc})
+                confirmed_ccs.add(detour.target_cc)
+                vantage_ccs.add(detour.source_cc)
         for transit in CONFIRMED_LOCAL_TRANSIT:
             if marker in transit.note:
                 # A satellite mention in a local-transit note almost always
@@ -439,11 +463,13 @@ def _compute_satellite_pathways(
                 # unrelated economy in just because it happens to be the
                 # entry's provider_cc.
                 confirmed_ccs.add(transit.customer_cc)
+                vantage_ccs.add(transit.vantage_point_cc)
 
         candidate_ccs: set[str] = set()
         for candidate in CANDIDATE_PEERING:
             if marker in candidate.note:
-                candidate_ccs.update({candidate.upstream_cc, candidate.target_cc})
+                candidate_ccs.add(candidate.target_cc)
+                vantage_ccs.add(candidate.vantage_point_cc)
         candidate_ccs -= confirmed_ccs
 
         pathways.append(
@@ -453,9 +479,75 @@ def _compute_satellite_pathways(
                 ris_economies=tuple(sorted(ris_ccs)),
                 traceroute_confirmed_economies=tuple(sorted(confirmed_ccs)),
                 candidate_only_economies=tuple(sorted(candidate_ccs)),
+                traceroute_vantage_economies=tuple(sorted(vantage_ccs)),
             )
         )
     return tuple(pathways)
+
+
+def describe_satellite_pathway(sat: dict, economy_names: dict[str, str]) -> str:
+    """One plain-text paragraph summarizing an operator's current evidence state.
+
+    Computed fresh from `sat` (a `SatellitePathway` as a dict, e.g. from
+    `ReportData.satellite_pathways`) every time it's called, specifically
+    so this can never go stale the way a hand-written "as of today, X
+    hasn't been confirmed yet" paragraph inevitably does the moment a
+    later tranche confirms it. Shared by both the ASCII and HTML
+    renderers -- plain "--" for dash punctuation either way, matching
+    how every other note/finding string in this project is written and
+    how `html_report.py` already embeds note text unmodified (`html.escape`
+    only, no dash substitution).
+    """
+
+    def _names(ccs: tuple[str, ...]) -> str:
+        return ", ".join(f"{economy_names.get(cc, cc)} ({cc})" for cc in ccs)
+
+    ris = set(sat["ris_economies"])
+    confirmed = set(sat["traceroute_confirmed_economies"])
+    candidate = set(sat["candidate_only_economies"])
+    vantage = sat["traceroute_vantage_economies"]
+    untested = ris - confirmed - candidate
+
+    header = f"AS{sat['asn']} ({sat['name']})"
+
+    if not confirmed and not candidate:
+        if not ris:
+            return (
+                f"{header}: no RIS-observed relationship with any in-scope "
+                "economy recorded yet, and no traceroute has touched it."
+            )
+        return (
+            f"{header} has RIS-observed BGP relationships with "
+            f"{len(ris)} in-scope econom{'y' if len(ris) == 1 else 'ies'} "
+            f"({_names(tuple(sorted(ris)))}), but no traceroute this "
+            "project has run has confirmed transit through it yet -- a "
+            "real, registered relationship with zero traceroute evidence "
+            "so far."
+        )
+
+    parts = [
+        f"{header} is traceroute-confirmed reaching "
+        f"{_names(tuple(sorted(confirmed))) or '(no economy yet)'}"
+    ]
+    if candidate:
+        parts.append(
+            f"with a further real-but-unconfirmed signal toward "
+            f"{_names(tuple(sorted(candidate)))}"
+        )
+    if vantage:
+        parts.append(
+            f"tested from {len(vantage)} distinct vantage "
+            f"point{'s' if len(vantage) != 1 else ''} "
+            f"({_names(vantage)})"
+        )
+    sentence = ", ".join(parts) + "."
+    if untested:
+        sentence += (
+            f" Still untested: {_names(tuple(sorted(untested)))} -- a real "
+            "RIS-observed relationship this project has never traceroute-"
+            "confirmed."
+        )
+    return sentence
 
 
 @dataclass(frozen=True)
@@ -489,6 +581,7 @@ class ReportData:
     regional_hubs: tuple[dict, ...]
     external_hubs: tuple[dict, ...]
     satellite_pathways: tuple[dict, ...]
+    satellite_narrative: tuple[str, ...]
     confirmed_detours: tuple[dict, ...]
     confirmed_local_transit: tuple[dict, ...]
     candidate_peering: tuple[dict, ...]
@@ -581,6 +674,9 @@ def build_report_data(
     satellite_pathways = tuple(
         asdict(s) for s in _compute_satellite_pathways(fishbowl, asn_to_cc)
     )
+    satellite_narrative = tuple(
+        describe_satellite_pathway(s, economy_names) for s in satellite_pathways
+    )
 
     return ReportData(
         generated_at=datetime.now(timezone.utc).isoformat(),
@@ -602,6 +698,7 @@ def build_report_data(
         regional_hubs=regional_hubs,
         external_hubs=external_hubs,
         satellite_pathways=satellite_pathways,
+        satellite_narrative=satellite_narrative,
         confirmed_detours=confirmed_detours,
         confirmed_local_transit=confirmed_local_transit,
         candidate_peering=candidate_peering,

@@ -213,25 +213,23 @@ def render_ascii_report(data: ReportData) -> str:
                 f"    RIS economies: {', '.join(sat['ris_economies']) or '(none)'}"
             )
             lines.append(
-                f"    Traceroute-confirmed: "
+                f"    Traceroute-confirmed (served): "
                 f"{', '.join(sat['traceroute_confirmed_economies']) or '(none)'}"
+            )
+            lines.append(
+                f"    Tested from (vantage points): "
+                f"{', '.join(sat['traceroute_vantage_economies']) or '(none)'}"
             )
     lines.append("")
     lines.append(
-        "**The Kacific gap**: Kacific Broadband Satellites (AS135409), a "
-        "real PeeringDB-registered Pacific-focused GEO satellite ISP, has "
-        "RIS-observed BGP relationships with at least three in-scope "
-        "economies (Papua New Guinea, Tonga, and -- visible only from "
-        "Kacific's own neighbor list, not from the target's side, a real "
-        "instance of RIS's asymmetric visibility -- Solomon Islands). "
-        "Despite that, **no traceroute this project has ever run has "
-        "touched Kacific's network at all**. AS38201 (Tonga, Kacific-"
-        "linked) sits untested in the current corridor backlog -- a "
-        "natural next target if a Kacific-transiting path is ever going "
-        "to surface. Starlink and SES ASTRA, by contrast, have both been "
-        "directly traceroute-confirmed (Tuvalu/Kiribati for Starlink; "
-        "Cook Islands/Nauru for SES ASTRA)."
+        "Per-operator evidence summary, computed fresh from the current "
+        "finding dataclasses every regeneration -- \"served\" means the "
+        "economy's own reachability was confirmed to depend on this "
+        "operator; \"vantage points\" just means a traceroute was fired "
+        "from there, which is a measure of testing breadth, not reach:"
     )
+    for narrative in data.satellite_narrative:
+        lines.append(f"- {narrative}")
 
     lines.append(_section("CONFIRMED SUB-OPTIMAL ROUTES (RIS + Atlas both agree)"))
     if not data.confirmed_detours:

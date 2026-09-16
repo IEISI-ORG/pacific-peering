@@ -193,9 +193,13 @@ def render_html_report(data: ReportData, viz_dir: Path | None = Path("../viz")) 
             <td>{html.escape(', '.join(sorted({subregion_of.get(cc) for cc in set(s['ris_economies']) | set(s['traceroute_confirmed_economies'])} - {None})))}</td>
             <td>{html.escape(', '.join(s['ris_economies']) or '(none)')}</td>
             <td>{html.escape(', '.join(s['traceroute_confirmed_economies']) or '(none)')}</td>
+            <td>{html.escape(', '.join(s['traceroute_vantage_economies']) or '(none)')}</td>
         </tr>"""
         for s in data.satellite_pathways
     ) or "<p>(none recorded yet)</p>"
+    satellite_narrative_items = "".join(
+        f"<li>{html.escape(n)}</li>" for n in data.satellite_narrative
+    )
 
     detour_cards = "".join(
         f"""<div class="detour-card">
@@ -373,23 +377,18 @@ def render_html_report(data: ReportData, viz_dir: Path | None = Path("../viz")) 
     <table>
         <thead><tr><th>ASN</th><th>Operator</th><th>Subregions reached</th>
             <th>RIS economies</th>
-            <th>Traceroute-confirmed economies</th></tr></thead>
+            <th>Traceroute-confirmed (served)</th>
+            <th>Tested from (vantage points)</th></tr></thead>
         <tbody>{satellite_rows}</tbody>
     </table>
-    <div class="callout"><strong>The Kacific gap</strong>: Kacific
-        Broadband Satellites (AS135409), a real PeeringDB-registered
-        Pacific-focused GEO satellite ISP, has RIS-observed BGP
-        relationships with at least three in-scope economies (Papua New
-        Guinea, Tonga, and &mdash; visible only from Kacific's own
-        neighbor list, not from the target's side, a real instance of
-        RIS's asymmetric visibility &mdash; Solomon Islands). Despite
-        that, <strong>no traceroute this project has ever run has touched
-        Kacific's network at all</strong>. AS38201 (Tonga, Kacific-linked)
-        sits untested in the current corridor backlog &mdash; a natural
-        next target if a Kacific-transiting path is ever going to
-        surface. Starlink and SES ASTRA, by contrast, have both been
-        directly traceroute-confirmed (Tuvalu/Kiribati for Starlink;
-        Cook Islands/Nauru for SES ASTRA).</div>
+    <div class="callout"><strong>Per-operator evidence summary</strong>,
+        computed fresh from the current finding dataclasses every
+        regeneration &mdash; &ldquo;served&rdquo; means the economy's own
+        reachability was confirmed to depend on this operator;
+        &ldquo;vantage points&rdquo; just means a traceroute was fired
+        from there, which is a measure of testing breadth, not reach:
+        <ul>{satellite_narrative_items}</ul>
+    </div>
 
     <h2>Confirmed sub-optimal routes (RIS + Atlas both agree)</h2>
     {detour_cards}
