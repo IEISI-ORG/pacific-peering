@@ -1933,3 +1933,8 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   (a real external carrier, e.g. Telstra/AU) crashed the geographic
   map with a KeyError; skip plotting that candidate's line instead of
   crashing -- it still appears in text/HTML reports.
+- feat(analysis): FJ(AS24390) tranche - AS141368(NR) third Cenpac Net
+  corroboration, AS154100(KI) tenth direct Starlink confirmation
+  (exhausts FJ as source); AS152706(NR) logged inconclusive, ordinary
+  dead-end not matching the established Tata relationship. Backlog:
+  234 -> 231.

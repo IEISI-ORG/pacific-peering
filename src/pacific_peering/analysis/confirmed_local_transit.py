@@ -352,7 +352,20 @@ CONFIRMED_LOCAL_TRANSIT: tuple[ConfirmedLocalTransit, ...] = (
             "geographically distinct source (Fiji, after FSM, Guam, "
             "CNMI, Vanuatu, French Polynesia, Cook Islands, Papua New "
             "Guinea, Palau, and Tuvalu). `has_routing_loop` correctly "
-            "returned `False`."
+            "returned `False`. "
+            "**A tenth independent confirmation of the direct AS154100<->"
+            "AS14593 relationship itself** (measurement 212116019, "
+            "FJ/AS24390 -> KI/AS154100 directly, a second FJ-sourced "
+            "measurement this tranche, this time targeting BNL Tarawa's "
+            "own address rather than transiting through it): fully "
+            "contiguous, resolves cleanly to AS14593 (Starlink) as the "
+            "literal last-reached ASN, via `AS24390 -> AS7575 (AARNet) "
+            "-> AS14593`, identical RIS match (361). No IXP crossing "
+            "this time (`ixp_crossings` empty). `has_routing_loop` "
+            "correctly returned `False`. A tenth distinct source "
+            "economy (Fiji, after FSM, Guam, CNMI, Vanuatu, French "
+            "Polynesia, Cook Islands, Papua New Guinea, and Palau) for "
+            "this specific direct relationship."
         ),
     ),
     ConfirmedLocalTransit(
@@ -1223,7 +1236,17 @@ CONFIRMED_LOCAL_TRANSIT: tuple[ConfirmedLocalTransit, ...] = (
             "identical RIS match (382) -- confirming the full chain "
             "again in one traceroute. `has_routing_loop` correctly "
             "returned `False`. A second distinct source economy "
-            "(Tuvalu, after Vanuatu)."
+            "(Tuvalu, after Vanuatu). "
+            "**Third independent corroboration** (measurement 212116017, "
+            "FJ/AS24390 -> NR/AS141368, a fresh FJ<->NR pair): "
+            "`AS24390 -> AS7575 (AARNet) -> AS140627 (OneQode) -> "
+            "AS7131 (PTI Pacifica) -> AS55722`, target never resolved, "
+            "identical RIS match (382) -- confirming the full chain "
+            "again in one traceroute, this time via a genuinely new "
+            "first-leg carrier (AARNet, and OneQode reappearing as the "
+            "intermediate). `has_routing_loop` correctly returned "
+            "`False`. A third distinct source economy (Fiji, after "
+            "Vanuatu and Tuvalu)."
         ),
     ),
 )
