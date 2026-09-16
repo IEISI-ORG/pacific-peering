@@ -1997,3 +1997,10 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   from a directly-checked real relationship), 1 inconclusive. Backlog:
   105 -> 28 (large drop from economy-pair dedup across 9 economies
   touched in one batch, not an anomaly).
+- feat(analysis): bulk clear-out, NU(AS55885) final sub-batch (28
+  corridors) - 16 confirmed (7 first-ever, including two SISCC
+  relationships FM had left inconclusive), 6 local-transit
+  extensions, 4 candidates, 1 inconclusive. Fixed 6 measurement-ID
+  transcription errors caught before committing. **Corridor backlog
+  is now empty (0 candidates)** -- closes out the full 157-corridor
+  bulk clear-out.

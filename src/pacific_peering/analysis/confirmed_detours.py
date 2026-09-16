@@ -3073,6 +3073,19 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
         ),
     ),
     ConfirmedDetour(
+        source_cc="NU", target_cc="SB", target_asn=45891,
+        detour_ix_name="MegaIX Sydney",
+        detour_hub="Sydney", measurement_id=212158125, ris_observation_count=663,
+        note=(
+            "Twelfth independent confirmation of AS139609(SISCC)<->AS45891, "
+            "again sourced by attempting AS134525 (Solomon Telekom's other "
+            "ASN) and landing on the sibling. `AS55885 -> AS9471 -> AS6939 "
+            "-> AS139609 -> AS45891`, RIS agrees exactly (663). "
+            "`has_routing_loop` False -- unlike the FM-sourced attempt at "
+            "this same target, no loop reproduced this time."
+        ),
+    ),
+    ConfirmedDetour(
         source_cc="TV",
         target_cc="PF",
         target_asn=55943,
@@ -3537,6 +3550,197 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
             "Third confirmation of AS132528<->AS38800. `AS55885 -> AS9471 "
             "-> AS6939 -> AS132528 -> AS38800`, RIS agrees exactly "
             "(1,656). `has_routing_loop` False."
+        ),
+    ),
+    # Final NU(AS55885) sub-batch, closing out the 109-corridor NU queue
+    # and the entire 157-corridor bulk clear-out (task_plan.md has full
+    # context). Concise style per volume.
+    ConfirmedDetour(
+        source_cc="NU", target_cc="VU", target_asn=45495,
+        detour_ix_name="Equinix Sydney",
+        detour_hub="Sydney", measurement_id=212158078, ris_observation_count=336,
+        note=(
+            "Second confirmation with Interchange Ltd (AS45495) itself as "
+            "the target. `AS55885 -> AS9471 -> AS6939 -> AS15830 "
+            "(Equinix)`, RIS agrees exactly (336). `has_routing_loop` "
+            "False."
+        ),
+    ),
+    ConfirmedDetour(
+        source_cc="NU", target_cc="WF", target_asn=45879,
+        detour_ix_name="AS3257 (GTT), then AS5511 (Opentransit Orange S.A.)",
+        detour_hub="Los Angeles", measurement_id=212158083, ris_observation_count=1665,
+        note=(
+            "Twelfth confirmation of AS5511(Orange)<->AS45879. `AS55885 "
+            "-> AS9471 -> AS3257 -> AS5511`, RIS agrees exactly (1,665). "
+            "`has_routing_loop` False."
+        ),
+    ),
+    ConfirmedDetour(
+        source_cc="NU", target_cc="SB", target_asn=45891,
+        detour_ix_name="MegaIX Sydney",
+        detour_hub="Sydney", measurement_id=212158087, ris_observation_count=1652,
+        note=(
+            "Twelfth confirmation of AS139609(SISCC)<->AS45891. `AS55885 "
+            "-> AS9471 -> AS6939 -> AS139609`, RIS agrees exactly (1,652). "
+            "`has_routing_loop` False."
+        ),
+    ),
+    ConfirmedDetour(
+        source_cc="NU", target_cc="VU", target_asn=45935,
+        detour_ix_name="Equinix Sydney",
+        detour_hub="Sydney", measurement_id=212158092, ris_observation_count=1664,
+        note=(
+            "Second confirmation of AS45495<->AS45935 (Wantok Network, "
+            "after PW's first-ever). `AS55885 -> AS9471 -> AS6939 -> "
+            "AS15830 -> AS45495 -> AS45935`, RIS agrees exactly (1,664). "
+            "`has_routing_loop` False."
+        ),
+    ),
+    ConfirmedDetour(
+        source_cc="NU", target_cc="VU", target_asn=132228,
+        detour_ix_name="Equinix Sydney",
+        detour_hub="Sydney", measurement_id=212158102, ris_observation_count=670,
+        note=(
+            "**First-ever confirmation for this target**: AS45495"
+            "(Interchange Ltd)<->AS132228, directly RIS-confirmed. "
+            "`AS55885 -> AS9471 -> AS6939 -> AS15830 -> AS45495 -> "
+            "AS132228`, RIS agrees exactly (670). `has_routing_loop` "
+            "False."
+        ),
+    ),
+    ConfirmedDetour(
+        source_cc="NU", target_cc="VU", target_asn=132254,
+        detour_ix_name="Equinix Sydney",
+        detour_hub="Sydney", measurement_id=212158105, ris_observation_count=670,
+        note=(
+            "**First-ever confirmation for this target**: AS45495"
+            "<->AS132254, directly RIS-confirmed (the same count as "
+            "AS132228 -- both siblings behind Interchange Ltd). "
+            "`AS55885 -> AS9471 -> AS6939 -> AS15830 -> AS45495 -> "
+            "AS132254`, RIS agrees exactly (670). `has_routing_loop` "
+            "False."
+        ),
+    ),
+    ConfirmedDetour(
+        source_cc="NU", target_cc="VU", target_asn=132429,
+        detour_ix_name="Equinix Sydney",
+        detour_hub="Sydney", measurement_id=212158107, ris_observation_count=1316,
+        note=(
+            "**First-ever confirmation for this target**: AS45355"
+            "(Digicel Fiji)<->AS132429, directly RIS-confirmed (1,316 of "
+            "1,316 observations -- AS45355 is its *only* RIS-observed "
+            "neighbor). `AS55885 -> AS9471 -> AS6939 -> AS132528 -> "
+            "AS45355`, RIS agrees exactly (1,316). `has_routing_loop` "
+            "False."
+        ),
+    ),
+    ConfirmedDetour(
+        source_cc="NU", target_cc="SB", target_asn=132468,
+        detour_ix_name="AS6939 (Hurricane Electric), then AS139609 (SISCC)",
+        detour_hub="Sydney", measurement_id=212158111, ris_observation_count=1319,
+        note=(
+            "Second confirmation of AS139609(SISCC)<->AS132468 (after "
+            "FM). `AS55885 -> AS9471 -> AS6939 -> AS139609 -> AS132468`, "
+            "RIS agrees exactly (1,319). `has_routing_loop` False."
+        ),
+    ),
+    ConfirmedDetour(
+        source_cc="NU", target_cc="VU", target_asn=133383,
+        detour_ix_name="Equinix Sydney",
+        detour_hub="Sydney", measurement_id=212158121, ris_observation_count=333,
+        note=(
+            "**First-ever confirmation for this target**: AS45495"
+            "<->AS133383, directly RIS-confirmed (332 of 332 observations "
+            "fresh-checked -- AS45495 is its only real neighbor). "
+            "`AS55885 -> AS9471 -> AS6939 -> AS15830 -> AS45495`, RIS "
+            "agrees exactly (333). `has_routing_loop` False."
+        ),
+    ),
+    ConfirmedDetour(
+        source_cc="NU", target_cc="SB", target_asn=136996,
+        detour_ix_name="AS174 (Cogent Communications), then AS136557",
+        detour_hub="Sydney", measurement_id=212158127, ris_observation_count=336,
+        note=(
+            "**First-ever confirmation for this target**: AS136557"
+            "<->AS136996, directly RIS-confirmed (336 of 336 observations "
+            "-- AS136557 is its only real neighbor, a genuinely new "
+            "intermediate carrier for this project). `AS55885 -> AS9471 "
+            "-> AS174 -> AS136557 -> AS136996`, RIS agrees exactly (336). "
+            "`has_routing_loop` False."
+        ),
+    ),
+    ConfirmedDetour(
+        source_cc="NU", target_cc="SB", target_asn=139609,
+        detour_ix_name="AS6939 (Hurricane Electric)",
+        detour_hub="Sydney", measurement_id=212158132, ris_observation_count=86,
+        note=(
+            "Second direct confirmation of AS6939<->SISCC (SISCC itself "
+            "as target, after FM's first-ever; count 86 vs. FM's 559 -- "
+            "RIS's live neighbor-count naturally shifts between snapshots, "
+            "already established elsewhere this session). `AS55885 -> "
+            "AS9471 -> AS6939 -> AS139609`, RIS agrees exactly (86). "
+            "`has_routing_loop` False."
+        ),
+    ),
+    ConfirmedDetour(
+        source_cc="NU", target_cc="SB", target_asn=142279,
+        detour_ix_name="AS6939 (Hurricane Electric), then AS139609 (SISCC)",
+        detour_hub="Sydney", measurement_id=212158139, ris_observation_count=330,
+        note=(
+            "**First-ever confirmation for this target** (the FM-sourced "
+            "attempt at this same target dead-ended one hop short and was "
+            "logged inconclusive; this one reaches far enough): AS139609"
+            "(SISCC)<->AS142279 (Solitech Ltd), directly RIS-confirmed. "
+            "`AS55885 -> AS9471 -> AS6939 -> AS139609 -> AS142279`, RIS "
+            "agrees exactly (330). `has_routing_loop` False."
+        ),
+    ),
+    ConfirmedDetour(
+        source_cc="NU", target_cc="WS", target_asn=150349,
+        detour_ix_name="AS6939 (Hurricane Electric), then AS139609 (SISCC)",
+        detour_hub="Sydney", measurement_id=212158141, ris_observation_count=331,
+        note=(
+            "**First-ever confirmation for this target** (the FM-sourced "
+            "attempt dead-ended one hop short and was logged inconclusive; "
+            "this one confirms it): AS139609(SISCC)<->AS150349 (Pacific "
+            "Vaizeds Enterprise Ltd, Samoa) -- a real, if unusual, cross-"
+            "region relationship (a Samoan ISP's dominant RIS neighbor is "
+            "a Solomon Islands submarine cable company). `AS55885 -> "
+            "AS9471 -> AS6939 -> AS139609`, RIS agrees exactly (331). "
+            "`has_routing_loop` False."
+        ),
+    ),
+    ConfirmedDetour(
+        source_cc="NU", target_cc="CK", target_asn=152093,
+        detour_ix_name="AS7474 (SingTel Optus), then AS9507 (NextHop)",
+        detour_hub="Sydney", measurement_id=212158146, ris_observation_count=335,
+        note=(
+            "Fifth confirmation of AS9507(NextHop)<->AS152093 (after GU, "
+            "MP, VU, TV). `AS55885 -> AS9471 -> AS3257 (GTT) -> AS7474 "
+            "(SingTel Optus) -> AS9507`, RIS agrees exactly (335). Optus "
+            "is a genuinely new intermediate carrier for this adjacency. "
+            "`has_routing_loop` False."
+        ),
+    ),
+    ConfirmedDetour(
+        source_cc="NU", target_cc="NR", target_asn=152706,
+        detour_ix_name="AS3257 (GTT), then AS6453 (Tata Communications)",
+        detour_hub="Los Angeles", measurement_id=212158149, ris_observation_count=292,
+        note=(
+            "Sixth confirmation of AS6453(Tata)<->AS152706. `AS55885 -> "
+            "AS9471 -> AS3257 -> AS6453 -> AS152706`, RIS agrees exactly "
+            "(292). `has_routing_loop` False."
+        ),
+    ),
+    ConfirmedDetour(
+        source_cc="NU", target_cc="KI", target_asn=154100,
+        detour_ix_name="AS6939 (Hurricane Electric)",
+        detour_hub="Sydney", measurement_id=212158151, ris_observation_count=361,
+        note=(
+            "Fourteenth direct confirmation of AS154100<->AS14593 "
+            "(Starlink). `AS55885 -> AS9471 -> AS6939 -> AS14593`, RIS "
+            "agrees exactly (361). `has_routing_loop` False."
         ),
     ),
 )

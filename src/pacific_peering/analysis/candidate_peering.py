@@ -771,4 +771,61 @@ CANDIDATE_PEERING: tuple[CandidatePeering, ...] = (
             "`has_routing_loop` False."
         ),
     ),
+    CandidatePeering(
+        upstream_cc="PG", upstream_asn=38008, upstream_name="Telikom PNG "
+        "Satellite Tier 1 AS", target_cc="SB", target_asn=132462,
+        target_name="Bemobile Solomon Islands Ltd", measurement_id=212158110,
+        vantage_point_cc="NU", probe_agreement="1/1 probe",
+        note=(
+            "NU(AS55885) -> AS132462: `AS55885 -> AS9471 -> AS6939 -> "
+            "AS38008 -> AS132462`, same mismatch already found via FM -- "
+            "real neighbor is AS140889 (333 of 337 observations), not "
+            "AS38008. Second candidate entry for this target. "
+            "`has_routing_loop` False."
+        ),
+    ),
+    CandidatePeering(
+        upstream_cc="US", upstream_asn=3257, upstream_name="GTT "
+        "Communications", target_cc="VU", target_asn=132797,
+        target_name="(Vanuatu ASN)", measurement_id=212158118,
+        vantage_point_cc="NU", probe_agreement="1/1 probe",
+        note=(
+            "NU(AS55885) -> AS132797: `AS55885 -> AS9471 -> AS3257 (GTT) "
+            "-> AS132797`, but `ris_agrees: false` -- checked AS132797's "
+            "real RIS neighbor list directly: AS133383 is its only real "
+            "neighbor (331 of 331 observations) -- a domestic Vanuatu "
+            "adjacency (AS133383 is itself confirmed this same batch as "
+            "AS45495's real customer), not GTT. Real signal, wrong "
+            "immediate carrier. `has_routing_loop` False."
+        ),
+    ),
+    CandidatePeering(
+        upstream_cc="SB", upstream_asn=139609, upstream_name="SISCC",
+        target_cc="SB", target_asn=139277,
+        target_name="Solomon Islands Government ICT Support Department",
+        measurement_id=212158129, vantage_point_cc="NU",
+        probe_agreement="1/1 probe",
+        note=(
+            "NU(AS55885) -> AS139277: `AS55885 -> AS9471 -> AS6939 -> "
+            "AS139609 -> AS139277`, same mismatch already found via FM -- "
+            "real neighbor is AS132468 (662 of 662 observations, itself "
+            "confirmed this batch as a real SISCC customer), not SISCC "
+            "directly. Second candidate entry for this target. "
+            "`has_routing_loop` False."
+        ),
+    ),
+    CandidatePeering(
+        upstream_cc="SB", upstream_asn=139609, upstream_name="SISCC",
+        target_cc="SB", target_asn=150403,
+        target_name="Solomon Islands National Provident Fund Board",
+        measurement_id=212158142, vantage_point_cc="NU",
+        probe_agreement="1/1 probe",
+        note=(
+            "NU(AS55885) -> AS150403: `AS55885 -> AS9471 -> AS6939 -> "
+            "AS139609 -> AS150403`, same mismatch already found via FM -- "
+            "real relationship is AS45891 (331 of 331 observations), not "
+            "SISCC directly. Second candidate entry for this target. "
+            "`has_routing_loop` False."
+        ),
+    ),
 )

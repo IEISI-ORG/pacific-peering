@@ -389,7 +389,14 @@ CONFIRMED_LOCAL_TRANSIT: tuple[ConfirmedLocalTransit, ...] = (
             "relationship** (measurements 212143033 and 212143042, same "
             "NC pair, direct to KI/AS154100): both `AS18200 -> AS55850 -> "
             "AS14593`, RIS agrees exactly (361). Same already-documented "
-            "loop pattern on both, not escalated."
+            "loop pattern on both, not escalated. "
+            "**Fourteenth downstream-chain reproduction and direct "
+            "confirmation** (measurements 212158116 and 212158151, "
+            "NU/AS55885, closing out the bulk NU/FM/GU/NC clear-out): "
+            "`AS55885 -> AS9471 -> AS6939 -> AS14593 -> AS154100` "
+            "(downstream, RIS 362) and `AS55885 -> AS9471 -> AS6939 -> "
+            "AS14593` (direct, RIS 361). `has_routing_loop` False on "
+            "both."
         ),
     ),
     ConfirmedLocalTransit(
@@ -806,7 +813,11 @@ CONFIRMED_LOCAL_TRANSIT: tuple[ConfirmedLocalTransit, ...] = (
             "crossing on the PG entry, the second real IXP crossing "
             "confirmed for this adjacency. A fourth distinct source "
             "economy (Tuvalu, after GU, VU, and PG) confirming AS3605's "
-            "regional-hub-carrier role."
+            "regional-hub-carrier role. "
+            "**Fifth independent corroboration** (measurement 212158100, "
+            "NU/AS55885, closing out the bulk clear-out): `AS55885 -> "
+            "AS9471 -> AS6939 -> AS3605 -> AS58932`, RIS agrees exactly "
+            "(664). `has_routing_loop` False."
         ),
     ),
     ConfirmedLocalTransit(
@@ -873,7 +884,11 @@ CONFIRMED_LOCAL_TRANSIT: tuple[ConfirmedLocalTransit, ...] = (
             "this tranche, a second real IXP crossing for this specific "
             "adjacency. A fourth distinct source economy (Tuvalu, after "
             "GU, VU, and PG) confirming AS3605's regional-hub-carrier "
-            "role."
+            "role. "
+            "**Fifth independent corroboration** (measurement 212158123, "
+            "NU/AS55885, closing out the bulk clear-out): `AS55885 -> "
+            "AS9471 -> AS6939 -> AS3605 -> AS133897`, RIS agrees exactly "
+            "(662). `has_routing_loop` False."
         ),
     ),
     ConfirmedLocalTransit(
@@ -1119,7 +1134,11 @@ CONFIRMED_LOCAL_TRANSIT: tuple[ConfirmedLocalTransit, ...] = (
             "New Caledonia ASN): `AS56089 -> AS18200 (OPT-NC) -> AS6939 "
             "-> AS7131`, RIS agrees exactly (1,528). `has_routing_loop` "
             "flagged `True` -- the already-documented Equinix Sydney "
-            "fabric repeat; not escalated."
+            "fabric repeat; not escalated. "
+            "**Tenth independent corroboration** (measurement 212158096, "
+            "NU/AS55885, closing out the bulk clear-out): `AS55885 -> "
+            "AS9471 -> AS6939 -> AS7131`, RIS agrees exactly (1,528). "
+            "`has_routing_loop` False."
         ),
     ),
     ConfirmedLocalTransit(
@@ -1240,7 +1259,11 @@ CONFIRMED_LOCAL_TRANSIT: tuple[ConfirmedLocalTransit, ...] = (
             "212143029 and 212143038, NC/AS45345 and NC/AS56089, part of "
             "the bulk clear-out): both `AS18200 (OPT-NC) -> AS4826 (Vocus "
             "Connect) -> AS14593 -> AS154100`, RIS agrees exactly (1,392). "
-            "`has_routing_loop` False on both."
+            "`has_routing_loop` False on both. "
+            "**Thirteenth corroboration** (measurement 212158126, "
+            "NU/AS55885, closing out the bulk clear-out): `AS55885 -> "
+            "AS9471 -> AS6939 -> AS14593 -> AS154100`, RIS agrees exactly "
+            "(1,392). `has_routing_loop` False."
         ),
     ),
     ConfirmedLocalTransit(
@@ -1351,7 +1374,11 @@ CONFIRMED_LOCAL_TRANSIT: tuple[ConfirmedLocalTransit, ...] = (
             "clear-out): both `AS18200 (OPT-NC) -> AS6939 -> AS7131 -> "
             "AS55722`, RIS agrees exactly (382). `has_routing_loop` "
             "flagged `True` on both -- the already-documented Equinix "
-            "Sydney fabric repeat at hop 4/5; not escalated."
+            "Sydney fabric repeat at hop 4/5; not escalated. "
+            "**Seventh corroboration** (measurement 212158136, NU/AS55885, "
+            "closing out the bulk clear-out): `AS55885 -> AS9471 -> "
+            "AS6939 -> AS7131 -> AS55722`, RIS agrees exactly (382). "
+            "`has_routing_loop` False."
         ),
     ),
 )
