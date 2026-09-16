@@ -5,9 +5,13 @@ detours through an out-of-fishbowl exchange (the sub-optimal-routing
 findings this project exists to document); this one records the
 opposite — an ASN-to-ASN adjacency confirmed by both RIS and Atlas
 where *both* ends are in-scope ASNs, meaning at least this leg of the
-journey stays entirely within the study region. Also hand-curated, same
-reason as `confirmed_detours.py`: only a handful of measurements exist
-so far.
+journey stays entirely within the study region.
+
+**Frozen historical archive, as of the SQLite migration** — same status
+as `confirmed_detours.py`: migrated once into `analysis/store.py`'s
+SQLite database, no longer live-read by anything (`store.
+load_confirmed_local_transit()` is what every consumer uses now); new
+findings are filed directly into the database going forward.
 """
 
 from __future__ import annotations

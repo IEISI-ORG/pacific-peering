@@ -4,6 +4,16 @@ Both the ASCII and HTML reports render from the exact same assembled
 data structure — per task_plan.md's Phase 1f spec ("generate ASCII
 report and HTML report from the same underlying analysis output"), so
 the two formats can never drift apart on what they claim to show.
+
+Findings source: as of the SQLite migration, `CONFIRMED_DETOURS`,
+`CONFIRMED_LOCAL_TRANSIT`, and `CANDIDATE_PEERING` below are loaded from
+`analysis/store.py`'s database, not imported from the legacy
+`confirmed_detours.py`/`confirmed_local_transit.py`/`candidate_peering.py`
+modules (those files are frozen historical snapshots now -- their data was
+migrated once via `migrate_legacy_findings.py` and is no longer live). The
+loader functions reconstruct the exact same dataclass types, so every
+function below this point that does `detour.target_cc`, `transit.note`,
+etc. keeps working completely unchanged.
 """
 
 from __future__ import annotations
@@ -14,13 +24,17 @@ from dataclasses import asdict, dataclass
 from datetime import datetime, timezone
 from pathlib import Path
 
-from pacific_peering.analysis.candidate_peering import CANDIDATE_PEERING
-from pacific_peering.analysis.confirmed_detours import CONFIRMED_DETOURS
-from pacific_peering.analysis.confirmed_local_transit import CONFIRMED_LOCAL_TRANSIT
+from pacific_peering.analysis import store as _store
 from pacific_peering.analysis.fishbowl import DEFAULT_SUMMARY_PATH
 from pacific_peering.analysis.ixp_lan_registry import DEFAULT_REGISTRY_PATH
 from pacific_peering.analysis.traceroute_topology import DEFAULT_TRIANGULATION_DIR
 from pacific_peering.discovery.registry import DEFAULT_OUTPUT_PATH
+
+_conn = _store.connect()
+CONFIRMED_DETOURS = _store.load_confirmed_detours(_conn)
+CONFIRMED_LOCAL_TRANSIT = _store.load_confirmed_local_transit(_conn)
+CANDIDATE_PEERING = _store.load_candidate_peering(_conn)
+_conn.close()
 
 # Shared across every report format so a reader who lands on any one of
 # them (this project's own audience, or an external one — e.g. RIPE

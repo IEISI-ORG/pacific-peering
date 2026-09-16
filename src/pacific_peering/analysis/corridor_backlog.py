@@ -40,11 +40,22 @@ from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
 
-from pacific_peering.analysis.candidate_peering import CANDIDATE_PEERING
-from pacific_peering.analysis.confirmed_detours import CONFIRMED_DETOURS
-from pacific_peering.analysis.confirmed_local_transit import CONFIRMED_LOCAL_TRANSIT
+from pacific_peering.analysis import store as _store
 from pacific_peering.analysis.fishbowl import DEFAULT_SUMMARY_PATH
 from pacific_peering.atlas.asn_probes import DEFAULT_REGISTRY_PATH, load_asn_probe_registry
+
+# Loaded from the SQLite store (analysis/store.py), not the legacy
+# confirmed_detours.py/confirmed_local_transit.py/candidate_peering.py
+# modules directly -- those are frozen historical snapshots as of the
+# SQLite migration. Loading here, not at call time, so a single backlog
+# regeneration sees one consistent snapshot even if findings are being
+# written concurrently (matches the previous module-level-constant
+# behavior exactly).
+_conn = _store.connect()
+CONFIRMED_DETOURS = _store.load_confirmed_detours(_conn)
+CONFIRMED_LOCAL_TRANSIT = _store.load_confirmed_local_transit(_conn)
+CANDIDATE_PEERING = _store.load_candidate_peering(_conn)
+_conn.close()
 
 logger = logging.getLogger(__name__)
 

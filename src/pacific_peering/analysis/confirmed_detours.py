@@ -1,11 +1,15 @@
 """Confirmed sub-optimal-routing findings: real detours through an out-of-fishbowl IXP.
 
-Curated by hand from this project's actual triangulation results (RIS +
-Atlas both agreeing — Validation Rule 1), not auto-derived generically
-yet: only a handful of measurements exist so far, and building a
-generic auto-extraction pipeline before there's enough data to justify
-one would be premature. Extend this list as more measurements get
-triangulated.
+**Frozen historical archive, as of the SQLite migration.** This module's
+158 entries were curated by hand across this project's first several
+months (RIS + Atlas both agreeing — Validation Rule 1), then migrated
+once into `analysis/store.py`'s SQLite database and never re-read from
+here again — every consumer (`reports/data.py`, `corridor_backlog.py`,
+`viz/geographic.py`, `reports/probe_gap_report.py`) now loads via
+`store.load_confirmed_detours()`. New findings are filed directly into
+the database (by `analysis/auto_classify.py`, going forward) and never
+appended here. Kept, not deleted, as the original record of how these
+entries read before migration; still valid, importable Python.
 """
 
 from __future__ import annotations

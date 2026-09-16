@@ -21,9 +21,15 @@ from pathlib import Path
 
 import matplotlib.pyplot as plt
 
-from pacific_peering.analysis.candidate_peering import CANDIDATE_PEERING
-from pacific_peering.analysis.confirmed_detours import CONFIRMED_DETOURS
-from pacific_peering.analysis.confirmed_local_transit import CONFIRMED_LOCAL_TRANSIT
+from pacific_peering.analysis import store as _store
+
+# Loaded from the SQLite store, not the legacy dataclass modules directly --
+# see reports/data.py's module docstring for why.
+_conn = _store.connect()
+CONFIRMED_DETOURS = _store.load_confirmed_detours(_conn)
+CONFIRMED_LOCAL_TRANSIT = _store.load_confirmed_local_transit(_conn)
+CANDIDATE_PEERING = _store.load_candidate_peering(_conn)
+_conn.close()
 from pacific_peering.discovery.economies import ECONOMIES_BY_CC
 from pacific_peering.discovery.economy_coordinates import ECONOMY_LATLON, EXTERNAL_HUB_LATLON
 

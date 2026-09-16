@@ -24,6 +24,15 @@ membership independently of ASN resolution (see `task_plan.md`) —
 AS17893's own hop turned out to sit inside Guam IX's registered LAN,
 directly corroborating its PeeringDB-claimed membership there even
 though the upstream adjacency itself remains unconfirmed.
+
+**Frozen historical archive, as of the SQLite migration** — same status
+as `confirmed_detours.py`: migrated once into `analysis/store.py`'s
+SQLite database (the migration also merged several accidental
+duplicate entries this module had accumulated, e.g. 8 separate rows for
+the same GU/AS38875 relationship, into one finding with multiple
+corroborations); no longer live-read by anything (`store.
+load_candidate_peering()` is what every consumer uses now); new
+findings are filed directly into the database going forward.
 """
 
 from __future__ import annotations

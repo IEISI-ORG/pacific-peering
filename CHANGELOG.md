@@ -2004,3 +2004,32 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   transcription errors caught before committing. **Corridor backlog
   is now empty (0 candidates)** -- closes out the full 157-corridor
   bulk clear-out.
+- feat(analysis): migrate all 188 findings (157 detour, 13
+  local-transit, 18 candidate) from the three hand-written dataclass
+  modules into a new SQLite store (`analysis/store.py`) - one
+  `findings`+`corroborations` schema replacing three divergent
+  presentation conventions. Migration surfaced and fixed real
+  duplicate-entry bugs in the legacy corpus (8 CandidatePeering rows
+  for one GU/AS38875 relationship, folded into 1). Legacy `.py` files
+  are now frozen historical archives (header notes added); every
+  consumer (`reports/data.py`, `corridor_backlog.py`,
+  `viz/geographic.py`, `reports/probe_gap_report.py`) rewired to load
+  from the store - caught and fixed 3 of these still importing the
+  legacy files directly, which would have hidden every future
+  SQLite-only finding from the backlog dedup. `findings_export.jsonl`
+  (repo root, committed, sorted JSON Lines) is the new git-tracked
+  source of truth; the `.db` itself stays local/gitignored.
+- feat(analysis): add `known_anomalies.py` (CIDR registry of 6
+  already-investigated routing-loop locations) and `auto_classify.py`
+  (`pacific-peering-auto-classify`) - the full uv-script pipeline
+  replacing LLM-driven per-corridor classification: pull next
+  candidate -> fire -> triangulate -> classify via a fixed mechanical
+  rule order (loop-vs-known-anomaly, IXP-hub detour, RIS-confirmed
+  local transit, unconfirmed candidate, retry-then-inconclusive) ->
+  file/extend a finding -> mark tested -> regenerate every artifact.
+  Genuine escalations (unrecognized loop, unclassified "TBA" IXP,
+  external upstream with no known hub) write to a new `escalations.md`
+  instead of being guessed at. Validated against two real historical
+  measurements (GU->PG detour, FM->PW candidate) before any live use;
+  backlog was empty at build time so no corridor has been fired
+  through it yet.

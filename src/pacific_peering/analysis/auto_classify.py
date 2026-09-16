@@ -1,0 +1,435 @@
+"""The uv-script replacement for LLM-driven per-corridor classification.
+
+Per the project owner's explicit direction (move off LLM processing, get uv
+scripts doing all of the work): this pulls the next candidate off the
+corridor backlog, fires a traceroute, triangulates it against RIS, classifies
+it via fixed mechanical rules, files a SQLite finding (new or extending an
+existing one), marks the corridor tested, and regenerates every derived
+artifact -- the same sequence this project's tranches performed by hand,
+all session, now scripted end-to-end. An LLM/human is only back in the loop
+for a genuine escalation (see `_Escalation`, `escalations.md`) -- everything
+else is fully automatic.
+
+Classification rules, in priority order, per probe:
+
+1. **Loop check** (`has_routing_loop`, called with the real target IP --
+   omitting it silently defeats the target-reached exemption, a bug this
+   project hit once already). A loop at an address `known_anomalies.py`
+   already recognizes is routine, logged but not blocking; a loop at a new
+   address is a genuine escalation.
+2. **IXP crossing.** If the traceroute crosses a *classified*
+   (`in_fishbowl` is `True`/`False`, never `"TBA"`) out-of-fishbowl exchange
+   at a hub this project has coordinates for
+   (`economy_coordinates.EXTERNAL_HUB_LATLON`), that's a Confirmed Detour --
+   `"TBA"` exchanges and unmapped hubs escalate instead of guessing.
+3. **RIS+Atlas agreement on the immediate upstream of the target**
+   (Validation Rule 1). If the confirmed upstream ASN is itself a fishbowl
+   ASN (`data/asn_registry.json`), that's Confirmed Local Transit. If it's
+   external and step 2 didn't already resolve a hub, that ambiguity
+   escalates rather than being filed as a locationless detour.
+4. **Real signal, RIS disagrees** (Validation Rule 4): a resolved,
+   contiguous upstream that RIS's neighbor list doesn't independently
+   confirm -- Candidate Peering.
+5. **Nothing real reached** -- retry once against the target ASN's next
+   cached prefix (a dead end can be a property of one destination address,
+   not the whole ASN -- confirmed concretely earlier this project). Still
+   dark after the retry -- Inconclusive: marked tested, no finding filed.
+"""
+
+from __future__ import annotations
+
+import json
+import logging
+import subprocess
+import sys
+from dataclasses import dataclass, field
+from datetime import datetime, timezone
+from pathlib import Path
+
+from pacific_peering.analysis import known_anomalies
+from pacific_peering.analysis import store as _store
+from pacific_peering.analysis.corridor_backlog import (
+    CorridorCandidate,
+    mark_corridor_tested,
+    pick_next_corridor,
+)
+from pacific_peering.analysis.ixp_lan_registry import (
+    DEFAULT_REGISTRY_PATH as IXP_REGISTRY_PATH,
+    load_ixp_lan_registry,
+)
+from pacific_peering.analysis.traceroute_topology import (
+    DEFAULT_ATLAS_PARSED_DIR,
+    analyze_measurement,
+)
+from pacific_peering.atlas.smoketest import run_smoketest
+from pacific_peering.atlas.targets import has_routing_loop, list_target_ips
+from pacific_peering.discovery.bgp_tools import fetch_asn_names
+from pacific_peering.discovery.economy_coordinates import EXTERNAL_HUB_LATLON
+
+logger = logging.getLogger(__name__)
+
+DEFAULT_ASN_REGISTRY_PATH = Path("data/asn_registry.json")
+DEFAULT_ESCALATIONS_PATH = Path("escalations.md")
+_PROBE_COUNT = 3
+_MAX_TARGET_IP_ATTEMPTS = 2  # primary + one alternate prefix, per the retry-on-deadend feedback
+
+
+@dataclass
+class _Escalation:
+    """Something the mechanical rules couldn't confidently resolve -- surfaced
+    to a human/LLM rather than silently guessed at or dropped."""
+
+    candidate: CorridorCandidate
+    measurement_id: int
+    reason: str
+    detail: str
+
+
+@dataclass
+class ClassifyResult:
+    candidate: CorridorCandidate
+    outcome: str  # "confirmed_detour" | "confirmed_local_transit" | "candidate_peering" | "inconclusive" | "escalated"
+    finding_id: int | None = None
+    escalations: list[_Escalation] = field(default_factory=list)
+
+
+def _asn_holder_name(asn: int, cache: dict[int, str]) -> str:
+    if asn not in cache:
+        info = fetch_asn_names([asn]).get(asn)
+        cache[asn] = info.name if info else f"AS{asn}"
+    return cache[asn]
+
+
+def _load_asn_to_cc(path: Path = DEFAULT_ASN_REGISTRY_PATH) -> dict[int, str]:
+    registry = json.loads(path.read_text())
+    return {asn: cc for cc, entry in registry.items() for asn in entry["asns"]}
+
+
+def _first_looping_address(hops: list[dict]) -> str | None:
+    """The first address that recurs across hops -- good enough to identify
+    *which* known (or unknown) location a loop sits in; `has_routing_loop`
+    already did the real work of deciding whether it's a genuine loop."""
+    seen: list[str] = []
+    window = 3
+    for hop in hops:
+        addresses = hop.get("addresses") or []
+        if len(addresses) != 1:
+            continue
+        addr = addresses[0]
+        if addr in seen:
+            return addr
+        seen.append(addr)
+        if len(seen) > window:
+            seen.pop(0)
+    return None
+
+
+def _fire_measurement(candidate: CorridorCandidate, target_ip: str) -> int:
+    return run_smoketest(
+        target_asn=candidate.target_asn,
+        target_cc=candidate.target_cc,
+        probe_count=_PROBE_COUNT,
+        source_cc=candidate.source_cc,
+    )
+
+
+def classify_corridor(candidate: CorridorCandidate) -> ClassifyResult:
+    """Fire, triangulate, and classify one corridor. Files a finding (or an
+    escalation) and always marks the corridor tested, any outcome."""
+    asn_to_cc = _load_asn_to_cc()
+    ixp_registry = load_ixp_lan_registry(IXP_REGISTRY_PATH)
+    name_cache: dict[int, str] = {}
+    escalations: list[_Escalation] = []
+
+    target_ips = list_target_ips(candidate.target_asn)
+    measurement_id: int | None = None
+    triangulation: dict | None = None
+    parsed: list[dict] = []
+
+    for attempt, target_ip in enumerate(target_ips[:_MAX_TARGET_IP_ATTEMPTS]):
+        measurement_id = _fire_measurement(candidate, target_ip)
+        triangulation = analyze_measurement(measurement_id, candidate.target_asn)
+        parsed_path = DEFAULT_ATLAS_PARSED_DIR / f"{measurement_id}.json"
+        parsed = json.loads(parsed_path.read_text())
+
+        any_signal = any(
+            p.get("traceroute_upstream_asn") is not None for p in triangulation["probes"]
+        )
+        if any_signal or attempt == len(target_ips[:_MAX_TARGET_IP_ATTEMPTS]) - 1:
+            break
+        logger.info(
+            "AS%d -> AS%d: %s was fully dark, retrying against %s (%s)",
+            candidate.source_asn, candidate.target_asn, target_ip,
+            target_ips[attempt + 1], "alternate cached prefix",
+        )
+
+    assert measurement_id is not None and triangulation is not None
+    hops_by_probe = {p["probe_id"]: p["hops"] for p in parsed}
+
+    # Loop check, per probe -- always with the real target IP for this attempt.
+    loop_notes: dict[int, str] = {}
+    for probe in triangulation["probes"]:
+        hops = hops_by_probe.get(probe["probe_id"], [])
+        if not has_routing_loop(hops, target=target_ip):
+            continue
+        looping_addr = _first_looping_address(hops)
+        known = known_anomalies.classify_loop_address(looping_addr) if looping_addr else None
+        if known is not None:
+            loop_notes[probe["probe_id"]] = f"loop at {looping_addr} ({known.description[:80]}...)"
+        else:
+            escalations.append(
+                _Escalation(
+                    candidate=candidate,
+                    measurement_id=measurement_id,
+                    reason="unrecognized routing loop",
+                    detail=(
+                        f"probe {probe['probe_id']}: loop involving address "
+                        f"{looping_addr or '(unresolved)'}, not in known_anomalies.py"
+                    ),
+                )
+            )
+
+    detour_pick: tuple[dict, str, str] | None = None  # (crossing, ix_name, hub_city)
+    local_transit_pick: dict | None = None
+    candidate_picks: list[dict] = []
+    tba_ixp_hit = False
+
+    for probe in triangulation["probes"]:
+        for crossing in probe.get("ixp_crossings", []):
+            in_fishbowl = crossing.get("in_fishbowl")
+            if in_fishbowl == "TBA":
+                tba_ixp_hit = True
+                continue
+            if in_fishbowl is False:
+                entry = ixp_registry.get(crossing.get("ix_id"))
+                hub_city = entry.city if entry else None
+                if hub_city in EXTERNAL_HUB_LATLON:
+                    detour_pick = detour_pick or (crossing, crossing.get("name", "?"), hub_city)
+
+        upstream_asn = probe.get("traceroute_upstream_asn")
+        if upstream_asn is None:
+            continue
+        if probe.get("ris_agrees") and probe.get("contiguous", True):
+            if upstream_asn in asn_to_cc:
+                local_transit_pick = local_transit_pick or probe
+        elif not probe.get("ris_agrees"):
+            candidate_picks.append(probe)
+
+    if tba_ixp_hit and detour_pick is None:
+        escalations.append(
+            _Escalation(
+                candidate=candidate,
+                measurement_id=measurement_id,
+                reason="unclassified (TBA) IXP crossing",
+                detail="traceroute crosses an exchange ixp_lan_registry.json has not yet "
+                "been told is in- or out-of-fishbowl; needs a human call, not a guess",
+            )
+        )
+
+    conn = _store.connect()
+    try:
+        if detour_pick is not None:
+            _, ix_name, hub_city = detour_pick
+            finding = _store.find_existing_detour(conn, candidate.source_cc, candidate.target_asn)
+            if finding is None:
+                finding_id = _store.create_finding(
+                    conn,
+                    kind=_store.KIND_CONFIRMED_DETOUR,
+                    source_cc=candidate.source_cc,
+                    source_asn=candidate.source_asn,
+                    source_name=candidate.source_name,
+                    target_cc=candidate.target_cc,
+                    target_asn=candidate.target_asn,
+                    target_name=_asn_holder_name(candidate.target_asn, name_cache),
+                    detour_ix_name=ix_name,
+                    detour_hub=hub_city,
+                )
+            else:
+                finding_id = finding.id
+            for probe in triangulation["probes"]:
+                chain = " -> ".join(f"AS{e['asn']}" for e in probe.get("as_sequence", []))
+                _store.add_corroboration(
+                    conn,
+                    finding_id=finding_id,
+                    measurement_id=measurement_id,
+                    vantage_point_cc=candidate.source_cc,
+                    vantage_point_asn=candidate.source_asn,
+                    chain=chain or None,
+                    ris_observation_count=probe.get("ris_observation_count"),
+                    ris_agrees=probe.get("ris_agrees"),
+                    has_loop=probe["probe_id"] in loop_notes,
+                    loop_note=loop_notes.get(probe["probe_id"]),
+                )
+            mark_corridor_tested(candidate.source_asn, candidate.target_asn)
+            _regenerate_artifacts()
+            return ClassifyResult(candidate, "confirmed_detour", finding_id, escalations)
+
+        if local_transit_pick is not None:
+            upstream_asn = local_transit_pick["traceroute_upstream_asn"]
+            finding = _store.find_existing(
+                conn, _store.KIND_CONFIRMED_LOCAL_TRANSIT, upstream_asn, candidate.target_asn
+            )
+            if finding is None:
+                finding_id = _store.create_finding(
+                    conn,
+                    kind=_store.KIND_CONFIRMED_LOCAL_TRANSIT,
+                    source_cc=asn_to_cc.get(upstream_asn, "??"),
+                    source_asn=upstream_asn,
+                    source_name=_asn_holder_name(upstream_asn, name_cache),
+                    target_cc=candidate.target_cc,
+                    target_asn=candidate.target_asn,
+                    target_name=_asn_holder_name(candidate.target_asn, name_cache),
+                )
+            else:
+                finding_id = finding.id
+            for probe in triangulation["probes"]:
+                chain = " -> ".join(f"AS{e['asn']}" for e in probe.get("as_sequence", []))
+                _store.add_corroboration(
+                    conn,
+                    finding_id=finding_id,
+                    measurement_id=measurement_id,
+                    vantage_point_cc=candidate.source_cc,
+                    vantage_point_asn=candidate.source_asn,
+                    chain=chain or None,
+                    ris_observation_count=probe.get("ris_observation_count"),
+                    ris_agrees=probe.get("ris_agrees"),
+                    has_loop=probe["probe_id"] in loop_notes,
+                    loop_note=loop_notes.get(probe["probe_id"]),
+                )
+            mark_corridor_tested(candidate.source_asn, candidate.target_asn)
+            _regenerate_artifacts()
+            return ClassifyResult(candidate, "confirmed_local_transit", finding_id, escalations)
+
+        if candidate_picks:
+            upstream_asn = candidate_picks[0]["traceroute_upstream_asn"]
+            agree_count = sum(
+                1 for p in candidate_picks if p["traceroute_upstream_asn"] == upstream_asn
+            )
+            finding = _store.find_existing(
+                conn, _store.KIND_CANDIDATE_PEERING, upstream_asn, candidate.target_asn
+            )
+            if finding is None:
+                finding_id = _store.create_finding(
+                    conn,
+                    kind=_store.KIND_CANDIDATE_PEERING,
+                    source_cc=asn_to_cc.get(upstream_asn, "??"),
+                    source_asn=upstream_asn,
+                    source_name=_asn_holder_name(upstream_asn, name_cache),
+                    target_cc=candidate.target_cc,
+                    target_asn=candidate.target_asn,
+                    target_name=_asn_holder_name(candidate.target_asn, name_cache),
+                    probe_agreement=f"{agree_count}/{len(triangulation['probes'])} probes",
+                )
+            else:
+                finding_id = finding.id
+            for probe in triangulation["probes"]:
+                chain = " -> ".join(f"AS{e['asn']}" for e in probe.get("as_sequence", []))
+                _store.add_corroboration(
+                    conn,
+                    finding_id=finding_id,
+                    measurement_id=measurement_id,
+                    vantage_point_cc=candidate.source_cc,
+                    vantage_point_asn=candidate.source_asn,
+                    chain=chain or None,
+                    ris_observation_count=probe.get("ris_observation_count"),
+                    ris_agrees=probe.get("ris_agrees"),
+                    has_loop=probe["probe_id"] in loop_notes,
+                    loop_note=loop_notes.get(probe["probe_id"]),
+                )
+            mark_corridor_tested(candidate.source_asn, candidate.target_asn)
+            _regenerate_artifacts()
+            return ClassifyResult(candidate, "candidate_peering", finding_id, escalations)
+    finally:
+        conn.close()
+
+    mark_corridor_tested(candidate.source_asn, candidate.target_asn)
+    if escalations:
+        _write_escalations(escalations)
+        return ClassifyResult(candidate, "escalated", None, escalations)
+    logger.info(
+        "AS%d -> AS%d: inconclusive, no real signal after %d attempt(s); marked tested",
+        candidate.source_asn, candidate.target_asn, len(target_ips[:_MAX_TARGET_IP_ATTEMPTS]),
+    )
+    return ClassifyResult(candidate, "inconclusive", None, escalations)
+
+
+def _write_escalations(escalations: list[_Escalation], path: Path = DEFAULT_ESCALATIONS_PATH) -> None:
+    now = datetime.now(timezone.utc).isoformat()
+    lines = []
+    if not path.exists():
+        lines.append("# Escalations")
+        lines.append("")
+        lines.append(
+            "Corridors `auto_classify.py`'s mechanical rules couldn't confidently "
+            "resolve on their own -- a routing loop at an address never seen before, "
+            "an IXP crossing PeeringDB/`ixp_lan_registry.json` hasn't been told is "
+            "in- or out-of-fishbowl, an external upstream at a hub with no known "
+            "coordinates. Each needs a human/LLM look before it's added to "
+            "`known_anomalies.py`, `ixp_lan_registry.json`, or "
+            "`economy_coordinates.EXTERNAL_HUB_LATLON` and reprocessed."
+        )
+        lines.append("")
+    for esc in escalations:
+        c = esc.candidate
+        lines.append(f"## AS{c.source_asn} ({c.source_cc}) -> AS{c.target_asn} ({c.target_cc})")
+        lines.append(f"- measurement: {esc.measurement_id}")
+        lines.append(f"- reason: {esc.reason}")
+        lines.append(f"- detail: {esc.detail}")
+        lines.append(f"- flagged: {now}")
+        lines.append("")
+    with path.open("a") as f:
+        f.write("\n".join(lines) + "\n")
+    logger.warning("Wrote %d escalation(s) to %s", len(escalations), path)
+
+
+def _regenerate_artifacts() -> None:
+    """Re-run every derived-artifact command as a subprocess, mirroring how
+    this project's tranches have always regenerated reports by hand.
+    Subprocesses, not in-process calls, because `reports/data.py` and
+    `corridor_backlog.py` read their SQLite-backed constants at import
+    time -- a long-lived classifier process can't just re-import them."""
+    commands = [
+        ["findings-export", "pacific_peering.analysis.store"],
+        ["corridor-backlog", "pacific_peering.analysis.corridor_backlog"],
+        ["report-ascii", "pacific_peering.reports.ascii_report"],
+        ["report-html", "pacific_peering.reports.html_report"],
+        ["viz-detours", "pacific_peering.viz.geographic"],
+    ]
+    for label, module in commands:
+        result = subprocess.run(
+            [sys.executable, "-m", module], capture_output=True, text=True
+        )
+        if result.returncode != 0:
+            logger.error("Artifact regeneration step %s failed:\n%s", label, result.stderr)
+
+
+def classify_next(max_corridors: int = 1) -> list[ClassifyResult]:
+    """Pull up to `max_corridors` candidates off the backlog and classify each."""
+    results: list[ClassifyResult] = []
+    for _ in range(max_corridors):
+        candidate = pick_next_corridor()
+        if candidate is None:
+            logger.info("Corridor backlog is empty; nothing to classify")
+            break
+        logger.info(
+            "Classifying AS%d (%s) -> AS%d (%s): %s",
+            candidate.source_asn, candidate.source_cc,
+            candidate.target_asn, candidate.target_cc, candidate.rationale,
+        )
+        results.append(classify_corridor(candidate))
+    return results
+
+
+def main() -> None:
+    logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
+    results = classify_next()
+    for r in results:
+        logger.info(
+            "AS%d -> AS%d: %s%s",
+            r.candidate.source_asn, r.candidate.target_asn, r.outcome,
+            f" ({len(r.escalations)} escalation(s))" if r.escalations else "",
+        )
+
+
+if __name__ == "__main__":
+    main()
