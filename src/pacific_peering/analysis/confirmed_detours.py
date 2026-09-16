@@ -2908,6 +2908,28 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
         ),
     ),
     ConfirmedDetour(
+        source_cc="FJ",
+        target_cc="SB",
+        target_asn=45891,
+        detour_ix_name="MegaIX Sydney",
+        detour_hub="Sydney",
+        measurement_id=212101906,
+        ris_observation_count=1652,
+        note=(
+            "University of the South Pacific (AS24390, Fiji) -> "
+            "Solomon Telekom Co Ltd (AS45891) -- a fresh FJ<->SB pair, "
+            "a ninth independent confirmation of the AS139609"
+            "(SISCC)<->AS45891 adjacency (after GU, MP, VU, PF, CK, PG, "
+            "PW, TV): `AS24390 -> AS7575 (AARNet) -> AS139609`, fully "
+            "contiguous, target never resolved, RIS-agreeing with the "
+            "identical exact match (1,652). Touched the known SISCC "
+            "loop-history address `103.142.98.131` once, cleanly, no "
+            "loop -- `has_routing_loop` correctly returned `False`. "
+            "Crosses MegaIX Sydney directly, the same exchange as the "
+            "VU and TV entries."
+        ),
+    ),
+    ConfirmedDetour(
         source_cc="TV",
         target_cc="PF",
         target_asn=55943,

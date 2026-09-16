@@ -513,6 +513,19 @@ CONFIRMED_LOCAL_TRANSIT: tuple[ConfirmedLocalTransit, ...] = (
             "resolved via AS55943, 1,662 observations, exact match). A "
             "ninth distinct source economy (Tuvalu, after Niue's own "
             "vantage point, Guam, CNMI, Vanuatu, French Polynesia, Cook "
+            "Islands, Papua New Guinea, and Palau). "
+            "**Eleventh independent corroboration, via a genuinely new "
+            "first-leg carrier** (measurement 212101918, FJ/AS24390 -> "
+            "NU/AS55885, a fresh FJ<->NU pair): fully contiguous all "
+            "the way to the literal target again: `AS24390 -> AS7575 "
+            "(AARNet) -> AS1299 (Arelion/Telia) -> AS3257 (GTT) -> "
+            "AS9471 -> AS55885`. AS1299 is a genuinely new intermediate "
+            "carrier for this adjacency (every prior entry used FINTEL "
+            "or Cogent as the first leg). Same sibling-ASN basis as "
+            "every prior instance (`ris_agrees: false` on the strict "
+            "AS9471/AS55885 pair, resolved via AS55943). A tenth "
+            "distinct source economy (Fiji, after Niue's own vantage "
+            "point, Guam, CNMI, Vanuatu, French Polynesia, Cook "
             "Islands, Papua New Guinea, and Palau)."
         ),
     ),
@@ -1002,7 +1015,17 @@ CONFIRMED_LOCAL_TRANSIT: tuple[ConfirmedLocalTransit, ...] = (
             "silence pattern as every prior instance). RIS agrees with "
             "the identical *exact* match (1,528). A sixth distinct "
             "source economy (Tuvalu, after MP, VU, French Polynesia, "
-            "Cook Islands, and Papua New Guinea)."
+            "Cook Islands, and Papua New Guinea). "
+            "**Seventh independent corroboration** (measurement "
+            "212101911, FJ/AS24390 -> NR/AS55722, a fresh FJ<->NR "
+            "pair): `AS24390 -> AS7575 (AARNet) -> AS140627 (OneQode) "
+            "-> AS7131` -> target never resolved (the same short-path "
+            "silence pattern as every prior instance). RIS agrees with "
+            "the identical *exact* match (1,528). AS140627 (OneQode) "
+            "reappears as the intermediate carrier, the same one "
+            "already confirmed on the PG entry. A seventh distinct "
+            "source economy (Fiji, after MP, VU, French Polynesia, "
+            "Cook Islands, Papua New Guinea, and Tuvalu)."
         ),
     ),
     ConfirmedLocalTransit(

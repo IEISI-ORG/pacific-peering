@@ -1920,3 +1920,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   target reached), AS45879(WF) ninth Orange confirmation (new NTT
   carrier). Backlog: 269 -> 249 (larger drop: same-economy-pair dedup
   pruned other untested FJ->FM/WF candidates, not an anomaly).
+- feat(analysis): FJ(AS24390) tranche - AS45891(SB) ninth SISCC
+  confirmation, AS55722(NR) seventh PTI Pacifica corroboration,
+  AS55885(NU) eleventh ONATI corroboration (new AS1299 first-leg
+  carrier). Backlog: 249 -> 237 (same-economy-pair dedup again).
