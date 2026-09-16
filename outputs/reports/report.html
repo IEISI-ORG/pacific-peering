@@ -56,7 +56,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
 <body>
 <div class="wrap">
     <h1>Pacific Peering — Regional Routing Report</h1>
-    <div class="meta">Generated 2026-09-16T08:53:22.915950+00:00</div>
+    <div class="meta">Generated 2026-09-16T09:06:11.951737+00:00</div>
 
     <div class="headline-banner">
         <span class="value">68%</span>
@@ -102,8 +102,8 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
         </tr><tr>
             <td>AS6453</td><td>Tata Communications</td>
             <td>MH, NR</td>
-            <td>CK, FJ, GU, MP, PF, PG, PW, TV, VU</td>
-            <td>11</td>
+            <td>CK, FJ, GU, MP, NC, PF, PG, PW, TV, VU</td>
+            <td>12</td>
             <td>no</td>
         </tr><tr>
             <td>AS132528</td><td>Digicel Australia/Telstra-operated backbone</td>
@@ -130,11 +130,11 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <td>10</td>
             <td>yes</td>
         </tr><tr>
-            <td>AS5511</td><td>Opentransit Orange S.A.</td>
-            <td>WF</td>
-            <td>CK, FJ, GU, MP, PF, PG, PW, TV, VU</td>
-            <td>9</td>
-            <td>no</td>
+            <td>AS45355</td><td>Digicel Fiji</td>
+            <td>TO</td>
+            <td>CK, FJ, GU, MP, NC, PF, PG, PW, TV, VU</td>
+            <td>10</td>
+            <td>yes</td>
         </tr></tbody>
     </table>
     <div class="callout"><strong>AS9241 (FINTEL, Fiji)</strong> doesn't
@@ -208,14 +208,14 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <th>Dependent economies</th></tr></thead>
         <tbody><tr>
             <td>Sydney</td>
-            <td>52</td>
+            <td>54</td>
             <td>50%</td>
             <td>16</td>
             <td>Melanesia, Micronesia, Polynesia</td>
             <td>AS, CK, FJ, MH, NC, PG, PW, SB, TO, VU, WS</td>
         </tr><tr>
             <td>Los Angeles</td>
-            <td>24</td>
+            <td>25</td>
             <td>23%</td>
             <td>7</td>
             <td>Melanesia, Micronesia, Polynesia</td>
@@ -281,7 +281,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <td>AS135409</td><td>Kacific Broadband Satellites</td>
             <td>Melanesia, Polynesia</td>
             <td>PG, TO</td>
-            <td>FJ, TO</td>
+            <td>FJ, NC, TO</td>
         </tr></tbody>
     </table>
     <div class="callout"><strong>The Kacific gap</strong>: Kacific
@@ -938,6 +938,13 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
                 &middot; measurement 212094707</div>
             <details class="note"><summary>University of the South Pacific (AS24390, Fiji) -&gt; Marshall Islands NTA ISP (AS24439) -- a fresh FJ&lt;-&gt;MH pair, a ninth independent confirmation of the…</summary>University of the South Pacific (AS24390, Fiji) -&gt; Marshall Islands NTA ISP (AS24439) -- a fresh FJ&lt;-&gt;MH pair, a ninth independent confirmation of the AS6453(Tata)&lt;-&gt;AS24439 adjacency (after GU, MP, VU, PF, CK, PG, PW, TV). `AS24390 -&gt; AS7575 (AARNet) -&gt; AS2914 (NTT) -&gt; AS6453`, target never resolved, RIS-agreeing with the identical exact match (997). NTT (AS2914) is a genuinely new intermediate carrier for this adjacency (every prior entry used Hurricane Electric or Cogent). Kept `detour_hub` as Los Angeles, matching the dominant already-verified attribution for this adjacency (the TV entry&#x27;s real hostname evidence). `has_routing_loop` correctly returned `False`.</details>
         </div><div class="detour-card">
+            <div class="headline">NC -&gt; MH
+                (AS24439): detours via AS38195 (Superloop), via AS174 (Cogent) and AS6453 (Tata Communications) -- global transit, not a named exchange crossing
+                (Los Angeles)</div>
+            <div>RIS observation count: 997
+                &middot; measurement 212128886</div>
+            <details class="note"><summary>New Caledonia (AS45345) -&gt; Marshall Islands NTA ISP (AS24439) -- a fresh NC&lt;-&gt;MH pair, a tenth independent confirmation of the AS6453(Tata)&lt;-&gt;AS24439 adjacency…</summary>New Caledonia (AS45345) -&gt; Marshall Islands NTA ISP (AS24439) -- a fresh NC&lt;-&gt;MH pair, a tenth independent confirmation of the AS6453(Tata)&lt;-&gt;AS24439 adjacency (after GU, MP, VU, PF, CK, PG, PW, TV, FJ). `AS45345 -&gt; AS18200 (OPT-NC) -&gt; AS38195 (Superloop) -&gt; AS174 (Cogent) -&gt; AS6453`, target never resolved, RIS-agreeing with the identical exact match (997) on all 3 probes. Superloop and Cogent together are a genuinely new two-carrier combination for this adjacency. Kept `detour_hub` as Los Angeles, matching the dominant already-verified attribution. `has_routing_loop` correctly flagged `True` on all 3 probes -- hops 4 and 5 both resolve to `125.63.12.157`, inside Superloop&#x27;s (AS38195) own announced prefix (`125.63.0.0/19`, confirmed via RIPEstat), the same carrier already resolved at that hop position -- an ordinary intra-carrier router artifact (consecutive-TTL repeat), not a cross-network anomaly; not escalated.</details>
+        </div><div class="detour-card">
             <div class="headline">TV -&gt; PG
                 (AS38009): detours via AS6939 (Hurricane Electric) -- global transit, not a named exchange crossing
                 (Sydney)</div>
@@ -958,6 +965,13 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <div>RIS observation count: 1321
                 &middot; measurement 212094709</div>
             <details class="note"><summary>University of the South Pacific (AS24390, Fiji) -&gt; Digicel Tonga (AS38198) -- a fresh FJ&lt;-&gt;TO pair, a ninth independent confirmation of the AS45355(Digicel…</summary>University of the South Pacific (AS24390, Fiji) -&gt; Digicel Tonga (AS38198) -- a fresh FJ&lt;-&gt;TO pair, a ninth independent confirmation of the AS45355(Digicel Fiji)&lt;-&gt;AS38198 adjacency (after GU, MP, VU, PF, CK, PG, PW, TV). `AS24390 -&gt; AS7575 (AARNet) -&gt; AS132528 (Digicel Australia) -&gt; AS45355`, target technically reached (the same real, BGP-confirmed AS38198 address `202.43.12.5` seen on every prior entry), separated by the usual routine silent boundary hop. RIS-agreeing with the identical exact match (1,321). Crosses Equinix Sydney directly (`ixp_crossings` confirms it, member AS132528) -- AARnet replaces Hurricane Electric as the first-leg carrier, a genuinely new combination for this adjacency, though AS132528&#x27;s own Sydney crossing is the same one already confirmed on most prior entries. `has_routing_loop` correctly returned `False`.</details>
+        </div><div class="detour-card">
+            <div class="headline">NC -&gt; TO
+                (AS38198): detours via AS132528 (Digicel Australia/Telstra-operated backbone) -- crosses Equinix Sydney
+                (Sydney)</div>
+            <div>RIS observation count: 1321
+                &middot; measurement 212128887</div>
+            <details class="note"><summary>New Caledonia (AS45345) -&gt; Digicel Tonga (AS38198) -- a fresh NC&lt;-&gt;TO pair, a tenth independent confirmation of the AS45355(Digicel Fiji)&lt;-&gt;AS38198 adjacency…</summary>New Caledonia (AS45345) -&gt; Digicel Tonga (AS38198) -- a fresh NC&lt;-&gt;TO pair, a tenth independent confirmation of the AS45355(Digicel Fiji)&lt;-&gt;AS38198 adjacency (after GU, MP, VU, PF, CK, PG, PW, TV, FJ). `AS45345 -&gt; AS18200 (OPT-NC) -&gt; AS132528 (Digicel Australia) -&gt; AS45355`, target technically reached (the same real, BGP-confirmed AS38198 address `202.43.12.5` seen on every prior entry), RIS-agreeing with the identical exact match (1,321) on all 3 probes. Crosses Equinix Sydney directly. `has_routing_loop` correctly flagged `True` on all 3 probes -- hops 4 and 5 both resolve to `45.127.173.29`, inside this project&#x27;s already-registered Equinix Sydney LAN prefix (`45.127.172.0/22`, ix_id 94), the same ordinary IXP-fabric pattern already established last tranche; not escalated.</details>
         </div><div class="detour-card">
             <div class="headline">TV -&gt; FM
                 (AS45193): detours via Any2West
@@ -1028,6 +1042,13 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <div>RIS observation count: 329
                 &middot; measurement 212119894</div>
             <details class="note"><summary>New Caledonia (AS45345) -&gt; American Samoa Telecommunications Authority (AS23657) -- **the first-ever confirmation of the AS17993(Vodafone Samoa)&lt;-&gt;AS23657…</summary>New Caledonia (AS45345) -&gt; American Samoa Telecommunications Authority (AS23657) -- **the first-ever confirmation of the AS17993(Vodafone Samoa)&lt;-&gt;AS23657 adjacency**, no prior entry for this target ASN existed anywhere in the project. Fully contiguous on all 3 probes: `AS45345 -&gt; AS18200 (OPT-NC) -&gt; AS17993 (Vodafone Samoa) -&gt; AS23657`, RIS-agreeing with the identical exact match (329) -- checked AS23657&#x27;s full RIS neighbor list directly: `{174 (Cogent): 11905, 6939 (Hurricane Electric): 1422, 17993 (Vodafone Samoa): 329}`, an exact match to what this traceroute found, and a genuinely real in-region relationship (Samoa&#x27;s own carrier serving American Samoa) rather than a global transit giant. Crosses **Equinix Sydney** directly (`ixp_crossings` confirms it, member AS17993, both hops 4 and 5 land inside the registered LAN prefix -- `45.127.172.0/22`, this project&#x27;s own `ixp_lan_registry` entry for ix_id 94). **`has_routing_loop` correctly flagged `True` on all 3 probes** -- hops 4 and 5 both resolve to the identical address `45.127.173.64`, inside that same registered Equinix Sydney LAN prefix -- an ordinary IXP-fabric router answering twice at consecutive TTLs (same class of harmless artifact as this project&#x27;s prior silent-IXP-boundary dead ends, just manifesting as a repeated address instead of silence, confirmed independently via PeeringDB (peeringdb.com/ix/94) rather than assumed). Not a newly-discovered loop-prone network -- the same, already-registered Equinix Sydney fabric this project crosses constantly elsewhere.</details>
+        </div><div class="detour-card">
+            <div class="headline">NC -&gt; TO
+                (AS38201): detours via AS135409 (Kacific Broadband Satellites) -- satellite operator, global transit, not a named exchange crossing
+                (Sydney)</div>
+            <div>RIS observation count: 331
+                &middot; measurement 212128889</div>
+            <details class="note"><summary>New Caledonia (AS45345) -&gt; Tonga Communications Internet Network (AS38201, KaliaNet) -- a fresh NC&lt;-&gt;TO pair, a second independent confirmation of the…</summary>New Caledonia (AS45345) -&gt; Tonga Communications Internet Network (AS38201, KaliaNet) -- a fresh NC&lt;-&gt;TO pair, a second independent confirmation of the AS135409(Kacific)&lt;-&gt;AS38201 adjacency (after FJ, the project&#x27;s first-ever confirmation for this target). Fully contiguous on all 3 probes: `AS45345 -&gt; AS18200 (OPT-NC) -&gt; AS7594 (On Q Communications, Australia) -&gt; AS135409 (Kacific)`, target never resolved, RIS-agreeing with the identical exact match (331). Crosses Equinix Sydney directly, the same AS7594 leg already confirmed on the FJ entry. `has_routing_loop` correctly flagged `True` on all 3 probes -- hops 4 and 5 both resolve to `45.127.173.66`, inside this project&#x27;s already-registered Equinix Sydney LAN prefix, the same ordinary IXP-fabric pattern already established twice this tranche; not escalated. A second distinct source economy (New Caledonia, after Fiji) confirming this satellite relationship.</details>
         </div>
 
     <h2>Confirmed local transit (RIS + Atlas both agree, stays in-fishbowl)</h2>

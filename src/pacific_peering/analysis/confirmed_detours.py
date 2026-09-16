@@ -2699,6 +2699,36 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
         ),
     ),
     ConfirmedDetour(
+        source_cc="NC",
+        target_cc="MH",
+        target_asn=24439,
+        detour_ix_name="AS38195 (Superloop), via AS174 (Cogent) and AS6453 "
+        "(Tata Communications) -- global transit, not a named exchange "
+        "crossing",
+        detour_hub="Los Angeles",
+        measurement_id=212128886,
+        ris_observation_count=997,
+        note=(
+            "New Caledonia (AS45345) -> Marshall Islands NTA ISP "
+            "(AS24439) -- a fresh NC<->MH pair, a tenth independent "
+            "confirmation of the AS6453(Tata)<->AS24439 adjacency "
+            "(after GU, MP, VU, PF, CK, PG, PW, TV, FJ). `AS45345 -> "
+            "AS18200 (OPT-NC) -> AS38195 (Superloop) -> AS174 (Cogent) "
+            "-> AS6453`, target never resolved, RIS-agreeing with the "
+            "identical exact match (997) on all 3 probes. Superloop and "
+            "Cogent together are a genuinely new two-carrier combination "
+            "for this adjacency. Kept `detour_hub` as Los Angeles, "
+            "matching the dominant already-verified attribution. "
+            "`has_routing_loop` correctly flagged `True` on all 3 "
+            "probes -- hops 4 and 5 both resolve to `125.63.12.157`, "
+            "inside Superloop's (AS38195) own announced prefix "
+            "(`125.63.0.0/19`, confirmed via RIPEstat), the same "
+            "carrier already resolved at that hop position -- an "
+            "ordinary intra-carrier router artifact (consecutive-TTL "
+            "repeat), not a cross-network anomaly; not escalated."
+        ),
+    ),
+    ConfirmedDetour(
         source_cc="TV",
         target_cc="PG",
         target_asn=38009,
@@ -2773,6 +2803,33 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
             "Sydney crossing is the same one already confirmed on most "
             "prior entries. `has_routing_loop` correctly returned "
             "`False`."
+        ),
+    ),
+    ConfirmedDetour(
+        source_cc="NC",
+        target_cc="TO",
+        target_asn=38198,
+        detour_ix_name="AS132528 (Digicel Australia/Telstra-operated "
+        "backbone) -- crosses Equinix Sydney",
+        detour_hub="Sydney",
+        measurement_id=212128887,
+        ris_observation_count=1321,
+        note=(
+            "New Caledonia (AS45345) -> Digicel Tonga (AS38198) -- a "
+            "fresh NC<->TO pair, a tenth independent confirmation of "
+            "the AS45355(Digicel Fiji)<->AS38198 adjacency (after GU, "
+            "MP, VU, PF, CK, PG, PW, TV, FJ). `AS45345 -> AS18200 "
+            "(OPT-NC) -> AS132528 (Digicel Australia) -> AS45355`, "
+            "target technically reached (the same real, BGP-confirmed "
+            "AS38198 address `202.43.12.5` seen on every prior entry), "
+            "RIS-agreeing with the identical exact match (1,321) on "
+            "all 3 probes. Crosses Equinix Sydney directly. "
+            "`has_routing_loop` correctly flagged `True` on all 3 "
+            "probes -- hops 4 and 5 both resolve to `45.127.173.29`, "
+            "inside this project's already-registered Equinix Sydney "
+            "LAN prefix (`45.127.172.0/22`, ix_id 94), the same "
+            "ordinary IXP-fabric pattern already established last "
+            "tranche; not escalated."
         ),
     ),
     ConfirmedDetour(
@@ -3050,6 +3107,35 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
             "discovered loop-prone network -- the same, already-"
             "registered Equinix Sydney fabric this project crosses "
             "constantly elsewhere."
+        ),
+    ),
+    ConfirmedDetour(
+        source_cc="NC",
+        target_cc="TO",
+        target_asn=38201,
+        detour_ix_name="AS135409 (Kacific Broadband Satellites) -- satellite "
+        "operator, global transit, not a named exchange crossing",
+        detour_hub="Sydney",
+        measurement_id=212128889,
+        ris_observation_count=331,
+        note=(
+            "New Caledonia (AS45345) -> Tonga Communications Internet "
+            "Network (AS38201, KaliaNet) -- a fresh NC<->TO pair, a "
+            "second independent confirmation of the AS135409(Kacific)"
+            "<->AS38201 adjacency (after FJ, the project's first-ever "
+            "confirmation for this target). Fully contiguous on all 3 "
+            "probes: `AS45345 -> AS18200 (OPT-NC) -> AS7594 (On Q "
+            "Communications, Australia) -> AS135409 (Kacific)`, target "
+            "never resolved, RIS-agreeing with the identical exact "
+            "match (331). Crosses Equinix Sydney directly, the same "
+            "AS7594 leg already confirmed on the FJ entry. "
+            "`has_routing_loop` correctly flagged `True` on all 3 "
+            "probes -- hops 4 and 5 both resolve to `45.127.173.66`, "
+            "inside this project's already-registered Equinix Sydney "
+            "LAN prefix, the same ordinary IXP-fabric pattern already "
+            "established twice this tranche; not escalated. A second "
+            "distinct source economy (New Caledonia, after Fiji) "
+            "confirming this satellite relationship."
         ),
     ),
 )

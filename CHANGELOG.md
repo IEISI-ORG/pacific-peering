@@ -1945,3 +1945,11 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   initially flagged as a new anomaly but corrected: the address sits
   inside this project's own already-registered Equinix Sydney IXP LAN
   prefix, not a new location. Backlog: 231 -> 215.
+- chore(cadence): tranche size bumped 3 -> 5 corridors per /loop
+  firing, effective next tranche, per project owner direction after
+  confirming a healthy RIPE Atlas credit balance (~95.8M).
+- feat(analysis): second NC(AS45345) tranche - AS24439(MH) tenth Tata
+  confirmation, AS38198(TO) tenth Digicel Fiji confirmation,
+  AS38201(TO) second Kacific confirmation. All 3 corridors showed
+  routine, already-recognized IXP-fabric/intra-carrier loops, not
+  escalated. Backlog: 215 -> 203.
