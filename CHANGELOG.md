@@ -1693,3 +1693,6 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   sourced from Palau, via a new carrier chain involving FINTEL. RIS
   disagrees; AS4638's only real neighbor remains AS45349. Not filed.
   Backlog: 493 -> 492.
+- docs(analysis): PW(AS17893)->FJ(AS9241) fifth reproduction of the
+  FINTEL routing loop (202.170.33.17/.11, both AS9241 itself), after
+  MP, PF, CK, PG. Not filed. Backlog: 492 -> 491.

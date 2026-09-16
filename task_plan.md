@@ -2118,3 +2118,11 @@ Extended the existing entry's note. Not a new dataclass entry -- `CONFIRMED_LOCA
 **The sixth time this session hitting the exact same known `202.137.178.x` gap zone** (after loop tranche 5, PTI Pacifica/AS7131, PF/AS9471, CK/AS10131, and PG/AS17828): hops 10-11 land in the identical zone (`202.137.178.52`, `.55`). This time via `AS17893 -> AS174 (Cogent) -> AS9241 (FINTEL)` -- FINTEL appearing directly in the chain this time, a genuinely different carrier path than any prior instance. `ris_agrees: False` -- AS4638's only real neighbor remains AS45349.
 
 Not filed in any dataclass, consistent with the established pattern. Called `mark_corridor_tested(17893, 4638)`. No report/map regeneration needed. Regenerated the corridor backlog: candidate count dropped 493 -> 492.
+
+---
+
+**Next corridor pulled: AS17893 (Palau NCC) -> AS9241 (FINTEL, Fiji).** `has_routing_loop` correctly returned `True`.
+
+**Checked the raw hops directly**: the traceroute alternates between `202.170.33.17` and `202.170.33.11` from hop 10 through hop 32, both already confirmed as AS9241 itself. A fifth independent vantage point (Palau, after MP's original discovery, PF's reproduction, CK's reproduction, and PNG's reproduction) reproducing this same live anomaly inside FINTEL's own network edge.
+
+Not filed in any dataclass, matching the established precedent. Called `mark_corridor_tested(17893, 9241)`. No report/map regeneration needed. Regenerated the corridor backlog: candidate count dropped 492 -> 491.
