@@ -3417,6 +3417,21 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
         ),
     ),
     ConfirmedDetour(
+        source_cc="NC", target_cc="NR", target_asn=152706,
+        detour_ix_name="AS174 (Cogent Communications), then AS6453 (Tata "
+        "Communications)",
+        detour_hub="Los Angeles", measurement_id=212143032, ris_observation_count=292,
+        note=(
+            "Fourth and fifth confirmations of AS6453(Tata)<->AS152706 "
+            "(measurements 212143032 and 212143041, NC/AS45345 and "
+            "NC/AS56089, part of the bulk clear-out). Both: `AS18200 "
+            "(OPT-NC) -> AS38195 (Superloop) -> AS174 (Cogent) -> AS6453 -> "
+            "AS152706`, RIS agrees exactly (292) -- Cogent as a new "
+            "intermediate carrier into Tata for this adjacency. "
+            "`has_routing_loop` False on both."
+        ),
+    ),
+    ConfirmedDetour(
         source_cc="FM", target_cc="WS", target_asn=153053,
         detour_ix_name="AS4637 (Telstra Global), then AS45177 and AS18400",
         detour_hub="Sydney", measurement_id=212143021, ris_observation_count=382,

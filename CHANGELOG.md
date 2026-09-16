@@ -1978,3 +1978,11 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   None)` bug mid-batch that produced false-positive loop flags by
   skipping the function's target-reached exemption; redid the check
   with correct target IPs before filing anything.
+- feat(analysis): bulk clear-out, GU(AS152735) + NC(AS45345/AS56089)
+  batches (19 corridors) - all corroborations of already-established
+  relationships (Starlink downstream chain, direct AS154100<->
+  AS14593, ONATI/AS55885, PTI Pacifica, Tata) plus one new
+  ConfirmedDetour entry (NC<->AS152706). All loop flags matched
+  already-documented locations. FM/GU/NC now fully exhausted as
+  sources; every remaining candidate is NU(AS55885). Backlog: 127 ->
+  105.
