@@ -95,9 +95,24 @@ CREATE TABLE IF NOT EXISTS findings (
     detour_hub TEXT,               -- confirmed_detour only
     probe_agreement TEXT,          -- candidate_peering only, e.g. "3/3 probes"
     legacy_note TEXT,              -- verbatim pre-migration narrative, if any
-    created_at TEXT NOT NULL,
-    UNIQUE(kind, source_cc, target_asn)
+    created_at TEXT NOT NULL
 );
+
+-- Identity is economy-scoped for confirmed_detour (it never records a
+-- literal source ASN -- see the source_asn comment above) but ASN-scoped
+-- for the other two kinds, whose source_* is the upstream/provider ASN
+-- itself, not a vantage-point economy. A single UNIQUE(kind, source_cc,
+-- target_asn) previously covered all three kinds, which is wrong for the
+-- ASN-scoped pair: find_existing() already looks up by source_asn, so two
+-- distinct upstream ASNs sharing a country and target would pass that
+-- lookup and then hit the constraint on insert (an uncaught
+-- sqlite3.IntegrityError, silently swallowed by run_batch()'s per-corridor
+-- exception handler, permanently stranding that corridor untested). Two
+-- partial unique indexes, one per identity scheme, replace it.
+CREATE UNIQUE INDEX IF NOT EXISTS idx_findings_identity_detour
+    ON findings(kind, source_cc, target_asn) WHERE kind = 'confirmed_detour';
+CREATE UNIQUE INDEX IF NOT EXISTS idx_findings_identity_asn
+    ON findings(kind, source_asn, target_asn) WHERE kind != 'confirmed_detour';
 
 CREATE TABLE IF NOT EXISTS corroborations (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
