@@ -288,7 +288,21 @@ CONFIRMED_LOCAL_TRANSIT: tuple[ConfirmedLocalTransit, ...] = (
             "the already-established chain, not a new anomaly. An eighth "
             "geographically distinct source (Palau, after FSM, Guam, "
             "CNMI, Vanuatu, French Polynesia, Cook Islands, and Papua "
-            "New Guinea)."
+            "New Guinea). "
+            "**An eighth independent confirmation of the direct AS154100<->"
+            "AS14593 relationship itself, and a third reproduction of the "
+            "Starlink routing loop in the same tranche** (measurement "
+            "212046217, PW/AS17893 -> KI/AS154100 directly): resolves "
+            "cleanly to AS14593 (Starlink) as the literal last-reached "
+            "ASN, identical RIS match (361), via `AS17893 -> AS7578/"
+            "AS137409 (GSL Networks, Australia) -> AS14593`. "
+            "`has_routing_loop` correctly returned `True` again -- yet "
+            "another address at the same known looping location "
+            "(`206.224.66.27`, a third distinct address on record after "
+            "`.23` and `.25`, all inside AS14593's own network); not "
+            "separately escalated. An eighth distinct source (Palau, "
+            "after Guam, CNMI, Vanuatu, French Polynesia, Cook Islands, "
+            "and Papua New Guinea) for this specific direct relationship."
         ),
     ),
     ConfirmedLocalTransit(

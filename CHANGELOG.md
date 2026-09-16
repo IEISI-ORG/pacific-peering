@@ -1809,3 +1809,8 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   Another Starlink routing-loop reproduction, different address
   (206.224.66.25), same known location. RIS agrees exactly (1,392).
   Backlog: 385 -> 384.
+- docs(analysis): PW(AS17893)->KI(AS154100), eighth confirmation of
+  the direct AS154100<->AS14593 (Starlink) relationship (after GU,
+  MP, VU, PF, CK, PG). Third Starlink routing-loop reproduction in
+  this same tranche (206.224.66.27). RIS agrees exactly (361).
+  Backlog: 384 -> 383.
