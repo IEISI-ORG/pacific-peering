@@ -1795,3 +1795,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   neighbor is AS7131). Distinct from the already-confirmed
   AS7131<->AS55722 relationship. Kept as a candidate. Backlog:
   392 -> 388.
+- docs(analysis): PW(AS17893)->NU(AS55885), ninth corroboration of
+  AS9471(ONATI)<->AS55885 (after NU, GU, MP, VU, PF, CK, PG), same
+  sibling-ASN basis as always (resolved via AS55943). Extended
+  existing entry, no new entry. Backlog: 388 -> 386.

@@ -2282,3 +2282,11 @@ Added as a new entry. Called `mark_corridor_tested(17893, 45935)`. Verified: mod
 `ris_agrees: false` -- checked AS55722's full RIS neighbor list directly: `{7131: 1528}`, AS17893 doesn't appear (AS7131/PTI Pacifica is its only real RIS-observed neighbor, already confirmed as its upstream in `confirmed_local_transit`). Not a missing-data artifact: both AS17893 and AS55722 independently claim PeeringDB membership at Guam IX, real shared-fabric corroboration on top of the traceroute evidence, matching this module's very first entry (FSM->Palau) in shape. A distinct finding from the already-confirmed AS7131<->AS55722 relationship, not a duplicate.
 
 Filed as a new `CandidatePeering` entry (kept as a candidate, not promoted, per the standing principle). Called `mark_corridor_tested(17893, 55722)`. Verified: module imports cleanly (12 entries, up from 11); regenerated ASCII/HTML reports (no map regeneration needed -- `candidate_peering` doesn't feed the geographic map). Regenerated the corridor backlog: candidate count dropped 392 -> 388 (0 new-probe, 0 new-RIS-relationship).
+
+---
+
+**Next corridor pulled: AS17893 (Palau NCC) -> AS55885 (Niue).** `has_routing_loop` correctly returned `False`. Fully contiguous all the way to the literal target: `AS17893 -> AS174 (Cogent) -> AS3257 (GTT) -> AS9471 -> AS55885`.
+
+Ninth independent corroboration of the AS9471(ONATI)<->AS55885(Niue) adjacency, same sibling-ASN basis as every prior instance (`ris_agrees: false` on the strict AS9471/AS55885 pair, resolved via AS55943, 1,662 observations, exact match -- verified directly against Niue's fishbowl-cached neighbor list). An eighth distinct source economy (Palau, after Niue's own vantage point, Guam, CNMI, Vanuatu, French Polynesia, Cook Islands, and Papua New Guinea).
+
+Extended the existing ONATI<->Niue entry's note (per the established per-source-economy convention for `ConfirmedLocalTransit`) rather than adding a new entry. Called `mark_corridor_tested(17893, 55885)`. Verified: module imports cleanly (still 13 entries, extension only); regenerated ASCII/HTML reports and the geographic map. Regenerated the corridor backlog: candidate count dropped 388 -> 386 (0 new-probe, 0 new-RIS-relationship).

@@ -425,7 +425,17 @@ CONFIRMED_LOCAL_TRANSIT: tuple[ConfirmedLocalTransit, ...] = (
             "combination for this adjacency. A seventh distinct source "
             "economy (Papua New Guinea, after Niue's own vantage "
             "point, Guam, CNMI, Vanuatu, French Polynesia, and Cook "
-            "Islands)."
+            "Islands). "
+            "**Ninth independent corroboration** (measurement 212038230, "
+            "PW/AS17893 -> NU/AS55885, a fresh PW<->NU pair): fully "
+            "contiguous all the way to the literal target again: "
+            "`AS17893 -> AS174 (Cogent) -> AS3257 (GTT) -> AS9471 -> "
+            "AS55885`. Same sibling-ASN basis as every prior instance "
+            "(`ris_agrees: false` on the strict AS9471/AS55885 pair, "
+            "resolved via AS55943, 1,662 observations, exact match). An "
+            "eighth distinct source economy (Palau, after Niue's own "
+            "vantage point, Guam, CNMI, Vanuatu, French Polynesia, Cook "
+            "Islands, and Papua New Guinea)."
         ),
     ),
     ConfirmedLocalTransit(
