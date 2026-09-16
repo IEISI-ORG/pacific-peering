@@ -91,6 +91,41 @@ KNOWN_LOOP_LOCATIONS: tuple[KnownLoopLocation, ...] = (
         "contradicting it.",
         asn=154100,
     ),
+    KnownLoopLocation(
+        "184.104.0.0/15",
+        "Hurricane Electric's (AS6939) global backbone loopback range -- "
+        "confirmed via RIPEstat network-info (the whole /15 is what's "
+        "actually announced for both addresses seen). Two distinct "
+        "addresses within it (.192.252, .192.136) each answered twice at "
+        "consecutive TTLs on GU-sourced corridors transiting HE en route "
+        "further into the Pacific; both traces continued past the loop to "
+        "real subsequent hops rather than dead-ending, consistent with an "
+        "ordinary backbone double-answer rather than a genuine block.",
+        asn=6939,
+    ),
+    KnownLoopLocation(
+        "209.120.128.0/17",
+        "GTT Communications' (AS3257, formerly Tinet) own backbone -- "
+        "confirmed via RIPEstat network-info. Seen as a same-address "
+        "double-answer at consecutive TTLs immediately after a Cogent "
+        "(AS174) hop on an MP(AS7131)-sourced corridor to French "
+        "Polynesia, then a dead end -- an ordinary backbone-router "
+        "artifact at the edge of RIS visibility, not a genuine new "
+        "anomaly.",
+        asn=3257,
+    ),
+    KnownLoopLocation(
+        "103.57.234.0/24",
+        "AS7131's (MTC, Northern Mariana Islands -- WHOIS netname "
+        "MTC-MP) own aggregation/upstream address space -- confirmed via "
+        "RIPEstat network-info and WHOIS. This is the *source* carrier's "
+        "own router (not a third party): the same address (.234.1) "
+        "appears as an ordinary single-touch hop on GU(AS3605)-sourced "
+        "corridors that transit it, and only doubled up at consecutive "
+        "TTLs on one MP(AS7131)-sourced corridor -- an intra-carrier "
+        "artifact at the network's own edge, not a genuine new anomaly.",
+        asn=7131,
+    ),
 )
 
 
