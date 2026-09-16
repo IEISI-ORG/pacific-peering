@@ -67,6 +67,9 @@ tr:hover {{ background: #f5f4f0; }}
 .note[open] summary {{ margin-bottom: 6px; }}
 .bool-true {{ color: {_GOOD}; font-weight: 600; }}
 .bool-false {{ color: {_CRITICAL}; }}
+.section-intro {{ color: {_MUTED}; font-size: 0.88rem; margin: 0.4em 0 1em; max-width: 780px; }}
+.callout {{ border-left: 4px solid {_WARNING}; background: #fef8e8; padding: 10px 14px;
+            border-radius: 4px; margin: 1em 0; font-size: 0.88rem; }}
 .viz-figure {{ margin: 1.5em 0; }}
 .viz-figure img {{ max-width: 100%; border: 1px solid #e1e0d9; border-radius: 6px; }}
 .viz-figure figcaption {{ color: {_MUTED}; font-size: 0.8rem; margin-top: 6px; }}
@@ -141,6 +144,18 @@ def render_html_report(data: ReportData, viz_dir: Path | None = Path("../viz")) 
             ),
         ]
     )
+
+    transit_supplier_rows = "".join(
+        f"""<tr>
+            <td>AS{s['asn']}</td><td>{html.escape(s['name'])}</td>
+            <td>{len(s['economies'])}</td>
+            <td>{len(s['economies']) / data.total_economies:.0%}</td>
+            <td>{s['corroboration_count']}</td>
+            <td>{'yes' if s['is_regional'] else 'no'}</td>
+            <td>{html.escape(', '.join(s['economies']))}</td>
+        </tr>"""
+        for s in data.transit_suppliers[:8]
+    ) or "<p>(none recorded yet)</p>"
 
     detour_cards = "".join(
         f"""<div class="detour-card">
@@ -237,6 +252,31 @@ def render_html_report(data: ReportData, viz_dir: Path | None = Path("../viz")) 
     </div>
 
     <div class="stat-row">{stat_tiles}</div>
+
+    <h2>Findings: transit supplier concentration</h2>
+    <p class="section-intro">How many in-scope economies have at least one
+        traceroute-confirmed corridor &mdash; as either the tested vantage
+        point or the reachability target &mdash; that depends on a single
+        carrier (RIS + Atlas confirmed immediate upstream). Counts
+        confirmed, measured corridors only, not total internet exposure:
+        most economies are likely multi-homed via paths this project
+        hasn't measured. "Regional" marks a carrier itself based in an
+        in-scope Pacific economy, rather than an external Tier-1.</p>
+    <table>
+        <thead><tr><th>ASN</th><th>Carrier</th><th>Economies</th><th>Share</th>
+            <th>Corrob.</th><th>Regional</th><th>Which economies</th></tr></thead>
+        <tbody>{transit_supplier_rows}</tbody>
+    </table>
+    <div class="callout">Two carriers don't crack the table above by raw
+        economy count, but are the starkest single-point-of-failure
+        findings this project has confirmed: <strong>AS9241 (FINTEL,
+        Fiji)</strong> is Tuvalu's <em>only</em> RIS-observed neighbor of
+        consequence, reconfirmed by 8 independent vantage points across
+        the region; <strong>AS9471 (ONATI, French Polynesia)</strong>
+        plays the identical role for Niue, also reconfirmed 8 times. For
+        both, every measured path into that economy &mdash; from every
+        direction this project has tested &mdash; passes through one
+        single carrier.</div>
 
     <h2>Confirmed sub-optimal routes (RIS + Atlas both agree)</h2>
     {detour_cards}

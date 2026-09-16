@@ -1737,3 +1737,12 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   source economies on this same adjacency -- a genuine geographic
   difference, not a correction. Added a new `tokyo` pattern to
   hop_geolocation.py. RIS agrees exactly (997). Backlog: 444 -> 442.
+- feat(reports): add "Findings: Transit Supplier Concentration"
+  section to both report formats, before sub-optimal routes. New
+  `TransitSupplier` computation in reports/data.py, ranking carriers
+  by confirmed immediate-upstream reach (ground-truthed against
+  persisted triangulation JSON, not free-text detour_ix_name).
+  Top finding: AS6453 (Tata) touches 9/20 in-scope economies (45%);
+  AS9241 (FINTEL) and AS9471 (ONATI) are each reconfirmed 8
+  independent times as the sole path into Tuvalu and Niue
+  respectively.

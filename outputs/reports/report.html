@@ -42,6 +42,9 @@ tr:hover { background: #f5f4f0; }
 .note[open] summary { margin-bottom: 6px; }
 .bool-true { color: #0ca30c; font-weight: 600; }
 .bool-false { color: #d03b3b; }
+.section-intro { color: #898781; font-size: 0.88rem; margin: 0.4em 0 1em; max-width: 780px; }
+.callout { border-left: 4px solid #fab219; background: #fef8e8; padding: 10px 14px;
+            border-radius: 4px; margin: 1em 0; font-size: 0.88rem; }
 .viz-figure { margin: 1.5em 0; }
 .viz-figure img { max-width: 100%; border: 1px solid #e1e0d9; border-radius: 6px; }
 .viz-figure figcaption { color: #898781; font-size: 0.8rem; margin-top: 6px; }
@@ -53,7 +56,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
 <body>
 <div class="wrap">
     <h1>Pacific Peering — Regional Routing Report</h1>
-    <div class="meta">Generated 2026-09-16T01:29:44.481119+00:00</div>
+    <div class="meta">Generated 2026-09-16T01:40:05.720430+00:00</div>
 
     <div class="headline-banner">
         <span class="value">68%</span>
@@ -64,6 +67,87 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
     </div>
 
     <div class="stat-row"><div class="stat-tile"><div class="value">20</div><div class="label">Economies in scope</div></div><div class="stat-tile"><div class="value">163</div><div class="label">ASNs in scope</div></div><div class="stat-tile"><div class="value">124</div><div class="label">ASNs w/ RIS neighbor</div></div><div class="stat-tile"><div class="value">38</div><div class="label">ASNs w/ IXP membership</div></div><div class="stat-tile"><div class="value">22</div><div class="label">ASNs w/ facility presence</div></div><div class="stat-tile"><div class="value">10/21</div><div class="label">IXPs in/out of fishbowl</div></div></div>
+
+    <h2>Findings: transit supplier concentration</h2>
+    <p class="section-intro">How many in-scope economies have at least one
+        traceroute-confirmed corridor &mdash; as either the tested vantage
+        point or the reachability target &mdash; that depends on a single
+        carrier (RIS + Atlas confirmed immediate upstream). Counts
+        confirmed, measured corridors only, not total internet exposure:
+        most economies are likely multi-homed via paths this project
+        hasn't measured. "Regional" marks a carrier itself based in an
+        in-scope Pacific economy, rather than an external Tier-1.</p>
+    <table>
+        <thead><tr><th>ASN</th><th>Carrier</th><th>Economies</th><th>Share</th>
+            <th>Corrob.</th><th>Regional</th><th>Which economies</th></tr></thead>
+        <tbody><tr>
+            <td>AS6453</td><td>Tata Communications</td>
+            <td>9</td>
+            <td>45%</td>
+            <td>9</td>
+            <td>no</td>
+            <td>CK, GU, MH, MP, NR, PF, PG, PW, VU</td>
+        </tr><tr>
+            <td>AS174</td><td>Cogent Communications</td>
+            <td>7</td>
+            <td>35%</td>
+            <td>8</td>
+            <td>no</td>
+            <td>AS, CK, FJ, GU, PF, PW, WS</td>
+        </tr><tr>
+            <td>AS5511</td><td>Opentransit Orange S.A.</td>
+            <td>7</td>
+            <td>35%</td>
+            <td>6</td>
+            <td>no</td>
+            <td>CK, GU, MP, PF, PG, VU, WF</td>
+        </tr><tr>
+            <td>AS6939</td><td>Hurricane Electric</td>
+            <td>7</td>
+            <td>35%</td>
+            <td>9</td>
+            <td>no</td>
+            <td>CK, GU, MP, PF, PG, PW, WS</td>
+        </tr><tr>
+            <td>AS45355</td><td>Digicel Fiji</td>
+            <td>7</td>
+            <td>35%</td>
+            <td>6</td>
+            <td>yes</td>
+            <td>CK, GU, MP, PF, PG, TO, VU</td>
+        </tr><tr>
+            <td>AS139609</td><td>SISCC (Solomon Islands Submarine Cable Company)</td>
+            <td>7</td>
+            <td>35%</td>
+            <td>6</td>
+            <td>yes</td>
+            <td>CK, GU, MP, PF, PG, SB, VU</td>
+        </tr><tr>
+            <td>AS7575</td><td>AARNet</td>
+            <td>6</td>
+            <td>30%</td>
+            <td>5</td>
+            <td>no</td>
+            <td>CK, FJ, MP, PF, PG, PW</td>
+        </tr><tr>
+            <td>AS18200</td><td>OPT NC (Office des Postes et Telecommunications, New Caledonia)</td>
+            <td>6</td>
+            <td>30%</td>
+            <td>5</td>
+            <td>yes</td>
+            <td>CK, MP, NC, PF, PG, PW</td>
+        </tr></tbody>
+    </table>
+    <div class="callout">Two carriers don't crack the table above by raw
+        economy count, but are the starkest single-point-of-failure
+        findings this project has confirmed: <strong>AS9241 (FINTEL,
+        Fiji)</strong> is Tuvalu's <em>only</em> RIS-observed neighbor of
+        consequence, reconfirmed by 8 independent vantage points across
+        the region; <strong>AS9471 (ONATI, French Polynesia)</strong>
+        plays the identical role for Niue, also reconfirmed 8 times. For
+        both, every measured path into that economy &mdash; from every
+        direction this project has tested &mdash; passes through one
+        single carrier.</div>
 
     <h2>Confirmed sub-optimal routes (RIS + Atlas both agree)</h2>
     <div class="detour-card">

@@ -58,6 +58,53 @@ def render_ascii_report(data: ReportData) -> str:
         f"{data.ixp_registry_tba} unconfirmed"
     )
 
+    lines.append(
+        _section(
+            "FINDINGS: TRANSIT SUPPLIER CONCENTRATION "
+            "(RIS + Atlas confirmed immediate upstream)"
+        )
+    )
+    lines.append(
+        "How many in-scope economies have at least one traceroute-confirmed "
+        "corridor -- as either the tested vantage point or the reachability "
+        "target -- that depends on a single carrier. This counts confirmed, "
+        "measured corridors only, not total internet exposure: most "
+        "economies are likely multi-homed via paths this project hasn't "
+        "measured. \"Regional\" marks a carrier itself based in an in-scope "
+        "Pacific economy, rather than an external Tier-1."
+    )
+    lines.append("")
+    if not data.transit_suppliers:
+        lines.append("(none recorded yet)")
+    else:
+        header = (
+            f"{'ASN':<9} {'Carrier':<40} {'Economies':>9} "
+            f"{'Share':>6} {'Corrob.':>7} {'Regional':>8}"
+        )
+        lines.append(header)
+        lines.append(_rule())
+        for supplier in data.transit_suppliers[:8]:
+            count = len(supplier["economies"])
+            share = count / data.total_economies if data.total_economies else 0.0
+            asn_str = f"AS{supplier['asn']}"
+            lines.append(
+                f"{asn_str:<9} {supplier['name']:<40.40} {count:>9} "
+                f"{share:>6.0%} {supplier['corroboration_count']:>7} "
+                f"{'yes' if supplier['is_regional'] else 'no':>8}"
+            )
+            lines.append(f"    Economies: {', '.join(supplier['economies'])}")
+    lines.append("")
+    lines.append(
+        "Two carriers don't crack the table above by raw economy count, but "
+        "are the starkest single-point-of-failure findings this project has "
+        "confirmed: AS9241 (FINTEL, Fiji) is Tuvalu's *only* RIS-observed "
+        "neighbor of consequence, reconfirmed by 8 independent vantage "
+        "points across the region; AS9471 (ONATI, French Polynesia) plays "
+        "the identical role for Niue, also reconfirmed 8 times. For both, "
+        "every measured path into that economy -- from every direction this "
+        "project has tested -- passes through one single carrier."
+    )
+
     lines.append(_section("CONFIRMED SUB-OPTIMAL ROUTES (RIS + Atlas both agree)"))
     if not data.confirmed_detours:
         lines.append("(none recorded yet)")

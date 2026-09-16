@@ -1,6 +1,6 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-09-16T01:29:44.342270+00:00                  
+                 Generated: 2026-09-16T01:40:25.500992+00:00                  
 ==============================================================================
 
 SUMMARY
@@ -13,6 +13,31 @@ ASNs with >=1 RIS neighbor:     124
 ASNs with >=1 IXP membership:   38
 ASNs with >=1 facility presence:22
 IXP LAN registry: 10 in-fishbowl, 21 out-of-fishbowl, 0 unconfirmed
+
+FINDINGS: TRANSIT SUPPLIER CONCENTRATION (RIS + Atlas confirmed immediate upstream)
+==============================================================================
+How many in-scope economies have at least one traceroute-confirmed corridor -- as either the tested vantage point or the reachability target -- that depends on a single carrier. This counts confirmed, measured corridors only, not total internet exposure: most economies are likely multi-homed via paths this project hasn't measured. "Regional" marks a carrier itself based in an in-scope Pacific economy, rather than an external Tier-1.
+
+ASN       Carrier                                  Economies  Share Corrob. Regional
+------------------------------------------------------------------------------
+AS6453    Tata Communications                              9    45%       9       no
+    Economies: CK, GU, MH, MP, NR, PF, PG, PW, VU
+AS174     Cogent Communications                            7    35%       8       no
+    Economies: AS, CK, FJ, GU, PF, PW, WS
+AS5511    Opentransit Orange S.A.                          7    35%       6       no
+    Economies: CK, GU, MP, PF, PG, VU, WF
+AS6939    Hurricane Electric                               7    35%       9       no
+    Economies: CK, GU, MP, PF, PG, PW, WS
+AS45355   Digicel Fiji                                     7    35%       6      yes
+    Economies: CK, GU, MP, PF, PG, TO, VU
+AS139609  SISCC (Solomon Islands Submarine Cable C         7    35%       6      yes
+    Economies: CK, GU, MP, PF, PG, SB, VU
+AS7575    AARNet                                           6    30%       5       no
+    Economies: CK, FJ, MP, PF, PG, PW
+AS18200   OPT NC (Office des Postes et Telecommuni         6    30%       5      yes
+    Economies: CK, MP, NC, PF, PG, PW
+
+Two carriers don't crack the table above by raw economy count, but are the starkest single-point-of-failure findings this project has confirmed: AS9241 (FINTEL, Fiji) is Tuvalu's *only* RIS-observed neighbor of consequence, reconfirmed by 8 independent vantage points across the region; AS9471 (ONATI, French Polynesia) plays the identical role for Niue, also reconfirmed 8 times. For both, every measured path into that economy -- from every direction this project has tested -- passes through one single carrier.
 
 CONFIRMED SUB-OPTIMAL ROUTES (RIS + Atlas both agree)
 ==============================================================================
