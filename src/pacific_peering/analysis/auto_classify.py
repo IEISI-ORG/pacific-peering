@@ -38,10 +38,14 @@ Classification rules, in priority order, per probe:
 
 from __future__ import annotations
 
+import argparse
+import contextlib
 import json
 import logging
 import subprocess
 import sys
+import threading
+import time
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
@@ -50,6 +54,7 @@ from pacific_peering.analysis import known_anomalies
 from pacific_peering.analysis import store as _store
 from pacific_peering.analysis.corridor_backlog import (
     CorridorCandidate,
+    enumerate_candidate_corridors,
     mark_corridor_tested,
     pick_next_corridor,
 )
@@ -133,9 +138,29 @@ def _fire_measurement(candidate: CorridorCandidate, target_ip: str) -> int:
     )
 
 
-def classify_corridor(candidate: CorridorCandidate) -> ClassifyResult:
+def classify_corridor(
+    candidate: CorridorCandidate,
+    lock: threading.Lock | None = None,
+    regenerate: bool = True,
+) -> ClassifyResult:
     """Fire, triangulate, and classify one corridor. Files a finding (or an
-    escalation) and always marks the corridor tested, any outcome."""
+    escalation) and always marks the corridor tested, any outcome.
+
+    Args:
+        lock: when given (batch mode -- see `run_batch`), every local
+            write (SQLite, `tested_pairs.json`, `escalations.md`) is
+            serialized under this lock so concurrent workers testing
+            *different* corridors can't race each other's read-modify-write
+            file updates. The slow part -- firing the measurement and
+            waiting for Atlas -- happens *before* this section, unlocked,
+            which is the whole point of running workers concurrently in
+            the first place.
+        regenerate: whether to regenerate every derived artifact after
+            this one corridor. `run_batch` passes `False` and regenerates
+            once at the end instead -- doing it after every corridor in a
+            tight time-boxed batch would spend most of the budget on
+            subprocess overhead rather than actual testing.
+    """
     asn_to_cc = _load_asn_to_cc()
     ixp_registry = load_ixp_lan_registry(IXP_REGISTRY_PATH)
     name_cache: dict[int, str] = {}
@@ -226,130 +251,138 @@ def classify_corridor(candidate: CorridorCandidate) -> ClassifyResult:
             )
         )
 
-    conn = _store.connect()
-    try:
-        if detour_pick is not None:
-            _, ix_name, hub_city = detour_pick
-            finding = _store.find_existing_detour(conn, candidate.source_cc, candidate.target_asn)
-            if finding is None:
-                finding_id = _store.create_finding(
-                    conn,
-                    kind=_store.KIND_CONFIRMED_DETOUR,
-                    source_cc=candidate.source_cc,
-                    source_asn=candidate.source_asn,
-                    source_name=candidate.source_name,
-                    target_cc=candidate.target_cc,
-                    target_asn=candidate.target_asn,
-                    target_name=_asn_holder_name(candidate.target_asn, name_cache),
-                    detour_ix_name=ix_name,
-                    detour_hub=hub_city,
-                )
-            else:
-                finding_id = finding.id
-            for probe in triangulation["probes"]:
-                chain = " -> ".join(f"AS{e['asn']}" for e in probe.get("as_sequence", []))
-                _store.add_corroboration(
-                    conn,
-                    finding_id=finding_id,
-                    measurement_id=measurement_id,
-                    vantage_point_cc=candidate.source_cc,
-                    vantage_point_asn=candidate.source_asn,
-                    chain=chain or None,
-                    ris_observation_count=probe.get("ris_observation_count"),
-                    ris_agrees=probe.get("ris_agrees"),
-                    has_loop=probe["probe_id"] in loop_notes,
-                    loop_note=loop_notes.get(probe["probe_id"]),
-                )
-            mark_corridor_tested(candidate.source_asn, candidate.target_asn)
-            _regenerate_artifacts()
-            return ClassifyResult(candidate, "confirmed_detour", finding_id, escalations)
+    def _finalize() -> ClassifyResult:
+        conn = _store.connect()
+        try:
+            if detour_pick is not None:
+                _, ix_name, hub_city = detour_pick
+                finding = _store.find_existing_detour(conn, candidate.source_cc, candidate.target_asn)
+                if finding is None:
+                    finding_id = _store.create_finding(
+                        conn,
+                        kind=_store.KIND_CONFIRMED_DETOUR,
+                        source_cc=candidate.source_cc,
+                        source_asn=candidate.source_asn,
+                        source_name=candidate.source_name,
+                        target_cc=candidate.target_cc,
+                        target_asn=candidate.target_asn,
+                        target_name=_asn_holder_name(candidate.target_asn, name_cache),
+                        detour_ix_name=ix_name,
+                        detour_hub=hub_city,
+                    )
+                else:
+                    finding_id = finding.id
+                for probe in triangulation["probes"]:
+                    chain = " -> ".join(f"AS{e['asn']}" for e in probe.get("as_sequence", []))
+                    _store.add_corroboration(
+                        conn,
+                        finding_id=finding_id,
+                        measurement_id=measurement_id,
+                        vantage_point_cc=candidate.source_cc,
+                        vantage_point_asn=candidate.source_asn,
+                        chain=chain or None,
+                        ris_observation_count=probe.get("ris_observation_count"),
+                        ris_agrees=probe.get("ris_agrees"),
+                        has_loop=probe["probe_id"] in loop_notes,
+                        loop_note=loop_notes.get(probe["probe_id"]),
+                    )
+                mark_corridor_tested(candidate.source_asn, candidate.target_asn)
+                if regenerate:
+                    _regenerate_artifacts()
+                return ClassifyResult(candidate, "confirmed_detour", finding_id, escalations)
 
-        if local_transit_pick is not None:
-            upstream_asn = local_transit_pick["traceroute_upstream_asn"]
-            finding = _store.find_existing(
-                conn, _store.KIND_CONFIRMED_LOCAL_TRANSIT, upstream_asn, candidate.target_asn
-            )
-            if finding is None:
-                finding_id = _store.create_finding(
-                    conn,
-                    kind=_store.KIND_CONFIRMED_LOCAL_TRANSIT,
-                    source_cc=asn_to_cc.get(upstream_asn, "??"),
-                    source_asn=upstream_asn,
-                    source_name=_asn_holder_name(upstream_asn, name_cache),
-                    target_cc=candidate.target_cc,
-                    target_asn=candidate.target_asn,
-                    target_name=_asn_holder_name(candidate.target_asn, name_cache),
+            if local_transit_pick is not None:
+                upstream_asn = local_transit_pick["traceroute_upstream_asn"]
+                finding = _store.find_existing(
+                    conn, _store.KIND_CONFIRMED_LOCAL_TRANSIT, upstream_asn, candidate.target_asn
                 )
-            else:
-                finding_id = finding.id
-            for probe in triangulation["probes"]:
-                chain = " -> ".join(f"AS{e['asn']}" for e in probe.get("as_sequence", []))
-                _store.add_corroboration(
-                    conn,
-                    finding_id=finding_id,
-                    measurement_id=measurement_id,
-                    vantage_point_cc=candidate.source_cc,
-                    vantage_point_asn=candidate.source_asn,
-                    chain=chain or None,
-                    ris_observation_count=probe.get("ris_observation_count"),
-                    ris_agrees=probe.get("ris_agrees"),
-                    has_loop=probe["probe_id"] in loop_notes,
-                    loop_note=loop_notes.get(probe["probe_id"]),
-                )
-            mark_corridor_tested(candidate.source_asn, candidate.target_asn)
-            _regenerate_artifacts()
-            return ClassifyResult(candidate, "confirmed_local_transit", finding_id, escalations)
+                if finding is None:
+                    finding_id = _store.create_finding(
+                        conn,
+                        kind=_store.KIND_CONFIRMED_LOCAL_TRANSIT,
+                        source_cc=asn_to_cc.get(upstream_asn, "??"),
+                        source_asn=upstream_asn,
+                        source_name=_asn_holder_name(upstream_asn, name_cache),
+                        target_cc=candidate.target_cc,
+                        target_asn=candidate.target_asn,
+                        target_name=_asn_holder_name(candidate.target_asn, name_cache),
+                    )
+                else:
+                    finding_id = finding.id
+                for probe in triangulation["probes"]:
+                    chain = " -> ".join(f"AS{e['asn']}" for e in probe.get("as_sequence", []))
+                    _store.add_corroboration(
+                        conn,
+                        finding_id=finding_id,
+                        measurement_id=measurement_id,
+                        vantage_point_cc=candidate.source_cc,
+                        vantage_point_asn=candidate.source_asn,
+                        chain=chain or None,
+                        ris_observation_count=probe.get("ris_observation_count"),
+                        ris_agrees=probe.get("ris_agrees"),
+                        has_loop=probe["probe_id"] in loop_notes,
+                        loop_note=loop_notes.get(probe["probe_id"]),
+                    )
+                mark_corridor_tested(candidate.source_asn, candidate.target_asn)
+                if regenerate:
+                    _regenerate_artifacts()
+                return ClassifyResult(candidate, "confirmed_local_transit", finding_id, escalations)
 
-        if candidate_picks:
-            upstream_asn = candidate_picks[0]["traceroute_upstream_asn"]
-            agree_count = sum(
-                1 for p in candidate_picks if p["traceroute_upstream_asn"] == upstream_asn
-            )
-            finding = _store.find_existing(
-                conn, _store.KIND_CANDIDATE_PEERING, upstream_asn, candidate.target_asn
-            )
-            if finding is None:
-                finding_id = _store.create_finding(
-                    conn,
-                    kind=_store.KIND_CANDIDATE_PEERING,
-                    source_cc=asn_to_cc.get(upstream_asn, "??"),
-                    source_asn=upstream_asn,
-                    source_name=_asn_holder_name(upstream_asn, name_cache),
-                    target_cc=candidate.target_cc,
-                    target_asn=candidate.target_asn,
-                    target_name=_asn_holder_name(candidate.target_asn, name_cache),
-                    probe_agreement=f"{agree_count}/{len(triangulation['probes'])} probes",
+            if candidate_picks:
+                upstream_asn = candidate_picks[0]["traceroute_upstream_asn"]
+                agree_count = sum(
+                    1 for p in candidate_picks if p["traceroute_upstream_asn"] == upstream_asn
                 )
-            else:
-                finding_id = finding.id
-            for probe in triangulation["probes"]:
-                chain = " -> ".join(f"AS{e['asn']}" for e in probe.get("as_sequence", []))
-                _store.add_corroboration(
-                    conn,
-                    finding_id=finding_id,
-                    measurement_id=measurement_id,
-                    vantage_point_cc=candidate.source_cc,
-                    vantage_point_asn=candidate.source_asn,
-                    chain=chain or None,
-                    ris_observation_count=probe.get("ris_observation_count"),
-                    ris_agrees=probe.get("ris_agrees"),
-                    has_loop=probe["probe_id"] in loop_notes,
-                    loop_note=loop_notes.get(probe["probe_id"]),
+                finding = _store.find_existing(
+                    conn, _store.KIND_CANDIDATE_PEERING, upstream_asn, candidate.target_asn
                 )
-            mark_corridor_tested(candidate.source_asn, candidate.target_asn)
-            _regenerate_artifacts()
-            return ClassifyResult(candidate, "candidate_peering", finding_id, escalations)
-    finally:
-        conn.close()
+                if finding is None:
+                    finding_id = _store.create_finding(
+                        conn,
+                        kind=_store.KIND_CANDIDATE_PEERING,
+                        source_cc=asn_to_cc.get(upstream_asn, "??"),
+                        source_asn=upstream_asn,
+                        source_name=_asn_holder_name(upstream_asn, name_cache),
+                        target_cc=candidate.target_cc,
+                        target_asn=candidate.target_asn,
+                        target_name=_asn_holder_name(candidate.target_asn, name_cache),
+                        probe_agreement=f"{agree_count}/{len(triangulation['probes'])} probes",
+                    )
+                else:
+                    finding_id = finding.id
+                for probe in triangulation["probes"]:
+                    chain = " -> ".join(f"AS{e['asn']}" for e in probe.get("as_sequence", []))
+                    _store.add_corroboration(
+                        conn,
+                        finding_id=finding_id,
+                        measurement_id=measurement_id,
+                        vantage_point_cc=candidate.source_cc,
+                        vantage_point_asn=candidate.source_asn,
+                        chain=chain or None,
+                        ris_observation_count=probe.get("ris_observation_count"),
+                        ris_agrees=probe.get("ris_agrees"),
+                        has_loop=probe["probe_id"] in loop_notes,
+                        loop_note=loop_notes.get(probe["probe_id"]),
+                    )
+                mark_corridor_tested(candidate.source_asn, candidate.target_asn)
+                if regenerate:
+                    _regenerate_artifacts()
+                return ClassifyResult(candidate, "candidate_peering", finding_id, escalations)
+        finally:
+            conn.close()
 
-    mark_corridor_tested(candidate.source_asn, candidate.target_asn)
-    if escalations:
-        _write_escalations(escalations)
-        return ClassifyResult(candidate, "escalated", None, escalations)
-    logger.info(
-        "AS%d -> AS%d: inconclusive, no real signal after %d attempt(s); marked tested",
-        candidate.source_asn, candidate.target_asn, len(target_ips[:_MAX_TARGET_IP_ATTEMPTS]),
-    )
+        mark_corridor_tested(candidate.source_asn, candidate.target_asn)
+        if escalations:
+            _write_escalations(escalations)
+            return ClassifyResult(candidate, "escalated", None, escalations)
+        logger.info(
+            "AS%d -> AS%d: inconclusive, no real signal after %d attempt(s); marked tested",
+            candidate.source_asn, candidate.target_asn, len(target_ips[:_MAX_TARGET_IP_ATTEMPTS]),
+        )
+        return ClassifyResult(candidate, "inconclusive", None, escalations)
+
+    with lock if lock is not None else contextlib.nullcontext():
+        return _finalize()
     return ClassifyResult(candidate, "inconclusive", None, escalations)
 
 
@@ -420,6 +453,98 @@ def classify_next(max_corridors: int = 1) -> list[ClassifyResult]:
     return results
 
 
+def _pick_next_for_batch(exclude_source_asns: set[int]) -> CorridorCandidate | None:
+    """Like `pick_next_corridor`, but skips any candidate whose source ASN
+    is currently in flight in another worker. Atlas serializes measurements
+    per source probe regardless of how fast we submit to it, so two workers
+    racing the same source ASN would just queue behind each other for zero
+    throughput gain -- the actual lever is running *different* source ASNs
+    concurrently, not more work against one."""
+    for candidate in enumerate_candidate_corridors():
+        if candidate.source_asn not in exclude_source_asns:
+            return candidate
+    return None
+
+
+def run_batch(time_budget_seconds: float, max_concurrent: int = 5) -> list[ClassifyResult]:
+    """Fit as many corridor tests as possible into `time_budget_seconds`,
+    running concurrently across different source-economy probes.
+
+    This is the parallel-across-probes insight from earlier in this
+    project, applied for real: a single source ASN's connected probe
+    serializes its own measurements no matter how fast we submit to it, so
+    real throughput comes from running several *different* source ASNs at
+    once, not from batching more work against one. Each worker thread only
+    ever has one source ASN in flight at a time; picking the next candidate,
+    filing a finding, and marking a corridor tested are all serialized
+    under one lock (fast, local file/DB writes), while firing a measurement
+    and waiting for Atlas -- the actually slow part -- happens unlocked, so
+    that's where the concurrency gain is spent.
+
+    Stops pulling *new* work once the deadline passes; corridors already in
+    flight are allowed to finish (a fired Atlas measurement can't be
+    un-fired). Regenerates every derived artifact once at the end, not per
+    corridor -- spending a time-boxed budget on repeated subprocess
+    overhead instead of actual testing would defeat the point.
+    """
+    deadline = time.monotonic() + time_budget_seconds
+    write_lock = threading.Lock()
+    in_flight: set[int] = set()
+    results: list[ClassifyResult] = []
+    results_lock = threading.Lock()
+
+    def worker() -> None:
+        while time.monotonic() < deadline:
+            with write_lock:
+                candidate = _pick_next_for_batch(in_flight)
+                if candidate is not None:
+                    in_flight.add(candidate.source_asn)
+                elif not in_flight:
+                    return  # nothing left anywhere, and nothing else will free one up
+            if candidate is None:
+                time.sleep(2)  # everything left is behind a source ASN another worker holds
+                continue
+            logger.info(
+                "Classifying AS%d (%s) -> AS%d (%s): %s",
+                candidate.source_asn, candidate.source_cc,
+                candidate.target_asn, candidate.target_cc, candidate.rationale,
+            )
+            try:
+                result = classify_corridor(candidate, lock=write_lock, regenerate=False)
+                with results_lock:
+                    results.append(result)
+                logger.info(
+                    "AS%d -> AS%d: %s%s",
+                    candidate.source_asn, candidate.target_asn, result.outcome,
+                    f" ({len(result.escalations)} escalation(s))" if result.escalations else "",
+                )
+            except Exception:  # noqa: BLE001 - one corridor's failure must not sink the worker
+                logger.exception(
+                    "AS%d -> AS%d: classification failed, leaving untested for a future pull",
+                    candidate.source_asn, candidate.target_asn,
+                )
+            finally:
+                with write_lock:
+                    in_flight.discard(candidate.source_asn)
+
+    threads = [
+        threading.Thread(target=worker, name=f"corridor-worker-{i}") for i in range(max_concurrent)
+    ]
+    started_at = time.monotonic()
+    for t in threads:
+        t.start()
+    for t in threads:
+        t.join()
+
+    if results:
+        _regenerate_artifacts()
+    logger.info(
+        "Batch done: %d corridor(s) tested in %.0fs (budget %.0fs)",
+        len(results), time.monotonic() - started_at, time_budget_seconds,
+    )
+    return results
+
+
 def main() -> None:
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
     results = classify_next()
@@ -429,6 +554,27 @@ def main() -> None:
             r.candidate.source_asn, r.candidate.target_asn, r.outcome,
             f" ({len(r.escalations)} escalation(s))" if r.escalations else "",
         )
+
+
+def main_batch() -> None:
+    """`uv run pacific-peering-auto-classify-batch [--hours H] [--max-concurrent N]`
+    -- fit as many corridor tests as possible into a fixed wall-clock budget
+    (default 2 hours), for unattended cron use. See `run_batch`."""
+    logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
+    parser = argparse.ArgumentParser(description="Time-boxed batch corridor classification.")
+    parser.add_argument(
+        "--hours", type=float, default=2.0, help="time budget in hours (default: 2)"
+    )
+    parser.add_argument(
+        "--max-concurrent", type=int, default=5,
+        help="max concurrent source-ASN workers (default: 5)",
+    )
+    args = parser.parse_args()
+    results = run_batch(args.hours * 3600, max_concurrent=args.max_concurrent)
+    outcomes: dict[str, int] = {}
+    for r in results:
+        outcomes[r.outcome] = outcomes.get(r.outcome, 0) + 1
+    logger.info("Outcomes: %s", outcomes)
 
 
 if __name__ == "__main__":

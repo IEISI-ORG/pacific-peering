@@ -22,6 +22,9 @@ outputs/*
 # Secrets
 secrets.yaml
 *.secret.yaml
+
+# Cron job output
+logs/
 *.swp
 *.swo
 .*.swp

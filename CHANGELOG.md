@@ -2033,3 +2033,21 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   measurements (GU->PG detour, FM->PW candidate) before any live use;
   backlog was empty at build time so no corridor has been fired
   through it yet.
+- feat(ops): move both standing loops from Claude's session-scoped
+  `CronCreate` onto real system cron - `scripts/weekly_discovery_refresh.sh`
+  (Sun 1am, free-API pipeline + backlog regen, no LLM/Atlas credits)
+  and `scripts/nightly_corridor_testing.sh` (Mon-Sat 1am, 2-hour
+  budget). Both commit+push their own git-tracked outputs when
+  something changes; both smoke-tested for real before being trusted
+  unattended.
+- feat(analysis): add `auto_classify.run_batch()` - the concurrent,
+  time-boxed corridor scheduler (`pacific-peering-auto-classify-batch
+  --hours H --max-concurrent N`), applying the parallel-across-probes
+  insight from earlier this session for real: one source ASN in
+  flight per worker thread, fast local writes (SQLite/tested-pairs/
+  escalations) serialized under a lock, the slow Atlas wait left
+  unlocked so concurrency actually helps. `classify_corridor()`
+  gained an optional `lock`/`regenerate` pair to support this without
+  changing single-shot behavior. Retired the two old session-scoped
+  cron jobs (8-hourly backlog-only regen, 10-minute pull-and-test)
+  now redundant with the two scripts above.

@@ -37,6 +37,7 @@ pacific-peering-report-probe-gaps = "pacific_peering.reports.probe_gap_report:ma
 pacific-peering-presentation = "pacific_peering.reports.presentation:main"
 pacific-peering-findings-export = "pacific_peering.analysis.store:main"
 pacific-peering-auto-classify = "pacific_peering.analysis.auto_classify:main"
+pacific-peering-auto-classify-batch = "pacific_peering.analysis.auto_classify:main_batch"
 
 [build-system]
 requires = ["uv_build>=0.12.5,<0.13.0"]

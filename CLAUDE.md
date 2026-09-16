@@ -3,24 +3,30 @@
 Run this check at the start of every session in this repo, before anything else:
 
 ```bash
-uv run pacific-peering-pipeline          # free APIs only: APNIC/RIS/IXP-LAN/IRR/probe-registry
-uv run pacific-peering-corridor-backlog  # regenerate corridor_backlog.md against that fresh data
+uv run pacific-peering-corridor-backlog  # cheap, local -- reports the current candidate count
 ```
 
-Then report the candidate count. If it's non-zero, pull corridors via
-`uv run pacific-peering-auto-classify` (see `src/pacific_peering/analysis/auto_classify.py`
-for the full pipeline — fires a traceroute, triangulates against RIS, classifies, files a
-finding, marks the corridor tested, regenerates artifacts, and escalates anything it can't
-confidently resolve to `escalations.md`).
+The real data-freshness and corridor-testing work now runs unattended via system cron
+(`crontab -l`, not Claude's own session-scoped CronCreate), so don't re-derive it by hand
+each session:
 
-Cadence agreement with the project owner: prefer firing across several different source
-economies' probes in parallel over batching many corridors against one probe (a single
-source ASN's probe queue serializes measurements — see `task_plan.md` for the Niue/AS55885
-case that established this).
+- **Weekly discovery refresh** — `scripts/weekly_discovery_refresh.sh`, Sunday 1am
+  (`0 1 * * 0`). Free APIs only (APNIC/RIS/PeeringDB/IRR/probe-registry), no Atlas credits,
+  no LLM. Regenerates the corridor backlog against fresh data and commits+pushes
+  `corridor_backlog.md`/`outputs/runs/*` if anything changed. Per the project owner: not
+  expected to need to run more often than this.
+- **Nightly corridor testing** — `scripts/nightly_corridor_testing.sh`, Mon–Sat 1am
+  (`0 1 * * 1-6`, deliberately skips Sunday so it never races the discovery refresh).
+  Runs `pacific-peering-auto-classify-batch --hours 2 --max-concurrent 5` — fits as many
+  corridor tests as possible into a 2-hour budget, firing concurrently across different
+  source-economy probes (see `auto_classify.run_batch()`'s docstring for why concurrency,
+  not just a longer queue, is the actual throughput lever). Spends real Atlas credits, but
+  only when a genuine untested corridor exists. Commits+pushes findings/reports/viz if
+  anything changed; escalates anything it can't confidently resolve to `escalations.md`
+  instead of guessing.
 
-Don't re-run the full pipeline more than once per session start or once genuine time has
-passed — it hits PeeringDB/APNIC/RIS live, and re-checking seconds apart just risks rate
-limiting for no new data.
+Both scripts log to `logs/cron.log` (gitignored). If you want to run either by hand mid-session
+rather than wait for its schedule, just invoke the script directly — same as cron does.
 
 Read `task_plan.md` for the full narrative history and `CHANGELOG.md` for the terse log
 before picking up new work.
