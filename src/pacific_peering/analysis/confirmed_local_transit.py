@@ -1280,7 +1280,11 @@ CONFIRMED_LOCAL_TRANSIT: tuple[ConfirmedLocalTransit, ...] = (
             "AS132528 -> AS38800 -> AS38227`, RIS agrees with the identical "
             "exact match (990). Same measurement also confirmed the chain "
             "extends one hop further, to AS139679 (Electoral Commission) -- "
-            "see the new `ConfirmedDetour` entry. `has_routing_loop` False."
+            "see the new `ConfirmedDetour` entry. `has_routing_loop` False. "
+            "**Third independent corroboration** (measurement 212141147, "
+            "NU/AS55885, part of the bulk NU/FM/GU/NC clear-out): "
+            "`AS55885 -> AS9471 -> AS6939 -> AS132528 -> AS38800 -> "
+            "AS38227`, RIS agrees exactly (990). `has_routing_loop` False."
         ),
     ),
     ConfirmedLocalTransit(

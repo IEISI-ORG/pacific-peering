@@ -714,4 +714,61 @@ CANDIDATE_PEERING: tuple[CandidatePeering, ...] = (
             "separate, presumably-confirmable lead. `has_routing_loop` False."
         ),
     ),
+    CandidatePeering(
+        upstream_cc="GU", upstream_asn=9246, upstream_name="Teleguam Holdings, "
+        "LLC (GTA)", target_cc="FM", target_asn=38875,
+        target_name="FSM Telecommunications Corporation",
+        measurement_id=212141162, vantage_point_cc="NU", probe_agreement="1/1 probe",
+        note=(
+            "NU(AS55885) -> AS38875: `AS55885 -> AS9471 -> AS6939 -> "
+            "AS9246 -> AS139759`, same sibling substitution as every "
+            "prior entry for this target (AS38875's real neighbor is "
+            "AS10130, not AS139759). Ninth `CandidatePeering` entry for "
+            "this target. `has_routing_loop` False."
+        ),
+    ),
+    CandidatePeering(
+        upstream_cc="AU", upstream_asn=7474, upstream_name="SingTel Optus "
+        "Pty Ltd", target_cc="FJ", target_asn=4638,
+        target_name="Telecom Fiji Limited", measurement_id=212141026,
+        vantage_point_cc="NU", probe_agreement="1/1 probe",
+        note=(
+            "NU(AS55885) -> AS4638: `AS55885 -> AS9471 -> AS3257 (GTT) -> "
+            "AS7474 -> AS4638`, but `ris_agrees: false` -- checked "
+            "AS4638's real RIS neighbor list directly: dominated by "
+            "AS45349 (32,318 of 32,318 observations, its effectively "
+            "only neighbor), the same relationship already confirmed "
+            "elsewhere in this project (NC->FJ/AS4638, upstream AS45349). "
+            "AS7474 doesn't appear at all. Real signal, wrong immediate "
+            "carrier. `has_routing_loop` False."
+        ),
+    ),
+    CandidatePeering(
+        upstream_cc="US", upstream_asn=6939, upstream_name="Hurricane "
+        "Electric", target_cc="GU", target_asn=23676,
+        target_name="University of Guam", measurement_id=212141106,
+        vantage_point_cc="NU", probe_agreement="1/1 probe",
+        note=(
+            "NU(AS55885) -> AS23676 (University of Guam): `AS55885 -> "
+            "AS9471 -> AS6939 -> AS23676`, but `ris_agrees: false` -- "
+            "checked AS23676's real RIS neighbor list directly: "
+            "AS395400 (University of Guam's *other* ASN, already "
+            "established elsewhere in this project) is dominant (380 of "
+            "380 observations). Real signal, one hop off from the real "
+            "relationship. `has_routing_loop` False."
+        ),
+    ),
+    CandidatePeering(
+        upstream_cc="US", upstream_asn=6939, upstream_name="Hurricane "
+        "Electric", target_cc="VU", target_asn=23959,
+        target_name="Wantok Network (Vanuatu)", measurement_id=212141116,
+        vantage_point_cc="NU", probe_agreement="1/1 probe",
+        note=(
+            "NU(AS55885) -> AS23959: `AS55885 -> AS9471 -> AS6939 -> "
+            "AS23959`, but `ris_agrees: false` -- checked AS23959's real "
+            "RIS neighbor list directly: AS4785 is dominant (662 of 662 "
+            "observations). Real signal, wrong immediate carrier. "
+            "`has_routing_loop` False."
+        ),
+    ),
 )

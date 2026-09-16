@@ -1986,3 +1986,14 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   already-documented locations. FM/GU/NC now fully exhausted as
   sources; every remaining candidate is NU(AS55885). Backlog: 127 ->
   105.
+- docs(analysis): "global transit" -> "international transit" in
+  detour_ix_name labels (owner directive), then a follow-up to drop
+  ", not a named exchange crossing" entirely. Two commits, 65
+  instances each.
+- feat(analysis): bulk clear-out, NU(AS55885) sub-batch 1 of ~6 (21
+  corridors) - 14 confirmed (5 first-ever-as-target: FINTEL,
+  Vodafone Fiji, OPT-NC, plus a second independent AS9751 relationship
+  via Cogent), 1 local-transit extension, 4 candidates (3 one-hop-off
+  from a directly-checked real relationship), 1 inconclusive. Backlog:
+  105 -> 28 (large drop from economy-pair dedup across 9 economies
+  touched in one batch, not an anomaly).
