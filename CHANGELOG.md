@@ -1712,3 +1712,8 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   confirm Sydney, validating the earlier GU entry's carrier-facility
   guess. Added a new `syd` pattern to hop_geolocation.py. RIS agrees
   exactly (1,455). Backlog: 468 -> 462.
+- docs(analysis): PW(AS17893)->TV(AS23917), eighth corroboration of
+  AS9241(FINTEL)<->AS23917. First appearance of GSL/Global Secure
+  Layer, GSL Networks, and Starlink as transit toward Tuvalu
+  specifically. RIS agrees exactly (1,009). Extended existing entry,
+  no new entry. Backlog: 462 -> 460.

@@ -2154,3 +2154,11 @@ Only one probe reported and again went dark before the destination IP itself rep
 **First hop-level geolocation of this specific corridor's hub**: the Cogent hops (`ccr71.syd01.atlas.cogentco.com`, `agr51.syd01.atlas.cogentco.com`) resolved to Sydney via `hop_geolocation` -- confirming, with real PTR evidence, the "Sydney" hub the original GU entry had assigned by carrier-facility guess rather than hop evidence. Added a new `syd` pattern to `hop_geolocation.py` citing this measurement.
 
 Added as a new entry. Called `mark_corridor_tested(17893, 17993)`. Verified: module imports cleanly (74 entries, up from 73); regenerated ASCII/HTML reports and the geographic map. Regenerated the corridor backlog: candidate count dropped 468 -> 462 (0 new-probe, 0 new-RIS-relationship).
+
+---
+
+**Next corridor pulled: AS17893 (Palau NCC) -> AS23917 (Tuvalu).** A long, unusual path: `AS17893 -> AS7578 (GSL/Global Secure Layer) -> AS137409 (GSL Networks) -> AS14593 (Starlink) -> AS4826 (Vocus Connect) -> AS1299 (Telia) -> AS9241 (FINTEL) -> AS23917`, fully contiguous between AS9241 and the target. `has_routing_loop` correctly returned `False`; checked manually anyway given both FINTEL's and Starlink's own loop histories this session -- no repeats anywhere, including the Starlink hops (`206.224.72.33`/`.40`, distinct from the known `206.224.66.23` loop address).
+
+Eighth independent corroboration of the AS9241(FINTEL)<->AS23917(Tuvalu) adjacency (after Tuvalu's own vantage point, Guam, CNMI, Vanuatu, French Polynesia, Cook Islands, and PNG). RIS agrees with the identical exact match (1,009). GSL/Global Secure Layer and GSL Networks are genuinely new intermediate carriers for this adjacency; this is also the first time Starlink has shown up as a transit hop toward Tuvalu specifically (previously only on the Kiribati chains).
+
+Extended the existing FINTEL<->Tuvalu entry's note (per the established per-source-economy convention for `ConfirmedLocalTransit`) rather than adding a new entry. Called `mark_corridor_tested(17893, 23917)`. Verified: module imports cleanly (still 13 entries, extension only); regenerated ASCII/HTML reports and the geographic map. Regenerated the corridor backlog: candidate count dropped 462 -> 460 (0 new-probe, 0 new-RIS-relationship).
