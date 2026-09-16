@@ -557,7 +557,7 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
         target_asn=55943,
         detour_ix_name="AS3257 (GTT Communications) -- global transit, not a named "
         "exchange crossing",
-        detour_hub="Tokyo",
+        detour_hub="Los Angeles",
         measurement_id=211499778,
         ris_observation_count=1657,
         note=(
@@ -578,7 +578,13 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
             "confirmation, distinct in both target identity and carrier from "
             "the earlier dead-end -- illustrating why re-testing a different "
             "ASN within an already-attempted economy can be worth it when the "
-            "first attempt was inconclusive rather than confirmed either way."
+            "first attempt was inconclusive rather than confirmed either way. "
+            "**Hub corrected from an original draft's \"Tokyo\" (a carrier-"
+            "facility guess, never verified against this entry's own hops) to "
+            "Los Angeles**, once a TV-sourced measurement on this identical "
+            "adjacency resolved real GTT hostname evidence (`cr10-lax2.ip4."
+            "gtt.net`) -- see that entry for the direct evidence; applied here "
+            "too since it's the same confirmed carrier relationship."
         ),
     ),
     ConfirmedDetour(
@@ -971,7 +977,7 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
         target_asn=55943,
         detour_ix_name="AS174 (Cogent Communications), then AS3257 (GTT "
         "Communications) -- global transit, not a named exchange crossing",
-        detour_hub="Tokyo",
+        detour_hub="Los Angeles",
         measurement_id=211585981,
         ris_observation_count=1657,
         note=(
@@ -988,7 +994,10 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
             "dominant relationship. `has_routing_loop` flagged probe "
             "60689 `True` -- checked directly: two consecutive-address "
             "repeats early in the path, both with modest, stable RTT, the "
-            "now-familiar ordinary-noise shape, not a real loop."
+            "now-familiar ordinary-noise shape, not a real loop. "
+            "**Hub corrected to Los Angeles** (from an original draft's "
+            "unverified \"Tokyo\") once real GTT hop evidence surfaced on "
+            "the TV-sourced entry for this identical adjacency."
         ),
     ),
     ConfirmedDetour(
@@ -1188,7 +1197,7 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
         target_asn=55943,
         detour_ix_name="AS4637 (Telstra Global), then AS3257 (GTT Communications) -- "
         "global transit, not a named exchange crossing",
-        detour_hub="Tokyo",
+        detour_hub="Los Angeles",
         measurement_id=211640827,
         ris_observation_count=1657,
         note=(
@@ -1201,10 +1210,14 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
             "resolved (ordinary ICMP filtering near the destination), so "
             "RIS is checked against the last reached ASN. RIS agrees with "
             "the identical *exact* match (1,657). No IXP crossing this "
-            "time (`ixp_crossings` empty for both probes) -- kept "
-            "`detour_hub` as Tokyo, already verified against GTT's real "
-            "PeeringDB facility list in the MP-sourced entry (genuine "
-            "Tokyo and Sydney presence)."
+            "time (`ixp_crossings` empty for both probes). "
+            "**Hub corrected to Los Angeles**: the original \"Tokyo\" here "
+            "was a carrier-facility guess (GTT's real PeeringDB presence "
+            "list, not this entry's own hops) -- exactly the same "
+            "mislabeling pattern already caught and fixed for Cogent/Tata "
+            "elsewhere this session. Real GTT hop evidence on the TV-"
+            "sourced entry for this identical adjacency (`cr10-lax2.ip4."
+            "gtt.net`) shows the true touchpoint is Los Angeles."
         ),
     ),
     ConfirmedDetour(
@@ -2704,6 +2717,34 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
             "-- a different named exchange than the Equinix Sydney "
             "crossing most other entries for this adjacency use, "
             "matching the VU entry's crossing instead."
+        ),
+    ),
+    ConfirmedDetour(
+        source_cc="TV",
+        target_cc="PF",
+        target_asn=55943,
+        detour_ix_name="AS3257 (GTT Communications) -- global transit, not a named "
+        "exchange crossing",
+        detour_hub="Los Angeles",
+        measurement_id=212077786,
+        ris_observation_count=1657,
+        note=(
+            "Tuvalu (AS23917) -> ONATI's other ASN (AS55943, French "
+            "Polynesia) -- a fresh TV<->PF pair, a fourth independent "
+            "confirmation of the AS3257(GTT)<->AS55943 adjacency (after "
+            "GU, MP, VU): `AS23917 -> AS9241 (FINTEL) -> [AS3356/Level 3 "
+            "gap] -> AS3257`, target never resolved, RIS-agreeing with "
+            "the identical exact match (1,657). **Geolocated with "
+            "`hop_geolocation`**: the path shows `SanJose1.Level3.net` "
+            "and `SanJose1.net.lumen.tech` (San Jose), then GTT's own "
+            "named hop `cr10-lax2.ip4.gtt.net` -- Los Angeles. **Hub "
+            "corrected here and retroactively on all three prior entries "
+            "for this adjacency (GU, MP, VU)**: all three previously used "
+            "\"Tokyo\", a carrier-facility guess never checked against "
+            "real hops -- the same mislabeling pattern already caught "
+            "for Cogent/Tata earlier this session. This is the first "
+            "real hop-level evidence for this specific adjacency, and it "
+            "points to Los Angeles, not Tokyo."
         ),
     ),
 )

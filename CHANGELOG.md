@@ -1886,3 +1886,11 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   confirmation as target (AS15830/Equinix, exact match 336), AS45879
   (WF) eighth Orange confirmation, AS45891(SB) eighth SISCC
   confirmation via MegaIX Sydney. Backlog: 311 -> 293.
+- fix(analysis): correct AS3257(GTT)<->AS55943 detour_hub from
+  "Tokyo" (a carrier-facility guess) to "Los Angeles" on all four
+  entries (GU, MP, VU retroactively + new TV entry), after real GTT
+  hop evidence (cr10-lax2.ip4.gtt.net) surfaced on the TV-sourced
+  fourth confirmation. Same mislabeling pattern already fixed for
+  Cogent/Tata earlier this session. Also: TV->AS55722(NR) sixth PTI
+  Pacifica corroboration, TV->AS55885(NU) tenth ONATI corroboration.
+  Backlog: 293 -> 286.

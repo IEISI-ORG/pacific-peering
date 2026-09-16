@@ -466,7 +466,17 @@ CONFIRMED_LOCAL_TRANSIT: tuple[ConfirmedLocalTransit, ...] = (
             "resolved via AS55943, 1,662 observations, exact match). An "
             "eighth distinct source economy (Palau, after Niue's own "
             "vantage point, Guam, CNMI, Vanuatu, French Polynesia, Cook "
-            "Islands, and Papua New Guinea)."
+            "Islands, and Papua New Guinea). "
+            "**Tenth independent corroboration** (measurement 212077143, "
+            "TV/AS23917 -> NU/AS55885, a fresh TV<->NU pair): fully "
+            "contiguous all the way to the literal target again: "
+            "`AS23917 -> AS9241 (FINTEL) -> AS3257 (GTT) -> AS9471 -> "
+            "AS55885`. Same sibling-ASN basis as every prior instance "
+            "(`ris_agrees: false` on the strict AS9471/AS55885 pair, "
+            "resolved via AS55943, 1,662 observations, exact match). A "
+            "ninth distinct source economy (Tuvalu, after Niue's own "
+            "vantage point, Guam, CNMI, Vanuatu, French Polynesia, Cook "
+            "Islands, Papua New Guinea, and Palau)."
         ),
     ),
     ConfirmedLocalTransit(
@@ -923,7 +933,15 @@ CONFIRMED_LOCAL_TRANSIT: tuple[ConfirmedLocalTransit, ...] = (
             "hop-level LAN-prefix match) -- a new named exchange for "
             "this specific corridor. A fifth distinct source economy "
             "(Papua New Guinea, after MP, VU, French Polynesia, and "
-            "Cook Islands)."
+            "Cook Islands). "
+            "**Sixth independent corroboration** (measurement 212075474, "
+            "TV/AS23917 -> NR/AS55722, a fresh TV<->NR pair): `AS23917 "
+            "-> AS9241 (FINTEL) -> AS6939 (Hurricane Electric) -> "
+            "AS7131` -> target never resolved (the same short-path "
+            "silence pattern as every prior instance). RIS agrees with "
+            "the identical *exact* match (1,528). A sixth distinct "
+            "source economy (Tuvalu, after MP, VU, French Polynesia, "
+            "Cook Islands, and Papua New Guinea)."
         ),
     ),
     ConfirmedLocalTransit(
