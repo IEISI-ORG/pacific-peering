@@ -56,7 +56,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
 <body>
 <div class="wrap">
     <h1>Pacific Peering — Regional Routing Report</h1>
-    <div class="meta">Generated 2026-09-16T10:17:45.523583+00:00</div>
+    <div class="meta">Generated 2026-09-16T10:19:47.303871+00:00</div>
 
     <div class="headline-banner">
         <span class="value">68%</span>
@@ -321,7 +321,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <details class="note"><summary>New Caledonia -&gt; Digicel Fiji (AS45355); upstream AS132528 -- per the project owner, the Telstra-operated backbone ASN behind Digicel&#x27;s Pacific mobile…</summary>New Caledonia -&gt; Digicel Fiji (AS45355); upstream AS132528 -- per the project owner, the Telstra-operated backbone ASN behind Digicel&#x27;s Pacific mobile networks, registered in PeeringDB as &#x27;Digicel Australia&#x27; -- confirmed by RIS+Atlas with an exact observation-count match (1,326) and a fully contiguous hop chain (AS18200, New Caledonia&#x27;s own incumbent -&gt; AS132528 at Equinix Sydney, exact netixlan address match -&gt; AS45355). The strongest-evidenced finding in this project so far: also IRR-corroborated on *both* sides -- AS132528&#x27;s declared AS-SET (AS-132528-PEERS) names AS45355 directly, and AS45355&#x27;s own declared AS-SET (AS-45355-PEERS) names AS132528 right back -- a mutual, independently-sourced (APNIC) declaration matching the observed adjacency exactly. AS132528 was also seen at this same Equinix Sydney fabric in an earlier, unrelated measurement (210930962, the Zscaler-proxied Fiji probe test) -- two independent measurements, two different vantage points, same exchange presence.</details>
         </div><div class="detour-card">
             <div class="headline">GU -&gt; PW
-                (AS17893): detours via AS174 (Cogent Communications), via AS2497 (IIJ, Japan) -- international transit, not a named exchange crossing
+                (AS17893): detours via AS174 (Cogent Communications), via AS2497 (IIJ, Japan) -- international transit
                 (Tokyo)</div>
             <div>RIS observation count: 1333
                 &middot; measurement 211064438</div>
@@ -342,70 +342,70 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <details class="note"><summary>New Caledonia -&gt; Telecom Vanuatu (AS9249), sourced from AS56089 (OFFRATEL) -- a third distinct NC carrier tested this session (after the incumbent OPT…</summary>New Caledonia -&gt; Telecom Vanuatu (AS9249), sourced from AS56089 (OFFRATEL) -- a third distinct NC carrier tested this session (after the incumbent OPT NC/AS18200 and the independent ISP Nautile/AS45345 last tranche), continuing the same question with a fresh target: does every NC carrier&#x27;s international traffic detour via Australia/NZ, regardless of destination or which local ISP originates it? A genuinely untested economy pair (NC&lt;-&gt;VU) before this measurement. Grepped first, per the standing process rule: confirmed untested. Result: fully contiguous, zero gaps, all 6 hops resolved cleanly -- AS56089 -&gt; AS18200 (OPT NC) -&gt; AS4648 (Spark NZ, New Zealand&#x27;s largest telecom, resolved via PeeringDB netixlan at Equinix Sydney) -&gt; AS6939 (Hurricane Electric, also present at the same Equinix Sydney fabric) -&gt; AS4637 (Telstra Global) -&gt; AS38442 (Vodafone Fiji) -&gt; AS9249. Upstream of the target is AS38442, RIS-agreeing with an *exact* match (1,346) -- the identical count on record for this project&#x27;s very first confirmed finding (AS38442&lt;-&gt;AS9249), now independently reinforced a **fourth** time, from a fourth distinct vantage point/source network. Notable in its own right: this is the first measurement this session to show New Zealand (Spark NZ) as a transit waypoint rather than just Australia -- the detour pattern isn&#x27;t Australia-specific, it&#x27;s &quot;whichever Oceania hub happens to sit on the path,&quot; consistent with this project&#x27;s Fish Bowl framing (AU/NZ both excluded from the study region, both acting as external hubs the region&#x27;s traffic routes through). Only 1 of 3 requested probes returned in time; not re-fired, same small-tranche judgment call as the USP/AS9249 measurement -- the one result is already clean and exactly RIS-matched.</details>
         </div><div class="detour-card">
             <div class="headline">PG -&gt; VU
-                (AS9249): detours via Telstra (AS1221 domestic + AS4637 Telstra Global) -- international transit, not a named exchange crossing
+                (AS9249): detours via Telstra (AS1221 domestic + AS4637 Telstra Global) -- international transit
                 (Sydney)</div>
             <div>RIS observation count: 1346
                 &middot; measurement 211299647</div>
             <details class="note"><summary>PNG DataCo (AS17828) -&gt; Telecom Vanuatu (AS9249) -- a genuinely untested economy pair before this measurement (PG&lt;-&gt;VU, both Melanesian), picked to check…</summary>PNG DataCo (AS17828) -&gt; Telecom Vanuatu (AS9249) -- a genuinely untested economy pair before this measurement (PG&lt;-&gt;VU, both Melanesian), picked to check whether regional Melanesian traffic stays in-region or detours externally like every other corridor tested this session. Grepped first: confirmed untested. Result: fully contiguous, zero gaps -- AS17828 -&gt; AS4826 (Vocus Connect, already established as PNG DataCo&#x27;s own upstream from an earlier tranche) -&gt; AS1221 (Telstra Limited, Australia&#x27;s domestic backbone) -&gt; AS4637 (Telstra Global, the international arm of the same company) -&gt; AS38442 (Vodafone Fiji) -&gt; AS9249. Upstream of the target is AS38442, RIS-agreeing with an *exact* match (1,346) -- this project&#x27;s very first confirmed finding, now independently reinforced a **fifth** time, from a fifth distinct vantage point. Different in kind from the NC-sourced detours to the same target: no hop landed inside any registered IXP LAN prefix this time (`ixp_crossings` empty) -- straight Tier-1 transit through Telstra&#x27;s own network (its domestic and international ASNs both appearing back-to-back) rather than a named-exchange crossing, so `detour_ix_name` records that honestly rather than implying an IXP that isn&#x27;t there, same convention already used for the AS3605-&gt;AS17893 Tokyo/Cogent entry. Five independent measurements, five different source networks, one identical destination adjacency -- AS38442&#x27;s role as Fiji&#x27;s real gateway to Vanuatu is about as solidly established as any single fact in this project.</details>
         </div><div class="detour-card">
             <div class="headline">GU -&gt; FJ
-                (AS9241): detours via AS174 (Cogent Communications), via AS2497 (IIJ, Japan) -- international transit, not a named exchange crossing
+                (AS9241): detours via AS174 (Cogent Communications), via AS2497 (IIJ, Japan) -- international transit
                 (Tokyo)</div>
             <div>RIS observation count: 830
                 &middot; measurement 211316239</div>
             <details class="note"><summary>Guam (AS3605, Guam Cablevision) -&gt; FINTEL (AS9241, Fiji International Telecommunications Ltd) -- pulled from the maintained corridor backlog&#x27;s top pick (the…</summary>Guam (AS3605, Guam Cablevision) -&gt; FINTEL (AS9241, Fiji International Telecommunications Ltd) -- pulled from the maintained corridor backlog&#x27;s top pick (the first hourly `/loop` firing to run against it): a genuinely untested GU&lt;-&gt;FJ economy pair despite both being among the most-characterized economies in the project. The measurement itself ran unusually slowly to schedule (stuck at `Scheduled` status for several minutes before any probe activity, versus the usual 5-15 seconds) -- checked directly rather than assumed transient: `participant_count: 2` confirmed both of AS3605&#x27;s connected probes were queued, and a second, longer poll resolved cleanly with both probes returning -- an ordinary Atlas-side scheduling delay, not a network anomaly, so not escalated under the standing consult-the-owner order (which is for strange *routing*, not platform latency). Result: AS3605 -&gt; AS2497 (IIJ, Japan) -&gt; AS174 (Cogent Communications) -&gt; AS9241, the same Tokyo/Cogent global-transit shape already seen for AS3605&#x27;s Palau corridor (see the GU-&gt;PW entry above) -- this project&#x27;s second example of AS3605 reaching an in-scope target via Cogent through Japan rather than any regional path. Upstream of the target is AS174, RIS-agreeing with an *exact* match (830) -- and checked against AS9241&#x27;s full neighbor list directly: AS174 is its single largest RIS-observed relationship (830 of ~1,700 total observations across all three of its neighbors), not a minor or coincidental one. One of two probes (329) was fully contiguous end-to-end; the other (64953) showed a gap immediately at the source hop too, but the RIS-agreeing upstream adjacency itself is identical and unambiguous on both.</details>
         </div><div class="detour-card">
             <div class="headline">GU -&gt; VU
-                (AS9249): detours via Level 3/Lumen (AS3356) + AS4637 (Telstra Global) -- international transit, not a named exchange crossing
+                (AS9249): detours via Level 3/Lumen (AS3356) + AS4637 (Telstra Global) -- international transit
                 (Sydney)</div>
             <div>RIS observation count: 1346
                 &middot; measurement 211334940</div>
             <details class="note"><summary>Guam Cablevision (AS3605) -&gt; Telecom Vanuatu (AS9249) -- pulled from the corridor backlog&#x27;s top pick: a genuinely untested GU&lt;-&gt;VU economy pair…</summary>Guam Cablevision (AS3605) -&gt; Telecom Vanuatu (AS9249) -- pulled from the corridor backlog&#x27;s top pick: a genuinely untested GU&lt;-&gt;VU economy pair. Both probes: AS3605 -&gt; AS3356 (Level 3/Lumen) -&gt; AS4637 (Telstra Global) -&gt; AS38442 (Vodafone Fiji) -&gt; AS9249. Upstream of the target is AS38442, RIS-agreeing with an *exact* match (1,346) -- this project&#x27;s very first confirmed finding, now independently reinforced a **sixth** time, from a sixth distinct source network (after AS18200/OPT NC, AS45345/Nautile, AS56089/OFFRATEL, AS24390/USP, and AS17828/PNG DataCo). The final AS38442-&gt;AS9249 leg shows a single silent (non-responding) hop immediately before the target on both probes -- checked directly, not assumed: the same ordinary ICMP-filtering-right-at-the-destination pattern already seen in essentially every measurement that has ever targeted AS9249 this session, not a new or unusual gap. No IXP crossing this time (`ixp_crossings` empty) -- plain Tier-1 transit (Level 3/Lumen then Telstra Global), the same no-named-exchange shape as the AS17828-&gt;AS9249 and AS3605-&gt;AS9241 entries. Six independent, differently-sourced measurements landing on one identical adjacency, all with exact observation-count matches, is about as strong a single fact as this project has produced.</details>
         </div><div class="detour-card">
             <div class="headline">GU -&gt; AS
-                (AS9751): detours via AS174 (Cogent Communications), via AS2497 (IIJ, Japan) -- international transit, not a named exchange crossing
+                (AS9751): detours via AS174 (Cogent Communications), via AS2497 (IIJ, Japan) -- international transit
                 (Tokyo)</div>
             <div>RIS observation count: 1055
                 &middot; measurement 211371732</div>
             <details class="note"><summary>Guam Cablevision (AS3605) -&gt; American Samoa (AS9751) -- pulled from the corridor backlog&#x27;s top pick: a fresh GU&lt;-&gt;AS economy pair…</summary>Guam Cablevision (AS3605) -&gt; American Samoa (AS9751) -- pulled from the corridor backlog&#x27;s top pick: a fresh GU&lt;-&gt;AS economy pair. American Samoa itself has zero connected Atlas probes (unchanged all session), so this is the only direction this corridor can currently be tested from. Both probes fully contiguous end-to-end: AS3605 -&gt; AS2497 (IIJ, Japan) -&gt; AS174 (Cogent Communications) -&gt; AS9751. Upstream of the target is AS174, RIS-agreeing with an *exact* match (1,055) -- checked directly against AS9751&#x27;s full neighbor list (`{174: 1055, 3356: 333, 11404: 267}`): AS174 is its single largest relationship, not a minor one. **This is now the *third* instance of the identical AS3605 -&gt; Tokyo (AS2497/IIJ) -&gt; Cogent shape this session** (after AS17893/Palau and AS9241/FINTEL Fiji) -- no longer just a one-off pattern but a real, repeated signature of how this specific Guam carrier routes to multiple different Pacific destinations: via Japan and global Tier-1 transit, not any regional path, regardless of which island it&#x27;s reaching.</details>
         </div><div class="detour-card">
             <div class="headline">GU -&gt; WS
-                (AS17993): detours via AS174 (Cogent Communications), via AS3356 (Level 3/Lumen) -- international transit, not a named exchange crossing
+                (AS17993): detours via AS174 (Cogent Communications), via AS3356 (Level 3/Lumen) -- international transit
                 (Sydney)</div>
             <div>RIS observation count: 1455
                 &middot; measurement 211418048</div>
             <details class="note"><summary>Guam Cablevision (AS3605) -&gt; Samoa (AS17993) -- pulled from the corridor backlog&#x27;s top pick: a fresh GU&lt;-&gt;WS economy pair…</summary>Guam Cablevision (AS3605) -&gt; Samoa (AS17993) -- pulled from the corridor backlog&#x27;s top pick: a fresh GU&lt;-&gt;WS economy pair. Measurement scheduled slowly again (a third occurrence of the same pattern already seen for AS9241 and AS9471 -- checked `participant_count` first, confirmed genuinely queued, resolved on a longer poll; treated as a now-recognized characteristic of AS3605&#x27;s probes rather than re-investigated as a fresh anomaly). Both probes fully contiguous: AS3605 -&gt; AS3356 (Level 3/Lumen) -&gt; AS174 (Cogent Communications) -&gt; AS17993. Upstream of the target is AS174, RIS-agreeing with an *exact* match (1,455) -- checked against AS17993&#x27;s full neighbor list (`{174: 1455, 6939: 150, 64073: 10, ...}`): AS174 is overwhelmingly its dominant relationship. **A fourth AS3605-sourced measurement landing on Cogent as the target&#x27;s real upstream** (after AS17893/Palau and AS9241/FINTEL Fiji via Tokyo/IIJ, and AS9751/American Samoa also via Tokyo/IIJ) -- this one via Level 3/Lumen instead, no Tokyo hop this time, but the same ultimate carrier. Cogent is clearly AS3605&#x27;s real default path to reach multiple different Pacific island networks, via more than one specific intermediate route.</details>
         </div><div class="detour-card">
             <div class="headline">GU -&gt; MH
-                (AS24439): detours via AS6453 (Tata Communications), via AS2497 (IIJ, Japan) -- international transit, not a named exchange crossing
+                (AS24439): detours via AS6453 (Tata Communications), via AS2497 (IIJ, Japan) -- international transit
                 (Tokyo)</div>
             <div>RIS observation count: 997
                 &middot; measurement 211465536</div>
             <details class="note"><summary>Guam Cablevision (AS3605) -&gt; Marshall Islands NTA ISP (AS24439) -- pulled from the corridor backlog, immediately after excluding AS24013 (see task_plan.md:…</summary>Guam Cablevision (AS3605) -&gt; Marshall Islands NTA ISP (AS24439) -- pulled from the corridor backlog, immediately after excluding AS24013 (see task_plan.md: DNS.SB, a global anycast resolver opportunistically registered under a Solomon Islands country code, confirmed and excluded rather than tested as a corridor). Checked AS24439&#x27;s own holder name directly before testing, given the session&#x27;s established caution around Marshall-Islands-registered ASNs specifically (several already confirmed as offshore shell companies in `supplementary_asns.py`): &quot;NTAMAR-AS-AP - MARSHALL ISLANDS NTA ISP AS&quot; -- NTA is the Marshall Islands&#x27; actual National Telecommunications Authority, a real incumbent operator, not a shell; its target IP also resolves inside real APNIC space (103.202.149.0/24), unlike AS24013&#x27;s RIPE-region anycast block. No anomaly here, proceeded normally. Both probes: AS3605 -&gt; AS2497 (IIJ, Japan) -&gt; AS6453 (Tata Communications) -- the target ASN itself never resolved (ordinary ICMP filtering near the destination, the established pattern for this situation), so RIS is checked against the last ASN the traceroute did reach, per this project&#x27;s inbound-style validation method. RIS agrees with an *exact* match (997) -- checked directly against AS24439&#x27;s full neighbor list: AS6453 is its *only* RIS-observed neighbor at all (997 of 997 total observations), a complete, exclusive relationship, not a partial one. Another instance of AS3605 reaching a Pacific destination via Tokyo and global Tier-1 transit rather than any regional path -- this session&#x27;s fourth distinct Tier-1 carrier seen filling this exact role for AS3605 (Cogent, Telstra domestic+international, and now Tata).</details>
         </div><div class="detour-card">
             <div class="headline">GU -&gt; TO
-                (AS38198): detours via AS3356 (Level 3/Lumen) + AS4637 (Telstra Global) + AS45355 (Digicel Fiji) -- international transit, not a named exchange crossing
+                (AS38198): detours via AS3356 (Level 3/Lumen) + AS4637 (Telstra Global) + AS45355 (Digicel Fiji) -- international transit
                 (Sydney)</div>
             <div>RIS observation count: 1321
                 &middot; measurement 211478036</div>
             <details class="note"><summary>Guam Cablevision (AS3605) -&gt; Digicel Tonga (AS38198) -- a fresh GU&lt;-&gt;TO economy pair…</summary>Guam Cablevision (AS3605) -&gt; Digicel Tonga (AS38198) -- a fresh GU&lt;-&gt;TO economy pair. Sixth occurrence of the slow-scheduling pattern (recognized, resolved on a longer poll as before). Both probes: AS3605 -&gt; AS3356 (Level 3/Lumen) -&gt; AS4637 (Telstra Global) -&gt; AS45355 (Digicel Fiji) -&gt; AS38198. Upstream of the target is AS45355, RIS-agreeing with an *exact* match (1,321) -- checked against AS38198&#x27;s full neighbor list: AS45355 is its *only* RIS-observed neighbor at all. **Checked the traceroute&#x27;s tail carefully before writing this up as routine, since it read as more silence than usual**: both probes actually reach a real, BGP-confirmed AS38198 address (`202.43.12.5`) one hop after the last AS45355 hop, separated by exactly one ordinary silent boundary hop (the same routine pattern seen throughout this session) -- a solid, confirmed crossing into the target&#x27;s own network, not a gap. Only *after* that does the traceroute go fully silent trying to reach the specific queried address (`202.43.12.1`) itself, all the way to the final hop -- read as the destination address itself not responding to traceroute probes at all (common for security-hardened endpoints), not evidence against the already-confirmed AS45355&lt;-&gt;AS38198 adjacency, which sits before that silent stretch, not inside it. **Worth noting in its own right**: Digicel Fiji serving as the real upstream for Digicel Tonga -- both are regional subsidiaries of the same corporate parent (Digicel Group). Reads as intra-corporate regional transit, the same shape as the Wallis &amp; Futuna -&gt; Orange S.A. relationship, rather than arm&#x27;s-length peering between unrelated carriers, though this traceroute alone doesn&#x27;t distinguish corporate-internal routing from an ordinary customer-transit contract between the two.</details>
         </div><div class="detour-card">
             <div class="headline">GU -&gt; WF
-                (AS45879): detours via AS5511 (Opentransit Orange S.A.), via AS2497 (IIJ, Japan) -- international transit, not a named exchange crossing
+                (AS45879): detours via AS5511 (Opentransit Orange S.A.), via AS2497 (IIJ, Japan) -- international transit
                 (Tokyo)</div>
             <div>RIS observation count: 1665
                 &middot; measurement 211486369</div>
             <details class="note"><summary>Guam Cablevision (AS3605) -&gt; Orange Wallis &amp; Futuna (AS45879) -- a fresh GU&lt;-&gt;WF economy pair…</summary>Guam Cablevision (AS3605) -&gt; Orange Wallis &amp; Futuna (AS45879) -- a fresh GU&lt;-&gt;WF economy pair. Seventh occurrence of the slow-scheduling pattern, resolved on a longer poll as before. Both probes: AS3605 -&gt; AS2497 (IIJ, Japan) -&gt; AS5511 (Opentransit Orange S.A.) -- the target itself never resolved (ordinary ICMP filtering, the established pattern), so RIS is checked against the last-reached ASN, per this project&#x27;s inbound-style method. RIS agrees with an *exact* match (1,665) -- and this is the identical relationship and identical observation count already on record from this session&#x27;s own market-structure analysis: AS45879&#x27;s only RIS-observed neighbor at all is AS5511, Orange&#x27;s own international backbone ASN, consistent with the operator itself being a direct Orange Group subsidiary rather than an independent carrier peering arm&#x27;s-length. This project&#x27;s fifth distinct global carrier now confirmed filling AS3605&#x27;s &quot;reach a Pacific destination via Tokyo&quot; role (Cogent, Telstra domestic, Telstra Global, Tata, and now Opentransit Orange).</details>
         </div><div class="detour-card">
             <div class="headline">GU -&gt; SB
-                (AS45891): detours via AS4637 (Telstra Global), via AS2497 (IIJ, Japan) -- international transit, not a named exchange crossing
+                (AS45891): detours via AS4637 (Telstra Global), via AS2497 (IIJ, Japan) -- international transit
                 (Tokyo)</div>
             <div>RIS observation count: 1652
                 &middot; measurement 211488835</div>
             <details class="note"><summary>Guam Cablevision (AS3605) -&gt; Solomon Telekom Co Ltd (AS45891) -- a fresh GU&lt;-&gt;SB economy pair…</summary>Guam Cablevision (AS3605) -&gt; Solomon Telekom Co Ltd (AS45891) -- a fresh GU&lt;-&gt;SB economy pair. Checked AS45891&#x27;s holder name directly before firing, given this session&#x27;s now-standard caution after the AS24013 exclusion: &quot;SBT-AS-AP - Solomon Telekom Co Ltd&quot;, a real incumbent, and the target IP resolves inside real APNIC space (202.1.164.0/24) -- no anomaly. Eighth occurrence of the slow-scheduling pattern, resolved on a longer poll as before. Both probes: AS3605 -&gt; AS2497 (IIJ, Japan) -&gt; AS4637 (Telstra Global) -&gt; AS139609. The literal target (AS45891) never itself resolved -- but this is not a sibling-ASN case like the FSM/ONATI ones: AS139609 is a genuinely different, real entity, &quot;Solomon Islands Submarine Cable Company&quot; (SISCC), the actual operator of Solomon Islands&#x27; international submarine cable infrastructure. Checked directly: AS45891&#x27;s *only* RIS-observed neighbor at all is AS139609 (1,652 observations), an *exact* match to what this traceroute found -- Solomon Telekom&#x27;s real, retail-facing network depends entirely on SISCC&#x27;s cable infrastructure for international connectivity, a completely sensible real-world relationship (retail ISP -&gt; the country&#x27;s own submarine cable operator), cleanly confirmed without needing any sibling-identity substitution.</details>
         </div><div class="detour-card">
             <div class="headline">GU -&gt; PF
-                (AS55943): detours via AS3257 (GTT Communications) -- international transit, not a named exchange crossing
+                (AS55943): detours via AS3257 (GTT Communications) -- international transit
                 (Los Angeles)</div>
             <div>RIS observation count: 1657
                 &middot; measurement 211499778</div>
@@ -419,21 +419,21 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <details class="note"><summary>Guam Cablevision (AS3605) -&gt; VakaNet Limited (AS152093, Cook Islands) -- a second, distinct Cook Islands ASN tested from Guam this session (after AS10131,…</summary>Guam Cablevision (AS3605) -&gt; VakaNet Limited (AS152093, Cook Islands) -- a second, distinct Cook Islands ASN tested from Guam this session (after AS10131, reached via the in-fishbowl ONATI transit corroboration). Both probes fully contiguous to AS9507 (NextHop Pty Ltd, Australia), resolved via PeeringDB netixlan, crossing **BBIX Tokyo** (out-of-fishbowl) -- a genuine named-exchange crossing this time, not just global transit. RIS agrees with an *exact* match (335) -- checked against AS152093&#x27;s full neighbor list: AS9507 is its *only* RIS-observed neighbor at all. Notable contrast with the AS10131 corridor tested from the same source: that one reaches Cook Islands via an in-fishbowl Pacific carrier (ONATI); this one reaches a different Cook Islands operator via a conventional Australia/Tokyo exchange crossing -- two real, differently-shaped Cook Islands corridors, not a uniform national pattern.</details>
         </div><div class="detour-card">
             <div class="headline">GU -&gt; NR
-                (AS152706): detours via AS6453 (Tata Communications), via AS2497 (IIJ, Japan) -- international transit, not a named exchange crossing
+                (AS152706): detours via AS6453 (Tata Communications), via AS2497 (IIJ, Japan) -- international transit
                 (Tokyo)</div>
             <div>RIS observation count: 292
                 &middot; measurement 211520771</div>
             <details class="note"><summary>Guam Cablevision (AS3605) -&gt; Neotel (AS152706, Nauru)…</summary>Guam Cablevision (AS3605) -&gt; Neotel (AS152706, Nauru). Both probes fully contiguous to the literal target: AS3605 -&gt; AS2497 (IIJ, Japan) -&gt; AS6453 (Tata Communications) -&gt; AS152706. RIS agrees with an *exact* match (292) -- checked against AS152706&#x27;s full neighbor list: AS6453 is its dominant relationship (292 of roughly 333 total observations). This is the **second** distinct instance of Tata Communications filling AS3605&#x27;s Tokyo-transit role this session (after AS24439/Marshall Islands) -- along with the two earlier Cogent instances (Palau, Fiji/FINTEL, American Samoa, Samoa) and Telstra&#x27;s domestic+international pair, Tata is clearly a second real, recurring carrier in this Guam network&#x27;s actual international transit mix, not a one-off.</details>
         </div><div class="detour-card">
             <div class="headline">MP -&gt; VU
-                (AS9249): detours via AS4637 (Telstra Global) -- international transit, not a named exchange crossing
+                (AS9249): detours via AS4637 (Telstra Global) -- international transit
                 (Sydney)</div>
             <div>RIS observation count: 1346
                 &middot; measurement 211537368</div>
             <details class="note"><summary>PTI Pacifica (AS7131, CNMI) -&gt; Telecom Vanuatu (AS9249) -- a fresh MP&lt;-&gt;VU pair, retried against a second target address after the first AS9249 IP had produced…</summary>PTI Pacifica (AS7131, CNMI) -&gt; Telecom Vanuatu (AS9249) -- a fresh MP&lt;-&gt;VU pair, retried against a second target address after the first AS9249 IP had produced a routing loop for a *different* target (AS9241) on this same source ASN two tranches earlier -- worth firing cleanly here rather than assuming the same problem. It didn&#x27;t recur: probe 60689 fully contiguous end-to-end -- AS7131 -&gt; AS6939 (Hurricane Electric) -&gt; AS4637 (Telstra Global) -&gt; AS38442 (Vodafone Fiji) -&gt; AS9249. Upstream of the target is AS38442, RIS-agreeing with an *exact* match (1,346) -- this project&#x27;s very first confirmed finding, now independently reinforced a **seventh** time, and the first from CNMI as a source. Probe 62689 shows the same adjacency but with a gap right before the literal target (ordinary silence, the well-established pattern for this specific corridor).</details>
         </div><div class="detour-card">
             <div class="headline">MP -&gt; AS
-                (AS9751): detours via AS11404 (Wave Broadband) -- international transit, not a named exchange crossing
+                (AS9751): detours via AS11404 (Wave Broadband) -- international transit
                 (Honolulu)</div>
             <div>RIS observation count: 267
                 &middot; measurement 211542695</div>
@@ -461,28 +461,28 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <details class="note"><summary>PTI Pacifica (AS7131, CNMI) -&gt; Samoa (AS17993) -- a fresh MP&lt;-&gt;WS pair…</summary>PTI Pacifica (AS7131, CNMI) -&gt; Samoa (AS17993) -- a fresh MP&lt;-&gt;WS pair. All 3 probes: AS7131 -&gt; AS6939 (Hurricane Electric) -&gt; [gap] -&gt; AS17993, upstream of target AS6939, RIS-agreeing with an *exact* match (150). A **different** carrier than the existing GU(AS3605)-&gt;WS entry (AS174/Cogent + AS3356/Level3, count 1,455) -- checked against AS17993&#x27;s full neighbor list (`{174: 1455, 6939: 150, 64073: 10, ...}`, already on record from that earlier entry): AS6939 is a real, minor-but-genuine relationship, not the dominant one, confirming Samoa&#x27;s real transit mix includes at least two distinct Tier-1 carriers, the same shape already seen for American Samoa (AS9751, Cogent vs. Wave Broadband). Real IXP crossing confirmed directly this time -- `ixp_crossings` non-empty for all 3 probes, all landing on Equinix Sydney (one shows both AS6939 and AS17993 as members at the same hop, the other two resolve AS17993 itself there via PeeringDB netixlan).</details>
         </div><div class="detour-card">
             <div class="headline">MP -&gt; FJ
-                (AS24390): detours via AS140627 (OneQode) -- international transit, not a named exchange crossing
+                (AS24390): detours via AS140627 (OneQode) -- international transit
                 (Sydney)</div>
             <div>RIS observation count: 337
                 &middot; measurement 211564127</div>
             <details class="note"><summary>PTI Pacifica (AS7131, CNMI) -&gt; University of the South Pacific&#x27;s own network (AS24390) -- a fresh MP&lt;-&gt;FJ pair, and the first time this project has targeted…</summary>PTI Pacifica (AS7131, CNMI) -&gt; University of the South Pacific&#x27;s own network (AS24390) -- a fresh MP&lt;-&gt;FJ pair, and the first time this project has targeted AS24390 directly as the destination (it was previously only ever the *source* of the FJ-&gt;VU/AS9249 detour, see the AS24390 entry above). Both probes: AS7131 -&gt; AS140627 (OneQode) -&gt; AS7575 (AARNet, Australia&#x27;s research/education network, resolved via PeeringDB netixlan) -- the literal target itself never resolved (ordinary ICMP filtering near the destination, the established pattern), so RIS is checked against the last reached ASN, per this project&#x27;s inbound-style method. RIS agrees with an *exact* match (337) -- and this is the identical relationship and count already on record from the AS24390-&gt;AS9249 entry&#x27;s own note: AS7575 is AS24390&#x27;s *only* RIS-observed neighbor at all. No IXP crossing this time (`ixp_crossings` empty for both probes) -- plain global transit through OneQode, a carrier already seen once before this session (AS17893&#x27;s and AS7131&#x27;s own fishbowl neighbor lists both already listed it as a minor relationship).</details>
         </div><div class="detour-card">
             <div class="headline">MP -&gt; MH
-                (AS24439): detours via AS174 (Cogent Communications), via AS6453 (Tata Communications) -- international transit, not a named exchange crossing
+                (AS24439): detours via AS174 (Cogent Communications), via AS6453 (Tata Communications) -- international transit
                 (Sydney)</div>
             <div>RIS observation count: 997
                 &middot; measurement 211567329</div>
             <details class="note"><summary>PTI Pacifica (AS7131, CNMI) -&gt; Marshall Islands NTA ISP (AS24439) -- a fresh MP&lt;-&gt;MH pair, landing on the existing GU(AS3605)-&gt;MH `ConfirmedDetour` adjacency…</summary>PTI Pacifica (AS7131, CNMI) -&gt; Marshall Islands NTA ISP (AS24439) -- a fresh MP&lt;-&gt;MH pair, landing on the existing GU(AS3605)-&gt;MH `ConfirmedDetour` adjacency (AS6453&lt;-&gt;AS24439), now a second independent confirmation from a different source economy. All 3 probes: AS7131 -&gt; AS174 (Cogent Communications) -&gt; AS6453 (Tata Communications) -- the target itself never resolved (ordinary ICMP filtering near the destination, the established pattern), so RIS is checked against the last reached ASN. RIS agrees with an *exact* match (997), identical to the original finding -- checked directly: AS6453 is still AS24439&#x27;s *only* RIS-observed neighbor at all. A **different** path into Tata than the original (which went via AS2497/IIJ and Tokyo) -- this one via Cogent directly, no Tokyo hop. `has_routing_loop` flagged 2 of 3 probes `True` on a first pass -- checked directly before trusting it, per the now-established process from the AS17828 case: both &#x27;repeats&#x27; are near-destination addresses (`180.87.180.33`, `209.58.61.40` -- inside Tata&#x27;s own transit space, not the literal target) replying at consecutive hops with stable, non-climbing RTT, the same ordinary noise pattern, not a real loop.</details>
         </div><div class="detour-card">
             <div class="headline">MP -&gt; TO
-                (AS38198): detours via AS6939 (Hurricane Electric) + AS132528 (Digicel Australia/Telstra-operated backbone) -- international transit, not a named exchange crossing
+                (AS38198): detours via AS6939 (Hurricane Electric) + AS132528 (Digicel Australia/Telstra-operated backbone) -- international transit
                 (Sydney)</div>
             <div>RIS observation count: 1321
                 &middot; measurement 211570035</div>
             <details class="note"><summary>PTI Pacifica (AS7131, CNMI) -&gt; Digicel Tonga (AS38198) -- a fresh MP&lt;-&gt;TO pair, landing on the existing GU(AS3605)-&gt;TO adjacency (AS45355&lt;-&gt;AS38198), a second…</summary>PTI Pacifica (AS7131, CNMI) -&gt; Digicel Tonga (AS38198) -- a fresh MP&lt;-&gt;TO pair, landing on the existing GU(AS3605)-&gt;TO adjacency (AS45355&lt;-&gt;AS38198), a second independent confirmation from a different source economy. Upstream of the target is AS45355 (Digicel Fiji), RIS-agreeing with an *exact* match (1,321), identical to the original finding. Genuinely new detail this time: probe 62689 resolves an intermediate hop to **AS132528** -- the same Telstra-operated Digicel-Australia backbone ASN already independently confirmed at Equinix Sydney in the NC-&gt;FJ/AS45355 entry above -- `ixp_crossings` confirms it directly at that same fabric again here, a second, unrelated measurement finding the identical real infrastructure. `has_routing_loop` flagged probe 60689 `True` -- checked directly per the now-standard process: a near-destination repeat (`202.43.12.5`, not the literal target `202.43.12.1`) with stable RTT, the same known ordinary-noise shape, not a real loop. All 3 probes eventually reach the same real, BGP-confirmed AS38198 address (`202.43.12.5`) already established in the original entry as this corridor&#x27;s routine final-hop pattern.</details>
         </div><div class="detour-card">
             <div class="headline">MP -&gt; WF
-                (AS45879): detours via AS5511 (Opentransit Orange S.A.) -- international transit, not a named exchange crossing
+                (AS45879): detours via AS5511 (Opentransit Orange S.A.) -- international transit
                 (Tokyo)</div>
             <div>RIS observation count: 1665
                 &middot; measurement 211577395</div>
@@ -496,7 +496,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <details class="note"><summary>PTI Pacifica (AS7131, CNMI) -&gt; Solomon Telekom Co Ltd (AS45891) -- a fresh MP&lt;-&gt;SB pair, landing on the existing GU(AS3605)-&gt;SB adjacency…</summary>PTI Pacifica (AS7131, CNMI) -&gt; Solomon Telekom Co Ltd (AS45891) -- a fresh MP&lt;-&gt;SB pair, landing on the existing GU(AS3605)-&gt;SB adjacency (AS139609/SISCC&lt;-&gt;AS45891), a second independent confirmation from a different source economy. Upstream of the target is AS139609 (Solomon Islands Submarine Cable Company), RIS-agreeing with an *exact* match (1,652), identical to the original finding. A different carrier and a genuinely new named exchange this time: AS7131 -&gt; AS140627 (OneQode, already seen once before for the FJ/USP corridor) -&gt; AS139609, crossing **IX Australia Sydney (NSW-IX)** -- `ixp_crossings` confirms it directly for 2 of 3 probes -- the first time this specific exchange (distinct from Equinix Sydney and MegaIX Sydney, both already on record) has appeared in this project. `has_routing_loop` flagged probe 65653 `True` -- checked directly: two consecutive-address repeats, both with stable, non-climbing RTT, the same ordinary noise pattern documented for prior false positives, not a real loop.</details>
         </div><div class="detour-card">
             <div class="headline">MP -&gt; PF
-                (AS55943): detours via AS174 (Cogent Communications), then AS3257 (GTT Communications) -- international transit, not a named exchange crossing
+                (AS55943): detours via AS174 (Cogent Communications), then AS3257 (GTT Communications) -- international transit
                 (Los Angeles)</div>
             <div>RIS observation count: 1657
                 &middot; measurement 211585981</div>
@@ -517,7 +517,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <details class="note"><summary>Telecom Vanuatu (AS9249) -&gt; American Samoa (AS9751) -- the first corridor genuinely sourced from AS9249 to reach the target (the previous AS9249 firing, toward…</summary>Telecom Vanuatu (AS9249) -&gt; American Samoa (AS9751) -- the first corridor genuinely sourced from AS9249 to reach the target (the previous AS9249 firing, toward AS9471, dead-ended on the first address). Path: AS9249 -&gt; AS38442 (Vodafone Fiji) -&gt; AS4637 (Telstra Global) -&gt; AS11404 (Wave Broadband) -&gt; AS9751. Upstream of the target is AS11404, RIS-agreeing with an *exact* match (267) -- landing on the existing MP(AS7131)-&gt;AS adjacency (Wave Broadband&lt;-&gt;AS9751), a second independent confirmation. **A genuine improvement on that original entry**: this traceroute directly crosses a real, named exchange -- **Equinix San Jose** (`ixp_crossings` confirms it, `in_fishbowl: false`) -- where the original found no IXP crossing at all. A new external hub for this project (added `&quot;San Jose&quot;: (37.3382, -121.8863)` to `economy_coordinates.EXTERNAL_HUB_LATLON`), directly observed rather than inferred.</details>
         </div><div class="detour-card">
             <div class="headline">VU -&gt; MH
-                (AS24439): detours via AS7473 (Singtel), via AS6453 (Tata Communications) -- international transit, not a named exchange crossing
+                (AS24439): detours via AS7473 (Singtel), via AS6453 (Tata Communications) -- international transit
                 (Tokyo)</div>
             <div>RIS observation count: 997
                 &middot; measurement 211627606</div>
@@ -538,7 +538,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <details class="note"><summary>Telecom Vanuatu (AS9249) -&gt; Digicel Samoa Ltd (AS38800) -- targeting Digicel Samoa directly, immediately after last tranche&#x27;s corridor happened to transit…</summary>Telecom Vanuatu (AS9249) -&gt; Digicel Samoa Ltd (AS38800) -- targeting Digicel Samoa directly, immediately after last tranche&#x27;s corridor happened to transit through it on the way to CSL Samoa (AS38227). Both probes fully contiguous: AS9249 -&gt; AS38442 (Vodafone Fiji) -&gt; **AS132528** -&gt; AS38800. Upstream of the target is AS132528 itself directly -- the **fifth** occurrence of this Telstra-operated Digicel-Australia backbone ASN at Equinix Sydney this session, but the *first* time it&#x27;s the literal immediate upstream of the target rather than an intermediate waypoint before further Pacific infrastructure. RIS agrees with an *exact* match (1,656) -- checked directly against AS38800&#x27;s full neighbor list: AS132528 is its *only* RIS-observed neighbor at all (1,656 of 1,656 total observations), confirming Digicel Samoa&#x27;s real international upstream is exclusively Digicel&#x27;s own Australia-based backbone. The cleanest, most direct confirmation yet of this now-well-established infrastructure.</details>
         </div><div class="detour-card">
             <div class="headline">VU -&gt; WF
-                (AS45879): detours via AS5511 (Opentransit Orange S.A.) -- international transit, not a named exchange crossing
+                (AS45879): detours via AS5511 (Opentransit Orange S.A.) -- international transit
                 (Tokyo)</div>
             <div>RIS observation count: 1665
                 &middot; measurement 211633489</div>
@@ -552,7 +552,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <details class="note"><summary>Telecom Vanuatu (AS9249) -&gt; Solomon Telekom Co Ltd (AS45891) -- a fresh VU&lt;-&gt;SB pair, a third independent confirmation of the AS139609(SISCC)&lt;-&gt;AS45891…</summary>Telecom Vanuatu (AS9249) -&gt; Solomon Telekom Co Ltd (AS45891) -- a fresh VU&lt;-&gt;SB pair, a third independent confirmation of the AS139609(SISCC)&lt;-&gt;AS45891 adjacency (after the GU entry and the MP entry via NSW-IX). A notably short, direct path this time: `AS9249 -&gt; AS38442 (Vodafone Fiji) -&gt; AS139609` -- the target itself never resolved (ordinary ICMP filtering near the destination), so RIS is checked against the last reached ASN. RIS agrees with the identical *exact* match (1,652). Crosses **MegaIX Sydney** directly (`ixp_crossings` confirms it for both probes) -- a different named exchange than the MP-sourced entry&#x27;s NSW-IX, a third distinct Sydney fabric now on record for this project (alongside Equinix Sydney and NSW-IX).</details>
         </div><div class="detour-card">
             <div class="headline">VU -&gt; PF
-                (AS55943): detours via AS4637 (Telstra Global), then AS3257 (GTT Communications) -- international transit, not a named exchange crossing
+                (AS55943): detours via AS4637 (Telstra Global), then AS3257 (GTT Communications) -- international transit
                 (Los Angeles)</div>
             <div>RIS observation count: 1657
                 &middot; measurement 211640827</div>
@@ -573,14 +573,14 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <details class="note"><summary>Tuvalu (AS23917) -&gt; VakaNet Limited (AS152093, Cook Islands) -- a fresh TV&lt;-&gt;CK pair, a fourth independent confirmation of the AS9507(NextHop)&lt;-&gt;AS152093…</summary>Tuvalu (AS23917) -&gt; VakaNet Limited (AS152093, Cook Islands) -- a fresh TV&lt;-&gt;CK pair, a fourth independent confirmation of the AS9507(NextHop)&lt;-&gt;AS152093 adjacency (after GU, MP, VU). `AS23917 -&gt; AS9241 (FINTEL) -&gt; AS9507`, upstream of the target directly, RIS-agreeing with the identical exact match (335). Crosses Equinix Sydney directly (`ixp_crossings` confirms it, member AS9507). `has_routing_loop` correctly returned `False`. A fourth distinct source economy (Tuvalu, after Guam, CNMI, and Vanuatu).</details>
         </div><div class="detour-card">
             <div class="headline">VU -&gt; NR
-                (AS152706): detours via AS4637 (Telstra Global), then AS6453 (Tata Communications) -- international transit, not a named exchange crossing
+                (AS152706): detours via AS4637 (Telstra Global), then AS6453 (Tata Communications) -- international transit
                 (Tokyo)</div>
             <div>RIS observation count: 292
                 &middot; measurement 211657025</div>
             <details class="note"><summary>Telecom Vanuatu (AS9249) -&gt; Neotel (AS152706, Nauru) -- a fresh VU&lt;-&gt;NR pair, a second independent confirmation of the AS6453(Tata)&lt;-&gt;AS152706 adjacency (after…</summary>Telecom Vanuatu (AS9249) -&gt; Neotel (AS152706, Nauru) -- a fresh VU&lt;-&gt;NR pair, a second independent confirmation of the AS6453(Tata)&lt;-&gt;AS152706 adjacency (after the GU entry via IIJ/Tokyo). Path: `AS9249 -&gt; AS38442 (Vodafone Fiji) -&gt; AS4637 (Telstra Global) -&gt; AS6453`, upstream of the target, RIS-agreeing with the identical *exact* match (292). No IXP crossing this time (`ixp_crossings` empty for both probes); checked Tata&#x27;s real PeeringDB facility list before keeping the hub -- genuine presence at both Equinix Tokyo and Sydney, so kept `detour_hub` as Tokyo, matching the original entry.</details>
         </div><div class="detour-card">
             <div class="headline">PF -&gt; AS
-                (AS9751): detours via AS174 (Cogent Communications) -- international transit, not a named exchange crossing
+                (AS9751): detours via AS174 (Cogent Communications) -- international transit
                 (Portland)</div>
             <div>RIS observation count: 1055
                 &middot; measurement 211668556</div>
@@ -594,14 +594,14 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <details class="note"><summary>ONATI (AS9471, French Polynesia) -&gt; a fresh New Caledonia ASN (AS17480) -- a fresh PF&lt;-&gt;NC pair, a second independent confirmation of the AS18200(OPT…</summary>ONATI (AS9471, French Polynesia) -&gt; a fresh New Caledonia ASN (AS17480) -- a fresh PF&lt;-&gt;NC pair, a second independent confirmation of the AS18200(OPT NC)&lt;-&gt;AS17480 adjacency (after the MP entry via Superloop/BBIX Tokyo). All 3 probes: `AS9471 -&gt; AS6939 (Hurricane Electric) -&gt; AS18200 -&gt; AS17480`, RIS-agreeing with the identical *exact* match (1,665). **Genuinely different named exchange this time**: crosses **Equinix Sydney** directly (`ixp_crossings` confirms it for all 3 probes), not BBIX Tokyo -- and notably, this *does* match AS17480&#x27;s own registered PeeringDB facility presence at Equinix SY1/SY2 Sydney, unlike the original MP-sourced measurement which crossed neither of AS17480&#x27;s own registered regional presences at all. A nice confirmatory contrast: the same target&#x27;s real traffic uses different real infrastructure depending on the source, and this time it happens to line up with its own declared Sydney presence.</details>
         </div><div class="detour-card">
             <div class="headline">PF -&gt; PG
-                (AS17828): detours via AS6939 (Hurricane Electric) -- international transit, not a named exchange crossing
+                (AS17828): detours via AS6939 (Hurricane Electric) -- international transit
                 (Sydney)</div>
             <div>RIS observation count: 1283
                 &middot; measurement 211672420</div>
             <details class="note"><summary>ONATI (AS9471, French Polynesia) -&gt; PNG DataCo (AS17828) -- a fresh PF&lt;-&gt;PG pair, a third independent confirmation of this project&#x27;s very first-ever confirmed…</summary>ONATI (AS9471, French Polynesia) -&gt; PNG DataCo (AS17828) -- a fresh PF&lt;-&gt;PG pair, a third independent confirmation of this project&#x27;s very first-ever confirmed finding (AS6939&lt;-&gt;AS17828), from a genuinely different source economy (after GU and MP). All 3 probes: `AS9471 -&gt; AS6939 -&gt; [gap] -&gt; AS17828`, RIS-agreeing with the identical *exact* match (1,283). No IXP crossing this time (`ixp_crossings` empty for all three). All 3 probes reach the same real near-destination address (`202.165.198.250`) already established from the GU-sourced entry as this corridor&#x27;s routine last-hop pattern before the literal target goes silent.</details>
         </div><div class="detour-card">
             <div class="headline">PF -&gt; PW
-                (AS17893): detours via AS6939 (Hurricane Electric) -- international transit, not a named exchange crossing
+                (AS17893): detours via AS6939 (Hurricane Electric) -- international transit
                 (Sydney)</div>
             <div>RIS observation count: 106
                 &middot; measurement 211674609</div>
@@ -622,7 +622,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <details class="note"><summary>ONATI (AS9471, French Polynesia) -&gt; University of the South Pacific&#x27;s own network (AS24390) -- a fresh PF&lt;-&gt;FJ pair, a second independent confirmation of the…</summary>ONATI (AS9471, French Polynesia) -&gt; University of the South Pacific&#x27;s own network (AS24390) -- a fresh PF&lt;-&gt;FJ pair, a second independent confirmation of the AS7575(AARNet)&lt;-&gt;AS24390 adjacency (after the MP entry via OneQode). This time via Hurricane Electric (AS6939) directly, and crossing a **real named exchange**: **Any2West** (`ixp_crossings` confirms it for all 3 probes) -- Any2West is based in Los Angeles/Silicon Valley, genuinely distinct from the existing San Jose hub (~550km away), so added a fifth external hub (`&quot;Los Angeles&quot;: (34.0522, -118.2437)`) rather than conflating the two. RIS agrees with the identical *exact* match (337).</details>
         </div><div class="detour-card">
             <div class="headline">PF -&gt; MH
-                (AS24439): detours via AS3257 (GTT Communications), via AS6453 (Tata Communications) -- international transit, not a named exchange crossing
+                (AS24439): detours via AS3257 (GTT Communications), via AS6453 (Tata Communications) -- international transit
                 (Los Angeles)</div>
             <div>RIS observation count: 997
                 &middot; measurement 211683854</div>
@@ -643,7 +643,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <details class="note"><summary>ONATI (AS9471, French Polynesia) -&gt; a third FSM Telecommunications Corporation sibling ASN (AS45193)…</summary>ONATI (AS9471, French Polynesia) -&gt; a third FSM Telecommunications Corporation sibling ASN (AS45193). All 3 probes: `AS9471 -&gt; AS6939 (Hurricane Electric) -&gt; AS9246 (Teleguam Holdings/GTA) -&gt; AS139759 -&gt; AS45193`, fully contiguous -- **the first traceroute this project has recorded that resolves AS45193 directly**, rather than stalling on a sibling substitution (the shape every prior FSM-corridor measurement has shown, all filed as `CandidatePeering` since RIS couldn&#x27;t confirm them). This time the immediate upstream (AS139759) *does* show up in AS45193&#x27;s own RIS neighbor list, with an exact match (1,681) -- RIS confirming the internal FSM sibling backbone relationship (AS139759&lt;-&gt;AS45193) directly, closing out a pattern that had stayed candidate-only for two prior source economies (GU, MP) and one prior PF measurement toward AS38875 earlier in this same tranche. Crosses **Any2West** (`ixp_crossings` confirms it for all 3 probes, member ASN 9246) -- already verified as a real PeeringDB-declared Any2West membership for AS9246/GTA when it first surfaced as a candidate finding minutes earlier.</details>
         </div><div class="detour-card">
             <div class="headline">PF -&gt; WF
-                (AS45879): detours via AS5511 (Opentransit Orange S.A.) -- international transit, not a named exchange crossing
+                (AS45879): detours via AS5511 (Opentransit Orange S.A.) -- international transit
                 (Tokyo)</div>
             <div>RIS observation count: 1665
                 &middot; measurement 211691024</div>
@@ -657,14 +657,14 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <details class="note"><summary>ONATI (AS9471, French Polynesia) -&gt; Solomon Telekom Co Ltd (AS45891) -- a fresh PF&lt;-&gt;SB pair, a fourth independent confirmation of the…</summary>ONATI (AS9471, French Polynesia) -&gt; Solomon Telekom Co Ltd (AS45891) -- a fresh PF&lt;-&gt;SB pair, a fourth independent confirmation of the AS139609(SISCC)&lt;-&gt;AS45891 adjacency (after GU, MP, and VU). All 3 probes: `AS9471 -&gt; AS6939 (Hurricane Electric) -&gt; AS139609` -- the target itself never resolved (ordinary ICMP filtering near the destination), so RIS is checked against the last reached ASN, which is AS45891&#x27;s *only* RIS-observed neighbor at all. RIS agrees with the identical *exact* match (1,652). Crosses **NSW-IX** directly (`ixp_crossings` confirms it for all 3 probes), the same named exchange as the original MP-sourced entry -- now the second confirmation of this specific Sydney fabric for this corridor, alongside the VU-sourced entry&#x27;s MegaIX Sydney crossing.</details>
         </div><div class="detour-card">
             <div class="headline">PF -&gt; NR
-                (AS140504): detours via AS12684 (SES ASTRA S.A.) -- satellite operator, international transit, not a named exchange crossing
+                (AS140504): detours via AS12684 (SES ASTRA S.A.) -- satellite operator, international transit
                 (Los Angeles)</div>
             <div>RIS observation count: 616
                 &middot; measurement 211706787</div>
             <details class="note"><summary>ONATI (AS9471, French Polynesia) -&gt; a distinct Nauru ASN (AS140504) -- the exact lead flagged in an earlier VU-sourced tranche this session…</summary>ONATI (AS9471, French Polynesia) -&gt; a distinct Nauru ASN (AS140504) -- the exact lead flagged in an earlier VU-sourced tranche this session. First address dead-ended the same way as that prior attempt: all 3 probes resolved to AS36149 (Hawaiian Telcom) with `ris_agrees: False`. Applied the standing retry policy against a different cached prefix. **The retry reached AS140504&#x27;s real relationship directly**: all 3 probes `AS9471 -&gt; AS6939 (Hurricane Electric) -&gt; AS36149 (Hawaiian Telcom) -&gt; [gap] -&gt; AS12684`, BGP-resolved and RIS-agreeing with an *exact* match (616) -- the second entry in AS140504&#x27;s own two-relationship RIS neighbor list (`{132528: 1032, 12684: 616}`), leaving only AS132528 as the still-untested one. Checked AS12684&#x27;s holder identity directly: **SES ASTRA S.A.**, a major geostationary satellite operator -- the same carrier flagged, but never confirmed, in an earlier Cook Islands tranche (that attempt stalled at generic transit and never got close enough to confirm or deny the relationship; a direct-source test was later ruled out entirely, since AS12684 has zero connected Atlas probes, all five ever registered against it Abandoned). **This is the first traceroute-confirmed SES Astra relationship this project has recorded**, closing that open thread from the other direction instead. Hub attribution: checked AS12684&#x27;s own PeeringDB record directly first -- zero registered facilities at all (expected for a satellite operator with no physical colocation), so attributed the hub from AS36149&#x27;s own verified facility list instead (CoreSite LA1/LA2, Los Angeles) -- the immediately preceding carrier in the resolved chain. **Caught a real query bug before trusting any of this**: an initial PeeringDB facility lookup using `asn=` as the netfac filter silently returned unfiltered, unrelated global data for both AS12684 and AS36149 -- re-queried using each network&#x27;s actual `net_id` (via `/api/net?asn=`) and got correct, small, verifiable facility lists instead.</details>
         </div><div class="detour-card">
             <div class="headline">CK -&gt; AS
-                (AS9751): detours via AS174 (Cogent Communications) -- international transit, not a named exchange crossing
+                (AS9751): detours via AS174 (Cogent Communications) -- international transit
                 (Tokyo)</div>
             <div>RIS observation count: 1055
                 &middot; measurement 211719803</div>
@@ -678,7 +678,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <details class="note"><summary>Cook Islands (AS10131) -&gt; a fresh New Caledonia ASN (AS17480) -- a fresh CK&lt;-&gt;NC pair, a third independent confirmation of the AS18200(OPT NC)&lt;-&gt;AS17480…</summary>Cook Islands (AS10131) -&gt; a fresh New Caledonia ASN (AS17480) -- a fresh CK&lt;-&gt;NC pair, a third independent confirmation of the AS18200(OPT NC)&lt;-&gt;AS17480 adjacency (after the MP entry via BBIX Tokyo and the PF entry via Equinix Sydney). Only 1 of 3 requested probes returned; checked `participant_count` directly (1, not 3) -- the same genuine single-probe pattern as every other AS10131-sourced measurement this session. Result: `AS10131 -&gt; AS9471 (ONATI, French Polynesia) -&gt; AS6939 (Hurricane Electric) -&gt; AS18200 -&gt; AS17480`, fully contiguous, RIS-agreeing with the identical *exact* match (1,665). Crosses **Equinix Sydney** directly (`ixp_crossings` confirms it) -- the same exchange as the PF entry, and the same ONATI-then-Hurricane-Electric path shape, since Cook Islands&#x27; own traffic transits ONATI&#x27;s network here too, matching the pattern already seen on the AS9751 corridor this same tranche cycle.</details>
         </div><div class="detour-card">
             <div class="headline">CK -&gt; PG
-                (AS17828): detours via AS6939 (Hurricane Electric) -- international transit, not a named exchange crossing
+                (AS17828): detours via AS6939 (Hurricane Electric) -- international transit
                 (Sydney)</div>
             <div>RIS observation count: 1283
                 &middot; measurement 211725920</div>
@@ -706,7 +706,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <details class="note"><summary>Cook Islands (AS10131) -&gt; University of the South Pacific&#x27;s own network (AS24390) -- a fresh CK&lt;-&gt;FJ pair, a third independent confirmation of the…</summary>Cook Islands (AS10131) -&gt; University of the South Pacific&#x27;s own network (AS24390) -- a fresh CK&lt;-&gt;FJ pair, a third independent confirmation of the AS7575(AARNet)&lt;-&gt;AS24390 adjacency (after MP via OneQode and PF via Hurricane Electric/Any2West). Only 1 of 3 requested probes returned; checked `participant_count` directly (1, not 3) -- the same genuine single-probe pattern as every other AS10131-sourced measurement this session. Result: `AS10131 -&gt; AS9471 (ONATI) -&gt; AS6939 (Hurricane Electric) -&gt; AS7575`, target never resolved (ordinary ICMP filtering), RIS-agreeing with the identical *exact* match (337). Crosses **Any2West** directly (`ixp_crossings` confirms it, a real hop-level LAN-prefix match, not a carrier-level guess) -- the same exchange as the PF entry, and the same ONATI-transit shape seen on every AS10131-sourced corridor this tranche cycle.</details>
         </div><div class="detour-card">
             <div class="headline">CK -&gt; MH
-                (AS24439): detours via AS3257 (GTT Communications), via AS6453 (Tata Communications) -- international transit, not a named exchange crossing
+                (AS24439): detours via AS3257 (GTT Communications), via AS6453 (Tata Communications) -- international transit
                 (Los Angeles)</div>
             <div>RIS observation count: 997
                 &middot; measurement 211741326</div>
@@ -727,7 +727,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <details class="note"><summary>Cook Islands (AS10131) -&gt; a third FSM Telecommunications Corporation sibling ASN (AS45193) -- a fresh CK&lt;-&gt;FM pair, a second independent confirmation of the…</summary>Cook Islands (AS10131) -&gt; a third FSM Telecommunications Corporation sibling ASN (AS45193) -- a fresh CK&lt;-&gt;FM pair, a second independent confirmation of the direct AS139759&lt;-&gt;AS45193 adjacency (after the PF entry). Only 1 of 3 requested probes returned; checked `participant_count` directly (1, not 3) -- the same genuine single-probe pattern as every other AS10131-sourced measurement this session. Result: `AS10131 -&gt; AS9471 (ONATI) -&gt; AS6939 (Hurricane Electric) -&gt; AS9246 (Teleguam Holdings/GTA) -&gt; AS139759 -&gt; AS45193`, fully contiguous -- the literal target resolves directly again, RIS-agreeing with the identical *exact* match (1,681). Crosses **Any2West** directly (`ixp_crossings` confirms it) -- the same exchange as the PF entry, and the same ONATI-transit shape seen on every AS10131-sourced corridor this tranche cycle.</details>
         </div><div class="detour-card">
             <div class="headline">CK -&gt; WF
-                (AS45879): detours via AS5511 (Opentransit Orange S.A.) -- international transit, not a named exchange crossing
+                (AS45879): detours via AS5511 (Opentransit Orange S.A.) -- international transit
                 (Tokyo)</div>
             <div>RIS observation count: 1665
                 &middot; measurement 211750685</div>
@@ -741,14 +741,14 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <details class="note"><summary>Cook Islands (AS10131) -&gt; Solomon Telekom Co Ltd (AS45891) -- a fresh CK&lt;-&gt;SB pair, a fifth independent confirmation of the AS139609(SISCC)&lt;-&gt;AS45891 adjacency…</summary>Cook Islands (AS10131) -&gt; Solomon Telekom Co Ltd (AS45891) -- a fresh CK&lt;-&gt;SB pair, a fifth independent confirmation of the AS139609(SISCC)&lt;-&gt;AS45891 adjacency (after GU, MP, VU, PF). Only 1 of 3 requested probes returned; checked `participant_count` directly (1, not 3) -- the same genuine single-probe pattern as every other AS10131-sourced measurement this session. Result: `AS10131 -&gt; AS9471 (ONATI) -&gt; AS6939 (Hurricane Electric) -&gt; AS139609` -- the target itself never resolved (ordinary ICMP filtering), so RIS is checked against the last reached ASN, which remains AS45891&#x27;s *only* RIS-observed neighbor at all. RIS agrees with the identical *exact* match (1,652). Crosses **NSW-IX** directly (`ixp_crossings` confirms it, a real hop-level LAN-prefix match) -- the same exchange as the PF entry.</details>
         </div><div class="detour-card">
             <div class="headline">CK -&gt; NR
-                (AS140504): detours via AS12684 (SES ASTRA S.A.) -- satellite operator, international transit, not a named exchange crossing
+                (AS140504): detours via AS12684 (SES ASTRA S.A.) -- satellite operator, international transit
                 (Los Angeles)</div>
             <div>RIS observation count: 616
                 &middot; measurement 211765425</div>
             <details class="note"><summary>Cook Islands (AS10131) -&gt; a distinct Nauru ASN (AS140504) -- a fresh CK&lt;-&gt;NR pair, a second independent confirmation of the AS140504&lt;-&gt;AS12684 (SES Astra)…</summary>Cook Islands (AS10131) -&gt; a distinct Nauru ASN (AS140504) -- a fresh CK&lt;-&gt;NR pair, a second independent confirmation of the AS140504&lt;-&gt;AS12684 (SES Astra) relationship (after PF). Fired directly at the address already confirmed to reach SES Astra in the PF retry, rather than starting from a fresh address and possibly needing the retry policy again. Result: `AS10131 -&gt; AS9471 (ONATI) -&gt; AS6939 (Hurricane Electric) -&gt; AS36149 (Hawaiian Telcom) -&gt; AS12684`, **fully contiguous this time** (the PF entry had a real gap before AS12684) -- the cleanest confirmation yet of this relationship. RIS agrees with the identical exact match (616). Kept `detour_hub` as Los Angeles, matching the PF entry&#x27;s verified attribution (from AS36149&#x27;s own real PeeringDB facility list, since AS12684 itself has zero registered facilities).</details>
         </div><div class="detour-card">
             <div class="headline">TV -&gt; NR
-                (AS140504): detours via AS12684 (SES ASTRA S.A.) -- satellite operator, international transit, not a named exchange crossing
+                (AS140504): detours via AS12684 (SES ASTRA S.A.) -- satellite operator, international transit
                 (Los Angeles)</div>
             <div>RIS observation count: 1347
                 &middot; measurement 212088551</div>
@@ -769,21 +769,21 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <details class="note"><summary>PNG DataCo (AS17828) -&gt; a fresh New Caledonia ASN (AS17480) -- a fresh PG&lt;-&gt;NC pair, a fourth independent confirmation of the AS18200(OPT NC)&lt;-&gt;AS17480…</summary>PNG DataCo (AS17828) -&gt; a fresh New Caledonia ASN (AS17480) -- a fresh PG&lt;-&gt;NC pair, a fourth independent confirmation of the AS18200(OPT NC)&lt;-&gt;AS17480 adjacency (after MP, PF, CK). `AS17828 -&gt; AS4826 (Vocus Connect) -&gt; AS18200 -&gt; AS17480`, fully contiguous, RIS-agreeing with the identical *exact* match (1,665). Crosses Equinix Sydney directly (`ixp_crossings` confirms it) -- the same exchange as the CK and PF entries.</details>
         </div><div class="detour-card">
             <div class="headline">PG -&gt; FJ
-                (AS24390): detours via AS7575 (AARNet) -- international transit, not a named exchange crossing
+                (AS24390): detours via AS7575 (AARNet) -- international transit
                 (Sydney)</div>
             <div>RIS observation count: 337
                 &middot; measurement 211816612</div>
             <details class="note"><summary>PNG DataCo (AS17828) -&gt; University of the South Pacific&#x27;s own network (AS24390) -- a fresh PG&lt;-&gt;FJ pair, a fourth independent confirmation of the…</summary>PNG DataCo (AS17828) -&gt; University of the South Pacific&#x27;s own network (AS24390) -- a fresh PG&lt;-&gt;FJ pair, a fourth independent confirmation of the AS7575(AARNet)&lt;-&gt;AS24390 adjacency (after MP, PF, CK). `AS17828 -&gt; AS4826 (Vocus Connect) -&gt; AS7575`, target never resolved, RIS-agreeing with the identical exact match (337). No IXP crossing this time (`ixp_crossings` empty) -- a direct AARNet hop with no intermediate Sydney fabric, unlike the CK and PF entries&#x27; Any2West crossings. Kept `detour_hub` as Sydney, matching AARNet&#x27;s already-established real presence there.</details>
         </div><div class="detour-card">
             <div class="headline">PG -&gt; TO
-                (AS38198): detours via AS1221 (Telstra domestic) -- international transit, not a named exchange crossing
+                (AS38198): detours via AS1221 (Telstra domestic) -- international transit
                 (Sydney)</div>
             <div>RIS observation count: 1321
                 &middot; measurement 211962193</div>
             <details class="note"><summary>PNG DataCo (AS17828) -&gt; Digicel Tonga (AS38198) -- a fresh PG&lt;-&gt;TO pair, a sixth independent confirmation of the AS45355(Digicel Fiji)&lt;-&gt;AS38198 adjacency…</summary>PNG DataCo (AS17828) -&gt; Digicel Tonga (AS38198) -- a fresh PG&lt;-&gt;TO pair, a sixth independent confirmation of the AS45355(Digicel Fiji)&lt;-&gt;AS38198 adjacency (after GU, MP, VU, PF, CK). `AS17828 -&gt; AS4826 (Vocus Connect) -&gt; AS1221 (Telstra domestic) -&gt; AS45355`, target technically reached at the end of the chain but with a real unresolved gap before AS38198 itself. RIS-agreeing with the identical *exact* match (1,321). **Notably no AS132528 this time** -- every prior confirmation of this adjacency crossed AS132528 (Digicel Australia/Telstra backbone) at Equinix Sydney; this one reaches AS45355 via Telstra&#x27;s domestic ASN directly, a genuinely different real path to the same ultimate carrier relationship. No IXP crossing observed.</details>
         </div><div class="detour-card">
             <div class="headline">PG -&gt; MH
-                (AS24439): detours via AS174 (Cogent Communications), via AS6453 (Tata Communications) -- international transit, not a named exchange crossing
+                (AS24439): detours via AS174 (Cogent Communications), via AS6453 (Tata Communications) -- international transit
                 (Los Angeles)</div>
             <div>RIS observation count: 997
                 &middot; measurement 211965108</div>
@@ -797,21 +797,21 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <details class="note"><summary>PNG DataCo (AS17828) -&gt; a third FSM Telecommunications Corporation sibling ASN (AS45193) -- a fresh PG&lt;-&gt;FM pair, a third independent confirmation of the…</summary>PNG DataCo (AS17828) -&gt; a third FSM Telecommunications Corporation sibling ASN (AS45193) -- a fresh PG&lt;-&gt;FM pair, a third independent confirmation of the direct AS139759&lt;-&gt;AS45193 adjacency (after PF and CK). `AS17828 -&gt; AS4826 (Vocus Connect) -&gt; AS9246 (Teleguam Holdings/GTA) -&gt; AS139759 -&gt; AS45193`, fully contiguous -- the literal target resolves directly again, RIS-agreeing with the identical *exact* match (1,681). Crosses Any2West directly -- the same exchange as every prior confirmation of this relationship.</details>
         </div><div class="detour-card">
             <div class="headline">PG -&gt; WF
-                (AS45879): detours via AS174 (Cogent Communications), then AS5511 (Opentransit Orange S.A.) -- international transit, not a named exchange crossing
+                (AS45879): detours via AS174 (Cogent Communications), then AS5511 (Opentransit Orange S.A.) -- international transit
                 (Los Angeles)</div>
             <div>RIS observation count: 1665
                 &middot; measurement 211976890</div>
             <details class="note"><summary>PNG DataCo (AS17828) -&gt; Orange Wallis &amp; Futuna (AS45879) -- a fresh PG&lt;-&gt;WF pair, a sixth independent confirmation of the AS5511(Opentransit Orange)&lt;-&gt;AS45879…</summary>PNG DataCo (AS17828) -&gt; Orange Wallis &amp; Futuna (AS45879) -- a fresh PG&lt;-&gt;WF pair, a sixth independent confirmation of the AS5511(Opentransit Orange)&lt;-&gt;AS45879 adjacency (after GU, MP, VU, PF, CK), and the **first time this corridor has ever had real geographic evidence for its Orange leg**. `AS17828 -&gt; AS4826 (Vocus Connect) -&gt; AS174 (Cogent) -&gt; AS5511`, target never resolved, RIS-agreeing with the identical *exact* match (1,665). Cogent is a genuinely new intermediate carrier for this adjacency (after GTT). **Reverse-DNS&#x27;d the Cogent hops directly (via the new `hop_geolocation` module) rather than inheriting the existing entries&#x27; Tokyo label**: `sjc13.atlas.cogentco.com` -&gt; `lax01...` -&gt; `lax05...` -&gt; **`orange.lax05.atlas.cogentco.com`** -- a Cogent router explicitly named for the Orange handoff, located in Los Angeles. Corrected `detour_hub` to Los Angeles accordingly, on real evidence rather than the carrier&#x27;s generic Tokyo presence used elsewhere in this corridor&#x27;s other, still-unverified entries. Added a new `sjc` pattern to `hop_geolocation.py` (San Jose) while auditing these hops.</details>
         </div><div class="detour-card">
             <div class="headline">PG -&gt; SB
-                (AS45891): detours via AS4637 (Telstra Global) -- international transit, not a named exchange crossing
+                (AS45891): detours via AS4637 (Telstra Global) -- international transit
                 (Sydney)</div>
             <div>RIS observation count: 1652
                 &middot; measurement 211978965</div>
             <details class="note"><summary>PNG DataCo (AS17828) -&gt; Solomon Telekom Co Ltd (AS45891) -- a fresh PG&lt;-&gt;SB pair, a sixth independent confirmation of the AS139609(SISCC)&lt;-&gt;AS45891 adjacency…</summary>PNG DataCo (AS17828) -&gt; Solomon Telekom Co Ltd (AS45891) -- a fresh PG&lt;-&gt;SB pair, a sixth independent confirmation of the AS139609(SISCC)&lt;-&gt;AS45891 adjacency (after GU, MP, VU, PF, CK). `AS17828 -&gt; AS4826 (Vocus Connect) -&gt; AS1221 (Telstra domestic) -&gt; AS4637 (Telstra Global) -&gt; AS139609` -- target never resolved, RIS-agreeing with the identical *exact* match (1,652). No IXP crossing this time. **A genuinely new routing-loop location, the fourth distinct network this session** (after Hurricane Electric&#x27;s network, FINTEL&#x27;s edge, and Starlink&#x27;s own network): `has_routing_loop` correctly returned `True`; checked the raw hops directly and found a single address (`103.142.98.131`) repeating at hop 11 and hop 14 with unanswered probes in between. Resolved it directly: it belongs to **AS139609 (SISCC) itself** -- a real, live loop at the destination&#x27;s own network edge, the same general shape as the FINTEL case but a genuinely different company&#x27;s network. The loop sits *after* the point (hop 10, also AS139609) already used for this measurement&#x27;s own RIS agreement, so it doesn&#x27;t affect the triangulation result here -- same as the earlier Starlink loop case.</details>
         </div><div class="detour-card">
             <div class="headline">PW -&gt; AS
-                (AS9751): detours via AS174 (Cogent Communications) -- international transit, not a named exchange crossing
+                (AS9751): detours via AS174 (Cogent Communications) -- international transit
                 (Portland)</div>
             <div>RIS observation count: 1055
                 &middot; measurement 211998672</div>
@@ -825,49 +825,49 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <details class="note"><summary>Palau NCC (AS17893) -&gt; a fresh New Caledonia ASN (AS17480) -- a fresh PW&lt;-&gt;NC pair, a fifth independent confirmation of the AS18200(OPT NC)&lt;-&gt;AS17480 adjacency…</summary>Palau NCC (AS17893) -&gt; a fresh New Caledonia ASN (AS17480) -- a fresh PW&lt;-&gt;NC pair, a fifth independent confirmation of the AS18200(OPT NC)&lt;-&gt;AS17480 adjacency (after MP, PF, CK, PG), and the first of the five to cross **BBIX Tokyo** rather than Equinix Sydney. Only one probe responded (Palau&#x27;s usual low-participant-count pattern), and it went dark after the target&#x27;s own edge address -- but `202.171.64.251` resolves directly to AS17480 by RIS BGP lookup (PTR `canl.nc`), and the immediately preceding hop `202.87.128.134` resolves directly to AS18200, so the adjacency is fully contiguous despite the destination IP itself never answering. `AS17893 -&gt; AS38195 (BBIX Tokyo) -&gt; AS18200 -&gt; AS17480`, RIS-agreeing with the identical *exact* match (1,665). The BBIX Tokyo crossing (`ixp_crossings` confirms it, ix_id 126) is a real IXP-LAN address match, not a carrier-facility guess -- unlike the Cogent/Tata Tokyo mislabeling caught earlier this session, this hub is solid.</details>
         </div><div class="detour-card">
             <div class="headline">PW -&gt; WS
-                (AS17993): detours via AS174 (Cogent Communications) -- international transit, not a named exchange crossing
+                (AS17993): detours via AS174 (Cogent Communications) -- international transit
                 (Sydney)</div>
             <div>RIS observation count: 1455
                 &middot; measurement 212005827</div>
             <details class="note"><summary>Palau NCC (AS17893) -&gt; Vodafone Samoa Limited (AS17993) -- a fresh PW&lt;-&gt;WS pair, a second independent confirmation of the AS174(Cogent)&lt;-&gt;AS17993 adjacency…</summary>Palau NCC (AS17893) -&gt; Vodafone Samoa Limited (AS17993) -- a fresh PW&lt;-&gt;WS pair, a second independent confirmation of the AS174(Cogent)&lt;-&gt;AS17993 adjacency (after GU). Only one probe responded and the destination IP never answered, but the second-to-last hop resolves directly to AS17993 by RIS BGP lookup, so the adjacency is fully contiguous. `AS17893 -&gt; AS174 -&gt; AS17993`, RIS-agreeing with the identical *exact* match (1,455). **Geolocated with `hop_geolocation` for the first time on this specific corridor**: the Cogent hops (`ccr71.syd01.atlas.cogentco.com`, `agr51.syd01.atlas.cogentco.com`) resolve to Sydney -- confirming, with real hop-level PTR evidence, the carrier-facility guess the earlier GU entry had used for the same &#x27;Sydney&#x27; hub. Added a new `syd` pattern to `hop_geolocation.py` from this measurement.</details>
         </div><div class="detour-card">
             <div class="headline">PW -&gt; FJ
-                (AS24390): detours via AS7575 (AARNet) -- international transit, not a named exchange crossing
+                (AS24390): detours via AS7575 (AARNet) -- international transit
                 (Sydney)</div>
             <div>RIS observation count: 337
                 &middot; measurement 212013476</div>
             <details class="note"><summary>Palau NCC (AS17893) -&gt; University of the South Pacific&#x27;s own network (AS24390) -- a fresh PW&lt;-&gt;FJ pair, a fifth independent confirmation of the…</summary>Palau NCC (AS17893) -&gt; University of the South Pacific&#x27;s own network (AS24390) -- a fresh PW&lt;-&gt;FJ pair, a fifth independent confirmation of the AS7575(AARNet)&lt;-&gt;AS24390 adjacency (after MP, PF, CK, PG). `AS17893 -&gt; AS174 (Cogent) -&gt; AS1299 (Telia) -&gt; AS7575`, target never resolved, RIS-agreeing with the identical exact match (337). **First hop-level geolocation evidence for this detour&#x27;s hub**: AARNet&#x27;s own router hostname (`et-3-0-2.pe1.alxd.nsw.aarnet.net.au`) spells out New South Wales explicitly, and the very next hop (`xe-0-0-0.pe1.a.suv.aarnet.net.au`) names Suva directly -- real confirmation that Sydney (not a carrier-facility guess) is AARNet&#x27;s actual detour point on every AS7575&lt;-&gt;AS24390 entry filed so far. Added a new `nsw` pattern to `hop_geolocation.py` from this measurement.</details>
         </div><div class="detour-card">
             <div class="headline">PW -&gt; MH
-                (AS24439): detours via AS174 (Cogent Communications), via AS6453 (Tata Communications) -- international transit, not a named exchange crossing
+                (AS24439): detours via AS174 (Cogent Communications), via AS6453 (Tata Communications) -- international transit
                 (Tokyo)</div>
             <div>RIS observation count: 997
                 &middot; measurement 212015972</div>
             <details class="note"><summary>Palau NCC (AS17893) -&gt; Marshall Islands NTA ISP (AS24439) -- a fresh PW&lt;-&gt;MH pair, a seventh independent confirmation of the AS6453(Tata)&lt;-&gt;AS24439 adjacency…</summary>Palau NCC (AS17893) -&gt; Marshall Islands NTA ISP (AS24439) -- a fresh PW&lt;-&gt;MH pair, a seventh independent confirmation of the AS6453(Tata)&lt;-&gt;AS24439 adjacency (after GU, MP, VU, PF, CK, PG). `AS17893 -&gt; AS174 (Cogent) -&gt; AS6453`, target never resolved, RIS-agreeing with the identical *exact* match (997). **Geolocated with `hop_geolocation` from the start**: the resolved Tata hops (`if-bundle-16-2.qcore1.tv2-tokyo.as6453.net`, `if-ae-51-2.tcore1.tv2-tokyo.as6453.net`) name Tokyo directly, then hand off to the same Piti, Guam hop (`if-bundle-3-2.qhar1.pv4-piti.as6453.net`) seen on the PF/CK/PG entries. Unlike those entries, **this one&#x27;s real external touchpoint genuinely is Tokyo, not Los Angeles** -- Palau&#x27;s shorter path to Asia routes Tata&#x27;s backbone through Tokyo before Piti, rather than through Los Angeles. Kept `detour_hub` as Tokyo, matching this measurement&#x27;s own evidence rather than reusing the Los Angeles value from other source economies. Added a new `tokyo` pattern to `hop_geolocation.py` from this measurement.</details>
         </div><div class="detour-card">
             <div class="headline">PW -&gt; PG
-                (AS38009): detours via AS6939 (Hurricane Electric) -- international transit, not a named exchange crossing
+                (AS38009): detours via AS6939 (Hurricane Electric) -- international transit
                 (Sydney)</div>
             <div>RIS observation count: 1875
                 &middot; measurement 212019977</div>
             <details class="note"><summary>Palau NCC (AS17893) -&gt; Telikom PNG Satellite Tier 1 AS (AS38009) -- a fresh PW&lt;-&gt;PG pair, and **the first-ever confirmation of this specific target** (no prior…</summary>Palau NCC (AS17893) -&gt; Telikom PNG Satellite Tier 1 AS (AS38009) -- a fresh PW&lt;-&gt;PG pair, and **the first-ever confirmation of this specific target** (no prior entry for AS38009 in any dataclass). `AS17893 -&gt; AS6939 (Hurricane Electric) -&gt; AS17828 (PNG DataCo)`, target itself never resolved, but RIS confirms AS17828 directly against AS38009 with an *exact* match (1,875) -- a genuinely new finding: PNG DataCo (already confirmed as this project&#x27;s usual PG-side target/source) is also the confirmed domestic upstream handing off to Telikom PNG&#x27;s satellite AS, a second, distinct PNG-based ASN. **Geolocated with `hop_geolocation`**: the Hurricane Electric hops resolve to Seattle (`core1.sea1.he.net`), Portland (`core1.pdx3.he.net`), then Sydney (`core1.syd1.he.net`), immediately followed by `png-dataco-limited.e0-11.switch1.syd1.he.net` -- PNG DataCo&#x27;s own named HE switch port in Sydney. Kept `detour_hub` as Sydney to match this direct, unambiguous PTR evidence. Note: `ixp_crossings` also flagged an earlier hop (`101.203.88.74`) as a BBIX Tokyo/AS6939 PeeringDB netixlan match; given it sits geographically incoherent with the immediately following Seattle/Portland/Sydney chain, and per this session&#x27;s established discipline of trusting real hop-level hostname evidence over an incidental subnet match, treated as likely a coincidental address-range overlap rather than a genuine Tokyo touchpoint -- not used to set `detour_hub`.</details>
         </div><div class="detour-card">
             <div class="headline">PW -&gt; TO
-                (AS38198): detours via AS174 (Cogent Communications), via AS1299 (Telia) and AS4637 (Telstra Global) -- international transit, not a named exchange crossing
+                (AS38198): detours via AS174 (Cogent Communications), via AS1299 (Telia) and AS4637 (Telstra Global) -- international transit
                 (Sydney)</div>
             <div>RIS observation count: 1321
                 &middot; measurement 212022541</div>
             <details class="note"><summary>Palau NCC (AS17893) -&gt; Digicel Tonga (AS38198) -- a fresh PW&lt;-&gt;TO pair, a seventh independent confirmation of the AS45355(Digicel Fiji)&lt;-&gt;AS38198 adjacency…</summary>Palau NCC (AS17893) -&gt; Digicel Tonga (AS38198) -- a fresh PW&lt;-&gt;TO pair, a seventh independent confirmation of the AS45355(Digicel Fiji)&lt;-&gt;AS38198 adjacency (after GU, MP, VU, PF, CK, PG) -- still AS38198&#x27;s only RIS-observed neighbor of consequence. `AS17893 -&gt; AS174 (Cogent) -&gt; AS1299 (Telia) -&gt; AS4637 (Telstra Global) -&gt; AS45355`, target technically reached (the same real, BGP-confirmed AS38198 address `202.43.12.5` one hop after the last AS45355 hop), separated by the usual routine silent boundary hop rather than a real gap. RIS-agreeing with the identical *exact* match (1,321). **Telia is a genuinely new intermediate carrier for this adjacency** (after Level 3/Lumen, Vocus Connect, Telstra domestic, Hurricane Electric, and SES ASTRA on prior entries). Telstra Global&#x27;s own hop confirms Sydney directly (`i-1053.sydp-core04.telstraglobal.net`), extra confirmation alongside the five prior entries&#x27; `detour_hub`.</details>
         </div><div class="detour-card">
             <div class="headline">PW -&gt; WF
-                (AS45879): detours via AS174 (Cogent Communications), then AS5511 (Opentransit Orange S.A.) -- international transit, not a named exchange crossing
+                (AS45879): detours via AS174 (Cogent Communications), then AS5511 (Opentransit Orange S.A.) -- international transit
                 (Los Angeles)</div>
             <div>RIS observation count: 1665
                 &middot; measurement 212029169</div>
             <details class="note"><summary>Palau NCC (AS17893) -&gt; Orange Wallis &amp; Futuna (AS45879) -- a fresh PW&lt;-&gt;WF pair, a seventh independent confirmation of the AS5511(Opentransit Orange)&lt;-&gt;AS45879…</summary>Palau NCC (AS17893) -&gt; Orange Wallis &amp; Futuna (AS45879) -- a fresh PW&lt;-&gt;WF pair, a seventh independent confirmation of the AS5511(Opentransit Orange)&lt;-&gt;AS45879 adjacency (after GU, MP, VU, PF, CK, PG). `AS17893 -&gt; AS174 (Cogent) -&gt; AS5511`, target never resolved, RIS-agreeing with the identical *exact* match (1,665). **Geolocated with `hop_geolocation` from the start**: the same `orange.lax05.atlas.cogentco.com` handoff hop already confirmed on the PG entry appears again, reconfirming Los Angeles a second time on real evidence.</details>
         </div><div class="detour-card">
             <div class="headline">PW -&gt; SB
-                (AS45891): detours via AS4637 (Telstra Global) -- international transit, not a named exchange crossing
+                (AS45891): detours via AS4637 (Telstra Global) -- international transit
                 (Sydney)</div>
             <div>RIS observation count: 1652
                 &middot; measurement 212030657</div>
@@ -895,7 +895,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <details class="note"><summary>Tuvalu (AS23917) -&gt; American Samoa (AS9751) -- a fresh TV&lt;-&gt;AS pair, a fourth independent confirmation of the Wave-Broadband(AS11404)&lt;-&gt;AS9751 adjacency (after…</summary>Tuvalu (AS23917) -&gt; American Samoa (AS9751) -- a fresh TV&lt;-&gt;AS pair, a fourth independent confirmation of the Wave-Broadband(AS11404)&lt;-&gt;AS9751 adjacency (after MP, VU, PG): `AS23917 -&gt; AS9241 (FINTEL) -&gt; AS6939 (Hurricane Electric) -&gt; AS11404`, target actually reached directly at the end (`103.117.168.1` answered), RIS-agreeing with the identical exact match (267). Crosses **Equinix Sydney** directly (`ixp_crossings` confirms it, member AS6939) -- a genuinely different real crossing than the prior three entries&#x27; Equinix San Jose, consistent with Tuvalu&#x27;s own path (via FINTEL, then south to Australia) differing geographically from MP/VU/PG&#x27;s routes. Notable: deeper in Wave Broadband&#x27;s own backbone, a real hostname (`cr3-pdx.bb.as11404.net`) confirms a Portland touchpoint too -- kept `detour_hub` as Sydney to match the actual named-exchange crossing point, not this deeper internal hop, but the Portland evidence is worth keeping on record.</details>
         </div><div class="detour-card">
             <div class="headline">FJ -&gt; AS
-                (AS9751): detours via AS11404 (Wave Broadband) -- international transit, no named exchange crossing this time
+                (AS9751): detours via AS11404 (Wave Broadband) -- international transit
                 (San Jose)</div>
             <div>RIS observation count: 267
                 &middot; measurement 212091988</div>
@@ -923,35 +923,35 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <details class="note"><summary>Tuvalu (AS23917) -&gt; Vodafone Samoa Limited (AS17993) -- a fresh TV&lt;-&gt;WS pair, a fourth independent confirmation of the AS6939(Hurricane Electric)&lt;-&gt;AS17993…</summary>Tuvalu (AS23917) -&gt; Vodafone Samoa Limited (AS17993) -- a fresh TV&lt;-&gt;WS pair, a fourth independent confirmation of the AS6939(Hurricane Electric)&lt;-&gt;AS17993 adjacency (after MP, PF, CK): `AS23917 -&gt; AS9241 (FINTEL) -&gt; AS6939 -&gt; AS17993`, fully contiguous, RIS-agreeing with the identical exact match (150). Both AS6939 and AS17993 resolve via `peeringdb_netixlan` directly at **Equinix Sydney** (`ixp_crossings` confirms both hops), the same clean, no-gap shape as the AS17480 entry this same tranche -- Tuvalu&#x27;s own path (via FINTEL, then Hurricane Electric) reaching straight into the target&#x27;s registered LAN prefix with no dead end.</details>
         </div><div class="detour-card">
             <div class="headline">TV -&gt; MH
-                (AS24439): detours via AS6939 (Hurricane Electric), via AS6453 (Tata Communications) -- international transit, not a named exchange crossing
+                (AS24439): detours via AS6939 (Hurricane Electric), via AS6453 (Tata Communications) -- international transit
                 (Los Angeles)</div>
             <div>RIS observation count: 997
                 &middot; measurement 212059716</div>
             <details class="note"><summary>Tuvalu (AS23917) -&gt; Marshall Islands NTA ISP (AS24439) -- a fresh TV&lt;-&gt;MH pair, an eighth independent confirmation of the AS6453(Tata)&lt;-&gt;AS24439 adjacency…</summary>Tuvalu (AS23917) -&gt; Marshall Islands NTA ISP (AS24439) -- a fresh TV&lt;-&gt;MH pair, an eighth independent confirmation of the AS6453(Tata)&lt;-&gt;AS24439 adjacency (after GU, MP, VU, PF, CK, PG, PW): `AS23917 -&gt; AS9241 (FINTEL) -&gt; AS6939 (Hurricane Electric) -&gt; AS6453`, target never resolved, RIS-agreeing with the identical exact match (997). **Geolocated with `hop_geolocation` from the start**: the same Tata chain already confirmed for GU/MP/VU/PF/CK/PG -- `lvw-losangeles.as6453.net` -&gt; `pv4-piti.as6453.net` (twice) -- Los Angeles, then Piti, Guam. Kept `detour_hub` as Los Angeles, matching this measurement&#x27;s own evidence (unlike the PW entry, whose real touchpoint was genuinely Tokyo instead).</details>
         </div><div class="detour-card">
             <div class="headline">FJ -&gt; MH
-                (AS24439): detours via AS2914 (NTT), via AS6453 (Tata Communications) -- international transit, not a named exchange crossing
+                (AS24439): detours via AS2914 (NTT), via AS6453 (Tata Communications) -- international transit
                 (Los Angeles)</div>
             <div>RIS observation count: 997
                 &middot; measurement 212094707</div>
             <details class="note"><summary>University of the South Pacific (AS24390, Fiji) -&gt; Marshall Islands NTA ISP (AS24439) -- a fresh FJ&lt;-&gt;MH pair, a ninth independent confirmation of the…</summary>University of the South Pacific (AS24390, Fiji) -&gt; Marshall Islands NTA ISP (AS24439) -- a fresh FJ&lt;-&gt;MH pair, a ninth independent confirmation of the AS6453(Tata)&lt;-&gt;AS24439 adjacency (after GU, MP, VU, PF, CK, PG, PW, TV). `AS24390 -&gt; AS7575 (AARNet) -&gt; AS2914 (NTT) -&gt; AS6453`, target never resolved, RIS-agreeing with the identical exact match (997). NTT (AS2914) is a genuinely new intermediate carrier for this adjacency (every prior entry used Hurricane Electric or Cogent). Kept `detour_hub` as Los Angeles, matching the dominant already-verified attribution for this adjacency (the TV entry&#x27;s real hostname evidence). `has_routing_loop` correctly returned `False`.</details>
         </div><div class="detour-card">
             <div class="headline">NC -&gt; MH
-                (AS24439): detours via AS38195 (Superloop), via AS174 (Cogent) and AS6453 (Tata Communications) -- international transit, not a named exchange crossing
+                (AS24439): detours via AS38195 (Superloop), via AS174 (Cogent) and AS6453 (Tata Communications) -- international transit
                 (Los Angeles)</div>
             <div>RIS observation count: 997
                 &middot; measurement 212128886</div>
             <details class="note"><summary>New Caledonia (AS45345) -&gt; Marshall Islands NTA ISP (AS24439) -- a fresh NC&lt;-&gt;MH pair, a tenth independent confirmation of the AS6453(Tata)&lt;-&gt;AS24439 adjacency…</summary>New Caledonia (AS45345) -&gt; Marshall Islands NTA ISP (AS24439) -- a fresh NC&lt;-&gt;MH pair, a tenth independent confirmation of the AS6453(Tata)&lt;-&gt;AS24439 adjacency (after GU, MP, VU, PF, CK, PG, PW, TV, FJ). `AS45345 -&gt; AS18200 (OPT-NC) -&gt; AS38195 (Superloop) -&gt; AS174 (Cogent) -&gt; AS6453`, target never resolved, RIS-agreeing with the identical exact match (997) on all 3 probes. Superloop and Cogent together are a genuinely new two-carrier combination for this adjacency. Kept `detour_hub` as Los Angeles, matching the dominant already-verified attribution. `has_routing_loop` correctly flagged `True` on all 3 probes -- hops 4 and 5 both resolve to `125.63.12.157`, inside Superloop&#x27;s (AS38195) own announced prefix (`125.63.0.0/19`, confirmed via RIPEstat), the same carrier already resolved at that hop position -- an ordinary intra-carrier router artifact (consecutive-TTL repeat), not a cross-network anomaly; not escalated.</details>
         </div><div class="detour-card">
             <div class="headline">TV -&gt; PG
-                (AS38009): detours via AS6939 (Hurricane Electric) -- international transit, not a named exchange crossing
+                (AS38009): detours via AS6939 (Hurricane Electric) -- international transit
                 (Sydney)</div>
             <div>RIS observation count: 1875
                 &middot; measurement 212060615</div>
             <details class="note"><summary>Tuvalu (AS23917) -&gt; Telikom PNG Satellite Tier 1 AS (AS38009) -- a fresh TV&lt;-&gt;PG pair, a second independent confirmation of the AS17828(PNG DataCo)&lt;-&gt;AS38009…</summary>Tuvalu (AS23917) -&gt; Telikom PNG Satellite Tier 1 AS (AS38009) -- a fresh TV&lt;-&gt;PG pair, a second independent confirmation of the AS17828(PNG DataCo)&lt;-&gt;AS38009 adjacency (after PW): `AS23917 -&gt; AS9241 (FINTEL) -&gt; AS6939 (Hurricane Electric) -&gt; AS17828`, fully contiguous this time (no gap before AS17828, unlike the PW entry), RIS-agreeing with the identical exact match (1,875). Same named HE switch port already confirmed (`png-dataco-limited.e0-11.switch1.syd1.he.net`) -- Sydney reconfirmed directly.</details>
         </div><div class="detour-card">
             <div class="headline">TV -&gt; TO
-                (AS38198): detours via AS6939 (Hurricane Electric), via AS132528 (Digicel Australia/Telstra-operated backbone) -- international transit, not a named exchange crossing
+                (AS38198): detours via AS6939 (Hurricane Electric), via AS132528 (Digicel Australia/Telstra-operated backbone) -- international transit
                 (Sydney)</div>
             <div>RIS observation count: 1321
                 &middot; measurement 212063778</div>
@@ -1000,21 +1000,21 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <details class="note"><summary>Tuvalu (AS23917) -&gt; Interchange Ltd (AS45495) -- **first-ever confirmation with AS45495 as the actual target** (its only prior appearance in this dataclass was…</summary>Tuvalu (AS23917) -&gt; Interchange Ltd (AS45495) -- **first-ever confirmation with AS45495 as the actual target** (its only prior appearance in this dataclass was as an intermediate hop in the PW-&gt;AS45935/Wantok entry, and an earlier PW-&gt;AS45495 measurement this session went dark with no real signal at all). `AS23917 -&gt; AS9241 (FINTEL) -&gt; AS6939 (Hurricane Electric) -&gt; AS15830 (Equinix)`, target never resolved, but both AS6939 and AS15830 resolve via `peeringdb_netixlan` directly at **Equinix Sydney** (`ixp_crossings` confirms both hops), RIS-agreeing with the identical exact match (336) -- AS15830 (Equinix&#x27;s own route-server/fabric ASN) is exactly the real neighbor already identified for AS45495 when the earlier PW measurement was investigated and found inconclusive. This measurement resolves that gap with real evidence.</details>
         </div><div class="detour-card">
             <div class="headline">TV -&gt; WF
-                (AS45879): detours via AS6939 (Hurricane Electric), then AS5511 (Opentransit Orange S.A.) -- international transit, not a named exchange crossing
+                (AS45879): detours via AS6939 (Hurricane Electric), then AS5511 (Opentransit Orange S.A.) -- international transit
                 (Los Angeles)</div>
             <div>RIS observation count: 1665
                 &middot; measurement 212072564</div>
             <details class="note"><summary>Tuvalu (AS23917) -&gt; Orange Wallis &amp; Futuna (AS45879) -- a fresh TV&lt;-&gt;WF pair, an eighth independent confirmation of the AS5511(Opentransit Orange)&lt;-&gt;AS45879…</summary>Tuvalu (AS23917) -&gt; Orange Wallis &amp; Futuna (AS45879) -- a fresh TV&lt;-&gt;WF pair, an eighth independent confirmation of the AS5511(Opentransit Orange)&lt;-&gt;AS45879 adjacency (after GU, MP, VU, PF, CK, PG, PW): `AS23917 -&gt; AS9241 (FINTEL) -&gt; AS6939 (Hurricane Electric) -&gt; AS5511`, target never resolved, RIS-agreeing with the identical exact match (1,665). Hurricane Electric&#x27;s own hops show a real Palo Alto -&gt; Ashburn transit (`pao1.he.net`, `ash1.he.net`) before handing off to Orange, which as usual has no PTR evidence at all for its own hops -- kept `detour_hub` as Los Angeles per the established convention for this adjacency, since the HE transit hops describe the path to Orange, not Orange&#x27;s own touchpoint.</details>
         </div><div class="detour-card">
             <div class="headline">FJ -&gt; WF
-                (AS45879): detours via AS2914 (NTT), then AS5511 (Opentransit Orange S.A.) -- international transit, not a named exchange crossing
+                (AS45879): detours via AS2914 (NTT), then AS5511 (Opentransit Orange S.A.) -- international transit
                 (Los Angeles)</div>
             <div>RIS observation count: 1665
                 &middot; measurement 212097710</div>
             <details class="note"><summary>University of the South Pacific (AS24390, Fiji) -&gt; Orange Wallis &amp; Futuna (AS45879) -- a fresh FJ&lt;-&gt;WF pair, a ninth independent confirmation of the…</summary>University of the South Pacific (AS24390, Fiji) -&gt; Orange Wallis &amp; Futuna (AS45879) -- a fresh FJ&lt;-&gt;WF pair, a ninth independent confirmation of the AS5511(Opentransit Orange)&lt;-&gt;AS45879 adjacency (after GU, MP, VU, PF, CK, PG, PW, TV): `AS24390 -&gt; AS7575 (AARNet) -&gt; AS2914 (NTT) -&gt; AS5511`, target never resolved, RIS-agreeing with the identical exact match (1,665). NTT is a genuinely new intermediate carrier for this adjacency (every prior entry used Hurricane Electric or Cogent). Kept `detour_hub` as Los Angeles, matching the established convention for this adjacency (Orange itself has no PTR evidence on any prior entry). `has_routing_loop` correctly returned `False`.</details>
         </div><div class="detour-card">
             <div class="headline">NC -&gt; WF
-                (AS45879): detours via AS3257 (GTT), then AS5511 (Opentransit Orange S.A.) -- international transit, not a named exchange crossing
+                (AS45879): detours via AS3257 (GTT), then AS5511 (Opentransit Orange S.A.) -- international transit
                 (Los Angeles)</div>
             <div>RIS observation count: 1665
                 &middot; measurement 212136083</div>
@@ -1049,14 +1049,14 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <details class="note"><summary>Eleventh independent confirmation of AS139609(SISCC)&lt;-&gt;AS45891, sourced by attempting AS134525 (Solomon Telekom&#x27;s other ASN) -- the traceroute landed on…</summary>Eleventh independent confirmation of AS139609(SISCC)&lt;-&gt;AS45891, sourced by attempting AS134525 (Solomon Telekom&#x27;s other ASN) -- the traceroute landed on AS45891 (the sibling) instead of the literal target, the same substitution pattern established elsewhere (FSM, BNL Tarawa). `AS139759 -&gt; AS9246 -&gt; AS4637 -&gt; AS139609 -&gt; AS45891`, RIS agrees exactly (663 -- a smaller count than prior entries&#x27; 1,652, RIS&#x27;s current-state snapshot having shifted; checked fresh: AS45891&#x27;s full neighbor list is now `{139609: 8934, 135409: 331}`, still dominant). `has_routing_loop` flagged `True` on 1 of 3 probes -- touches `103.142.98.129`, adjacent to the known SISCC loop address `103.142.98.131`, then a later interleaved repeat; the same already-documented anomaly class, not escalated.</details>
         </div><div class="detour-card">
             <div class="headline">TV -&gt; PF
-                (AS55943): detours via AS3257 (GTT Communications) -- international transit, not a named exchange crossing
+                (AS55943): detours via AS3257 (GTT Communications) -- international transit
                 (Los Angeles)</div>
             <div>RIS observation count: 1657
                 &middot; measurement 212077786</div>
             <details class="note"><summary>Tuvalu (AS23917) -&gt; ONATI&#x27;s other ASN (AS55943, French Polynesia) -- a fresh TV&lt;-&gt;PF pair, a fourth independent confirmation of the AS3257(GTT)&lt;-&gt;AS55943…</summary>Tuvalu (AS23917) -&gt; ONATI&#x27;s other ASN (AS55943, French Polynesia) -- a fresh TV&lt;-&gt;PF pair, a fourth independent confirmation of the AS3257(GTT)&lt;-&gt;AS55943 adjacency (after GU, MP, VU): `AS23917 -&gt; AS9241 (FINTEL) -&gt; [AS3356/Level 3 gap] -&gt; AS3257`, target never resolved, RIS-agreeing with the identical exact match (1,657). **Geolocated with `hop_geolocation`**: the path shows `SanJose1.Level3.net` and `SanJose1.net.lumen.tech` (San Jose), then GTT&#x27;s own named hop `cr10-lax2.ip4.gtt.net` -- Los Angeles. **Hub corrected here and retroactively on all three prior entries for this adjacency (GU, MP, VU)**: all three previously used &quot;Tokyo&quot;, a carrier-facility guess never checked against real hops -- the same mislabeling pattern already caught for Cogent/Tata earlier this session. This is the first real hop-level evidence for this specific adjacency, and it points to Los Angeles, not Tokyo.</details>
         </div><div class="detour-card">
             <div class="headline">FJ -&gt; TO
-                (AS38201): detours via AS135409 (Kacific Broadband Satellites) -- satellite operator, international transit, not a named exchange crossing
+                (AS38201): detours via AS135409 (Kacific Broadband Satellites) -- satellite operator, international transit
                 (Sydney)</div>
             <div>RIS observation count: 331
                 &middot; measurement 212094712</div>
@@ -1070,35 +1070,35 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <details class="note"><summary>New Caledonia (AS45345) -&gt; American Samoa Telecommunications Authority (AS23657) -- **the first-ever confirmation of the AS17993(Vodafone Samoa)&lt;-&gt;AS23657…</summary>New Caledonia (AS45345) -&gt; American Samoa Telecommunications Authority (AS23657) -- **the first-ever confirmation of the AS17993(Vodafone Samoa)&lt;-&gt;AS23657 adjacency**, no prior entry for this target ASN existed anywhere in the project. Fully contiguous on all 3 probes: `AS45345 -&gt; AS18200 (OPT-NC) -&gt; AS17993 (Vodafone Samoa) -&gt; AS23657`, RIS-agreeing with the identical exact match (329) -- checked AS23657&#x27;s full RIS neighbor list directly: `{174 (Cogent): 11905, 6939 (Hurricane Electric): 1422, 17993 (Vodafone Samoa): 329}`, an exact match to what this traceroute found, and a genuinely real in-region relationship (Samoa&#x27;s own carrier serving American Samoa) rather than a global transit giant. Crosses **Equinix Sydney** directly (`ixp_crossings` confirms it, member AS17993, both hops 4 and 5 land inside the registered LAN prefix -- `45.127.172.0/22`, this project&#x27;s own `ixp_lan_registry` entry for ix_id 94). **`has_routing_loop` correctly flagged `True` on all 3 probes** -- hops 4 and 5 both resolve to the identical address `45.127.173.64`, inside that same registered Equinix Sydney LAN prefix -- an ordinary IXP-fabric router answering twice at consecutive TTLs (same class of harmless artifact as this project&#x27;s prior silent-IXP-boundary dead ends, just manifesting as a repeated address instead of silence, confirmed independently via PeeringDB (peeringdb.com/ix/94) rather than assumed). Not a newly-discovered loop-prone network -- the same, already-registered Equinix Sydney fabric this project crosses constantly elsewhere.</details>
         </div><div class="detour-card">
             <div class="headline">NC -&gt; TO
-                (AS38201): detours via AS135409 (Kacific Broadband Satellites) -- satellite operator, international transit, not a named exchange crossing
+                (AS38201): detours via AS135409 (Kacific Broadband Satellites) -- satellite operator, international transit
                 (Sydney)</div>
             <div>RIS observation count: 331
                 &middot; measurement 212128889</div>
             <details class="note"><summary>New Caledonia (AS45345) -&gt; Tonga Communications Internet Network (AS38201, KaliaNet) -- a fresh NC&lt;-&gt;TO pair, a second independent confirmation of the…</summary>New Caledonia (AS45345) -&gt; Tonga Communications Internet Network (AS38201, KaliaNet) -- a fresh NC&lt;-&gt;TO pair, a second independent confirmation of the AS135409(Kacific)&lt;-&gt;AS38201 adjacency (after FJ, the project&#x27;s first-ever confirmation for this target). Fully contiguous on all 3 probes: `AS45345 -&gt; AS18200 (OPT-NC) -&gt; AS7594 (On Q Communications, Australia) -&gt; AS135409 (Kacific)`, target never resolved, RIS-agreeing with the identical exact match (331). Crosses Equinix Sydney directly, the same AS7594 leg already confirmed on the FJ entry. `has_routing_loop` correctly flagged `True` on all 3 probes -- hops 4 and 5 both resolve to `45.127.173.66`, inside this project&#x27;s already-registered Equinix Sydney LAN prefix, the same ordinary IXP-fabric pattern already established twice this tranche; not escalated. A second distinct source economy (New Caledonia, after Fiji) confirming this satellite relationship.</details>
         </div><div class="detour-card">
             <div class="headline">FM -&gt; AS
-                (AS9751): detours via AS3356 (Level 3/Lumen), then AS11404 (Wave Broadband) -- international transit, not a named exchange crossing
+                (AS9751): detours via AS3356 (Level 3/Lumen), then AS11404 (Wave Broadband) -- international transit
                 (San Jose)</div>
             <div>RIS observation count: 267
                 &middot; measurement 212142987</div>
             <details class="note"><summary>Eleventh confirmation of AS11404&lt;-&gt;AS9751 (after GU, MP, VU, PG, TV, FJ, NC, and others)…</summary>Eleventh confirmation of AS11404&lt;-&gt;AS9751 (after GU, MP, VU, PG, TV, FJ, NC, and others). `AS139759 -&gt; AS9246 (Teleguam/GTA) -&gt; AS3356 (Level 3/Lumen, new intermediate) -&gt; AS11404 -&gt; AS9751`, RIS agrees exactly (267) on all 3 probes. `has_routing_loop` False.</details>
         </div><div class="detour-card">
             <div class="headline">FM -&gt; WS
-                (AS17993): detours via AS174 (Cogent Communications) -- international transit, not a named exchange crossing
+                (AS17993): detours via AS174 (Cogent Communications) -- international transit
                 (Sydney)</div>
             <div>RIS observation count: 1455
                 &middot; measurement 212142988</div>
             <details class="note"><summary>**A genuinely new confirmed relationship for this target**: AS174(Cogent)&lt;-&gt;AS17993, distinct from the already-established AS6939(Hurricane Electric)&lt;-&gt;AS17993…</summary>**A genuinely new confirmed relationship for this target**: AS174(Cogent)&lt;-&gt;AS17993, distinct from the already-established AS6939(Hurricane Electric)&lt;-&gt;AS17993 adjacency (RIS count ~150 in earlier entries). `AS139759 -&gt; AS9246 -&gt; AS4637 (Telstra Global) -&gt; AS1299 (Arelion) -&gt; AS174 -&gt; AS17993`, RIS agrees exactly (1,455) -- a much larger observation count, consistent with AS174 being AS17993&#x27;s dominant real neighbor (checked directly: AS17993&#x27;s full list is `{174: 9774, 6939: 1146, 9241: 163, ...}`, Cogent clearly dominant). `has_routing_loop` False on all 3 probes.</details>
         </div><div class="detour-card">
             <div class="headline">FM -&gt; AS
-                (AS23657): detours via AS17993 (Vodafone Samoa) -- international transit, not a named exchange crossing
+                (AS23657): detours via AS17993 (Vodafone Samoa) -- international transit
                 (Sydney)</div>
             <div>RIS observation count: 329
                 &middot; measurement 212142989</div>
             <details class="note"><summary>Second confirmation of AS17993&lt;-&gt;AS23657 (after NC&#x27;s first-ever)…</summary>Second confirmation of AS17993&lt;-&gt;AS23657 (after NC&#x27;s first-ever). `AS139759 -&gt; AS9246 -&gt; AS4637 -&gt; AS1299 -&gt; AS174 -&gt; AS17993 -&gt; AS23657`, fully contiguous, RIS agrees exactly (329). `has_routing_loop` False.</details>
         </div><div class="detour-card">
             <div class="headline">FM -&gt; MH
-                (AS24439): detours via AS4637 (Telstra Global), then AS6453 (Tata Communications) -- international transit, not a named exchange crossing
+                (AS24439): detours via AS4637 (Telstra Global), then AS6453 (Tata Communications) -- international transit
                 (Los Angeles)</div>
             <div>RIS observation count: 997
                 &middot; measurement 212142990</div>
@@ -1112,7 +1112,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <details class="note"><summary>Eleventh confirmation of AS45355(Digicel Fiji)&lt;-&gt;AS38198…</summary>Eleventh confirmation of AS45355(Digicel Fiji)&lt;-&gt;AS38198. `AS139759 -&gt; AS9246 -&gt; AS4637 -&gt; AS45355 -&gt; AS38198`, RIS agrees exactly (1,321). `has_routing_loop` False.</details>
         </div><div class="detour-card">
             <div class="headline">FM -&gt; TO
-                (AS38201): detours via AS135409 (Kacific Broadband Satellites) -- satellite operator, international transit, not a named exchange crossing
+                (AS38201): detours via AS135409 (Kacific Broadband Satellites) -- satellite operator, international transit
                 (Sydney)</div>
             <div>RIS observation count: 331
                 &middot; measurement 212142992</div>
@@ -1147,14 +1147,14 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <details class="note"><summary>**First-ever confirmation for this target**: AS174(Cogent)&lt;-&gt;AS132579 (Tonga Cable Limited), directly RIS-confirmed, a genuinely different Tongan-carrier…</summary>**First-ever confirmation for this target**: AS174(Cogent)&lt;-&gt;AS132579 (Tonga Cable Limited), directly RIS-confirmed, a genuinely different Tongan-carrier relationship than the established Digicel/Kacific ones. `AS139759 -&gt; AS9246 -&gt; AS4637 -&gt; AS174 -&gt; AS132579`, RIS agrees exactly (604). `has_routing_loop` False.</details>
         </div><div class="detour-card">
             <div class="headline">FM -&gt; SB
-                (AS139609): detours via AS4637 (Telstra Global) -- international transit, not a named exchange crossing
+                (AS139609): detours via AS4637 (Telstra Global) -- international transit
                 (Sydney)</div>
             <div>RIS observation count: 559
                 &middot; measurement 212143010</div>
             <details class="note"><summary>**First-ever direct confirmation of SISCC&#x27;s own upstream carrier**: AS4637(Telstra Global)&lt;-&gt;AS139609 (SISCC itself as the target, not an intermediate this…</summary>**First-ever direct confirmation of SISCC&#x27;s own upstream carrier**: AS4637(Telstra Global)&lt;-&gt;AS139609 (SISCC itself as the target, not an intermediate this time). `AS139759 -&gt; AS9246 -&gt; AS4637 -&gt; AS139609`, RIS agrees exactly (559). `has_routing_loop` False.</details>
         </div><div class="detour-card">
             <div class="headline">FM -&gt; WS
-                (AS139679): detours via AS4637 (Telstra Global), via AS132528 and AS38800 -- domestic Samoa chain, not a named exchange crossing
+                (AS139679): detours via AS4637 (Telstra Global), via AS132528 and AS38800 -- domestic Samoa chain
                 (Sydney)</div>
             <div>RIS observation count: 329
                 &middot; measurement 212143012</div>
