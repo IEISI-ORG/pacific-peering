@@ -148,11 +148,10 @@ def render_html_report(data: ReportData, viz_dir: Path | None = Path("../viz")) 
     transit_supplier_rows = "".join(
         f"""<tr>
             <td>AS{s['asn']}</td><td>{html.escape(s['name'])}</td>
-            <td>{len(s['economies'])}</td>
-            <td>{len(s['economies']) / data.total_economies:.0%}</td>
+            <td>{html.escape(', '.join(s['dependent_economies']) or '(none)')}</td>
+            <td>{html.escape(', '.join(s['vantage_only_economies']) or '(none)')}</td>
             <td>{s['corroboration_count']}</td>
             <td>{'yes' if s['is_regional'] else 'no'}</td>
-            <td>{html.escape(', '.join(s['economies']))}</td>
         </tr>"""
         for s in data.transit_suppliers[:8]
     ) or "<p>(none recorded yet)</p>"
@@ -263,27 +262,32 @@ def render_html_report(data: ReportData, viz_dir: Path | None = Path("../viz")) 
     <div class="stat-row">{stat_tiles}</div>
 
     <h2>Findings: transit supplier concentration</h2>
-    <p class="section-intro">How many in-scope economies have at least one
-        traceroute-confirmed corridor &mdash; as either the tested vantage
-        point or the reachability target &mdash; that depends on a single
-        carrier (RIS + Atlas confirmed immediate upstream). Counts
+    <p class="section-intro">Ranked by <strong>dependent</strong> economies
+        &mdash; those whose own reachability this carrier was confirmed as
+        the immediate upstream for &mdash; not by every economy a
+        measurement happened to be fired from. <strong>Vantage-only</strong>
+        economies merely tested a path through this carrier to reach a
+        dependent economy elsewhere; they have no confirmed reliance on it
+        themselves. This split exists because a single-island submarine-
+        cable operator like SISCC was otherwise misreading as a broad
+        regional concentration risk, when almost every economy in its count
+        was just a vantage point testing a path to Solomon Islands. Counts
         confirmed, measured corridors only, not total internet exposure:
         most economies are likely multi-homed via paths this project
         hasn't measured. "Regional" marks a carrier itself based in an
         in-scope Pacific economy, rather than an external Tier-1.</p>
     <table>
-        <thead><tr><th>ASN</th><th>Carrier</th><th>Economies</th><th>Share</th>
-            <th>Corrob.</th><th>Regional</th><th>Which economies</th></tr></thead>
+        <thead><tr><th>ASN</th><th>Carrier</th><th>Dependent economies</th>
+            <th>Vantage-only economies</th><th>Corrob.</th>
+            <th>Regional</th></tr></thead>
         <tbody>{transit_supplier_rows}</tbody>
     </table>
-    <div class="callout">Two carriers don't crack the table above by raw
-        economy count, but are the starkest single-point-of-failure
-        findings this project has confirmed: <strong>AS9241 (FINTEL,
-        Fiji)</strong> is Tuvalu's <em>only</em> RIS-observed neighbor of
+    <div class="callout"><strong>AS9241 (FINTEL, Fiji)</strong> doesn't
+        crack the table above by dependent-economy count (just Tuvalu),
+        but is the starkest single-point-of-failure finding this project
+        has confirmed: it's Tuvalu's <em>only</em> RIS-observed neighbor of
         consequence, reconfirmed by 8 independent vantage points across
-        the region; <strong>AS9471 (ONATI, French Polynesia)</strong>
-        plays the identical role for Niue, also reconfirmed 8 times. For
-        both, every measured path into that economy &mdash; from every
+        the region. Every measured path into Tuvalu &mdash; from every
         direction this project has tested &mdash; passes through one
         single carrier.</div>
 

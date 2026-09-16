@@ -1819,3 +1819,11 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   actual target (previously only an intermediate hop). Crosses
   Equinix Sydney then Any2West (Los Angeles). Tuvalu's own path
   transits FINTEL first. RIS agrees exactly (71). Backlog: 383 -> 377.
+- fix(reports): split transit supplier concentration into dependent
+  vs vantage-only economies. SISCC was misreading as a 7-economy
+  concentration risk when 6 of those were just vantage points
+  testing paths to Solomon Islands, its only real dependent. Now
+  ranked by dependent-economy count: Hurricane Electric and Cogent
+  (4 dependents each) surface as the genuine broad-reach carriers;
+  Tata drops from a misleading 9 to an accurate 2 (MH, NR); SISCC
+  drops out of the top 8 entirely.

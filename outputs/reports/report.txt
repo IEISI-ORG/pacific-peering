@@ -1,6 +1,6 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-09-16T03:39:14.707458+00:00                  
+                 Generated: 2026-09-16T03:49:23.222229+00:00                  
 ==============================================================================
 
 SUMMARY
@@ -16,28 +16,36 @@ IXP LAN registry: 10 in-fishbowl, 21 out-of-fishbowl, 0 unconfirmed
 
 FINDINGS: TRANSIT SUPPLIER CONCENTRATION (RIS + Atlas confirmed immediate upstream)
 ==============================================================================
-How many in-scope economies have at least one traceroute-confirmed corridor -- as either the tested vantage point or the reachability target -- that depends on a single carrier. This counts confirmed, measured corridors only, not total internet exposure: most economies are likely multi-homed via paths this project hasn't measured. "Regional" marks a carrier itself based in an in-scope Pacific economy, rather than an external Tier-1.
+Ranked by "dependent" economies -- those whose own reachability this carrier was confirmed as the immediate upstream for -- not by every economy a measurement happened to be fired from. "Vantage-only" economies merely tested a path through this carrier to reach a dependent economy elsewhere; they have no confirmed reliance on it themselves (this split exists because a single-island submarine-cable operator like SISCC was otherwise misreading as a broad regional concentration risk, when almost every economy in its count was just a vantage point testing a path to Solomon Islands). This counts confirmed, measured corridors only, not total internet exposure: most economies are likely multi-homed via paths this project hasn't measured. "Regional" marks a carrier itself based in an in-scope Pacific economy, rather than an external Tier-1.
 
-ASN       Carrier                                  Economies  Share Corrob. Regional
+ASN       Carrier                          Dependent  Vantage Corrob. Regional
 ------------------------------------------------------------------------------
-AS6453    Tata Communications                              9    45%       9       no
-    Economies: CK, GU, MH, MP, NR, PF, PG, PW, VU
-AS5511    Opentransit Orange S.A.                          8    40%       7       no
-    Economies: CK, GU, MP, PF, PG, PW, VU, WF
-AS6939    Hurricane Electric                               8    40%      10       no
-    Economies: CK, GU, MP, PF, PG, PW, TV, WS
-AS45355   Digicel Fiji                                     8    40%       7      yes
-    Economies: CK, GU, MP, PF, PG, PW, TO, VU
-AS139609  SISCC (Solomon Islands Submarine Cable C         8    40%       7      yes
-    Economies: CK, GU, MP, PF, PG, PW, SB, VU
-AS174     Cogent Communications                            7    35%       8       no
-    Economies: AS, CK, FJ, GU, PF, PW, WS
-AS7575    AARNet                                           6    30%       5       no
-    Economies: CK, FJ, MP, PF, PG, PW
-AS18200   OPT NC (Office des Postes et Telecommuni         6    30%       5      yes
-    Economies: CK, MP, NC, PF, PG, PW
+AS6939    Hurricane Electric                       4        4      10       no
+    Dependent: GU, PG, PW, WS
+    Vantage-only: CK, MP, PF, TV
+AS174     Cogent Communications                    4        3       8       no
+    Dependent: AS, FJ, PW, WS
+    Vantage-only: CK, GU, PF
+AS6453    Tata Communications                      2        7       9       no
+    Dependent: MH, NR
+    Vantage-only: CK, GU, MP, PF, PG, PW, VU
+AS132528  Digicel Australia/Telstra-operat         2        2       2       no
+    Dependent: FJ, WS
+    Vantage-only: NC, VU
+AS3605    Guam Cablevision, LLC                    2        0       3      yes
+    Dependent: GU, PW
+    Vantage-only: (none)
+AS7131    PTI Pacifica Inc.                        2        0       5      yes
+    Dependent: GU, NR
+    Vantage-only: (none)
+AS9471    ONATI (Office des Postes et Tele         2        0       9      yes
+    Dependent: CK, NU
+    Vantage-only: (none)
+AS5511    Opentransit Orange S.A.                  1        7       7       no
+    Dependent: WF
+    Vantage-only: CK, GU, MP, PF, PG, PW, VU
 
-Two carriers don't crack the table above by raw economy count, but are the starkest single-point-of-failure findings this project has confirmed: AS9241 (FINTEL, Fiji) is Tuvalu's *only* RIS-observed neighbor of consequence, reconfirmed by 8 independent vantage points across the region; AS9471 (ONATI, French Polynesia) plays the identical role for Niue, also reconfirmed 8 times. For both, every measured path into that economy -- from every direction this project has tested -- passes through one single carrier.
+AS9241 (FINTEL, Fiji) doesn't crack the table above by dependent-economy count (just Tuvalu), but is the starkest single-point-of-failure finding this project has confirmed: it's Tuvalu's *only* RIS-observed neighbor of consequence, reconfirmed by 8 independent vantage points across the region. Every measured path into Tuvalu -- from every direction this project has tested -- passes through one single carrier.
 
 FINDINGS: SATELLITE OPERATOR PATHWAYS
 ==============================================================================

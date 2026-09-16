@@ -64,31 +64,48 @@ class EconomySummary:
 class TransitSupplier:
     """One carrier confirmed (RIS + Atlas) as the immediate upstream on at least
 
-    one traceroute-verified Pacific corridor. `economies` is every in-scope
-    economy touched -- as the vantage point a measurement was fired from, or
-    as the target whose reachability that measurement confirmed -- by a
-    measurement where this ASN is the true immediate neighbor of the target
-    (`traceroute_upstream_asn` from `analyze_measurement`, not a guess or an
-    intermediate hop further up the path). `corroboration_count` is the
-    highest "Nth independent corroboration/confirmation" ordinal mined from
-    the underlying notes -- for `ConfirmedDetour` entries this always equals
-    `len(economies)` exactly (one entry per source economy, by convention),
-    but for `ConfirmedLocalTransit` entries -- which extend one entry's note
+    one traceroute-verified Pacific corridor. Two deliberately distinct
+    kinds of economy, per the project owner's own correction (SISCC --
+    Solomon Islands' own submarine-cable operator -- was reading as a
+    7-economy concentration risk when it's really a single-island carrier
+    most of those economies had no relationship to at all):
+
+    - `dependent_economies`: economies whose own reachability this carrier
+      was confirmed as the immediate upstream for (`target_cc` on a
+      `ConfirmedDetour`, `customer_cc` on a `ConfirmedLocalTransit`) --
+      the real "who actually relies on this carrier" set.
+    - `vantage_only_economies`: economies that only ever appeared as the
+      *tested vantage point* for a measurement reaching a dependent
+      economy elsewhere (`source_cc` on a `ConfirmedDetour`), with no
+      confirmed dependency of their own on this carrier. Excludes any
+      economy already counted as dependent, so the two sets never
+      overlap.
+
+    `corroboration_count` is the highest "Nth independent corroboration/
+    confirmation" ordinal mined from the underlying notes -- for
+    `ConfirmedDetour` entries this always equals the number of source
+    economies exactly (one entry per source economy, by convention), but
+    for `ConfirmedLocalTransit` entries -- which extend one entry's note
     per new corroborating source economy rather than adding new entries --
-    it can run meaningfully higher than the economy count alone shows,
+    it can run meaningfully higher than either economy count alone shows,
     because most corroborating vantage points aren't the provider or
     customer themselves.
     """
 
     asn: int
     name: str
-    economies: tuple[str, ...]
+    dependent_economies: tuple[str, ...]
+    vantage_only_economies: tuple[str, ...]
     is_regional: bool  # True if this carrier is itself based in an in-scope economy
     corroboration_count: int
 
     @property
-    def economy_count(self) -> int:
-        return len(self.economies)
+    def dependent_count(self) -> int:
+        return len(self.dependent_economies)
+
+    @property
+    def vantage_only_count(self) -> int:
+        return len(self.vantage_only_economies)
 
 
 # A handful of ASNs where automatic name extraction from `detour_ix_name`/
@@ -163,7 +180,8 @@ def _compute_transit_suppliers(
             names.setdefault(int(m.group(1)), m.group(2).strip())
     names.update(_CARRIER_NAME_OVERRIDES)
 
-    economies: dict[int, set[str]] = {}
+    dependent: dict[int, set[str]] = {}
+    vantage: dict[int, set[str]] = {}
     entry_count: dict[int, int] = {}
 
     for detour in CONFIRMED_DETOURS:
@@ -176,27 +194,36 @@ def _compute_transit_suppliers(
         }
         upstream_asns.discard(None)
         for asn in upstream_asns:
-            economies.setdefault(asn, set()).update({detour.source_cc, detour.target_cc})
+            dependent.setdefault(asn, set()).add(detour.target_cc)
+            vantage.setdefault(asn, set()).add(detour.source_cc)
             entry_count[asn] = entry_count.get(asn, 0) + 1
 
     for transit in CONFIRMED_LOCAL_TRANSIT:
         asn = transit.provider_asn
-        economies.setdefault(asn, set()).update({transit.provider_cc, transit.customer_cc})
+        dependent.setdefault(asn, set()).add(transit.customer_cc)
         entry_count[asn] = max(
             entry_count.get(asn, 0), _max_corroboration_ordinal(transit.note)
         )
 
+    all_asns = set(dependent) | set(vantage)
     suppliers = [
         TransitSupplier(
             asn=asn,
             name=names.get(asn, f"AS{asn}"),
-            economies=tuple(sorted(ccs)),
+            dependent_economies=tuple(sorted(dependent.get(asn, set()))),
+            vantage_only_economies=tuple(
+                sorted(vantage.get(asn, set()) - dependent.get(asn, set()))
+            ),
             is_regional=str(asn) in fishbowl,
-            corroboration_count=entry_count.get(asn, len(ccs)),
+            corroboration_count=entry_count.get(
+                asn, len(dependent.get(asn, set()) | vantage.get(asn, set()))
+            ),
         )
-        for asn, ccs in economies.items()
+        for asn in all_asns
     ]
-    return tuple(sorted(suppliers, key=lambda s: (-s.economy_count, s.asn)))
+    return tuple(
+        sorted(suppliers, key=lambda s: (-s.dependent_count, -s.vantage_only_count, s.asn))
+    )
 
 
 # Satellite operators with a real, PeeringDB-registered presence this

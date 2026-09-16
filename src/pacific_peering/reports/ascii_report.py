@@ -65,44 +65,53 @@ def render_ascii_report(data: ReportData) -> str:
         )
     )
     lines.append(
-        "How many in-scope economies have at least one traceroute-confirmed "
-        "corridor -- as either the tested vantage point or the reachability "
-        "target -- that depends on a single carrier. This counts confirmed, "
-        "measured corridors only, not total internet exposure: most "
-        "economies are likely multi-homed via paths this project hasn't "
-        "measured. \"Regional\" marks a carrier itself based in an in-scope "
-        "Pacific economy, rather than an external Tier-1."
+        "Ranked by \"dependent\" economies -- those whose own reachability "
+        "this carrier was confirmed as the immediate upstream for -- not "
+        "by every economy a measurement happened to be fired from. "
+        "\"Vantage-only\" economies merely tested a path through this "
+        "carrier to reach a dependent economy elsewhere; they have no "
+        "confirmed reliance on it themselves (this split exists because a "
+        "single-island submarine-cable operator like SISCC was otherwise "
+        "misreading as a broad regional concentration risk, when almost "
+        "every economy in its count was just a vantage point testing a "
+        "path to Solomon Islands). This counts confirmed, measured "
+        "corridors only, not total internet exposure: most economies are "
+        "likely multi-homed via paths this project hasn't measured. "
+        "\"Regional\" marks a carrier itself based in an in-scope Pacific "
+        "economy, rather than an external Tier-1."
     )
     lines.append("")
     if not data.transit_suppliers:
         lines.append("(none recorded yet)")
     else:
         header = (
-            f"{'ASN':<9} {'Carrier':<40} {'Economies':>9} "
-            f"{'Share':>6} {'Corrob.':>7} {'Regional':>8}"
+            f"{'ASN':<9} {'Carrier':<32} {'Dependent':>9} {'Vantage':>8} "
+            f"{'Corrob.':>7} {'Regional':>8}"
         )
         lines.append(header)
         lines.append(_rule())
         for supplier in data.transit_suppliers[:8]:
-            count = len(supplier["economies"])
-            share = count / data.total_economies if data.total_economies else 0.0
+            dep_count = len(supplier["dependent_economies"])
+            van_count = len(supplier["vantage_only_economies"])
             asn_str = f"AS{supplier['asn']}"
             lines.append(
-                f"{asn_str:<9} {supplier['name']:<40.40} {count:>9} "
-                f"{share:>6.0%} {supplier['corroboration_count']:>7} "
+                f"{asn_str:<9} {supplier['name']:<32.32} {dep_count:>9} "
+                f"{van_count:>8} {supplier['corroboration_count']:>7} "
                 f"{'yes' if supplier['is_regional'] else 'no':>8}"
             )
-            lines.append(f"    Economies: {', '.join(supplier['economies'])}")
+            lines.append(f"    Dependent: {', '.join(supplier['dependent_economies']) or '(none)'}")
+            lines.append(
+                f"    Vantage-only: {', '.join(supplier['vantage_only_economies']) or '(none)'}"
+            )
     lines.append("")
     lines.append(
-        "Two carriers don't crack the table above by raw economy count, but "
-        "are the starkest single-point-of-failure findings this project has "
-        "confirmed: AS9241 (FINTEL, Fiji) is Tuvalu's *only* RIS-observed "
-        "neighbor of consequence, reconfirmed by 8 independent vantage "
-        "points across the region; AS9471 (ONATI, French Polynesia) plays "
-        "the identical role for Niue, also reconfirmed 8 times. For both, "
-        "every measured path into that economy -- from every direction this "
-        "project has tested -- passes through one single carrier."
+        "AS9241 (FINTEL, Fiji) doesn't crack the table above by dependent-"
+        "economy count (just Tuvalu), but is the starkest single-point-of-"
+        "failure finding this project has confirmed: it's Tuvalu's *only* "
+        "RIS-observed neighbor of consequence, reconfirmed by 8 independent "
+        "vantage points across the region. Every measured path into Tuvalu "
+        "-- from every direction this project has tested -- passes through "
+        "one single carrier."
     )
 
     lines.append(_section("FINDINGS: SATELLITE OPERATOR PATHWAYS"))
