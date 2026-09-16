@@ -1,6 +1,6 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-09-16T04:32:37.179390+00:00                  
+                 Generated: 2026-09-16T04:52:56.647396+00:00                  
 ==============================================================================
 
 SUMMARY
@@ -41,9 +41,9 @@ AS7131    PTI Pacifica Inc.                        2        0       5      yes
 AS9471    ONATI (Office des Postes et Tele         2        0       9      yes
     Dependent: CK, NU
     Vantage-only: (none)
-AS5511    Opentransit Orange S.A.                  1        7       7       no
-    Dependent: WF
-    Vantage-only: CK, GU, MP, PF, PG, PW, VU
+AS45355   Digicel Fiji                             1        8       8      yes
+    Dependent: TO
+    Vantage-only: CK, GU, MP, PF, PG, PW, TV, VU
 
 AS9241 (FINTEL, Fiji) doesn't crack the table above by dependent-economy count (just Tuvalu), but is the starkest single-point-of-failure finding this project has confirmed: it's Tuvalu's *only* RIS-observed neighbor of consequence, reconfirmed by 8 independent vantage points across the region. Every measured path into Tuvalu -- from every direction this project has tested -- passes through one single carrier.
 
@@ -51,16 +51,20 @@ FINDINGS: REGIONAL HUB CONCENTRATION
 ==============================================================================
 Which in-scope Pacific economies serve as a real transit waypoint for *other* in-scope economies, entirely inside the fishbowl -- the mirror image of transit supplier concentration above, but for carriers based in the region rather than external Tier-1s. Built from `ConfirmedLocalTransit` entries where the provider and customer are different economies. "Corrob." sums each underlying relationship's own corroboration depth, so an economy serving two economies each reconfirmed many times outranks one serving two economies confirmed only once each.
 
-Economy                           Serves Corrob. Carriers                                
+Economy                           Serves Corrob. Subregions served           
 ------------------------------------------------------------------------------
-French Polynesia (PF)                  2      13 ONATI (Office des Postes et Telecommunications)
+French Polynesia (PF)                  2      13 Polynesia                   
     Serves: CK, NU
-Fiji (FJ)                              2       9 FINTEL (Fiji International Telecommunications Ltd), Vodafone Fiji
+    Carriers: ONATI (Office des Postes et Telecommunications)
+Fiji (FJ)                              2       9 Melanesia, Polynesia        
     Serves: TV, VU
-Northern Mariana Islands (MP)          2       6 PTI Pacifica Inc.                       
+    Carriers: FINTEL (Fiji International Telecommunications Ltd), Vodafone Fiji
+Northern Mariana Islands (MP)          2       6 Micronesia                  
     Serves: GU, NR
-Guam (GU)                              1       6 Guam Cablevision, LLC                   
+    Carriers: PTI Pacifica Inc.
+Guam (GU)                              1       6 Micronesia                  
     Serves: PW
+    Carriers: Guam Cablevision, LLC
 
 FINDINGS: EXTERNAL HUB CONCENTRATION
 ==============================================================================
@@ -68,9 +72,9 @@ The mirror image of the regional hubs above: the real external cities where conf
 
 City           Entries  Share Carriers Subregions reached            
 ------------------------------------------------------------------------------
-Sydney              44    51%       13 Melanesia, Micronesia, Polynesia
+Sydney              45    51%       13 Melanesia, Micronesia, Polynesia
     Dependent economies: AS, CK, FJ, MH, NC, PG, PW, SB, TO, VU, WS
-Tokyo               24    28%        9 Melanesia, Micronesia, Polynesia
+Tokyo               24    27%        9 Melanesia, Micronesia, Polynesia
     Dependent economies: AS, CK, FJ, MH, NC, NR, PF, PW, SB, VU, WF
 Los Angeles         14    16%        6 Melanesia, Micronesia, Polynesia
     Dependent economies: FJ, FM, GU, MH, NR, WF
@@ -87,11 +91,17 @@ FINDINGS: SATELLITE OPERATOR PATHWAYS
 ==============================================================================
 Which in-scope economies have a known relationship to a satellite operator, and how strong the evidence is. "RIS economies" is a real, BGP-observed neighbor relationship (this project's own fishbowl cache) that no traceroute has necessarily confirmed carries traffic; "traceroute-confirmed" means an Atlas traceroute has actually been observed transiting that operator's network.
 
-ASN        Operator                       RIS economies      Traceroute-confirmed  
+ASN        Operator                       Subregions reached          
 ------------------------------------------------------------------------------
-AS14593    SpaceX Starlink                KI, TV             KI, TV                
-AS12684    SES ASTRA S.A.                 CK, KI, NR, PG     CK, NR, PF            
-AS135409   Kacific Broadband Satellites   PG, TO             (none)                
+AS14593    SpaceX Starlink                Micronesia, Polynesia       
+    RIS economies: KI, TV
+    Traceroute-confirmed: KI, TV
+AS12684    SES ASTRA S.A.                 Melanesia, Micronesia, Polynesia
+    RIS economies: CK, KI, NR, PG
+    Traceroute-confirmed: CK, NR, PF
+AS135409   Kacific Broadband Satellites   Melanesia, Polynesia        
+    RIS economies: PG, TO
+    Traceroute-confirmed: (none)
 
 **The Kacific gap**: Kacific Broadband Satellites (AS135409), a real PeeringDB-registered Pacific-focused GEO satellite ISP, has RIS-observed BGP relationships with at least three in-scope economies (Papua New Guinea, Tonga, and -- visible only from Kacific's own neighbor list, not from the target's side, a real instance of RIS's asymmetric visibility -- Solomon Islands). Despite that, **no traceroute this project has ever run has touched Kacific's network at all**. AS38201 (Tonga, Kacific-linked) sits untested in the current corridor backlog -- a natural next target if a Kacific-transiting path is ever going to surface. Starlink and SES ASTRA, by contrast, have both been directly traceroute-confirmed (Tuvalu/Kiribati for Starlink; Cook Islands/Nauru for SES ASTRA).
 
@@ -358,6 +368,9 @@ TV -> MH (AS24439): detours via AS6939 (Hurricane Electric), via AS6453 (Tata Co
 TV -> PG (AS38009): detours via AS6939 (Hurricane Electric) -- global transit, not a named exchange crossing (Sydney)
     RIS observation count: 1875  [measurement 212060615]
     Tuvalu (AS23917) -> Telikom PNG Satellite Tier 1 AS (AS38009) -- a fresh TV<->PG pair, a second independent confirmation of the AS17828(PNG DataCo)<->AS38009 adjacency (after PW): `AS23917 -> AS9241 (FINTEL) -> AS6939 (Hurricane Electric) -> AS17828`, fully contiguous this time (no gap before AS17828, unlike the PW entry), RIS-agreeing with the identical exact match (1,875). Same named HE switch port already confirmed (`png-dataco-limited.e0-11.switch1.syd1.he.net`) -- Sydney reconfirmed directly.
+TV -> TO (AS38198): detours via AS6939 (Hurricane Electric), via AS132528 (Digicel Australia/Telstra-operated backbone) -- global transit, not a named exchange crossing (Sydney)
+    RIS observation count: 1321  [measurement 212063778]
+    Tuvalu (AS23917) -> Digicel Tonga (AS38198) -- a fresh TV<->TO pair, an eighth independent confirmation of the AS45355(Digicel Fiji)<->AS38198 adjacency (after GU, MP, VU, PF, CK, PG, PW) -- still Tonga's only RIS-observed neighbor of consequence. `AS23917 -> AS9241 (FINTEL) -> AS6939 (Hurricane Electric) -> AS132528 (Digicel Australia) -> AS45355`, target technically reached (the same real, BGP-confirmed AS38198 address `202.43.12.5` seen on every prior entry), separated by the usual routine silent boundary hop. RIS-agreeing with the identical exact match (1,321). Crosses Equinix Sydney twice (`ixp_crossings` confirms both AS6939 and AS132528) -- the same AS132528 leg already confirmed on most prior entries for this adjacency.
 
 CONFIRMED LOCAL TRANSIT (RIS + Atlas both agree, stays in-fishbowl)
 ==============================================================================

@@ -157,18 +157,19 @@ def render_html_report(data: ReportData, viz_dir: Path | None = Path("../viz")) 
     ) or "<p>(none recorded yet)</p>"
 
     total_detours = len(data.confirmed_detours)
+    subregion_of = {e.cc: e.subregion for e in data.economies}
     regional_hub_rows = "".join(
         f"""<tr>
             <td>{html.escape(h['economy_name'])} ({html.escape(h['economy_cc'])})</td>
             <td>{len(h['dependent_economies'])}</td>
             <td>{h['corroboration_count']}</td>
+            <td>{html.escape(', '.join(sorted({subregion_of.get(cc) for cc in h['dependent_economies']} - {None})))}</td>
             <td>{html.escape(', '.join(h['carriers']))}</td>
             <td>{html.escape(', '.join(h['dependent_economies']))}</td>
         </tr>"""
         for h in data.regional_hubs
     ) or "<p>(none recorded yet)</p>"
 
-    subregion_of = {e.cc: e.subregion for e in data.economies}
     external_hub_rows = "".join(
         f"""<tr>
             <td>{html.escape(h['name'])}</td>
@@ -189,6 +190,7 @@ def render_html_report(data: ReportData, viz_dir: Path | None = Path("../viz")) 
     satellite_rows = "".join(
         f"""<tr>
             <td>AS{s['asn']}</td><td>{html.escape(s['name'])}</td>
+            <td>{html.escape(', '.join(sorted({subregion_of.get(cc) for cc in set(s['ris_economies']) | set(s['traceroute_confirmed_economies'])} - {None})))}</td>
             <td>{html.escape(', '.join(s['ris_economies']) or '(none)')}</td>
             <td>{html.escape(', '.join(s['traceroute_confirmed_economies']) or '(none)')}</td>
         </tr>"""
@@ -334,7 +336,8 @@ def render_html_report(data: ReportData, viz_dir: Path | None = Path("../viz")) 
         economies confirmed only once each.</p>
     <table>
         <thead><tr><th>Economy</th><th>Serves</th><th>Corrob.</th>
-            <th>Carriers</th><th>Which economies</th></tr></thead>
+            <th>Subregions served</th><th>Carriers</th>
+            <th>Which economies</th></tr></thead>
         <tbody>{regional_hub_rows}</tbody>
     </table>
 
@@ -368,7 +371,8 @@ def render_html_report(data: ReportData, viz_dir: Path | None = Path("../viz")) 
         means an Atlas traceroute has actually been observed transiting
         that operator's network.</p>
     <table>
-        <thead><tr><th>ASN</th><th>Operator</th><th>RIS economies</th>
+        <thead><tr><th>ASN</th><th>Operator</th><th>Subregions reached</th>
+            <th>RIS economies</th>
             <th>Traceroute-confirmed economies</th></tr></thead>
         <tbody>{satellite_rows}</tbody>
     </table>

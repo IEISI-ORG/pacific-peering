@@ -56,7 +56,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
 <body>
 <div class="wrap">
     <h1>Pacific Peering — Regional Routing Report</h1>
-    <div class="meta">Generated 2026-09-16T04:32:37.337311+00:00</div>
+    <div class="meta">Generated 2026-09-16T04:52:56.799693+00:00</div>
 
     <div class="headline-banner">
         <span class="value">68%</span>
@@ -130,11 +130,11 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <td>9</td>
             <td>yes</td>
         </tr><tr>
-            <td>AS5511</td><td>Opentransit Orange S.A.</td>
-            <td>WF</td>
-            <td>CK, GU, MP, PF, PG, PW, VU</td>
-            <td>7</td>
-            <td>no</td>
+            <td>AS45355</td><td>Digicel Fiji</td>
+            <td>TO</td>
+            <td>CK, GU, MP, PF, PG, PW, TV, VU</td>
+            <td>8</td>
+            <td>yes</td>
         </tr></tbody>
     </table>
     <div class="callout"><strong>AS9241 (FINTEL, Fiji)</strong> doesn't
@@ -159,29 +159,34 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
         economies confirmed only once each.</p>
     <table>
         <thead><tr><th>Economy</th><th>Serves</th><th>Corrob.</th>
-            <th>Carriers</th><th>Which economies</th></tr></thead>
+            <th>Subregions served</th><th>Carriers</th>
+            <th>Which economies</th></tr></thead>
         <tbody><tr>
             <td>French Polynesia (PF)</td>
             <td>2</td>
             <td>13</td>
+            <td>Polynesia</td>
             <td>ONATI (Office des Postes et Telecommunications)</td>
             <td>CK, NU</td>
         </tr><tr>
             <td>Fiji (FJ)</td>
             <td>2</td>
             <td>9</td>
+            <td>Melanesia, Polynesia</td>
             <td>FINTEL (Fiji International Telecommunications Ltd), Vodafone Fiji</td>
             <td>TV, VU</td>
         </tr><tr>
             <td>Northern Mariana Islands (MP)</td>
             <td>2</td>
             <td>6</td>
+            <td>Micronesia</td>
             <td>PTI Pacifica Inc.</td>
             <td>GU, NR</td>
         </tr><tr>
             <td>Guam (GU)</td>
             <td>1</td>
             <td>6</td>
+            <td>Micronesia</td>
             <td>Guam Cablevision, LLC</td>
             <td>PW</td>
         </tr></tbody>
@@ -203,7 +208,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <th>Dependent economies</th></tr></thead>
         <tbody><tr>
             <td>Sydney</td>
-            <td>44</td>
+            <td>45</td>
             <td>51%</td>
             <td>13</td>
             <td>Melanesia, Micronesia, Polynesia</td>
@@ -211,7 +216,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
         </tr><tr>
             <td>Tokyo</td>
             <td>24</td>
-            <td>28%</td>
+            <td>27%</td>
             <td>9</td>
             <td>Melanesia, Micronesia, Polynesia</td>
             <td>AS, CK, FJ, MH, NC, NR, PF, PW, SB, VU, WF</td>
@@ -259,18 +264,22 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
         means an Atlas traceroute has actually been observed transiting
         that operator's network.</p>
     <table>
-        <thead><tr><th>ASN</th><th>Operator</th><th>RIS economies</th>
+        <thead><tr><th>ASN</th><th>Operator</th><th>Subregions reached</th>
+            <th>RIS economies</th>
             <th>Traceroute-confirmed economies</th></tr></thead>
         <tbody><tr>
             <td>AS14593</td><td>SpaceX Starlink</td>
+            <td>Micronesia, Polynesia</td>
             <td>KI, TV</td>
             <td>KI, TV</td>
         </tr><tr>
             <td>AS12684</td><td>SES ASTRA S.A.</td>
+            <td>Melanesia, Micronesia, Polynesia</td>
             <td>CK, KI, NR, PG</td>
             <td>CK, NR, PF</td>
         </tr><tr>
             <td>AS135409</td><td>Kacific Broadband Satellites</td>
+            <td>Melanesia, Polynesia</td>
             <td>PG, TO</td>
             <td>(none)</td>
         </tr></tbody>
@@ -900,6 +909,13 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <div>RIS observation count: 1875
                 &middot; measurement 212060615</div>
             <details class="note"><summary>Tuvalu (AS23917) -&gt; Telikom PNG Satellite Tier 1 AS (AS38009) -- a fresh TV&lt;-&gt;PG pair, a second independent confirmation of the AS17828(PNG DataCo)&lt;-&gt;AS38009…</summary>Tuvalu (AS23917) -&gt; Telikom PNG Satellite Tier 1 AS (AS38009) -- a fresh TV&lt;-&gt;PG pair, a second independent confirmation of the AS17828(PNG DataCo)&lt;-&gt;AS38009 adjacency (after PW): `AS23917 -&gt; AS9241 (FINTEL) -&gt; AS6939 (Hurricane Electric) -&gt; AS17828`, fully contiguous this time (no gap before AS17828, unlike the PW entry), RIS-agreeing with the identical exact match (1,875). Same named HE switch port already confirmed (`png-dataco-limited.e0-11.switch1.syd1.he.net`) -- Sydney reconfirmed directly.</details>
+        </div><div class="detour-card">
+            <div class="headline">TV -&gt; TO
+                (AS38198): detours via AS6939 (Hurricane Electric), via AS132528 (Digicel Australia/Telstra-operated backbone) -- global transit, not a named exchange crossing
+                (Sydney)</div>
+            <div>RIS observation count: 1321
+                &middot; measurement 212063778</div>
+            <details class="note"><summary>Tuvalu (AS23917) -&gt; Digicel Tonga (AS38198) -- a fresh TV&lt;-&gt;TO pair, an eighth independent confirmation of the AS45355(Digicel Fiji)&lt;-&gt;AS38198 adjacency (after…</summary>Tuvalu (AS23917) -&gt; Digicel Tonga (AS38198) -- a fresh TV&lt;-&gt;TO pair, an eighth independent confirmation of the AS45355(Digicel Fiji)&lt;-&gt;AS38198 adjacency (after GU, MP, VU, PF, CK, PG, PW) -- still Tonga&#x27;s only RIS-observed neighbor of consequence. `AS23917 -&gt; AS9241 (FINTEL) -&gt; AS6939 (Hurricane Electric) -&gt; AS132528 (Digicel Australia) -&gt; AS45355`, target technically reached (the same real, BGP-confirmed AS38198 address `202.43.12.5` seen on every prior entry), separated by the usual routine silent boundary hop. RIS-agreeing with the identical exact match (1,321). Crosses Equinix Sydney twice (`ixp_crossings` confirms both AS6939 and AS132528) -- the same AS132528 leg already confirmed on most prior entries for this adjacency.</details>
         </div>
 
     <h2>Confirmed local transit (RIS + Atlas both agree, stays in-fishbowl)</h2>

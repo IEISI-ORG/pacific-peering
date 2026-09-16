@@ -1870,3 +1870,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   agrees exactly (997). AS38009(PG) second PNG DataCo confirmation,
   fully contiguous this time, RIS agrees exactly (1,875). Backlog:
   352 -> 321.
+- feat(reports): add "Subregions" columns to Regional Hub
+  Concentration and Satellite Operator Pathways, same technique as
+  External Hub Concentration's. Finding: in-fishbowl regional hubs
+  stay almost entirely within their own subregion (unlike the
+  pan-regional external hubs); SES ASTRA reaches all three
+  subregions, the broadest satellite footprint.

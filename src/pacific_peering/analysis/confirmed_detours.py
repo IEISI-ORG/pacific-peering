@@ -2573,4 +2573,31 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
             "reconfirmed directly."
         ),
     ),
+    ConfirmedDetour(
+        source_cc="TV",
+        target_cc="TO",
+        target_asn=38198,
+        detour_ix_name="AS6939 (Hurricane Electric), via AS132528 (Digicel "
+        "Australia/Telstra-operated backbone) -- global transit, not a "
+        "named exchange crossing",
+        detour_hub="Sydney",
+        measurement_id=212063778,
+        ris_observation_count=1321,
+        note=(
+            "Tuvalu (AS23917) -> Digicel Tonga (AS38198) -- a fresh "
+            "TV<->TO pair, an eighth independent confirmation of the "
+            "AS45355(Digicel Fiji)<->AS38198 adjacency (after GU, MP, "
+            "VU, PF, CK, PG, PW) -- still Tonga's only RIS-observed "
+            "neighbor of consequence. `AS23917 -> AS9241 (FINTEL) -> "
+            "AS6939 (Hurricane Electric) -> AS132528 (Digicel Australia) "
+            "-> AS45355`, target technically reached (the same real, "
+            "BGP-confirmed AS38198 address `202.43.12.5` seen on every "
+            "prior entry), separated by the usual routine silent "
+            "boundary hop. RIS-agreeing with the identical exact match "
+            "(1,321). Crosses Equinix Sydney twice (`ixp_crossings` "
+            "confirms both AS6939 and AS132528) -- the same AS132528 "
+            "leg already confirmed on most prior entries for this "
+            "adjacency."
+        ),
+    ),
 )

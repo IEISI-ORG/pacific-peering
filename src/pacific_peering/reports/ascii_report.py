@@ -131,16 +131,21 @@ def render_ascii_report(data: ReportData) -> str:
     if not data.regional_hubs:
         lines.append("(none recorded yet)")
     else:
-        header = f"{'Economy':<32} {'Serves':>7} {'Corrob.':>7} {'Carriers':<40}"
+        subregion_of = {e.cc: e.subregion for e in data.economies}
+        header = f"{'Economy':<32} {'Serves':>7} {'Corrob.':>7} {'Subregions served':<28}"
         lines.append(header)
         lines.append(_rule())
         for hub in data.regional_hubs:
             name = f"{hub['economy_name']} ({hub['economy_cc']})"
+            subregions = sorted(
+                {subregion_of.get(cc) for cc in hub["dependent_economies"]} - {None}
+            )
             lines.append(
                 f"{name:<32.32} {len(hub['dependent_economies']):>7} "
-                f"{hub['corroboration_count']:>7} {', '.join(hub['carriers']):<40}"
+                f"{hub['corroboration_count']:>7} {', '.join(subregions):<28}"
             )
             lines.append(f"    Serves: {', '.join(hub['dependent_economies'])}")
+            lines.append(f"    Carriers: {', '.join(hub['carriers'])}")
 
     lines.append(_section("FINDINGS: EXTERNAL HUB CONCENTRATION"))
     lines.append(
@@ -194,14 +199,22 @@ def render_ascii_report(data: ReportData) -> str:
     if not data.satellite_pathways:
         lines.append("(none recorded yet)")
     else:
-        header = f"{'ASN':<10} {'Operator':<30} {'RIS economies':<18} {'Traceroute-confirmed':<22}"
+        subregion_of = {e.cc: e.subregion for e in data.economies}
+        header = f"{'ASN':<10} {'Operator':<30} {'Subregions reached':<28}"
         lines.append(header)
         lines.append(_rule())
         for sat in data.satellite_pathways:
+            all_economies = set(sat["ris_economies"]) | set(sat["traceroute_confirmed_economies"])
+            subregions = sorted({subregion_of.get(cc) for cc in all_economies} - {None})
             lines.append(
-                f"AS{sat['asn']:<8} {sat['name']:<30.30} "
-                f"{', '.join(sat['ris_economies']) or '(none)':<18} "
-                f"{', '.join(sat['traceroute_confirmed_economies']) or '(none)':<22}"
+                f"AS{sat['asn']:<8} {sat['name']:<30.30} {', '.join(subregions):<28}"
+            )
+            lines.append(
+                f"    RIS economies: {', '.join(sat['ris_economies']) or '(none)'}"
+            )
+            lines.append(
+                f"    Traceroute-confirmed: "
+                f"{', '.join(sat['traceroute_confirmed_economies']) or '(none)'}"
             )
     lines.append("")
     lines.append(

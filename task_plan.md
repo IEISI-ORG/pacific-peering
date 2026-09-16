@@ -2395,3 +2395,13 @@ Notable finding surfaced by this: **all three top hubs (Sydney, Tokyo, Los Angel
 3. **TV -> AS38009 (PNG, Telikom PNG)**: second independent confirmation of the AS17828(PNG DataCo)<->AS38009 adjacency (after PW), and fully contiguous this time (no gap before AS17828, unlike the PW entry). Same named HE switch port reconfirmed (`png-dataco-limited...switch1.syd1.he.net`, Sydney). RIS agrees exactly (1,875). Added as a new entry.
 
 All three: `has_routing_loop` correctly returned `False`. Called `mark_corridor_tested()` for all three pairs individually as each was classified, then did the shared regeneration/commit once at the end of the tranche, per the new working agreement. Verified: module imports cleanly (87 entries, up from 85 at tranche start); regenerated ASCII/HTML reports and the geographic map once. Regenerated the corridor backlog once: candidate count dropped 352 -> 321 (0 new-probe, 0 new-RIS-relationship).
+
+---
+
+**Mid-tranche interruption, per direct request: "Melanesia, Polynesia and Micronesia --> let's add columns on Satellite and internal regional hubs."** Extended the same subregion-tagging idea just added to External Hub Concentration to the other two tables that were still missing it: the (in-fishbowl) "Findings: Regional Hub Concentration" table and "Findings: Satellite Operator Pathways" table. Same technique as before -- no new `reports/data.py` computation, just a `cc -> subregion` lookup built from `data.economies` at render time in both `ascii_report.py` and `html_report.py`.
+
+Regional hub table: added a "Subregions served" column (based on `dependent_economies`); moved "Carriers" to a secondary detail line in the ASCII renderer to keep the main row readable. Notable finding, a clean contrast with the external-hub section: **every in-fishbowl regional hub serves almost entirely within its own subregion** -- French Polynesia -> Polynesia only, Northern Mariana Islands and Guam -> Micronesia only, Fiji spans two (Melanesia + Polynesia, via its two carriers) but none reaches all three the way Sydney/Tokyo/LA do. The region's own internal hubs stay local; only the external gateways are truly pan-regional.
+
+Satellite table: added a "Subregions reached" column (based on the union of `ris_economies` and `traceroute_confirmed_economies`). SES ASTRA reaches all three subregions (the broadest satellite footprint); Starlink and Kacific each reach two.
+
+Verified: regenerated ASCII/HTML reports and the geographic map. Did not interrupt the in-flight corridor tranche's second measurement (still polling in the background) to make this change.
