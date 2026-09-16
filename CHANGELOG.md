@@ -1804,3 +1804,8 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   CK, PG). Reproduced the known Starlink routing loop
   (206.224.66.23); not separately escalated since it's an already-
   known location. RIS agrees exactly (362). Backlog: 386 -> 385.
+- docs(analysis): PW(AS17893)->KI(AS134783), seventh corroboration
+  of the sibling BNL Tarawa chain (after GU, MP, VU, PF, CK, PG).
+  Another Starlink routing-loop reproduction, different address
+  (206.224.66.25), same known location. RIS agrees exactly (1,392).
+  Backlog: 385 -> 384.

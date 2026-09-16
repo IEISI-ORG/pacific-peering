@@ -985,7 +985,20 @@ CONFIRMED_LOCAL_TRANSIT: tuple[ConfirmedLocalTransit, ...] = (
             "AS154100`, target never resolved, identical RIS match "
             "(1,392). No IXP crossing this time. A sixth distinct "
             "source economy (Papua New Guinea, after Guam, CNMI, "
-            "Vanuatu, French Polynesia, and Cook Islands)."
+            "Vanuatu, French Polynesia, and Cook Islands). "
+            "**Seventh independent corroboration, and another "
+            "reproduction of the known Starlink routing loop** "
+            "(measurement 212043876, PW/AS17893 -> KI/AS134783, a fresh "
+            "PW<->KI pair): `AS17893 -> AS7578/AS137409 (GSL Networks, "
+            "Australia) -> AS14593 (Starlink) -> AS154100`, target never "
+            "resolved, identical RIS match (1,392). `has_routing_loop` "
+            "correctly returned `True` -- two consecutive identical "
+            "addresses (`206.224.66.25`, a different address than the "
+            "`.23` one already on record, but the same known looping "
+            "location inside AS14593's own network); not separately "
+            "escalated since it's an already-known anomaly. A seventh "
+            "distinct source economy (Palau, after Guam, CNMI, Vanuatu, "
+            "French Polynesia, Cook Islands, and Papua New Guinea)."
         ),
     ),
     ConfirmedLocalTransit(

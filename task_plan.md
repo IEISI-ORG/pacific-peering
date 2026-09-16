@@ -2298,3 +2298,11 @@ Extended the existing ONATI<->Niue entry's note (per the established per-source-
 `has_routing_loop` correctly returned `True` -- checked the raw hops directly: two consecutive identical addresses (`206.224.66.23`, hops 17-18), a reproduction of the already-known Starlink routing-loop location (not a newly-discovered anomaly, so not separately escalated, matching the established pattern of just logging known-location reproductions inline). After the loop, the traceroute recovers and reaches `202.1.22.29`, which resolves directly to AS154100 itself (checked via RIPEstat) -- consistent with the already-established chain, not a new anomaly.
 
 Extended the existing BNL Tarawa<->AS132486 entry's note rather than adding a new entry. Called `mark_corridor_tested(17893, 132486)`. Verified: module imports cleanly (still 13 entries, extension only); regenerated ASCII/HTML reports and the geographic map. Regenerated the corridor backlog: candidate count dropped 386 -> 385 (0 new-probe, 0 new-RIS-relationship).
+
+---
+
+**Next corridor pulled: AS17893 (Palau NCC) -> AS134783 (Kiribati, BNL Tarawa's other customer ASN).** Same chain again: `AS17893 -> AS7578/AS137409 (GSL Networks, Australia) -> AS14593 (Starlink) -> AS154100`, target never resolved, RIS-agreeing with the identical exact match (1,392) -- the seventh independent corroboration (after GU, MP, VU, PF, CK, PG).
+
+`has_routing_loop` correctly returned `True` again -- another reproduction of the known Starlink routing loop, this time at a different address (`206.224.66.25`, vs. the `.23` one already on record) but the same known looping location inside AS14593's own network; not separately escalated.
+
+Extended the existing BNL Tarawa<->AS134783 entry's note rather than adding a new entry. Called `mark_corridor_tested(17893, 134783)`. Verified: module imports cleanly (still 13 entries, extension only); regenerated ASCII/HTML reports and the geographic map. Regenerated the corridor backlog: candidate count dropped 385 -> 384 (0 new-probe, 0 new-RIS-relationship).
