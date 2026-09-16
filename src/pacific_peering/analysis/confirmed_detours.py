@@ -2629,4 +2629,81 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
             "pair of measurements."
         ),
     ),
+    ConfirmedDetour(
+        source_cc="TV",
+        target_cc="VU",
+        target_asn=45495,
+        detour_ix_name="Equinix Sydney",
+        detour_hub="Sydney",
+        measurement_id=212070753,
+        ris_observation_count=336,
+        note=(
+            "Tuvalu (AS23917) -> Interchange Ltd (AS45495) -- "
+            "**first-ever confirmation with AS45495 as the actual "
+            "target** (its only prior appearance in this dataclass was "
+            "as an intermediate hop in the PW->AS45935/Wantok entry, "
+            "and an earlier PW->AS45495 measurement this session went "
+            "dark with no real signal at all). `AS23917 -> AS9241 "
+            "(FINTEL) -> AS6939 (Hurricane Electric) -> AS15830 "
+            "(Equinix)`, target never resolved, but both AS6939 and "
+            "AS15830 resolve via `peeringdb_netixlan` directly at "
+            "**Equinix Sydney** (`ixp_crossings` confirms both hops), "
+            "RIS-agreeing with the identical exact match (336) -- "
+            "AS15830 (Equinix's own route-server/fabric ASN) is exactly "
+            "the real neighbor already identified for AS45495 when the "
+            "earlier PW measurement was investigated and found "
+            "inconclusive. This measurement resolves that gap with real "
+            "evidence."
+        ),
+    ),
+    ConfirmedDetour(
+        source_cc="TV",
+        target_cc="WF",
+        target_asn=45879,
+        detour_ix_name="AS6939 (Hurricane Electric), then AS5511 (Opentransit "
+        "Orange S.A.) -- global transit, not a named exchange crossing",
+        detour_hub="Los Angeles",
+        measurement_id=212072564,
+        ris_observation_count=1665,
+        note=(
+            "Tuvalu (AS23917) -> Orange Wallis & Futuna (AS45879) -- a "
+            "fresh TV<->WF pair, an eighth independent confirmation of "
+            "the AS5511(Opentransit Orange)<->AS45879 adjacency (after "
+            "GU, MP, VU, PF, CK, PG, PW): `AS23917 -> AS9241 (FINTEL) -> "
+            "AS6939 (Hurricane Electric) -> AS5511`, target never "
+            "resolved, RIS-agreeing with the identical exact match "
+            "(1,665). Hurricane Electric's own hops show a real "
+            "Palo Alto -> Ashburn transit (`pao1.he.net`, `ash1.he.net`) "
+            "before handing off to Orange, which as usual has no PTR "
+            "evidence at all for its own hops -- kept `detour_hub` as "
+            "Los Angeles per the established convention for this "
+            "adjacency, since the HE transit hops describe the path to "
+            "Orange, not Orange's own touchpoint."
+        ),
+    ),
+    ConfirmedDetour(
+        source_cc="TV",
+        target_cc="SB",
+        target_asn=45891,
+        detour_ix_name="MegaIX Sydney",
+        detour_hub="Sydney",
+        measurement_id=212073454,
+        ris_observation_count=1652,
+        note=(
+            "Tuvalu (AS23917) -> Solomon Telekom Co Ltd (AS45891) -- a "
+            "fresh TV<->SB pair, an eighth independent confirmation of "
+            "the AS139609(SISCC)<->AS45891 adjacency (after GU, MP, VU, "
+            "PF, CK, PG, PW): `AS23917 -> AS9241 (FINTEL) -> "
+            "[unresolved hop] -> AS139609`, target never resolved, RIS-"
+            "agreeing with the identical exact match (1,652). Reaches "
+            "the known SISCC address `103.142.98.131` (the same one "
+            "previously found alternating in a live routing loop this "
+            "session) but only once, then goes cleanly dark -- "
+            "`has_routing_loop` correctly returned `False`. Crosses "
+            "**MegaIX Sydney** directly (`ixp_crossings` confirms it) "
+            "-- a different named exchange than the Equinix Sydney "
+            "crossing most other entries for this adjacency use, "
+            "matching the VU entry's crossing instead."
+        ),
+    ),
 )

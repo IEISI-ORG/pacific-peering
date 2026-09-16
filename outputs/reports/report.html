@@ -56,7 +56,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
 <body>
 <div class="wrap">
     <h1>Pacific Peering — Regional Routing Report</h1>
-    <div class="meta">Generated 2026-09-16T05:03:07.447933+00:00</div>
+    <div class="meta">Generated 2026-09-16T05:29:57.615079+00:00</div>
 
     <div class="headline-banner">
         <span class="value">68%</span>
@@ -130,11 +130,11 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <td>9</td>
             <td>yes</td>
         </tr><tr>
-            <td>AS45355</td><td>Digicel Fiji</td>
-            <td>TO</td>
+            <td>AS5511</td><td>Opentransit Orange S.A.</td>
+            <td>WF</td>
             <td>CK, GU, MP, PF, PG, PW, TV, VU</td>
             <td>8</td>
-            <td>yes</td>
+            <td>no</td>
         </tr></tbody>
     </table>
     <div class="callout"><strong>AS9241 (FINTEL, Fiji)</strong> doesn't
@@ -208,21 +208,21 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <th>Dependent economies</th></tr></thead>
         <tbody><tr>
             <td>Sydney</td>
-            <td>45</td>
+            <td>47</td>
             <td>51%</td>
-            <td>13</td>
+            <td>14</td>
             <td>Melanesia, Micronesia, Polynesia</td>
             <td>AS, CK, FJ, MH, NC, PG, PW, SB, TO, VU, WS</td>
         </tr><tr>
             <td>Tokyo</td>
             <td>24</td>
-            <td>27%</td>
+            <td>26%</td>
             <td>9</td>
             <td>Melanesia, Micronesia, Polynesia</td>
             <td>AS, CK, FJ, MH, NC, NR, PF, PW, SB, VU, WF</td>
         </tr><tr>
             <td>Los Angeles</td>
-            <td>15</td>
+            <td>16</td>
             <td>17%</td>
             <td>6</td>
             <td>Melanesia, Micronesia, Polynesia</td>
@@ -251,7 +251,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
         </tr></tbody>
     </table>
     <div class="callout">Just the top 3 cities above account for
-        <strong>94%</strong> of every confirmed detour
+        <strong>95%</strong> of every confirmed detour
         this project has recorded &mdash; almost the entire region's
         out-of-fishbowl traffic funnels through three physical places.</div>
 
@@ -923,6 +923,27 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <div>RIS observation count: 1681
                 &middot; measurement 212067642</div>
             <details class="note"><summary>Tuvalu (AS23917) -&gt; a fourth FSM Telecommunications Corporation sibling ASN (AS45193) -- a fresh TV&lt;-&gt;FM pair, a fourth independent confirmation of the direct…</summary>Tuvalu (AS23917) -&gt; a fourth FSM Telecommunications Corporation sibling ASN (AS45193) -- a fresh TV&lt;-&gt;FM pair, a fourth independent confirmation of the direct AS139759&lt;-&gt;AS45193 adjacency (after PF, CK, PG). `AS23917 -&gt; AS9241 (FINTEL) -&gt; AS6939 (Hurricane Electric) -&gt; AS9246 (Teleguam Holdings/GTA) -&gt; AS139759 -&gt; AS45193`, fully contiguous -- the literal target resolves directly again, RIS-agreeing with the identical exact match (1,681). Crosses Any2West directly -- the same exchange as every prior confirmation of this relationship. Notable: this same tranche&#x27;s prior corridor (TV-&gt;AS38875, FSM&#x27;s other sibling) landed on the identical AS9246-&gt;AS139759 chain but stayed unconfirmed (candidate only, since AS38875&#x27;s real RIS neighbor is AS10130, not AS139759) -- here the direct AS139759&lt;-&gt;AS45193 pair is genuinely RIS-confirmed instead, the structural difference between this project&#x27;s `Confirmed` and `Candidate` shapes made concrete in one back-to-back pair of measurements.</details>
+        </div><div class="detour-card">
+            <div class="headline">TV -&gt; VU
+                (AS45495): detours via Equinix Sydney
+                (Sydney)</div>
+            <div>RIS observation count: 336
+                &middot; measurement 212070753</div>
+            <details class="note"><summary>Tuvalu (AS23917) -&gt; Interchange Ltd (AS45495) -- **first-ever confirmation with AS45495 as the actual target** (its only prior appearance in this dataclass was…</summary>Tuvalu (AS23917) -&gt; Interchange Ltd (AS45495) -- **first-ever confirmation with AS45495 as the actual target** (its only prior appearance in this dataclass was as an intermediate hop in the PW-&gt;AS45935/Wantok entry, and an earlier PW-&gt;AS45495 measurement this session went dark with no real signal at all). `AS23917 -&gt; AS9241 (FINTEL) -&gt; AS6939 (Hurricane Electric) -&gt; AS15830 (Equinix)`, target never resolved, but both AS6939 and AS15830 resolve via `peeringdb_netixlan` directly at **Equinix Sydney** (`ixp_crossings` confirms both hops), RIS-agreeing with the identical exact match (336) -- AS15830 (Equinix&#x27;s own route-server/fabric ASN) is exactly the real neighbor already identified for AS45495 when the earlier PW measurement was investigated and found inconclusive. This measurement resolves that gap with real evidence.</details>
+        </div><div class="detour-card">
+            <div class="headline">TV -&gt; WF
+                (AS45879): detours via AS6939 (Hurricane Electric), then AS5511 (Opentransit Orange S.A.) -- global transit, not a named exchange crossing
+                (Los Angeles)</div>
+            <div>RIS observation count: 1665
+                &middot; measurement 212072564</div>
+            <details class="note"><summary>Tuvalu (AS23917) -&gt; Orange Wallis &amp; Futuna (AS45879) -- a fresh TV&lt;-&gt;WF pair, an eighth independent confirmation of the AS5511(Opentransit Orange)&lt;-&gt;AS45879…</summary>Tuvalu (AS23917) -&gt; Orange Wallis &amp; Futuna (AS45879) -- a fresh TV&lt;-&gt;WF pair, an eighth independent confirmation of the AS5511(Opentransit Orange)&lt;-&gt;AS45879 adjacency (after GU, MP, VU, PF, CK, PG, PW): `AS23917 -&gt; AS9241 (FINTEL) -&gt; AS6939 (Hurricane Electric) -&gt; AS5511`, target never resolved, RIS-agreeing with the identical exact match (1,665). Hurricane Electric&#x27;s own hops show a real Palo Alto -&gt; Ashburn transit (`pao1.he.net`, `ash1.he.net`) before handing off to Orange, which as usual has no PTR evidence at all for its own hops -- kept `detour_hub` as Los Angeles per the established convention for this adjacency, since the HE transit hops describe the path to Orange, not Orange&#x27;s own touchpoint.</details>
+        </div><div class="detour-card">
+            <div class="headline">TV -&gt; SB
+                (AS45891): detours via MegaIX Sydney
+                (Sydney)</div>
+            <div>RIS observation count: 1652
+                &middot; measurement 212073454</div>
+            <details class="note"><summary>Tuvalu (AS23917) -&gt; Solomon Telekom Co Ltd (AS45891) -- a fresh TV&lt;-&gt;SB pair, an eighth independent confirmation of the AS139609(SISCC)&lt;-&gt;AS45891 adjacency…</summary>Tuvalu (AS23917) -&gt; Solomon Telekom Co Ltd (AS45891) -- a fresh TV&lt;-&gt;SB pair, an eighth independent confirmation of the AS139609(SISCC)&lt;-&gt;AS45891 adjacency (after GU, MP, VU, PF, CK, PG, PW): `AS23917 -&gt; AS9241 (FINTEL) -&gt; [unresolved hop] -&gt; AS139609`, target never resolved, RIS-agreeing with the identical exact match (1,652). Reaches the known SISCC address `103.142.98.131` (the same one previously found alternating in a live routing loop this session) but only once, then goes cleanly dark -- `has_routing_loop` correctly returned `False`. Crosses **MegaIX Sydney** directly (`ixp_crossings` confirms it) -- a different named exchange than the Equinix Sydney crossing most other entries for this adjacency use, matching the VU entry&#x27;s crossing instead.</details>
         </div>
 
     <h2>Confirmed local transit (RIS + Atlas both agree, stays in-fishbowl)</h2>
