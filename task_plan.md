@@ -2110,3 +2110,11 @@ Added as a new `CandidatePeering` entry. Called `mark_corridor_tested(17828, 140
 Seventh independent confirmation of the direct AS154100<->AS14593 relationship: `AS17828 -> AS4826 (Vocus Connect) -> AS14593`, identical exact RIS match (361).
 
 Extended the existing entry's note. Not a new dataclass entry -- `CONFIRMED_LOCAL_TRANSIT` count unchanged (13). Called `mark_corridor_tested(17828, 154100)`. Regenerated ASCII/HTML reports since the note text changed (render correctly); map unaffected. Regenerated the corridor backlog: candidate count dropped 494 -> 493. AS17828 is now genuinely, fully exhausted; AS17893 (Palau NCC) is the sole source.
+
+---
+
+**Next corridor pulled: AS17893 (Palau NCC) -> AS4638 (Telecom Fiji)** -- the first firing genuinely sourced from Palau. `has_routing_loop` correctly returned `False`.
+
+**The sixth time this session hitting the exact same known `202.137.178.x` gap zone** (after loop tranche 5, PTI Pacifica/AS7131, PF/AS9471, CK/AS10131, and PG/AS17828): hops 10-11 land in the identical zone (`202.137.178.52`, `.55`). This time via `AS17893 -> AS174 (Cogent) -> AS9241 (FINTEL)` -- FINTEL appearing directly in the chain this time, a genuinely different carrier path than any prior instance. `ris_agrees: False` -- AS4638's only real neighbor remains AS45349.
+
+Not filed in any dataclass, consistent with the established pattern. Called `mark_corridor_tested(17893, 4638)`. No report/map regeneration needed. Regenerated the corridor backlog: candidate count dropped 493 -> 492.

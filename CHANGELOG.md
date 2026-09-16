@@ -1688,3 +1688,8 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   the direct AS154100<->AS14593 relationship. RIS agrees exactly
   (361). Backlog: 494 -> 493. AS17828 fully exhausted; AS17893
   (Palau NCC) is the sole source.
+- docs(analysis): PW(AS17893)->FJ(AS4638) inconclusive -- sixth hit
+  on the known 202.137.178.x gap zone this session, first firing
+  sourced from Palau, via a new carrier chain involving FINTEL. RIS
+  disagrees; AS4638's only real neighbor remains AS45349. Not filed.
+  Backlog: 493 -> 492.
