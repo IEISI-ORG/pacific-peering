@@ -499,4 +499,39 @@ CANDIDATE_PEERING: tuple[CandidatePeering, ...] = (
             "standing principle."
         ),
     ),
+    CandidatePeering(
+        upstream_cc="GU",
+        upstream_asn=9246,
+        upstream_name="Teleguam Holdings, LLC (GTA)",
+        target_cc="FM",
+        target_asn=38875,
+        target_name="FSM Telecommunications Corporation",
+        measurement_id=212065242,
+        vantage_point_cc="TV",
+        probe_agreement="1/1 probe",
+        note=(
+            "Sourced from AS23917 (Tuvalu) toward AS38875 (FSM "
+            "Telecommunications Corporation) -- a fresh TV<->FM pair. "
+            "Only 1 of 3 requested probes returned (Tuvalu's usual "
+            "single-probe pattern). Fully contiguous: `AS23917 -> "
+            "AS9241 (FINTEL) -> AS6939 (Hurricane Electric) -> AS9246 "
+            "(Teleguam Holdings/GTA, resolved via PeeringDB netixlan) -> "
+            "AS139759`. The final crossing into AS9246's own registered "
+            "LAN prefix happens at **Any2West** (`ixp_crossings` "
+            "confirms it) -- unlike the prior GU-sourced entries for "
+            "this same target, which crossed the in-fishbowl **MARIIX** "
+            "instead; this is the first time this specific "
+            "AS9246<->AS38875(sibling) corridor has been reached via an "
+            "out-of-fishbowl exchange rather than an in-region one. The "
+            "literal target (AS38875) never resolved; the traceroute "
+            "lands on sibling AS139759 instead -- the same substitution "
+            "already established for this operator (GU and MP entries "
+            "above): AS38875's only RIS-observed neighbor is AS10130 "
+            "(1,014 observations), not the literal AS139759 the "
+            "traceroute resolves to. Same shape as every prior entry "
+            "for this target: a real, repeatable signal, but not RIS-"
+            "confirmed on the strict pair. Kept as a candidate, not "
+            "promoted, per the standing principle."
+        ),
+    ),
 )

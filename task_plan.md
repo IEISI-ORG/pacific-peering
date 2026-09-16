@@ -2405,3 +2405,12 @@ Regional hub table: added a "Subregions served" column (based on `dependent_econ
 Satellite table: added a "Subregions reached" column (based on the union of `ris_economies` and `traceroute_confirmed_economies`). SES ASTRA reaches all three subregions (the broadest satellite footprint); Starlink and Kacific each reach two.
 
 Verified: regenerated ASCII/HTML reports and the geographic map. Did not interrupt the in-flight corridor tranche's second measurement (still polling in the background) to make this change.
+
+---
+
+**Continuing the 3-corridor tranche (TV/AS23917 source), corridors 2 and 3 (corridor 1, TV->AS38198/Digicel Fiji, was already committed alongside the subregion-columns change above):**
+
+2. **TV -> AS38875 (FSM Telecommunications Corporation, one sibling ASN)**: same sibling-substitution shape already established for this operator (GU x4, MP x1 prior source economies) -- traceroute lands on sibling AS139759, but AS38875's real RIS neighbor is AS10130, so `ris_agrees: false` on the strict pair. New color: crosses **Any2West** (out-of-fishbowl, Los Angeles) rather than the in-fishbowl **MARIIX** the prior GU entries used -- the first time this specific corridor's final crossing left the fishbowl. Filed as a new `CandidatePeering` entry (a genuinely new source economy, TV), not promoted.
+3. **TV -> AS45193 (FSM Telecommunications Corporation, a different sibling ASN)**: fourth independent confirmation of the *direct* AS139759<->AS45193 adjacency (after PF, CK, PG) -- this one genuinely RIS-confirmed on the literal traceroute-observed pair, unlike corridor 2's sibling-substitution case. Same AS9241(FINTEL)->AS6939(HE)->AS9246(Teleguam)->AS139759 chain as corridor 2, but this target's own RIS-registered neighbor really is AS139759 -- concrete illustration of why one corridor lands as `ConfirmedDetour` and the structurally-identical-looking one right before it stays `CandidatePeering`.
+
+All three: `has_routing_loop` correctly returned `False`. Called `mark_corridor_tested()` for each pair individually, then did the shared regeneration/commit once at the end of the tranche. Verified: `confirmed_detours` module imports cleanly (89 entries, up from 87 at this sub-tranche's start), `candidate_peering` module imports cleanly (13 entries, up from 12); regenerated ASCII/HTML reports and the geographic map once. Regenerated the corridor backlog once: candidate count dropped 321 -> 311 (0 new-probe, 0 new-RIS-relationship).

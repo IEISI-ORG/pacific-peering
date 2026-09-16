@@ -1876,3 +1876,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   stay almost entirely within their own subregion (unlike the
   pan-regional external hubs); SES ASTRA reaches all three
   subregions, the broadest satellite footprint.
+- feat(analysis): TV(AS23917) tranche corridors 2-3. AS38875(FSM
+  sibling) candidate peering, new via Any2West rather than the
+  in-fishbowl MARIIX prior GU entries used. AS45193(FSM sibling)
+  fourth confirmation of the direct AS139759<->AS45193 adjacency,
+  genuinely RIS-confirmed unlike corridor 2's sibling substitution.
+  Backlog: 321 -> 311.

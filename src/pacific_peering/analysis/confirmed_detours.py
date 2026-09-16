@@ -2600,4 +2600,33 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
             "adjacency."
         ),
     ),
+    ConfirmedDetour(
+        source_cc="TV",
+        target_cc="FM",
+        target_asn=45193,
+        detour_ix_name="Any2West",
+        detour_hub="Los Angeles",
+        measurement_id=212067642,
+        ris_observation_count=1681,
+        note=(
+            "Tuvalu (AS23917) -> a fourth FSM Telecommunications "
+            "Corporation sibling ASN (AS45193) -- a fresh TV<->FM pair, "
+            "a fourth independent confirmation of the direct AS139759<->"
+            "AS45193 adjacency (after PF, CK, PG). `AS23917 -> AS9241 "
+            "(FINTEL) -> AS6939 (Hurricane Electric) -> AS9246 (Teleguam "
+            "Holdings/GTA) -> AS139759 -> AS45193`, fully contiguous -- "
+            "the literal target resolves directly again, RIS-agreeing "
+            "with the identical exact match (1,681). Crosses Any2West "
+            "directly -- the same exchange as every prior confirmation "
+            "of this relationship. Notable: this same tranche's prior "
+            "corridor (TV->AS38875, FSM's other sibling) landed on the "
+            "identical AS9246->AS139759 chain but stayed unconfirmed "
+            "(candidate only, since AS38875's real RIS neighbor is "
+            "AS10130, not AS139759) -- here the direct AS139759<->"
+            "AS45193 pair is genuinely RIS-confirmed instead, the "
+            "structural difference between this project's `Confirmed` "
+            "and `Candidate` shapes made concrete in one back-to-back "
+            "pair of measurements."
+        ),
+    ),
 )

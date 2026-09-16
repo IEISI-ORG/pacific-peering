@@ -56,7 +56,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
 <body>
 <div class="wrap">
     <h1>Pacific Peering — Regional Routing Report</h1>
-    <div class="meta">Generated 2026-09-16T04:52:56.799693+00:00</div>
+    <div class="meta">Generated 2026-09-16T05:03:07.447933+00:00</div>
 
     <div class="headline-banner">
         <span class="value">68%</span>
@@ -222,8 +222,8 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <td>AS, CK, FJ, MH, NC, NR, PF, PW, SB, VU, WF</td>
         </tr><tr>
             <td>Los Angeles</td>
-            <td>14</td>
-            <td>16%</td>
+            <td>15</td>
+            <td>17%</td>
             <td>6</td>
             <td>Melanesia, Micronesia, Polynesia</td>
             <td>FJ, FM, GU, MH, NR, WF</td>
@@ -916,6 +916,13 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <div>RIS observation count: 1321
                 &middot; measurement 212063778</div>
             <details class="note"><summary>Tuvalu (AS23917) -&gt; Digicel Tonga (AS38198) -- a fresh TV&lt;-&gt;TO pair, an eighth independent confirmation of the AS45355(Digicel Fiji)&lt;-&gt;AS38198 adjacency (after…</summary>Tuvalu (AS23917) -&gt; Digicel Tonga (AS38198) -- a fresh TV&lt;-&gt;TO pair, an eighth independent confirmation of the AS45355(Digicel Fiji)&lt;-&gt;AS38198 adjacency (after GU, MP, VU, PF, CK, PG, PW) -- still Tonga&#x27;s only RIS-observed neighbor of consequence. `AS23917 -&gt; AS9241 (FINTEL) -&gt; AS6939 (Hurricane Electric) -&gt; AS132528 (Digicel Australia) -&gt; AS45355`, target technically reached (the same real, BGP-confirmed AS38198 address `202.43.12.5` seen on every prior entry), separated by the usual routine silent boundary hop. RIS-agreeing with the identical exact match (1,321). Crosses Equinix Sydney twice (`ixp_crossings` confirms both AS6939 and AS132528) -- the same AS132528 leg already confirmed on most prior entries for this adjacency.</details>
+        </div><div class="detour-card">
+            <div class="headline">TV -&gt; FM
+                (AS45193): detours via Any2West
+                (Los Angeles)</div>
+            <div>RIS observation count: 1681
+                &middot; measurement 212067642</div>
+            <details class="note"><summary>Tuvalu (AS23917) -&gt; a fourth FSM Telecommunications Corporation sibling ASN (AS45193) -- a fresh TV&lt;-&gt;FM pair, a fourth independent confirmation of the direct…</summary>Tuvalu (AS23917) -&gt; a fourth FSM Telecommunications Corporation sibling ASN (AS45193) -- a fresh TV&lt;-&gt;FM pair, a fourth independent confirmation of the direct AS139759&lt;-&gt;AS45193 adjacency (after PF, CK, PG). `AS23917 -&gt; AS9241 (FINTEL) -&gt; AS6939 (Hurricane Electric) -&gt; AS9246 (Teleguam Holdings/GTA) -&gt; AS139759 -&gt; AS45193`, fully contiguous -- the literal target resolves directly again, RIS-agreeing with the identical exact match (1,681). Crosses Any2West directly -- the same exchange as every prior confirmation of this relationship. Notable: this same tranche&#x27;s prior corridor (TV-&gt;AS38875, FSM&#x27;s other sibling) landed on the identical AS9246-&gt;AS139759 chain but stayed unconfirmed (candidate only, since AS38875&#x27;s real RIS neighbor is AS10130, not AS139759) -- here the direct AS139759&lt;-&gt;AS45193 pair is genuinely RIS-confirmed instead, the structural difference between this project&#x27;s `Confirmed` and `Candidate` shapes made concrete in one back-to-back pair of measurements.</details>
         </div>
 
     <h2>Confirmed local transit (RIS + Atlas both agree, stays in-fishbowl)</h2>
@@ -1122,6 +1129,14 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
                 &middot; measurement 212035683
                 &middot; vantage point PW</div>
             <details class="note"><summary>Sourced from AS17893 (Palau NCC) toward AS55722 (Cenpac Net, Nauru) -- a fresh PW&lt;-&gt;NR pair…</summary>Sourced from AS17893 (Palau NCC) toward AS55722 (Cenpac Net, Nauru) -- a fresh PW&lt;-&gt;NR pair. All 3 probes show the same clean, contiguous, two-hop path: the source&#x27;s own network -&gt; a resolved address landing directly inside AS55722&#x27;s own registered LAN prefix at **Guam IX** (`ixp_crossings` confirms it, AS55722 itself as the member, ix_id 4494, in-fishbowl) -- no intermediate transit carrier hop at all. But `ris_agrees: false`: checked AS55722&#x27;s full RIS neighbor list directly -- `{7131: 1528}` -- AS17893 doesn&#x27;t appear (AS7131/PTI Pacifica is its only real RIS-observed neighbor, already confirmed as its upstream in `confirmed_local_transit`). Not a missing-data artifact: both AS17893 and AS55722 independently claim PeeringDB membership at Guam IX (`ix_id 4494`), so this is real shared-fabric corroboration on top of the traceroute evidence, matching this module&#x27;s very first entry (FSM-&gt;Palau) in shape. A distinct finding from the already-confirmed AS7131&lt;-&gt;AS55722 relationship, not a duplicate of it. Kept as a candidate, not promoted, per the standing principle.</details>
+        </div><div class="candidate-card">
+            <div class="headline">AS9246 (Teleguam Holdings, LLC (GTA),
+                GU) -&gt; AS38875
+                (FSM Telecommunications Corporation, FM)</div>
+            <div>Traceroute agreement: 1/1 probe
+                &middot; measurement 212065242
+                &middot; vantage point TV</div>
+            <details class="note"><summary>Sourced from AS23917 (Tuvalu) toward AS38875 (FSM Telecommunications Corporation) -- a fresh TV&lt;-&gt;FM pair…</summary>Sourced from AS23917 (Tuvalu) toward AS38875 (FSM Telecommunications Corporation) -- a fresh TV&lt;-&gt;FM pair. Only 1 of 3 requested probes returned (Tuvalu&#x27;s usual single-probe pattern). Fully contiguous: `AS23917 -&gt; AS9241 (FINTEL) -&gt; AS6939 (Hurricane Electric) -&gt; AS9246 (Teleguam Holdings/GTA, resolved via PeeringDB netixlan) -&gt; AS139759`. The final crossing into AS9246&#x27;s own registered LAN prefix happens at **Any2West** (`ixp_crossings` confirms it) -- unlike the prior GU-sourced entries for this same target, which crossed the in-fishbowl **MARIIX** instead; this is the first time this specific AS9246&lt;-&gt;AS38875(sibling) corridor has been reached via an out-of-fishbowl exchange rather than an in-region one. The literal target (AS38875) never resolved; the traceroute lands on sibling AS139759 instead -- the same substitution already established for this operator (GU and MP entries above): AS38875&#x27;s only RIS-observed neighbor is AS10130 (1,014 observations), not the literal AS139759 the traceroute resolves to. Same shape as every prior entry for this target: a real, repeatable signal, but not RIS-confirmed on the strict pair. Kept as a candidate, not promoted, per the standing principle.</details>
         </div>
 
     

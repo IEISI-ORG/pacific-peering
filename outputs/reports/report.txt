@@ -1,6 +1,6 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-09-16T04:52:56.647396+00:00                  
+                 Generated: 2026-09-16T05:03:07.291501+00:00                  
 ==============================================================================
 
 SUMMARY
@@ -76,7 +76,7 @@ Sydney              45    51%       13 Melanesia, Micronesia, Polynesia
     Dependent economies: AS, CK, FJ, MH, NC, PG, PW, SB, TO, VU, WS
 Tokyo               24    27%        9 Melanesia, Micronesia, Polynesia
     Dependent economies: AS, CK, FJ, MH, NC, NR, PF, PW, SB, VU, WF
-Los Angeles         14    16%        6 Melanesia, Micronesia, Polynesia
+Los Angeles         15    17%        6 Melanesia, Micronesia, Polynesia
     Dependent economies: FJ, FM, GU, MH, NR, WF
 Portland             2     2%        1 Polynesia
     Dependent economies: AS
@@ -371,6 +371,9 @@ TV -> PG (AS38009): detours via AS6939 (Hurricane Electric) -- global transit, n
 TV -> TO (AS38198): detours via AS6939 (Hurricane Electric), via AS132528 (Digicel Australia/Telstra-operated backbone) -- global transit, not a named exchange crossing (Sydney)
     RIS observation count: 1321  [measurement 212063778]
     Tuvalu (AS23917) -> Digicel Tonga (AS38198) -- a fresh TV<->TO pair, an eighth independent confirmation of the AS45355(Digicel Fiji)<->AS38198 adjacency (after GU, MP, VU, PF, CK, PG, PW) -- still Tonga's only RIS-observed neighbor of consequence. `AS23917 -> AS9241 (FINTEL) -> AS6939 (Hurricane Electric) -> AS132528 (Digicel Australia) -> AS45355`, target technically reached (the same real, BGP-confirmed AS38198 address `202.43.12.5` seen on every prior entry), separated by the usual routine silent boundary hop. RIS-agreeing with the identical exact match (1,321). Crosses Equinix Sydney twice (`ixp_crossings` confirms both AS6939 and AS132528) -- the same AS132528 leg already confirmed on most prior entries for this adjacency.
+TV -> FM (AS45193): detours via Any2West (Los Angeles)
+    RIS observation count: 1681  [measurement 212067642]
+    Tuvalu (AS23917) -> a fourth FSM Telecommunications Corporation sibling ASN (AS45193) -- a fresh TV<->FM pair, a fourth independent confirmation of the direct AS139759<->AS45193 adjacency (after PF, CK, PG). `AS23917 -> AS9241 (FINTEL) -> AS6939 (Hurricane Electric) -> AS9246 (Teleguam Holdings/GTA) -> AS139759 -> AS45193`, fully contiguous -- the literal target resolves directly again, RIS-agreeing with the identical exact match (1,681). Crosses Any2West directly -- the same exchange as every prior confirmation of this relationship. Notable: this same tranche's prior corridor (TV->AS38875, FSM's other sibling) landed on the identical AS9246->AS139759 chain but stayed unconfirmed (candidate only, since AS38875's real RIS neighbor is AS10130, not AS139759) -- here the direct AS139759<->AS45193 pair is genuinely RIS-confirmed instead, the structural difference between this project's `Confirmed` and `Candidate` shapes made concrete in one back-to-back pair of measurements.
 
 CONFIRMED LOCAL TRANSIT (RIS + Atlas both agree, stays in-fishbowl)
 ==============================================================================
@@ -452,6 +455,9 @@ AS1221 (Telstra Limited (domestic ASN), PG) -> AS140504 (Digicel Nauru Corporati
 AS17893 (Palau National Communications Corp, PW) -> AS55722 (Cenpac Net Inc, NR)
     Traceroute agreement: 3/3 probes  [measurement 212035683, vantage: PW]
     Sourced from AS17893 (Palau NCC) toward AS55722 (Cenpac Net, Nauru) -- a fresh PW<->NR pair. All 3 probes show the same clean, contiguous, two-hop path: the source's own network -> a resolved address landing directly inside AS55722's own registered LAN prefix at **Guam IX** (`ixp_crossings` confirms it, AS55722 itself as the member, ix_id 4494, in-fishbowl) -- no intermediate transit carrier hop at all. But `ris_agrees: false`: checked AS55722's full RIS neighbor list directly -- `{7131: 1528}` -- AS17893 doesn't appear (AS7131/PTI Pacifica is its only real RIS-observed neighbor, already confirmed as its upstream in `confirmed_local_transit`). Not a missing-data artifact: both AS17893 and AS55722 independently claim PeeringDB membership at Guam IX (`ix_id 4494`), so this is real shared-fabric corroboration on top of the traceroute evidence, matching this module's very first entry (FSM->Palau) in shape. A distinct finding from the already-confirmed AS7131<->AS55722 relationship, not a duplicate of it. Kept as a candidate, not promoted, per the standing principle.
+AS9246 (Teleguam Holdings, LLC (GTA), GU) -> AS38875 (FSM Telecommunications Corporation, FM)
+    Traceroute agreement: 1/1 probe  [measurement 212065242, vantage: TV]
+    Sourced from AS23917 (Tuvalu) toward AS38875 (FSM Telecommunications Corporation) -- a fresh TV<->FM pair. Only 1 of 3 requested probes returned (Tuvalu's usual single-probe pattern). Fully contiguous: `AS23917 -> AS9241 (FINTEL) -> AS6939 (Hurricane Electric) -> AS9246 (Teleguam Holdings/GTA, resolved via PeeringDB netixlan) -> AS139759`. The final crossing into AS9246's own registered LAN prefix happens at **Any2West** (`ixp_crossings` confirms it) -- unlike the prior GU-sourced entries for this same target, which crossed the in-fishbowl **MARIIX** instead; this is the first time this specific AS9246<->AS38875(sibling) corridor has been reached via an out-of-fishbowl exchange rather than an in-region one. The literal target (AS38875) never resolved; the traceroute lands on sibling AS139759 instead -- the same substitution already established for this operator (GU and MP entries above): AS38875's only RIS-observed neighbor is AS10130 (1,014 observations), not the literal AS139759 the traceroute resolves to. Same shape as every prior entry for this target: a real, repeatable signal, but not RIS-confirmed on the strict pair. Kept as a candidate, not promoted, per the standing principle.
 
 ECONOMIES
 ==============================================================================
