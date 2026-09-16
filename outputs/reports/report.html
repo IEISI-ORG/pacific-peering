@@ -56,7 +56,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
 <body>
 <div class="wrap">
     <h1>Pacific Peering — Regional Routing Report</h1>
-    <div class="meta">Generated 2026-09-16T23:22:20.644239+00:00</div>
+    <div class="meta">Generated 2026-09-16T23:30:40.999708+00:00</div>
 
     <div class="headline-banner">
         <span class="value">68%</span>
@@ -1706,6 +1706,67 @@ Sourced from AS17828 (PNG DataCo) toward AS140504 (Digicel Nauru) -- a fresh PG&
 
 NU(AS55885) -&gt; AS150403: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS139609 -&gt; AS150403`, same mismatch already found via FM -- real relationship is AS45891 (331 of 331 observations), not SISCC directly. Second candidate entry for this target. `has_routing_loop` False.</details>
         </div>
+
+    <h2>ASPA progress (RFC 9582 upstream-authorization adoption)</h2>
+    <p class="section-intro">
+        <strong>16 of 163</strong> in-scope ASNs
+        now publish an ASPA record (3104 total across the
+        whole internet, per Cloudflare Radar). Adoption is still early &mdash; absence
+        means "not published yet," not "no real upstream." Per economy: how many of its
+        own ASNs publish a record, and the distinct upstream ASNs those records declare,
+        split by whether the declared provider is itself an in-scope Pacific ASN or an
+        external carrier.
+    </p>
+    <table>
+        <thead><tr><th>CC</th><th>Name</th><th>ASNs</th><th>w/ ASPA</th>
+            <th>Upstream (in-fishbowl)</th><th>Upstream (external)</th></tr></thead>
+        <tbody><tr>
+            <td>CK</td><td>Cook Islands</td>
+            <td>2</td><td>1</td>
+            <td>0</td>
+            <td>3</td>
+        </tr><tr>
+            <td>FJ</td><td>Fiji</td>
+            <td>20</td><td>4</td>
+            <td>2</td>
+            <td>3</td>
+        </tr><tr>
+            <td>GU</td><td>Guam</td>
+            <td>10</td><td>1</td>
+            <td>1</td>
+            <td>0</td>
+        </tr><tr>
+            <td>NR</td><td>Nauru</td>
+            <td>5</td><td>3</td>
+            <td>3</td>
+            <td>3</td>
+        </tr><tr>
+            <td>PG</td><td>Papua New Guinea</td>
+            <td>39</td><td>2</td>
+            <td>1</td>
+            <td>1</td>
+        </tr><tr>
+            <td>TO</td><td>Tonga</td>
+            <td>5</td><td>3</td>
+            <td>3</td>
+            <td>4</td>
+        </tr><tr>
+            <td>VU</td><td>Vanuatu</td>
+            <td>12</td><td>1</td>
+            <td>1</td>
+            <td>0</td>
+        </tr><tr>
+            <td>WS</td><td>Samoa</td>
+            <td>10</td><td>1</td>
+            <td>0</td>
+            <td>1</td>
+        </tr></tbody>
+    </table>
+    <!-- TODO: once enough ASPA-confirmed findings exist, add a "certified
+         supply" marker to the Confirmed Local Transit / Candidate Peering
+         sections above so an ASPA-backed confirmation is visually
+         distinguishable from a RIS-agreement-only one (see
+         store.mark_aspa_checked's aspa_confirmed field, already tracked). -->
 
     
         <h2>Visualizations</h2>

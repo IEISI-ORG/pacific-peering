@@ -260,6 +260,17 @@ def render_html_report(data: ReportData, viz_dir: Path | None = Path("../viz")) 
         for ix in data.ixps
     )
 
+    aspa_economy_rows = "".join(
+        f"""<tr>
+            <td>{html.escape(e.cc)}</td><td>{html.escape(e.name)}</td>
+            <td>{e.asn_count}</td><td>{e.asns_with_aspa}</td>
+            <td>{e.unique_upstream_in_fishbowl}</td>
+            <td>{e.unique_upstream_out_of_fishbowl}</td>
+        </tr>"""
+        for e in data.aspa_economies
+        if e.asns_with_aspa
+    ) or "<p>(no in-scope ASN publishes an ASPA record yet)</p>"
+
     viz_html = ""
     if viz_dir is not None:
         viz_html = f"""
@@ -398,6 +409,27 @@ def render_html_report(data: ReportData, viz_dir: Path | None = Path("../viz")) 
 
     <h2>Candidate peering (strong traceroute signal, RIS disagrees &mdash; unconfirmed)</h2>
     {candidate_cards}
+
+    <h2>ASPA progress (RFC 9582 upstream-authorization adoption)</h2>
+    <p class="section-intro">
+        <strong>{data.aspa_asns_with_record} of {data.total_asns}</strong> in-scope ASNs
+        now publish an ASPA record ({data.aspa_global_total_records} total across the
+        whole internet, per Cloudflare Radar). Adoption is still early &mdash; absence
+        means "not published yet," not "no real upstream." Per economy: how many of its
+        own ASNs publish a record, and the distinct upstream ASNs those records declare,
+        split by whether the declared provider is itself an in-scope Pacific ASN or an
+        external carrier.
+    </p>
+    <table>
+        <thead><tr><th>CC</th><th>Name</th><th>ASNs</th><th>w/ ASPA</th>
+            <th>Upstream (in-fishbowl)</th><th>Upstream (external)</th></tr></thead>
+        <tbody>{aspa_economy_rows}</tbody>
+    </table>
+    <!-- TODO: once enough ASPA-confirmed findings exist, add a "certified
+         supply" marker to the Confirmed Local Transit / Candidate Peering
+         sections above so an ASPA-backed confirmation is visually
+         distinguishable from a RIS-agreement-only one (see
+         store.mark_aspa_checked's aspa_confirmed field, already tracked). -->
 
     {viz_html}
 

@@ -278,6 +278,36 @@ def render_ascii_report(data: ReportData) -> str:
         )
         lines.append(f"    {candidate['note']}")
 
+    lines.append(_section("ASPA PROGRESS (RFC 9582 upstream-authorization adoption)"))
+    lines.append(
+        f"{data.aspa_asns_with_record} of {data.total_asns} in-scope ASNs now publish an "
+        f"ASPA record ({data.aspa_global_total_records} total across the whole internet, "
+        "per Cloudflare Radar). Adoption is still early -- absence means "
+        "'not published yet', not 'no real upstream'. Per-economy: how many of its own "
+        "ASNs publish a record, and the distinct upstream ASNs those records declare, "
+        "split by whether the declared provider is itself an in-scope Pacific ASN or an "
+        "external carrier."
+    )
+    lines.append(
+        f"{'CC':<4} {'Name':<24} {'ASNs':>5} {'w/ ASPA':>8} "
+        f"{'Upstr in-FB':>12} {'Upstr ext':>10}"
+    )
+    lines.append(_rule())
+    for e in data.aspa_economies:
+        if e.asns_with_aspa == 0:
+            continue
+        lines.append(
+            f"{e.cc:<4} {e.name:<24.24} {e.asn_count:>5} {e.asns_with_aspa:>8} "
+            f"{e.unique_upstream_in_fishbowl:>12} {e.unique_upstream_out_of_fishbowl:>10}"
+        )
+    if not any(e.asns_with_aspa for e in data.aspa_economies):
+        lines.append("(no in-scope ASN publishes an ASPA record yet)")
+    # TODO: once enough ASPA-confirmed findings exist, add a "certified
+    # supply" marker to the Confirmed Local Transit / Candidate Peering
+    # sections above so an ASPA-backed confirmation is visually
+    # distinguishable from a RIS-agreement-only one (see
+    # store.mark_aspa_checked's aspa_confirmed field, already tracked).
+
     lines.append(_section("ECONOMIES"))
     header = f"{'CC':<4} {'Name':<32} {'Subregion':<12} {'ASNs':>5} {'Nbr':>5} {'IXP':>5} {'Fac':>5}"
     lines.append(header)

@@ -19,6 +19,7 @@ etc. keeps working completely unchanged.
 from __future__ import annotations
 
 import json
+import logging
 import re
 from dataclasses import asdict, dataclass
 from datetime import datetime, timezone
@@ -28,7 +29,10 @@ from pacific_peering.analysis import store as _store
 from pacific_peering.analysis.fishbowl import DEFAULT_SUMMARY_PATH
 from pacific_peering.analysis.ixp_lan_registry import DEFAULT_REGISTRY_PATH
 from pacific_peering.analysis.traceroute_topology import DEFAULT_TRIANGULATION_DIR
+from pacific_peering.discovery import cloudflare_radar
 from pacific_peering.discovery.registry import DEFAULT_OUTPUT_PATH
+
+logger = logging.getLogger(__name__)
 
 _conn = _store.connect()
 CONFIRMED_DETOURS = _store.load_confirmed_detours(_conn)
@@ -577,6 +581,31 @@ class IxpSummary:
 
 
 @dataclass(frozen=True)
+class AspaEconomySummary:
+    """One economy's ASPA (RFC 9582) adoption progress.
+
+    `asns_with_aspa` is how many of this economy's own in-scope ASNs
+    currently publish an ASPA record at all (via Cloudflare Radar --
+    see `discovery/cloudflare_radar.py`) -- adoption is still early, so
+    this is a progress count, not a completeness one. The two upstream
+    columns are the distinct provider ASNs those records declare, split
+    by the same in/out-of-fishbowl distinction this report already uses
+    for IXPs and detour hubs: an in-fishbowl provider is itself one of
+    this project's in-scope Pacific ASNs (a regional relationship an
+    ASPA record newly corroborates), an out-of-fishbowl one is an
+    external carrier (the more common case -- most Pacific ASNs'
+    genuine upstream is a Tier-1 outside the region).
+    """
+
+    cc: str
+    name: str
+    asn_count: int
+    asns_with_aspa: int
+    unique_upstream_in_fishbowl: int
+    unique_upstream_out_of_fishbowl: int
+
+
+@dataclass(frozen=True)
 class ReportData:
     """Everything both report formats render from."""
 
@@ -591,6 +620,9 @@ class ReportData:
     ixp_registry_tba: int
     economies: tuple[EconomySummary, ...]
     ixps: tuple[IxpSummary, ...]
+    aspa_economies: tuple[AspaEconomySummary, ...]
+    aspa_asns_with_record: int
+    aspa_global_total_records: int
     transit_suppliers: tuple[dict, ...]
     regional_hubs: tuple[dict, ...]
     external_hubs: tuple[dict, ...]
@@ -619,6 +651,86 @@ class ReportData:
         if total == 0:
             return 0.0
         return self.ixp_registry_out_of_fishbowl / total
+
+
+@dataclass(frozen=True)
+class _AspaProgress:
+    economies: tuple[AspaEconomySummary, ...]
+    asns_with_record: int
+    global_total_records: int
+
+
+def _zero_aspa_progress(registry: dict) -> _AspaProgress:
+    return _AspaProgress(
+        economies=tuple(
+            AspaEconomySummary(
+                cc=cc, name=entry["name"], asn_count=len(entry["asns"]),
+                asns_with_aspa=0, unique_upstream_in_fishbowl=0,
+                unique_upstream_out_of_fishbowl=0,
+            )
+            for cc, entry in sorted(registry.items())
+        ),
+        asns_with_record=0,
+        global_total_records=0,
+    )
+
+
+def _compute_aspa_progress(registry: dict, fishbowl_asns: set[int]) -> _AspaProgress:
+    """Per-economy ASPA adoption, reading the same locally-cached
+    Cloudflare Radar snapshot `auto_classify.recheck_aspa_candidates()`
+    uses -- one snapshot fetch total, not one per ASN, and no live API
+    call at all on a plain report regeneration if the cache is fresh.
+
+    Report generation must never depend on this succeeding: a missing
+    token, an expired cache needing a live refetch, or a transient
+    Cloudflare API error would otherwise take down the *entire* report
+    (this runs from `_regenerate_artifacts()`, unattended, every nightly
+    /weekly cron run) over one optional section. Degrades to all-zero
+    ASPA data instead, same posture `ris/ripestat.py` already takes for
+    its own network calls.
+    """
+    try:
+        snapshot = cloudflare_radar.fetch_aspa_snapshot()
+    except Exception:
+        logger.warning(
+            "ASPA progress data unavailable this run (missing token, "
+            "network error, or API failure) -- reporting zero for all "
+            "economies rather than failing the whole report",
+            exc_info=True,
+        )
+        return _zero_aspa_progress(registry)
+
+    summaries = []
+    for cc, entry in sorted(registry.items()):
+        asns = entry["asns"]
+        with_aspa = 0
+        upstream_in_fishbowl: set[int] = set()
+        upstream_out_of_fishbowl: set[int] = set()
+        for asn in asns:
+            providers = snapshot.get(asn)
+            if providers is None:
+                continue
+            with_aspa += 1
+            for provider in providers:
+                if provider in fishbowl_asns:
+                    upstream_in_fishbowl.add(provider)
+                else:
+                    upstream_out_of_fishbowl.add(provider)
+        summaries.append(
+            AspaEconomySummary(
+                cc=cc,
+                name=entry["name"],
+                asn_count=len(asns),
+                asns_with_aspa=with_aspa,
+                unique_upstream_in_fishbowl=len(upstream_in_fishbowl),
+                unique_upstream_out_of_fishbowl=len(upstream_out_of_fishbowl),
+            )
+        )
+    return _AspaProgress(
+        economies=tuple(summaries),
+        asns_with_record=sum(s.asns_with_aspa for s in summaries),
+        global_total_records=len(snapshot),
+    )
 
 
 def build_report_data(
@@ -691,6 +803,7 @@ def build_report_data(
     satellite_narrative = tuple(
         describe_satellite_pathway(s, economy_names) for s in satellite_pathways
     )
+    aspa_progress = _compute_aspa_progress(registry, set(asn_to_cc))
 
     return ReportData(
         generated_at=datetime.now(timezone.utc).isoformat(),
@@ -708,6 +821,9 @@ def build_report_data(
         ixp_registry_tba=sum(1 for v in ixp_registry.values() if v["in_fishbowl"] == "TBA"),
         economies=tuple(economies),
         ixps=ixps,
+        aspa_economies=aspa_progress.economies,
+        aspa_asns_with_record=aspa_progress.asns_with_record,
+        aspa_global_total_records=aspa_progress.global_total_records,
         transit_suppliers=transit_suppliers,
         regional_hubs=regional_hubs,
         external_hubs=external_hubs,

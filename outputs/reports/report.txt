@@ -1,6 +1,6 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-09-16T23:22:20.452784+00:00                  
+                 Generated: 2026-09-16T23:30:40.785275+00:00                  
 ==============================================================================
 
 SUMMARY
@@ -732,6 +732,20 @@ AS139609 (SISCC, SB) -> AS150403 (Solomon Islands National Provident Fund Board,
 ---
 
 NU(AS55885) -> AS150403: `AS55885 -> AS9471 -> AS6939 -> AS139609 -> AS150403`, same mismatch already found via FM -- real relationship is AS45891 (331 of 331 observations), not SISCC directly. Second candidate entry for this target. `has_routing_loop` False.
+
+ASPA PROGRESS (RFC 9582 upstream-authorization adoption)
+==============================================================================
+16 of 163 in-scope ASNs now publish an ASPA record (3104 total across the whole internet, per Cloudflare Radar). Adoption is still early -- absence means 'not published yet', not 'no real upstream'. Per-economy: how many of its own ASNs publish a record, and the distinct upstream ASNs those records declare, split by whether the declared provider is itself an in-scope Pacific ASN or an external carrier.
+CC   Name                      ASNs  w/ ASPA  Upstr in-FB  Upstr ext
+------------------------------------------------------------------------------
+CK   Cook Islands                 2        1            0          3
+FJ   Fiji                        20        4            2          3
+GU   Guam                        10        1            1          0
+NR   Nauru                        5        3            3          3
+PG   Papua New Guinea            39        2            1          1
+TO   Tonga                        5        3            3          4
+VU   Vanuatu                     12        1            1          0
+WS   Samoa                       10        1            0          1
 
 ECONOMIES
 ==============================================================================
