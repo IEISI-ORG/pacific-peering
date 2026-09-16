@@ -1717,3 +1717,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   Layer, GSL Networks, and Starlink as transit toward Tuvalu
   specifically. RIS agrees exactly (1,009). Extended existing entry,
   no new entry. Backlog: 462 -> 460.
+- docs(analysis): PW(AS17893)->VU(AS23959) inconclusive -- traceroute
+  reached the destination IP directly, but hops 9-13 went dark first,
+  so the true immediate upstream is unknown. RIS shows AS23959 as
+  single-homed to AS4785 only; AS2497 (IIJ) never appears. Not filed
+  (gap disqualifies it from CandidatePeering's "clean" bar). Backlog:
+  460 -> 459.
