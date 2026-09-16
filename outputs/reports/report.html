@@ -56,7 +56,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
 <body>
 <div class="wrap">
     <h1>Pacific Peering — Regional Routing Report</h1>
-    <div class="meta">Generated 2026-09-16T09:27:10.130168+00:00</div>
+    <div class="meta">Generated 2026-09-16T10:04:58.012166+00:00</div>
 
     <div class="headline-banner">
         <span class="value">68%</span>
@@ -88,29 +88,35 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <th>Vantage-only economies</th><th>Corrob.</th>
             <th>Regional</th></tr></thead>
         <tbody><tr>
+            <td>AS174</td><td>Cogent Communications</td>
+            <td>AS, FJ, PW, TO, WS</td>
+            <td>CK, FM, GU, PF</td>
+            <td>10</td>
+            <td>no</td>
+        </tr><tr>
             <td>AS6939</td><td>Hurricane Electric</td>
             <td>GU, PG, PW, WS</td>
             <td>CK, MP, PF, TV</td>
             <td>11</td>
             <td>no</td>
         </tr><tr>
-            <td>AS174</td><td>Cogent Communications</td>
-            <td>AS, FJ, PW, WS</td>
-            <td>CK, GU, PF</td>
-            <td>8</td>
-            <td>no</td>
-        </tr><tr>
             <td>AS6453</td><td>Tata Communications</td>
             <td>MH, NR</td>
-            <td>CK, FJ, GU, MP, NC, PF, PG, PW, TV, VU</td>
-            <td>12</td>
+            <td>CK, FJ, FM, GU, MP, NC, PF, PG, PW, TV, VU</td>
+            <td>14</td>
             <td>no</td>
         </tr><tr>
             <td>AS132528</td><td>Digicel Australia/Telstra-operated backbone</td>
             <td>FJ, WS</td>
-            <td>NC, VU</td>
-            <td>2</td>
+            <td>FM, NC, VU</td>
+            <td>3</td>
             <td>no</td>
+        </tr><tr>
+            <td>AS17993</td><td>Vodafone Samoa</td>
+            <td>AS, WS</td>
+            <td>FM, NC</td>
+            <td>3</td>
+            <td>yes</td>
         </tr><tr>
             <td>AS3605</td><td>Guam Cablevision, LLC</td>
             <td>GU, PW</td>
@@ -129,12 +135,6 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <td>(none)</td>
             <td>10</td>
             <td>yes</td>
-        </tr><tr>
-            <td>AS5511</td><td>Opentransit Orange S.A.</td>
-            <td>WF</td>
-            <td>CK, FJ, GU, MP, NC, PF, PG, PW, TV, VU</td>
-            <td>10</td>
-            <td>no</td>
         </tr></tbody>
     </table>
     <div class="callout"><strong>AS9241 (FINTEL, Fiji)</strong> doesn't
@@ -208,28 +208,28 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <th>Dependent economies</th></tr></thead>
         <tbody><tr>
             <td>Sydney</td>
-            <td>55</td>
-            <td>50%</td>
-            <td>16</td>
+            <td>67</td>
+            <td>53%</td>
+            <td>20</td>
             <td>Melanesia, Micronesia, Polynesia</td>
             <td>AS, CK, FJ, MH, NC, PG, PW, SB, TO, VU, WS</td>
         </tr><tr>
             <td>Los Angeles</td>
-            <td>27</td>
-            <td>25%</td>
+            <td>30</td>
+            <td>24%</td>
             <td>7</td>
             <td>Melanesia, Micronesia, Polynesia</td>
             <td>FJ, FM, GU, MH, NR, PF, WF</td>
         </tr><tr>
             <td>Tokyo</td>
             <td>21</td>
-            <td>19%</td>
+            <td>17%</td>
             <td>8</td>
             <td>Melanesia, Micronesia, Polynesia</td>
             <td>AS, CK, FJ, MH, NC, NR, PW, SB, VU, WF</td>
         </tr><tr>
             <td>San Jose</td>
-            <td>4</td>
+            <td>5</td>
             <td>4%</td>
             <td>1</td>
             <td>Polynesia</td>
@@ -285,7 +285,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <td>Melanesia, Polynesia</td>
             <td>PG, TO</td>
             <td>TO</td>
-            <td>FJ, NC</td>
+            <td>FJ, FM, NC</td>
         </tr></tbody>
     </table>
     <div class="callout"><strong>Per-operator evidence summary</strong>,
@@ -294,7 +294,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
         reachability was confirmed to depend on this operator;
         &ldquo;vantage points&rdquo; just means a traceroute was fired
         from there, which is a measure of testing breadth, not reach:
-        <ul><li>AS14593 (SpaceX Starlink) is traceroute-confirmed reaching Kiribati (KI), Tuvalu (TV), tested from 3 distinct vantage points (Micronesia, Federated States of (FM), Guam (GU), Tuvalu (TV)).</li><li>AS12684 (SES ASTRA S.A.) is traceroute-confirmed reaching Nauru (NR), tested from 5 distinct vantage points (Cook Islands (CK), Fiji (FJ), French Polynesia (PF), Papua New Guinea (PG), Tuvalu (TV)). Still untested: Cook Islands (CK), Kiribati (KI), Papua New Guinea (PG) -- a real RIS-observed relationship this project has never traceroute-confirmed.</li><li>AS135409 (Kacific Broadband Satellites) is traceroute-confirmed reaching Tonga (TO), tested from 2 distinct vantage points (Fiji (FJ), New Caledonia (NC)). Still untested: Papua New Guinea (PG) -- a real RIS-observed relationship this project has never traceroute-confirmed.</li></ul>
+        <ul><li>AS14593 (SpaceX Starlink) is traceroute-confirmed reaching Kiribati (KI), Tuvalu (TV), tested from 3 distinct vantage points (Micronesia, Federated States of (FM), Guam (GU), Tuvalu (TV)).</li><li>AS12684 (SES ASTRA S.A.) is traceroute-confirmed reaching Nauru (NR), tested from 5 distinct vantage points (Cook Islands (CK), Fiji (FJ), French Polynesia (PF), Papua New Guinea (PG), Tuvalu (TV)). Still untested: Cook Islands (CK), Kiribati (KI), Papua New Guinea (PG) -- a real RIS-observed relationship this project has never traceroute-confirmed.</li><li>AS135409 (Kacific Broadband Satellites) is traceroute-confirmed reaching Tonga (TO), tested from 3 distinct vantage points (Fiji (FJ), Micronesia, Federated States of (FM), New Caledonia (NC)). Still untested: Papua New Guinea (PG) -- a real RIS-observed relationship this project has never traceroute-confirmed.</li></ul>
     </div>
 
     <h2>Confirmed sub-optimal routes (RIS + Atlas both agree)</h2>
@@ -1041,6 +1041,13 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
                 &middot; measurement 212136107</div>
             <details class="note"><summary>New Caledonia (AS45345) -&gt; Solomon Telekom Co Ltd (AS45891) -- a fresh NC&lt;-&gt;SB pair, a tenth independent confirmation of the AS139609(SISCC)&lt;-&gt;AS45891…</summary>New Caledonia (AS45345) -&gt; Solomon Telekom Co Ltd (AS45891) -- a fresh NC&lt;-&gt;SB pair, a tenth independent confirmation of the AS139609(SISCC)&lt;-&gt;AS45891 adjacency (after GU, MP, VU, PF, CK, PG, PW, TV, FJ): `AS45345 -&gt; AS18200 (OPT-NC) -&gt; AS139609`, fully contiguous, target never resolved, RIS-agreeing with the identical exact match (1,652) on all 3 probes. Crosses MegaIX Sydney directly. `has_routing_loop` correctly flagged `True` on all 3 probes this time -- the known SISCC loop-history address `103.142.98.131` reappears after a run of silent hops (the alternating/interleaved shape the function&#x27;s own rolling-window check is built to catch, not a fresh location), the target never resolved -- an already-documented anomaly, not escalated again.</details>
         </div><div class="detour-card">
+            <div class="headline">FM -&gt; SB
+                (AS45891): detours via MegaIX Sydney
+                (Sydney)</div>
+            <div>RIS observation count: 663
+                &middot; measurement 212143008</div>
+            <details class="note"><summary>Eleventh independent confirmation of AS139609(SISCC)&lt;-&gt;AS45891, sourced by attempting AS134525 (Solomon Telekom&#x27;s other ASN) -- the traceroute landed on…</summary>Eleventh independent confirmation of AS139609(SISCC)&lt;-&gt;AS45891, sourced by attempting AS134525 (Solomon Telekom&#x27;s other ASN) -- the traceroute landed on AS45891 (the sibling) instead of the literal target, the same substitution pattern established elsewhere (FSM, BNL Tarawa). `AS139759 -&gt; AS9246 -&gt; AS4637 -&gt; AS139609 -&gt; AS45891`, RIS agrees exactly (663 -- a smaller count than prior entries&#x27; 1,652, RIS&#x27;s current-state snapshot having shifted; checked fresh: AS45891&#x27;s full neighbor list is now `{139609: 8934, 135409: 331}`, still dominant). `has_routing_loop` flagged `True` on 1 of 3 probes -- touches `103.142.98.129`, adjacent to the known SISCC loop address `103.142.98.131`, then a later interleaved repeat; the same already-documented anomaly class, not escalated.</details>
+        </div><div class="detour-card">
             <div class="headline">TV -&gt; PF
                 (AS55943): detours via AS3257 (GTT Communications) -- global transit, not a named exchange crossing
                 (Los Angeles)</div>
@@ -1068,6 +1075,111 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <div>RIS observation count: 331
                 &middot; measurement 212128889</div>
             <details class="note"><summary>New Caledonia (AS45345) -&gt; Tonga Communications Internet Network (AS38201, KaliaNet) -- a fresh NC&lt;-&gt;TO pair, a second independent confirmation of the…</summary>New Caledonia (AS45345) -&gt; Tonga Communications Internet Network (AS38201, KaliaNet) -- a fresh NC&lt;-&gt;TO pair, a second independent confirmation of the AS135409(Kacific)&lt;-&gt;AS38201 adjacency (after FJ, the project&#x27;s first-ever confirmation for this target). Fully contiguous on all 3 probes: `AS45345 -&gt; AS18200 (OPT-NC) -&gt; AS7594 (On Q Communications, Australia) -&gt; AS135409 (Kacific)`, target never resolved, RIS-agreeing with the identical exact match (331). Crosses Equinix Sydney directly, the same AS7594 leg already confirmed on the FJ entry. `has_routing_loop` correctly flagged `True` on all 3 probes -- hops 4 and 5 both resolve to `45.127.173.66`, inside this project&#x27;s already-registered Equinix Sydney LAN prefix, the same ordinary IXP-fabric pattern already established twice this tranche; not escalated. A second distinct source economy (New Caledonia, after Fiji) confirming this satellite relationship.</details>
+        </div><div class="detour-card">
+            <div class="headline">FM -&gt; AS
+                (AS9751): detours via AS3356 (Level 3/Lumen), then AS11404 (Wave Broadband) -- global transit, not a named exchange crossing
+                (San Jose)</div>
+            <div>RIS observation count: 267
+                &middot; measurement 212142987</div>
+            <details class="note"><summary>Eleventh confirmation of AS11404&lt;-&gt;AS9751 (after GU, MP, VU, PG, TV, FJ, NC, and others)…</summary>Eleventh confirmation of AS11404&lt;-&gt;AS9751 (after GU, MP, VU, PG, TV, FJ, NC, and others). `AS139759 -&gt; AS9246 (Teleguam/GTA) -&gt; AS3356 (Level 3/Lumen, new intermediate) -&gt; AS11404 -&gt; AS9751`, RIS agrees exactly (267) on all 3 probes. `has_routing_loop` False.</details>
+        </div><div class="detour-card">
+            <div class="headline">FM -&gt; WS
+                (AS17993): detours via AS174 (Cogent Communications) -- global transit, not a named exchange crossing
+                (Sydney)</div>
+            <div>RIS observation count: 1455
+                &middot; measurement 212142988</div>
+            <details class="note"><summary>**A genuinely new confirmed relationship for this target**: AS174(Cogent)&lt;-&gt;AS17993, distinct from the already-established AS6939(Hurricane Electric)&lt;-&gt;AS17993…</summary>**A genuinely new confirmed relationship for this target**: AS174(Cogent)&lt;-&gt;AS17993, distinct from the already-established AS6939(Hurricane Electric)&lt;-&gt;AS17993 adjacency (RIS count ~150 in earlier entries). `AS139759 -&gt; AS9246 -&gt; AS4637 (Telstra Global) -&gt; AS1299 (Arelion) -&gt; AS174 -&gt; AS17993`, RIS agrees exactly (1,455) -- a much larger observation count, consistent with AS174 being AS17993&#x27;s dominant real neighbor (checked directly: AS17993&#x27;s full list is `{174: 9774, 6939: 1146, 9241: 163, ...}`, Cogent clearly dominant). `has_routing_loop` False on all 3 probes.</details>
+        </div><div class="detour-card">
+            <div class="headline">FM -&gt; AS
+                (AS23657): detours via AS17993 (Vodafone Samoa) -- global transit, not a named exchange crossing
+                (Sydney)</div>
+            <div>RIS observation count: 329
+                &middot; measurement 212142989</div>
+            <details class="note"><summary>Second confirmation of AS17993&lt;-&gt;AS23657 (after NC&#x27;s first-ever)…</summary>Second confirmation of AS17993&lt;-&gt;AS23657 (after NC&#x27;s first-ever). `AS139759 -&gt; AS9246 -&gt; AS4637 -&gt; AS1299 -&gt; AS174 -&gt; AS17993 -&gt; AS23657`, fully contiguous, RIS agrees exactly (329). `has_routing_loop` False.</details>
+        </div><div class="detour-card">
+            <div class="headline">FM -&gt; MH
+                (AS24439): detours via AS4637 (Telstra Global), then AS6453 (Tata Communications) -- global transit, not a named exchange crossing
+                (Los Angeles)</div>
+            <div>RIS observation count: 997
+                &middot; measurement 212142990</div>
+            <details class="note"><summary>Eleventh confirmation of AS6453(Tata)&lt;-&gt;AS24439…</summary>Eleventh confirmation of AS6453(Tata)&lt;-&gt;AS24439. `AS139759 -&gt; AS9246 -&gt; AS4637 -&gt; AS6453`, RIS agrees exactly (997). Telstra Global direct into Tata is a new first-leg combination for this adjacency. `has_routing_loop` False.</details>
+        </div><div class="detour-card">
+            <div class="headline">FM -&gt; TO
+                (AS38198): detours via AS4637 (Telstra Global), then AS45355 (Digicel Fiji)
+                (Sydney)</div>
+            <div>RIS observation count: 1321
+                &middot; measurement 212142991</div>
+            <details class="note"><summary>Eleventh confirmation of AS45355(Digicel Fiji)&lt;-&gt;AS38198…</summary>Eleventh confirmation of AS45355(Digicel Fiji)&lt;-&gt;AS38198. `AS139759 -&gt; AS9246 -&gt; AS4637 -&gt; AS45355 -&gt; AS38198`, RIS agrees exactly (1,321). `has_routing_loop` False.</details>
+        </div><div class="detour-card">
+            <div class="headline">FM -&gt; TO
+                (AS38201): detours via AS135409 (Kacific Broadband Satellites) -- satellite operator, global transit, not a named exchange crossing
+                (Sydney)</div>
+            <div>RIS observation count: 331
+                &middot; measurement 212142992</div>
+            <details class="note"><summary>Third confirmation of AS135409(Kacific)&lt;-&gt;AS38201 (after FJ, NC)…</summary>Third confirmation of AS135409(Kacific)&lt;-&gt;AS38201 (after FJ, NC). `AS139759 -&gt; AS9246 -&gt; AS4637 -&gt; AS3356 -&gt; AS7594 (On Q) -&gt; AS135409`, RIS agrees exactly (331). `has_routing_loop` False.</details>
+        </div><div class="detour-card">
+            <div class="headline">FM -&gt; WS
+                (AS38800): detours via AS4637 (Telstra Global), then AS132528 (Digicel Australia/Telstra-operated backbone)
+                (Sydney)</div>
+            <div>RIS observation count: 1656
+                &middot; measurement 212142997</div>
+            <details class="note"><summary>Second confirmation of AS132528&lt;-&gt;AS38800 (after the first entry)…</summary>Second confirmation of AS132528&lt;-&gt;AS38800 (after the first entry). `AS139759 -&gt; AS9246 -&gt; AS4637 -&gt; AS132528 -&gt; AS38800`, RIS agrees exactly (1,656). `has_routing_loop` False.</details>
+        </div><div class="detour-card">
+            <div class="headline">FM -&gt; WF
+                (AS45879): detours via AS4637 (Telstra Global), then AS5511 (Opentransit Orange S.A.)
+                (Los Angeles)</div>
+            <div>RIS observation count: 1665
+                &middot; measurement 212143000</div>
+            <details class="note"><summary>Eleventh confirmation of AS5511(Orange)&lt;-&gt;AS45879…</summary>Eleventh confirmation of AS5511(Orange)&lt;-&gt;AS45879. `AS139759 -&gt; AS9246 -&gt; AS4637 -&gt; AS5511`, RIS agrees exactly (1,665). Telstra Global direct into Orange is a new first-leg combination. `has_routing_loop` False.</details>
+        </div><div class="detour-card">
+            <div class="headline">FM -&gt; SB
+                (AS132468): detours via AS4637 (Telstra Global), then AS139609 (SISCC)
+                (Sydney)</div>
+            <div>RIS observation count: 1319
+                &middot; measurement 212143005</div>
+            <details class="note"><summary>**First-ever confirmation for this target**: AS139609(SISCC)&lt;-&gt;AS132468 (SATSOL LIMITED), directly RIS-confirmed…</summary>**First-ever confirmation for this target**: AS139609(SISCC)&lt;-&gt;AS132468 (SATSOL LIMITED), directly RIS-confirmed. `AS139759 -&gt; AS9246 -&gt; AS4637 -&gt; AS139609 -&gt; AS132468`, RIS agrees exactly (1,319). `has_routing_loop` False.</details>
+        </div><div class="detour-card">
+            <div class="headline">FM -&gt; TO
+                (AS132579): detours via AS4637 (Telstra Global), then AS174 (Cogent Communications)
+                (Sydney)</div>
+            <div>RIS observation count: 604
+                &middot; measurement 212143006</div>
+            <details class="note"><summary>**First-ever confirmation for this target**: AS174(Cogent)&lt;-&gt;AS132579 (Tonga Cable Limited), directly RIS-confirmed, a genuinely different Tongan-carrier…</summary>**First-ever confirmation for this target**: AS174(Cogent)&lt;-&gt;AS132579 (Tonga Cable Limited), directly RIS-confirmed, a genuinely different Tongan-carrier relationship than the established Digicel/Kacific ones. `AS139759 -&gt; AS9246 -&gt; AS4637 -&gt; AS174 -&gt; AS132579`, RIS agrees exactly (604). `has_routing_loop` False.</details>
+        </div><div class="detour-card">
+            <div class="headline">FM -&gt; SB
+                (AS139609): detours via AS4637 (Telstra Global) -- global transit, not a named exchange crossing
+                (Sydney)</div>
+            <div>RIS observation count: 559
+                &middot; measurement 212143010</div>
+            <details class="note"><summary>**First-ever direct confirmation of SISCC&#x27;s own upstream carrier**: AS4637(Telstra Global)&lt;-&gt;AS139609 (SISCC itself as the target, not an intermediate this…</summary>**First-ever direct confirmation of SISCC&#x27;s own upstream carrier**: AS4637(Telstra Global)&lt;-&gt;AS139609 (SISCC itself as the target, not an intermediate this time). `AS139759 -&gt; AS9246 -&gt; AS4637 -&gt; AS139609`, RIS agrees exactly (559). `has_routing_loop` False.</details>
+        </div><div class="detour-card">
+            <div class="headline">FM -&gt; WS
+                (AS139679): detours via AS4637 (Telstra Global), via AS132528 and AS38800 -- domestic Samoa chain, not a named exchange crossing
+                (Sydney)</div>
+            <div>RIS observation count: 329
+                &middot; measurement 212143012</div>
+            <details class="note"><summary>**First-ever confirmation**: AS38227&lt;-&gt;AS139679 (Office of the Electoral Commission, Samoa), a third hop on the already-established domestic Samoa chain…</summary>**First-ever confirmation**: AS38227&lt;-&gt;AS139679 (Office of the Electoral Commission, Samoa), a third hop on the already-established domestic Samoa chain (AS132528 -&gt; AS38800 -&gt; AS38227, see `ConfirmedLocalTransit`). `AS139759 -&gt; AS9246 -&gt; AS4637 -&gt; AS132528 -&gt; AS38800 -&gt; AS38227 -&gt; AS139679`, RIS agrees exactly (329). `has_routing_loop` False.</details>
+        </div><div class="detour-card">
+            <div class="headline">FM -&gt; WS
+                (AS150321): detours via AS4637 (Telstra Global), then AS17993 (Vodafone Samoa)
+                (Sydney)</div>
+            <div>RIS observation count: 330
+                &middot; measurement 212143016</div>
+            <details class="note"><summary>**First-ever confirmation**: AS17993(Vodafone Samoa)&lt;-&gt;AS150321 (Secretariat of the Pacific Regional Environment Programme)…</summary>**First-ever confirmation**: AS17993(Vodafone Samoa)&lt;-&gt;AS150321 (Secretariat of the Pacific Regional Environment Programme). `AS139759 -&gt; AS9246 -&gt; AS4637 -&gt; AS6461 (Zayo) -&gt; AS174 -&gt; AS17993 -&gt; AS150321`, RIS agrees exactly (330). `has_routing_loop` False.</details>
+        </div><div class="detour-card">
+            <div class="headline">FM -&gt; NR
+                (AS152706): detours via AS4637 (Telstra Global), then AS6453 (Tata Communications)
+                (Los Angeles)</div>
+            <div>RIS observation count: 292
+                &middot; measurement 212143020</div>
+            <details class="note"><summary>Third confirmation of AS6453(Tata)&lt;-&gt;AS152706 (after GU, VU)…</summary>Third confirmation of AS6453(Tata)&lt;-&gt;AS152706 (after GU, VU). `AS139759 -&gt; AS9246 -&gt; AS4637 -&gt; AS6453 -&gt; AS152706`, RIS agrees exactly (292). `has_routing_loop` False.</details>
+        </div><div class="detour-card">
+            <div class="headline">FM -&gt; WS
+                (AS153053): detours via AS4637 (Telstra Global), then AS45177 and AS18400
+                (Sydney)</div>
+            <div>RIS observation count: 382
+                &middot; measurement 212143021</div>
+            <details class="note"><summary>**First-ever confirmation for this target**: AS18400&lt;-&gt;AS153053 (Lesamoa.net), directly RIS-confirmed…</summary>**First-ever confirmation for this target**: AS18400&lt;-&gt;AS153053 (Lesamoa.net), directly RIS-confirmed. A long, genuinely deep traceroute (22-25 real hops) reaching the target directly on all 3 probes: `AS139759 -&gt; AS9246 -&gt; AS4637 -&gt; AS45177 -&gt; AS18400 -&gt; AS153053`, RIS agrees exactly (382). `has_routing_loop` False on all 3 once the correct target IP was checked -- an earlier internal processing pass wrongly flagged all 3 probes as loops by omitting the target IP from the check; caught and corrected before filing (one benign consecutive-address repeat mid-path, ordinary ECMP noise, not a real loop, since the target was cleanly reached).</details>
         </div>
 
     <h2>Confirmed local transit (RIS + Atlas both agree, stays in-fishbowl)</h2>
@@ -1102,7 +1214,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <div>RIS observation count: 1662
                 &middot; measurement 211091699
                 &middot; vantage point NU</div>
-            <details class="note"><summary>Niue&#x27;s only RIS-observed neighbor at all is AS55943 (1,662 observations) -- also ONATI, French Polynesia&#x27;s telecom incumbent, just a second ASN of the same…</summary>Niue&#x27;s only RIS-observed neighbor at all is AS55943 (1,662 observations) -- also ONATI, French Polynesia&#x27;s telecom incumbent, just a second ASN of the same operator (both PeeringDB and RIPEstat list AS9471 and AS55943 under the identical holder name, &#x27;ONATI-AS-AP - ONATI&#x27;; AS9471&#x27;s own RIS neighbor list independently confirms AS55943 with 1,838 observations, proving the sibling relationship, not just a name coincidence). Sourced directly from Niue&#x27;s own connected Atlas probe (found via the ASN probe registry) toward AS55943 specifically: the traceroute resolved cleanly and contiguously to AS9471 -- ONATI&#x27;s *other* ASN -- before going dark short of the literal target. `check_neighbor_agreement` reports `ris_agrees: false` on a strict reading (AS9471 isn&#x27;t literally in AS55943&#x27;s own neighbor list), but read correctly this is the same real-world relationship RIS already confirmed for Niue, observed via ONATI&#x27;s other identity -- recorded as confirmed on that basis, with the nuance stated plainly rather than either overclaiming a literal ASN-for-ASN match or discarding a real, well-evidenced finding over a technicality of which of one company&#x27;s two ASNs a hop resolved to. **Third independent-source corroboration, from the corridor backlog** (measurement 211495010, GU/AS3605 -&gt; NU/AS55885, pulled as a fresh GU&lt;-&gt;NU economy pair): both probes fully contiguous all the way to the literal target -- AS3605 -&gt; AS3356 (Level 3/Lumen) -&gt; AS3257 (GTT) -&gt; **AS9471** -&gt; AS55885, landing directly on this exact adjacency again, same sibling-ASN basis (`ris_agrees: false` on the strict AS9471/AS55885 pair, same as every prior instance). Same pattern as the AS9471/ONATI&lt;-&gt;Cook-Islands and AS9241/FINTEL&lt;-&gt;Tuvalu corroborations from two tranches ago -- a **third** distinct case this session of an in-fishbowl Pacific carrier (here, ONATI reaching its own direct customer rather than transiting to a further target) confirmed from an independent source network, reinforcing rather than merely repeating the original finding. **Fourth independent corroboration** (measurement 211582548, MP/AS7131 -&gt; NU/AS55885, a fresh MP&lt;-&gt;NU pair): both probes again resolve to AS9471 immediately before the target, same sibling-ASN basis. Genuinely different upstream mix this time -- one probe via AS1299 (Telia) -&gt; AS6453 (Tata) -&gt; AS3257 (GTT), the other via AS6453 (Tata) -&gt; AS3257 (GTT) directly -- neither Telia nor this specific Telia/Tata/GTT combination had appeared for this adjacency before. Not a new entry -- same confirmed relationship, a fourth distinct vantage point reinforcing it. **Fifth independent corroboration** (measurement 211638372, VU/AS9249 -&gt; NU/AS55885, a fresh VU&lt;-&gt;NU pair): again resolves to AS9471 immediately before the target, same sibling-ASN basis. Yet another distinct upstream path into ONATI: AS9249 -&gt; AS38442 (Vodafone Fiji) -&gt; AS2914 (NTT Communications) -&gt; AS3257 (GTT) -&gt; AS9471 -- NTT hadn&#x27;t appeared for this adjacency before either. A fourth distinct source economy (Vanuatu, after Niue&#x27;s own vantage point, Guam, and CNMI) confirming the same relationship. **Sixth independent corroboration** (measurement 211755730, CK/AS10131 -&gt; NU/AS55885, a fresh CK&lt;-&gt;NU pair): only 1 of 3 requested probes returned; checked `participant_count` directly (1, not 3) -- the same genuine single-probe pattern as every other AS10131-sourced measurement this session. Fully contiguous, resolving directly to AS9471 immediately before the target -- the same sibling-ASN basis as every prior instance, and the shortest, most direct path yet: `AS10131 -&gt; AS9471 -&gt; AS55885`, no intermediate transit carrier at all. A fifth distinct source economy (Cook Islands, after Niue&#x27;s own vantage point, Guam, CNMI, and Vanuatu) -- and the fourth time this session AS9471/ONATI has shown up as the direct upstream in a Cook Islands traceroute, further reinforcing its role as Cook Islands&#x27; real regional gateway. **Seventh independent corroboration, from a second, distinct Guam carrier** (measurement 211772521, GU/AS17456 (Pacific Data Systems) -&gt; NU/AS55885): the first traceroute sourced from this ASN this session (holder identity checked directly: &quot;PDSGUAM-USTRANSPORT-AS-GU-AP - Pacific Data Systems&quot;). Fully contiguous **all the way to the literal target** -- unlike most prior instances, which stopped at AS9471 without resolving AS55885 itself: `AS17456 -&gt; AS3605 (Guam Cablevision) -&gt; AS2914 (NTT Communications) -&gt; AS3257 (GTT) -&gt; AS9471 -&gt; AS55885`. Same sibling-ASN basis as every prior instance (`ris_agrees: false` on the strict AS9471/AS55885 pair, resolved via AS55943). A second distinct Guam-based carrier now confirming this relationship (after AS3605/Guam Cablevision), interestingly transiting through AS3605 itself before reaching ONATI -- Guam&#x27;s own carriers routing through each other domestically before continuing internationally. **Eighth independent corroboration** (measurement 211983058, PG/AS17828 -&gt; NU/AS55885, a fresh PG&lt;-&gt;NU pair): fully contiguous all the way to the literal target again: `AS17828 -&gt; AS4826 (Vocus Connect) -&gt; AS174 (Cogent) -&gt; AS3257 (GTT) -&gt; AS9471 -&gt; AS55885`. Same sibling-ASN basis as every prior instance (`ris_agrees: false` on the strict AS9471/AS55885 pair, resolved via AS55943). Both Cogent and GTT appearing together as sequential intermediate carriers is a genuinely new combination for this adjacency. A seventh distinct source economy (Papua New Guinea, after Niue&#x27;s own vantage point, Guam, CNMI, Vanuatu, French Polynesia, and Cook Islands). **Ninth independent corroboration** (measurement 212038230, PW/AS17893 -&gt; NU/AS55885, a fresh PW&lt;-&gt;NU pair): fully contiguous all the way to the literal target again: `AS17893 -&gt; AS174 (Cogent) -&gt; AS3257 (GTT) -&gt; AS9471 -&gt; AS55885`. Same sibling-ASN basis as every prior instance (`ris_agrees: false` on the strict AS9471/AS55885 pair, resolved via AS55943, 1,662 observations, exact match). An eighth distinct source economy (Palau, after Niue&#x27;s own vantage point, Guam, CNMI, Vanuatu, French Polynesia, Cook Islands, and Papua New Guinea). **Tenth independent corroboration** (measurement 212077143, TV/AS23917 -&gt; NU/AS55885, a fresh TV&lt;-&gt;NU pair): fully contiguous all the way to the literal target again: `AS23917 -&gt; AS9241 (FINTEL) -&gt; AS3257 (GTT) -&gt; AS9471 -&gt; AS55885`. Same sibling-ASN basis as every prior instance (`ris_agrees: false` on the strict AS9471/AS55885 pair, resolved via AS55943, 1,662 observations, exact match). A ninth distinct source economy (Tuvalu, after Niue&#x27;s own vantage point, Guam, CNMI, Vanuatu, French Polynesia, Cook Islands, Papua New Guinea, and Palau). **Eleventh independent corroboration, via a genuinely new first-leg carrier** (measurement 212101918, FJ/AS24390 -&gt; NU/AS55885, a fresh FJ&lt;-&gt;NU pair): fully contiguous all the way to the literal target again: `AS24390 -&gt; AS7575 (AARNet) -&gt; AS1299 (Arelion/Telia) -&gt; AS3257 (GTT) -&gt; AS9471 -&gt; AS55885`. AS1299 is a genuinely new intermediate carrier for this adjacency (every prior entry used FINTEL or Cogent as the first leg). Same sibling-ASN basis as every prior instance (`ris_agrees: false` on the strict AS9471/AS55885 pair, resolved via AS55943). A tenth distinct source economy (Fiji, after Niue&#x27;s own vantage point, Guam, CNMI, Vanuatu, French Polynesia, Cook Islands, Papua New Guinea, and Palau).</details>
+            <details class="note"><summary>Niue&#x27;s only RIS-observed neighbor at all is AS55943 (1,662 observations) -- also ONATI, French Polynesia&#x27;s telecom incumbent, just a second ASN of the same…</summary>Niue&#x27;s only RIS-observed neighbor at all is AS55943 (1,662 observations) -- also ONATI, French Polynesia&#x27;s telecom incumbent, just a second ASN of the same operator (both PeeringDB and RIPEstat list AS9471 and AS55943 under the identical holder name, &#x27;ONATI-AS-AP - ONATI&#x27;; AS9471&#x27;s own RIS neighbor list independently confirms AS55943 with 1,838 observations, proving the sibling relationship, not just a name coincidence). Sourced directly from Niue&#x27;s own connected Atlas probe (found via the ASN probe registry) toward AS55943 specifically: the traceroute resolved cleanly and contiguously to AS9471 -- ONATI&#x27;s *other* ASN -- before going dark short of the literal target. `check_neighbor_agreement` reports `ris_agrees: false` on a strict reading (AS9471 isn&#x27;t literally in AS55943&#x27;s own neighbor list), but read correctly this is the same real-world relationship RIS already confirmed for Niue, observed via ONATI&#x27;s other identity -- recorded as confirmed on that basis, with the nuance stated plainly rather than either overclaiming a literal ASN-for-ASN match or discarding a real, well-evidenced finding over a technicality of which of one company&#x27;s two ASNs a hop resolved to. **Third independent-source corroboration, from the corridor backlog** (measurement 211495010, GU/AS3605 -&gt; NU/AS55885, pulled as a fresh GU&lt;-&gt;NU economy pair): both probes fully contiguous all the way to the literal target -- AS3605 -&gt; AS3356 (Level 3/Lumen) -&gt; AS3257 (GTT) -&gt; **AS9471** -&gt; AS55885, landing directly on this exact adjacency again, same sibling-ASN basis (`ris_agrees: false` on the strict AS9471/AS55885 pair, same as every prior instance). Same pattern as the AS9471/ONATI&lt;-&gt;Cook-Islands and AS9241/FINTEL&lt;-&gt;Tuvalu corroborations from two tranches ago -- a **third** distinct case this session of an in-fishbowl Pacific carrier (here, ONATI reaching its own direct customer rather than transiting to a further target) confirmed from an independent source network, reinforcing rather than merely repeating the original finding. **Fourth independent corroboration** (measurement 211582548, MP/AS7131 -&gt; NU/AS55885, a fresh MP&lt;-&gt;NU pair): both probes again resolve to AS9471 immediately before the target, same sibling-ASN basis. Genuinely different upstream mix this time -- one probe via AS1299 (Telia) -&gt; AS6453 (Tata) -&gt; AS3257 (GTT), the other via AS6453 (Tata) -&gt; AS3257 (GTT) directly -- neither Telia nor this specific Telia/Tata/GTT combination had appeared for this adjacency before. Not a new entry -- same confirmed relationship, a fourth distinct vantage point reinforcing it. **Fifth independent corroboration** (measurement 211638372, VU/AS9249 -&gt; NU/AS55885, a fresh VU&lt;-&gt;NU pair): again resolves to AS9471 immediately before the target, same sibling-ASN basis. Yet another distinct upstream path into ONATI: AS9249 -&gt; AS38442 (Vodafone Fiji) -&gt; AS2914 (NTT Communications) -&gt; AS3257 (GTT) -&gt; AS9471 -- NTT hadn&#x27;t appeared for this adjacency before either. A fourth distinct source economy (Vanuatu, after Niue&#x27;s own vantage point, Guam, and CNMI) confirming the same relationship. **Sixth independent corroboration** (measurement 211755730, CK/AS10131 -&gt; NU/AS55885, a fresh CK&lt;-&gt;NU pair): only 1 of 3 requested probes returned; checked `participant_count` directly (1, not 3) -- the same genuine single-probe pattern as every other AS10131-sourced measurement this session. Fully contiguous, resolving directly to AS9471 immediately before the target -- the same sibling-ASN basis as every prior instance, and the shortest, most direct path yet: `AS10131 -&gt; AS9471 -&gt; AS55885`, no intermediate transit carrier at all. A fifth distinct source economy (Cook Islands, after Niue&#x27;s own vantage point, Guam, CNMI, and Vanuatu) -- and the fourth time this session AS9471/ONATI has shown up as the direct upstream in a Cook Islands traceroute, further reinforcing its role as Cook Islands&#x27; real regional gateway. **Seventh independent corroboration, from a second, distinct Guam carrier** (measurement 211772521, GU/AS17456 (Pacific Data Systems) -&gt; NU/AS55885): the first traceroute sourced from this ASN this session (holder identity checked directly: &quot;PDSGUAM-USTRANSPORT-AS-GU-AP - Pacific Data Systems&quot;). Fully contiguous **all the way to the literal target** -- unlike most prior instances, which stopped at AS9471 without resolving AS55885 itself: `AS17456 -&gt; AS3605 (Guam Cablevision) -&gt; AS2914 (NTT Communications) -&gt; AS3257 (GTT) -&gt; AS9471 -&gt; AS55885`. Same sibling-ASN basis as every prior instance (`ris_agrees: false` on the strict AS9471/AS55885 pair, resolved via AS55943). A second distinct Guam-based carrier now confirming this relationship (after AS3605/Guam Cablevision), interestingly transiting through AS3605 itself before reaching ONATI -- Guam&#x27;s own carriers routing through each other domestically before continuing internationally. **Eighth independent corroboration** (measurement 211983058, PG/AS17828 -&gt; NU/AS55885, a fresh PG&lt;-&gt;NU pair): fully contiguous all the way to the literal target again: `AS17828 -&gt; AS4826 (Vocus Connect) -&gt; AS174 (Cogent) -&gt; AS3257 (GTT) -&gt; AS9471 -&gt; AS55885`. Same sibling-ASN basis as every prior instance (`ris_agrees: false` on the strict AS9471/AS55885 pair, resolved via AS55943). Both Cogent and GTT appearing together as sequential intermediate carriers is a genuinely new combination for this adjacency. A seventh distinct source economy (Papua New Guinea, after Niue&#x27;s own vantage point, Guam, CNMI, Vanuatu, French Polynesia, and Cook Islands). **Ninth independent corroboration** (measurement 212038230, PW/AS17893 -&gt; NU/AS55885, a fresh PW&lt;-&gt;NU pair): fully contiguous all the way to the literal target again: `AS17893 -&gt; AS174 (Cogent) -&gt; AS3257 (GTT) -&gt; AS9471 -&gt; AS55885`. Same sibling-ASN basis as every prior instance (`ris_agrees: false` on the strict AS9471/AS55885 pair, resolved via AS55943, 1,662 observations, exact match). An eighth distinct source economy (Palau, after Niue&#x27;s own vantage point, Guam, CNMI, Vanuatu, French Polynesia, Cook Islands, and Papua New Guinea). **Tenth independent corroboration** (measurement 212077143, TV/AS23917 -&gt; NU/AS55885, a fresh TV&lt;-&gt;NU pair): fully contiguous all the way to the literal target again: `AS23917 -&gt; AS9241 (FINTEL) -&gt; AS3257 (GTT) -&gt; AS9471 -&gt; AS55885`. Same sibling-ASN basis as every prior instance (`ris_agrees: false` on the strict AS9471/AS55885 pair, resolved via AS55943, 1,662 observations, exact match). A ninth distinct source economy (Tuvalu, after Niue&#x27;s own vantage point, Guam, CNMI, Vanuatu, French Polynesia, Cook Islands, Papua New Guinea, and Palau). **Eleventh independent corroboration, via a genuinely new first-leg carrier** (measurement 212101918, FJ/AS24390 -&gt; NU/AS55885, a fresh FJ&lt;-&gt;NU pair): fully contiguous all the way to the literal target again: `AS24390 -&gt; AS7575 (AARNet) -&gt; AS1299 (Arelion/Telia) -&gt; AS3257 (GTT) -&gt; AS9471 -&gt; AS55885`. AS1299 is a genuinely new intermediate carrier for this adjacency (every prior entry used FINTEL or Cogent as the first leg). Same sibling-ASN basis as every prior instance (`ris_agrees: false` on the strict AS9471/AS55885 pair, resolved via AS55943). A tenth distinct source economy (Fiji, after Niue&#x27;s own vantage point, Guam, CNMI, Vanuatu, French Polynesia, Cook Islands, Papua New Guinea, and Palau). **Twelfth independent corroboration** (measurement 212143003, FM/AS139759 -&gt; NU/AS55885, part of the bulk NU/FM/GU/NC clear-out): `AS139759 -&gt; AS9246 -&gt; AS4637 (Telstra Global) -&gt; AS3257 (GTT) -&gt; AS9471 -&gt; AS55885`, fully contiguous to the literal target. Same sibling-ASN basis (`ris_agrees: false` on the strict AS9471/AS55885 pair). An eleventh distinct source economy (Micronesia, Federated States of, after Niue&#x27;s own vantage point, Guam, CNMI, Vanuatu, French Polynesia, Cook Islands, Papua New Guinea, Palau, and Fiji). `has_routing_loop` False.</details>
         </div><div class="transit-card">
             <div class="headline">AS9241 (FINTEL (Fiji International Telecommunications Ltd),
                 FJ) -&gt; AS23917
@@ -1166,7 +1278,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <div>RIS observation count: 990
                 &middot; measurement 211629998
                 &middot; vantage point VU</div>
-            <details class="note"><summary>Sourced from AS9249 (Telecom Vanuatu) toward AS38227 -- a fresh VU&lt;-&gt;WS pair, and a genuinely new adjacency this project hadn&#x27;t recorded before…</summary>Sourced from AS9249 (Telecom Vanuatu) toward AS38227 -- a fresh VU&lt;-&gt;WS pair, and a genuinely new adjacency this project hadn&#x27;t recorded before. Both probes fully contiguous, target reached directly: AS9249 -&gt; AS38442 (Vodafone Fiji) -&gt; AS132528 (Digicel Australia/Telstra backbone, crossing Equinix Sydney -- a **fourth** occurrence of this same real infrastructure this session) -&gt; **AS38800 (Digicel Samoa Ltd)** -&gt; AS38227 (Computer Services Limited, Samoa&#x27;s incumbent). Upstream of the target is AS38800, RIS-agreeing with an *exact* match (990) -- checked directly: AS38800 is AS38227&#x27;s *only* RIS-observed neighbor at all. A domestic (intra-Samoa) adjacency, the same shape as the established ONATI&lt;-&gt;Cook-Islands and FINTEL&lt;-&gt;Tuvalu patterns: an in-fishbowl Pacific carrier (here, Digicel Samoa) acting as a real transit waypoint for another Pacific carrier&#x27;s network (CSL Samoa), for traffic originating from a third economy (Vanuatu) -- another real data point for regional-hub structure within the fishbowl, this time at the intra-country level rather than inter-economy.</details>
+            <details class="note"><summary>Sourced from AS9249 (Telecom Vanuatu) toward AS38227 -- a fresh VU&lt;-&gt;WS pair, and a genuinely new adjacency this project hadn&#x27;t recorded before…</summary>Sourced from AS9249 (Telecom Vanuatu) toward AS38227 -- a fresh VU&lt;-&gt;WS pair, and a genuinely new adjacency this project hadn&#x27;t recorded before. Both probes fully contiguous, target reached directly: AS9249 -&gt; AS38442 (Vodafone Fiji) -&gt; AS132528 (Digicel Australia/Telstra backbone, crossing Equinix Sydney -- a **fourth** occurrence of this same real infrastructure this session) -&gt; **AS38800 (Digicel Samoa Ltd)** -&gt; AS38227 (Computer Services Limited, Samoa&#x27;s incumbent). Upstream of the target is AS38800, RIS-agreeing with an *exact* match (990) -- checked directly: AS38800 is AS38227&#x27;s *only* RIS-observed neighbor at all. A domestic (intra-Samoa) adjacency, the same shape as the established ONATI&lt;-&gt;Cook-Islands and FINTEL&lt;-&gt;Tuvalu patterns: an in-fishbowl Pacific carrier (here, Digicel Samoa) acting as a real transit waypoint for another Pacific carrier&#x27;s network (CSL Samoa), for traffic originating from a third economy (Vanuatu) -- another real data point for regional-hub structure within the fishbowl, this time at the intra-country level rather than inter-economy. **Second independent corroboration** (measurement 212142995, FM/AS139759 -&gt; WS/AS38227, part of the bulk NU/FM/GU/NC clear-out): `AS139759 -&gt; AS9246 -&gt; AS4637 (Telstra Global) -&gt; AS132528 -&gt; AS38800 -&gt; AS38227`, RIS agrees with the identical exact match (990). Same measurement also confirmed the chain extends one hop further, to AS139679 (Electoral Commission) -- see the new `ConfirmedDetour` entry. `has_routing_loop` False.</details>
         </div><div class="transit-card">
             <div class="headline">AS55722 (Cenpac Net Inc,
                 NR) -&gt; AS141368
@@ -1174,7 +1286,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <div>RIS observation count: 382
                 &middot; measurement 211653801
                 &middot; vantage point VU</div>
-            <details class="note"><summary>Sourced from AS9249 (Telecom Vanuatu) toward AS141368 -- a fresh VU&lt;-&gt;NR pair, and **the direct test flagged as a lead several tranches ago** (when AS3605&#x27;s…</summary>Sourced from AS9249 (Telecom Vanuatu) toward AS141368 -- a fresh VU&lt;-&gt;NR pair, and **the direct test flagged as a lead several tranches ago** (when AS3605&#x27;s own dead-end attempt toward AS141368 surfaced its only RIS neighbor as AS55722, itself already confirmed as PTI Pacifica/AS7131&#x27;s real Nauru customer -- flagged then as worth testing directly rather than assumed from the indirect chain). The literal target never resolved (ordinary ICMP filtering near the destination), so RIS is checked against the last reached ASN, per this project&#x27;s inbound-style method. Both probes: AS9249 -&gt; AS38442 (Vodafone Fiji) -&gt; AS6939 (Hurricane Electric) -&gt; AS7131 (PTI Pacifica) -&gt; **AS55722 (Cenpac Net Inc)** -- confirming the full chain in one traceroute: AS7131&#x27;s own confirmed upstream role for AS55722, now extended one hop further to AS55722&#x27;s own domestic downstream. RIS agrees with an *exact* match (382) -- checked directly: AS55722 is AS141368&#x27;s *only* RIS-observed neighbor at all. A domestic (intra-Nauru) adjacency, the same shape as the Digicel Samoa&lt;-&gt;CSL Samoa finding -- confirms the lead exactly as flagged, closing out a loose thread from earlier this session. **Second independent corroboration** (measurement 212085608, TV/AS23917 -&gt; NR/AS141368, a fresh TV&lt;-&gt;NR pair): `AS23917 -&gt; AS9241 (FINTEL) -&gt; AS6939 (Hurricane Electric) -&gt; AS7131 (PTI Pacifica) -&gt; AS55722`, target never resolved, identical RIS match (382) -- confirming the full chain again in one traceroute. `has_routing_loop` correctly returned `False`. A second distinct source economy (Tuvalu, after Vanuatu). **Third independent corroboration** (measurement 212116017, FJ/AS24390 -&gt; NR/AS141368, a fresh FJ&lt;-&gt;NR pair): `AS24390 -&gt; AS7575 (AARNet) -&gt; AS140627 (OneQode) -&gt; AS7131 (PTI Pacifica) -&gt; AS55722`, target never resolved, identical RIS match (382) -- confirming the full chain again in one traceroute, this time via a genuinely new first-leg carrier (AARNet, and OneQode reappearing as the intermediate). `has_routing_loop` correctly returned `False`. A third distinct source economy (Fiji, after Vanuatu and Tuvalu).</details>
+            <details class="note"><summary>Sourced from AS9249 (Telecom Vanuatu) toward AS141368 -- a fresh VU&lt;-&gt;NR pair, and **the direct test flagged as a lead several tranches ago** (when AS3605&#x27;s…</summary>Sourced from AS9249 (Telecom Vanuatu) toward AS141368 -- a fresh VU&lt;-&gt;NR pair, and **the direct test flagged as a lead several tranches ago** (when AS3605&#x27;s own dead-end attempt toward AS141368 surfaced its only RIS neighbor as AS55722, itself already confirmed as PTI Pacifica/AS7131&#x27;s real Nauru customer -- flagged then as worth testing directly rather than assumed from the indirect chain). The literal target never resolved (ordinary ICMP filtering near the destination), so RIS is checked against the last reached ASN, per this project&#x27;s inbound-style method. Both probes: AS9249 -&gt; AS38442 (Vodafone Fiji) -&gt; AS6939 (Hurricane Electric) -&gt; AS7131 (PTI Pacifica) -&gt; **AS55722 (Cenpac Net Inc)** -- confirming the full chain in one traceroute: AS7131&#x27;s own confirmed upstream role for AS55722, now extended one hop further to AS55722&#x27;s own domestic downstream. RIS agrees with an *exact* match (382) -- checked directly: AS55722 is AS141368&#x27;s *only* RIS-observed neighbor at all. A domestic (intra-Nauru) adjacency, the same shape as the Digicel Samoa&lt;-&gt;CSL Samoa finding -- confirms the lead exactly as flagged, closing out a loose thread from earlier this session. **Second independent corroboration** (measurement 212085608, TV/AS23917 -&gt; NR/AS141368, a fresh TV&lt;-&gt;NR pair): `AS23917 -&gt; AS9241 (FINTEL) -&gt; AS6939 (Hurricane Electric) -&gt; AS7131 (PTI Pacifica) -&gt; AS55722`, target never resolved, identical RIS match (382) -- confirming the full chain again in one traceroute. `has_routing_loop` correctly returned `False`. A second distinct source economy (Tuvalu, after Vanuatu). **Third independent corroboration** (measurement 212116017, FJ/AS24390 -&gt; NR/AS141368, a fresh FJ&lt;-&gt;NR pair): `AS24390 -&gt; AS7575 (AARNet) -&gt; AS140627 (OneQode) -&gt; AS7131 (PTI Pacifica) -&gt; AS55722`, target never resolved, identical RIS match (382) -- confirming the full chain again in one traceroute, this time via a genuinely new first-leg carrier (AARNet, and OneQode reappearing as the intermediate). `has_routing_loop` correctly returned `False`. A third distinct source economy (Fiji, after Vanuatu and Tuvalu). **Fourth independent corroboration** (measurement 212143014, FM/AS139759 -&gt; NR/AS141368, part of the bulk NU/FM/GU/NC clear-out): FM&#x27;s own network hops dead-end quickly, but the chain progresses into Cenpac Net&#x27;s real announced address space (`203.98.224.12`, `203.98.228.82`) before going dark, RIS agrees with the identical exact match (382) against AS55722. A fourth distinct source economy (Micronesia, Federated States of, after Vanuatu, Tuvalu, and Fiji). `has_routing_loop` False.</details>
         </div>
 
     <h2>Candidate peering (strong traceroute signal, RIS disagrees &mdash; unconfirmed)</h2>
@@ -1314,6 +1426,22 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
                 &middot; measurement 212136022
                 &middot; vantage point NC</div>
             <details class="note"><summary>Sourced from AS45345 (New Caledonia) toward AS38875 (FSM Telecommunications Corporation) -- a fresh NC&lt;-&gt;FM pair…</summary>Sourced from AS45345 (New Caledonia) toward AS38875 (FSM Telecommunications Corporation) -- a fresh NC&lt;-&gt;FM pair. Fully contiguous on all 3 probes: `AS45345 -&gt; AS18200 (OPT-NC) -&gt; AS38195 (Superloop) -&gt; AS9246 (Teleguam Holdings/GTA, resolved via PeeringDB netixlan) -&gt; AS139759`. Crosses **BBIX Tokyo** directly (`ixp_crossings` confirms it) -- a genuinely new named exchange for this specific corridor&#x27;s final crossing (every prior entry used Any2West or the in-fishbowl MARIIX). The literal target (AS38875) never resolved; the traceroute lands on sibling AS139759 instead, the same substitution as every prior entry for this target -- AS38875&#x27;s only RIS-observed neighbor is AS10130, not AS139759. Same shape as every prior entry: a real, repeatable signal, but not RIS-confirmed on the strict pair. Kept as a candidate, not promoted, per the standing principle. `has_routing_loop` flagged `True` on 2 of 3 probes -- hops 4 and 5 both resolve to `125.63.12.157`, inside Superloop&#x27;s (AS38195) own announced prefix, the same ordinary intra-carrier artifact already established twice this tranche; not escalated.</details>
+        </div><div class="candidate-card">
+            <div class="headline">AS38008 (Telikom PNG Satellite Tier 1 AS,
+                PG) -&gt; AS132462
+                (Bemobile Solomon Islands Ltd, SB)</div>
+            <div>Traceroute agreement: 3/3 probes
+                &middot; measurement 212143004
+                &middot; vantage point FM</div>
+            <details class="note"><summary>FM(AS139759) -&gt; AS132462: `AS139759 -&gt; AS9246 -&gt; AS4637 -&gt; AS38008 -&gt; AS132462`, contiguous, but `ris_agrees: false` -- checked AS132462&#x27;s real RIS neighbor…</summary>FM(AS139759) -&gt; AS132462: `AS139759 -&gt; AS9246 -&gt; AS4637 -&gt; AS38008 -&gt; AS132462`, contiguous, but `ris_agrees: false` -- checked AS132462&#x27;s real RIS neighbor list directly: `{140889: 333, 139609: 4}`, AS38008 doesn&#x27;t appear at all. Real signal, not RIS-confirmed on the strict pair. Kept as a candidate. `has_routing_loop` False.</details>
+        </div><div class="candidate-card">
+            <div class="headline">AS139609 (SISCC,
+                SB) -&gt; AS150403
+                (Solomon Islands National Provident Fund Board, SB)</div>
+            <div>Traceroute agreement: 3/3 probes
+                &middot; measurement 212143018
+                &middot; vantage point FM</div>
+            <details class="note"><summary>FM(AS139759) -&gt; AS150403: `AS139759 -&gt; AS9246 -&gt; AS4637 -&gt; AS139609 (SISCC) -&gt; AS150403`, target resolves directly, but `ris_agrees: false` on the strict SISCC…</summary>FM(AS139759) -&gt; AS150403: `AS139759 -&gt; AS9246 -&gt; AS4637 -&gt; AS139609 (SISCC) -&gt; AS150403`, target resolves directly, but `ris_agrees: false` on the strict SISCC pair -- checked AS150403&#x27;s real RIS neighbor list directly: `{45891: 331}`, Solomon Telekom&#x27;s *other* ASN, not SISCC. A real, exact-count match (331) for AS45891&lt;-&gt;AS150403 exists, just one hop off from what this traceroute literally shows. Kept as a candidate on the SISCC pair as tested; the real AS45891 relationship is a separate, presumably-confirmable lead. `has_routing_loop` False.</details>
         </div>
 
     

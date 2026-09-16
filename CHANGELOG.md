@@ -1969,3 +1969,12 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   (SB) tenth confirmed (SISCC loop reproduced, already-documented),
   AS55722(NR) eighth corroboration. Backlog: 203 -> 157 (large drop
   expected at 5/tranche from the economy-pair dedup policy).
+- feat(analysis): bulk clear-out, FM(AS139759) batch (29 corridors) -
+  16 confirmed (5 first-ever: Cogent<->AS17993, SISCC<->AS132468,
+  Cogent<->AS132579, Telstra Global<->SISCC itself, Vodafone
+  Samoa<->AS150321, AS18400<->AS153053), 2 candidates, 3 local-
+  transit extensions, 7 logged inconclusive. Backlog: 157 -> 127.
+- fix(analysis): caught and corrected a `has_routing_loop(..., target=
+  None)` bug mid-batch that produced false-positive loop flags by
+  skipping the function's target-reached exemption; redid the check
+  with correct target IPs before filing anything.

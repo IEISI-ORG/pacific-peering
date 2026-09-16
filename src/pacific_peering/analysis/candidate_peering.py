@@ -682,4 +682,36 @@ CANDIDATE_PEERING: tuple[CandidatePeering, ...] = (
             "escalated."
         ),
     ),
+    CandidatePeering(
+        upstream_cc="PG", upstream_asn=38008, upstream_name="Telikom PNG "
+        "Satellite Tier 1 AS", target_cc="SB", target_asn=132462,
+        target_name="Bemobile Solomon Islands Ltd", measurement_id=212143004,
+        vantage_point_cc="FM", probe_agreement="3/3 probes",
+        note=(
+            "FM(AS139759) -> AS132462: `AS139759 -> AS9246 -> AS4637 -> "
+            "AS38008 -> AS132462`, contiguous, but `ris_agrees: false` -- "
+            "checked AS132462's real RIS neighbor list directly: `{140889: "
+            "333, 139609: 4}`, AS38008 doesn't appear at all. Real signal, "
+            "not RIS-confirmed on the strict pair. Kept as a candidate. "
+            "`has_routing_loop` False."
+        ),
+    ),
+    CandidatePeering(
+        upstream_cc="SB", upstream_asn=139609, upstream_name="SISCC",
+        target_cc="SB", target_asn=150403,
+        target_name="Solomon Islands National Provident Fund Board",
+        measurement_id=212143018, vantage_point_cc="FM",
+        probe_agreement="3/3 probes",
+        note=(
+            "FM(AS139759) -> AS150403: `AS139759 -> AS9246 -> AS4637 -> "
+            "AS139609 (SISCC) -> AS150403`, target resolves directly, but "
+            "`ris_agrees: false` on the strict SISCC pair -- checked "
+            "AS150403's real RIS neighbor list directly: `{45891: 331}`, "
+            "Solomon Telekom's *other* ASN, not SISCC. A real, exact-count "
+            "match (331) for AS45891<->AS150403 exists, just one hop off "
+            "from what this traceroute literally shows. Kept as a candidate "
+            "on the SISCC pair as tested; the real AS45891 relationship is a "
+            "separate, presumably-confirmable lead. `has_routing_loop` False."
+        ),
+    ),
 )

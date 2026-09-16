@@ -3094,6 +3094,26 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
         ),
     ),
     ConfirmedDetour(
+        source_cc="FM", target_cc="SB", target_asn=45891,
+        detour_ix_name="MegaIX Sydney", detour_hub="Sydney",
+        measurement_id=212143008, ris_observation_count=663,
+        note=(
+            "Eleventh independent confirmation of AS139609(SISCC)<->AS45891, "
+            "sourced by attempting AS134525 (Solomon Telekom's other ASN) -- "
+            "the traceroute landed on AS45891 (the sibling) instead of the "
+            "literal target, the same substitution pattern established "
+            "elsewhere (FSM, BNL Tarawa). `AS139759 -> AS9246 -> AS4637 -> "
+            "AS139609 -> AS45891`, RIS agrees exactly (663 -- a smaller "
+            "count than prior entries' 1,652, RIS's current-state snapshot "
+            "having shifted; checked fresh: AS45891's full neighbor list is "
+            "now `{139609: 8934, 135409: 331}`, still dominant). "
+            "`has_routing_loop` flagged `True` on 1 of 3 probes -- touches "
+            "`103.142.98.129`, adjacent to the known SISCC loop address "
+            "`103.142.98.131`, then a later interleaved repeat; the same "
+            "already-documented anomaly class, not escalated."
+        ),
+    ),
+    ConfirmedDetour(
         source_cc="TV",
         target_cc="PF",
         target_asn=55943,
@@ -3219,6 +3239,199 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
             "established twice this tranche; not escalated. A second "
             "distinct source economy (New Caledonia, after Fiji) "
             "confirming this satellite relationship."
+        ),
+    ),
+    # FM(AS139759)-sourced batch, part of the bulk NU/FM/GU/NC clear-out
+    # (task_plan.md has the full context). Written more concisely than
+    # earlier entries given the volume (29 corridors in one batch) --
+    # still full RIS+loop verification per corridor, less narrative padding.
+    ConfirmedDetour(
+        source_cc="FM", target_cc="AS", target_asn=9751,
+        detour_ix_name="AS3356 (Level 3/Lumen), then AS11404 (Wave Broadband) "
+        "-- global transit, not a named exchange crossing",
+        detour_hub="San Jose", measurement_id=212142987, ris_observation_count=267,
+        note=(
+            "Eleventh confirmation of AS11404<->AS9751 (after GU, MP, VU, PG, TV, "
+            "FJ, NC, and others). `AS139759 -> AS9246 (Teleguam/GTA) -> AS3356 "
+            "(Level 3/Lumen, new intermediate) -> AS11404 -> AS9751`, RIS agrees "
+            "exactly (267) on all 3 probes. `has_routing_loop` False."
+        ),
+    ),
+    ConfirmedDetour(
+        source_cc="FM", target_cc="WS", target_asn=17993,
+        detour_ix_name="AS174 (Cogent Communications) -- global transit, not a "
+        "named exchange crossing",
+        detour_hub="Sydney", measurement_id=212142988, ris_observation_count=1455,
+        note=(
+            "**A genuinely new confirmed relationship for this target**: "
+            "AS174(Cogent)<->AS17993, distinct from the already-established "
+            "AS6939(Hurricane Electric)<->AS17993 adjacency (RIS count ~150 in "
+            "earlier entries). `AS139759 -> AS9246 -> AS4637 (Telstra Global) -> "
+            "AS1299 (Arelion) -> AS174 -> AS17993`, RIS agrees exactly (1,455) -- "
+            "a much larger observation count, consistent with AS174 being "
+            "AS17993's dominant real neighbor (checked directly: AS17993's full "
+            "list is `{174: 9774, 6939: 1146, 9241: 163, ...}`, Cogent clearly "
+            "dominant). `has_routing_loop` False on all 3 probes."
+        ),
+    ),
+    ConfirmedDetour(
+        source_cc="FM", target_cc="AS", target_asn=23657,
+        detour_ix_name="AS17993 (Vodafone Samoa) -- global transit, not a named "
+        "exchange crossing",
+        detour_hub="Sydney", measurement_id=212142989, ris_observation_count=329,
+        note=(
+            "Second confirmation of AS17993<->AS23657 (after NC's first-ever). "
+            "`AS139759 -> AS9246 -> AS4637 -> AS1299 -> AS174 -> AS17993 -> "
+            "AS23657`, fully contiguous, RIS agrees exactly (329). "
+            "`has_routing_loop` False."
+        ),
+    ),
+    ConfirmedDetour(
+        source_cc="FM", target_cc="MH", target_asn=24439,
+        detour_ix_name="AS4637 (Telstra Global), then AS6453 (Tata "
+        "Communications) -- global transit, not a named exchange crossing",
+        detour_hub="Los Angeles", measurement_id=212142990, ris_observation_count=997,
+        note=(
+            "Eleventh confirmation of AS6453(Tata)<->AS24439. `AS139759 -> "
+            "AS9246 -> AS4637 -> AS6453`, RIS agrees exactly (997). Telstra "
+            "Global direct into Tata is a new first-leg combination for this "
+            "adjacency. `has_routing_loop` False."
+        ),
+    ),
+    ConfirmedDetour(
+        source_cc="FM", target_cc="TO", target_asn=38198,
+        detour_ix_name="AS4637 (Telstra Global), then AS45355 (Digicel Fiji)",
+        detour_hub="Sydney", measurement_id=212142991, ris_observation_count=1321,
+        note=(
+            "Eleventh confirmation of AS45355(Digicel Fiji)<->AS38198. "
+            "`AS139759 -> AS9246 -> AS4637 -> AS45355 -> AS38198`, RIS agrees "
+            "exactly (1,321). `has_routing_loop` False."
+        ),
+    ),
+    ConfirmedDetour(
+        source_cc="FM", target_cc="TO", target_asn=38201,
+        detour_ix_name="AS135409 (Kacific Broadband Satellites) -- satellite "
+        "operator, global transit, not a named exchange crossing",
+        detour_hub="Sydney", measurement_id=212142992, ris_observation_count=331,
+        note=(
+            "Third confirmation of AS135409(Kacific)<->AS38201 (after FJ, NC). "
+            "`AS139759 -> AS9246 -> AS4637 -> AS3356 -> AS7594 (On Q) -> "
+            "AS135409`, RIS agrees exactly (331). `has_routing_loop` False."
+        ),
+    ),
+    ConfirmedDetour(
+        source_cc="FM", target_cc="WS", target_asn=38800,
+        detour_ix_name="AS4637 (Telstra Global), then AS132528 (Digicel "
+        "Australia/Telstra-operated backbone)",
+        detour_hub="Sydney", measurement_id=212142997, ris_observation_count=1656,
+        note=(
+            "Second confirmation of AS132528<->AS38800 (after the first entry). "
+            "`AS139759 -> AS9246 -> AS4637 -> AS132528 -> AS38800`, RIS agrees "
+            "exactly (1,656). `has_routing_loop` False."
+        ),
+    ),
+    ConfirmedDetour(
+        source_cc="FM", target_cc="WF", target_asn=45879,
+        detour_ix_name="AS4637 (Telstra Global), then AS5511 (Opentransit "
+        "Orange S.A.)",
+        detour_hub="Los Angeles", measurement_id=212143000, ris_observation_count=1665,
+        note=(
+            "Eleventh confirmation of AS5511(Orange)<->AS45879. `AS139759 -> "
+            "AS9246 -> AS4637 -> AS5511`, RIS agrees exactly (1,665). Telstra "
+            "Global direct into Orange is a new first-leg combination. "
+            "`has_routing_loop` False."
+        ),
+    ),
+    ConfirmedDetour(
+        source_cc="FM", target_cc="SB", target_asn=132468,
+        detour_ix_name="AS4637 (Telstra Global), then AS139609 (SISCC)",
+        detour_hub="Sydney", measurement_id=212143005, ris_observation_count=1319,
+        note=(
+            "**First-ever confirmation for this target**: AS139609(SISCC)"
+            "<->AS132468 (SATSOL LIMITED), directly RIS-confirmed. `AS139759 -> "
+            "AS9246 -> AS4637 -> AS139609 -> AS132468`, RIS agrees exactly "
+            "(1,319). `has_routing_loop` False."
+        ),
+    ),
+    ConfirmedDetour(
+        source_cc="FM", target_cc="TO", target_asn=132579,
+        detour_ix_name="AS4637 (Telstra Global), then AS174 (Cogent "
+        "Communications)",
+        detour_hub="Sydney", measurement_id=212143006, ris_observation_count=604,
+        note=(
+            "**First-ever confirmation for this target**: AS174(Cogent)"
+            "<->AS132579 (Tonga Cable Limited), directly RIS-confirmed, a "
+            "genuinely different Tongan-carrier relationship than the "
+            "established Digicel/Kacific ones. `AS139759 -> AS9246 -> AS4637 "
+            "-> AS174 -> AS132579`, RIS agrees exactly (604). "
+            "`has_routing_loop` False."
+        ),
+    ),
+    ConfirmedDetour(
+        source_cc="FM", target_cc="SB", target_asn=139609,
+        detour_ix_name="AS4637 (Telstra Global) -- global transit, not a named "
+        "exchange crossing",
+        detour_hub="Sydney", measurement_id=212143010, ris_observation_count=559,
+        note=(
+            "**First-ever direct confirmation of SISCC's own upstream carrier**: "
+            "AS4637(Telstra Global)<->AS139609 (SISCC itself as the target, not "
+            "an intermediate this time). `AS139759 -> AS9246 -> AS4637 -> "
+            "AS139609`, RIS agrees exactly (559). `has_routing_loop` False."
+        ),
+    ),
+    ConfirmedDetour(
+        source_cc="FM", target_cc="WS", target_asn=139679,
+        detour_ix_name="AS4637 (Telstra Global), via AS132528 and AS38800 -- "
+        "domestic Samoa chain, not a named exchange crossing",
+        detour_hub="Sydney", measurement_id=212143012, ris_observation_count=329,
+        note=(
+            "**First-ever confirmation**: AS38227<->AS139679 (Office of the "
+            "Electoral Commission, Samoa), a third hop on the already-"
+            "established domestic Samoa chain (AS132528 -> AS38800 -> "
+            "AS38227, see `ConfirmedLocalTransit`). `AS139759 -> AS9246 -> "
+            "AS4637 -> AS132528 -> AS38800 -> AS38227 -> AS139679`, RIS "
+            "agrees exactly (329). `has_routing_loop` False."
+        ),
+    ),
+    ConfirmedDetour(
+        source_cc="FM", target_cc="WS", target_asn=150321,
+        detour_ix_name="AS4637 (Telstra Global), then AS17993 (Vodafone Samoa)",
+        detour_hub="Sydney", measurement_id=212143016, ris_observation_count=330,
+        note=(
+            "**First-ever confirmation**: AS17993(Vodafone Samoa)<->AS150321 "
+            "(Secretariat of the Pacific Regional Environment Programme). "
+            "`AS139759 -> AS9246 -> AS4637 -> AS6461 (Zayo) -> AS174 -> "
+            "AS17993 -> AS150321`, RIS agrees exactly (330). `has_routing_loop` "
+            "False."
+        ),
+    ),
+    ConfirmedDetour(
+        source_cc="FM", target_cc="NR", target_asn=152706,
+        detour_ix_name="AS4637 (Telstra Global), then AS6453 (Tata "
+        "Communications)",
+        detour_hub="Los Angeles", measurement_id=212143020, ris_observation_count=292,
+        note=(
+            "Third confirmation of AS6453(Tata)<->AS152706 (after GU, VU). "
+            "`AS139759 -> AS9246 -> AS4637 -> AS6453 -> AS152706`, RIS agrees "
+            "exactly (292). `has_routing_loop` False."
+        ),
+    ),
+    ConfirmedDetour(
+        source_cc="FM", target_cc="WS", target_asn=153053,
+        detour_ix_name="AS4637 (Telstra Global), then AS45177 and AS18400",
+        detour_hub="Sydney", measurement_id=212143021, ris_observation_count=382,
+        note=(
+            "**First-ever confirmation for this target**: AS18400<->AS153053 "
+            "(Lesamoa.net), directly RIS-confirmed. A long, genuinely deep "
+            "traceroute (22-25 real hops) reaching the target directly on "
+            "all 3 probes: `AS139759 -> AS9246 -> AS4637 -> AS45177 -> "
+            "AS18400 -> AS153053`, RIS agrees exactly (382). "
+            "`has_routing_loop` False on all 3 once the correct target IP "
+            "was checked -- an earlier internal processing pass wrongly "
+            "flagged all 3 probes as loops by omitting the target IP from "
+            "the check; caught and corrected before filing (one benign "
+            "consecutive-address repeat mid-path, ordinary ECMP noise, not "
+            "a real loop, since the target was cleanly reached)."
         ),
     ),
 )

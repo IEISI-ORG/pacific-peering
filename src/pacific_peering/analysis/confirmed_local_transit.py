@@ -552,7 +552,17 @@ CONFIRMED_LOCAL_TRANSIT: tuple[ConfirmedLocalTransit, ...] = (
             "AS9471/AS55885 pair, resolved via AS55943). A tenth "
             "distinct source economy (Fiji, after Niue's own vantage "
             "point, Guam, CNMI, Vanuatu, French Polynesia, Cook "
-            "Islands, Papua New Guinea, and Palau)."
+            "Islands, Papua New Guinea, and Palau). "
+            "**Twelfth independent corroboration** (measurement 212143003, "
+            "FM/AS139759 -> NU/AS55885, part of the bulk NU/FM/GU/NC "
+            "clear-out): `AS139759 -> AS9246 -> AS4637 (Telstra Global) -> "
+            "AS3257 (GTT) -> AS9471 -> AS55885`, fully contiguous to the "
+            "literal target. Same sibling-ASN basis (`ris_agrees: false` "
+            "on the strict AS9471/AS55885 pair). An eleventh distinct "
+            "source economy (Micronesia, Federated States of, after "
+            "Niue's own vantage point, Guam, CNMI, Vanuatu, French "
+            "Polynesia, Cook Islands, Papua New Guinea, Palau, and Fiji). "
+            "`has_routing_loop` False."
         ),
     ),
     ConfirmedLocalTransit(
@@ -1208,7 +1218,14 @@ CONFIRMED_LOCAL_TRANSIT: tuple[ConfirmedLocalTransit, ...] = (
             "originating from a third economy (Vanuatu) -- another real "
             "data point for regional-hub structure within the fishbowl, "
             "this time at the intra-country level rather than "
-            "inter-economy."
+            "inter-economy. "
+            "**Second independent corroboration** (measurement 212142995, "
+            "FM/AS139759 -> WS/AS38227, part of the bulk NU/FM/GU/NC "
+            "clear-out): `AS139759 -> AS9246 -> AS4637 (Telstra Global) -> "
+            "AS132528 -> AS38800 -> AS38227`, RIS agrees with the identical "
+            "exact match (990). Same measurement also confirmed the chain "
+            "extends one hop further, to AS139679 (Electoral Commission) -- "
+            "see the new `ConfirmedDetour` entry. `has_routing_loop` False."
         ),
     ),
     ConfirmedLocalTransit(
@@ -1260,7 +1277,16 @@ CONFIRMED_LOCAL_TRANSIT: tuple[ConfirmedLocalTransit, ...] = (
             "first-leg carrier (AARNet, and OneQode reappearing as the "
             "intermediate). `has_routing_loop` correctly returned "
             "`False`. A third distinct source economy (Fiji, after "
-            "Vanuatu and Tuvalu)."
+            "Vanuatu and Tuvalu). "
+            "**Fourth independent corroboration** (measurement 212143014, "
+            "FM/AS139759 -> NR/AS141368, part of the bulk NU/FM/GU/NC "
+            "clear-out): FM's own network hops dead-end quickly, but the "
+            "chain progresses into Cenpac Net's real announced address "
+            "space (`203.98.224.12`, `203.98.228.82`) before going dark, "
+            "RIS agrees with the identical exact match (382) against "
+            "AS55722. A fourth distinct source economy (Micronesia, "
+            "Federated States of, after Vanuatu, Tuvalu, and Fiji). "
+            "`has_routing_loop` False."
         ),
     ),
 )
