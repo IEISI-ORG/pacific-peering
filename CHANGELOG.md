@@ -1827,3 +1827,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   (4 dependents each) surface as the genuine broad-reach carriers;
   Tata drops from a misleading 9 to an accurate 2 (MH, NR); SISCC
   drops out of the top 8 entirely.
+- feat(analysis): confirm TV(AS23917)->AS(AS9751) via Wave Broadband,
+  fourth confirmation of AS11404<->AS9751 (after MP, VU, PG). Crosses
+  Equinix Sydney -- a different real exchange than the prior three
+  entries' San Jose, plus real Portland evidence deeper in Wave
+  Broadband's own backbone. RIS agrees exactly (267). Backlog:
+  377 -> 375.

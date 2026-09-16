@@ -2453,4 +2453,32 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
             "documented in `confirmed_local_transit`."
         ),
     ),
+    ConfirmedDetour(
+        source_cc="TV",
+        target_cc="AS",
+        target_asn=9751,
+        detour_ix_name="Equinix Sydney",
+        detour_hub="Sydney",
+        measurement_id=212050511,
+        ris_observation_count=267,
+        note=(
+            "Tuvalu (AS23917) -> American Samoa (AS9751) -- a fresh "
+            "TV<->AS pair, a fourth independent confirmation of the "
+            "Wave-Broadband(AS11404)<->AS9751 adjacency (after MP, VU, "
+            "PG): `AS23917 -> AS9241 (FINTEL) -> AS6939 (Hurricane "
+            "Electric) -> AS11404`, target actually reached directly at "
+            "the end (`103.117.168.1` answered), RIS-agreeing with the "
+            "identical exact match (267). Crosses **Equinix Sydney** "
+            "directly (`ixp_crossings` confirms it, member AS6939) -- a "
+            "genuinely different real crossing than the prior three "
+            "entries' Equinix San Jose, consistent with Tuvalu's own "
+            "path (via FINTEL, then south to Australia) differing "
+            "geographically from MP/VU/PG's routes. Notable: deeper in "
+            "Wave Broadband's own backbone, a real hostname "
+            "(`cr3-pdx.bb.as11404.net`) confirms a Portland touchpoint "
+            "too -- kept `detour_hub` as Sydney to match the actual "
+            "named-exchange crossing point, not this deeper internal "
+            "hop, but the Portland evidence is worth keeping on record."
+        ),
+    ),
 )

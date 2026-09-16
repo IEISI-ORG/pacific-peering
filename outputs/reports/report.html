@@ -56,7 +56,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
 <body>
 <div class="wrap">
     <h1>Pacific Peering — Regional Routing Report</h1>
-    <div class="meta">Generated 2026-09-16T03:49:23.372667+00:00</div>
+    <div class="meta">Generated 2026-09-16T03:51:55.815726+00:00</div>
 
     <div class="headline-banner">
         <span class="value">68%</span>
@@ -761,6 +761,13 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <div>RIS observation count: 71
                 &middot; measurement 212048367</div>
             <details class="note"><summary>Tuvalu (AS23917) -&gt; Teleguam Holdings/GTA (AS9246) -- **first-ever confirmation with AS9246 as the actual target** (every prior appearance in this dataclass…</summary>Tuvalu (AS23917) -&gt; Teleguam Holdings/GTA (AS9246) -- **first-ever confirmation with AS9246 as the actual target** (every prior appearance in this dataclass had AS9246 as an intermediate hop en route to a different final target). `AS23917 -&gt; AS9241 (FINTEL) -&gt; AS6939 (Hurricane Electric) -&gt; AS9246`, fully contiguous, RIS-agreeing with the identical exact match (71) -- a notably thinner observation count than most adjacencies on record, but an exact match is an exact match. Crosses **Equinix Sydney** first (`ixp_crossings` confirms it, member AS6939), then lands directly inside AS9246&#x27;s own registered LAN prefix at **Any2West** (`ixp_crossings` confirms it too, member AS9246 itself) -- Any2West is based in Los Angeles, the same hub already established for AS9246&#x27;s other appearances in this dataclass. Notable: Tuvalu&#x27;s own outbound path transits FINTEL (Fiji) before ever reaching Hurricane Electric -- consistent with FINTEL&#x27;s role as Tuvalu&#x27;s dominant, near-exclusive real upstream, already extensively documented in `confirmed_local_transit`.</details>
+        </div><div class="detour-card">
+            <div class="headline">TV -&gt; AS
+                (AS9751): detours via Equinix Sydney
+                (Sydney)</div>
+            <div>RIS observation count: 267
+                &middot; measurement 212050511</div>
+            <details class="note"><summary>Tuvalu (AS23917) -&gt; American Samoa (AS9751) -- a fresh TV&lt;-&gt;AS pair, a fourth independent confirmation of the Wave-Broadband(AS11404)&lt;-&gt;AS9751 adjacency (after…</summary>Tuvalu (AS23917) -&gt; American Samoa (AS9751) -- a fresh TV&lt;-&gt;AS pair, a fourth independent confirmation of the Wave-Broadband(AS11404)&lt;-&gt;AS9751 adjacency (after MP, VU, PG): `AS23917 -&gt; AS9241 (FINTEL) -&gt; AS6939 (Hurricane Electric) -&gt; AS11404`, target actually reached directly at the end (`103.117.168.1` answered), RIS-agreeing with the identical exact match (267). Crosses **Equinix Sydney** directly (`ixp_crossings` confirms it, member AS6939) -- a genuinely different real crossing than the prior three entries&#x27; Equinix San Jose, consistent with Tuvalu&#x27;s own path (via FINTEL, then south to Australia) differing geographically from MP/VU/PG&#x27;s routes. Notable: deeper in Wave Broadband&#x27;s own backbone, a real hostname (`cr3-pdx.bb.as11404.net`) confirms a Portland touchpoint too -- kept `detour_hub` as Sydney to match the actual named-exchange crossing point, not this deeper internal hop, but the Portland evidence is worth keeping on record.</details>
         </div>
 
     <h2>Confirmed local transit (RIS + Atlas both agree, stays in-fishbowl)</h2>
