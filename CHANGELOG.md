@@ -2069,3 +2069,8 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   candidates spot-checked, a same-source-ASN collision case
   confirmed correctly blocked) before being wired into the weekly
   script and smoke-tested end-to-end.
+- docs: mark the per-source-ASN scheduler and probe-churn deferred
+  items resolved (built as `run_batch()`/the weekly pipeline refresh,
+  respectively - see `task_plan.md`), and add a consolidated
+  "current open items" list, including a queued full code review of
+  Phases 6-8's fast-shipped code.
