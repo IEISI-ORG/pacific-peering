@@ -1788,3 +1788,10 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   AS45495 (Interchange) confirmed as AS45935's (Wantok) real domestic
   Vanuatu upstream, reached via BBIX Tokyo + Equinix. RIS agrees
   exactly (1,664). Backlog: 399 -> 392.
+- feat(analysis): new CandidatePeering, PW(AS17893)->NR(AS55722) at
+  Guam IX -- clean, contiguous, direct hop into Cenpac Net's own
+  registered LAN prefix, both ends independently claiming Guam IX
+  membership in PeeringDB. RIS disagrees (AS55722's only real
+  neighbor is AS7131). Distinct from the already-confirmed
+  AS7131<->AS55722 relationship. Kept as a candidate. Backlog:
+  392 -> 388.

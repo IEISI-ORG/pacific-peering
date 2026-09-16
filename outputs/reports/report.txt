@@ -1,6 +1,6 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-09-16T02:39:19.448835+00:00                  
+                 Generated: 2026-09-16T02:49:28.235969+00:00                  
 ==============================================================================
 
 SUMMARY
@@ -374,6 +374,9 @@ AS9246 (Teleguam Holdings, LLC (GTA), GU) -> AS38875 (FSM Telecommunications Cor
 AS1221 (Telstra Limited (domestic ASN), PG) -> AS140504 (Digicel Nauru Corporation, NR)
     Traceroute agreement: 1/1 probe  [measurement 211992510, vantage: PG]
     Sourced from AS17828 (PNG DataCo) toward AS140504 (Digicel Nauru) -- a fresh PG<->NR pair. Clean, direct traceroute, fully contiguous: `AS17828 -> AS4826 (Vocus Connect) -> AS1221 (Telstra Limited, domestic ASN) -> AS140504`, the literal target resolving directly -- the first time this project has reached AS140504 via anything other than its two already-confirmed relationships (AS132528/Digicel Australia and AS12684/SES Astra). But `ris_agrees: false`: checked AS140504's full RIS neighbor list directly -- `{132528: 1032, 12684: 616}` -- AS1221 doesn't appear at all (checked AS1221's own fishbowl entry too: empty neighbor list, no RIS visibility into it from any direction). Not a fishbowl-scope artifact (both ends are genuinely in-fishbowl Pacific/Nauru ASNs -- Telstra itself isn't in-fishbowl, but the shape matches Validation Rule 4 regardless). Notable: AS1221 and AS132528 (AS140504's real dominant neighbor) are both Telstra-operated -- a genuinely different ASN of the same corporate family reaching the same target directly, rather than the already-confirmed backbone ASN specifically. Kept as a candidate, not promoted, per the standing principle.
+AS17893 (Palau National Communications Corp, PW) -> AS55722 (Cenpac Net Inc, NR)
+    Traceroute agreement: 3/3 probes  [measurement 212035683, vantage: PW]
+    Sourced from AS17893 (Palau NCC) toward AS55722 (Cenpac Net, Nauru) -- a fresh PW<->NR pair. All 3 probes show the same clean, contiguous, two-hop path: the source's own network -> a resolved address landing directly inside AS55722's own registered LAN prefix at **Guam IX** (`ixp_crossings` confirms it, AS55722 itself as the member, ix_id 4494, in-fishbowl) -- no intermediate transit carrier hop at all. But `ris_agrees: false`: checked AS55722's full RIS neighbor list directly -- `{7131: 1528}` -- AS17893 doesn't appear (AS7131/PTI Pacifica is its only real RIS-observed neighbor, already confirmed as its upstream in `confirmed_local_transit`). Not a missing-data artifact: both AS17893 and AS55722 independently claim PeeringDB membership at Guam IX (`ix_id 4494`), so this is real shared-fabric corroboration on top of the traceroute evidence, matching this module's very first entry (FSM->Palau) in shape. A distinct finding from the already-confirmed AS7131<->AS55722 relationship, not a duplicate of it. Kept as a candidate, not promoted, per the standing principle.
 
 ECONOMIES
 ==============================================================================

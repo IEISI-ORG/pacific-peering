@@ -466,4 +466,37 @@ CANDIDATE_PEERING: tuple[CandidatePeering, ...] = (
             "candidate, not promoted, per the standing principle."
         ),
     ),
+    CandidatePeering(
+        upstream_cc="PW",
+        upstream_asn=17893,
+        upstream_name="Palau National Communications Corp",
+        target_cc="NR",
+        target_asn=55722,
+        target_name="Cenpac Net Inc",
+        measurement_id=212035683,
+        vantage_point_cc="PW",
+        probe_agreement="3/3 probes",
+        note=(
+            "Sourced from AS17893 (Palau NCC) toward AS55722 (Cenpac "
+            "Net, Nauru) -- a fresh PW<->NR pair. All 3 probes show the "
+            "same clean, contiguous, two-hop path: the source's own "
+            "network -> a resolved address landing directly inside "
+            "AS55722's own registered LAN prefix at **Guam IX** "
+            "(`ixp_crossings` confirms it, AS55722 itself as the "
+            "member, ix_id 4494, in-fishbowl) -- no intermediate "
+            "transit carrier hop at all. But `ris_agrees: false`: "
+            "checked AS55722's full RIS neighbor list directly -- "
+            "`{7131: 1528}` -- AS17893 doesn't appear (AS7131/PTI "
+            "Pacifica is its only real RIS-observed neighbor, already "
+            "confirmed as its upstream in `confirmed_local_transit`). "
+            "Not a missing-data artifact: both AS17893 and AS55722 "
+            "independently claim PeeringDB membership at Guam IX (`ix_id "
+            "4494`), so this is real shared-fabric corroboration on top "
+            "of the traceroute evidence, matching this module's very "
+            "first entry (FSM->Palau) in shape. A distinct finding from "
+            "the already-confirmed AS7131<->AS55722 relationship, not a "
+            "duplicate of it. Kept as a candidate, not promoted, per the "
+            "standing principle."
+        ),
+    ),
 )
