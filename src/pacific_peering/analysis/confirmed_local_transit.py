@@ -1076,7 +1076,18 @@ CONFIRMED_LOCAL_TRANSIT: tuple[ConfirmedLocalTransit, ...] = (
             "location inside AS14593's own network); not separately "
             "escalated since it's an already-known anomaly. A seventh "
             "distinct source economy (Palau, after Guam, CNMI, Vanuatu, "
-            "French Polynesia, Cook Islands, and Papua New Guinea)."
+            "French Polynesia, Cook Islands, and Papua New Guinea). "
+            "**Eighth independent corroboration** (measurement 212085592, "
+            "TV/AS23917 -> KI/AS134783, a fresh TV<->KI pair): "
+            "`AS23917 -> AS9241 (FINTEL) -> AS6939 (Hurricane Electric) "
+            "-> AS14593 (Starlink) -> AS154100`, target never resolved, "
+            "identical RIS match (1,392). Crosses Equinix Sydney directly "
+            "(`ixp_crossings` confirms it, member AS6939). "
+            "`has_routing_loop` correctly returned `False` this time -- "
+            "the last reached address (`202.1.22.25`) is not the known "
+            "looping location. An eighth distinct source economy (Tuvalu, "
+            "after Guam, CNMI, Vanuatu, French Polynesia, Cook Islands, "
+            "Papua New Guinea, and Palau)."
         ),
     ),
     ConfirmedLocalTransit(
@@ -1143,7 +1154,15 @@ CONFIRMED_LOCAL_TRANSIT: tuple[ConfirmedLocalTransit, ...] = (
             "neighbor at all. A domestic (intra-Nauru) adjacency, the "
             "same shape as the Digicel Samoa<->CSL Samoa finding -- "
             "confirms the lead exactly as flagged, closing out a loose "
-            "thread from earlier this session."
+            "thread from earlier this session. "
+            "**Second independent corroboration** (measurement 212085608, "
+            "TV/AS23917 -> NR/AS141368, a fresh TV<->NR pair): "
+            "`AS23917 -> AS9241 (FINTEL) -> AS6939 (Hurricane Electric) "
+            "-> AS7131 (PTI Pacifica) -> AS55722`, target never resolved, "
+            "identical RIS match (382) -- confirming the full chain "
+            "again in one traceroute. `has_routing_loop` correctly "
+            "returned `False`. A second distinct source economy "
+            "(Tuvalu, after Vanuatu)."
         ),
     ),
 )

@@ -1962,6 +1962,43 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
         ),
     ),
     ConfirmedDetour(
+        source_cc="TV",
+        target_cc="NR",
+        target_asn=140504,
+        detour_ix_name="AS12684 (SES ASTRA S.A.) -- satellite operator, global transit, "
+        "not a named exchange crossing",
+        detour_hub="Los Angeles",
+        measurement_id=212088551,
+        ris_observation_count=1347,
+        note=(
+            "Tuvalu (AS23917) -> AS140504 -- a fresh TV<->NR pair, a third "
+            "independent confirmation of the AS140504<->AS12684 (SES "
+            "Astra) relationship (after PF, CK). First address "
+            "(103.20.124.1) dead-ended the same way as every prior first "
+            "attempt: resolved only as far as AS36149 (Hawaiian Telcom), "
+            "`ris_agrees: False`. Applied the standing retry policy "
+            "against a different cached prefix (103.49.173.1, from "
+            "`list_target_ips`). **The retry reached the target address "
+            "directly** -- the first time this project has actually "
+            "landed on AS140504's own address rather than dead-ending "
+            "near it: `AS23917 -> AS9241 (FINTEL) -> AS6939 (Hurricane "
+            "Electric) -> AS36149 (Hawaiian Telcom) -> [one-hop silent "
+            "gap, the satellite leg] -> 103.49.173.1 (target)`. "
+            "`analyze_measurement`'s automated check reads `ris_agrees: "
+            "False` because it compares the last *resolved* ASN "
+            "(AS36149, not a registered neighbor of AS140504) rather "
+            "than the satellite hop sitting silently in the gap -- "
+            "checked RIS directly instead: AS140504's real neighbor list "
+            "is `{12684: 1347, 132528: 521}` (1,868 total observations, "
+            "counts naturally shifted from the PF/CK entries' snapshot "
+            "since RIS data is always current-state, not a fixed "
+            "historical record) -- AS12684 remains dominant, an exact "
+            "match for the gap this traceroute shows. Kept `detour_hub` "
+            "as Los Angeles, matching the PF/CK entries' verified "
+            "attribution."
+        ),
+    ),
+    ConfirmedDetour(
         source_cc="PG",
         target_cc="AS",
         target_asn=9751,
