@@ -56,7 +56,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
 <body>
 <div class="wrap">
     <h1>Pacific Peering — Regional Routing Report</h1>
-    <div class="meta">Generated 2026-09-16T02:29:14.534092+00:00</div>
+    <div class="meta">Generated 2026-09-16T02:39:19.594224+00:00</div>
 
     <div class="headline-banner">
         <span class="value">68%</span>
@@ -750,6 +750,13 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <div>RIS observation count: 1652
                 &middot; measurement 212030657</div>
             <details class="note"><summary>Palau NCC (AS17893) -&gt; Solomon Telekom Co Ltd (AS45891) -- a fresh PW&lt;-&gt;SB pair, a seventh independent confirmation of the AS139609(SISCC)&lt;-&gt;AS45891 adjacency…</summary>Palau NCC (AS17893) -&gt; Solomon Telekom Co Ltd (AS45891) -- a fresh PW&lt;-&gt;SB pair, a seventh independent confirmation of the AS139609(SISCC)&lt;-&gt;AS45891 adjacency (after GU, MP, VU, PF, CK, PG). `AS17893 -&gt; AS174 (Cogent) -&gt; AS1299 (Telia) -&gt; AS4637 (Telstra Global) -&gt; AS139609`, target never resolved, RIS-agreeing with the identical exact match (1,652). Reaches the known SISCC address `103.142.98.131` (the same one previously found alternating in a live routing loop this session) but only once this time, then goes cleanly dark -- `has_routing_loop` correctly returned `False`, and manual inspection confirmed no repeat. Telstra Global&#x27;s own hops (`sydp-core04.telstraglobal.net`, `sydp10.telstraglobal.net`) reconfirm Sydney directly.</details>
+        </div><div class="detour-card">
+            <div class="headline">PW -&gt; VU
+                (AS45935): detours via BBIX Tokyo
+                (Tokyo)</div>
+            <div>RIS observation count: 1664
+                &middot; measurement 212033156</div>
+            <details class="note"><summary>Palau NCC (AS17893) -&gt; Wantok Network Limited (AS45935) -- **first-ever confirmation of this target ASN**, and a genuinely new finding: the target itself…</summary>Palau NCC (AS17893) -&gt; Wantok Network Limited (AS45935) -- **first-ever confirmation of this target ASN**, and a genuinely new finding: the target itself answered directly (`103.36.144.1`), fully contiguous the whole way: `AS17893 -&gt; AS38195 (BBIX Tokyo) -&gt; AS15830 (Equinix) -&gt; AS45495 (Interchange Ltd) -&gt; AS45935`. AS45495 is the same ASN this session&#x27;s earlier PW-&gt;AS45495 measurement left inconclusive (dead end right after the same BBIX Tokyo/Equinix fabric touch, per the project owner&#x27;s own guidance that an IXP-fabric dead end is ordinary, not evidence of anything) -- this measurement resolves what that one couldn&#x27;t: AS45495 (Interchange, Vanuatu) is confirmed as AS45935&#x27;s (Wantok, also Vanuatu) real domestic upstream, RIS-agreeing with the identical exact match (1,664). Both ends of that specific leg are in-fishbowl Vanuatu carriers, but reaching it from Palau still crosses real external infrastructure first (BBIX Tokyo, `ixp_crossings` confirms it via a genuine IXP-LAN address match, ix_id 126 -- not a carrier guess), so this is filed as a detour, same as the OPT NC&lt;-&gt;AS17480 pattern already on record.</details>
         </div>
 
     <h2>Confirmed local transit (RIS + Atlas both agree, stays in-fishbowl)</h2>

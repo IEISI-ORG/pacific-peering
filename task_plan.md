@@ -2266,3 +2266,11 @@ Added as a new entry. Called `mark_corridor_tested(17893, 45879)`. Verified: mod
 Seventh independent confirmation of the AS139609(SISCC)<->AS45891 adjacency (after GU, MP, VU, PF, CK, PG): `AS17893 -> AS174 (Cogent) -> AS1299 (Telia) -> AS4637 (Telstra Global) -> AS139609`, target never resolved, RIS-agreeing with the identical exact match (1,652). Telstra Global's own hops (`sydp-core04.telstraglobal.net`, `sydp10.telstraglobal.net`) reconfirm Sydney directly.
 
 Added as a new entry. Called `mark_corridor_tested(17893, 45891)`. Verified: module imports cleanly (80 entries, up from 79); regenerated ASCII/HTML reports and the geographic map. Regenerated the corridor backlog: candidate count dropped 408 -> 399 (0 new-probe, 0 new-RIS-relationship).
+
+---
+
+**Next corridor pulled: AS17893 (Palau NCC) -> AS45935 (Vanuatu, Wantok Network Limited).** Checked holder name up front (real registered Vanuatu ISP). `has_routing_loop` correctly returned `False`. **First-ever confirmation of this target ASN.**
+
+The target itself answered directly (`103.36.144.1`), fully contiguous the whole way: `AS17893 -> AS38195 (BBIX Tokyo) -> AS15830 (Equinix) -> AS45495 (Interchange Ltd) -> AS45935`. **This resolves what the earlier PW->AS45495 inconclusive result couldn't**: AS45495 (Interchange, Vanuatu) is confirmed as AS45935's (Wantok, also Vanuatu) real domestic upstream, RIS-agreeing with the identical exact match (1,664). Both ends of that specific leg are in-fishbowl Vanuatu carriers, but reaching it from Palau still crosses real external infrastructure (BBIX Tokyo, `ixp_crossings` confirms a genuine IXP-LAN match, ix_id 126) -- filed as a detour, same pattern as OPT NC<->AS17480.
+
+Added as a new entry. Called `mark_corridor_tested(17893, 45935)`. Verified: module imports cleanly (81 entries, up from 80); regenerated ASCII/HTML reports and the geographic map. Regenerated the corridor backlog: candidate count dropped 399 -> 392 (0 new-probe, 0 new-RIS-relationship).

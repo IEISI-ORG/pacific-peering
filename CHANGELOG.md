@@ -1782,3 +1782,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   CK, PG). Touched the known loop address 103.142.98.131 once, then
   went cleanly dark -- no loop this time. Telstra Global's own hops
   reconfirm Sydney. RIS agrees exactly (1,652). Backlog: 408 -> 399.
+- feat(analysis): confirm PW(AS17893)->VU(AS45935) via BBIX Tokyo,
+  first-ever confirmation of this target. Fully contiguous to the
+  target itself; resolves the earlier AS45495 inconclusive result --
+  AS45495 (Interchange) confirmed as AS45935's (Wantok) real domestic
+  Vanuatu upstream, reached via BBIX Tokyo + Equinix. RIS agrees
+  exactly (1,664). Backlog: 399 -> 392.

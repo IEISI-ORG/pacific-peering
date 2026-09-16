@@ -2392,4 +2392,35 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
             "`sydp10.telstraglobal.net`) reconfirm Sydney directly."
         ),
     ),
+    ConfirmedDetour(
+        source_cc="PW",
+        target_cc="VU",
+        target_asn=45935,
+        detour_ix_name="BBIX Tokyo",
+        detour_hub="Tokyo",
+        measurement_id=212033156,
+        ris_observation_count=1664,
+        note=(
+            "Palau NCC (AS17893) -> Wantok Network Limited (AS45935) -- "
+            "**first-ever confirmation of this target ASN**, and a "
+            "genuinely new finding: the target itself answered directly "
+            "(`103.36.144.1`), fully contiguous the whole way: "
+            "`AS17893 -> AS38195 (BBIX Tokyo) -> AS15830 (Equinix) -> "
+            "AS45495 (Interchange Ltd) -> AS45935`. AS45495 is the same "
+            "ASN this session's earlier PW->AS45495 measurement left "
+            "inconclusive (dead end right after the same BBIX Tokyo/"
+            "Equinix fabric touch, per the project owner's own guidance "
+            "that an IXP-fabric dead end is ordinary, not evidence of "
+            "anything) -- this measurement resolves what that one "
+            "couldn't: AS45495 (Interchange, Vanuatu) is confirmed as "
+            "AS45935's (Wantok, also Vanuatu) real domestic upstream, "
+            "RIS-agreeing with the identical exact match (1,664). Both "
+            "ends of that specific leg are in-fishbowl Vanuatu carriers, "
+            "but reaching it from Palau still crosses real external "
+            "infrastructure first (BBIX Tokyo, `ixp_crossings` confirms "
+            "it via a genuine IXP-LAN address match, ix_id 126 -- not a "
+            "carrier guess), so this is filed as a detour, same as the "
+            "OPT NC<->AS17480 pattern already on record."
+        ),
+    ),
 )

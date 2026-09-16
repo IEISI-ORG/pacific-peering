@@ -1,6 +1,6 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-09-16T02:29:14.387952+00:00                  
+                 Generated: 2026-09-16T02:39:19.448835+00:00                  
 ==============================================================================
 
 SUMMARY
@@ -293,6 +293,9 @@ PW -> WF (AS45879): detours via AS174 (Cogent Communications), then AS5511 (Open
 PW -> SB (AS45891): detours via AS4637 (Telstra Global) -- global transit, not a named exchange crossing (Sydney)
     RIS observation count: 1652  [measurement 212030657]
     Palau NCC (AS17893) -> Solomon Telekom Co Ltd (AS45891) -- a fresh PW<->SB pair, a seventh independent confirmation of the AS139609(SISCC)<->AS45891 adjacency (after GU, MP, VU, PF, CK, PG). `AS17893 -> AS174 (Cogent) -> AS1299 (Telia) -> AS4637 (Telstra Global) -> AS139609`, target never resolved, RIS-agreeing with the identical exact match (1,652). Reaches the known SISCC address `103.142.98.131` (the same one previously found alternating in a live routing loop this session) but only once this time, then goes cleanly dark -- `has_routing_loop` correctly returned `False`, and manual inspection confirmed no repeat. Telstra Global's own hops (`sydp-core04.telstraglobal.net`, `sydp10.telstraglobal.net`) reconfirm Sydney directly.
+PW -> VU (AS45935): detours via BBIX Tokyo (Tokyo)
+    RIS observation count: 1664  [measurement 212033156]
+    Palau NCC (AS17893) -> Wantok Network Limited (AS45935) -- **first-ever confirmation of this target ASN**, and a genuinely new finding: the target itself answered directly (`103.36.144.1`), fully contiguous the whole way: `AS17893 -> AS38195 (BBIX Tokyo) -> AS15830 (Equinix) -> AS45495 (Interchange Ltd) -> AS45935`. AS45495 is the same ASN this session's earlier PW->AS45495 measurement left inconclusive (dead end right after the same BBIX Tokyo/Equinix fabric touch, per the project owner's own guidance that an IXP-fabric dead end is ordinary, not evidence of anything) -- this measurement resolves what that one couldn't: AS45495 (Interchange, Vanuatu) is confirmed as AS45935's (Wantok, also Vanuatu) real domestic upstream, RIS-agreeing with the identical exact match (1,664). Both ends of that specific leg are in-fishbowl Vanuatu carriers, but reaching it from Palau still crosses real external infrastructure first (BBIX Tokyo, `ixp_crossings` confirms it via a genuine IXP-LAN address match, ix_id 126 -- not a carrier guess), so this is filed as a detour, same as the OPT NC<->AS17480 pattern already on record.
 
 CONFIRMED LOCAL TRANSIT (RIS + Atlas both agree, stays in-fishbowl)
 ==============================================================================
