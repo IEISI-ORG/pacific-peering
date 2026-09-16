@@ -1894,3 +1894,8 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   Cogent/Tata earlier this session. Also: TV->AS55722(NR) sixth PTI
   Pacifica corroboration, TV->AS55885(NU) tenth ONATI corroboration.
   Backlog: 293 -> 286.
+- feat(analysis): TV(AS23917) tranche - AS58932(PW) and AS133897(PW)
+  fourth AS3605 corroborations, both crossing JPNAP Tokyo directly;
+  AS132486(KI) ninth Starlink-fronted downstream reproduction, noted
+  honestly as weaker evidence (went dark before AS154100, ris_agrees
+  false on the direct AS14593 comparison). Backlog: 286 -> 283.
