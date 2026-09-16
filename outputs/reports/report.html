@@ -56,7 +56,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
 <body>
 <div class="wrap">
     <h1>Pacific Peering — Regional Routing Report</h1>
-    <div class="meta">Generated 2026-09-16T04:21:44.957229+00:00</div>
+    <div class="meta">Generated 2026-09-16T04:32:37.337311+00:00</div>
 
     <div class="headline-banner">
         <span class="value">68%</span>
@@ -102,8 +102,8 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
         </tr><tr>
             <td>AS6453</td><td>Tata Communications</td>
             <td>MH, NR</td>
-            <td>CK, GU, MP, PF, PG, PW, VU</td>
-            <td>9</td>
+            <td>CK, GU, MP, PF, PG, PW, TV, VU</td>
+            <td>10</td>
             <td>no</td>
         </tr><tr>
             <td>AS132528</td><td>Digicel Australia/Telstra-operated backbone</td>
@@ -203,7 +203,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <th>Dependent economies</th></tr></thead>
         <tbody><tr>
             <td>Sydney</td>
-            <td>43</td>
+            <td>44</td>
             <td>51%</td>
             <td>13</td>
             <td>Melanesia, Micronesia, Polynesia</td>
@@ -217,8 +217,8 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <td>AS, CK, FJ, MH, NC, NR, PF, PW, SB, VU, WF</td>
         </tr><tr>
             <td>Los Angeles</td>
-            <td>13</td>
-            <td>15%</td>
+            <td>14</td>
+            <td>16%</td>
             <td>6</td>
             <td>Melanesia, Micronesia, Polynesia</td>
             <td>FJ, FM, GU, MH, NR, WF</td>
@@ -886,6 +886,20 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <div>RIS observation count: 150
                 &middot; measurement 212054917</div>
             <details class="note"><summary>Tuvalu (AS23917) -&gt; Vodafone Samoa Limited (AS17993) -- a fresh TV&lt;-&gt;WS pair, a fourth independent confirmation of the AS6939(Hurricane Electric)&lt;-&gt;AS17993…</summary>Tuvalu (AS23917) -&gt; Vodafone Samoa Limited (AS17993) -- a fresh TV&lt;-&gt;WS pair, a fourth independent confirmation of the AS6939(Hurricane Electric)&lt;-&gt;AS17993 adjacency (after MP, PF, CK): `AS23917 -&gt; AS9241 (FINTEL) -&gt; AS6939 -&gt; AS17993`, fully contiguous, RIS-agreeing with the identical exact match (150). Both AS6939 and AS17993 resolve via `peeringdb_netixlan` directly at **Equinix Sydney** (`ixp_crossings` confirms both hops), the same clean, no-gap shape as the AS17480 entry this same tranche -- Tuvalu&#x27;s own path (via FINTEL, then Hurricane Electric) reaching straight into the target&#x27;s registered LAN prefix with no dead end.</details>
+        </div><div class="detour-card">
+            <div class="headline">TV -&gt; MH
+                (AS24439): detours via AS6939 (Hurricane Electric), via AS6453 (Tata Communications) -- global transit, not a named exchange crossing
+                (Los Angeles)</div>
+            <div>RIS observation count: 997
+                &middot; measurement 212059716</div>
+            <details class="note"><summary>Tuvalu (AS23917) -&gt; Marshall Islands NTA ISP (AS24439) -- a fresh TV&lt;-&gt;MH pair, an eighth independent confirmation of the AS6453(Tata)&lt;-&gt;AS24439 adjacency…</summary>Tuvalu (AS23917) -&gt; Marshall Islands NTA ISP (AS24439) -- a fresh TV&lt;-&gt;MH pair, an eighth independent confirmation of the AS6453(Tata)&lt;-&gt;AS24439 adjacency (after GU, MP, VU, PF, CK, PG, PW): `AS23917 -&gt; AS9241 (FINTEL) -&gt; AS6939 (Hurricane Electric) -&gt; AS6453`, target never resolved, RIS-agreeing with the identical exact match (997). **Geolocated with `hop_geolocation` from the start**: the same Tata chain already confirmed for GU/MP/VU/PF/CK/PG -- `lvw-losangeles.as6453.net` -&gt; `pv4-piti.as6453.net` (twice) -- Los Angeles, then Piti, Guam. Kept `detour_hub` as Los Angeles, matching this measurement&#x27;s own evidence (unlike the PW entry, whose real touchpoint was genuinely Tokyo instead).</details>
+        </div><div class="detour-card">
+            <div class="headline">TV -&gt; PG
+                (AS38009): detours via AS6939 (Hurricane Electric) -- global transit, not a named exchange crossing
+                (Sydney)</div>
+            <div>RIS observation count: 1875
+                &middot; measurement 212060615</div>
+            <details class="note"><summary>Tuvalu (AS23917) -&gt; Telikom PNG Satellite Tier 1 AS (AS38009) -- a fresh TV&lt;-&gt;PG pair, a second independent confirmation of the AS17828(PNG DataCo)&lt;-&gt;AS38009…</summary>Tuvalu (AS23917) -&gt; Telikom PNG Satellite Tier 1 AS (AS38009) -- a fresh TV&lt;-&gt;PG pair, a second independent confirmation of the AS17828(PNG DataCo)&lt;-&gt;AS38009 adjacency (after PW): `AS23917 -&gt; AS9241 (FINTEL) -&gt; AS6939 (Hurricane Electric) -&gt; AS17828`, fully contiguous this time (no gap before AS17828, unlike the PW entry), RIS-agreeing with the identical exact match (1,875). Same named HE switch port already confirmed (`png-dataco-limited.e0-11.switch1.syd1.he.net`) -- Sydney reconfirmed directly.</details>
         </div>
 
     <h2>Confirmed local transit (RIS + Atlas both agree, stays in-fishbowl)</h2>

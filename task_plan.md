@@ -2385,3 +2385,13 @@ Verified: `build_report_data()` runs cleanly (4 regional hubs, 6 external hubs c
 **Follow-up, per direct request: "with the external hub concentration report, add the regional tags, Melanesia, Polynesia and Micronesia."** Added a "Subregions reached" column to the External Hub Concentration table in both report formats -- for each hub, the distinct set of subregions (Melanesia/Polynesia/Micronesia) among its dependent economies, looked up from `data.economies` (no new computation in `reports/data.py` needed, the subregion tag was already on every `EconomySummary`).
 
 Notable finding surfaced by this: **all three top hubs (Sydney, Tokyo, Los Angeles) reach all three subregions** -- none of them is a subregion-specific gateway; each is a genuine whole-region crossing point. Only the long-tail single-carrier hubs (Portland, San Jose, Honolulu) are subregion-narrow, and only because their sole dependent economy (American Samoa) happens to be Polynesian. Verified: regenerated ASCII/HTML reports and the geographic map.
+
+---
+
+**First tranche under the new 3-corridors-per-firing agreement: AS23917 (Tuvalu) -> three corridors in a row.**
+
+1. **TV -> AS23959 (Vanuatu)**: target answered directly, but hops 6-10 went dark first -- `contiguous: false`, `ris_agrees: false`. AS23959's only real RIS neighbor is AS4785 (662 obs), which never appeared. Not filed (dark middle disqualifies it from `CandidatePeering`'s clean bar).
+2. **TV -> AS24439 (Marshall Islands)**: eighth independent confirmation of the AS6453(Tata)<->AS24439 adjacency (after GU, MP, VU, PF, CK, PG, PW). Geolocated hops match the already-confirmed Los Angeles -> Piti, Guam chain exactly (`lvw-losangeles.as6453.net` -> `pv4-piti.as6453.net`); kept `detour_hub` as Los Angeles, distinct from PW's genuinely-Tokyo entry. RIS agrees exactly (997). Added as a new entry.
+3. **TV -> AS38009 (PNG, Telikom PNG)**: second independent confirmation of the AS17828(PNG DataCo)<->AS38009 adjacency (after PW), and fully contiguous this time (no gap before AS17828, unlike the PW entry). Same named HE switch port reconfirmed (`png-dataco-limited...switch1.syd1.he.net`, Sydney). RIS agrees exactly (1,875). Added as a new entry.
+
+All three: `has_routing_loop` correctly returned `False`. Called `mark_corridor_tested()` for all three pairs individually as each was classified, then did the shared regeneration/commit once at the end of the tranche, per the new working agreement. Verified: module imports cleanly (87 entries, up from 85 at tranche start); regenerated ASCII/HTML reports and the geographic map once. Regenerated the corridor backlog once: candidate count dropped 352 -> 321 (0 new-probe, 0 new-RIS-relationship).

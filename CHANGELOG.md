@@ -1864,3 +1864,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   Polynesia/Micronesia) to External Hub Concentration in both report
   formats. Finding: Sydney, Tokyo, and Los Angeles all reach all
   three subregions -- none is a subregion-specific gateway.
+- feat(analysis): first 3-corridors-per-firing tranche (TV/AS23917
+  source). AS23959(VU) inconclusive, not filed. AS24439(MH) eighth
+  Tata confirmation, Los Angeles hub matching prior evidence, RIS
+  agrees exactly (997). AS38009(PG) second PNG DataCo confirmation,
+  fully contiguous this time, RIS agrees exactly (1,875). Backlog:
+  352 -> 321.

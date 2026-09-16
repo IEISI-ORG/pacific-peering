@@ -1,6 +1,6 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-09-16T04:21:44.802603+00:00                  
+                 Generated: 2026-09-16T04:32:37.179390+00:00                  
 ==============================================================================
 
 SUMMARY
@@ -26,9 +26,9 @@ AS6939    Hurricane Electric                       4        4      11       no
 AS174     Cogent Communications                    4        3       8       no
     Dependent: AS, FJ, PW, WS
     Vantage-only: CK, GU, PF
-AS6453    Tata Communications                      2        7       9       no
+AS6453    Tata Communications                      2        8      10       no
     Dependent: MH, NR
-    Vantage-only: CK, GU, MP, PF, PG, PW, VU
+    Vantage-only: CK, GU, MP, PF, PG, PW, TV, VU
 AS132528  Digicel Australia/Telstra-operat         2        2       2       no
     Dependent: FJ, WS
     Vantage-only: NC, VU
@@ -68,11 +68,11 @@ The mirror image of the regional hubs above: the real external cities where conf
 
 City           Entries  Share Carriers Subregions reached            
 ------------------------------------------------------------------------------
-Sydney              43    51%       13 Melanesia, Micronesia, Polynesia
+Sydney              44    51%       13 Melanesia, Micronesia, Polynesia
     Dependent economies: AS, CK, FJ, MH, NC, PG, PW, SB, TO, VU, WS
 Tokyo               24    28%        9 Melanesia, Micronesia, Polynesia
     Dependent economies: AS, CK, FJ, MH, NC, NR, PF, PW, SB, VU, WF
-Los Angeles         13    15%        6 Melanesia, Micronesia, Polynesia
+Los Angeles         14    16%        6 Melanesia, Micronesia, Polynesia
     Dependent economies: FJ, FM, GU, MH, NR, WF
 Portland             2     2%        1 Polynesia
     Dependent economies: AS
@@ -352,6 +352,12 @@ TV -> NC (AS17480): detours via Equinix Sydney (Sydney)
 TV -> WS (AS17993): detours via Equinix Sydney (Sydney)
     RIS observation count: 150  [measurement 212054917]
     Tuvalu (AS23917) -> Vodafone Samoa Limited (AS17993) -- a fresh TV<->WS pair, a fourth independent confirmation of the AS6939(Hurricane Electric)<->AS17993 adjacency (after MP, PF, CK): `AS23917 -> AS9241 (FINTEL) -> AS6939 -> AS17993`, fully contiguous, RIS-agreeing with the identical exact match (150). Both AS6939 and AS17993 resolve via `peeringdb_netixlan` directly at **Equinix Sydney** (`ixp_crossings` confirms both hops), the same clean, no-gap shape as the AS17480 entry this same tranche -- Tuvalu's own path (via FINTEL, then Hurricane Electric) reaching straight into the target's registered LAN prefix with no dead end.
+TV -> MH (AS24439): detours via AS6939 (Hurricane Electric), via AS6453 (Tata Communications) -- global transit, not a named exchange crossing (Los Angeles)
+    RIS observation count: 997  [measurement 212059716]
+    Tuvalu (AS23917) -> Marshall Islands NTA ISP (AS24439) -- a fresh TV<->MH pair, an eighth independent confirmation of the AS6453(Tata)<->AS24439 adjacency (after GU, MP, VU, PF, CK, PG, PW): `AS23917 -> AS9241 (FINTEL) -> AS6939 (Hurricane Electric) -> AS6453`, target never resolved, RIS-agreeing with the identical exact match (997). **Geolocated with `hop_geolocation` from the start**: the same Tata chain already confirmed for GU/MP/VU/PF/CK/PG -- `lvw-losangeles.as6453.net` -> `pv4-piti.as6453.net` (twice) -- Los Angeles, then Piti, Guam. Kept `detour_hub` as Los Angeles, matching this measurement's own evidence (unlike the PW entry, whose real touchpoint was genuinely Tokyo instead).
+TV -> PG (AS38009): detours via AS6939 (Hurricane Electric) -- global transit, not a named exchange crossing (Sydney)
+    RIS observation count: 1875  [measurement 212060615]
+    Tuvalu (AS23917) -> Telikom PNG Satellite Tier 1 AS (AS38009) -- a fresh TV<->PG pair, a second independent confirmation of the AS17828(PNG DataCo)<->AS38009 adjacency (after PW): `AS23917 -> AS9241 (FINTEL) -> AS6939 (Hurricane Electric) -> AS17828`, fully contiguous this time (no gap before AS17828, unlike the PW entry), RIS-agreeing with the identical exact match (1,875). Same named HE switch port already confirmed (`png-dataco-limited.e0-11.switch1.syd1.he.net`) -- Sydney reconfirmed directly.
 
 CONFIRMED LOCAL TRANSIT (RIS + Atlas both agree, stays in-fishbowl)
 ==============================================================================

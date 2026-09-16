@@ -2526,4 +2526,51 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
             "LAN prefix with no dead end."
         ),
     ),
+    ConfirmedDetour(
+        source_cc="TV",
+        target_cc="MH",
+        target_asn=24439,
+        detour_ix_name="AS6939 (Hurricane Electric), via AS6453 (Tata "
+        "Communications) -- global transit, not a named exchange crossing",
+        detour_hub="Los Angeles",
+        measurement_id=212059716,
+        ris_observation_count=997,
+        note=(
+            "Tuvalu (AS23917) -> Marshall Islands NTA ISP (AS24439) -- "
+            "a fresh TV<->MH pair, an eighth independent confirmation "
+            "of the AS6453(Tata)<->AS24439 adjacency (after GU, MP, VU, "
+            "PF, CK, PG, PW): `AS23917 -> AS9241 (FINTEL) -> AS6939 "
+            "(Hurricane Electric) -> AS6453`, target never resolved, "
+            "RIS-agreeing with the identical exact match (997). "
+            "**Geolocated with `hop_geolocation` from the start**: the "
+            "same Tata chain already confirmed for GU/MP/VU/PF/CK/PG -- "
+            "`lvw-losangeles.as6453.net` -> `pv4-piti.as6453.net` "
+            "(twice) -- Los Angeles, then Piti, Guam. Kept `detour_hub` "
+            "as Los Angeles, matching this measurement's own evidence "
+            "(unlike the PW entry, whose real touchpoint was genuinely "
+            "Tokyo instead)."
+        ),
+    ),
+    ConfirmedDetour(
+        source_cc="TV",
+        target_cc="PG",
+        target_asn=38009,
+        detour_ix_name="AS6939 (Hurricane Electric) -- global transit, not a named "
+        "exchange crossing",
+        detour_hub="Sydney",
+        measurement_id=212060615,
+        ris_observation_count=1875,
+        note=(
+            "Tuvalu (AS23917) -> Telikom PNG Satellite Tier 1 AS "
+            "(AS38009) -- a fresh TV<->PG pair, a second independent "
+            "confirmation of the AS17828(PNG DataCo)<->AS38009 adjacency "
+            "(after PW): `AS23917 -> AS9241 (FINTEL) -> AS6939 "
+            "(Hurricane Electric) -> AS17828`, fully contiguous this "
+            "time (no gap before AS17828, unlike the PW entry), RIS-"
+            "agreeing with the identical exact match (1,875). Same "
+            "named HE switch port already confirmed "
+            "(`png-dataco-limited.e0-11.switch1.syd1.he.net`) -- Sydney "
+            "reconfirmed directly."
+        ),
+    ),
 )
