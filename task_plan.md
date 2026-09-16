@@ -2180,3 +2180,13 @@ Fifth independent confirmation of the AS7575(AARNet)<->AS24390 adjacency (after 
 **First hop-level geolocation evidence for this detour's hub**: AARNet's own router hostnames spell it out directly -- `et-3-0-2.pe1.alxd.nsw.aarnet.net.au` (New South Wales) immediately followed by `xe-0-0-0.pe1.a.suv.aarnet.net.au` (Suva) on the very next hop. Real confirmation that "Sydney" -- used by carrier-facility guess on all four prior AS7575<->AS24390 entries -- was correct all along. Added a new `nsw` pattern to `hop_geolocation.py`.
 
 Added as a new entry. Called `mark_corridor_tested(17893, 24390)`. Verified: module imports cleanly (75 entries, up from 74); regenerated ASCII/HTML reports and the geographic map. Regenerated the corridor backlog: candidate count dropped 459 -> 444 (0 new-probe, 0 new-RIS-relationship).
+
+---
+
+**Next corridor pulled: AS17893 (Palau NCC) -> AS24439 (Marshall Islands NTA ISP).** Checked `probes_requested`/`probes_scheduled`/`participant_count` up front given this exact target ASN's earlier zero-probes-scheduled anomaly (PG source) -- healthy (1/1/1, Palau's usual low-participant pattern), no anomaly this time.
+
+Seventh independent confirmation of the AS6453(Tata)<->AS24439 adjacency (after GU, MP, VU, PF, CK, PG): `AS17893 -> AS174 (Cogent) -> AS6453`, target never resolved, RIS-agreeing with the identical exact match (997). `has_routing_loop` correctly returned `False`.
+
+**Geolocated with `hop_geolocation` from the start.** The resolved Tata hops name Tokyo directly (`tv2-tokyo.as6453.net`, twice) before handing off to the same Piti, Guam hop seen on the PF/CK/PG entries. Unlike those entries (whose real external touchpoint is Los Angeles), **this one's real touchpoint genuinely is Tokyo** -- Palau's shorter path to Asia routes Tata's backbone differently than French Polynesia/Cook Islands/PNG's does. Kept `detour_hub` as Tokyo, matching this measurement's own evidence rather than reusing the Los Angeles value from the other source economies on the same adjacency. Added a new `tokyo` pattern to `hop_geolocation.py`.
+
+Added as a new entry. Called `mark_corridor_tested(17893, 24439)`. Verified: module imports cleanly (76 entries, up from 75); regenerated ASCII/HTML reports and the geographic map. Regenerated the corridor backlog: candidate count dropped 444 -> 442 (0 new-probe, 0 new-RIS-relationship).

@@ -1730,3 +1730,10 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   along, not just a carrier-facility guess. Added a new `nsw`
   pattern to hop_geolocation.py. RIS agrees exactly (337). Backlog:
   459 -> 444.
+- feat(analysis): confirm PW(AS17893)->MH(AS24439) via Tata, seventh
+  confirmation of AS6453<->AS24439 (after GU, MP, VU, PF, CK, PG).
+  Tata's tv2-tokyo hostnames show this source economy's real
+  external touchpoint is Tokyo, not Los Angeles like the other
+  source economies on this same adjacency -- a genuine geographic
+  difference, not a correction. Added a new `tokyo` pattern to
+  hop_geolocation.py. RIS agrees exactly (997). Backlog: 444 -> 442.

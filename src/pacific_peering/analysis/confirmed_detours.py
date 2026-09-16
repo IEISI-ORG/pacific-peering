@@ -2250,4 +2250,34 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
             "`hop_geolocation.py` from this measurement."
         ),
     ),
+    ConfirmedDetour(
+        source_cc="PW",
+        target_cc="MH",
+        target_asn=24439,
+        detour_ix_name="AS174 (Cogent Communications), via AS6453 (Tata "
+        "Communications) -- global transit, not a named exchange crossing",
+        detour_hub="Tokyo",
+        measurement_id=212015972,
+        ris_observation_count=997,
+        note=(
+            "Palau NCC (AS17893) -> Marshall Islands NTA ISP (AS24439) -- "
+            "a fresh PW<->MH pair, a seventh independent confirmation of "
+            "the AS6453(Tata)<->AS24439 adjacency (after GU, MP, VU, PF, "
+            "CK, PG). `AS17893 -> AS174 (Cogent) -> AS6453`, target never "
+            "resolved, RIS-agreeing with the identical *exact* match "
+            "(997). **Geolocated with `hop_geolocation` from the start**: "
+            "the resolved Tata hops (`if-bundle-16-2.qcore1.tv2-tokyo."
+            "as6453.net`, `if-ae-51-2.tcore1.tv2-tokyo.as6453.net`) name "
+            "Tokyo directly, then hand off to the same Piti, Guam hop "
+            "(`if-bundle-3-2.qhar1.pv4-piti.as6453.net`) seen on the "
+            "PF/CK/PG entries. Unlike those entries, **this one's real "
+            "external touchpoint genuinely is Tokyo, not Los Angeles** -- "
+            "Palau's shorter path to Asia routes Tata's backbone through "
+            "Tokyo before Piti, rather than through Los Angeles. Kept "
+            "`detour_hub` as Tokyo, matching this measurement's own "
+            "evidence rather than reusing the Los Angeles value from "
+            "other source economies. Added a new `tokyo` pattern to "
+            "`hop_geolocation.py` from this measurement."
+        ),
+    ),
 )

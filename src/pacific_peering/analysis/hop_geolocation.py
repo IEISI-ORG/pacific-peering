@@ -161,6 +161,27 @@ _KNOWN_PATTERNS: tuple[tuple[re.Pattern[str], HopLocation], ...] = (
         ),
     ),
     (
+        re.compile(r"(?:^|[.\-])[a-z]{2}\d-tokyo(?:[.\-]|$)", re.I),
+        HopLocation(
+            city="Tokyo",
+            economy_cc=None,
+            matched_pattern="tokyo",
+            evidence_note=(
+                "Confirmed via Tata (if-bundle-16-2.qcore1.tv2-tokyo.as6453.net "
+                "and if-ae-51-2.tcore1.tv2-tokyo.as6453.net, measurement "
+                "212015972, PW->AS24439) -- Tata's own naming convention "
+                "spells the city out directly (preceded by a two-letter+digit "
+                "site code, e.g. 'tv2-'), distinct from the 'lax'/'losangeles' "
+                "patterns already confirmed for this same carrier on other "
+                "source economies. Genuinely different external touchpoint "
+                "than the Los Angeles hub used for the PF/CK/PG-sourced "
+                "entries on this same AS6453<->AS24439 adjacency -- Palau's "
+                "shorter path to Asia routes through Tokyo before Piti, Guam, "
+                "rather than through Los Angeles."
+            ),
+        ),
+    ),
+    (
         re.compile(r"(?:^|[.\-])gu-gnc(?:[.\-]|$)", re.I),
         HopLocation(
             city="Guam",

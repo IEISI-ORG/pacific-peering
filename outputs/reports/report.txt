@@ -1,6 +1,6 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-09-16T01:19:35.301281+00:00                  
+                 Generated: 2026-09-16T01:29:44.342270+00:00                  
 ==============================================================================
 
 SUMMARY
@@ -241,6 +241,9 @@ PW -> WS (AS17993): detours via AS174 (Cogent Communications) -- global transit,
 PW -> FJ (AS24390): detours via AS7575 (AARNet) -- global transit, not a named exchange crossing (Sydney)
     RIS observation count: 337  [measurement 212013476]
     Palau NCC (AS17893) -> University of the South Pacific's own network (AS24390) -- a fresh PW<->FJ pair, a fifth independent confirmation of the AS7575(AARNet)<->AS24390 adjacency (after MP, PF, CK, PG). `AS17893 -> AS174 (Cogent) -> AS1299 (Telia) -> AS7575`, target never resolved, RIS-agreeing with the identical exact match (337). **First hop-level geolocation evidence for this detour's hub**: AARNet's own router hostname (`et-3-0-2.pe1.alxd.nsw.aarnet.net.au`) spells out New South Wales explicitly, and the very next hop (`xe-0-0-0.pe1.a.suv.aarnet.net.au`) names Suva directly -- real confirmation that Sydney (not a carrier-facility guess) is AARNet's actual detour point on every AS7575<->AS24390 entry filed so far. Added a new `nsw` pattern to `hop_geolocation.py` from this measurement.
+PW -> MH (AS24439): detours via AS174 (Cogent Communications), via AS6453 (Tata Communications) -- global transit, not a named exchange crossing (Tokyo)
+    RIS observation count: 997  [measurement 212015972]
+    Palau NCC (AS17893) -> Marshall Islands NTA ISP (AS24439) -- a fresh PW<->MH pair, a seventh independent confirmation of the AS6453(Tata)<->AS24439 adjacency (after GU, MP, VU, PF, CK, PG). `AS17893 -> AS174 (Cogent) -> AS6453`, target never resolved, RIS-agreeing with the identical *exact* match (997). **Geolocated with `hop_geolocation` from the start**: the resolved Tata hops (`if-bundle-16-2.qcore1.tv2-tokyo.as6453.net`, `if-ae-51-2.tcore1.tv2-tokyo.as6453.net`) name Tokyo directly, then hand off to the same Piti, Guam hop (`if-bundle-3-2.qhar1.pv4-piti.as6453.net`) seen on the PF/CK/PG entries. Unlike those entries, **this one's real external touchpoint genuinely is Tokyo, not Los Angeles** -- Palau's shorter path to Asia routes Tata's backbone through Tokyo before Piti, rather than through Los Angeles. Kept `detour_hub` as Tokyo, matching this measurement's own evidence rather than reusing the Los Angeles value from other source economies. Added a new `tokyo` pattern to `hop_geolocation.py` from this measurement.
 
 CONFIRMED LOCAL TRANSIT (RIS + Atlas both agree, stays in-fishbowl)
 ==============================================================================
