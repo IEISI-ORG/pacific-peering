@@ -324,7 +324,22 @@ CONFIRMED_LOCAL_TRANSIT: tuple[ConfirmedLocalTransit, ...] = (
             "corridor (after GSL Networks on every prior entry). A ninth "
             "geographically distinct source (Tuvalu, after FSM, Guam, "
             "CNMI, Vanuatu, French Polynesia, Cook Islands, Papua New "
-            "Guinea, and Palau)."
+            "Guinea, and Palau). "
+            "**A ninth independent confirmation of the direct AS154100<->"
+            "AS14593 relationship itself** (measurement 212091984, "
+            "TV/AS23917 -> KI/AS154100 directly, a second TV-sourced "
+            "measurement this tranche, this time targeting BNL Tarawa's "
+            "own address rather than transiting through it): fully "
+            "contiguous, resolves cleanly to AS14593 (Starlink) as the "
+            "literal last-reached ASN, via `AS23917 -> AS9241 (FINTEL) "
+            "-> AS6939 (Hurricane Electric) -> AS14593`, identical RIS "
+            "match (361). Crosses Equinix Sydney directly (`ixp_"
+            "crossings` confirms it, member AS6939). `has_routing_loop` "
+            "correctly returned `False` -- no reproduction of the known "
+            "looping addresses this time. A ninth distinct source "
+            "economy (Tuvalu, after FSM, Guam, CNMI, Vanuatu, French "
+            "Polynesia, Cook Islands, Papua New Guinea, and Palau) for "
+            "this specific direct relationship."
         ),
     ),
     ConfirmedLocalTransit(

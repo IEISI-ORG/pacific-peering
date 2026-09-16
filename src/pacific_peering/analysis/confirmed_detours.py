@@ -1240,6 +1240,26 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
         ),
     ),
     ConfirmedDetour(
+        source_cc="TV",
+        target_cc="CK",
+        target_asn=152093,
+        detour_ix_name="Equinix Sydney",
+        detour_hub="Sydney",
+        measurement_id=212091981,
+        ris_observation_count=335,
+        note=(
+            "Tuvalu (AS23917) -> VakaNet Limited (AS152093, Cook Islands) "
+            "-- a fresh TV<->CK pair, a fourth independent confirmation "
+            "of the AS9507(NextHop)<->AS152093 adjacency (after GU, MP, "
+            "VU). `AS23917 -> AS9241 (FINTEL) -> AS9507`, upstream of "
+            "the target directly, RIS-agreeing with the identical exact "
+            "match (335). Crosses Equinix Sydney directly (`ixp_"
+            "crossings` confirms it, member AS9507). `has_routing_loop` "
+            "correctly returned `False`. A fourth distinct source "
+            "economy (Tuvalu, after Guam, CNMI, and Vanuatu)."
+        ),
+    ),
+    ConfirmedDetour(
         source_cc="VU",
         target_cc="NR",
         target_asn=152706,
@@ -2529,6 +2549,34 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
             "too -- kept `detour_hub` as Sydney to match the actual "
             "named-exchange crossing point, not this deeper internal "
             "hop, but the Portland evidence is worth keeping on record."
+        ),
+    ),
+    ConfirmedDetour(
+        source_cc="FJ",
+        target_cc="AS",
+        target_asn=9751,
+        detour_ix_name="AS11404 (Wave Broadband) -- global transit, no named "
+        "exchange crossing this time",
+        detour_hub="San Jose",
+        measurement_id=212091988,
+        ris_observation_count=267,
+        note=(
+            "University of the South Pacific (AS24390, Fiji) -> American "
+            "Samoa (AS9751) -- a fresh FJ<->AS pair, sourced via the same "
+            "AS24390 vantage already used once before for a FJ->VU "
+            "corridor (Emalus Campus). A fifth independent confirmation "
+            "of the Wave-Broadband(AS11404)<->AS9751 adjacency (after MP, "
+            "VU, PG, TV): `AS24390 -> AS7575 (AARNet) -> AS11404`, target "
+            "actually reached directly at the end (`103.117.168.1` "
+            "answered), RIS-agreeing with the identical exact match "
+            "(267). No IXP crossing this time (`ixp_crossings` empty) -- "
+            "checked AS11404's real PeeringDB facility list directly "
+            "before keeping the hub: genuine presence at multiple San "
+            "Jose facilities (Equinix SV1/SV5/SV10, CoreSite SV1), "
+            "matching the majority (MP/VU/PG) of prior entries for this "
+            "adjacency, so kept `detour_hub` as San Jose rather than "
+            "guess from the one TV entry's different real Sydney "
+            "crossing. `has_routing_loop` correctly returned `False`."
         ),
     ),
     ConfirmedDetour(

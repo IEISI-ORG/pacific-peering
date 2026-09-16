@@ -2458,3 +2458,17 @@ All three: `has_routing_loop` correctly returned `False`. Called `mark_corridor_
 3. **TV -> AS141368 (Nauru, ICT)**: second independent corroboration of the AS55722(Cenpac Net)<->AS141368 domestic (intra-Nauru) adjacency (after VU). `AS23917 -> AS9241 (FINTEL) -> AS6939 (Hurricane Electric) -> AS7131 (PTI Pacifica) -> AS55722`, target never resolved, RIS agrees exactly (382). Extended the existing `ConfirmedLocalTransit` entry's note.
 
 All three: `has_routing_loop` correctly returned `False` throughout (including on the AS140504 retry). Called `mark_corridor_tested()` for each pair individually, then did the shared regeneration/commit once at the end of the tranche. Verified: `confirmed_local_transit` module imports cleanly (still 13 entries, two extensions only); `confirmed_detours` module imports cleanly (94 entries, up from 93, one new TV entry). Regenerated ASCII/HTML reports and the geographic map once. Regenerated the corridor backlog once: candidate count dropped 283 -> 279 (0 new-probe, 0 new-RIS-relationship).
+
+---
+
+Routine corridor-backlog regeneration (no corridors fired): re-ran `pacific-peering-corridor-backlog` per the standing keep-track order. 279 candidates, 0 new probes, 0 new RIS relationships -- only the timestamp changed, nothing anomalous. Committed and pushed (`8b2952c`).
+
+---
+
+**Next 3-corridor tranche (TV/AS23917 source, exhausting it; FJ/AS24390 picks up next):**
+
+1. **TV -> AS152093 (Cook Islands, VakaNet Limited)**: fourth independent confirmation of the AS9507(NextHop)<->AS152093 adjacency (after GU, MP, VU). `AS23917 -> AS9241 (FINTEL) -> AS9507`, upstream of target directly, RIS agrees exactly (335). Crosses Equinix Sydney directly. Filed as a new `ConfirmedDetour` entry.
+2. **TV -> AS154100 (Kiribati, BNL Tarawa) directly**: ninth independent confirmation of the direct AS154100<->AS14593 (Starlink) relationship itself (targeting BNL Tarawa's own address, not transiting through it). Fully contiguous, resolves cleanly to AS14593 as the literal last-reached ASN, identical RIS match (361). Crosses Equinix Sydney directly. Extended the existing `ConfirmedLocalTransit` entry's note -- this exhausts the TV-sourced backlog for AS23917.
+3. **FJ -> AS9751 (American Samoa)**: fifth independent confirmation of the Wave-Broadband(AS11404)<->AS9751 adjacency (after MP, VU, PG, TV), sourced via AS24390 (University of the South Pacific), already used once before for a FJ->VU corridor. Target actually reached directly (`103.117.168.1` answered). RIS agrees exactly (267). No IXP crossing this time -- checked AS11404's real PeeringDB facility list directly before keeping `detour_hub` as San Jose (matching the majority of prior entries, genuine San Jose facility presence confirmed). Filed as a new `ConfirmedDetour` entry. **First 3-corridor tranche to pull a candidate from a non-Tuvalu source economy since the TV-sourced run began.**
+
+All three: `has_routing_loop` correctly returned `False`. Called `mark_corridor_tested()` for each pair individually, then did the shared regeneration/commit once at the end of the tranche. Verified: `confirmed_local_transit` module imports cleanly (still 13 entries, one extension only); `confirmed_detours` module imports cleanly (96 entries, up from 94, two new entries). Regenerated ASCII/HTML reports and the geographic map once. Regenerated the corridor backlog once: candidate count dropped 279 -> 275 (0 new-probe, 0 new-RIS-relationship). **TV(AS23917) source exhausted -- next tranches will pull from FJ(AS24390) and other sources.**
