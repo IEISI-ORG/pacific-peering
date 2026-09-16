@@ -298,6 +298,8 @@ def classify_corridor(
                 mark_corridor_tested(candidate.source_asn, candidate.target_asn)
                 if regenerate:
                     _regenerate_artifacts()
+                if escalations:
+                    _write_escalations(escalations)
                 return ClassifyResult(candidate, "confirmed_detour", finding_id, escalations)
 
             if local_transit_pick is not None:
@@ -335,6 +337,8 @@ def classify_corridor(
                 mark_corridor_tested(candidate.source_asn, candidate.target_asn)
                 if regenerate:
                     _regenerate_artifacts()
+                if escalations:
+                    _write_escalations(escalations)
                 return ClassifyResult(candidate, "confirmed_local_transit", finding_id, escalations)
 
             if candidate_picks:
@@ -376,6 +380,8 @@ def classify_corridor(
                 mark_corridor_tested(candidate.source_asn, candidate.target_asn)
                 if regenerate:
                     _regenerate_artifacts()
+                if escalations:
+                    _write_escalations(escalations)
                 return ClassifyResult(candidate, "candidate_peering", finding_id, escalations)
         finally:
             conn.close()
