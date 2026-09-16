@@ -228,8 +228,69 @@ def _compute_transit_suppliers(
 
 @dataclass(frozen=True)
 class RegionalHub:
+    """One in-scope Pacific economy confirmed (RIS + Atlas) as a real transit
+
+    waypoint for *other* in-scope economies' traffic -- entirely within the
+    fishbowl, the mirror image of `TransitSupplier`'s external carriers.
+    Built from `ConfirmedLocalTransit` entries where `provider_cc` and
+    `customer_cc` differ (a same-economy entry is domestic transit, not a
+    regional-hub relationship). `dependent_economies` is every other
+    economy this hub has been confirmed to serve. `carriers` is the
+    distinct carrier(s) based in this economy doing that serving --
+    one economy can host more than one such carrier. `corroboration_count`
+    sums each underlying relationship's own corroboration depth (the
+    highest "Nth independent corroboration" ordinal mined from its note,
+    same method `TransitSupplier` uses), so an economy serving two
+    economies each reconfirmed many times outranks one serving two
+    economies confirmed only once each.
+    """
+
+    economy_cc: str
+    economy_name: str
+    dependent_economies: tuple[str, ...]
+    carriers: tuple[str, ...]
+    corroboration_count: int
+
+    @property
+    def dependent_count(self) -> int:
+        return len(self.dependent_economies)
+
+
+def _compute_regional_hubs(economy_names: dict[str, str]) -> tuple[RegionalHub, ...]:
+    """Rank in-scope economies by how many *other* in-scope economies confirm routing through them."""
+    dependent: dict[str, set[str]] = {}
+    carriers: dict[str, set[str]] = {}
+    corroboration: dict[str, int] = {}
+
+    for transit in CONFIRMED_LOCAL_TRANSIT:
+        if transit.customer_cc == transit.provider_cc:
+            continue  # domestic transit, not a cross-economy hub relationship
+        cc = transit.provider_cc
+        dependent.setdefault(cc, set()).add(transit.customer_cc)
+        carriers.setdefault(cc, set()).add(transit.provider_name)
+        corroboration[cc] = corroboration.get(cc, 0) + _max_corroboration_ordinal(transit.note)
+
+    hubs = [
+        RegionalHub(
+            economy_cc=cc,
+            economy_name=economy_names.get(cc, cc),
+            dependent_economies=tuple(sorted(deps)),
+            carriers=tuple(sorted(carriers.get(cc, set()))),
+            corroboration_count=corroboration.get(cc, 0),
+        )
+        for cc, deps in dependent.items()
+    ]
+    return tuple(
+        sorted(hubs, key=lambda h: (-h.dependent_count, -h.corroboration_count, h.economy_cc))
+    )
+
+
+@dataclass(frozen=True)
+class ExternalHub:
     """One external city where confirmed detours physically cross, per `ConfirmedDetour.detour_hub`.
 
+    The mirror image of `RegionalHub`: where the region's traffic actually
+    leaves the fishbowl, rather than where it stays inside it.
     `entry_count` is how many `ConfirmedDetour` entries name this city as
     their real external touchpoint -- not a carrier-level guess, since
     every current entry's hub was set (or corrected) from actual hop
@@ -253,9 +314,9 @@ class RegionalHub:
         return len(self.dependent_economies)
 
 
-def _compute_regional_hubs(
+def _compute_external_hubs(
     triangulation_dir: Path = DEFAULT_TRIANGULATION_DIR,
-) -> tuple[RegionalHub, ...]:
+) -> tuple[ExternalHub, ...]:
     """Rank the external cities where confirmed detours actually cross, by how much traffic does."""
     entry_count: dict[str, int] = {}
     dependent: dict[str, set[str]] = {}
@@ -277,7 +338,7 @@ def _compute_regional_hubs(
         carriers.setdefault(hub, set()).update(upstream_asns)
 
     hubs = [
-        RegionalHub(
+        ExternalHub(
             name=hub,
             entry_count=count,
             dependent_economies=tuple(sorted(dependent.get(hub, set()))),
@@ -426,6 +487,7 @@ class ReportData:
     ixps: tuple[IxpSummary, ...]
     transit_suppliers: tuple[dict, ...]
     regional_hubs: tuple[dict, ...]
+    external_hubs: tuple[dict, ...]
     satellite_pathways: tuple[dict, ...]
     confirmed_detours: tuple[dict, ...]
     confirmed_local_transit: tuple[dict, ...]
@@ -512,7 +574,9 @@ def build_report_data(
     confirmed_local_transit = tuple(asdict(t) for t in CONFIRMED_LOCAL_TRANSIT)
     candidate_peering = tuple(asdict(c) for c in CANDIDATE_PEERING)
     transit_suppliers = tuple(asdict(s) for s in _compute_transit_suppliers(fishbowl))
-    regional_hubs = tuple(asdict(h) for h in _compute_regional_hubs())
+    economy_names = {cc: entry["name"] for cc, entry in registry.items()}
+    regional_hubs = tuple(asdict(h) for h in _compute_regional_hubs(economy_names))
+    external_hubs = tuple(asdict(h) for h in _compute_external_hubs())
     asn_to_cc = {asn: cc for cc, entry in registry.items() for asn in entry["asns"]}
     satellite_pathways = tuple(
         asdict(s) for s in _compute_satellite_pathways(fishbowl, asn_to_cc)
@@ -536,6 +600,7 @@ def build_report_data(
         ixps=ixps,
         transit_suppliers=transit_suppliers,
         regional_hubs=regional_hubs,
+        external_hubs=external_hubs,
         satellite_pathways=satellite_pathways,
         confirmed_detours=confirmed_detours,
         confirmed_local_transit=confirmed_local_transit,

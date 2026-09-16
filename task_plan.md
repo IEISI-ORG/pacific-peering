@@ -2367,3 +2367,15 @@ Implementation, in `src/pacific_peering/reports/data.py`: a new `RegionalHub` da
 **Top 3, verified directly: Sydney (43 entries, 51% of all 85 confirmed detours, 13 distinct carriers), Tokyo (24, 28%, 9 carriers), Los Angeles (13, 15%, 6 carriers)** -- together 94% of every confirmed detour this project has recorded. The long tail (Portland, San Jose, Honolulu) accounts for the remaining 6%, each a single carrier's own path.
 
 Rendered in both `ascii_report.py` and `html_report.py`, positioned between "Findings: transit supplier concentration" and "Findings: satellite operator pathways" per the request. Verified: `build_report_data()` runs cleanly (6 regional hubs computed), regenerated ASCII/HTML reports and the geographic map.
+
+---
+
+**Correction, mid-turn: "let's modify that, regional hubs INSIDE the fishbowl."** Realized the just-shipped section was mislabeled: `detour_hub` is defined as a key into `EXTERNAL_HUB_LATLON` (Sydney/Tokyo/LA), so "Regional Hub Concentration" was actually describing *external* touchpoints, not in-region ones.
+
+Redefined `RegionalHub` to be genuinely in-fishbowl: built from `ConfirmedLocalTransit` entries where `provider_cc != customer_cc` (a same-economy entry is domestic transit, not a cross-economy hub relationship). Fields: `economy_cc`/`economy_name`, `dependent_economies` (other in-scope economies this hub serves), `carriers` (distinct carrier(s) based there), `corroboration_count` (summed per-relationship corroboration depth, reusing the same ordinal-mining helper already built for `TransitSupplier`).
+
+**Top 3, verified directly: French Polynesia (via ONATI, serves Cook Islands + Niue, corroboration 13), Fiji (via FINTEL + Vodafone Fiji, serves Tuvalu + Vanuatu, corroboration 9), Northern Mariana Islands (via PTI Pacifica, serves Guam + Nauru, corroboration 6)** -- ranked by how many other economies each serves, corroboration depth as tiebreaker (Guam ranks 4th: only 1 dependent economy, Palau, despite matching MP's corroboration count).
+
+**Follow-up, same turn: "that report with the external regional hubs looks really useful as well, we'll do both now -- add the old report back in just before the satellite section."** Restored the original detour_hub-based computation as a new, separately-named `ExternalHub` dataclass/`_compute_external_hubs()` function (identical logic to what was just replaced), wired as a new `external_hubs` field on `ReportData`. Rendered as **"Findings: External Hub Concentration"**, positioned directly after the (now-correct) in-fishbowl "Findings: Regional Hub Concentration" and before "Findings: Satellite Operator Pathways" -- so the report now reads regional (in-fishbowl) hubs, then external hubs, then satellite, three complementary cuts on "where does the region's traffic actually go."
+
+Verified: `build_report_data()` runs cleanly (4 regional hubs, 6 external hubs computed), regenerated ASCII/HTML reports and the geographic map. Fixed a minor ASCII column-width truncation ("Northern Mariana Islands (MP" losing its closing paren) caught on review.

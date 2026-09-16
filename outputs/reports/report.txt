@@ -1,6 +1,6 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-09-16T04:12:55.538767+00:00                  
+                 Generated: 2026-09-16T04:17:25.852027+00:00                  
 ==============================================================================
 
 SUMMARY
@@ -49,7 +49,22 @@ AS9241 (FINTEL, Fiji) doesn't crack the table above by dependent-economy count (
 
 FINDINGS: REGIONAL HUB CONCENTRATION
 ==============================================================================
-Every `ConfirmedDetour` names a real external city where the path physically crosses (`detour_hub`, set from actual hop evidence or a real IXP-LAN address match, never a carrier-level guess). Ranked by how many confirmed detours cross there. "Carriers" is how many distinct confirmed-upstream ASNs have been observed crossing at that city -- a high count means a genuine shared crossroads, not one carrier's path repeated.
+Which in-scope Pacific economies serve as a real transit waypoint for *other* in-scope economies, entirely inside the fishbowl -- the mirror image of transit supplier concentration above, but for carriers based in the region rather than external Tier-1s. Built from `ConfirmedLocalTransit` entries where the provider and customer are different economies. "Corrob." sums each underlying relationship's own corroboration depth, so an economy serving two economies each reconfirmed many times outranks one serving two economies confirmed only once each.
+
+Economy                           Serves Corrob. Carriers                                
+------------------------------------------------------------------------------
+French Polynesia (PF)                  2      13 ONATI (Office des Postes et Telecommunications)
+    Serves: CK, NU
+Fiji (FJ)                              2       9 FINTEL (Fiji International Telecommunications Ltd), Vodafone Fiji
+    Serves: TV, VU
+Northern Mariana Islands (MP)          2       6 PTI Pacifica Inc.                       
+    Serves: GU, NR
+Guam (GU)                              1       6 Guam Cablevision, LLC                   
+    Serves: PW
+
+FINDINGS: EXTERNAL HUB CONCENTRATION
+==============================================================================
+The mirror image of the regional hubs above: the real external cities where confirmed detours physically leave the fishbowl. Every `ConfirmedDetour` names one (`detour_hub`, set from actual hop evidence or a real IXP-LAN address match, never a carrier-level guess). Ranked by how many confirmed detours cross there. "Carriers" is how many distinct confirmed-upstream ASNs have been observed crossing at that city -- a high count means a genuine shared crossroads, not one carrier's path repeated.
 
 City           Entries  Share Carriers Dependent economies 
 ------------------------------------------------------------------------------

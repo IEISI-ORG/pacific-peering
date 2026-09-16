@@ -159,16 +159,27 @@ def render_html_report(data: ReportData, viz_dir: Path | None = Path("../viz")) 
     total_detours = len(data.confirmed_detours)
     regional_hub_rows = "".join(
         f"""<tr>
+            <td>{html.escape(h['economy_name'])} ({html.escape(h['economy_cc'])})</td>
+            <td>{len(h['dependent_economies'])}</td>
+            <td>{h['corroboration_count']}</td>
+            <td>{html.escape(', '.join(h['carriers']))}</td>
+            <td>{html.escape(', '.join(h['dependent_economies']))}</td>
+        </tr>"""
+        for h in data.regional_hubs
+    ) or "<p>(none recorded yet)</p>"
+
+    external_hub_rows = "".join(
+        f"""<tr>
             <td>{html.escape(h['name'])}</td>
             <td>{h['entry_count']}</td>
             <td>{h['entry_count'] / total_detours if total_detours else 0:.0%}</td>
             <td>{h['carrier_count']}</td>
             <td>{html.escape(', '.join(h['dependent_economies']))}</td>
         </tr>"""
-        for h in data.regional_hubs
+        for h in data.external_hubs
     ) or "<p>(none recorded yet)</p>"
     top3_hub_share = (
-        sum(h["entry_count"] for h in data.regional_hubs[:3]) / total_detours
+        sum(h["entry_count"] for h in data.external_hubs[:3]) / total_detours
         if total_detours
         else 0
     )
@@ -309,18 +320,36 @@ def render_html_report(data: ReportData, viz_dir: Path | None = Path("../viz")) 
         single carrier.</div>
 
     <h2>Findings: regional hub concentration</h2>
-    <p class="section-intro">Every confirmed detour names a real external
-        city where the path physically crosses (<code>detour_hub</code>,
-        set from actual hop evidence or a real IXP-LAN address match,
-        never a carrier-level guess). Ranked by how many confirmed
-        detours cross there. "Carriers" is how many distinct confirmed-
-        upstream ASNs have been observed crossing at that city &mdash; a
-        high count means a genuine shared crossroads, not one carrier's
-        path repeated.</p>
+    <p class="section-intro">Which in-scope Pacific economies serve as a
+        real transit waypoint for <strong>other</strong> in-scope
+        economies, entirely inside the fishbowl &mdash; the mirror image
+        of transit supplier concentration above, but for carriers based
+        in the region rather than external Tier-1s. Built from
+        <code>ConfirmedLocalTransit</code> entries where the provider and
+        customer are different economies. "Corrob." sums each underlying
+        relationship's own corroboration depth, so an economy serving two
+        economies each reconfirmed many times outranks one serving two
+        economies confirmed only once each.</p>
+    <table>
+        <thead><tr><th>Economy</th><th>Serves</th><th>Corrob.</th>
+            <th>Carriers</th><th>Which economies</th></tr></thead>
+        <tbody>{regional_hub_rows}</tbody>
+    </table>
+
+    <h2>Findings: external hub concentration</h2>
+    <p class="section-intro">The mirror image of the regional hubs above:
+        the real external cities where confirmed detours physically leave
+        the fishbowl. Every confirmed detour names one
+        (<code>detour_hub</code>, set from actual hop evidence or a real
+        IXP-LAN address match, never a carrier-level guess). Ranked by
+        how many confirmed detours cross there. "Carriers" is how many
+        distinct confirmed-upstream ASNs have been observed crossing at
+        that city &mdash; a high count means a genuine shared crossroads,
+        not one carrier's path repeated.</p>
     <table>
         <thead><tr><th>City</th><th>Entries</th><th>Share</th>
             <th>Carriers</th><th>Dependent economies</th></tr></thead>
-        <tbody>{regional_hub_rows}</tbody>
+        <tbody>{external_hub_rows}</tbody>
     </table>
     <div class="callout">Just the top 3 cities above account for
         <strong>{top3_hub_share:.0%}</strong> of every confirmed detour

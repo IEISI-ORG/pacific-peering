@@ -56,7 +56,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
 <body>
 <div class="wrap">
     <h1>Pacific Peering — Regional Routing Report</h1>
-    <div class="meta">Generated 2026-09-16T04:12:55.692464+00:00</div>
+    <div class="meta">Generated 2026-09-16T04:17:30.020195+00:00</div>
 
     <div class="headline-banner">
         <span class="value">68%</span>
@@ -147,14 +147,56 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
         single carrier.</div>
 
     <h2>Findings: regional hub concentration</h2>
-    <p class="section-intro">Every confirmed detour names a real external
-        city where the path physically crosses (<code>detour_hub</code>,
-        set from actual hop evidence or a real IXP-LAN address match,
-        never a carrier-level guess). Ranked by how many confirmed
-        detours cross there. "Carriers" is how many distinct confirmed-
-        upstream ASNs have been observed crossing at that city &mdash; a
-        high count means a genuine shared crossroads, not one carrier's
-        path repeated.</p>
+    <p class="section-intro">Which in-scope Pacific economies serve as a
+        real transit waypoint for <strong>other</strong> in-scope
+        economies, entirely inside the fishbowl &mdash; the mirror image
+        of transit supplier concentration above, but for carriers based
+        in the region rather than external Tier-1s. Built from
+        <code>ConfirmedLocalTransit</code> entries where the provider and
+        customer are different economies. "Corrob." sums each underlying
+        relationship's own corroboration depth, so an economy serving two
+        economies each reconfirmed many times outranks one serving two
+        economies confirmed only once each.</p>
+    <table>
+        <thead><tr><th>Economy</th><th>Serves</th><th>Corrob.</th>
+            <th>Carriers</th><th>Which economies</th></tr></thead>
+        <tbody><tr>
+            <td>French Polynesia (PF)</td>
+            <td>2</td>
+            <td>13</td>
+            <td>ONATI (Office des Postes et Telecommunications)</td>
+            <td>CK, NU</td>
+        </tr><tr>
+            <td>Fiji (FJ)</td>
+            <td>2</td>
+            <td>9</td>
+            <td>FINTEL (Fiji International Telecommunications Ltd), Vodafone Fiji</td>
+            <td>TV, VU</td>
+        </tr><tr>
+            <td>Northern Mariana Islands (MP)</td>
+            <td>2</td>
+            <td>6</td>
+            <td>PTI Pacifica Inc.</td>
+            <td>GU, NR</td>
+        </tr><tr>
+            <td>Guam (GU)</td>
+            <td>1</td>
+            <td>6</td>
+            <td>Guam Cablevision, LLC</td>
+            <td>PW</td>
+        </tr></tbody>
+    </table>
+
+    <h2>Findings: external hub concentration</h2>
+    <p class="section-intro">The mirror image of the regional hubs above:
+        the real external cities where confirmed detours physically leave
+        the fishbowl. Every confirmed detour names one
+        (<code>detour_hub</code>, set from actual hop evidence or a real
+        IXP-LAN address match, never a carrier-level guess). Ranked by
+        how many confirmed detours cross there. "Carriers" is how many
+        distinct confirmed-upstream ASNs have been observed crossing at
+        that city &mdash; a high count means a genuine shared crossroads,
+        not one carrier's path repeated.</p>
     <table>
         <thead><tr><th>City</th><th>Entries</th><th>Share</th>
             <th>Carriers</th><th>Dependent economies</th></tr></thead>

@@ -116,29 +116,59 @@ def render_ascii_report(data: ReportData) -> str:
 
     lines.append(_section("FINDINGS: REGIONAL HUB CONCENTRATION"))
     lines.append(
-        "Every `ConfirmedDetour` names a real external city where the "
-        "path physically crosses (`detour_hub`, set from actual hop "
-        "evidence or a real IXP-LAN address match, never a carrier-level "
-        "guess). Ranked by how many confirmed detours cross there. "
-        "\"Carriers\" is how many distinct confirmed-upstream ASNs have "
-        "been observed crossing at that city -- a high count means a "
-        "genuine shared crossroads, not one carrier's path repeated."
+        "Which in-scope Pacific economies serve as a real transit "
+        "waypoint for *other* in-scope economies, entirely inside the "
+        "fishbowl -- the mirror image of transit supplier concentration "
+        "above, but for carriers based in the region rather than "
+        "external Tier-1s. Built from `ConfirmedLocalTransit` entries "
+        "where the provider and customer are different economies. "
+        "\"Corrob.\" sums each underlying relationship's own "
+        "corroboration depth, so an economy serving two economies each "
+        "reconfirmed many times outranks one serving two economies "
+        "confirmed only once each."
     )
     lines.append("")
     if not data.regional_hubs:
+        lines.append("(none recorded yet)")
+    else:
+        header = f"{'Economy':<32} {'Serves':>7} {'Corrob.':>7} {'Carriers':<40}"
+        lines.append(header)
+        lines.append(_rule())
+        for hub in data.regional_hubs:
+            name = f"{hub['economy_name']} ({hub['economy_cc']})"
+            lines.append(
+                f"{name:<32.32} {len(hub['dependent_economies']):>7} "
+                f"{hub['corroboration_count']:>7} {', '.join(hub['carriers']):<40}"
+            )
+            lines.append(f"    Serves: {', '.join(hub['dependent_economies'])}")
+
+    lines.append(_section("FINDINGS: EXTERNAL HUB CONCENTRATION"))
+    lines.append(
+        "The mirror image of the regional hubs above: the real external "
+        "cities where confirmed detours physically leave the fishbowl. "
+        "Every `ConfirmedDetour` names one (`detour_hub`, set from "
+        "actual hop evidence or a real IXP-LAN address match, never a "
+        "carrier-level guess). Ranked by how many confirmed detours "
+        "cross there. \"Carriers\" is how many distinct confirmed-"
+        "upstream ASNs have been observed crossing at that city -- a "
+        "high count means a genuine shared crossroads, not one "
+        "carrier's path repeated."
+    )
+    lines.append("")
+    if not data.external_hubs:
         lines.append("(none recorded yet)")
     else:
         total_detours = len(data.confirmed_detours)
         header = f"{'City':<14} {'Entries':>7} {'Share':>6} {'Carriers':>8} {'Dependent economies':<20}"
         lines.append(header)
         lines.append(_rule())
-        for hub in data.regional_hubs:
+        for hub in data.external_hubs:
             share = hub["entry_count"] / total_detours if total_detours else 0.0
             lines.append(
                 f"{hub['name']:<14} {hub['entry_count']:>7} {share:>6.0%} "
                 f"{hub['carrier_count']:>8} {', '.join(hub['dependent_economies'])}"
             )
-        top3_share = sum(h["entry_count"] for h in data.regional_hubs[:3]) / total_detours
+        top3_share = sum(h["entry_count"] for h in data.external_hubs[:3]) / total_detours
         lines.append("")
         lines.append(
             f"Just the top 3 cities above account for {top3_share:.0%} of every "

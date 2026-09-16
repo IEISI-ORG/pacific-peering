@@ -1850,3 +1850,13 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   count. Top 3: Sydney (43 entries, 51%, 13 carriers), Tokyo (24,
   28%, 9 carriers), Los Angeles (13, 15%, 6 carriers) -- together 94%
   of all 85 confirmed detours.
+- fix(reports): redefine "Findings: Regional Hub Concentration" to
+  be genuinely in-fishbowl. detour_hub is always external
+  (Sydney/Tokyo/LA); the section was mislabeled. Rebuilt from
+  ConfirmedLocalTransit cross-economy relationships instead. Top 3:
+  French Polynesia (serves CK, NU), Fiji (serves TV, VU), Northern
+  Mariana Islands (serves GU, NR).
+- feat(reports): restore the external-city version as a new
+  "Findings: External Hub Concentration" section, positioned right
+  after the corrected regional-hub section and before satellite
+  pathways -- both cuts kept, per direct request.
