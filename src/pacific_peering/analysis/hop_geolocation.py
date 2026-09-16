@@ -142,6 +142,25 @@ _KNOWN_PATTERNS: tuple[tuple[re.Pattern[str], HopLocation], ...] = (
         ),
     ),
     (
+        re.compile(r"(?:^|[.\-])nsw(?:[.\-]|$)", re.I),
+        HopLocation(
+            city="Sydney",
+            economy_cc=None,
+            matched_pattern="nsw",
+            evidence_note=(
+                "Confirmed via AARNet (et-3-0-2.pe1.alxd.nsw.aarnet.net.au, "
+                "measurement 212013476, PW->AS24390) -- AARNet spells out the "
+                "Australian state (New South Wales, i.e. Sydney metro) rather "
+                "than using an IATA code, hence a separate pattern from "
+                "Cogent's/Telia's 'syd'/'lax' convention. The same hop also "
+                "shows the next leg direct to Fiji (`pe1.a.suv.aarnet.net.au` "
+                "-- Suva), real hostname confirmation that AARNet's Sydney "
+                "presence is the actual detour hub for every AS7575<->AS24390 "
+                "entry, not just a carrier-facility guess."
+            ),
+        ),
+    ),
+    (
         re.compile(r"(?:^|[.\-])gu-gnc(?:[.\-]|$)", re.I),
         HopLocation(
             city="Guam",

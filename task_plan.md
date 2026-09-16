@@ -2170,3 +2170,13 @@ Extended the existing FINTEL<->Tuvalu entry's note (per the established per-sour
 The traceroute actually reached the destination IP itself directly (`194.114.136.1` answered at hop 14) via `AS17893 -> AS174 (Cogent) -> AS2497 (IIJ, Japan) -> [hops 9-13 dark, no replies] -> AS23959`. `has_routing_loop` correctly returned `False`. But the path is **not contiguous**: hops 9-13 never replied, so the true immediate upstream of AS23959 is unknown -- IIJ is simply the last ASN resolved before the dark stretch, not a confirmed adjacency. Checked AS23959's fishbowl-registered RIS neighbor list directly: it shows a single neighbor, AS4785 (662 observations) -- AS2497 doesn't appear at all, and RIS disagrees.
 
 Given the gap, this doesn't meet the "clean, contiguous" bar `CandidatePeering` requires (unlike the Vodafone Fiji<->Vodafone Samoa candidate, where the final hop landed unambiguously inside the target's own registered prefix with no gap) -- just inconclusive, dark-middle evidence. Not filed in any dataclass, matching established precedent. Called `mark_corridor_tested(17893, 23959)`. No report/map regeneration needed (no dataclass changed). Regenerated the corridor backlog: candidate count dropped 460 -> 459.
+
+---
+
+**Next corridor pulled: AS17893 (Palau NCC) -> AS24390 (Fiji, USP).** Another local memory-pressure event killed the background wait this session already flagged the workaround for; recovered the same way (lightweight foreground `fetch_measurement_status`/`fetch_raw_results` polling instead of a long-running background process).
+
+Fifth independent confirmation of the AS7575(AARNet)<->AS24390 adjacency (after MP, PF, CK, PG): `AS17893 -> AS174 (Cogent) -> AS1299 (Telia) -> AS7575`, target never resolved (ICMP filtering near destination, matching the established pattern for this specific target), RIS-agreeing with the identical exact match (337). `has_routing_loop` correctly returned `False`.
+
+**First hop-level geolocation evidence for this detour's hub**: AARNet's own router hostnames spell it out directly -- `et-3-0-2.pe1.alxd.nsw.aarnet.net.au` (New South Wales) immediately followed by `xe-0-0-0.pe1.a.suv.aarnet.net.au` (Suva) on the very next hop. Real confirmation that "Sydney" -- used by carrier-facility guess on all four prior AS7575<->AS24390 entries -- was correct all along. Added a new `nsw` pattern to `hop_geolocation.py`.
+
+Added as a new entry. Called `mark_corridor_tested(17893, 24390)`. Verified: module imports cleanly (75 entries, up from 74); regenerated ASCII/HTML reports and the geographic map. Regenerated the corridor backlog: candidate count dropped 459 -> 444 (0 new-probe, 0 new-RIS-relationship).

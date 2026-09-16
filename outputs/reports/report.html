@@ -53,7 +53,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
 <body>
 <div class="wrap">
     <h1>Pacific Peering — Regional Routing Report</h1>
-    <div class="meta">Generated 2026-09-16T00:57:06.896109+00:00</div>
+    <div class="meta">Generated 2026-09-16T01:19:35.439187+00:00</div>
 
     <div class="headline-banner">
         <span class="value">68%</span>
@@ -584,6 +584,13 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <div>RIS observation count: 1455
                 &middot; measurement 212005827</div>
             <details class="note"><summary>Palau NCC (AS17893) -&gt; Vodafone Samoa Limited (AS17993) -- a fresh PW&lt;-&gt;WS pair, a second independent confirmation of the AS174(Cogent)&lt;-&gt;AS17993 adjacency…</summary>Palau NCC (AS17893) -&gt; Vodafone Samoa Limited (AS17993) -- a fresh PW&lt;-&gt;WS pair, a second independent confirmation of the AS174(Cogent)&lt;-&gt;AS17993 adjacency (after GU). Only one probe responded and the destination IP never answered, but the second-to-last hop resolves directly to AS17993 by RIS BGP lookup, so the adjacency is fully contiguous. `AS17893 -&gt; AS174 -&gt; AS17993`, RIS-agreeing with the identical *exact* match (1,455). **Geolocated with `hop_geolocation` for the first time on this specific corridor**: the Cogent hops (`ccr71.syd01.atlas.cogentco.com`, `agr51.syd01.atlas.cogentco.com`) resolve to Sydney -- confirming, with real hop-level PTR evidence, the carrier-facility guess the earlier GU entry had used for the same &#x27;Sydney&#x27; hub. Added a new `syd` pattern to `hop_geolocation.py` from this measurement.</details>
+        </div><div class="detour-card">
+            <div class="headline">PW -&gt; FJ
+                (AS24390): detours via AS7575 (AARNet) -- global transit, not a named exchange crossing
+                (Sydney)</div>
+            <div>RIS observation count: 337
+                &middot; measurement 212013476</div>
+            <details class="note"><summary>Palau NCC (AS17893) -&gt; University of the South Pacific&#x27;s own network (AS24390) -- a fresh PW&lt;-&gt;FJ pair, a fifth independent confirmation of the…</summary>Palau NCC (AS17893) -&gt; University of the South Pacific&#x27;s own network (AS24390) -- a fresh PW&lt;-&gt;FJ pair, a fifth independent confirmation of the AS7575(AARNet)&lt;-&gt;AS24390 adjacency (after MP, PF, CK, PG). `AS17893 -&gt; AS174 (Cogent) -&gt; AS1299 (Telia) -&gt; AS7575`, target never resolved, RIS-agreeing with the identical exact match (337). **First hop-level geolocation evidence for this detour&#x27;s hub**: AARNet&#x27;s own router hostname (`et-3-0-2.pe1.alxd.nsw.aarnet.net.au`) spells out New South Wales explicitly, and the very next hop (`xe-0-0-0.pe1.a.suv.aarnet.net.au`) names Suva directly -- real confirmation that Sydney (not a carrier-facility guess) is AARNet&#x27;s actual detour point on every AS7575&lt;-&gt;AS24390 entry filed so far. Added a new `nsw` pattern to `hop_geolocation.py` from this measurement.</details>
         </div>
 
     <h2>Confirmed local transit (RIS + Atlas both agree, stays in-fishbowl)</h2>

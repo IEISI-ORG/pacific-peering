@@ -2225,4 +2225,29 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
             "`hop_geolocation.py` from this measurement."
         ),
     ),
+    ConfirmedDetour(
+        source_cc="PW",
+        target_cc="FJ",
+        target_asn=24390,
+        detour_ix_name="AS7575 (AARNet) -- global transit, not a named exchange crossing",
+        detour_hub="Sydney",
+        measurement_id=212013476,
+        ris_observation_count=337,
+        note=(
+            "Palau NCC (AS17893) -> University of the South Pacific's own "
+            "network (AS24390) -- a fresh PW<->FJ pair, a fifth independent "
+            "confirmation of the AS7575(AARNet)<->AS24390 adjacency (after "
+            "MP, PF, CK, PG). `AS17893 -> AS174 (Cogent) -> AS1299 (Telia) "
+            "-> AS7575`, target never resolved, RIS-agreeing with the "
+            "identical exact match (337). **First hop-level geolocation "
+            "evidence for this detour's hub**: AARNet's own router hostname "
+            "(`et-3-0-2.pe1.alxd.nsw.aarnet.net.au`) spells out New South "
+            "Wales explicitly, and the very next hop "
+            "(`xe-0-0-0.pe1.a.suv.aarnet.net.au`) names Suva directly -- "
+            "real confirmation that Sydney (not a carrier-facility guess) "
+            "is AARNet's actual detour point on every AS7575<->AS24390 "
+            "entry filed so far. Added a new `nsw` pattern to "
+            "`hop_geolocation.py` from this measurement."
+        ),
+    ),
 )

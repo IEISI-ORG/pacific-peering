@@ -1723,3 +1723,10 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   single-homed to AS4785 only; AS2497 (IIJ) never appears. Not filed
   (gap disqualifies it from CandidatePeering's "clean" bar). Backlog:
   460 -> 459.
+- feat(analysis): confirm PW(AS17893)->FJ(AS24390) via AARNet --
+  fifth confirmation of AS7575<->AS24390 (after MP, PF, CK, PG).
+  AARNet's own hostnames (nsw, then suv on the next hop) give the
+  first real hop-level confirmation that "Sydney" was correct all
+  along, not just a carrier-facility guess. Added a new `nsw`
+  pattern to hop_geolocation.py. RIS agrees exactly (337). Backlog:
+  459 -> 444.
