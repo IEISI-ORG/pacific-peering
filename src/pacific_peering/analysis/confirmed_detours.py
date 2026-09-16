@@ -2367,4 +2367,29 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
             "Angeles a second time on real evidence."
         ),
     ),
+    ConfirmedDetour(
+        source_cc="PW",
+        target_cc="SB",
+        target_asn=45891,
+        detour_ix_name="AS4637 (Telstra Global) -- global transit, not a named "
+        "exchange crossing",
+        detour_hub="Sydney",
+        measurement_id=212030657,
+        ris_observation_count=1652,
+        note=(
+            "Palau NCC (AS17893) -> Solomon Telekom Co Ltd (AS45891) -- a "
+            "fresh PW<->SB pair, a seventh independent confirmation of "
+            "the AS139609(SISCC)<->AS45891 adjacency (after GU, MP, VU, "
+            "PF, CK, PG). `AS17893 -> AS174 (Cogent) -> AS1299 (Telia) -> "
+            "AS4637 (Telstra Global) -> AS139609`, target never "
+            "resolved, RIS-agreeing with the identical exact match "
+            "(1,652). Reaches the known SISCC address `103.142.98.131` "
+            "(the same one previously found alternating in a live "
+            "routing loop this session) but only once this time, then "
+            "goes cleanly dark -- `has_routing_loop` correctly returned "
+            "`False`, and manual inspection confirmed no repeat. "
+            "Telstra Global's own hops (`sydp-core04.telstraglobal.net`, "
+            "`sydp10.telstraglobal.net`) reconfirm Sydney directly."
+        ),
+    ),
 )

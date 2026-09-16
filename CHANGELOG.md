@@ -1777,3 +1777,8 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   PG). Reconfirms Los Angeles via the same orange.lax05.atlas hop
   seen on the PG entry. RIS agrees exactly (1,665). Backlog: 409 ->
   408.
+- feat(analysis): confirm PW(AS17893)->SB(AS45891) via SISCC,
+  seventh confirmation of AS139609<->AS45891 (after GU, MP, VU, PF,
+  CK, PG). Touched the known loop address 103.142.98.131 once, then
+  went cleanly dark -- no loop this time. Telstra Global's own hops
+  reconfirm Sydney. RIS agrees exactly (1,652). Backlog: 408 -> 399.

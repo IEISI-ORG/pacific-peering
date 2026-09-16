@@ -1,6 +1,6 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-09-16T02:19:21.174837+00:00                  
+                 Generated: 2026-09-16T02:29:14.387952+00:00                  
 ==============================================================================
 
 SUMMARY
@@ -26,12 +26,12 @@ AS5511    Opentransit Orange S.A.                          8    40%       7     
     Economies: CK, GU, MP, PF, PG, PW, VU, WF
 AS45355   Digicel Fiji                                     8    40%       7      yes
     Economies: CK, GU, MP, PF, PG, PW, TO, VU
+AS139609  SISCC (Solomon Islands Submarine Cable C         8    40%       7      yes
+    Economies: CK, GU, MP, PF, PG, PW, SB, VU
 AS174     Cogent Communications                            7    35%       8       no
     Economies: AS, CK, FJ, GU, PF, PW, WS
 AS6939    Hurricane Electric                               7    35%       9       no
     Economies: CK, GU, MP, PF, PG, PW, WS
-AS139609  SISCC (Solomon Islands Submarine Cable C         7    35%       6      yes
-    Economies: CK, GU, MP, PF, PG, SB, VU
 AS7575    AARNet                                           6    30%       5       no
     Economies: CK, FJ, MP, PF, PG, PW
 AS18200   OPT NC (Office des Postes et Telecommuni         6    30%       5      yes
@@ -290,6 +290,9 @@ PW -> TO (AS38198): detours via AS174 (Cogent Communications), via AS1299 (Telia
 PW -> WF (AS45879): detours via AS174 (Cogent Communications), then AS5511 (Opentransit Orange S.A.) -- global transit, not a named exchange crossing (Los Angeles)
     RIS observation count: 1665  [measurement 212029169]
     Palau NCC (AS17893) -> Orange Wallis & Futuna (AS45879) -- a fresh PW<->WF pair, a seventh independent confirmation of the AS5511(Opentransit Orange)<->AS45879 adjacency (after GU, MP, VU, PF, CK, PG). `AS17893 -> AS174 (Cogent) -> AS5511`, target never resolved, RIS-agreeing with the identical *exact* match (1,665). **Geolocated with `hop_geolocation` from the start**: the same `orange.lax05.atlas.cogentco.com` handoff hop already confirmed on the PG entry appears again, reconfirming Los Angeles a second time on real evidence.
+PW -> SB (AS45891): detours via AS4637 (Telstra Global) -- global transit, not a named exchange crossing (Sydney)
+    RIS observation count: 1652  [measurement 212030657]
+    Palau NCC (AS17893) -> Solomon Telekom Co Ltd (AS45891) -- a fresh PW<->SB pair, a seventh independent confirmation of the AS139609(SISCC)<->AS45891 adjacency (after GU, MP, VU, PF, CK, PG). `AS17893 -> AS174 (Cogent) -> AS1299 (Telia) -> AS4637 (Telstra Global) -> AS139609`, target never resolved, RIS-agreeing with the identical exact match (1,652). Reaches the known SISCC address `103.142.98.131` (the same one previously found alternating in a live routing loop this session) but only once this time, then goes cleanly dark -- `has_routing_loop` correctly returned `False`, and manual inspection confirmed no repeat. Telstra Global's own hops (`sydp-core04.telstraglobal.net`, `sydp10.telstraglobal.net`) reconfirm Sydney directly.
 
 CONFIRMED LOCAL TRANSIT (RIS + Atlas both agree, stays in-fishbowl)
 ==============================================================================

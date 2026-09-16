@@ -2258,3 +2258,11 @@ Seventh independent confirmation of the AS5511(Opentransit Orange)<->AS45879 adj
 **Geolocated with `hop_geolocation` from the start**: the exact same `orange.lax05.atlas.cogentco.com` handoff hop already confirmed on the PG entry appeared again on this measurement, reconfirming Los Angeles a second time on real evidence.
 
 Added as a new entry. Called `mark_corridor_tested(17893, 45879)`. Verified: module imports cleanly (79 entries, up from 78); regenerated ASCII/HTML reports and the geographic map. Regenerated the corridor backlog: candidate count dropped 409 -> 408 (0 new-probe, 0 new-RIS-relationship).
+
+---
+
+**Next corridor pulled: AS17893 (Palau NCC) -> AS45891 (Solomon Islands, Solomon Telekom).** `has_routing_loop` correctly returned `False`. Reached the known SISCC address `103.142.98.131` (the same one previously found alternating in a live routing loop this session) but only once this time, then went cleanly dark -- manually confirmed no repeat.
+
+Seventh independent confirmation of the AS139609(SISCC)<->AS45891 adjacency (after GU, MP, VU, PF, CK, PG): `AS17893 -> AS174 (Cogent) -> AS1299 (Telia) -> AS4637 (Telstra Global) -> AS139609`, target never resolved, RIS-agreeing with the identical exact match (1,652). Telstra Global's own hops (`sydp-core04.telstraglobal.net`, `sydp10.telstraglobal.net`) reconfirm Sydney directly.
+
+Added as a new entry. Called `mark_corridor_tested(17893, 45891)`. Verified: module imports cleanly (80 entries, up from 79); regenerated ASCII/HTML reports and the geographic map. Regenerated the corridor backlog: candidate count dropped 408 -> 399 (0 new-probe, 0 new-RIS-relationship).
