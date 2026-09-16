@@ -1,6 +1,6 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-09-16T08:30:01.168086+00:00                  
+                 Generated: 2026-09-16T08:53:22.756777+00:00                  
 ==============================================================================
 
 SUMMARY
@@ -72,20 +72,20 @@ The mirror image of the regional hubs above: the real external cities where conf
 
 City           Entries  Share Carriers Subregions reached            
 ------------------------------------------------------------------------------
-Sydney              51    50%       15 Melanesia, Micronesia, Polynesia
+Sydney              52    50%       16 Melanesia, Micronesia, Polynesia
     Dependent economies: AS, CK, FJ, MH, NC, PG, PW, SB, TO, VU, WS
-Los Angeles         24    24%        7 Melanesia, Micronesia, Polynesia
+Los Angeles         24    23%        7 Melanesia, Micronesia, Polynesia
     Dependent economies: FJ, FM, GU, MH, NR, PF, WF
-Tokyo               21    21%        8 Melanesia, Micronesia, Polynesia
+Tokyo               21    20%        8 Melanesia, Micronesia, Polynesia
     Dependent economies: AS, CK, FJ, MH, NC, NR, PW, SB, VU, WF
-San Jose             3     3%        1 Polynesia
+San Jose             4     4%        1 Polynesia
     Dependent economies: AS
 Portland             2     2%        1 Polynesia
     Dependent economies: AS
 Honolulu             1     1%        1 Polynesia
     Dependent economies: AS
 
-Just the top 3 cities above account for 94% of every confirmed detour this project has recorded -- almost the entire region's out-of-fishbowl traffic funnels through three physical places.
+Just the top 3 cities above account for 93% of every confirmed detour this project has recorded -- almost the entire region's out-of-fishbowl traffic funnels through three physical places.
 
 FINDINGS: SATELLITE OPERATOR PATHWAYS
 ==============================================================================
@@ -365,6 +365,9 @@ TV -> AS (AS9751): detours via Equinix Sydney (Sydney)
 FJ -> AS (AS9751): detours via AS11404 (Wave Broadband) -- global transit, no named exchange crossing this time (San Jose)
     RIS observation count: 267  [measurement 212091988]
     University of the South Pacific (AS24390, Fiji) -> American Samoa (AS9751) -- a fresh FJ<->AS pair, sourced via the same AS24390 vantage already used once before for a FJ->VU corridor (Emalus Campus). A fifth independent confirmation of the Wave-Broadband(AS11404)<->AS9751 adjacency (after MP, VU, PG, TV): `AS24390 -> AS7575 (AARNet) -> AS11404`, target actually reached directly at the end (`103.117.168.1` answered), RIS-agreeing with the identical exact match (267). No IXP crossing this time (`ixp_crossings` empty) -- checked AS11404's real PeeringDB facility list directly before keeping the hub: genuine presence at multiple San Jose facilities (Equinix SV1/SV5/SV10, CoreSite SV1), matching the majority (MP/VU/PG) of prior entries for this adjacency, so kept `detour_hub` as San Jose rather than guess from the one TV entry's different real Sydney crossing. `has_routing_loop` correctly returned `False`.
+NC -> AS (AS9751): detours via Equinix San Jose (San Jose)
+    RIS observation count: 267  [measurement 212119891]
+    New Caledonia (AS45345) -> American Samoa (AS9751) -- the first NC-sourced corridor this project has tested. A sixth independent confirmation of the Wave-Broadband(AS11404)<->AS9751 adjacency (after MP, VU, PG, TV, FJ): `AS45345 -> AS18200 (OPT-NC) -> AS38195 -> AS11404`, target actually reached directly at the end (`103.117.168.1` answered by all 3 probes), RIS-agreeing with the identical exact match (267). Crosses **Equinix San Jose** directly (`ixp_crossings` confirms it, member AS11404) -- matching the majority (MP/VU/PG) of prior entries for this adjacency. AS38195 is a genuinely new intermediate carrier. `has_routing_loop` correctly returned `False` on all 3 probes.
 TV -> NC (AS17480): detours via Equinix Sydney (Sydney)
     RIS observation count: 1665  [measurement 212053045]
     Tuvalu (AS23917) -> a fresh New Caledonia ASN (AS17480) -- a fresh TV<->NC pair, a sixth independent confirmation of the AS18200(OPT NC)<->AS17480 adjacency (after MP, PF, CK, PG, PW): `AS23917 -> AS9241 (FINTEL) -> AS6939 (Hurricane Electric) -> AS18200 -> AS17480`, fully contiguous, RIS-agreeing with the identical exact match (1,665). Both AS6939 and AS18200 resolve via `peeringdb_netixlan` at the same exchange, **Equinix Sydney** (`ixp_crossings` confirms both hops), the cleanest confirmation of this specific crossing on record -- no gap, no dead end, both member ASNs matched directly inside the registered LAN prefix.
@@ -413,6 +416,9 @@ TV -> PF (AS55943): detours via AS3257 (GTT Communications) -- global transit, n
 FJ -> TO (AS38201): detours via AS135409 (Kacific Broadband Satellites) -- satellite operator, global transit, not a named exchange crossing (Sydney)
     RIS observation count: 331  [measurement 212094712]
     University of the South Pacific (AS24390, Fiji) -> Tonga Communications Internet Network (AS38201, KaliaNet) -- a fresh FJ<->TO pair, **the first-ever confirmation of the AS135409(Kacific)<->AS38201 adjacency** -- no prior entry for this target ASN exists in this project at all. Fully contiguous: `AS24390 -> AS7575 (AARNet) -> AS7594 (On Q Communications, Australia) -> AS135409 (Kacific)`, target never resolved, RIS-agreeing with the identical exact match (331). AS7594 resolved via `peeringdb_netixlan` but no direct IXP crossing was recorded this time -- checked On Q's own real PeeringDB facility list directly instead: genuine presence at Equinix SY3/SY4 and NEXTDC S1, all Sydney, so attributed `detour_hub` as Sydney from the immediately-preceding carrier's verified facilities rather than guess. A second satellite operator now confirmed for this project (after Starlink and SES Astra) -- Kacific Broadband Satellites is a genuine Asia-Pacific regional satellite provider, consistent with a small Tongan ISP using satellite backhaul. `has_routing_loop` correctly returned `False`.
+NC -> AS (AS23657): detours via Equinix Sydney (Sydney)
+    RIS observation count: 329  [measurement 212119894]
+    New Caledonia (AS45345) -> American Samoa Telecommunications Authority (AS23657) -- **the first-ever confirmation of the AS17993(Vodafone Samoa)<->AS23657 adjacency**, no prior entry for this target ASN existed anywhere in the project. Fully contiguous on all 3 probes: `AS45345 -> AS18200 (OPT-NC) -> AS17993 (Vodafone Samoa) -> AS23657`, RIS-agreeing with the identical exact match (329) -- checked AS23657's full RIS neighbor list directly: `{174 (Cogent): 11905, 6939 (Hurricane Electric): 1422, 17993 (Vodafone Samoa): 329}`, an exact match to what this traceroute found, and a genuinely real in-region relationship (Samoa's own carrier serving American Samoa) rather than a global transit giant. Crosses **Equinix Sydney** directly (`ixp_crossings` confirms it, member AS17993, both hops 4 and 5 land inside the registered LAN prefix -- `45.127.172.0/22`, this project's own `ixp_lan_registry` entry for ix_id 94). **`has_routing_loop` correctly flagged `True` on all 3 probes** -- hops 4 and 5 both resolve to the identical address `45.127.173.64`, inside that same registered Equinix Sydney LAN prefix -- an ordinary IXP-fabric router answering twice at consecutive TTLs (same class of harmless artifact as this project's prior silent-IXP-boundary dead ends, just manifesting as a repeated address instead of silence, confirmed independently via PeeringDB (peeringdb.com/ix/94) rather than assumed). Not a newly-discovered loop-prone network -- the same, already-registered Equinix Sydney fabric this project crosses constantly elsewhere.
 
 CONFIRMED LOCAL TRANSIT (RIS + Atlas both agree, stays in-fishbowl)
 ==============================================================================
@@ -503,6 +509,9 @@ AS9246 (Teleguam Holdings, LLC (GTA), GU) -> AS38875 (FSM Telecommunications Cor
 AS1221 (Telstra Corporation Ltd (domestic ASN), AU) -> AS140504 (Digicel Nauru Corporation, NR)
     Traceroute agreement: 1/1 probe  [measurement 212106578, vantage: FJ]
     Sourced from AS24390 (University of the South Pacific, Fiji) toward AS140504 (Digicel Nauru) -- a fresh FJ<->NR pair, the retry address for a target that's already had its real relationship confirmed three times via a genuinely different carrier (AS12684, SES Astra, see `confirmed_detours.py`). First address (103.20.124.1) dead-ended one hop short of the usual AS36149 (Hawaiian Telcom) landing spot, stopping at AS1221 (Telstra domestic) instead. Applied the standing retry policy against a different cached prefix (103.49.173.1, the same address the TV-sourced retry reached directly for the SES Astra confirmation). **This time the traceroute reached the target's own address again, fully contiguous** -- but via a completely different path: `AS24390 -> AS7575 (AARNet) -> AS1221 (Telstra domestic) -> AS140504` directly, no gap. Verified the address itself is genuinely AS140504's own (RIPEstat prefix-overview confirms `103.49.173.0/24` announced solely by AS140504). Checked AS140504's real RIS neighbor list fresh, directly: `{12684 (SES Astra): 1341, 132528: 527}` -- AS1221 does not appear anywhere in it, unlike the sibling-ASN substitutions seen elsewhere in this project, this isn't a documented alternate-ASN pattern; it's a real, named global carrier (Telstra) with no RIS trace of ever connecting to this target at all. **Flagged to and reviewed with the project owner before filing** given how unlike every other candidate-vs-confirmed disagreement in this project it is -- filed as a candidate per that direction: a real, repeatable, target-reaching signal, but not RIS-confirmed, and structurally distinct enough from this project's usual sibling-ASN candidates to be worth a dedicated note rather than a generic one. `has_routing_loop` correctly returned `False`.
+AS18200 (OPT-NC (Office des Postes et Telecommunications New-Caledonia), NC) -> AS17993 (Vodafone Samoa Limited, WS)
+    Traceroute agreement: 3/3 probes  [measurement 212119893, vantage: NC]
+    Sourced from AS45345 (New Caledonia) toward AS17993 -- a fresh NC<->WS pair, the first NC-sourced corridor this project has tested. Fully contiguous on all 3 probes: `AS45345 -> AS18200 (OPT-NC) -> AS17993`, resolving via PeeringDB netixlan directly inside AS17993's own registered LAN prefix at **Equinix Sydney** (`ixp_crossings` confirms it, AS17993 itself as the member) -- a real, physically-instantiated presence. But `ris_agrees: false`: checked AS17993's full RIS neighbor list directly (`{174: 9774, 6939: 1146, 9241: 163, ...}`) -- AS18200 (OPT-NC) does not appear anywhere in it. **`has_routing_loop` correctly flagged `True` on all 3 probes** -- hops 4 and 5 both resolve to the identical address `45.127.173.64`, inside the same registered Equinix Sydney LAN prefix (`45.127.172.0/22`, ix_id 94, independently confirmed via PeeringDB) -- an ordinary IXP-fabric router answering twice at consecutive TTLs, not a newly-discovered loop-prone network; the sibling NC->AS23657 measurement this same tranche hit the identical loop location and resolved cleanly past it into a genuinely RIS-confirmed adjacency, reinforcing that the loop itself is incidental to this specific pair's disagreement. Kept as a candidate, not promoted, per the standing principle: a real, repeatable, physically-instantiated signal at a named exchange, just not RIS-confirmed.
 
 ECONOMIES
 ==============================================================================

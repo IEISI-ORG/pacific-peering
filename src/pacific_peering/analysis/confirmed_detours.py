@@ -2580,6 +2580,30 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
         ),
     ),
     ConfirmedDetour(
+        source_cc="NC",
+        target_cc="AS",
+        target_asn=9751,
+        detour_ix_name="Equinix San Jose",
+        detour_hub="San Jose",
+        measurement_id=212119891,
+        ris_observation_count=267,
+        note=(
+            "New Caledonia (AS45345) -> American Samoa (AS9751) -- the "
+            "first NC-sourced corridor this project has tested. A sixth "
+            "independent confirmation of the Wave-Broadband(AS11404)"
+            "<->AS9751 adjacency (after MP, VU, PG, TV, FJ): `AS45345 -> "
+            "AS18200 (OPT-NC) -> AS38195 -> AS11404`, target actually "
+            "reached directly at the end (`103.117.168.1` answered by "
+            "all 3 probes), RIS-agreeing with the identical exact match "
+            "(267). Crosses **Equinix San Jose** directly (`ixp_"
+            "crossings` confirms it, member AS11404) -- matching the "
+            "majority (MP/VU/PG) of prior entries for this adjacency. "
+            "AS38195 is a genuinely new intermediate carrier. "
+            "`has_routing_loop` correctly returned `False` on all 3 "
+            "probes."
+        ),
+    ),
+    ConfirmedDetour(
         source_cc="TV",
         target_cc="NC",
         target_asn=17480,
@@ -2987,6 +3011,45 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
             "satellite provider, consistent with a small Tongan ISP "
             "using satellite backhaul. `has_routing_loop` correctly "
             "returned `False`."
+        ),
+    ),
+    ConfirmedDetour(
+        source_cc="NC",
+        target_cc="AS",
+        target_asn=23657,
+        detour_ix_name="Equinix Sydney",
+        detour_hub="Sydney",
+        measurement_id=212119894,
+        ris_observation_count=329,
+        note=(
+            "New Caledonia (AS45345) -> American Samoa Telecommunications "
+            "Authority (AS23657) -- **the first-ever confirmation of the "
+            "AS17993(Vodafone Samoa)<->AS23657 adjacency**, no prior "
+            "entry for this target ASN existed anywhere in the project. "
+            "Fully contiguous on all 3 probes: `AS45345 -> AS18200 "
+            "(OPT-NC) -> AS17993 (Vodafone Samoa) -> AS23657`, RIS-"
+            "agreeing with the identical exact match (329) -- checked "
+            "AS23657's full RIS neighbor list directly: `{174 (Cogent): "
+            "11905, 6939 (Hurricane Electric): 1422, 17993 (Vodafone "
+            "Samoa): 329}`, an exact match to what this traceroute "
+            "found, and a genuinely real in-region relationship (Samoa's "
+            "own carrier serving American Samoa) rather than a global "
+            "transit giant. Crosses **Equinix Sydney** directly (`ixp_"
+            "crossings` confirms it, member AS17993, both hops 4 and 5 "
+            "land inside the registered LAN prefix -- `45.127.172.0/22`, "
+            "this project's own `ixp_lan_registry` entry for ix_id 94). "
+            "**`has_routing_loop` correctly flagged `True` on all 3 "
+            "probes** -- hops 4 and 5 both resolve to the identical "
+            "address `45.127.173.64`, inside that same registered "
+            "Equinix Sydney LAN prefix -- an ordinary IXP-fabric router "
+            "answering twice at consecutive TTLs (same class of harmless "
+            "artifact as this project's prior silent-IXP-boundary dead "
+            "ends, just manifesting as a repeated address instead of "
+            "silence, confirmed independently via PeeringDB "
+            "(peeringdb.com/ix/94) rather than assumed). Not a newly-"
+            "discovered loop-prone network -- the same, already-"
+            "registered Equinix Sydney fabric this project crosses "
+            "constantly elsewhere."
         ),
     ),
 )

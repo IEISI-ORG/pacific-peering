@@ -609,4 +609,43 @@ CANDIDATE_PEERING: tuple[CandidatePeering, ...] = (
             "`False`."
         ),
     ),
+    CandidatePeering(
+        upstream_cc="NC",
+        upstream_asn=18200,
+        upstream_name="OPT-NC (Office des Postes et Telecommunications "
+        "New-Caledonia)",
+        target_cc="WS",
+        target_asn=17993,
+        target_name="Vodafone Samoa Limited",
+        measurement_id=212119893,
+        vantage_point_cc="NC",
+        probe_agreement="3/3 probes",
+        note=(
+            "Sourced from AS45345 (New Caledonia) toward AS17993 -- a "
+            "fresh NC<->WS pair, the first NC-sourced corridor this "
+            "project has tested. Fully contiguous on all 3 probes: "
+            "`AS45345 -> AS18200 (OPT-NC) -> AS17993`, resolving via "
+            "PeeringDB netixlan directly inside AS17993's own registered "
+            "LAN prefix at **Equinix Sydney** (`ixp_crossings` confirms "
+            "it, AS17993 itself as the member) -- a real, physically-"
+            "instantiated presence. But `ris_agrees: false`: checked "
+            "AS17993's full RIS neighbor list directly (`{174: 9774, "
+            "6939: 1146, 9241: 163, ...}`) -- AS18200 (OPT-NC) does not "
+            "appear anywhere in it. **`has_routing_loop` correctly "
+            "flagged `True` on all 3 probes** -- hops 4 and 5 both "
+            "resolve to the identical address `45.127.173.64`, inside "
+            "the same registered Equinix Sydney LAN prefix "
+            "(`45.127.172.0/22`, ix_id 94, independently confirmed via "
+            "PeeringDB) -- an ordinary IXP-fabric router answering twice "
+            "at consecutive TTLs, not a newly-discovered loop-prone "
+            "network; the sibling NC->AS23657 measurement this same "
+            "tranche hit the identical loop location and resolved "
+            "cleanly past it into a genuinely RIS-confirmed adjacency, "
+            "reinforcing that the loop itself is incidental to this "
+            "specific pair's disagreement. Kept as a candidate, not "
+            "promoted, per the standing principle: a real, repeatable, "
+            "physically-instantiated signal at a named exchange, just "
+            "not RIS-confirmed."
+        ),
+    ),
 )

@@ -1938,3 +1938,10 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   (exhausts FJ as source); AS152706(NR) logged inconclusive, ordinary
   dead-end not matching the established Tata relationship. Backlog:
   234 -> 231.
+- feat(analysis): first NC(AS45345) tranche - AS9751(AS) sixth Wave-
+  Broadband confirmation, AS23657(AS) first-ever confirmation
+  (AS17993<->AS23657), AS17993(WS) candidate (real Equinix Sydney
+  signal, RIS disagrees). A routing loop found on corridors 2-3 was
+  initially flagged as a new anomaly but corrected: the address sits
+  inside this project's own already-registered Equinix Sydney IXP LAN
+  prefix, not a new location. Backlog: 231 -> 215.
