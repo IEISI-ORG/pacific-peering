@@ -563,4 +563,50 @@ CANDIDATE_PEERING: tuple[CandidatePeering, ...] = (
             "correctly returned `False`."
         ),
     ),
+    CandidatePeering(
+        upstream_cc="AU",
+        upstream_asn=1221,
+        upstream_name="Telstra Corporation Ltd (domestic ASN)",
+        target_cc="NR",
+        target_asn=140504,
+        target_name="Digicel Nauru Corporation",
+        measurement_id=212106578,
+        vantage_point_cc="FJ",
+        probe_agreement="1/1 probe",
+        note=(
+            "Sourced from AS24390 (University of the South Pacific, "
+            "Fiji) toward AS140504 (Digicel Nauru) -- a fresh FJ<->NR "
+            "pair, the retry address for a target that's already had "
+            "its real relationship confirmed three times via a "
+            "genuinely different carrier (AS12684, SES Astra, see "
+            "`confirmed_detours.py`). First address (103.20.124.1) "
+            "dead-ended one hop short of the usual AS36149 (Hawaiian "
+            "Telcom) landing spot, stopping at AS1221 (Telstra domestic) "
+            "instead. Applied the standing retry policy against a "
+            "different cached prefix (103.49.173.1, the same address "
+            "the TV-sourced retry reached directly for the SES Astra "
+            "confirmation). **This time the traceroute reached the "
+            "target's own address again, fully contiguous** -- but via "
+            "a completely different path: `AS24390 -> AS7575 (AARNet) "
+            "-> AS1221 (Telstra domestic) -> AS140504` directly, no gap. "
+            "Verified the address itself is genuinely AS140504's own "
+            "(RIPEstat prefix-overview confirms `103.49.173.0/24` "
+            "announced solely by AS140504). Checked AS140504's real "
+            "RIS neighbor list fresh, directly: `{12684 (SES Astra): "
+            "1341, 132528: 527}` -- AS1221 does not appear anywhere in "
+            "it, unlike the sibling-ASN substitutions seen elsewhere in "
+            "this project, this isn't a documented alternate-ASN "
+            "pattern; it's a real, named global carrier (Telstra) with "
+            "no RIS trace of ever connecting to this target at all. "
+            "**Flagged to and reviewed with the project owner before "
+            "filing** given how unlike every other candidate-vs-"
+            "confirmed disagreement in this project it is -- filed as a "
+            "candidate per that direction: a real, repeatable, target-"
+            "reaching signal, but not RIS-confirmed, and structurally "
+            "distinct enough from this project's usual sibling-ASN "
+            "candidates to be worth a dedicated note rather than a "
+            "generic one. `has_routing_loop` correctly returned "
+            "`False`."
+        ),
+    ),
 )

@@ -339,7 +339,20 @@ CONFIRMED_LOCAL_TRANSIT: tuple[ConfirmedLocalTransit, ...] = (
             "looping addresses this time. A ninth distinct source "
             "economy (Tuvalu, after FSM, Guam, CNMI, Vanuatu, French "
             "Polynesia, Cook Islands, Papua New Guinea, and Palau) for "
-            "this specific direct relationship."
+            "this specific direct relationship. "
+            "**A tenth independent reproduction of the full downstream "
+            "chain, and the first time it resolves cleanly again since "
+            "the TV entry's dark ending** (measurement 212104391, "
+            "FJ/AS24390 -> KI/AS132486, a fresh FJ<->KI pair): "
+            "`AS24390 -> AS7575 (AARNet) -> AS14593 (Starlink) -> "
+            "AS154100`, target never resolved, identical RIS match "
+            "(362). No IXP crossing this time (`ixp_crossings` empty). "
+            "AARNet is a genuinely new first-leg intermediate carrier "
+            "for this specific downstream-chain corridor. A tenth "
+            "geographically distinct source (Fiji, after FSM, Guam, "
+            "CNMI, Vanuatu, French Polynesia, Cook Islands, Papua New "
+            "Guinea, Palau, and Tuvalu). `has_routing_loop` correctly "
+            "returned `False`."
         ),
     ),
     ConfirmedLocalTransit(
@@ -1125,7 +1138,17 @@ CONFIRMED_LOCAL_TRANSIT: tuple[ConfirmedLocalTransit, ...] = (
             "the last reached address (`202.1.22.25`) is not the known "
             "looping location. An eighth distinct source economy (Tuvalu, "
             "after Guam, CNMI, Vanuatu, French Polynesia, Cook Islands, "
-            "Papua New Guinea, and Palau)."
+            "Papua New Guinea, and Palau). "
+            "**Ninth independent corroboration** (measurement 212104394, "
+            "FJ/AS24390 -> KI/AS134783, a fresh FJ<->KI pair): "
+            "`AS24390 -> AS7575 (AARNet) -> AS14593 (Starlink) -> "
+            "AS154100`, target never resolved, identical RIS match "
+            "(1,392). No IXP crossing this time (`ixp_crossings` empty). "
+            "`has_routing_loop` correctly returned `False` -- the last "
+            "reached address (`202.1.22.29`) is not the known looping "
+            "location. A ninth distinct source economy (Fiji, after "
+            "Guam, CNMI, Vanuatu, French Polynesia, Cook Islands, Papua "
+            "New Guinea, Palau, and Tuvalu)."
         ),
     ),
     ConfirmedLocalTransit(

@@ -117,6 +117,12 @@ def plot_confirmed_detours(output_path: Path = DEFAULT_OUTPUT_PATH) -> Path:
         )
 
     for candidate in CANDIDATE_PEERING:
+        if candidate.upstream_cc not in ECONOMY_LATLON:
+            # Upstream is a real external carrier (e.g. Telstra/AU), not a
+            # fishbowl economy -- no coordinates to plot a line from, so
+            # skip it on the map rather than crash. Still shows up in the
+            # text/HTML reports.
+            continue
         up_lat, up_lon = ECONOMY_LATLON[candidate.upstream_cc]
         tgt_lat, tgt_lon = ECONOMY_LATLON[candidate.target_cc]
         ux, tx = _shifted_lon(up_lon), _shifted_lon(tgt_lon)

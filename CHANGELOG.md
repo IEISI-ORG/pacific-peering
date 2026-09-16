@@ -1924,3 +1924,12 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   confirmation, AS55722(NR) seventh PTI Pacifica corroboration,
   AS55885(NU) eleventh ONATI corroboration (new AS1299 first-leg
   carrier). Backlog: 249 -> 237 (same-economy-pair dedup again).
+- feat(analysis): FJ(AS24390) tranche - AS132486(KI) tenth and
+  AS134783(KI) ninth Starlink-chain reproductions; AS140504(NR)
+  retry reached the target via Telstra(AS1221), a path RIS shows no
+  trace of at all -- flagged to and reviewed with the project owner,
+  filed as CandidatePeering per their direction. Backlog: 237 -> 234.
+- fix(viz): CandidatePeering entries with a non-fishbowl upstream_cc
+  (a real external carrier, e.g. Telstra/AU) crashed the geographic
+  map with a KeyError; skip plotting that candidate's line instead of
+  crashing -- it still appears in text/HTML reports.
