@@ -1,6 +1,6 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-09-16T03:59:59.809159+00:00                  
+                 Generated: 2026-09-16T04:05:41.972539+00:00                  
 ==============================================================================
 
 SUMMARY
@@ -20,7 +20,7 @@ Ranked by "dependent" economies -- those whose own reachability this carrier was
 
 ASN       Carrier                          Dependent  Vantage Corrob. Regional
 ------------------------------------------------------------------------------
-AS6939    Hurricane Electric                       4        4      10       no
+AS6939    Hurricane Electric                       4        4      11       no
     Dependent: GU, PG, PW, WS
     Vantage-only: CK, MP, PF, TV
 AS174     Cogent Communications                    4        3       8       no
@@ -313,6 +313,9 @@ TV -> AS (AS9751): detours via Equinix Sydney (Sydney)
 TV -> NC (AS17480): detours via Equinix Sydney (Sydney)
     RIS observation count: 1665  [measurement 212053045]
     Tuvalu (AS23917) -> a fresh New Caledonia ASN (AS17480) -- a fresh TV<->NC pair, a sixth independent confirmation of the AS18200(OPT NC)<->AS17480 adjacency (after MP, PF, CK, PG, PW): `AS23917 -> AS9241 (FINTEL) -> AS6939 (Hurricane Electric) -> AS18200 -> AS17480`, fully contiguous, RIS-agreeing with the identical exact match (1,665). Both AS6939 and AS18200 resolve via `peeringdb_netixlan` at the same exchange, **Equinix Sydney** (`ixp_crossings` confirms both hops), the cleanest confirmation of this specific crossing on record -- no gap, no dead end, both member ASNs matched directly inside the registered LAN prefix.
+TV -> WS (AS17993): detours via Equinix Sydney (Sydney)
+    RIS observation count: 150  [measurement 212054917]
+    Tuvalu (AS23917) -> Vodafone Samoa Limited (AS17993) -- a fresh TV<->WS pair, a fourth independent confirmation of the AS6939(Hurricane Electric)<->AS17993 adjacency (after MP, PF, CK): `AS23917 -> AS9241 (FINTEL) -> AS6939 -> AS17993`, fully contiguous, RIS-agreeing with the identical exact match (150). Both AS6939 and AS17993 resolve via `peeringdb_netixlan` directly at **Equinix Sydney** (`ixp_crossings` confirms both hops), the same clean, no-gap shape as the AS17480 entry this same tranche -- Tuvalu's own path (via FINTEL, then Hurricane Electric) reaching straight into the target's registered LAN prefix with no dead end.
 
 CONFIRMED LOCAL TRANSIT (RIS + Atlas both agree, stays in-fishbowl)
 ==============================================================================

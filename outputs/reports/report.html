@@ -56,7 +56,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
 <body>
 <div class="wrap">
     <h1>Pacific Peering — Regional Routing Report</h1>
-    <div class="meta">Generated 2026-09-16T03:59:59.961376+00:00</div>
+    <div class="meta">Generated 2026-09-16T04:05:42.123878+00:00</div>
 
     <div class="headline-banner">
         <span class="value">68%</span>
@@ -91,7 +91,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <td>AS6939</td><td>Hurricane Electric</td>
             <td>GU, PG, PW, WS</td>
             <td>CK, MP, PF, TV</td>
-            <td>10</td>
+            <td>11</td>
             <td>no</td>
         </tr><tr>
             <td>AS174</td><td>Cogent Communications</td>
@@ -775,6 +775,13 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <div>RIS observation count: 1665
                 &middot; measurement 212053045</div>
             <details class="note"><summary>Tuvalu (AS23917) -&gt; a fresh New Caledonia ASN (AS17480) -- a fresh TV&lt;-&gt;NC pair, a sixth independent confirmation of the AS18200(OPT NC)&lt;-&gt;AS17480 adjacency…</summary>Tuvalu (AS23917) -&gt; a fresh New Caledonia ASN (AS17480) -- a fresh TV&lt;-&gt;NC pair, a sixth independent confirmation of the AS18200(OPT NC)&lt;-&gt;AS17480 adjacency (after MP, PF, CK, PG, PW): `AS23917 -&gt; AS9241 (FINTEL) -&gt; AS6939 (Hurricane Electric) -&gt; AS18200 -&gt; AS17480`, fully contiguous, RIS-agreeing with the identical exact match (1,665). Both AS6939 and AS18200 resolve via `peeringdb_netixlan` at the same exchange, **Equinix Sydney** (`ixp_crossings` confirms both hops), the cleanest confirmation of this specific crossing on record -- no gap, no dead end, both member ASNs matched directly inside the registered LAN prefix.</details>
+        </div><div class="detour-card">
+            <div class="headline">TV -&gt; WS
+                (AS17993): detours via Equinix Sydney
+                (Sydney)</div>
+            <div>RIS observation count: 150
+                &middot; measurement 212054917</div>
+            <details class="note"><summary>Tuvalu (AS23917) -&gt; Vodafone Samoa Limited (AS17993) -- a fresh TV&lt;-&gt;WS pair, a fourth independent confirmation of the AS6939(Hurricane Electric)&lt;-&gt;AS17993…</summary>Tuvalu (AS23917) -&gt; Vodafone Samoa Limited (AS17993) -- a fresh TV&lt;-&gt;WS pair, a fourth independent confirmation of the AS6939(Hurricane Electric)&lt;-&gt;AS17993 adjacency (after MP, PF, CK): `AS23917 -&gt; AS9241 (FINTEL) -&gt; AS6939 -&gt; AS17993`, fully contiguous, RIS-agreeing with the identical exact match (150). Both AS6939 and AS17993 resolve via `peeringdb_netixlan` directly at **Equinix Sydney** (`ixp_crossings` confirms both hops), the same clean, no-gap shape as the AS17480 entry this same tranche -- Tuvalu&#x27;s own path (via FINTEL, then Hurricane Electric) reaching straight into the target&#x27;s registered LAN prefix with no dead end.</details>
         </div>
 
     <h2>Confirmed local transit (RIS + Atlas both agree, stays in-fishbowl)</h2>

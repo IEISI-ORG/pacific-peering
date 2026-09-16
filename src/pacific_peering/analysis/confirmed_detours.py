@@ -2503,4 +2503,27 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
             "ASNs matched directly inside the registered LAN prefix."
         ),
     ),
+    ConfirmedDetour(
+        source_cc="TV",
+        target_cc="WS",
+        target_asn=17993,
+        detour_ix_name="Equinix Sydney",
+        detour_hub="Sydney",
+        measurement_id=212054917,
+        ris_observation_count=150,
+        note=(
+            "Tuvalu (AS23917) -> Vodafone Samoa Limited (AS17993) -- a "
+            "fresh TV<->WS pair, a fourth independent confirmation of "
+            "the AS6939(Hurricane Electric)<->AS17993 adjacency (after "
+            "MP, PF, CK): `AS23917 -> AS9241 (FINTEL) -> AS6939 -> "
+            "AS17993`, fully contiguous, RIS-agreeing with the "
+            "identical exact match (150). Both AS6939 and AS17993 "
+            "resolve via `peeringdb_netixlan` directly at **Equinix "
+            "Sydney** (`ixp_crossings` confirms both hops), the same "
+            "clean, no-gap shape as the AS17480 entry this same "
+            "tranche -- Tuvalu's own path (via FINTEL, then Hurricane "
+            "Electric) reaching straight into the target's registered "
+            "LAN prefix with no dead end."
+        ),
+    ),
 )

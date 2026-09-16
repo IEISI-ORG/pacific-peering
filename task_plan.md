@@ -2348,3 +2348,11 @@ Added as a new entry. Called `mark_corridor_tested(23917, 9751)`. Verified: modu
 Both AS6939 and AS18200 resolve via `peeringdb_netixlan` at the same exchange, **Equinix Sydney** -- the cleanest confirmation of this specific crossing on record, no gap, no dead end, both member ASNs matched directly inside the registered LAN prefix.
 
 Added as a new entry. Called `mark_corridor_tested(23917, 17480)`. Verified: module imports cleanly (84 entries, up from 83); regenerated ASCII/HTML reports and the geographic map. Regenerated the corridor backlog: candidate count dropped 375 -> 358 (0 new-probe, 0 new-RIS-relationship) -- a larger-than-usual drop, plausibly because TV is a newly-active source economy this tranche.
+
+---
+
+**Next corridor pulled: AS23917 (Tuvalu) -> AS17993 (Samoa, Vodafone Samoa Limited).** `has_routing_loop` correctly returned `False`. Fourth independent confirmation of the AS6939(Hurricane Electric)<->AS17993 adjacency (after MP, PF, CK): `AS23917 -> AS9241 (FINTEL) -> AS6939 -> AS17993`, fully contiguous, RIS-agreeing with the identical exact match (150).
+
+Both AS6939 and AS17993 resolve via `peeringdb_netixlan` directly at Equinix Sydney -- the same clean, no-gap shape as the AS17480 entry earlier this same tranche.
+
+Added as a new entry. Called `mark_corridor_tested(23917, 17993)`. Verified: module imports cleanly (85 entries, up from 84); regenerated ASCII/HTML reports and the geographic map. Regenerated the corridor backlog: candidate count dropped 358 -> 352 (0 new-probe, 0 new-RIS-relationship).

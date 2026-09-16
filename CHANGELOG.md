@@ -1838,3 +1838,8 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   Cleanest confirmation on record -- both AS6939 and AS18200 resolve
   via peeringdb_netixlan at Equinix Sydney, no gap. RIS agrees
   exactly (1,665). Backlog: 375 -> 358.
+- feat(analysis): confirm TV(AS23917)->WS(AS17993), fourth
+  confirmation of AS6939<->AS17993 (after MP, PF, CK). Same clean,
+  no-gap peeringdb_netixlan match at Equinix Sydney as the AS17480
+  entry this same tranche. RIS agrees exactly (150). Backlog:
+  358 -> 352.
