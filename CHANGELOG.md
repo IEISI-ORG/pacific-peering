@@ -1746,3 +1746,10 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   AS9241 (FINTEL) and AS9471 (ONATI) are each reconfirmed 8
   independent times as the sole path into Tuvalu and Niue
   respectively.
+- feat(analysis): confirm PW(AS17893)->PG(AS38009) via Hurricane
+  Electric -- first-ever confirmation of this target ASN (Telikom
+  PNG). PNG DataCo (AS17828) confirmed as its domestic upstream.
+  Geolocated hops show a coherent Seattle->Portland->Sydney chain to
+  PNG DataCo's own HE switch port; an earlier BBIX Tokyo netixlan
+  match was judged a coincidental subnet overlap, not a real
+  touchpoint. RIS agrees exactly (1,875). Backlog: 442 -> 414.

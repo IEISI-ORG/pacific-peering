@@ -2280,4 +2280,41 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
             "`hop_geolocation.py` from this measurement."
         ),
     ),
+    ConfirmedDetour(
+        source_cc="PW",
+        target_cc="PG",
+        target_asn=38009,
+        detour_ix_name="AS6939 (Hurricane Electric) -- global transit, not a named "
+        "exchange crossing",
+        detour_hub="Sydney",
+        measurement_id=212019977,
+        ris_observation_count=1875,
+        note=(
+            "Palau NCC (AS17893) -> Telikom PNG Satellite Tier 1 AS "
+            "(AS38009) -- a fresh PW<->PG pair, and **the first-ever "
+            "confirmation of this specific target** (no prior entry for "
+            "AS38009 in any dataclass). `AS17893 -> AS6939 (Hurricane "
+            "Electric) -> AS17828 (PNG DataCo)`, target itself never "
+            "resolved, but RIS confirms AS17828 directly against AS38009 "
+            "with an *exact* match (1,875) -- a genuinely new finding: PNG "
+            "DataCo (already confirmed as this project's usual PG-side "
+            "target/source) is also the confirmed domestic upstream "
+            "handing off to Telikom PNG's satellite AS, a second, distinct "
+            "PNG-based ASN. **Geolocated with `hop_geolocation`**: the "
+            "Hurricane Electric hops resolve to Seattle "
+            "(`core1.sea1.he.net`), Portland (`core1.pdx3.he.net`), then "
+            "Sydney (`core1.syd1.he.net`), immediately followed by "
+            "`png-dataco-limited.e0-11.switch1.syd1.he.net` -- PNG DataCo's "
+            "own named HE switch port in Sydney. Kept `detour_hub` as "
+            "Sydney to match this direct, unambiguous PTR evidence. Note: "
+            "`ixp_crossings` also flagged an earlier hop (`101.203.88.74`) "
+            "as a BBIX Tokyo/AS6939 PeeringDB netixlan match; given it sits "
+            "geographically incoherent with the immediately following "
+            "Seattle/Portland/Sydney chain, and per this session's "
+            "established discipline of trusting real hop-level hostname "
+            "evidence over an incidental subnet match, treated as likely a "
+            "coincidental address-range overlap rather than a genuine Tokyo "
+            "touchpoint -- not used to set `detour_hub`."
+        ),
+    ),
 )

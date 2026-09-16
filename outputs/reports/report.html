@@ -56,7 +56,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
 <body>
 <div class="wrap">
     <h1>Pacific Peering — Regional Routing Report</h1>
-    <div class="meta">Generated 2026-09-16T01:40:05.720430+00:00</div>
+    <div class="meta">Generated 2026-09-16T01:45:53.474899+00:00</div>
 
     <div class="headline-banner">
         <span class="value">68%</span>
@@ -682,6 +682,13 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <div>RIS observation count: 997
                 &middot; measurement 212015972</div>
             <details class="note"><summary>Palau NCC (AS17893) -&gt; Marshall Islands NTA ISP (AS24439) -- a fresh PW&lt;-&gt;MH pair, a seventh independent confirmation of the AS6453(Tata)&lt;-&gt;AS24439 adjacency…</summary>Palau NCC (AS17893) -&gt; Marshall Islands NTA ISP (AS24439) -- a fresh PW&lt;-&gt;MH pair, a seventh independent confirmation of the AS6453(Tata)&lt;-&gt;AS24439 adjacency (after GU, MP, VU, PF, CK, PG). `AS17893 -&gt; AS174 (Cogent) -&gt; AS6453`, target never resolved, RIS-agreeing with the identical *exact* match (997). **Geolocated with `hop_geolocation` from the start**: the resolved Tata hops (`if-bundle-16-2.qcore1.tv2-tokyo.as6453.net`, `if-ae-51-2.tcore1.tv2-tokyo.as6453.net`) name Tokyo directly, then hand off to the same Piti, Guam hop (`if-bundle-3-2.qhar1.pv4-piti.as6453.net`) seen on the PF/CK/PG entries. Unlike those entries, **this one&#x27;s real external touchpoint genuinely is Tokyo, not Los Angeles** -- Palau&#x27;s shorter path to Asia routes Tata&#x27;s backbone through Tokyo before Piti, rather than through Los Angeles. Kept `detour_hub` as Tokyo, matching this measurement&#x27;s own evidence rather than reusing the Los Angeles value from other source economies. Added a new `tokyo` pattern to `hop_geolocation.py` from this measurement.</details>
+        </div><div class="detour-card">
+            <div class="headline">PW -&gt; PG
+                (AS38009): detours via AS6939 (Hurricane Electric) -- global transit, not a named exchange crossing
+                (Sydney)</div>
+            <div>RIS observation count: 1875
+                &middot; measurement 212019977</div>
+            <details class="note"><summary>Palau NCC (AS17893) -&gt; Telikom PNG Satellite Tier 1 AS (AS38009) -- a fresh PW&lt;-&gt;PG pair, and **the first-ever confirmation of this specific target** (no prior…</summary>Palau NCC (AS17893) -&gt; Telikom PNG Satellite Tier 1 AS (AS38009) -- a fresh PW&lt;-&gt;PG pair, and **the first-ever confirmation of this specific target** (no prior entry for AS38009 in any dataclass). `AS17893 -&gt; AS6939 (Hurricane Electric) -&gt; AS17828 (PNG DataCo)`, target itself never resolved, but RIS confirms AS17828 directly against AS38009 with an *exact* match (1,875) -- a genuinely new finding: PNG DataCo (already confirmed as this project&#x27;s usual PG-side target/source) is also the confirmed domestic upstream handing off to Telikom PNG&#x27;s satellite AS, a second, distinct PNG-based ASN. **Geolocated with `hop_geolocation`**: the Hurricane Electric hops resolve to Seattle (`core1.sea1.he.net`), Portland (`core1.pdx3.he.net`), then Sydney (`core1.syd1.he.net`), immediately followed by `png-dataco-limited.e0-11.switch1.syd1.he.net` -- PNG DataCo&#x27;s own named HE switch port in Sydney. Kept `detour_hub` as Sydney to match this direct, unambiguous PTR evidence. Note: `ixp_crossings` also flagged an earlier hop (`101.203.88.74`) as a BBIX Tokyo/AS6939 PeeringDB netixlan match; given it sits geographically incoherent with the immediately following Seattle/Portland/Sydney chain, and per this session&#x27;s established discipline of trusting real hop-level hostname evidence over an incidental subnet match, treated as likely a coincidental address-range overlap rather than a genuine Tokyo touchpoint -- not used to set `detour_hub`.</details>
         </div>
 
     <h2>Confirmed local transit (RIS + Atlas both agree, stays in-fishbowl)</h2>
