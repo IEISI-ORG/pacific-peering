@@ -2290,3 +2290,11 @@ Filed as a new `CandidatePeering` entry (kept as a candidate, not promoted, per 
 Ninth independent corroboration of the AS9471(ONATI)<->AS55885(Niue) adjacency, same sibling-ASN basis as every prior instance (`ris_agrees: false` on the strict AS9471/AS55885 pair, resolved via AS55943, 1,662 observations, exact match -- verified directly against Niue's fishbowl-cached neighbor list). An eighth distinct source economy (Palau, after Niue's own vantage point, Guam, CNMI, Vanuatu, French Polynesia, Cook Islands, and Papua New Guinea).
 
 Extended the existing ONATI<->Niue entry's note (per the established per-source-economy convention for `ConfirmedLocalTransit`) rather than adding a new entry. Called `mark_corridor_tested(17893, 55885)`. Verified: module imports cleanly (still 13 entries, extension only); regenerated ASCII/HTML reports and the geographic map. Regenerated the corridor backlog: candidate count dropped 388 -> 386 (0 new-probe, 0 new-RIS-relationship).
+
+---
+
+**Next corridor pulled: AS17893 (Palau NCC) -> AS132486 (Kiribati, Ocean Link Ltd).** `AS17893 -> AS7578/AS137409 (GSL Networks, Australia) -> AS14593 (Starlink) -> AS154100 (BNL Tarawa)`, target never resolved, RIS-agreeing with the identical exact match (362) -- the eighth independent reproduction of the full downstream chain (after FSM, GU, MP, VU, PF, CK, PG).
+
+`has_routing_loop` correctly returned `True` -- checked the raw hops directly: two consecutive identical addresses (`206.224.66.23`, hops 17-18), a reproduction of the already-known Starlink routing-loop location (not a newly-discovered anomaly, so not separately escalated, matching the established pattern of just logging known-location reproductions inline). After the loop, the traceroute recovers and reaches `202.1.22.29`, which resolves directly to AS154100 itself (checked via RIPEstat) -- consistent with the already-established chain, not a new anomaly.
+
+Extended the existing BNL Tarawa<->AS132486 entry's note rather than adding a new entry. Called `mark_corridor_tested(17893, 132486)`. Verified: module imports cleanly (still 13 entries, extension only); regenerated ASCII/HTML reports and the geographic map. Regenerated the corridor backlog: candidate count dropped 386 -> 385 (0 new-probe, 0 new-RIS-relationship).

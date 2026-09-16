@@ -1799,3 +1799,8 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   AS9471(ONATI)<->AS55885 (after NU, GU, MP, VU, PF, CK, PG), same
   sibling-ASN basis as always (resolved via AS55943). Extended
   existing entry, no new entry. Backlog: 388 -> 386.
+- docs(analysis): PW(AS17893)->KI(AS132486), eighth reproduction of
+  the Kiribati/Starlink downstream chain (after FSM, GU, MP, VU, PF,
+  CK, PG). Reproduced the known Starlink routing loop
+  (206.224.66.23); not separately escalated since it's an already-
+  known location. RIS agrees exactly (362). Backlog: 386 -> 385.
