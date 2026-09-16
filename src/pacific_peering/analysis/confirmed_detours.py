@@ -2345,4 +2345,26 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
             "alongside the five prior entries' `detour_hub`."
         ),
     ),
+    ConfirmedDetour(
+        source_cc="PW",
+        target_cc="WF",
+        target_asn=45879,
+        detour_ix_name="AS174 (Cogent Communications), then AS5511 (Opentransit "
+        "Orange S.A.) -- global transit, not a named exchange crossing",
+        detour_hub="Los Angeles",
+        measurement_id=212029169,
+        ris_observation_count=1665,
+        note=(
+            "Palau NCC (AS17893) -> Orange Wallis & Futuna (AS45879) -- a "
+            "fresh PW<->WF pair, a seventh independent confirmation of "
+            "the AS5511(Opentransit Orange)<->AS45879 adjacency (after "
+            "GU, MP, VU, PF, CK, PG). `AS17893 -> AS174 (Cogent) -> "
+            "AS5511`, target never resolved, RIS-agreeing with the "
+            "identical *exact* match (1,665). **Geolocated with "
+            "`hop_geolocation` from the start**: the same "
+            "`orange.lax05.atlas.cogentco.com` handoff hop already "
+            "confirmed on the PG entry appears again, reconfirming Los "
+            "Angeles a second time on real evidence."
+        ),
+    ),
 )

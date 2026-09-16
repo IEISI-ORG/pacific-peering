@@ -56,7 +56,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
 <body>
 <div class="wrap">
     <h1>Pacific Peering — Regional Routing Report</h1>
-    <div class="meta">Generated 2026-09-16T02:14:26.866387+00:00</div>
+    <div class="meta">Generated 2026-09-16T02:19:21.323540+00:00</div>
 
     <div class="headline-banner">
         <span class="value">68%</span>
@@ -88,6 +88,13 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <td>no</td>
             <td>CK, GU, MH, MP, NR, PF, PG, PW, VU</td>
         </tr><tr>
+            <td>AS5511</td><td>Opentransit Orange S.A.</td>
+            <td>8</td>
+            <td>40%</td>
+            <td>7</td>
+            <td>no</td>
+            <td>CK, GU, MP, PF, PG, PW, VU, WF</td>
+        </tr><tr>
             <td>AS45355</td><td>Digicel Fiji</td>
             <td>8</td>
             <td>40%</td>
@@ -101,13 +108,6 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <td>8</td>
             <td>no</td>
             <td>AS, CK, FJ, GU, PF, PW, WS</td>
-        </tr><tr>
-            <td>AS5511</td><td>Opentransit Orange S.A.</td>
-            <td>7</td>
-            <td>35%</td>
-            <td>6</td>
-            <td>no</td>
-            <td>CK, GU, MP, PF, PG, VU, WF</td>
         </tr><tr>
             <td>AS6939</td><td>Hurricane Electric</td>
             <td>7</td>
@@ -736,6 +736,13 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <div>RIS observation count: 1321
                 &middot; measurement 212022541</div>
             <details class="note"><summary>Palau NCC (AS17893) -&gt; Digicel Tonga (AS38198) -- a fresh PW&lt;-&gt;TO pair, a seventh independent confirmation of the AS45355(Digicel Fiji)&lt;-&gt;AS38198 adjacency…</summary>Palau NCC (AS17893) -&gt; Digicel Tonga (AS38198) -- a fresh PW&lt;-&gt;TO pair, a seventh independent confirmation of the AS45355(Digicel Fiji)&lt;-&gt;AS38198 adjacency (after GU, MP, VU, PF, CK, PG) -- still AS38198&#x27;s only RIS-observed neighbor of consequence. `AS17893 -&gt; AS174 (Cogent) -&gt; AS1299 (Telia) -&gt; AS4637 (Telstra Global) -&gt; AS45355`, target technically reached (the same real, BGP-confirmed AS38198 address `202.43.12.5` one hop after the last AS45355 hop), separated by the usual routine silent boundary hop rather than a real gap. RIS-agreeing with the identical *exact* match (1,321). **Telia is a genuinely new intermediate carrier for this adjacency** (after Level 3/Lumen, Vocus Connect, Telstra domestic, Hurricane Electric, and SES ASTRA on prior entries). Telstra Global&#x27;s own hop confirms Sydney directly (`i-1053.sydp-core04.telstraglobal.net`), extra confirmation alongside the five prior entries&#x27; `detour_hub`.</details>
+        </div><div class="detour-card">
+            <div class="headline">PW -&gt; WF
+                (AS45879): detours via AS174 (Cogent Communications), then AS5511 (Opentransit Orange S.A.) -- global transit, not a named exchange crossing
+                (Los Angeles)</div>
+            <div>RIS observation count: 1665
+                &middot; measurement 212029169</div>
+            <details class="note"><summary>Palau NCC (AS17893) -&gt; Orange Wallis &amp; Futuna (AS45879) -- a fresh PW&lt;-&gt;WF pair, a seventh independent confirmation of the AS5511(Opentransit Orange)&lt;-&gt;AS45879…</summary>Palau NCC (AS17893) -&gt; Orange Wallis &amp; Futuna (AS45879) -- a fresh PW&lt;-&gt;WF pair, a seventh independent confirmation of the AS5511(Opentransit Orange)&lt;-&gt;AS45879 adjacency (after GU, MP, VU, PF, CK, PG). `AS17893 -&gt; AS174 (Cogent) -&gt; AS5511`, target never resolved, RIS-agreeing with the identical *exact* match (1,665). **Geolocated with `hop_geolocation` from the start**: the same `orange.lax05.atlas.cogentco.com` handoff hop already confirmed on the PG entry appears again, reconfirming Los Angeles a second time on real evidence.</details>
         </div>
 
     <h2>Confirmed local transit (RIS + Atlas both agree, stays in-fishbowl)</h2>

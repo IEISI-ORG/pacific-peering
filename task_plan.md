@@ -2248,3 +2248,13 @@ Caught and fixed during implementation: initially attributed a satellite mention
 Findings: **Starlink** (AS14593) -- RIS + traceroute confirmed for KI and TV. **SES ASTRA** (AS12684) -- RIS-visible for CK/KI/NR/PG, traceroute-confirmed for CK/NR/PF, candidate-only for PG. **Kacific** (AS135409) -- RIS-visible for PG/TO (and SB, per the asymmetric-visibility note above), zero traceroute confirmation anywhere -- the explicit gap requested. Noted AS38201 (Tonga, Kacific-linked) sits untested in the current corridor backlog as a natural next target.
 
 Rendered in both `ascii_report.py` and `html_report.py`, positioned identically immediately after "Findings: transit supplier concentration" and before "Confirmed sub-optimal routes." Verified: `build_report_data()` runs cleanly (3 satellite pathways computed), regenerated ASCII/HTML reports and the geographic map.
+
+---
+
+**Next corridor pulled: AS17893 (Palau NCC) -> AS45879 (Wallis and Futuna, Orange).** `has_routing_loop` correctly returned `False`.
+
+Seventh independent confirmation of the AS5511(Opentransit Orange)<->AS45879 adjacency (after GU, MP, VU, PF, CK, PG): `AS17893 -> AS174 (Cogent) -> AS5511`, target never resolved, RIS-agreeing with the identical exact match (1,665).
+
+**Geolocated with `hop_geolocation` from the start**: the exact same `orange.lax05.atlas.cogentco.com` handoff hop already confirmed on the PG entry appeared again on this measurement, reconfirming Los Angeles a second time on real evidence.
+
+Added as a new entry. Called `mark_corridor_tested(17893, 45879)`. Verified: module imports cleanly (79 entries, up from 78); regenerated ASCII/HTML reports and the geographic map. Regenerated the corridor backlog: candidate count dropped 409 -> 408 (0 new-probe, 0 new-RIS-relationship).
