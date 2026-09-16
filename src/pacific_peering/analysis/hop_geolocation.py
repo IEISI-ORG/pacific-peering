@@ -125,6 +125,23 @@ _KNOWN_PATTERNS: tuple[tuple[re.Pattern[str], HopLocation], ...] = (
         ),
     ),
     (
+        re.compile(r"(?:^|[.\-])syd\d*(?:[.\-]|$)", re.I),
+        HopLocation(
+            city="Sydney",
+            economy_cc=None,
+            matched_pattern="syd",
+            evidence_note=(
+                "Confirmed via Cogent (ccr71.syd01.atlas.cogentco.com and "
+                "agr51.syd01.atlas.cogentco.com, measurement 212005827, "
+                "PW->AS17993) -- Cogent's IATA-code convention for Sydney, "
+                "matching the same city already used (by carrier-facility "
+                "guess, not hop evidence) for the earlier GU->AS17993 Cogent "
+                "entry; this measurement is the first hop-level confirmation "
+                "that guess was actually correct."
+            ),
+        ),
+    ),
+    (
         re.compile(r"(?:^|[.\-])gu-gnc(?:[.\-]|$)", re.I),
         HopLocation(
             city="Guam",

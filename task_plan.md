@@ -2144,3 +2144,13 @@ Only one probe reported (Palau's usual low-participant-count pattern) and the tr
 Fifth independent confirmation of the AS18200(OPT NC)<->AS17480 adjacency (after MP, PF, CK, PG) -- and the first of the five to cross **BBIX Tokyo** instead of Equinix Sydney: `AS17893 -> AS38195 (BBIX Tokyo) -> AS18200 -> AS17480`, RIS-agreeing with the identical exact match (1,665). The Tokyo hub here is a real IXP-LAN address match confirmed via `ixp_crossings` (ix_id 126), not a carrier-facility guess -- a stronger evidentiary basis than the Cogent/Tata Tokyo mislabeling caught and corrected earlier this session.
 
 Added as a new entry. Called `mark_corridor_tested(17893, 17480)`. Verified: module imports cleanly (73 entries, up from 72); regenerated ASCII/HTML reports and the geographic map. Regenerated the corridor backlog: candidate count dropped 489 -> 468 (0 new-probe, 0 new-RIS-relationship).
+
+---
+
+**Next corridor pulled: AS17893 (Palau NCC) -> AS17993 (Samoa, Vodafone Samoa Limited).** `has_routing_loop` correctly returned `False`.
+
+Only one probe reported and again went dark before the destination IP itself replied -- the same pattern as the AS17480 tranche. RIS BGP lookup on the second-to-last hop confirmed direct AS17993 attribution, so the adjacency is contiguous. Second independent confirmation of the AS174(Cogent)<->AS17993 adjacency (after GU): `AS17893 -> AS174 -> AS17993`, RIS-agreeing with the identical exact match (1,455).
+
+**First hop-level geolocation of this specific corridor's hub**: the Cogent hops (`ccr71.syd01.atlas.cogentco.com`, `agr51.syd01.atlas.cogentco.com`) resolved to Sydney via `hop_geolocation` -- confirming, with real PTR evidence, the "Sydney" hub the original GU entry had assigned by carrier-facility guess rather than hop evidence. Added a new `syd` pattern to `hop_geolocation.py` citing this measurement.
+
+Added as a new entry. Called `mark_corridor_tested(17893, 17993)`. Verified: module imports cleanly (74 entries, up from 73); regenerated ASCII/HTML reports and the geographic map. Regenerated the corridor backlog: candidate count dropped 468 -> 462 (0 new-probe, 0 new-RIS-relationship).

@@ -2199,4 +2199,30 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
             "mislabeling caught earlier this session, this hub is solid."
         ),
     ),
+    ConfirmedDetour(
+        source_cc="PW",
+        target_cc="WS",
+        target_asn=17993,
+        detour_ix_name="AS174 (Cogent Communications) -- global transit, not a named "
+        "exchange crossing",
+        detour_hub="Sydney",
+        measurement_id=212005827,
+        ris_observation_count=1455,
+        note=(
+            "Palau NCC (AS17893) -> Vodafone Samoa Limited (AS17993) -- a "
+            "fresh PW<->WS pair, a second independent confirmation of the "
+            "AS174(Cogent)<->AS17993 adjacency (after GU). Only one probe "
+            "responded and the destination IP never answered, but the "
+            "second-to-last hop resolves directly to AS17993 by RIS BGP "
+            "lookup, so the adjacency is fully contiguous. `AS17893 -> "
+            "AS174 -> AS17993`, RIS-agreeing with the identical *exact* "
+            "match (1,455). **Geolocated with `hop_geolocation` for the "
+            "first time on this specific corridor**: the Cogent hops "
+            "(`ccr71.syd01.atlas.cogentco.com`, `agr51.syd01.atlas.cogentco.com`) "
+            "resolve to Sydney -- confirming, with real hop-level PTR "
+            "evidence, the carrier-facility guess the earlier GU entry had "
+            "used for the same 'Sydney' hub. Added a new `syd` pattern to "
+            "`hop_geolocation.py` from this measurement."
+        ),
+    ),
 )

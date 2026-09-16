@@ -1,6 +1,6 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-09-16T00:34:59.632205+00:00                  
+                 Generated: 2026-09-16T00:46:49.031084+00:00                  
 ==============================================================================
 
 SUMMARY
@@ -235,6 +235,9 @@ PW -> AS (AS9751): detours via AS174 (Cogent Communications) -- global transit, 
 PW -> NC (AS17480): detours via BBIX Tokyo (Tokyo)
     RIS observation count: 1665  [measurement 212001808]
     Palau NCC (AS17893) -> a fresh New Caledonia ASN (AS17480) -- a fresh PW<->NC pair, a fifth independent confirmation of the AS18200(OPT NC)<->AS17480 adjacency (after MP, PF, CK, PG), and the first of the five to cross **BBIX Tokyo** rather than Equinix Sydney. Only one probe responded (Palau's usual low-participant-count pattern), and it went dark after the target's own edge address -- but `202.171.64.251` resolves directly to AS17480 by RIS BGP lookup (PTR `canl.nc`), and the immediately preceding hop `202.87.128.134` resolves directly to AS18200, so the adjacency is fully contiguous despite the destination IP itself never answering. `AS17893 -> AS38195 (BBIX Tokyo) -> AS18200 -> AS17480`, RIS-agreeing with the identical *exact* match (1,665). The BBIX Tokyo crossing (`ixp_crossings` confirms it, ix_id 126) is a real IXP-LAN address match, not a carrier-facility guess -- unlike the Cogent/Tata Tokyo mislabeling caught earlier this session, this hub is solid.
+PW -> WS (AS17993): detours via AS174 (Cogent Communications) -- global transit, not a named exchange crossing (Sydney)
+    RIS observation count: 1455  [measurement 212005827]
+    Palau NCC (AS17893) -> Vodafone Samoa Limited (AS17993) -- a fresh PW<->WS pair, a second independent confirmation of the AS174(Cogent)<->AS17993 adjacency (after GU). Only one probe responded and the destination IP never answered, but the second-to-last hop resolves directly to AS17993 by RIS BGP lookup, so the adjacency is fully contiguous. `AS17893 -> AS174 -> AS17993`, RIS-agreeing with the identical *exact* match (1,455). **Geolocated with `hop_geolocation` for the first time on this specific corridor**: the Cogent hops (`ccr71.syd01.atlas.cogentco.com`, `agr51.syd01.atlas.cogentco.com`) resolve to Sydney -- confirming, with real hop-level PTR evidence, the carrier-facility guess the earlier GU entry had used for the same 'Sydney' hub. Added a new `syd` pattern to `hop_geolocation.py` from this measurement.
 
 CONFIRMED LOCAL TRANSIT (RIS + Atlas both agree, stays in-fishbowl)
 ==============================================================================

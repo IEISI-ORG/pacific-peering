@@ -1706,3 +1706,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   final hop resolved via RIS BGP lookup on the second-to-last hop
   (target ASN itself, PTR canl.nc) rather than the unresponsive
   destination IP. RIS agrees exactly (1,665). Backlog: 489 -> 468.
+- feat(analysis): confirm PW(AS17893)->WS(AS17993) via Cogent --
+  second confirmation of AS174<->AS17993 (after GU). First hop-level
+  geolocation of this corridor's hub: Cogent's syd01 hostnames
+  confirm Sydney, validating the earlier GU entry's carrier-facility
+  guess. Added a new `syd` pattern to hop_geolocation.py. RIS agrees
+  exactly (1,455). Backlog: 468 -> 462.
