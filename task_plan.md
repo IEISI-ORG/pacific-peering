@@ -2126,3 +2126,11 @@ Not filed in any dataclass, consistent with the established pattern. Called `mar
 **Checked the raw hops directly**: the traceroute alternates between `202.170.33.17` and `202.170.33.11` from hop 10 through hop 32, both already confirmed as AS9241 itself. A fifth independent vantage point (Palau, after MP's original discovery, PF's reproduction, CK's reproduction, and PNG's reproduction) reproducing this same live anomaly inside FINTEL's own network edge.
 
 Not filed in any dataclass, matching the established precedent. Called `mark_corridor_tested(17893, 9241)`. No report/map regeneration needed. Regenerated the corridor backlog: candidate count dropped 492 -> 491.
+
+---
+
+**Next corridor pulled: AS17893 (Palau NCC) -> AS9751 (American Samoa)** -- the first firing genuinely sourced from Palau to reach a target. `has_routing_loop` correctly returned `False`.
+
+Fifth independent confirmation of the AS174(Cogent)<->AS9751 adjacency (after GU, VU, PF, CK): `AS17893 -> AS174 -> AS9751`, RIS-agreeing with the identical exact match (1,055). **Geolocated with `hop_geolocation` from the start**: `lax01` -> `sjc13` -> `sfo01` -> `pdx01` -> `pdx02` -- the identical US West Coast chain already established for the corrected PF entry, ending at Portland.
+
+Added as a new entry. Called `mark_corridor_tested(17893, 9751)`. Verified: module imports cleanly (72 entries, up from 71); regenerated ASCII/HTML reports (render correctly) and the geographic map. Regenerated the corridor backlog: candidate count dropped 491 -> 489.

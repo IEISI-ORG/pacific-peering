@@ -53,7 +53,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
 <body>
 <div class="wrap">
     <h1>Pacific Peering — Regional Routing Report</h1>
-    <div class="meta">Generated 2026-09-15T23:55:42.449586+00:00</div>
+    <div class="meta">Generated 2026-09-16T00:16:02.539074+00:00</div>
 
     <div class="headline-banner">
         <span class="value">68%</span>
@@ -563,6 +563,13 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <div>RIS observation count: 1652
                 &middot; measurement 211978965</div>
             <details class="note"><summary>PNG DataCo (AS17828) -&gt; Solomon Telekom Co Ltd (AS45891) -- a fresh PG&lt;-&gt;SB pair, a sixth independent confirmation of the AS139609(SISCC)&lt;-&gt;AS45891 adjacency…</summary>PNG DataCo (AS17828) -&gt; Solomon Telekom Co Ltd (AS45891) -- a fresh PG&lt;-&gt;SB pair, a sixth independent confirmation of the AS139609(SISCC)&lt;-&gt;AS45891 adjacency (after GU, MP, VU, PF, CK). `AS17828 -&gt; AS4826 (Vocus Connect) -&gt; AS1221 (Telstra domestic) -&gt; AS4637 (Telstra Global) -&gt; AS139609` -- target never resolved, RIS-agreeing with the identical *exact* match (1,652). No IXP crossing this time. **A genuinely new routing-loop location, the fourth distinct network this session** (after Hurricane Electric&#x27;s network, FINTEL&#x27;s edge, and Starlink&#x27;s own network): `has_routing_loop` correctly returned `True`; checked the raw hops directly and found a single address (`103.142.98.131`) repeating at hop 11 and hop 14 with unanswered probes in between. Resolved it directly: it belongs to **AS139609 (SISCC) itself** -- a real, live loop at the destination&#x27;s own network edge, the same general shape as the FINTEL case but a genuinely different company&#x27;s network. The loop sits *after* the point (hop 10, also AS139609) already used for this measurement&#x27;s own RIS agreement, so it doesn&#x27;t affect the triangulation result here -- same as the earlier Starlink loop case.</details>
+        </div><div class="detour-card">
+            <div class="headline">PW -&gt; AS
+                (AS9751): detours via AS174 (Cogent Communications) -- global transit, not a named exchange crossing
+                (Portland)</div>
+            <div>RIS observation count: 1055
+                &middot; measurement 211998672</div>
+            <details class="note"><summary>Palau NCC (AS17893) -&gt; American Samoa (AS9751) -- the first firing genuinely sourced from Palau to reach a target…</summary>Palau NCC (AS17893) -&gt; American Samoa (AS9751) -- the first firing genuinely sourced from Palau to reach a target. Fifth independent confirmation of the AS174(Cogent)&lt;-&gt;AS9751 adjacency (after GU, VU, PF, CK): `AS17893 -&gt; AS174 -&gt; AS9751`, RIS-agreeing with the identical *exact* match (1,055). **Geolocated with `hop_geolocation` from the start**: `lax01` -&gt; `sjc13` -&gt; `sfo01` -&gt; `pdx01` -&gt; `pdx02` -- the identical US West Coast chain already established for the corrected PF entry, ending at Portland. Kept `detour_hub` as Portland, matching that corrected entry.</details>
         </div>
 
     <h2>Confirmed local transit (RIS + Atlas both agree, stays in-fishbowl)</h2>

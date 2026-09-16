@@ -2148,4 +2148,27 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
             "loop case."
         ),
     ),
+    ConfirmedDetour(
+        source_cc="PW",
+        target_cc="AS",
+        target_asn=9751,
+        detour_ix_name="AS174 (Cogent Communications) -- global transit, not a named "
+        "exchange crossing",
+        detour_hub="Portland",
+        measurement_id=211998672,
+        ris_observation_count=1055,
+        note=(
+            "Palau NCC (AS17893) -> American Samoa (AS9751) -- the "
+            "first firing genuinely sourced from Palau to reach a "
+            "target. Fifth independent confirmation of the "
+            "AS174(Cogent)<->AS9751 adjacency (after GU, VU, PF, CK): "
+            "`AS17893 -> AS174 -> AS9751`, RIS-agreeing with the "
+            "identical *exact* match (1,055). **Geolocated with "
+            "`hop_geolocation` from the start**: `lax01` -> `sjc13` -> "
+            "`sfo01` -> `pdx01` -> `pdx02` -- the identical US West "
+            "Coast chain already established for the corrected PF "
+            "entry, ending at Portland. Kept `detour_hub` as Portland, "
+            "matching that corrected entry."
+        ),
+    ),
 )

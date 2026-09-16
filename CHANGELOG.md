@@ -1696,3 +1696,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - docs(analysis): PW(AS17893)->FJ(AS9241) fifth reproduction of the
   FINTEL routing loop (202.170.33.17/.11, both AS9241 itself), after
   MP, PF, CK, PG. Not filed. Backlog: 492 -> 491.
+- feat(analysis): confirm PW(AS17893)->AS(AS9751) via Cogent,
+  geolocated to Portland from the start -- fifth confirmation of
+  AS174<->AS9751 (after GU, VU, PF, CK). RIS agrees exactly (1,055).
+  Backlog: 491 -> 489.
