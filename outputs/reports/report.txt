@@ -1,6 +1,6 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-09-16T04:05:41.972539+00:00                  
+                 Generated: 2026-09-16T04:12:55.538767+00:00                  
 ==============================================================================
 
 SUMMARY
@@ -46,6 +46,21 @@ AS5511    Opentransit Orange S.A.                  1        7       7       no
     Vantage-only: CK, GU, MP, PF, PG, PW, VU
 
 AS9241 (FINTEL, Fiji) doesn't crack the table above by dependent-economy count (just Tuvalu), but is the starkest single-point-of-failure finding this project has confirmed: it's Tuvalu's *only* RIS-observed neighbor of consequence, reconfirmed by 8 independent vantage points across the region. Every measured path into Tuvalu -- from every direction this project has tested -- passes through one single carrier.
+
+FINDINGS: REGIONAL HUB CONCENTRATION
+==============================================================================
+Every `ConfirmedDetour` names a real external city where the path physically crosses (`detour_hub`, set from actual hop evidence or a real IXP-LAN address match, never a carrier-level guess). Ranked by how many confirmed detours cross there. "Carriers" is how many distinct confirmed-upstream ASNs have been observed crossing at that city -- a high count means a genuine shared crossroads, not one carrier's path repeated.
+
+City           Entries  Share Carriers Dependent economies 
+------------------------------------------------------------------------------
+Sydney              43    51%       13 AS, CK, FJ, MH, NC, PG, PW, SB, TO, VU, WS
+Tokyo               24    28%        9 AS, CK, FJ, MH, NC, NR, PF, PW, SB, VU, WF
+Los Angeles         13    15%        6 FJ, FM, GU, MH, NR, WF
+Portland             2     2%        1 AS
+San Jose             2     2%        1 AS
+Honolulu             1     1%        1 AS
+
+Just the top 3 cities above account for 94% of every confirmed detour this project has recorded -- almost the entire region's out-of-fishbowl traffic funnels through three physical places.
 
 FINDINGS: SATELLITE OPERATOR PATHWAYS
 ==============================================================================

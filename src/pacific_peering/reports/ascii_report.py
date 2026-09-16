@@ -114,6 +114,39 @@ def render_ascii_report(data: ReportData) -> str:
         "one single carrier."
     )
 
+    lines.append(_section("FINDINGS: REGIONAL HUB CONCENTRATION"))
+    lines.append(
+        "Every `ConfirmedDetour` names a real external city where the "
+        "path physically crosses (`detour_hub`, set from actual hop "
+        "evidence or a real IXP-LAN address match, never a carrier-level "
+        "guess). Ranked by how many confirmed detours cross there. "
+        "\"Carriers\" is how many distinct confirmed-upstream ASNs have "
+        "been observed crossing at that city -- a high count means a "
+        "genuine shared crossroads, not one carrier's path repeated."
+    )
+    lines.append("")
+    if not data.regional_hubs:
+        lines.append("(none recorded yet)")
+    else:
+        total_detours = len(data.confirmed_detours)
+        header = f"{'City':<14} {'Entries':>7} {'Share':>6} {'Carriers':>8} {'Dependent economies':<20}"
+        lines.append(header)
+        lines.append(_rule())
+        for hub in data.regional_hubs:
+            share = hub["entry_count"] / total_detours if total_detours else 0.0
+            lines.append(
+                f"{hub['name']:<14} {hub['entry_count']:>7} {share:>6.0%} "
+                f"{hub['carrier_count']:>8} {', '.join(hub['dependent_economies'])}"
+            )
+        top3_share = sum(h["entry_count"] for h in data.regional_hubs[:3]) / total_detours
+        lines.append("")
+        lines.append(
+            f"Just the top 3 cities above account for {top3_share:.0%} of every "
+            "confirmed detour this project has recorded -- almost the entire "
+            "region's out-of-fishbowl traffic funnels through three physical "
+            "places."
+        )
+
     lines.append(_section("FINDINGS: SATELLITE OPERATOR PATHWAYS"))
     lines.append(
         "Which in-scope economies have a known relationship to a satellite "

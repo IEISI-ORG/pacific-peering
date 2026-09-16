@@ -226,6 +226,68 @@ def _compute_transit_suppliers(
     )
 
 
+@dataclass(frozen=True)
+class RegionalHub:
+    """One external city where confirmed detours physically cross, per `ConfirmedDetour.detour_hub`.
+
+    `entry_count` is how many `ConfirmedDetour` entries name this city as
+    their real external touchpoint -- not a carrier-level guess, since
+    every current entry's hub was set (or corrected) from actual hop
+    evidence or a real IXP-LAN address match, per this project's own
+    `hop_geolocation` discipline. `dependent_economies` is every distinct
+    target economy at least one of those entries reaches.
+    `carrier_count` is how many distinct confirmed-upstream ASNs (ground-
+    truthed the same way as `TransitSupplier`, via each entry's persisted
+    triangulation JSON) have been observed crossing at this city -- a
+    high count means the city is a genuine shared crossroads, not just
+    one carrier's own path repeated many times.
+    """
+
+    name: str
+    entry_count: int
+    dependent_economies: tuple[str, ...]
+    carrier_count: int
+
+    @property
+    def dependent_count(self) -> int:
+        return len(self.dependent_economies)
+
+
+def _compute_regional_hubs(
+    triangulation_dir: Path = DEFAULT_TRIANGULATION_DIR,
+) -> tuple[RegionalHub, ...]:
+    """Rank the external cities where confirmed detours actually cross, by how much traffic does."""
+    entry_count: dict[str, int] = {}
+    dependent: dict[str, set[str]] = {}
+    carriers: dict[str, set[int]] = {}
+
+    for detour in CONFIRMED_DETOURS:
+        hub = detour.detour_hub
+        entry_count[hub] = entry_count.get(hub, 0) + 1
+        dependent.setdefault(hub, set()).add(detour.target_cc)
+
+        tri_path = triangulation_dir / f"{detour.measurement_id}.json"
+        if not tri_path.exists():
+            continue
+        tri = json.loads(tri_path.read_text())
+        upstream_asns = {
+            p.get("traceroute_upstream_asn") for p in tri["probes"] if p.get("ris_agrees")
+        }
+        upstream_asns.discard(None)
+        carriers.setdefault(hub, set()).update(upstream_asns)
+
+    hubs = [
+        RegionalHub(
+            name=hub,
+            entry_count=count,
+            dependent_economies=tuple(sorted(dependent.get(hub, set()))),
+            carrier_count=len(carriers.get(hub, set())),
+        )
+        for hub, count in entry_count.items()
+    ]
+    return tuple(sorted(hubs, key=lambda h: (-h.entry_count, h.name)))
+
+
 # Satellite operators with a real, PeeringDB-registered presence this
 # project has checked for -- a small, stable set, hand-curated same as
 # `regional_carrier_facilities.py`, since there's no reliable automatic
@@ -363,6 +425,7 @@ class ReportData:
     economies: tuple[EconomySummary, ...]
     ixps: tuple[IxpSummary, ...]
     transit_suppliers: tuple[dict, ...]
+    regional_hubs: tuple[dict, ...]
     satellite_pathways: tuple[dict, ...]
     confirmed_detours: tuple[dict, ...]
     confirmed_local_transit: tuple[dict, ...]
@@ -449,6 +512,7 @@ def build_report_data(
     confirmed_local_transit = tuple(asdict(t) for t in CONFIRMED_LOCAL_TRANSIT)
     candidate_peering = tuple(asdict(c) for c in CANDIDATE_PEERING)
     transit_suppliers = tuple(asdict(s) for s in _compute_transit_suppliers(fishbowl))
+    regional_hubs = tuple(asdict(h) for h in _compute_regional_hubs())
     asn_to_cc = {asn: cc for cc, entry in registry.items() for asn in entry["asns"]}
     satellite_pathways = tuple(
         asdict(s) for s in _compute_satellite_pathways(fishbowl, asn_to_cc)
@@ -471,6 +535,7 @@ def build_report_data(
         economies=tuple(economies),
         ixps=ixps,
         transit_suppliers=transit_suppliers,
+        regional_hubs=regional_hubs,
         satellite_pathways=satellite_pathways,
         confirmed_detours=confirmed_detours,
         confirmed_local_transit=confirmed_local_transit,

@@ -1843,3 +1843,10 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   no-gap peeringdb_netixlan match at Equinix Sydney as the AS17480
   entry this same tranche. RIS agrees exactly (150). Backlog:
   358 -> 352.
+- feat(reports): add "Findings: Regional Hub Concentration" section
+  to both report formats, between transit suppliers and satellite
+  pathways. New RegionalHub computation in reports/data.py, ranking
+  detour_hub cities by confirmed-detour count and distinct-carrier
+  count. Top 3: Sydney (43 entries, 51%, 13 carriers), Tokyo (24,
+  28%, 9 carriers), Los Angeles (13, 15%, 6 carriers) -- together 94%
+  of all 85 confirmed detours.

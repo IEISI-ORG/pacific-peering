@@ -156,6 +156,23 @@ def render_html_report(data: ReportData, viz_dir: Path | None = Path("../viz")) 
         for s in data.transit_suppliers[:8]
     ) or "<p>(none recorded yet)</p>"
 
+    total_detours = len(data.confirmed_detours)
+    regional_hub_rows = "".join(
+        f"""<tr>
+            <td>{html.escape(h['name'])}</td>
+            <td>{h['entry_count']}</td>
+            <td>{h['entry_count'] / total_detours if total_detours else 0:.0%}</td>
+            <td>{h['carrier_count']}</td>
+            <td>{html.escape(', '.join(h['dependent_economies']))}</td>
+        </tr>"""
+        for h in data.regional_hubs
+    ) or "<p>(none recorded yet)</p>"
+    top3_hub_share = (
+        sum(h["entry_count"] for h in data.regional_hubs[:3]) / total_detours
+        if total_detours
+        else 0
+    )
+
     satellite_rows = "".join(
         f"""<tr>
             <td>AS{s['asn']}</td><td>{html.escape(s['name'])}</td>
@@ -290,6 +307,25 @@ def render_html_report(data: ReportData, viz_dir: Path | None = Path("../viz")) 
         the region. Every measured path into Tuvalu &mdash; from every
         direction this project has tested &mdash; passes through one
         single carrier.</div>
+
+    <h2>Findings: regional hub concentration</h2>
+    <p class="section-intro">Every confirmed detour names a real external
+        city where the path physically crosses (<code>detour_hub</code>,
+        set from actual hop evidence or a real IXP-LAN address match,
+        never a carrier-level guess). Ranked by how many confirmed
+        detours cross there. "Carriers" is how many distinct confirmed-
+        upstream ASNs have been observed crossing at that city &mdash; a
+        high count means a genuine shared crossroads, not one carrier's
+        path repeated.</p>
+    <table>
+        <thead><tr><th>City</th><th>Entries</th><th>Share</th>
+            <th>Carriers</th><th>Dependent economies</th></tr></thead>
+        <tbody>{regional_hub_rows}</tbody>
+    </table>
+    <div class="callout">Just the top 3 cities above account for
+        <strong>{top3_hub_share:.0%}</strong> of every confirmed detour
+        this project has recorded &mdash; almost the entire region's
+        out-of-fishbowl traffic funnels through three physical places.</div>
 
     <h2>Findings: satellite operator pathways</h2>
     <p class="section-intro">Which in-scope economies have a known

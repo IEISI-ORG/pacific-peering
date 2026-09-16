@@ -2357,3 +2357,13 @@ Added as a new entry. Called `mark_corridor_tested(23917, 17480)`. Verified: mod
 Both AS6939 and AS17993 resolve via `peeringdb_netixlan` directly at Equinix Sydney -- the same clean, no-gap shape as the AS17480 entry earlier this same tranche.
 
 Added as a new entry. Called `mark_corridor_tested(23917, 17993)`. Verified: module imports cleanly (85 entries, up from 84); regenerated ASCII/HTML reports and the geographic map. Regenerated the corridor backlog: candidate count dropped 358 -> 352 (0 new-probe, 0 new-RIS-relationship).
+
+---
+
+**New report section, per direct request: "between transit and satellite: what are the top 3 regional hubs in the data? you come up with a good name for the section."** Named it **"Findings: Regional Hub Concentration"** -- matches the existing "Findings: Transit Supplier Concentration" naming pattern, same concentration framing on a different axis (physical city, not carrier).
+
+Implementation, in `src/pacific_peering/reports/data.py`: a new `RegionalHub` dataclass and `_compute_regional_hubs()` function, wired into `ReportData`/`build_report_data()` as a new `regional_hubs` field. Directly counts `ConfirmedDetour.detour_hub` occurrences (every current entry's hub was set from real hop evidence or an IXP-LAN address match, per this project's own `hop_geolocation` discipline -- never a carrier-level guess, so the count itself is trustworthy). `carrier_count` per hub reuses the same triangulation-ground-truth ASN lookup as `TransitSupplier`, to distinguish a genuine shared crossroads from one carrier's path repeated many times.
+
+**Top 3, verified directly: Sydney (43 entries, 51% of all 85 confirmed detours, 13 distinct carriers), Tokyo (24, 28%, 9 carriers), Los Angeles (13, 15%, 6 carriers)** -- together 94% of every confirmed detour this project has recorded. The long tail (Portland, San Jose, Honolulu) accounts for the remaining 6%, each a single carrier's own path.
+
+Rendered in both `ascii_report.py` and `html_report.py`, positioned between "Findings: transit supplier concentration" and "Findings: satellite operator pathways" per the request. Verified: `build_report_data()` runs cleanly (6 regional hubs computed), regenerated ASCII/HTML reports and the geographic map.
