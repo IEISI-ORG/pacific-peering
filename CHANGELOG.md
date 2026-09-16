@@ -1814,3 +1814,8 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   MP, VU, PF, CK, PG). Third Starlink routing-loop reproduction in
   this same tranche (206.224.66.27). RIS agrees exactly (361).
   Backlog: 384 -> 383.
+- feat(analysis): confirm TV(AS23917)->GU(AS9246) via Hurricane
+  Electric/Any2West -- first-ever confirmation with AS9246 as the
+  actual target (previously only an intermediate hop). Crosses
+  Equinix Sydney then Any2West (Los Angeles). Tuvalu's own path
+  transits FINTEL first. RIS agrees exactly (71). Backlog: 383 -> 377.

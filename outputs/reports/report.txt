@@ -1,6 +1,6 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-09-16T03:28:58.704218+00:00                  
+                 Generated: 2026-09-16T03:39:14.707458+00:00                  
 ==============================================================================
 
 SUMMARY
@@ -24,14 +24,14 @@ AS6453    Tata Communications                              9    45%       9     
     Economies: CK, GU, MH, MP, NR, PF, PG, PW, VU
 AS5511    Opentransit Orange S.A.                          8    40%       7       no
     Economies: CK, GU, MP, PF, PG, PW, VU, WF
+AS6939    Hurricane Electric                               8    40%      10       no
+    Economies: CK, GU, MP, PF, PG, PW, TV, WS
 AS45355   Digicel Fiji                                     8    40%       7      yes
     Economies: CK, GU, MP, PF, PG, PW, TO, VU
 AS139609  SISCC (Solomon Islands Submarine Cable C         8    40%       7      yes
     Economies: CK, GU, MP, PF, PG, PW, SB, VU
 AS174     Cogent Communications                            7    35%       8       no
     Economies: AS, CK, FJ, GU, PF, PW, WS
-AS6939    Hurricane Electric                               7    35%       9       no
-    Economies: CK, GU, MP, PF, PG, PW, WS
 AS7575    AARNet                                           6    30%       5       no
     Economies: CK, FJ, MP, PF, PG, PW
 AS18200   OPT NC (Office des Postes et Telecommuni         6    30%       5      yes
@@ -296,6 +296,9 @@ PW -> SB (AS45891): detours via AS4637 (Telstra Global) -- global transit, not a
 PW -> VU (AS45935): detours via BBIX Tokyo (Tokyo)
     RIS observation count: 1664  [measurement 212033156]
     Palau NCC (AS17893) -> Wantok Network Limited (AS45935) -- **first-ever confirmation of this target ASN**, and a genuinely new finding: the target itself answered directly (`103.36.144.1`), fully contiguous the whole way: `AS17893 -> AS38195 (BBIX Tokyo) -> AS15830 (Equinix) -> AS45495 (Interchange Ltd) -> AS45935`. AS45495 is the same ASN this session's earlier PW->AS45495 measurement left inconclusive (dead end right after the same BBIX Tokyo/Equinix fabric touch, per the project owner's own guidance that an IXP-fabric dead end is ordinary, not evidence of anything) -- this measurement resolves what that one couldn't: AS45495 (Interchange, Vanuatu) is confirmed as AS45935's (Wantok, also Vanuatu) real domestic upstream, RIS-agreeing with the identical exact match (1,664). Both ends of that specific leg are in-fishbowl Vanuatu carriers, but reaching it from Palau still crosses real external infrastructure first (BBIX Tokyo, `ixp_crossings` confirms it via a genuine IXP-LAN address match, ix_id 126 -- not a carrier guess), so this is filed as a detour, same as the OPT NC<->AS17480 pattern already on record.
+TV -> GU (AS9246): detours via Any2West (Los Angeles)
+    RIS observation count: 71  [measurement 212048367]
+    Tuvalu (AS23917) -> Teleguam Holdings/GTA (AS9246) -- **first-ever confirmation with AS9246 as the actual target** (every prior appearance in this dataclass had AS9246 as an intermediate hop en route to a different final target). `AS23917 -> AS9241 (FINTEL) -> AS6939 (Hurricane Electric) -> AS9246`, fully contiguous, RIS-agreeing with the identical exact match (71) -- a notably thinner observation count than most adjacencies on record, but an exact match is an exact match. Crosses **Equinix Sydney** first (`ixp_crossings` confirms it, member AS6939), then lands directly inside AS9246's own registered LAN prefix at **Any2West** (`ixp_crossings` confirms it too, member AS9246 itself) -- Any2West is based in Los Angeles, the same hub already established for AS9246's other appearances in this dataclass. Notable: Tuvalu's own outbound path transits FINTEL (Fiji) before ever reaching Hurricane Electric -- consistent with FINTEL's role as Tuvalu's dominant, near-exclusive real upstream, already extensively documented in `confirmed_local_transit`.
 
 CONFIRMED LOCAL TRANSIT (RIS + Atlas both agree, stays in-fishbowl)
 ==============================================================================

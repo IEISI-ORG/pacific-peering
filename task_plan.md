@@ -2314,3 +2314,11 @@ Extended the existing BNL Tarawa<->AS134783 entry's note rather than adding a ne
 `has_routing_loop` correctly returned `True` a third time in this same tranche -- yet another address at the same known looping location (`206.224.66.27`, a third distinct address on record after `.23` and `.25`, all inside AS14593's own network); not separately escalated.
 
 Extended the same AS132486 entry's note (which carries both the downstream-chain and direct-relationship threads for this Starlink/Kiribati topic) rather than adding a new entry. Called `mark_corridor_tested(17893, 154100)`. Verified: module imports cleanly (still 13 entries, extension only); regenerated ASCII/HTML reports and the geographic map. Regenerated the corridor backlog: candidate count dropped 384 -> 383 (0 new-probe, 0 new-RIS-relationship).
+
+---
+
+**Next corridor pulled: AS23917 (Tuvalu) -> AS9246 (Guam, Teleguam Holdings/GTA).** A new source economy this tranche (Palau's cheap untested targets are exhausted). `has_routing_loop` correctly returned `False`. **First-ever confirmation with AS9246 as the actual target** -- every prior appearance of AS9246 in `confirmed_detours.py` had it as an intermediate hop en route to a different final target.
+
+`AS23917 -> AS9241 (FINTEL) -> AS6939 (Hurricane Electric) -> AS9246`, fully contiguous, RIS-agreeing with the identical exact match (71 -- notably thinner than most adjacencies on record, but exact). Crosses Equinix Sydney first, then lands directly inside AS9246's own registered LAN prefix at **Any2West** (Los Angeles, matching the hub already established for AS9246's other appearances). Notable: Tuvalu's own outbound path transits FINTEL before ever reaching Hurricane Electric -- consistent with FINTEL's documented role as Tuvalu's dominant, near-exclusive upstream.
+
+Added as a new entry. Called `mark_corridor_tested(23917, 9246)`. Verified: module imports cleanly (82 entries, up from 81); regenerated ASCII/HTML reports and the geographic map. Regenerated the corridor backlog: candidate count dropped 383 -> 377 (0 new-probe, 0 new-RIS-relationship).

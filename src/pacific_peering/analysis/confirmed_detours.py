@@ -2423,4 +2423,34 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
             "OPT NC<->AS17480 pattern already on record."
         ),
     ),
+    ConfirmedDetour(
+        source_cc="TV",
+        target_cc="GU",
+        target_asn=9246,
+        detour_ix_name="Any2West",
+        detour_hub="Los Angeles",
+        measurement_id=212048367,
+        ris_observation_count=71,
+        note=(
+            "Tuvalu (AS23917) -> Teleguam Holdings/GTA (AS9246) -- "
+            "**first-ever confirmation with AS9246 as the actual target** "
+            "(every prior appearance in this dataclass had AS9246 as an "
+            "intermediate hop en route to a different final target). "
+            "`AS23917 -> AS9241 (FINTEL) -> AS6939 (Hurricane Electric) "
+            "-> AS9246`, fully contiguous, RIS-agreeing with the "
+            "identical exact match (71) -- a notably thinner observation "
+            "count than most adjacencies on record, but an exact match "
+            "is an exact match. Crosses **Equinix Sydney** first "
+            "(`ixp_crossings` confirms it, member AS6939), then lands "
+            "directly inside AS9246's own registered LAN prefix at "
+            "**Any2West** (`ixp_crossings` confirms it too, member "
+            "AS9246 itself) -- Any2West is based in Los Angeles, the "
+            "same hub already established for AS9246's other appearances "
+            "in this dataclass. Notable: Tuvalu's own outbound path "
+            "transits FINTEL (Fiji) before ever reaching Hurricane "
+            "Electric -- consistent with FINTEL's role as Tuvalu's "
+            "dominant, near-exclusive real upstream, already extensively "
+            "documented in `confirmed_local_transit`."
+        ),
+    ),
 )

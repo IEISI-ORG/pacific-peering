@@ -56,7 +56,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
 <body>
 <div class="wrap">
     <h1>Pacific Peering — Regional Routing Report</h1>
-    <div class="meta">Generated 2026-09-16T03:28:58.864189+00:00</div>
+    <div class="meta">Generated 2026-09-16T03:39:14.853329+00:00</div>
 
     <div class="headline-banner">
         <span class="value">68%</span>
@@ -95,6 +95,13 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <td>no</td>
             <td>CK, GU, MP, PF, PG, PW, VU, WF</td>
         </tr><tr>
+            <td>AS6939</td><td>Hurricane Electric</td>
+            <td>8</td>
+            <td>40%</td>
+            <td>10</td>
+            <td>no</td>
+            <td>CK, GU, MP, PF, PG, PW, TV, WS</td>
+        </tr><tr>
             <td>AS45355</td><td>Digicel Fiji</td>
             <td>8</td>
             <td>40%</td>
@@ -115,13 +122,6 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <td>8</td>
             <td>no</td>
             <td>AS, CK, FJ, GU, PF, PW, WS</td>
-        </tr><tr>
-            <td>AS6939</td><td>Hurricane Electric</td>
-            <td>7</td>
-            <td>35%</td>
-            <td>9</td>
-            <td>no</td>
-            <td>CK, GU, MP, PF, PG, PW, WS</td>
         </tr><tr>
             <td>AS7575</td><td>AARNet</td>
             <td>6</td>
@@ -757,6 +757,13 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <div>RIS observation count: 1664
                 &middot; measurement 212033156</div>
             <details class="note"><summary>Palau NCC (AS17893) -&gt; Wantok Network Limited (AS45935) -- **first-ever confirmation of this target ASN**, and a genuinely new finding: the target itself…</summary>Palau NCC (AS17893) -&gt; Wantok Network Limited (AS45935) -- **first-ever confirmation of this target ASN**, and a genuinely new finding: the target itself answered directly (`103.36.144.1`), fully contiguous the whole way: `AS17893 -&gt; AS38195 (BBIX Tokyo) -&gt; AS15830 (Equinix) -&gt; AS45495 (Interchange Ltd) -&gt; AS45935`. AS45495 is the same ASN this session&#x27;s earlier PW-&gt;AS45495 measurement left inconclusive (dead end right after the same BBIX Tokyo/Equinix fabric touch, per the project owner&#x27;s own guidance that an IXP-fabric dead end is ordinary, not evidence of anything) -- this measurement resolves what that one couldn&#x27;t: AS45495 (Interchange, Vanuatu) is confirmed as AS45935&#x27;s (Wantok, also Vanuatu) real domestic upstream, RIS-agreeing with the identical exact match (1,664). Both ends of that specific leg are in-fishbowl Vanuatu carriers, but reaching it from Palau still crosses real external infrastructure first (BBIX Tokyo, `ixp_crossings` confirms it via a genuine IXP-LAN address match, ix_id 126 -- not a carrier guess), so this is filed as a detour, same as the OPT NC&lt;-&gt;AS17480 pattern already on record.</details>
+        </div><div class="detour-card">
+            <div class="headline">TV -&gt; GU
+                (AS9246): detours via Any2West
+                (Los Angeles)</div>
+            <div>RIS observation count: 71
+                &middot; measurement 212048367</div>
+            <details class="note"><summary>Tuvalu (AS23917) -&gt; Teleguam Holdings/GTA (AS9246) -- **first-ever confirmation with AS9246 as the actual target** (every prior appearance in this dataclass…</summary>Tuvalu (AS23917) -&gt; Teleguam Holdings/GTA (AS9246) -- **first-ever confirmation with AS9246 as the actual target** (every prior appearance in this dataclass had AS9246 as an intermediate hop en route to a different final target). `AS23917 -&gt; AS9241 (FINTEL) -&gt; AS6939 (Hurricane Electric) -&gt; AS9246`, fully contiguous, RIS-agreeing with the identical exact match (71) -- a notably thinner observation count than most adjacencies on record, but an exact match is an exact match. Crosses **Equinix Sydney** first (`ixp_crossings` confirms it, member AS6939), then lands directly inside AS9246&#x27;s own registered LAN prefix at **Any2West** (`ixp_crossings` confirms it too, member AS9246 itself) -- Any2West is based in Los Angeles, the same hub already established for AS9246&#x27;s other appearances in this dataclass. Notable: Tuvalu&#x27;s own outbound path transits FINTEL (Fiji) before ever reaching Hurricane Electric -- consistent with FINTEL&#x27;s role as Tuvalu&#x27;s dominant, near-exclusive real upstream, already extensively documented in `confirmed_local_transit`.</details>
         </div>
 
     <h2>Confirmed local transit (RIS + Atlas both agree, stays in-fishbowl)</h2>
