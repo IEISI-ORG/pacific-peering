@@ -56,7 +56,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
 <body>
 <div class="wrap">
     <h1>Pacific Peering — Regional Routing Report</h1>
-    <div class="meta">Generated 2026-09-16T01:59:25.434323+00:00</div>
+    <div class="meta">Generated 2026-09-16T02:14:26.866387+00:00</div>
 
     <div class="headline-banner">
         <span class="value">68%</span>
@@ -148,6 +148,46 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
         both, every measured path into that economy &mdash; from every
         direction this project has tested &mdash; passes through one
         single carrier.</div>
+
+    <h2>Findings: satellite operator pathways</h2>
+    <p class="section-intro">Which in-scope economies have a known
+        relationship to a satellite operator, and how strong the evidence
+        is. "RIS economies" is a real, BGP-observed neighbor relationship
+        (this project's own fishbowl cache) that no traceroute has
+        necessarily confirmed carries traffic; "traceroute-confirmed"
+        means an Atlas traceroute has actually been observed transiting
+        that operator's network.</p>
+    <table>
+        <thead><tr><th>ASN</th><th>Operator</th><th>RIS economies</th>
+            <th>Traceroute-confirmed economies</th></tr></thead>
+        <tbody><tr>
+            <td>AS14593</td><td>SpaceX Starlink</td>
+            <td>KI, TV</td>
+            <td>KI, TV</td>
+        </tr><tr>
+            <td>AS12684</td><td>SES ASTRA S.A.</td>
+            <td>CK, KI, NR, PG</td>
+            <td>CK, NR, PF</td>
+        </tr><tr>
+            <td>AS135409</td><td>Kacific Broadband Satellites</td>
+            <td>PG, TO</td>
+            <td>(none)</td>
+        </tr></tbody>
+    </table>
+    <div class="callout"><strong>The Kacific gap</strong>: Kacific
+        Broadband Satellites (AS135409), a real PeeringDB-registered
+        Pacific-focused GEO satellite ISP, has RIS-observed BGP
+        relationships with at least three in-scope economies (Papua New
+        Guinea, Tonga, and &mdash; visible only from Kacific's own
+        neighbor list, not from the target's side, a real instance of
+        RIS's asymmetric visibility &mdash; Solomon Islands). Despite
+        that, <strong>no traceroute this project has ever run has touched
+        Kacific's network at all</strong>. AS38201 (Tonga, Kacific-linked)
+        sits untested in the current corridor backlog &mdash; a natural
+        next target if a Kacific-transiting path is ever going to
+        surface. Starlink and SES ASTRA, by contrast, have both been
+        directly traceroute-confirmed (Tuvalu/Kiribati for Starlink;
+        Cook Islands/Nauru for SES ASTRA).</div>
 
     <h2>Confirmed sub-optimal routes (RIS + Atlas both agree)</h2>
     <div class="detour-card">

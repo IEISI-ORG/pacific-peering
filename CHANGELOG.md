@@ -1763,3 +1763,12 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   touched BBIX Tokyo's fabric ASN, then went dark with no other ASN
   ever resolving, target never reached. AS45495's real RIS neighbor
   (AS15830, Equinix) never appeared. Not filed. Backlog: 410 -> 409.
+- feat(reports): add "Findings: Satellite Operator Pathways" section
+  to both report formats, after transit supplier concentration. New
+  SatellitePathway computation in reports/data.py, three-tier
+  evidence (RIS-visible / traceroute-confirmed / candidate-only) for
+  a small hand-curated set of satellite operators. Confirms Starlink
+  (KI, TV) and SES ASTRA (CK/KI/NR/PG) both have real relationships
+  with in-scope economies; Kacific (AS135409) has real RIS
+  relationships to PG/TO/SB but has never appeared in any traceroute
+  this project has run -- the explicit gap requested.

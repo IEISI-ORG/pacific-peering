@@ -105,6 +105,46 @@ def render_ascii_report(data: ReportData) -> str:
         "project has tested -- passes through one single carrier."
     )
 
+    lines.append(_section("FINDINGS: SATELLITE OPERATOR PATHWAYS"))
+    lines.append(
+        "Which in-scope economies have a known relationship to a satellite "
+        "operator, and how strong the evidence is. \"RIS economies\" is a "
+        "real, BGP-observed neighbor relationship (this project's own "
+        "fishbowl cache) that no traceroute has necessarily confirmed "
+        "carries traffic; \"traceroute-confirmed\" means an Atlas "
+        "traceroute has actually been observed transiting that operator's "
+        "network."
+    )
+    lines.append("")
+    if not data.satellite_pathways:
+        lines.append("(none recorded yet)")
+    else:
+        header = f"{'ASN':<10} {'Operator':<30} {'RIS economies':<18} {'Traceroute-confirmed':<22}"
+        lines.append(header)
+        lines.append(_rule())
+        for sat in data.satellite_pathways:
+            lines.append(
+                f"AS{sat['asn']:<8} {sat['name']:<30.30} "
+                f"{', '.join(sat['ris_economies']) or '(none)':<18} "
+                f"{', '.join(sat['traceroute_confirmed_economies']) or '(none)':<22}"
+            )
+    lines.append("")
+    lines.append(
+        "**The Kacific gap**: Kacific Broadband Satellites (AS135409), a "
+        "real PeeringDB-registered Pacific-focused GEO satellite ISP, has "
+        "RIS-observed BGP relationships with at least three in-scope "
+        "economies (Papua New Guinea, Tonga, and -- visible only from "
+        "Kacific's own neighbor list, not from the target's side, a real "
+        "instance of RIS's asymmetric visibility -- Solomon Islands). "
+        "Despite that, **no traceroute this project has ever run has "
+        "touched Kacific's network at all**. AS38201 (Tonga, Kacific-"
+        "linked) sits untested in the current corridor backlog -- a "
+        "natural next target if a Kacific-transiting path is ever going "
+        "to surface. Starlink and SES ASTRA, by contrast, have both been "
+        "directly traceroute-confirmed (Tuvalu/Kiribati for Starlink; "
+        "Cook Islands/Nauru for SES ASTRA)."
+    )
+
     lines.append(_section("CONFIRMED SUB-OPTIMAL ROUTES (RIS + Atlas both agree)"))
     if not data.confirmed_detours:
         lines.append("(none recorded yet)")

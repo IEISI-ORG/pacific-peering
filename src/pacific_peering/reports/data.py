@@ -199,6 +199,115 @@ def _compute_transit_suppliers(
     return tuple(sorted(suppliers, key=lambda s: (-s.economy_count, s.asn)))
 
 
+# Satellite operators with a real, PeeringDB-registered presence this
+# project has checked for -- a small, stable set, hand-curated same as
+# `regional_carrier_facilities.py`, since there's no reliable automatic
+# signal to detect "this ASN is a satellite operator" from RIS/PeeringDB
+# data alone.
+_SATELLITE_OPERATORS: dict[int, str] = {
+    14593: "SpaceX Starlink",
+    12684: "SES ASTRA S.A.",
+    135409: "Kacific Broadband Satellites",
+}
+
+
+@dataclass(frozen=True)
+class SatellitePathway:
+    """One satellite operator's reach into the in-scope Pacific economies.
+
+    Three different, deliberately distinct kinds of evidence, from
+    weakest to strongest:
+
+    - `ris_economies`: this project's own fishbowl-cached RIS neighbor
+      data shows the economy's ASN lists this operator as a real
+      BGP-observed neighbor -- a genuine relationship, but one RIS alone
+      can't confirm actually carries the traffic a given traceroute
+      takes (the same fishbowl-vs-traceroute distinction this whole
+      project is built around).
+    - `traceroute_confirmed_economies`: an Atlas traceroute has actually
+      been observed transiting this operator's ASN on a path to/from
+      that economy (mentioned in a `ConfirmedDetour` or
+      `ConfirmedLocalTransit` entry's note) -- real packets, not just an
+      announced relationship.
+    - `candidate_only_economies`: mentioned only in an unconfirmed
+      `CandidatePeering` note -- a real traceroute signal RIS doesn't
+      corroborate.
+
+    An operator can have RIS-visible relationships with economies this
+    project has never traceroute-confirmed at all -- exactly the
+    Kacific case: registered, real BGP relationships, zero traceroute
+    evidence so far.
+    """
+
+    asn: int
+    name: str
+    ris_economies: tuple[str, ...]
+    traceroute_confirmed_economies: tuple[str, ...]
+    candidate_only_economies: tuple[str, ...]
+
+
+def _compute_satellite_pathways(
+    fishbowl: dict,
+    asn_to_cc: dict[int, str],
+) -> tuple[SatellitePathway, ...]:
+    """Find every in-scope economy with a known relationship to a satellite operator.
+
+    `ris_economies` comes from scanning every in-scope ASN's own
+    fishbowl-cached RIS neighbor list for a satellite operator's ASN
+    (string-keyed in the cached JSON, unlike everywhere else in this
+    module that works with the live registry) -- this catches real BGP
+    relationships even when this project has never fired a traceroute
+    anywhere near them, which is the whole point of the Kacific finding.
+    `traceroute_confirmed_economies`/`candidate_only_economies` scan the
+    note text of every entry in all three finding dataclasses for a
+    literal "AS<n>" mention, since satellite legs are typically described
+    as an intermediate hop in another entry's prose, not stored as their
+    own structured provider/target relationship.
+    """
+    pathways = []
+    for sat_asn, sat_name in _SATELLITE_OPERATORS.items():
+        ris_ccs: set[str] = set()
+        for asn_str, entry in fishbowl.items():
+            if str(sat_asn) in entry.get("neighbors", {}):
+                cc = asn_to_cc.get(int(asn_str))
+                if cc:
+                    ris_ccs.add(cc)
+
+        marker = f"AS{sat_asn}"
+        confirmed_ccs: set[str] = set()
+        for detour in CONFIRMED_DETOURS:
+            if marker in detour.note or marker in detour.detour_ix_name:
+                confirmed_ccs.update({detour.source_cc, detour.target_cc})
+        for transit in CONFIRMED_LOCAL_TRANSIT:
+            if marker in transit.note:
+                # A satellite mention in a local-transit note almost always
+                # describes the *customer's* own alternate/backup neighbor
+                # (e.g. Tuvalu's Starlink backup, mentioned while
+                # explaining FINTEL's dominance) -- not something the
+                # provider's home economy actually transits. Attribute to
+                # the customer only, not the provider, to avoid folding an
+                # unrelated economy in just because it happens to be the
+                # entry's provider_cc.
+                confirmed_ccs.add(transit.customer_cc)
+
+        candidate_ccs: set[str] = set()
+        for candidate in CANDIDATE_PEERING:
+            if marker in candidate.note:
+                candidate_ccs.update({candidate.upstream_cc, candidate.target_cc})
+        candidate_ccs -= confirmed_ccs
+
+        pathways.append(
+            SatellitePathway(
+                asn=sat_asn,
+                name=sat_name,
+                ris_economies=tuple(sorted(ris_ccs)),
+                traceroute_confirmed_economies=tuple(sorted(confirmed_ccs)),
+                candidate_only_economies=tuple(sorted(candidate_ccs)),
+            )
+        )
+    return tuple(pathways)
+
+
 @dataclass(frozen=True)
 class IxpSummary:
     """One IXP's row in both report formats' IXP table."""
@@ -227,6 +336,7 @@ class ReportData:
     economies: tuple[EconomySummary, ...]
     ixps: tuple[IxpSummary, ...]
     transit_suppliers: tuple[dict, ...]
+    satellite_pathways: tuple[dict, ...]
     confirmed_detours: tuple[dict, ...]
     confirmed_local_transit: tuple[dict, ...]
     candidate_peering: tuple[dict, ...]
@@ -312,6 +422,10 @@ def build_report_data(
     confirmed_local_transit = tuple(asdict(t) for t in CONFIRMED_LOCAL_TRANSIT)
     candidate_peering = tuple(asdict(c) for c in CANDIDATE_PEERING)
     transit_suppliers = tuple(asdict(s) for s in _compute_transit_suppliers(fishbowl))
+    asn_to_cc = {asn: cc for cc, entry in registry.items() for asn in entry["asns"]}
+    satellite_pathways = tuple(
+        asdict(s) for s in _compute_satellite_pathways(fishbowl, asn_to_cc)
+    )
 
     return ReportData(
         generated_at=datetime.now(timezone.utc).isoformat(),
@@ -330,6 +444,7 @@ def build_report_data(
         economies=tuple(economies),
         ixps=ixps,
         transit_suppliers=transit_suppliers,
+        satellite_pathways=satellite_pathways,
         confirmed_detours=confirmed_detours,
         confirmed_local_transit=confirmed_local_transit,
         candidate_peering=candidate_peering,

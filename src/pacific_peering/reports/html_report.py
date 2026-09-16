@@ -157,6 +157,15 @@ def render_html_report(data: ReportData, viz_dir: Path | None = Path("../viz")) 
         for s in data.transit_suppliers[:8]
     ) or "<p>(none recorded yet)</p>"
 
+    satellite_rows = "".join(
+        f"""<tr>
+            <td>AS{s['asn']}</td><td>{html.escape(s['name'])}</td>
+            <td>{html.escape(', '.join(s['ris_economies']) or '(none)')}</td>
+            <td>{html.escape(', '.join(s['traceroute_confirmed_economies']) or '(none)')}</td>
+        </tr>"""
+        for s in data.satellite_pathways
+    ) or "<p>(none recorded yet)</p>"
+
     detour_cards = "".join(
         f"""<div class="detour-card">
             <div class="headline">{html.escape(d['source_cc'])} -&gt; {html.escape(d['target_cc'])}
@@ -277,6 +286,34 @@ def render_html_report(data: ReportData, viz_dir: Path | None = Path("../viz")) 
         both, every measured path into that economy &mdash; from every
         direction this project has tested &mdash; passes through one
         single carrier.</div>
+
+    <h2>Findings: satellite operator pathways</h2>
+    <p class="section-intro">Which in-scope economies have a known
+        relationship to a satellite operator, and how strong the evidence
+        is. "RIS economies" is a real, BGP-observed neighbor relationship
+        (this project's own fishbowl cache) that no traceroute has
+        necessarily confirmed carries traffic; "traceroute-confirmed"
+        means an Atlas traceroute has actually been observed transiting
+        that operator's network.</p>
+    <table>
+        <thead><tr><th>ASN</th><th>Operator</th><th>RIS economies</th>
+            <th>Traceroute-confirmed economies</th></tr></thead>
+        <tbody>{satellite_rows}</tbody>
+    </table>
+    <div class="callout"><strong>The Kacific gap</strong>: Kacific
+        Broadband Satellites (AS135409), a real PeeringDB-registered
+        Pacific-focused GEO satellite ISP, has RIS-observed BGP
+        relationships with at least three in-scope economies (Papua New
+        Guinea, Tonga, and &mdash; visible only from Kacific's own
+        neighbor list, not from the target's side, a real instance of
+        RIS's asymmetric visibility &mdash; Solomon Islands). Despite
+        that, <strong>no traceroute this project has ever run has touched
+        Kacific's network at all</strong>. AS38201 (Tonga, Kacific-linked)
+        sits untested in the current corridor backlog &mdash; a natural
+        next target if a Kacific-transiting path is ever going to
+        surface. Starlink and SES ASTRA, by contrast, have both been
+        directly traceroute-confirmed (Tuvalu/Kiribati for Starlink;
+        Cook Islands/Nauru for SES ASTRA).</div>
 
     <h2>Confirmed sub-optimal routes (RIS + Atlas both agree)</h2>
     {detour_cards}

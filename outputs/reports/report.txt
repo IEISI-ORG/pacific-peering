@@ -1,6 +1,6 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-09-16T01:59:25.284622+00:00                  
+                 Generated: 2026-09-16T02:14:26.717902+00:00                  
 ==============================================================================
 
 SUMMARY
@@ -38,6 +38,18 @@ AS18200   OPT NC (Office des Postes et Telecommuni         6    30%       5     
     Economies: CK, MP, NC, PF, PG, PW
 
 Two carriers don't crack the table above by raw economy count, but are the starkest single-point-of-failure findings this project has confirmed: AS9241 (FINTEL, Fiji) is Tuvalu's *only* RIS-observed neighbor of consequence, reconfirmed by 8 independent vantage points across the region; AS9471 (ONATI, French Polynesia) plays the identical role for Niue, also reconfirmed 8 times. For both, every measured path into that economy -- from every direction this project has tested -- passes through one single carrier.
+
+FINDINGS: SATELLITE OPERATOR PATHWAYS
+==============================================================================
+Which in-scope economies have a known relationship to a satellite operator, and how strong the evidence is. "RIS economies" is a real, BGP-observed neighbor relationship (this project's own fishbowl cache) that no traceroute has necessarily confirmed carries traffic; "traceroute-confirmed" means an Atlas traceroute has actually been observed transiting that operator's network.
+
+ASN        Operator                       RIS economies      Traceroute-confirmed  
+------------------------------------------------------------------------------
+AS14593    SpaceX Starlink                KI, TV             KI, TV                
+AS12684    SES ASTRA S.A.                 CK, KI, NR, PG     CK, NR, PF            
+AS135409   Kacific Broadband Satellites   PG, TO             (none)                
+
+**The Kacific gap**: Kacific Broadband Satellites (AS135409), a real PeeringDB-registered Pacific-focused GEO satellite ISP, has RIS-observed BGP relationships with at least three in-scope economies (Papua New Guinea, Tonga, and -- visible only from Kacific's own neighbor list, not from the target's side, a real instance of RIS's asymmetric visibility -- Solomon Islands). Despite that, **no traceroute this project has ever run has touched Kacific's network at all**. AS38201 (Tonga, Kacific-linked) sits untested in the current corridor backlog -- a natural next target if a Kacific-transiting path is ever going to surface. Starlink and SES ASTRA, by contrast, have both been directly traceroute-confirmed (Tuvalu/Kiribati for Starlink; Cook Islands/Nauru for SES ASTRA).
 
 CONFIRMED SUB-OPTIMAL ROUTES (RIS + Atlas both agree)
 ==============================================================================
