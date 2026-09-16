@@ -2214,3 +2214,13 @@ Rendered in both `ascii_report.py` (new table + two-carrier callout paragraph) a
 **Geolocated with `hop_geolocation`**: the Hurricane Electric hops resolve cleanly to Seattle, then Portland, then Sydney, immediately followed by PNG DataCo's own named HE switch port in Sydney -- unambiguous, geographically coherent evidence. Kept `detour_hub` as Sydney. Judgment call, not escalated as a fresh anomaly (consistent application of the established hop-evidence-over-automated-signal principle from the earlier Tokyo mislabeling correction, not a new kind of decision): `analyze_measurement`'s `ixp_crossings` also flagged an earlier hop as a BBIX Tokyo/AS6939 PeeringDB netixlan match, but that sits geographically incoherent with the immediately-following Seattle/Portland/Sydney chain -- treated as a likely coincidental address-range overlap, not a genuine Tokyo touchpoint, and not used to set `detour_hub`.
 
 Added as a new entry. Called `mark_corridor_tested(17893, 38009)`. Verified: module imports cleanly (77 entries, up from 76); regenerated ASCII/HTML reports and the geographic map. Regenerated the corridor backlog: candidate count dropped 442 -> 414 (0 new-probe, 0 new-RIS-relationship) -- a larger-than-usual drop, plausibly because AS38009 was a genuinely new target ASN the backlog generator hadn't accounted for before.
+
+---
+
+**Next corridor pulled: AS17893 (Palau NCC) -> AS38198 (Tonga, Digicel Tonga).** `has_routing_loop` correctly returned `False`.
+
+Seventh independent confirmation of the AS45355(Digicel Fiji)<->AS38198 adjacency (after GU, MP, VU, PF, CK, PG) -- still AS38198's only RIS-observed neighbor of consequence. `AS17893 -> AS174 (Cogent) -> AS1299 (Telia) -> AS4637 (Telstra Global) -> AS45355`, target technically reached (the same real, BGP-confirmed AS38198 address `202.43.12.5` seen on every prior entry, one hop after the last AS45355 hop, separated by the usual routine silent boundary hop rather than a real gap). RIS-agreeing with the identical exact match (1,321).
+
+Telia is a genuinely new intermediate carrier for this adjacency (after Level 3/Lumen, Vocus Connect, Telstra domestic, Hurricane Electric, and SES ASTRA on prior entries). Telstra Global's own hop confirms Sydney directly (`sydp-core04.telstraglobal.net`), extra confirmation of the already-established `detour_hub`.
+
+Added as a new entry. Called `mark_corridor_tested(17893, 38198)`. Verified: module imports cleanly (78 entries, up from 77); regenerated ASCII/HTML reports and the geographic map. Regenerated the corridor backlog: candidate count dropped 414 -> 410 (0 new-probe, 0 new-RIS-relationship).

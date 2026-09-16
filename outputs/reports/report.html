@@ -56,7 +56,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
 <body>
 <div class="wrap">
     <h1>Pacific Peering — Regional Routing Report</h1>
-    <div class="meta">Generated 2026-09-16T01:45:53.474899+00:00</div>
+    <div class="meta">Generated 2026-09-16T01:59:25.434323+00:00</div>
 
     <div class="headline-banner">
         <span class="value">68%</span>
@@ -88,6 +88,13 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <td>no</td>
             <td>CK, GU, MH, MP, NR, PF, PG, PW, VU</td>
         </tr><tr>
+            <td>AS45355</td><td>Digicel Fiji</td>
+            <td>8</td>
+            <td>40%</td>
+            <td>7</td>
+            <td>yes</td>
+            <td>CK, GU, MP, PF, PG, PW, TO, VU</td>
+        </tr><tr>
             <td>AS174</td><td>Cogent Communications</td>
             <td>7</td>
             <td>35%</td>
@@ -108,13 +115,6 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <td>9</td>
             <td>no</td>
             <td>CK, GU, MP, PF, PG, PW, WS</td>
-        </tr><tr>
-            <td>AS45355</td><td>Digicel Fiji</td>
-            <td>7</td>
-            <td>35%</td>
-            <td>6</td>
-            <td>yes</td>
-            <td>CK, GU, MP, PF, PG, TO, VU</td>
         </tr><tr>
             <td>AS139609</td><td>SISCC (Solomon Islands Submarine Cable Company)</td>
             <td>7</td>
@@ -689,6 +689,13 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <div>RIS observation count: 1875
                 &middot; measurement 212019977</div>
             <details class="note"><summary>Palau NCC (AS17893) -&gt; Telikom PNG Satellite Tier 1 AS (AS38009) -- a fresh PW&lt;-&gt;PG pair, and **the first-ever confirmation of this specific target** (no prior…</summary>Palau NCC (AS17893) -&gt; Telikom PNG Satellite Tier 1 AS (AS38009) -- a fresh PW&lt;-&gt;PG pair, and **the first-ever confirmation of this specific target** (no prior entry for AS38009 in any dataclass). `AS17893 -&gt; AS6939 (Hurricane Electric) -&gt; AS17828 (PNG DataCo)`, target itself never resolved, but RIS confirms AS17828 directly against AS38009 with an *exact* match (1,875) -- a genuinely new finding: PNG DataCo (already confirmed as this project&#x27;s usual PG-side target/source) is also the confirmed domestic upstream handing off to Telikom PNG&#x27;s satellite AS, a second, distinct PNG-based ASN. **Geolocated with `hop_geolocation`**: the Hurricane Electric hops resolve to Seattle (`core1.sea1.he.net`), Portland (`core1.pdx3.he.net`), then Sydney (`core1.syd1.he.net`), immediately followed by `png-dataco-limited.e0-11.switch1.syd1.he.net` -- PNG DataCo&#x27;s own named HE switch port in Sydney. Kept `detour_hub` as Sydney to match this direct, unambiguous PTR evidence. Note: `ixp_crossings` also flagged an earlier hop (`101.203.88.74`) as a BBIX Tokyo/AS6939 PeeringDB netixlan match; given it sits geographically incoherent with the immediately following Seattle/Portland/Sydney chain, and per this session&#x27;s established discipline of trusting real hop-level hostname evidence over an incidental subnet match, treated as likely a coincidental address-range overlap rather than a genuine Tokyo touchpoint -- not used to set `detour_hub`.</details>
+        </div><div class="detour-card">
+            <div class="headline">PW -&gt; TO
+                (AS38198): detours via AS174 (Cogent Communications), via AS1299 (Telia) and AS4637 (Telstra Global) -- global transit, not a named exchange crossing
+                (Sydney)</div>
+            <div>RIS observation count: 1321
+                &middot; measurement 212022541</div>
+            <details class="note"><summary>Palau NCC (AS17893) -&gt; Digicel Tonga (AS38198) -- a fresh PW&lt;-&gt;TO pair, a seventh independent confirmation of the AS45355(Digicel Fiji)&lt;-&gt;AS38198 adjacency…</summary>Palau NCC (AS17893) -&gt; Digicel Tonga (AS38198) -- a fresh PW&lt;-&gt;TO pair, a seventh independent confirmation of the AS45355(Digicel Fiji)&lt;-&gt;AS38198 adjacency (after GU, MP, VU, PF, CK, PG) -- still AS38198&#x27;s only RIS-observed neighbor of consequence. `AS17893 -&gt; AS174 (Cogent) -&gt; AS1299 (Telia) -&gt; AS4637 (Telstra Global) -&gt; AS45355`, target technically reached (the same real, BGP-confirmed AS38198 address `202.43.12.5` one hop after the last AS45355 hop), separated by the usual routine silent boundary hop rather than a real gap. RIS-agreeing with the identical *exact* match (1,321). **Telia is a genuinely new intermediate carrier for this adjacency** (after Level 3/Lumen, Vocus Connect, Telstra domestic, Hurricane Electric, and SES ASTRA on prior entries). Telstra Global&#x27;s own hop confirms Sydney directly (`i-1053.sydp-core04.telstraglobal.net`), extra confirmation alongside the five prior entries&#x27; `detour_hub`.</details>
         </div>
 
     <h2>Confirmed local transit (RIS + Atlas both agree, stays in-fishbowl)</h2>

@@ -1753,3 +1753,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   PNG DataCo's own HE switch port; an earlier BBIX Tokyo netixlan
   match was judged a coincidental subnet overlap, not a real
   touchpoint. RIS agrees exactly (1,875). Backlog: 442 -> 414.
+- docs(analysis): PW(AS17893)->TO(AS38198), seventh confirmation of
+  AS45355(Digicel Fiji)<->AS38198 (after GU, MP, VU, PF, CK, PG),
+  still the target's only real RIS neighbor. Telia is a new
+  intermediate carrier for this adjacency; Telstra Global's own hop
+  reconfirms Sydney directly. RIS agrees exactly (1,321). Backlog:
+  414 -> 410.

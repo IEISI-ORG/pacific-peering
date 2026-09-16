@@ -1,6 +1,6 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-09-16T01:45:53.309806+00:00                  
+                 Generated: 2026-09-16T01:59:25.284622+00:00                  
 ==============================================================================
 
 SUMMARY
@@ -22,14 +22,14 @@ ASN       Carrier                                  Economies  Share Corrob. Regi
 ------------------------------------------------------------------------------
 AS6453    Tata Communications                              9    45%       9       no
     Economies: CK, GU, MH, MP, NR, PF, PG, PW, VU
+AS45355   Digicel Fiji                                     8    40%       7      yes
+    Economies: CK, GU, MP, PF, PG, PW, TO, VU
 AS174     Cogent Communications                            7    35%       8       no
     Economies: AS, CK, FJ, GU, PF, PW, WS
 AS5511    Opentransit Orange S.A.                          7    35%       6       no
     Economies: CK, GU, MP, PF, PG, VU, WF
 AS6939    Hurricane Electric                               7    35%       9       no
     Economies: CK, GU, MP, PF, PG, PW, WS
-AS45355   Digicel Fiji                                     7    35%       6      yes
-    Economies: CK, GU, MP, PF, PG, TO, VU
 AS139609  SISCC (Solomon Islands Submarine Cable C         7    35%       6      yes
     Economies: CK, GU, MP, PF, PG, SB, VU
 AS7575    AARNet                                           6    30%       5       no
@@ -272,6 +272,9 @@ PW -> MH (AS24439): detours via AS174 (Cogent Communications), via AS6453 (Tata 
 PW -> PG (AS38009): detours via AS6939 (Hurricane Electric) -- global transit, not a named exchange crossing (Sydney)
     RIS observation count: 1875  [measurement 212019977]
     Palau NCC (AS17893) -> Telikom PNG Satellite Tier 1 AS (AS38009) -- a fresh PW<->PG pair, and **the first-ever confirmation of this specific target** (no prior entry for AS38009 in any dataclass). `AS17893 -> AS6939 (Hurricane Electric) -> AS17828 (PNG DataCo)`, target itself never resolved, but RIS confirms AS17828 directly against AS38009 with an *exact* match (1,875) -- a genuinely new finding: PNG DataCo (already confirmed as this project's usual PG-side target/source) is also the confirmed domestic upstream handing off to Telikom PNG's satellite AS, a second, distinct PNG-based ASN. **Geolocated with `hop_geolocation`**: the Hurricane Electric hops resolve to Seattle (`core1.sea1.he.net`), Portland (`core1.pdx3.he.net`), then Sydney (`core1.syd1.he.net`), immediately followed by `png-dataco-limited.e0-11.switch1.syd1.he.net` -- PNG DataCo's own named HE switch port in Sydney. Kept `detour_hub` as Sydney to match this direct, unambiguous PTR evidence. Note: `ixp_crossings` also flagged an earlier hop (`101.203.88.74`) as a BBIX Tokyo/AS6939 PeeringDB netixlan match; given it sits geographically incoherent with the immediately following Seattle/Portland/Sydney chain, and per this session's established discipline of trusting real hop-level hostname evidence over an incidental subnet match, treated as likely a coincidental address-range overlap rather than a genuine Tokyo touchpoint -- not used to set `detour_hub`.
+PW -> TO (AS38198): detours via AS174 (Cogent Communications), via AS1299 (Telia) and AS4637 (Telstra Global) -- global transit, not a named exchange crossing (Sydney)
+    RIS observation count: 1321  [measurement 212022541]
+    Palau NCC (AS17893) -> Digicel Tonga (AS38198) -- a fresh PW<->TO pair, a seventh independent confirmation of the AS45355(Digicel Fiji)<->AS38198 adjacency (after GU, MP, VU, PF, CK, PG) -- still AS38198's only RIS-observed neighbor of consequence. `AS17893 -> AS174 (Cogent) -> AS1299 (Telia) -> AS4637 (Telstra Global) -> AS45355`, target technically reached (the same real, BGP-confirmed AS38198 address `202.43.12.5` one hop after the last AS45355 hop), separated by the usual routine silent boundary hop rather than a real gap. RIS-agreeing with the identical *exact* match (1,321). **Telia is a genuinely new intermediate carrier for this adjacency** (after Level 3/Lumen, Vocus Connect, Telstra domestic, Hurricane Electric, and SES ASTRA on prior entries). Telstra Global's own hop confirms Sydney directly (`i-1053.sydp-core04.telstraglobal.net`), extra confirmation alongside the five prior entries' `detour_hub`.
 
 CONFIRMED LOCAL TRANSIT (RIS + Atlas both agree, stays in-fishbowl)
 ==============================================================================

@@ -2317,4 +2317,32 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
             "touchpoint -- not used to set `detour_hub`."
         ),
     ),
+    ConfirmedDetour(
+        source_cc="PW",
+        target_cc="TO",
+        target_asn=38198,
+        detour_ix_name="AS174 (Cogent Communications), via AS1299 (Telia) and AS4637 "
+        "(Telstra Global) -- global transit, not a named exchange crossing",
+        detour_hub="Sydney",
+        measurement_id=212022541,
+        ris_observation_count=1321,
+        note=(
+            "Palau NCC (AS17893) -> Digicel Tonga (AS38198) -- a fresh "
+            "PW<->TO pair, a seventh independent confirmation of the "
+            "AS45355(Digicel Fiji)<->AS38198 adjacency (after GU, MP, VU, "
+            "PF, CK, PG) -- still AS38198's only RIS-observed neighbor of "
+            "consequence. `AS17893 -> AS174 (Cogent) -> AS1299 (Telia) -> "
+            "AS4637 (Telstra Global) -> AS45355`, target technically "
+            "reached (the same real, BGP-confirmed AS38198 address "
+            "`202.43.12.5` one hop after the last AS45355 hop), separated "
+            "by the usual routine silent boundary hop rather than a real "
+            "gap. RIS-agreeing with the identical *exact* match (1,321). "
+            "**Telia is a genuinely new intermediate carrier for this "
+            "adjacency** (after Level 3/Lumen, Vocus Connect, Telstra "
+            "domestic, Hurricane Electric, and SES ASTRA on prior "
+            "entries). Telstra Global's own hop confirms Sydney directly "
+            "(`i-1053.sydp-core04.telstraglobal.net`), extra confirmation "
+            "alongside the five prior entries' `detour_hub`."
+        ),
+    ),
 )
