@@ -1910,3 +1910,8 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   confirmation, AS154100(KI) ninth direct Starlink confirmation
   (exhausts TV as source); FJ(AS24390) tranche debut - AS9751(AS)
   fifth Wave-Broadband confirmation via AARNet. Backlog: 279 -> 275.
+- feat(analysis): FJ(AS24390) tranche - AS24439(MH) ninth Tata
+  confirmation (new NTT intermediate carrier), AS38198(TO) ninth
+  Digicel Fiji confirmation; AS38201(TO) first-ever confirmation,
+  a second satellite operator (Kacific) for this project. Backlog:
+  275 -> 269.

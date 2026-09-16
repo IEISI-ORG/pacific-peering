@@ -2650,6 +2650,31 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
         ),
     ),
     ConfirmedDetour(
+        source_cc="FJ",
+        target_cc="MH",
+        target_asn=24439,
+        detour_ix_name="AS2914 (NTT), via AS6453 (Tata Communications) -- "
+        "global transit, not a named exchange crossing",
+        detour_hub="Los Angeles",
+        measurement_id=212094707,
+        ris_observation_count=997,
+        note=(
+            "University of the South Pacific (AS24390, Fiji) -> "
+            "Marshall Islands NTA ISP (AS24439) -- a fresh FJ<->MH "
+            "pair, a ninth independent confirmation of the AS6453"
+            "(Tata)<->AS24439 adjacency (after GU, MP, VU, PF, CK, PG, "
+            "PW, TV). `AS24390 -> AS7575 (AARNet) -> AS2914 (NTT) -> "
+            "AS6453`, target never resolved, RIS-agreeing with the "
+            "identical exact match (997). NTT (AS2914) is a genuinely "
+            "new intermediate carrier for this adjacency (every prior "
+            "entry used Hurricane Electric or Cogent). Kept `detour_hub` "
+            "as Los Angeles, matching the dominant already-verified "
+            "attribution for this adjacency (the TV entry's real "
+            "hostname evidence). `has_routing_loop` correctly returned "
+            "`False`."
+        ),
+    ),
+    ConfirmedDetour(
         source_cc="TV",
         target_cc="PG",
         target_asn=38009,
@@ -2696,6 +2721,34 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
             "confirms both AS6939 and AS132528) -- the same AS132528 "
             "leg already confirmed on most prior entries for this "
             "adjacency."
+        ),
+    ),
+    ConfirmedDetour(
+        source_cc="FJ",
+        target_cc="TO",
+        target_asn=38198,
+        detour_ix_name="AS132528 (Digicel Australia/Telstra-operated "
+        "backbone) -- crosses Equinix Sydney",
+        detour_hub="Sydney",
+        measurement_id=212094709,
+        ris_observation_count=1321,
+        note=(
+            "University of the South Pacific (AS24390, Fiji) -> Digicel "
+            "Tonga (AS38198) -- a fresh FJ<->TO pair, a ninth independent "
+            "confirmation of the AS45355(Digicel Fiji)<->AS38198 "
+            "adjacency (after GU, MP, VU, PF, CK, PG, PW, TV). `AS24390 "
+            "-> AS7575 (AARNet) -> AS132528 (Digicel Australia) -> "
+            "AS45355`, target technically reached (the same real, "
+            "BGP-confirmed AS38198 address `202.43.12.5` seen on every "
+            "prior entry), separated by the usual routine silent "
+            "boundary hop. RIS-agreeing with the identical exact match "
+            "(1,321). Crosses Equinix Sydney directly (`ixp_crossings` "
+            "confirms it, member AS132528) -- AARnet replaces Hurricane "
+            "Electric as the first-leg carrier, a genuinely new "
+            "combination for this adjacency, though AS132528's own "
+            "Sydney crossing is the same one already confirmed on most "
+            "prior entries. `has_routing_loop` correctly returned "
+            "`False`."
         ),
     ),
     ConfirmedDetour(
@@ -2830,6 +2883,38 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
             "for Cogent/Tata earlier this session. This is the first "
             "real hop-level evidence for this specific adjacency, and it "
             "points to Los Angeles, not Tokyo."
+        ),
+    ),
+    ConfirmedDetour(
+        source_cc="FJ",
+        target_cc="TO",
+        target_asn=38201,
+        detour_ix_name="AS135409 (Kacific Broadband Satellites) -- satellite "
+        "operator, global transit, not a named exchange crossing",
+        detour_hub="Sydney",
+        measurement_id=212094712,
+        ris_observation_count=331,
+        note=(
+            "University of the South Pacific (AS24390, Fiji) -> Tonga "
+            "Communications Internet Network (AS38201, KaliaNet) -- a "
+            "fresh FJ<->TO pair, **the first-ever confirmation of the "
+            "AS135409(Kacific)<->AS38201 adjacency** -- no prior entry "
+            "for this target ASN exists in this project at all. Fully "
+            "contiguous: `AS24390 -> AS7575 (AARNet) -> AS7594 (On Q "
+            "Communications, Australia) -> AS135409 (Kacific)`, target "
+            "never resolved, RIS-agreeing with the identical exact "
+            "match (331). AS7594 resolved via `peeringdb_netixlan` but "
+            "no direct IXP crossing was recorded this time -- checked "
+            "On Q's own real PeeringDB facility list directly instead: "
+            "genuine presence at Equinix SY3/SY4 and NEXTDC S1, all "
+            "Sydney, so attributed `detour_hub` as Sydney from the "
+            "immediately-preceding carrier's verified facilities rather "
+            "than guess. A second satellite operator now confirmed for "
+            "this project (after Starlink and SES Astra) -- Kacific "
+            "Broadband Satellites is a genuine Asia-Pacific regional "
+            "satellite provider, consistent with a small Tongan ISP "
+            "using satellite backhaul. `has_routing_loop` correctly "
+            "returned `False`."
         ),
     ),
 )
