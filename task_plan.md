@@ -2340,3 +2340,11 @@ The target itself answered directly (`103.117.168.1`). `has_routing_loop` correc
 Crosses **Equinix Sydney** directly (`ixp_crossings` confirms it) -- a genuinely different real crossing than the prior three entries' Equinix San Jose, consistent with Tuvalu's own path (via FINTEL, then south to Australia) differing geographically from MP/VU/PG's routes. Deeper in Wave Broadband's own backbone, a real hostname (`cr3-pdx.bb.as11404.net`) also confirms a Portland touchpoint -- kept `detour_hub` as Sydney to match the actual named-exchange crossing point, not this deeper internal hop, but noted the Portland evidence for the record.
 
 Added as a new entry. Called `mark_corridor_tested(23917, 9751)`. Verified: module imports cleanly (83 entries, up from 82); regenerated ASCII/HTML reports and the geographic map. Regenerated the corridor backlog: candidate count dropped 377 -> 375 (0 new-probe, 0 new-RIS-relationship).
+
+---
+
+**Next corridor pulled: AS23917 (Tuvalu) -> AS17480 (New Caledonia).** `has_routing_loop` correctly returned `False`. Sixth independent confirmation of the AS18200(OPT NC)<->AS17480 adjacency (after MP, PF, CK, PG, PW): `AS23917 -> AS9241 (FINTEL) -> AS6939 (Hurricane Electric) -> AS18200 -> AS17480`, fully contiguous, RIS-agreeing with the identical exact match (1,665).
+
+Both AS6939 and AS18200 resolve via `peeringdb_netixlan` at the same exchange, **Equinix Sydney** -- the cleanest confirmation of this specific crossing on record, no gap, no dead end, both member ASNs matched directly inside the registered LAN prefix.
+
+Added as a new entry. Called `mark_corridor_tested(23917, 17480)`. Verified: module imports cleanly (84 entries, up from 83); regenerated ASCII/HTML reports and the geographic map. Regenerated the corridor backlog: candidate count dropped 375 -> 358 (0 new-probe, 0 new-RIS-relationship) -- a larger-than-usual drop, plausibly because TV is a newly-active source economy this tranche.

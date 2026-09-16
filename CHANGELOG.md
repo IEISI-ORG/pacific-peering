@@ -1833,3 +1833,8 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   entries' San Jose, plus real Portland evidence deeper in Wave
   Broadband's own backbone. RIS agrees exactly (267). Backlog:
   377 -> 375.
+- feat(analysis): confirm TV(AS23917)->NC(AS17480), sixth
+  confirmation of AS18200<->AS17480 (after MP, PF, CK, PG, PW).
+  Cleanest confirmation on record -- both AS6939 and AS18200 resolve
+  via peeringdb_netixlan at Equinix Sydney, no gap. RIS agrees
+  exactly (1,665). Backlog: 375 -> 358.

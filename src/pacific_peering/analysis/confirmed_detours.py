@@ -2481,4 +2481,26 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
             "hop, but the Portland evidence is worth keeping on record."
         ),
     ),
+    ConfirmedDetour(
+        source_cc="TV",
+        target_cc="NC",
+        target_asn=17480,
+        detour_ix_name="Equinix Sydney",
+        detour_hub="Sydney",
+        measurement_id=212053045,
+        ris_observation_count=1665,
+        note=(
+            "Tuvalu (AS23917) -> a fresh New Caledonia ASN (AS17480) -- "
+            "a fresh TV<->NC pair, a sixth independent confirmation of "
+            "the AS18200(OPT NC)<->AS17480 adjacency (after MP, PF, CK, "
+            "PG, PW): `AS23917 -> AS9241 (FINTEL) -> AS6939 (Hurricane "
+            "Electric) -> AS18200 -> AS17480`, fully contiguous, RIS-"
+            "agreeing with the identical exact match (1,665). Both "
+            "AS6939 and AS18200 resolve via `peeringdb_netixlan` at the "
+            "same exchange, **Equinix Sydney** (`ixp_crossings` confirms "
+            "both hops), the cleanest confirmation of this specific "
+            "crossing on record -- no gap, no dead end, both member "
+            "ASNs matched directly inside the registered LAN prefix."
+        ),
+    ),
 )
