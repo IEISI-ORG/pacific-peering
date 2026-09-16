@@ -168,12 +168,14 @@ def render_html_report(data: ReportData, viz_dir: Path | None = Path("../viz")) 
         for h in data.regional_hubs
     ) or "<p>(none recorded yet)</p>"
 
+    subregion_of = {e.cc: e.subregion for e in data.economies}
     external_hub_rows = "".join(
         f"""<tr>
             <td>{html.escape(h['name'])}</td>
             <td>{h['entry_count']}</td>
             <td>{h['entry_count'] / total_detours if total_detours else 0:.0%}</td>
             <td>{h['carrier_count']}</td>
+            <td>{html.escape(', '.join(sorted({subregion_of.get(cc) for cc in h['dependent_economies']} - {None})))}</td>
             <td>{html.escape(', '.join(h['dependent_economies']))}</td>
         </tr>"""
         for h in data.external_hubs
@@ -348,7 +350,8 @@ def render_html_report(data: ReportData, viz_dir: Path | None = Path("../viz")) 
         not one carrier's path repeated.</p>
     <table>
         <thead><tr><th>City</th><th>Entries</th><th>Share</th>
-            <th>Carriers</th><th>Dependent economies</th></tr></thead>
+            <th>Carriers</th><th>Subregions reached</th>
+            <th>Dependent economies</th></tr></thead>
         <tbody>{external_hub_rows}</tbody>
     </table>
     <div class="callout">Just the top 3 cities above account for

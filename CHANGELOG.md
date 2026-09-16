@@ -1860,3 +1860,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   "Findings: External Hub Concentration" section, positioned right
   after the corrected regional-hub section and before satellite
   pathways -- both cuts kept, per direct request.
+- feat(reports): add a "Subregions reached" column (Melanesia/
+  Polynesia/Micronesia) to External Hub Concentration in both report
+  formats. Finding: Sydney, Tokyo, and Los Angeles all reach all
+  three subregions -- none is a subregion-specific gateway.

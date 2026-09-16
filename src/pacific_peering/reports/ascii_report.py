@@ -159,15 +159,18 @@ def render_ascii_report(data: ReportData) -> str:
         lines.append("(none recorded yet)")
     else:
         total_detours = len(data.confirmed_detours)
-        header = f"{'City':<14} {'Entries':>7} {'Share':>6} {'Carriers':>8} {'Dependent economies':<20}"
+        subregion_of = {e.cc: e.subregion for e in data.economies}
+        header = f"{'City':<14} {'Entries':>7} {'Share':>6} {'Carriers':>8} {'Subregions reached':<30}"
         lines.append(header)
         lines.append(_rule())
         for hub in data.external_hubs:
             share = hub["entry_count"] / total_detours if total_detours else 0.0
+            subregions = sorted({subregion_of.get(cc) for cc in hub["dependent_economies"]} - {None})
             lines.append(
                 f"{hub['name']:<14} {hub['entry_count']:>7} {share:>6.0%} "
-                f"{hub['carrier_count']:>8} {', '.join(hub['dependent_economies'])}"
+                f"{hub['carrier_count']:>8} {', '.join(subregions)}"
             )
+            lines.append(f"    Dependent economies: {', '.join(hub['dependent_economies'])}")
         top3_share = sum(h["entry_count"] for h in data.external_hubs[:3]) / total_detours
         lines.append("")
         lines.append(
