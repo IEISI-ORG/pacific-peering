@@ -56,7 +56,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
 <body>
 <div class="wrap">
     <h1>Pacific Peering — Regional Routing Report</h1>
-    <div class="meta">Generated 2026-09-16T11:37:35.625104+00:00</div>
+    <div class="meta">Generated 2026-09-16T15:45:56.213256+00:00</div>
 
     <div class="headline-banner">
         <span class="value">68%</span>
@@ -1584,6 +1584,14 @@ Twelfth confirmation of AS139609(SISCC)&lt;-&gt;AS45891. `AS55885 -&gt; AS9471 -
                 &middot; vantage point NU</div>
             <details class="note"><summary>NU(AS55885) -&gt; AS23959: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS23959`, but `ris_agrees: false` -- checked AS23959&#x27;s real RIS neighbor list directly: AS4785 is…</summary>NU(AS55885) -&gt; AS23959: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS23959`, but `ris_agrees: false` -- checked AS23959&#x27;s real RIS neighbor list directly: AS4785 is dominant (662 of 662 observations). Real signal, wrong immediate carrier. `has_routing_loop` False.</details>
         </div><div class="candidate-card">
+            <div class="headline">AS7131 (PTI Pacifica Inc.,
+                MP) -&gt; AS38198
+                (Digicel Tonga Ltd, TO)</div>
+            <div>Traceroute agreement: 1/1 probes
+                &middot; measurement 212244674
+                &middot; vantage point MP</div>
+            <details class="note"><summary>measurement 212244674 (from MP); chain: AS7131; RIS disagrees.</summary>measurement 212244674 (from MP); chain: AS7131; RIS disagrees.</details>
+        </div><div class="candidate-card">
             <div class="headline">AS9246 (Teleguam Holdings, LLC (GTA),
                 GU) -&gt; AS38875
                 (FSM Telecommunications Corporation, FM)</div>
@@ -1627,6 +1635,14 @@ NU(AS55885) -&gt; AS38875: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS9246 -&gt;
                 &middot; measurement 211572946
                 &middot; vantage point MP</div>
             <details class="note"><summary>A fresh MP&lt;-&gt;FM pair, pulled from the corridor backlog…</summary>A fresh MP&lt;-&gt;FM pair, pulled from the corridor backlog. Unusually fast for this source (9-21ms RTT, a genuinely regional path, not a Tokyo/Sydney detour). Both probes cross **Guam IX** directly -- `ixp_crossings` confirms it, and unlike every other IXP crossing this project has recorded, this one is **in-fishbowl** (`in_fishbowl: true`): the member ASN is AS10130, itself one of FSM Telecommunications Corporation&#x27;s own sibling ASNs (alongside AS38875 and AS139759, all sharing the same real operator, established earlier this session). The literal target (AS38875) never resolved; the traceroute lands on sibling AS139759 instead -- the same substitution already seen for this operator&#x27;s other corridors. Applying the sibling-identity correction and checking both siblings&#x27; own RIS neighbor lists directly: AS38875&#x27;s only neighbor is AS10130 (1,014 observations) and AS139759&#x27;s only neighbor is also AS10130 (1,009) -- so RIS *does* confirm the internal FSM sibling relationship crossed here. But that&#x27;s not the same as confirming *this* adjacency: AS10130 itself has zero RIS-observed neighbors on record, and AS7131&#x27;s own neighbor list doesn&#x27;t include AS10130 either -- so the actual traceroute-observed leg (AS7131 -&gt; AS10130) remains unconfirmed by RIS from either side, exactly the same shape as the earlier GU(AS3605)-&gt;FM(AS38875) MARIIX entry above, just at a different in-fishbowl exchange. Kept as a candidate, not promoted, per Validation Rule 1 -- a real in-fishbowl crossing and a real sibling-confirmed downstream relationship still don&#x27;t add up to RIS confirming the specific source-to-target leg itself.</details>
+        </div><div class="candidate-card">
+            <div class="headline">AS7131 (PTI Pacifica Inc.,
+                MP) -&gt; AS45891
+                (Solomon Telekom Co Ltd, SB)</div>
+            <div>Traceroute agreement: 1/1 probes
+                &middot; measurement 212246188
+                &middot; vantage point MP</div>
+            <details class="note"><summary>measurement 212246188 (from MP); chain: AS7131; RIS disagrees.</summary>measurement 212246188 (from MP); chain: AS7131; RIS disagrees.</details>
         </div><div class="candidate-card">
             <div class="headline">AS17893 (Palau National Communications Corp,
                 PW) -&gt; AS55722
