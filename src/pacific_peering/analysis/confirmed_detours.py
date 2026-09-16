@@ -84,7 +84,7 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
         source_cc="GU",
         target_cc="PW",
         target_asn=17893,
-        detour_ix_name="AS174 (Cogent Communications), via AS2497 (IIJ, Japan) -- global "
+        detour_ix_name="AS174 (Cogent Communications), via AS2497 (IIJ, Japan) -- international "
         "transit, not a named exchange crossing",
         detour_hub="Tokyo",
         measurement_id=211064438,
@@ -238,7 +238,7 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
         target_cc="VU",
         target_asn=9249,
         detour_ix_name="Telstra (AS1221 domestic + AS4637 Telstra Global) -- "
-        "global transit, not a named exchange crossing",
+        "international transit, not a named exchange crossing",
         detour_hub="Sydney",
         measurement_id=211299647,
         ris_observation_count=1346,
@@ -274,7 +274,7 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
         source_cc="GU",
         target_cc="FJ",
         target_asn=9241,
-        detour_ix_name="AS174 (Cogent Communications), via AS2497 (IIJ, Japan) -- global "
+        detour_ix_name="AS174 (Cogent Communications), via AS2497 (IIJ, Japan) -- international "
         "transit, not a named exchange crossing",
         detour_hub="Tokyo",
         measurement_id=211316239,
@@ -314,7 +314,7 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
         source_cc="GU",
         target_cc="VU",
         target_asn=9249,
-        detour_ix_name="Level 3/Lumen (AS3356) + AS4637 (Telstra Global) -- global "
+        detour_ix_name="Level 3/Lumen (AS3356) + AS4637 (Telstra Global) -- international "
         "transit, not a named exchange crossing",
         detour_hub="Sydney",
         measurement_id=211334940,
@@ -348,7 +348,7 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
         source_cc="GU",
         target_cc="AS",
         target_asn=9751,
-        detour_ix_name="AS174 (Cogent Communications), via AS2497 (IIJ, Japan) -- global "
+        detour_ix_name="AS174 (Cogent Communications), via AS2497 (IIJ, Japan) -- international "
         "transit, not a named exchange crossing",
         detour_hub="Tokyo",
         measurement_id=211371732,
@@ -379,7 +379,7 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
         target_cc="WS",
         target_asn=17993,
         detour_ix_name="AS174 (Cogent Communications), via AS3356 (Level 3/Lumen) -- "
-        "global transit, not a named exchange crossing",
+        "international transit, not a named exchange crossing",
         detour_hub="Sydney",
         measurement_id=211418048,
         ris_observation_count=1455,
@@ -410,7 +410,7 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
         source_cc="GU",
         target_cc="MH",
         target_asn=24439,
-        detour_ix_name="AS6453 (Tata Communications), via AS2497 (IIJ, Japan) -- global "
+        detour_ix_name="AS6453 (Tata Communications), via AS2497 (IIJ, Japan) -- international "
         "transit, not a named exchange crossing",
         detour_hub="Tokyo",
         measurement_id=211465536,
@@ -451,7 +451,7 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
         target_cc="TO",
         target_asn=38198,
         detour_ix_name="AS3356 (Level 3/Lumen) + AS4637 (Telstra Global) + AS45355 "
-        "(Digicel Fiji) -- global transit, not a named exchange crossing",
+        "(Digicel Fiji) -- international transit, not a named exchange crossing",
         detour_hub="Sydney",
         measurement_id=211478036,
         ris_observation_count=1321,
@@ -493,7 +493,7 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
         target_cc="WF",
         target_asn=45879,
         detour_ix_name="AS5511 (Opentransit Orange S.A.), via AS2497 (IIJ, Japan) -- "
-        "global transit, not a named exchange crossing",
+        "international transit, not a named exchange crossing",
         detour_hub="Tokyo",
         measurement_id=211486369,
         ris_observation_count=1665,
@@ -521,7 +521,7 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
         source_cc="GU",
         target_cc="SB",
         target_asn=45891,
-        detour_ix_name="AS4637 (Telstra Global), via AS2497 (IIJ, Japan) -- global "
+        detour_ix_name="AS4637 (Telstra Global), via AS2497 (IIJ, Japan) -- international "
         "transit, not a named exchange crossing",
         detour_hub="Tokyo",
         measurement_id=211488835,
@@ -555,7 +555,7 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
         source_cc="GU",
         target_cc="PF",
         target_asn=55943,
-        detour_ix_name="AS3257 (GTT Communications) -- global transit, not a named "
+        detour_ix_name="AS3257 (GTT Communications) -- international transit, not a named "
         "exchange crossing",
         detour_hub="Los Angeles",
         measurement_id=211499778,
@@ -617,7 +617,7 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
         source_cc="GU",
         target_cc="NR",
         target_asn=152706,
-        detour_ix_name="AS6453 (Tata Communications), via AS2497 (IIJ, Japan) -- global "
+        detour_ix_name="AS6453 (Tata Communications), via AS2497 (IIJ, Japan) -- international "
         "transit, not a named exchange crossing",
         detour_hub="Tokyo",
         measurement_id=211520771,
@@ -641,7 +641,7 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
         source_cc="MP",
         target_cc="VU",
         target_asn=9249,
-        detour_ix_name="AS4637 (Telstra Global) -- global transit, not a named exchange "
+        detour_ix_name="AS4637 (Telstra Global) -- international transit, not a named exchange "
         "crossing",
         detour_hub="Sydney",
         measurement_id=211537368,
@@ -667,7 +667,7 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
         source_cc="MP",
         target_cc="AS",
         target_asn=9751,
-        detour_ix_name="AS11404 (Wave Broadband) -- global transit, not a named exchange "
+        detour_ix_name="AS11404 (Wave Broadband) -- international transit, not a named exchange "
         "crossing",
         detour_hub="Honolulu",
         measurement_id=211542695,
@@ -816,7 +816,7 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
         source_cc="MP",
         target_cc="FJ",
         target_asn=24390,
-        detour_ix_name="AS140627 (OneQode) -- global transit, not a named exchange "
+        detour_ix_name="AS140627 (OneQode) -- international transit, not a named exchange "
         "crossing",
         detour_hub="Sydney",
         measurement_id=211564127,
@@ -848,7 +848,7 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
         target_cc="MH",
         target_asn=24439,
         detour_ix_name="AS174 (Cogent Communications), via AS6453 (Tata Communications) "
-        "-- global transit, not a named exchange crossing",
+        "-- international transit, not a named exchange crossing",
         detour_hub="Sydney",
         measurement_id=211567329,
         ris_observation_count=997,
@@ -881,7 +881,7 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
         target_cc="TO",
         target_asn=38198,
         detour_ix_name="AS6939 (Hurricane Electric) + AS132528 (Digicel Australia/"
-        "Telstra-operated backbone) -- global transit, not a named exchange "
+        "Telstra-operated backbone) -- international transit, not a named exchange "
         "crossing",
         detour_hub="Sydney",
         measurement_id=211570035,
@@ -913,7 +913,7 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
         source_cc="MP",
         target_cc="WF",
         target_asn=45879,
-        detour_ix_name="AS5511 (Opentransit Orange S.A.) -- global transit, not a named "
+        detour_ix_name="AS5511 (Opentransit Orange S.A.) -- international transit, not a named "
         "exchange crossing",
         detour_hub="Tokyo",
         measurement_id=211577395,
@@ -976,7 +976,7 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
         target_cc="PF",
         target_asn=55943,
         detour_ix_name="AS174 (Cogent Communications), then AS3257 (GTT "
-        "Communications) -- global transit, not a named exchange crossing",
+        "Communications) -- international transit, not a named exchange crossing",
         detour_hub="Los Angeles",
         measurement_id=211585981,
         ris_observation_count=1657,
@@ -1059,7 +1059,7 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
         source_cc="VU",
         target_cc="MH",
         target_asn=24439,
-        detour_ix_name="AS7473 (Singtel), via AS6453 (Tata Communications) -- global "
+        detour_ix_name="AS7473 (Singtel), via AS6453 (Tata Communications) -- international "
         "transit, not a named exchange crossing",
         detour_hub="Tokyo",
         measurement_id=211627606,
@@ -1146,7 +1146,7 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
         source_cc="VU",
         target_cc="WF",
         target_asn=45879,
-        detour_ix_name="AS5511 (Opentransit Orange S.A.) -- global transit, not a named "
+        detour_ix_name="AS5511 (Opentransit Orange S.A.) -- international transit, not a named "
         "exchange crossing",
         detour_hub="Tokyo",
         measurement_id=211633489,
@@ -1196,7 +1196,7 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
         target_cc="PF",
         target_asn=55943,
         detour_ix_name="AS4637 (Telstra Global), then AS3257 (GTT Communications) -- "
-        "global transit, not a named exchange crossing",
+        "international transit, not a named exchange crossing",
         detour_hub="Los Angeles",
         measurement_id=211640827,
         ris_observation_count=1657,
@@ -1264,7 +1264,7 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
         target_cc="NR",
         target_asn=152706,
         detour_ix_name="AS4637 (Telstra Global), then AS6453 (Tata "
-        "Communications) -- global transit, not a named exchange crossing",
+        "Communications) -- international transit, not a named exchange crossing",
         detour_hub="Tokyo",
         measurement_id=211657025,
         ris_observation_count=292,
@@ -1285,7 +1285,7 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
         source_cc="PF",
         target_cc="AS",
         target_asn=9751,
-        detour_ix_name="AS174 (Cogent Communications) -- global transit, not a named "
+        detour_ix_name="AS174 (Cogent Communications) -- international transit, not a named "
         "exchange crossing",
         detour_hub="Portland",
         measurement_id=211668556,
@@ -1347,7 +1347,7 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
         source_cc="PF",
         target_cc="PG",
         target_asn=17828,
-        detour_ix_name="AS6939 (Hurricane Electric) -- global transit, not a named "
+        detour_ix_name="AS6939 (Hurricane Electric) -- international transit, not a named "
         "exchange crossing",
         detour_hub="Sydney",
         measurement_id=211672420,
@@ -1371,7 +1371,7 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
         source_cc="PF",
         target_cc="PW",
         target_asn=17893,
-        detour_ix_name="AS6939 (Hurricane Electric) -- global transit, not a named "
+        detour_ix_name="AS6939 (Hurricane Electric) -- international transit, not a named "
         "exchange crossing",
         detour_hub="Sydney",
         measurement_id=211674609,
@@ -1445,7 +1445,7 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
         target_cc="MH",
         target_asn=24439,
         detour_ix_name="AS3257 (GTT Communications), via AS6453 (Tata "
-        "Communications) -- global transit, not a named exchange crossing",
+        "Communications) -- international transit, not a named exchange crossing",
         detour_hub="Los Angeles",
         measurement_id=211683854,
         ris_observation_count=997,
@@ -1541,7 +1541,7 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
         source_cc="PF",
         target_cc="WF",
         target_asn=45879,
-        detour_ix_name="AS5511 (Opentransit Orange S.A.) -- global transit, not a named "
+        detour_ix_name="AS5511 (Opentransit Orange S.A.) -- international transit, not a named "
         "exchange crossing",
         detour_hub="Tokyo",
         measurement_id=211691024,
@@ -1606,7 +1606,7 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
         source_cc="PF",
         target_cc="NR",
         target_asn=140504,
-        detour_ix_name="AS12684 (SES ASTRA S.A.) -- satellite operator, global transit, "
+        detour_ix_name="AS12684 (SES ASTRA S.A.) -- satellite operator, international transit, "
         "not a named exchange crossing",
         detour_hub="Los Angeles",
         measurement_id=211706787,
@@ -1653,7 +1653,7 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
         source_cc="CK",
         target_cc="AS",
         target_asn=9751,
-        detour_ix_name="AS174 (Cogent Communications) -- global transit, not a named "
+        detour_ix_name="AS174 (Cogent Communications) -- international transit, not a named "
         "exchange crossing",
         detour_hub="Tokyo",
         measurement_id=211719803,
@@ -1708,7 +1708,7 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
         source_cc="CK",
         target_cc="PG",
         target_asn=17828,
-        detour_ix_name="AS6939 (Hurricane Electric) -- global transit, not a named "
+        detour_ix_name="AS6939 (Hurricane Electric) -- international transit, not a named "
         "exchange crossing",
         detour_hub="Sydney",
         measurement_id=211725920,
@@ -1814,7 +1814,7 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
         target_cc="MH",
         target_asn=24439,
         detour_ix_name="AS3257 (GTT Communications), via AS6453 (Tata "
-        "Communications) -- global transit, not a named exchange crossing",
+        "Communications) -- international transit, not a named exchange crossing",
         detour_hub="Los Angeles",
         measurement_id=211741326,
         ris_observation_count=997,
@@ -1896,7 +1896,7 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
         source_cc="CK",
         target_cc="WF",
         target_asn=45879,
-        detour_ix_name="AS5511 (Opentransit Orange S.A.) -- global transit, not a named "
+        detour_ix_name="AS5511 (Opentransit Orange S.A.) -- international transit, not a named "
         "exchange crossing",
         detour_hub="Tokyo",
         measurement_id=211750685,
@@ -1958,7 +1958,7 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
         source_cc="CK",
         target_cc="NR",
         target_asn=140504,
-        detour_ix_name="AS12684 (SES ASTRA S.A.) -- satellite operator, global transit, "
+        detour_ix_name="AS12684 (SES ASTRA S.A.) -- satellite operator, international transit, "
         "not a named exchange crossing",
         detour_hub="Los Angeles",
         measurement_id=211765425,
@@ -1985,7 +1985,7 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
         source_cc="TV",
         target_cc="NR",
         target_asn=140504,
-        detour_ix_name="AS12684 (SES ASTRA S.A.) -- satellite operator, global transit, "
+        detour_ix_name="AS12684 (SES ASTRA S.A.) -- satellite operator, international transit, "
         "not a named exchange crossing",
         detour_hub="Los Angeles",
         measurement_id=212088551,
@@ -2061,7 +2061,7 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
         source_cc="PG",
         target_cc="FJ",
         target_asn=24390,
-        detour_ix_name="AS7575 (AARNet) -- global transit, not a named exchange crossing",
+        detour_ix_name="AS7575 (AARNet) -- international transit, not a named exchange crossing",
         detour_hub="Sydney",
         measurement_id=211816612,
         ris_observation_count=337,
@@ -2082,7 +2082,7 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
         source_cc="PG",
         target_cc="TO",
         target_asn=38198,
-        detour_ix_name="AS1221 (Telstra domestic) -- global transit, not a named "
+        detour_ix_name="AS1221 (Telstra domestic) -- international transit, not a named "
         "exchange crossing",
         detour_hub="Sydney",
         measurement_id=211962193,
@@ -2108,7 +2108,7 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
         target_cc="MH",
         target_asn=24439,
         detour_ix_name="AS174 (Cogent Communications), via AS6453 (Tata "
-        "Communications) -- global transit, not a named exchange crossing",
+        "Communications) -- international transit, not a named exchange crossing",
         detour_hub="Los Angeles",
         measurement_id=211965108,
         ris_observation_count=997,
@@ -2157,7 +2157,7 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
         target_cc="WF",
         target_asn=45879,
         detour_ix_name="AS174 (Cogent Communications), then AS5511 (Opentransit "
-        "Orange S.A.) -- global transit, not a named exchange crossing",
+        "Orange S.A.) -- international transit, not a named exchange crossing",
         detour_hub="Los Angeles",
         measurement_id=211976890,
         ris_observation_count=1665,
@@ -2188,7 +2188,7 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
         source_cc="PG",
         target_cc="SB",
         target_asn=45891,
-        detour_ix_name="AS4637 (Telstra Global) -- global transit, not a named "
+        detour_ix_name="AS4637 (Telstra Global) -- international transit, not a named "
         "exchange crossing",
         detour_hub="Sydney",
         measurement_id=211978965,
@@ -2222,7 +2222,7 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
         source_cc="PW",
         target_cc="AS",
         target_asn=9751,
-        detour_ix_name="AS174 (Cogent Communications) -- global transit, not a named "
+        detour_ix_name="AS174 (Cogent Communications) -- international transit, not a named "
         "exchange crossing",
         detour_hub="Portland",
         measurement_id=211998672,
@@ -2273,7 +2273,7 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
         source_cc="PW",
         target_cc="WS",
         target_asn=17993,
-        detour_ix_name="AS174 (Cogent Communications) -- global transit, not a named "
+        detour_ix_name="AS174 (Cogent Communications) -- international transit, not a named "
         "exchange crossing",
         detour_hub="Sydney",
         measurement_id=212005827,
@@ -2299,7 +2299,7 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
         source_cc="PW",
         target_cc="FJ",
         target_asn=24390,
-        detour_ix_name="AS7575 (AARNet) -- global transit, not a named exchange crossing",
+        detour_ix_name="AS7575 (AARNet) -- international transit, not a named exchange crossing",
         detour_hub="Sydney",
         measurement_id=212013476,
         ris_observation_count=337,
@@ -2325,7 +2325,7 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
         target_cc="MH",
         target_asn=24439,
         detour_ix_name="AS174 (Cogent Communications), via AS6453 (Tata "
-        "Communications) -- global transit, not a named exchange crossing",
+        "Communications) -- international transit, not a named exchange crossing",
         detour_hub="Tokyo",
         measurement_id=212015972,
         ris_observation_count=997,
@@ -2354,7 +2354,7 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
         source_cc="PW",
         target_cc="PG",
         target_asn=38009,
-        detour_ix_name="AS6939 (Hurricane Electric) -- global transit, not a named "
+        detour_ix_name="AS6939 (Hurricane Electric) -- international transit, not a named "
         "exchange crossing",
         detour_hub="Sydney",
         measurement_id=212019977,
@@ -2392,7 +2392,7 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
         target_cc="TO",
         target_asn=38198,
         detour_ix_name="AS174 (Cogent Communications), via AS1299 (Telia) and AS4637 "
-        "(Telstra Global) -- global transit, not a named exchange crossing",
+        "(Telstra Global) -- international transit, not a named exchange crossing",
         detour_hub="Sydney",
         measurement_id=212022541,
         ris_observation_count=1321,
@@ -2420,7 +2420,7 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
         target_cc="WF",
         target_asn=45879,
         detour_ix_name="AS174 (Cogent Communications), then AS5511 (Opentransit "
-        "Orange S.A.) -- global transit, not a named exchange crossing",
+        "Orange S.A.) -- international transit, not a named exchange crossing",
         detour_hub="Los Angeles",
         measurement_id=212029169,
         ris_observation_count=1665,
@@ -2441,7 +2441,7 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
         source_cc="PW",
         target_cc="SB",
         target_asn=45891,
-        detour_ix_name="AS4637 (Telstra Global) -- global transit, not a named "
+        detour_ix_name="AS4637 (Telstra Global) -- international transit, not a named "
         "exchange crossing",
         detour_hub="Sydney",
         measurement_id=212030657,
@@ -2555,7 +2555,7 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
         source_cc="FJ",
         target_cc="AS",
         target_asn=9751,
-        detour_ix_name="AS11404 (Wave Broadband) -- global transit, no named "
+        detour_ix_name="AS11404 (Wave Broadband) -- international transit, no named "
         "exchange crossing this time",
         detour_hub="San Jose",
         measurement_id=212091988,
@@ -2653,7 +2653,7 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
         target_cc="MH",
         target_asn=24439,
         detour_ix_name="AS6939 (Hurricane Electric), via AS6453 (Tata "
-        "Communications) -- global transit, not a named exchange crossing",
+        "Communications) -- international transit, not a named exchange crossing",
         detour_hub="Los Angeles",
         measurement_id=212059716,
         ris_observation_count=997,
@@ -2678,7 +2678,7 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
         target_cc="MH",
         target_asn=24439,
         detour_ix_name="AS2914 (NTT), via AS6453 (Tata Communications) -- "
-        "global transit, not a named exchange crossing",
+        "international transit, not a named exchange crossing",
         detour_hub="Los Angeles",
         measurement_id=212094707,
         ris_observation_count=997,
@@ -2703,7 +2703,7 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
         target_cc="MH",
         target_asn=24439,
         detour_ix_name="AS38195 (Superloop), via AS174 (Cogent) and AS6453 "
-        "(Tata Communications) -- global transit, not a named exchange "
+        "(Tata Communications) -- international transit, not a named exchange "
         "crossing",
         detour_hub="Los Angeles",
         measurement_id=212128886,
@@ -2732,7 +2732,7 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
         source_cc="TV",
         target_cc="PG",
         target_asn=38009,
-        detour_ix_name="AS6939 (Hurricane Electric) -- global transit, not a named "
+        detour_ix_name="AS6939 (Hurricane Electric) -- international transit, not a named "
         "exchange crossing",
         detour_hub="Sydney",
         measurement_id=212060615,
@@ -2755,7 +2755,7 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
         target_cc="TO",
         target_asn=38198,
         detour_ix_name="AS6939 (Hurricane Electric), via AS132528 (Digicel "
-        "Australia/Telstra-operated backbone) -- global transit, not a "
+        "Australia/Telstra-operated backbone) -- international transit, not a "
         "named exchange crossing",
         detour_hub="Sydney",
         measurement_id=212063778,
@@ -2950,7 +2950,7 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
         target_cc="WF",
         target_asn=45879,
         detour_ix_name="AS6939 (Hurricane Electric), then AS5511 (Opentransit "
-        "Orange S.A.) -- global transit, not a named exchange crossing",
+        "Orange S.A.) -- international transit, not a named exchange crossing",
         detour_hub="Los Angeles",
         measurement_id=212072564,
         ris_observation_count=1665,
@@ -2975,7 +2975,7 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
         target_cc="WF",
         target_asn=45879,
         detour_ix_name="AS2914 (NTT), then AS5511 (Opentransit Orange S.A.) "
-        "-- global transit, not a named exchange crossing",
+        "-- international transit, not a named exchange crossing",
         detour_hub="Los Angeles",
         measurement_id=212097710,
         ris_observation_count=1665,
@@ -2999,7 +2999,7 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
         target_cc="WF",
         target_asn=45879,
         detour_ix_name="AS3257 (GTT), then AS5511 (Opentransit Orange "
-        "S.A.) -- global transit, not a named exchange crossing",
+        "S.A.) -- international transit, not a named exchange crossing",
         detour_hub="Los Angeles",
         measurement_id=212136083,
         ris_observation_count=1665,
@@ -3117,7 +3117,7 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
         source_cc="TV",
         target_cc="PF",
         target_asn=55943,
-        detour_ix_name="AS3257 (GTT Communications) -- global transit, not a named "
+        detour_ix_name="AS3257 (GTT Communications) -- international transit, not a named "
         "exchange crossing",
         detour_hub="Los Angeles",
         measurement_id=212077786,
@@ -3146,7 +3146,7 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
         target_cc="TO",
         target_asn=38201,
         detour_ix_name="AS135409 (Kacific Broadband Satellites) -- satellite "
-        "operator, global transit, not a named exchange crossing",
+        "operator, international transit, not a named exchange crossing",
         detour_hub="Sydney",
         measurement_id=212094712,
         ris_observation_count=331,
@@ -3217,7 +3217,7 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
         target_cc="TO",
         target_asn=38201,
         detour_ix_name="AS135409 (Kacific Broadband Satellites) -- satellite "
-        "operator, global transit, not a named exchange crossing",
+        "operator, international transit, not a named exchange crossing",
         detour_hub="Sydney",
         measurement_id=212128889,
         ris_observation_count=331,
@@ -3248,7 +3248,7 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
     ConfirmedDetour(
         source_cc="FM", target_cc="AS", target_asn=9751,
         detour_ix_name="AS3356 (Level 3/Lumen), then AS11404 (Wave Broadband) "
-        "-- global transit, not a named exchange crossing",
+        "-- international transit, not a named exchange crossing",
         detour_hub="San Jose", measurement_id=212142987, ris_observation_count=267,
         note=(
             "Eleventh confirmation of AS11404<->AS9751 (after GU, MP, VU, PG, TV, "
@@ -3259,7 +3259,7 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
     ),
     ConfirmedDetour(
         source_cc="FM", target_cc="WS", target_asn=17993,
-        detour_ix_name="AS174 (Cogent Communications) -- global transit, not a "
+        detour_ix_name="AS174 (Cogent Communications) -- international transit, not a "
         "named exchange crossing",
         detour_hub="Sydney", measurement_id=212142988, ris_observation_count=1455,
         note=(
@@ -3276,7 +3276,7 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
     ),
     ConfirmedDetour(
         source_cc="FM", target_cc="AS", target_asn=23657,
-        detour_ix_name="AS17993 (Vodafone Samoa) -- global transit, not a named "
+        detour_ix_name="AS17993 (Vodafone Samoa) -- international transit, not a named "
         "exchange crossing",
         detour_hub="Sydney", measurement_id=212142989, ris_observation_count=329,
         note=(
@@ -3289,7 +3289,7 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
     ConfirmedDetour(
         source_cc="FM", target_cc="MH", target_asn=24439,
         detour_ix_name="AS4637 (Telstra Global), then AS6453 (Tata "
-        "Communications) -- global transit, not a named exchange crossing",
+        "Communications) -- international transit, not a named exchange crossing",
         detour_hub="Los Angeles", measurement_id=212142990, ris_observation_count=997,
         note=(
             "Eleventh confirmation of AS6453(Tata)<->AS24439. `AS139759 -> "
@@ -3311,7 +3311,7 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
     ConfirmedDetour(
         source_cc="FM", target_cc="TO", target_asn=38201,
         detour_ix_name="AS135409 (Kacific Broadband Satellites) -- satellite "
-        "operator, global transit, not a named exchange crossing",
+        "operator, international transit, not a named exchange crossing",
         detour_hub="Sydney", measurement_id=212142992, ris_observation_count=331,
         note=(
             "Third confirmation of AS135409(Kacific)<->AS38201 (after FJ, NC). "
@@ -3369,7 +3369,7 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
     ),
     ConfirmedDetour(
         source_cc="FM", target_cc="SB", target_asn=139609,
-        detour_ix_name="AS4637 (Telstra Global) -- global transit, not a named "
+        detour_ix_name="AS4637 (Telstra Global) -- international transit, not a named "
         "exchange crossing",
         detour_hub="Sydney", measurement_id=212143010, ris_observation_count=559,
         note=(
