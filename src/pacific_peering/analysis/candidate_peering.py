@@ -648,4 +648,38 @@ CANDIDATE_PEERING: tuple[CandidatePeering, ...] = (
             "not RIS-confirmed."
         ),
     ),
+    CandidatePeering(
+        upstream_cc="GU",
+        upstream_asn=9246,
+        upstream_name="Teleguam Holdings, LLC (GTA)",
+        target_cc="FM",
+        target_asn=38875,
+        target_name="FSM Telecommunications Corporation",
+        measurement_id=212136022,
+        vantage_point_cc="NC",
+        probe_agreement="3/3 probes",
+        note=(
+            "Sourced from AS45345 (New Caledonia) toward AS38875 (FSM "
+            "Telecommunications Corporation) -- a fresh NC<->FM pair. "
+            "Fully contiguous on all 3 probes: `AS45345 -> AS18200 "
+            "(OPT-NC) -> AS38195 (Superloop) -> AS9246 (Teleguam "
+            "Holdings/GTA, resolved via PeeringDB netixlan) -> "
+            "AS139759`. Crosses **BBIX Tokyo** directly (`ixp_"
+            "crossings` confirms it) -- a genuinely new named exchange "
+            "for this specific corridor's final crossing (every prior "
+            "entry used Any2West or the in-fishbowl MARIIX). The "
+            "literal target (AS38875) never resolved; the traceroute "
+            "lands on sibling AS139759 instead, the same substitution "
+            "as every prior entry for this target -- AS38875's only "
+            "RIS-observed neighbor is AS10130, not AS139759. Same shape "
+            "as every prior entry: a real, repeatable signal, but not "
+            "RIS-confirmed on the strict pair. Kept as a candidate, not "
+            "promoted, per the standing principle. `has_routing_loop` "
+            "flagged `True` on 2 of 3 probes -- hops 4 and 5 both "
+            "resolve to `125.63.12.157`, inside Superloop's (AS38195) "
+            "own announced prefix, the same ordinary intra-carrier "
+            "artifact already established twice this tranche; not "
+            "escalated."
+        ),
+    ),
 )

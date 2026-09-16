@@ -1963,3 +1963,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   served/target economies. Added `traceroute_vantage_economies` as a
   separate field, wired through both renderers with a new table
   column. Both `report.txt`/`report.html` regenerated and spot-checked.
+- feat(analysis): first 5-corridor NC(AS45345) tranche - AS38875(FM)
+  eighth candidate (new BBIX Tokyo crossing), AS45193(FM) sixth
+  confirmed, AS45879(WF) tenth confirmed (new GTT carrier), AS45891
+  (SB) tenth confirmed (SISCC loop reproduced, already-documented),
+  AS55722(NR) eighth corroboration. Backlog: 203 -> 157 (large drop
+  expected at 5/tranche from the economy-pair dedup policy).

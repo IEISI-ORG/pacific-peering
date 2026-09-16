@@ -1051,7 +1051,21 @@ CONFIRMED_LOCAL_TRANSIT: tuple[ConfirmedLocalTransit, ...] = (
             "reappears as the intermediate carrier, the same one "
             "already confirmed on the PG entry. A seventh distinct "
             "source economy (Fiji, after MP, VU, French Polynesia, "
-            "Cook Islands, Papua New Guinea, and Tuvalu)."
+            "Cook Islands, Papua New Guinea, and Tuvalu). "
+            "**Eighth independent corroboration** (measurement "
+            "212136145, NC/AS45345 -> NR/AS55722, a fresh NC<->NR "
+            "pair): `AS45345 -> AS18200 (OPT-NC) -> AS6939 (Hurricane "
+            "Electric) -> AS7131` -> target never resolved (the same "
+            "short-path silence pattern as every prior instance). RIS "
+            "agrees with the identical *exact* match (1,528) on all 3 "
+            "probes. Crosses Equinix Sydney directly. `has_routing_loop` "
+            "flagged `True` on all 3 probes -- hops 4 and 5 both "
+            "resolve to `45.127.173.24`, inside this project's "
+            "already-registered Equinix Sydney LAN prefix, the same "
+            "ordinary IXP-fabric pattern already established multiple "
+            "times; not escalated. An eighth distinct source economy "
+            "(New Caledonia, after MP, VU, French Polynesia, Cook "
+            "Islands, Papua New Guinea, Tuvalu, and Fiji)."
         ),
     ),
     ConfirmedLocalTransit(

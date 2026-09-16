@@ -2888,6 +2888,37 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
         ),
     ),
     ConfirmedDetour(
+        source_cc="NC",
+        target_cc="FM",
+        target_asn=45193,
+        detour_ix_name="Any2West",
+        detour_hub="Los Angeles",
+        measurement_id=212136053,
+        ris_observation_count=1681,
+        note=(
+            "New Caledonia (AS45345) -> a fifth FSM Telecommunications "
+            "Corporation sibling ASN (AS45193) -- a fresh NC<->FM pair, "
+            "a sixth independent confirmation of the direct AS139759"
+            "<->AS45193 adjacency (after PF, CK, PG, TV, FJ). `AS45345 "
+            "-> AS18200 (OPT-NC) -> AS38195 (Superloop) -> AS9246 "
+            "(Teleguam Holdings/GTA) -> AS139759 -> AS45193`, fully "
+            "contiguous on all 3 probes -- the literal target resolves "
+            "directly again (`103.39.252.1` answered), RIS-agreeing "
+            "with the identical exact match (1,681) on all 3 probes. "
+            "Crosses Any2West directly, the same exchange as every "
+            "prior confirmation. Notable: this same tranche's prior "
+            "corridor (NC->AS38875, FSM's other sibling) landed on the "
+            "identical AS9246->AS139759 chain but stayed unconfirmed "
+            "(candidate only, crossing BBIX Tokyo instead), the same "
+            "structural distinction already documented for the TV- and "
+            "FJ-sourced pairs. `has_routing_loop` correctly returned "
+            "`False` on all 3 probes -- despite an identical-address "
+            "repeat at hops 4/5 (inside Superloop's own network), the "
+            "target itself was reached directly, so it's ordinary "
+            "ECMP/load-balancer noise, not a blocking loop."
+        ),
+    ),
+    ConfirmedDetour(
         source_cc="TV",
         target_cc="VU",
         target_asn=45495,
@@ -2964,6 +2995,33 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
         ),
     ),
     ConfirmedDetour(
+        source_cc="NC",
+        target_cc="WF",
+        target_asn=45879,
+        detour_ix_name="AS3257 (GTT), then AS5511 (Opentransit Orange "
+        "S.A.) -- global transit, not a named exchange crossing",
+        detour_hub="Los Angeles",
+        measurement_id=212136083,
+        ris_observation_count=1665,
+        note=(
+            "New Caledonia (AS45345) -> Orange Wallis & Futuna (AS45879) "
+            "-- a fresh NC<->WF pair, a tenth independent confirmation "
+            "of the AS5511(Opentransit Orange)<->AS45879 adjacency "
+            "(after GU, MP, VU, PF, CK, PG, PW, TV, FJ): `AS45345 -> "
+            "AS18200 (OPT-NC) -> AS38195 (Superloop) -> AS3257 (GTT) -> "
+            "AS5511`, target never resolved, RIS-agreeing with the "
+            "identical exact match (1,665) on all 3 probes. GTT is a "
+            "genuinely new intermediate carrier for this adjacency "
+            "(every prior entry used Hurricane Electric, Cogent, or "
+            "NTT). Kept `detour_hub` as Los Angeles, matching the "
+            "established convention. `has_routing_loop` flagged `True` "
+            "on all 3 probes -- hops 4 and 5 both resolve to "
+            "`125.63.12.157`, inside Superloop's own network, the same "
+            "ordinary intra-carrier artifact already established twice "
+            "this tranche; not escalated."
+        ),
+    ),
+    ConfirmedDetour(
         source_cc="TV",
         target_cc="SB",
         target_asn=45891,
@@ -3008,6 +3066,31 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
             "loop -- `has_routing_loop` correctly returned `False`. "
             "Crosses MegaIX Sydney directly, the same exchange as the "
             "VU and TV entries."
+        ),
+    ),
+    ConfirmedDetour(
+        source_cc="NC",
+        target_cc="SB",
+        target_asn=45891,
+        detour_ix_name="MegaIX Sydney",
+        detour_hub="Sydney",
+        measurement_id=212136107,
+        ris_observation_count=1652,
+        note=(
+            "New Caledonia (AS45345) -> Solomon Telekom Co Ltd "
+            "(AS45891) -- a fresh NC<->SB pair, a tenth independent "
+            "confirmation of the AS139609(SISCC)<->AS45891 adjacency "
+            "(after GU, MP, VU, PF, CK, PG, PW, TV, FJ): `AS45345 -> "
+            "AS18200 (OPT-NC) -> AS139609`, fully contiguous, target "
+            "never resolved, RIS-agreeing with the identical exact "
+            "match (1,652) on all 3 probes. Crosses MegaIX Sydney "
+            "directly. `has_routing_loop` correctly flagged `True` on "
+            "all 3 probes this time -- the known SISCC loop-history "
+            "address `103.142.98.131` reappears after a run of silent "
+            "hops (the alternating/interleaved shape the function's own "
+            "rolling-window check is built to catch, not a fresh "
+            "location), the target never resolved -- an already-"
+            "documented anomaly, not escalated again."
         ),
     ),
     ConfirmedDetour(
