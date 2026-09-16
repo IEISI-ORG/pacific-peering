@@ -7,6 +7,12 @@
 # deliberately -- that's when the discovery refresh itself runs, and testing
 # against data that's mid-refresh would be working from a moving target.
 #
+# Two sources of work, drained by the same run: genuinely new corridors from
+# the backlog, and this week's reverification ration (the oldest-verified
+# quarter of all findings, staged by the Sunday job) -- see
+# auto_classify.run_batch()'s docstring for how a worker checks the
+# reverification queue before falling back to a new corridor.
+#
 # Concurrency, not just a longer queue: auto_classify.run_batch() fires
 # measurements across several different source-economy probes at once
 # (see its docstring) rather than serially waiting on one -- a single
@@ -16,7 +22,8 @@
 #
 # This step spends real RIPE Atlas account credits (unlike the free-API-only
 # weekly discovery refresh) -- only fires when pacific-peering-auto-classify-batch
-# finds a genuine untested corridor to test, never speculatively.
+# finds a genuine untested corridor or a queued reverification to test, never
+# speculatively.
 #
 # cron runs with a minimal environment, so this uses uv's full path and
 # cd's into the repo first -- secrets.yaml and pyproject.toml both resolve

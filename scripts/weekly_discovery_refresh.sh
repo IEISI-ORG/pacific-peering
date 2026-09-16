@@ -7,9 +7,19 @@
 # rate-limiting this project has already hit once on a single run.
 #
 # Scope, deliberately: only re-derives the free-API-backed registries and
-# regenerates the corridor backlog against them. Never fires an Atlas
-# traceroute (that costs real account credits and needs a real candidate to
-# exist first -- see auto_classify.py, run separately/on its own cadence).
+# regenerates the corridor backlog against them, plus staging this week's
+# reverification ration (see below). Never fires an Atlas traceroute itself
+# (that costs real account credits and needs a real candidate to exist
+# first -- the nightly job, scripts/nightly_corridor_testing.sh, does that
+# on its own cadence).
+#
+# Also stages the oldest-verified quarter of all findings for this week's
+# nightly runs to re-test -- per the project owner: a rolling reverification
+# (oldest 1/4 each week) rather than one big periodic re-check, so it never
+# competes with new-corridor testing for a whole night's budget, and every
+# finding gets a fresh look roughly every 4 weeks. See
+# auto_classify.write_reverification_queue()/run_batch() for how the
+# nightly job actually drains this queue.
 #
 # cron runs with a minimal environment (no ~/.local/bin on PATH, no shell
 # profile), so this uses uv's full path and cd's into the repo before
@@ -27,6 +37,7 @@ echo "=== weekly discovery refresh: $(date -u +%Y-%m-%dT%H:%M:%SZ) ==="
 
 "$UV" run pacific-peering-pipeline
 "$UV" run pacific-peering-corridor-backlog
+"$UV" run pacific-peering-reverify-enqueue
 
 # Only these two paths are git-tracked outputs of the steps above --
 # data/* (the registries themselves) is gitignored by design. Scoped

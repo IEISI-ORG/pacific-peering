@@ -2051,3 +2051,21 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   changing single-shot behavior. Retired the two old session-scoped
   cron jobs (8-hourly backlog-only regen, 10-minute pull-and-test)
   now redundant with the two scripts above.
+- feat(analysis): add rolling reverification - the oldest-verified 1/4
+  of all findings staged weekly (`pacific-peering-reverify-enqueue`,
+  called from the Sunday discovery refresh) into
+  `data/analysis/reverify_queue.json`, drained by the nightly batch
+  before it looks for new corridors. Full rotation roughly every 4
+  weeks. Deliberately bypasses the backlog's economy-pair dedup
+  (which is correct for new-corridor discovery but would permanently
+  block reverifying anything that already has a finding) by
+  reconstructing a firable candidate straight from each finding's
+  most recent corroboration. Caught and fixed a real data gap this
+  surfaced: every migrated legacy finding has no recorded
+  vantage-point ASN, only a vantage economy - fixed with a
+  currently-connected-probe fallback rather than silently dropping
+  all ~157 legacy findings from ever being reverifiable. Verified
+  against the live 188-finding database (47 staged, 5 real
+  candidates spot-checked, a same-source-ASN collision case
+  confirmed correctly blocked) before being wired into the weekly
+  script and smoke-tested end-to-end.

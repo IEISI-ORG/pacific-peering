@@ -42,6 +42,8 @@ import argparse
 import contextlib
 import json
 import logging
+import math
+import sqlite3
 import subprocess
 import sys
 import threading
@@ -66,17 +68,24 @@ from pacific_peering.analysis.traceroute_topology import (
     DEFAULT_ATLAS_PARSED_DIR,
     analyze_measurement,
 )
+from pacific_peering.atlas.asn_probes import (
+    DEFAULT_REGISTRY_PATH as ASN_PROBE_REGISTRY_PATH,
+    load_asn_probe_registry,
+)
 from pacific_peering.atlas.smoketest import run_smoketest
 from pacific_peering.atlas.targets import has_routing_loop, list_target_ips
 from pacific_peering.discovery.bgp_tools import fetch_asn_names
+from pacific_peering.discovery.economies import ECONOMIES_BY_CC
 from pacific_peering.discovery.economy_coordinates import EXTERNAL_HUB_LATLON
 
 logger = logging.getLogger(__name__)
 
 DEFAULT_ASN_REGISTRY_PATH = Path("data/asn_registry.json")
 DEFAULT_ESCALATIONS_PATH = Path("escalations.md")
+DEFAULT_REVERIFY_QUEUE_PATH = Path("data/analysis/reverify_queue.json")
 _PROBE_COUNT = 3
 _MAX_TARGET_IP_ATTEMPTS = 2  # primary + one alternate prefix, per the retry-on-deadend feedback
+_REVERIFY_FRACTION = 0.25  # oldest quarter each week -> full rotation roughly every 4 weeks
 
 
 @dataclass
@@ -453,6 +462,142 @@ def classify_next(max_corridors: int = 1) -> list[ClassifyResult]:
     return results
 
 
+def _last_verified(conn: sqlite3.Connection, finding: _store.Finding) -> str:
+    """The most recent corroboration's timestamp for this finding, or its
+    own creation time if it's never been re-corroborated since filing."""
+    corrobs = _store.get_corroborations(conn, finding.id)
+    if not corrobs:
+        return finding.created_at
+    return max(c.created_at for c in corrobs)
+
+
+def select_reverification_batch(fraction: float = _REVERIFY_FRACTION) -> list[int]:
+    """IDs of the oldest-verified `fraction` of all findings, by their most
+    recent corroboration -- the ones due for a fresh look, not the ones
+    already checked in on recently."""
+    conn = _store.connect()
+    try:
+        findings = _store.all_findings(conn)
+        ranked = sorted(findings, key=lambda f: _last_verified(conn, f))
+    finally:
+        conn.close()
+    n = math.ceil(len(ranked) * fraction)
+    return [f.id for f in ranked[:n]]
+
+
+def write_reverification_queue(
+    path: Path = DEFAULT_REVERIFY_QUEUE_PATH, fraction: float = _REVERIFY_FRACTION
+) -> int:
+    """Stage the oldest-verified quarter of findings for this week's nightly
+    runs to re-test. Per the project owner: a rolling reverification (the
+    oldest quarter, every week) rather than one giant periodic re-check --
+    it never has to compete with new-corridor testing for a whole night's
+    budget, and every finding gets a fresh look roughly every 4 weeks.
+    Overwrites any prior queue contents -- this is "this week's ration,"
+    not an ever-growing backlog; whatever the nightly runs didn't get to
+    this week is superseded, not lost (it'll be near the front again once
+    its turn comes back around, since it's still among the oldest-verified).
+    """
+    finding_ids = select_reverification_batch(fraction)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(
+        json.dumps(
+            {"finding_ids": finding_ids, "enqueued_at": datetime.now(timezone.utc).isoformat()},
+            indent=2,
+        )
+        + "\n"
+    )
+    logger.info("Staged %d finding(s) for reverification this week", len(finding_ids))
+    return len(finding_ids)
+
+
+def _any_probe_asn_for_cc(cc: str) -> int | None:
+    """Any currently-connected probe ASN for this economy -- used only as a
+    firing-bookkeeping fallback when a finding's original vantage-point ASN
+    wasn't recorded (every finding migrated from the legacy dataclasses
+    only ever tracked the vantage *economy*, never a literal ASN). Firing
+    itself is always country-based (`run_smoketest`'s `source_cc`), so this
+    doesn't need to be the *exact* original probe -- any connected ASN in
+    the same economy fires from the same country selector."""
+    registry = load_asn_probe_registry(ASN_PROBE_REGISTRY_PATH)
+    asn_to_cc = _load_asn_to_cc()
+    candidates = sorted(a for a in registry if asn_to_cc.get(a) == cc)
+    return candidates[0] if candidates else None
+
+
+def _candidate_from_finding(conn: sqlite3.Connection, finding_id: int) -> CorridorCandidate | None:
+    """Rebuild a firable `CorridorCandidate` from an existing finding, using
+    its most recent corroboration's vantage point as the source -- this
+    re-runs the exact test that originally produced the finding, rather
+    than searching for something new. Returns `None` if the finding has
+    since vanished, has no corroboration to derive a vantage point from, or
+    its vantage economy no longer has any connected probe at all."""
+    finding = next((f for f in _store.all_findings(conn) if f.id == finding_id), None)
+    if finding is None:
+        return None
+    corrobs = _store.get_corroborations(conn, finding_id)
+    if not corrobs:
+        return None
+    latest = max(corrobs, key=lambda c: c.created_at)
+    source_cc = latest.vantage_point_cc
+    source_asn = latest.vantage_point_asn or _any_probe_asn_for_cc(source_cc)
+    if source_asn is None:
+        return None
+    source_economy = ECONOMIES_BY_CC.get(source_cc)
+    target_economy = ECONOMIES_BY_CC.get(finding.target_cc)
+    return CorridorCandidate(
+        source_asn=source_asn,
+        source_cc=source_cc,
+        source_name=source_economy.name if source_economy else source_cc,
+        target_asn=finding.target_asn,
+        target_cc=finding.target_cc,
+        target_name=target_economy.name if target_economy else finding.target_cc,
+        rationale=(
+            f"scheduled reverification of finding #{finding.id} "
+            f"(kind={finding.kind}, last verified {latest.created_at})"
+        ),
+    )
+
+
+def _pop_reverify_candidate(
+    exclude_source_asns: set[int], path: Path = DEFAULT_REVERIFY_QUEUE_PATH
+) -> CorridorCandidate | None:
+    """Must be called with `run_batch`'s write lock held -- reads, mutates,
+    and rewrites the queue file, so two workers popping concurrently would
+    otherwise race each other's read-modify-write. Pops the first queued
+    finding whose vantage-point ASN isn't already in flight; a finding
+    that's vanished (or lost every connected probe in its vantage economy)
+    is dropped permanently, not left to jam the queue forever. Leaves
+    everything else queued -- including any entry blocked only by
+    `exclude_source_asns` right now -- for a later attempt."""
+    if not path.exists():
+        return None
+    data = json.loads(path.read_text())
+    finding_ids: list[int] = list(data.get("finding_ids", []))
+    if not finding_ids:
+        return None
+    conn = _store.connect()
+    try:
+        remaining = list(finding_ids)
+        picked: CorridorCandidate | None = None
+        for finding_id in finding_ids:
+            candidate = _candidate_from_finding(conn, finding_id)
+            if candidate is None:
+                remaining.remove(finding_id)
+                continue
+            if candidate.source_asn in exclude_source_asns:
+                continue
+            remaining.remove(finding_id)
+            picked = candidate
+            break
+    finally:
+        conn.close()
+    if remaining != finding_ids:
+        data["finding_ids"] = remaining
+        path.write_text(json.dumps(data, indent=2) + "\n")
+    return picked
+
+
 def _pick_next_for_batch(exclude_source_asns: set[int]) -> CorridorCandidate | None:
     """Like `pick_next_corridor`, but skips any candidate whose source ASN
     is currently in flight in another worker. Atlas serializes measurements
@@ -496,7 +641,12 @@ def run_batch(time_budget_seconds: float, max_concurrent: int = 5) -> list[Class
     def worker() -> None:
         while time.monotonic() < deadline:
             with write_lock:
-                candidate = _pick_next_for_batch(in_flight)
+                # Reverification queue first -- it's a fixed weekly ration
+                # meant to finish within the week, whereas new corridors
+                # just keep accumulating regardless of when they're tested.
+                candidate = _pop_reverify_candidate(in_flight)
+                if candidate is None:
+                    candidate = _pick_next_for_batch(in_flight)
                 if candidate is not None:
                     in_flight.add(candidate.source_asn)
                 elif not in_flight:
@@ -575,6 +725,21 @@ def main_batch() -> None:
     for r in results:
         outcomes[r.outcome] = outcomes.get(r.outcome, 0) + 1
     logger.info("Outcomes: %s", outcomes)
+
+
+def main_reverify_enqueue() -> None:
+    """`uv run pacific-peering-reverify-enqueue [--fraction F]` -- stage the
+    oldest-verified fraction of findings (default 1/4) for the nightly
+    batches to re-test this week. Run from the weekly discovery refresh,
+    right after the backlog regen -- see `write_reverification_queue`."""
+    logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
+    parser = argparse.ArgumentParser(description="Stage findings for reverification.")
+    parser.add_argument(
+        "--fraction", type=float, default=_REVERIFY_FRACTION,
+        help=f"fraction of findings to stage, oldest-verified first (default: {_REVERIFY_FRACTION})",
+    )
+    args = parser.parse_args()
+    write_reverification_queue(fraction=args.fraction)
 
 
 if __name__ == "__main__":
