@@ -1,6 +1,6 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-09-17T00:58:04.635788+00:00                  
+                 Generated: 2026-09-17T01:00:23.382272+00:00                  
 ==============================================================================
 
 SUMMARY
@@ -211,26 +211,26 @@ PATHWAY COVERAGE (per economy)
 How many of this economy's own ASNs have a connected Atlas probe (zero means it can never be a traceroute source, only ever reached as a target) and how many of the other 19 in-scope economies still have zero finding connecting to it -- see the PATHWAYS summary at the top for the region-wide totals this is derived from.
 CC   Name                             Subregion     ASNs  Probes  Untested
 ------------------------------------------------------------------------------
-AS   American Samoa                   Polynesia        2       0         7
-CK   Cook Islands                     Polynesia        2       1         1
-FJ   Fiji                             Melanesia       20       1         2
-FM   Micronesia, Federated States of  Micronesia       6       3         0
-GU   Guam                             Micronesia      10       5         1
 KI   Kiribati                         Micronesia       5       0        17
-MH   Marshall Islands                 Micronesia       2       0         7
-MP   Northern Mariana Islands         Micronesia       2       3         3
-NC   New Caledonia                    Melanesia       19       5         1
 NR   Nauru                            Micronesia       5       0         9
-NU   Niue                             Polynesia        1       0         3
-PF   French Polynesia                 Polynesia        6       6         1
-PG   Papua New Guinea                 Melanesia       38       1         2
-PW   Palau                            Micronesia       3       1         3
+AS   American Samoa                   Polynesia        2       0         7
+MH   Marshall Islands                 Micronesia       2       0         7
 SB   Solomon Islands                  Melanesia       10       0         7
 TO   Tonga                            Polynesia        5       0         7
-TV   Tuvalu                           Polynesia        3       1         4
-VU   Vanuatu                          Melanesia       12       2         1
 WF   Wallis and Futuna                Polynesia        1       0         7
 WS   Samoa                            Polynesia       10       0         7
+TV   Tuvalu                           Polynesia        3       1         4
+MP   Northern Mariana Islands         Micronesia       2       3         3
+NU   Niue                             Polynesia        1       0         3
+PW   Palau                            Micronesia       3       1         3
+FJ   Fiji                             Melanesia       20       1         2
+PG   Papua New Guinea                 Melanesia       38       1         2
+CK   Cook Islands                     Polynesia        2       1         1
+GU   Guam                             Micronesia      10       5         1
+NC   New Caledonia                    Melanesia       19       5         1
+PF   French Polynesia                 Polynesia        6       6         1
+VU   Vanuatu                          Melanesia       12       2         1
+FM   Micronesia, Federated States of  Micronesia       6       3         0
 
 APPENDIX: LOW DATA QUALITY ISSUES (2 known, resolved)
 ==============================================================================

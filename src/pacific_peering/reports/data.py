@@ -787,6 +787,7 @@ def _compute_pathway_coverage(
                 untested_pathways=untested,
             )
         )
+    summaries.sort(key=lambda p: p.untested_pathways, reverse=True)
     return tuple(summaries)
 
 
