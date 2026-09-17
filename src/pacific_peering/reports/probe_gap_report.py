@@ -7,11 +7,19 @@ single operational question instead — "where should a human go request
 a new probe next" — meant to run on its own weekly cadence, not
 bundled into the same output as the substantive analysis.
 
-Coverage is re-fetched live every run (20 cheap, unauthenticated Atlas
-API calls, no credits spent) rather than reading the possibly-stale
-`data/atlas/probe_coverage.json` — a report whose entire point is
-current operational status defeats its own purpose if it reports last
-month's numbers.
+Coverage and the full probe listing are both re-fetched live every run
+(40 cheap, unauthenticated Atlas API calls, no credits spent) rather
+than reading the possibly-stale `data/atlas/probe_coverage.json` — a
+report whose entire point is current operational status defeats its
+own purpose if it reports last month's numbers.
+
+Per the project owner: this report should distinguish "listed" (every
+probe Atlas has ever registered for an economy, any status) from
+"actually useful" (currently Connected) — a listed-but-inactive probe
+is either a stale registration (fix the data) or a real host that
+could be reconnected (get it back online), and naming the specific
+probe IDs and their status gives the wider Atlas/Pacific-networking
+community something concrete to act on, not just an aggregate count.
 """
 
 from __future__ import annotations
@@ -30,7 +38,11 @@ CONFIRMED_LOCAL_TRANSIT = _store.load_confirmed_local_transit(_conn)
 CANDIDATE_PEERING = _store.load_candidate_peering(_conn)
 _conn.close()
 from pacific_peering.atlas.asn_probes import load_asn_probe_registry
-from pacific_peering.atlas.probes import build_probe_coverage
+from pacific_peering.atlas.probes import (
+    asn_listed_registry,
+    build_probe_coverage,
+    build_probe_listing,
+)
 from pacific_peering.discovery.economies import ECONOMIES_BY_CC
 from pacific_peering.discovery.registry import DEFAULT_OUTPUT_PATH as _ASN_REGISTRY_PATH
 from pacific_peering.reports.data import FISHBOWL_EXPLANATION, PathwayCoverageSummary
@@ -78,6 +90,7 @@ def render_probe_gap_report(
     coverage: dict[str, int],
     asn_registry: dict,
     pathway_coverage: tuple[PathwayCoverageSummary, ...],
+    listing: dict[str, list[dict]],
 ) -> str:
     """Render the probe-gap report as plain text.
 
@@ -92,10 +105,15 @@ def render_probe_gap_report(
             ASN than a bare country code.
         pathway_coverage: Per-economy test-coverage summaries from
             `reports.data._compute_pathway_coverage` -- ASN-tracked
-            active-probe counts (deliberately a different question from
-            `coverage` above -- see `PathwayCoverageSummary`'s own
-            docstring) plus how many of the other in-scope economies
+            listed-vs-active-probe counts (deliberately a different
+            question from `coverage` above -- see `PathwayCoverageSummary`'s
+            own docstring) plus how many of the other in-scope economies
             still have zero finding connecting to this one.
+        listing: economy cc -> every probe Atlas has ever registered
+            there, any status (see `atlas.probes.build_probe_listing`) --
+            used to name the specific probe IDs that are actually useful
+            (Connected) versus listed-but-not (a data-quality fix or a
+            reconnection opportunity, either way a concrete target).
 
     Returns:
         The full report as a single string.
@@ -111,6 +129,22 @@ def render_probe_gap_report(
         asns = sorted(asn_registry.get(cc, {}).get("asns", []))
         return f"\n      ASNs: {', '.join(str(a) for a in asns)}" if asns else ""
 
+    def _probes(cc: str) -> str:
+        probes = sorted(listing.get(cc, []), key=lambda p: p["id"])
+        if not probes:
+            return ""
+        useful = [p for p in probes if p["status"] == "Connected"]
+        not_useful = [p for p in probes if p["status"] != "Connected"]
+        out = [f"\n      Probes: {len(probes)} listed, {len(useful)} actually useful"]
+        if useful:
+            out.append("\n        Useful (Connected): " + ", ".join(str(p["id"]) for p in useful))
+        if not_useful:
+            out.append(
+                "\n        Not useful yet -- fix the data or get it back online: "
+                + ", ".join(f"{p['id']} ({p['status']})" for p in not_useful)
+            )
+        return "".join(out)
+
     zero = sorted(cc for cc, n in coverage.items() if n == 0)
     fragile = sorted(cc for cc, n in coverage.items() if n == 1)
     adequate = sorted(cc for cc, n in coverage.items() if n >= 2)
@@ -118,6 +152,14 @@ def render_probe_gap_report(
     lines: list[str] = []
     lines.append("PACIFIC PEERING -- RIPE ATLAS PROBE COVERAGE GAPS")
     lines.append("Sole purpose: where to request a new probe next. Not a findings report.")
+    lines.append(
+        "\"Probes\" breakdowns below distinguish every probe Atlas has ever listed for "
+        "an economy (any status) from the subset that's actually useful right now "
+        "(status: Connected) -- a listed-but-not-Connected probe is either a stale "
+        "registration worth cleaning up or a real host that could be brought back "
+        "online, and naming the specific probe IDs gives the Atlas/Pacific-networking "
+        "community a concrete target either way."
+    )
     lines.append("=" * 78)
     lines.append("")
 
@@ -129,7 +171,7 @@ def render_probe_gap_report(
     if not zero:
         lines.append("  (none -- every in-scope economy has at least one connected probe)")
     for cc in zero:
-        lines.append(f"  {cc}  {ECONOMIES_BY_CC[cc].name}{_flag(cc)}{_asns(cc)}")
+        lines.append(f"  {cc}  {ECONOMIES_BY_CC[cc].name}{_flag(cc)}{_asns(cc)}{_probes(cc)}")
     lines.append("")
 
     lines.append(
@@ -140,14 +182,16 @@ def render_probe_gap_report(
     if not fragile:
         lines.append("  (none)")
     for cc in fragile:
-        lines.append(f"  {cc}  {ECONOMIES_BY_CC[cc].name}{_flag(cc)}{_asns(cc)}")
+        lines.append(f"  {cc}  {ECONOMIES_BY_CC[cc].name}{_flag(cc)}{_asns(cc)}{_probes(cc)}")
     lines.append("")
 
     lines.append(f"ADEQUATE -- 2+ connected probes ({len(adequate)}/{len(coverage)}):")
     if not adequate:
         lines.append("  (none)")
     for cc in adequate:
-        lines.append(f"  {cc}  {ECONOMIES_BY_CC[cc].name} ({coverage[cc]} connected)")
+        lines.append(
+            f"  {cc}  {ECONOMIES_BY_CC[cc].name} ({coverage[cc]} connected){_probes(cc)}"
+        )
     lines.append("")
     lines.append("=" * 78)
     lines.append("")
@@ -155,8 +199,8 @@ def render_probe_gap_report(
     lines.append(
         f"PATHWAY COVERAGE ({len(pathway_coverage)} economies) -- same table as the "
         "main report's Pathway Coverage section, kept here too since it's the "
-        "other half of \"where does a new probe actually help\": ASN count, "
-        "active probes on this project's own tracked ASNs (not the same count "
+        "other half of \"where does a new probe actually help\": ASN count, listed "
+        "vs. active probes on this project's own tracked ASNs (not the same count "
         "as above -- see note below), and how many of the other in-scope "
         "economies still have zero finding connecting to this one. Sorted by "
         "untested pathways, most first:"
@@ -164,18 +208,18 @@ def render_probe_gap_report(
     for p in pathway_coverage:
         lines.append(
             f"  {p.cc}  {p.name} ({p.subregion}) -- {p.asn_count} ASN(s), "
-            f"{p.active_probes} active probe(s) on a tracked ASN, "
-            f"{p.untested_pathways} untested pathway(s)"
+            f"{p.listed_probes} listed / {p.active_probes} active probe(s) on a "
+            f"tracked ASN, {p.untested_pathways} untested pathway(s)"
         )
     lines.append("")
     lines.append(
-        "  Note: this section's \"active probes\" counts only probes hosted on "
+        "  Note: this section's \"listed\"/\"active\" counts only probes hosted on "
         "one of this project's own tracked in-scope ASNs -- a different, "
         "stricter question than the ZERO/FRAGILE/ADEQUATE breakdown above, "
         "which counts any physically-connected probe in the country. A country "
-        "can show >=1 above and 0 here (e.g. a probe hosted on a Starlink ASN, "
-        "or on an ASN registered to a different country) -- that's expected, not "
-        "a data-quality problem."
+        "can show >=1 active above and 0 here (e.g. a probe hosted on a Starlink "
+        "ASN, or on an ASN registered to a different country) -- that's expected, "
+        "not a data-quality problem."
     )
     lines.append("")
     lines.append("=" * 78)
@@ -191,9 +235,10 @@ def write_probe_gap_report(
 
     Args:
         output_path: Where to write the plain-text report.
-        refresh: Re-check live Atlas probe counts (default). Pass False
-            only to render from whatever `data/atlas/probe_coverage.json`
-            already holds, e.g. for a quick offline re-render.
+        refresh: Re-check live Atlas probe counts and the full probe
+            listing (default). Pass False only to render from whatever
+            `data/atlas/probe_coverage.json`/`probe_listing.json` already
+            hold, e.g. for a quick offline re-render.
 
     Returns:
         The path the report was written to.
@@ -203,9 +248,16 @@ def write_probe_gap_report(
         if refresh
         else json.loads(Path("data/atlas/probe_coverage.json").read_text())
     )
+    listing = (
+        build_probe_listing()
+        if refresh
+        else json.loads(Path("data/atlas/probe_listing.json").read_text())
+    )
     asn_registry = json.loads(_ASN_REGISTRY_PATH.read_text())
-    pathway_coverage = _compute_pathway_coverage(asn_registry, load_asn_probe_registry())
-    text = render_probe_gap_report(coverage, asn_registry, pathway_coverage)
+    pathway_coverage = _compute_pathway_coverage(
+        asn_registry, load_asn_probe_registry(), asn_listed_registry(listing)
+    )
+    text = render_probe_gap_report(coverage, asn_registry, pathway_coverage, listing)
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(text + "\n")
     logger.info("Wrote probe-gap report to %s", output_path)

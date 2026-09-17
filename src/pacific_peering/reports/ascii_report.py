@@ -350,18 +350,25 @@ def render_ascii_report(data: ReportData) -> str:
 
     lines.append(_section("PATHWAY COVERAGE (per economy)"))
     lines.append(
-        "How many of this economy's own ASNs have a connected Atlas probe (zero means it "
-        "can never be a traceroute source, only ever reached as a target) and how many of "
-        "the other 19 in-scope economies still have zero finding connecting to it -- see "
-        "the PATHWAYS summary at the top for the region-wide totals this is derived from."
+        "How many Atlas probes this economy's own ASNs have ever had registered "
+        "(\"Listed\", any status) versus currently Connected (\"Active\" -- zero means it "
+        "can never be a traceroute source right now, only ever reached as a target); and "
+        "how many of the other 19 in-scope economies still have zero finding connecting "
+        "to it. A Listed count above Active is a gap worth closing either way -- a stale "
+        "Atlas registration to clean up, or a real host that could be brought back online "
+        "-- see the PATHWAYS summary at the top for the region-wide totals this is derived "
+        "from."
     )
-    header = f"{'CC':<4} {'Name':<32} {'Subregion':<12} {'ASNs':>5} {'Probes':>7} {'Untested':>9}"
+    header = (
+        f"{'CC':<4} {'Name':<32} {'Subregion':<12} {'ASNs':>5} "
+        f"{'Listed':>7} {'Active':>7} {'Untested':>9}"
+    )
     lines.append(header)
     lines.append(_rule())
     for p in data.pathway_coverage:
         lines.append(
             f"{p.cc:<4} {p.name:<32.32} {p.subregion:<12} "
-            f"{p.asn_count:>5} {p.active_probes:>7} {p.untested_pathways:>9}"
+            f"{p.asn_count:>5} {p.listed_probes:>7} {p.active_probes:>7} {p.untested_pathways:>9}"
         )
 
     lines.append(

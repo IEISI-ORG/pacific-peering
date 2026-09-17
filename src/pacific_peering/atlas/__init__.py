@@ -13,7 +13,15 @@ from .client import (
     parse_traceroute_results,
     wait_for_results,
 )
-from .probes import build_probe_coverage, count_connected_probes, pick_best_covered_economy
+from .probes import (
+    asn_listed_registry,
+    build_probe_coverage,
+    build_probe_listing,
+    count_connected_probes,
+    fetch_probes_for_economy,
+    load_probe_listing,
+    pick_best_covered_economy,
+)
 from .secrets import load_atlas_api_key
 from .targets import has_routing_loop, list_target_ips, pick_ixp_member_target, pick_target_ip
 
@@ -26,6 +34,10 @@ __all__ = [
     "parse_traceroute_results",
     "wait_for_results",
     "build_probe_coverage",
+    "build_probe_listing",
+    "load_probe_listing",
+    "fetch_probes_for_economy",
+    "asn_listed_registry",
     "count_connected_probes",
     "pick_best_covered_economy",
     "load_atlas_api_key",

@@ -41,9 +41,10 @@ echo "=== nightly corridor testing: $(date -u +%Y-%m-%dT%H:%M:%SZ) ==="
 "$UV" run pacific-peering-auto-classify-batch --hours 2 --max-concurrent 5
 
 # Probe-gap report, regenerated daily rather than only on the weekly
-# refresh -- per the project owner, cheap (20 unauthenticated Atlas calls,
-# no credits) and worth keeping current every night rather than letting it
-# drift stale between Sunday runs.
+# refresh -- per the project owner, cheap (40 unauthenticated Atlas calls,
+# no credits -- one pass for connected-only coverage, one for the full
+# any-status probe listing) and worth keeping current every night rather
+# than letting it drift stale between Sunday runs.
 "$UV" run pacific-peering-report-probe-gaps
 
 # Everything this step can change that's git-tracked: findings_export.jsonl,

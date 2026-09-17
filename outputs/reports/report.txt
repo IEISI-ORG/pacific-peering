@@ -1,6 +1,6 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-09-17T15:06:13.995719+00:00                  
+                 Generated: 2026-09-17T23:33:32.701031+00:00                  
 ==============================================================================
 
 SUMMARY
@@ -166,7 +166,7 @@ WS   Samoa                       10       3            1       2
 
 ASPA PROGRESS (RFC 9582 upstream-authorization adoption)
 ==============================================================================
-16 of 162 in-scope ASNs now publish an ASPA record (3104 total across the whole internet, per Cloudflare Radar). Adoption is still early -- absence means 'not published yet', not 'no real upstream'. Per-economy: how many of its own ASNs publish a record, and the distinct upstream ASNs those records declare, split by whether the declared provider is itself an in-scope Pacific ASN or an external carrier.
+16 of 162 in-scope ASNs now publish an ASPA record (3127 total across the whole internet, per Cloudflare Radar). Adoption is still early -- absence means 'not published yet', not 'no real upstream'. Per-economy: how many of its own ASNs publish a record, and the distinct upstream ASNs those records declare, split by whether the declared provider is itself an in-scope Pacific ASN or an external carrier.
 CC   Name                      ASNs  w/ ASPA  Upstr in-FB  Upstr ext
 ------------------------------------------------------------------------------
 CK   Cook Islands                 2        1            0          3
@@ -231,29 +231,29 @@ VIX.VU                       Port Vila        VU   True               3  VU
 
 PATHWAY COVERAGE (per economy)
 ==============================================================================
-How many of this economy's own ASNs have a connected Atlas probe (zero means it can never be a traceroute source, only ever reached as a target) and how many of the other 19 in-scope economies still have zero finding connecting to it -- see the PATHWAYS summary at the top for the region-wide totals this is derived from.
-CC   Name                             Subregion     ASNs  Probes  Untested
+How many Atlas probes this economy's own ASNs have ever had registered ("Listed", any status) versus currently Connected ("Active" -- zero means it can never be a traceroute source right now, only ever reached as a target); and how many of the other 19 in-scope economies still have zero finding connecting to it. A Listed count above Active is a gap worth closing either way -- a stale Atlas registration to clean up, or a real host that could be brought back online -- see the PATHWAYS summary at the top for the region-wide totals this is derived from.
+CC   Name                             Subregion     ASNs  Listed  Active  Untested
 ------------------------------------------------------------------------------
-KI   Kiribati                         Micronesia       5       0        17
-NR   Nauru                            Micronesia       5       0         8
-AS   American Samoa                   Polynesia        2       0         7
-MH   Marshall Islands                 Micronesia       2       0         7
-SB   Solomon Islands                  Melanesia       10       0         7
-TO   Tonga                            Polynesia        5       0         7
-WF   Wallis and Futuna                Polynesia        1       0         7
-WS   Samoa                            Polynesia       10       0         7
-TV   Tuvalu                           Polynesia        3       1         4
-MP   Northern Mariana Islands         Micronesia       2       3         3
-NU   Niue                             Polynesia        1       1         3
-PW   Palau                            Micronesia       3       1         3
-FJ   Fiji                             Melanesia       20       1         2
-CK   Cook Islands                     Polynesia        2       1         1
-GU   Guam                             Micronesia      10       6         1
-NC   New Caledonia                    Melanesia       19       5         1
-PF   French Polynesia                 Polynesia        6       6         1
-PG   Papua New Guinea                 Melanesia       38       1         1
-VU   Vanuatu                          Melanesia       12       2         1
-FM   Micronesia, Federated States of  Micronesia       6       3         0
+KI   Kiribati                         Micronesia       5       0       0        17
+NR   Nauru                            Micronesia       5       0       0         8
+AS   American Samoa                   Polynesia        2       2       0         7
+MH   Marshall Islands                 Micronesia       2       4       0         7
+SB   Solomon Islands                  Melanesia       10       0       0         7
+TO   Tonga                            Polynesia        5       2       0         7
+WF   Wallis and Futuna                Polynesia        1       0       0         7
+WS   Samoa                            Polynesia       10       3       0         7
+TV   Tuvalu                           Polynesia        3       1       1         4
+MP   Northern Mariana Islands         Micronesia       2       6       3         3
+NU   Niue                             Polynesia        1       0       1         3
+PW   Palau                            Micronesia       3       3       1         3
+FJ   Fiji                             Melanesia       20      19       1         2
+CK   Cook Islands                     Polynesia        2       6       1         1
+GU   Guam                             Micronesia      10      14       6         1
+NC   New Caledonia                    Melanesia       19      21       5         1
+PF   French Polynesia                 Polynesia        6       9       6         1
+PG   Papua New Guinea                 Melanesia       38      10       1         1
+VU   Vanuatu                          Melanesia       12       5       2         1
+FM   Micronesia, Federated States of  Micronesia       6       6       3         0
 
 APPENDIX: LOW DATA QUALITY ISSUES (2 known, resolved)
 ==============================================================================

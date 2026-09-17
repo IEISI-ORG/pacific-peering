@@ -278,7 +278,8 @@ def render_html_report(data: ReportData, viz_dir: Path | None = Path("../viz")) 
         f"""<tr>
             <td>{html.escape(p.cc)}</td><td>{html.escape(p.name)}</td>
             <td>{html.escape(p.subregion)}</td>
-            <td>{p.asn_count}</td><td>{p.active_probes}</td><td>{p.untested_pathways}</td>
+            <td>{p.asn_count}</td><td>{p.listed_probes}</td><td>{p.active_probes}</td>
+            <td>{p.untested_pathways}</td>
         </tr>"""
         for p in data.pathway_coverage
     )
@@ -561,14 +562,17 @@ def render_html_report(data: ReportData, viz_dir: Path | None = Path("../viz")) 
     </table>
 
     <h2>Pathway coverage</h2>
-    <p class="section-intro">How many of this economy's own ASNs have a connected Atlas
-        probe (zero means it can never be a traceroute source, only ever reached as a
-        target) and how many of the other 19 in-scope economies still have zero finding
-        connecting to it &mdash; see the pathway counts at the top of this report for the
-        region-wide totals this is derived from.</p>
+    <p class="section-intro">How many Atlas probes this economy's own ASNs have ever had
+        registered ("Listed", any status) versus currently Connected ("Active" &mdash; zero
+        means it can never be a traceroute source right now, only ever reached as a target),
+        and how many of the other 19 in-scope economies still have zero finding connecting
+        to it. A Listed count above Active is a gap worth closing either way &mdash; a stale
+        Atlas registration to clean up, or a real host that could be brought back online
+        &mdash; see the pathway counts at the top of this report for the region-wide totals
+        this is derived from.</p>
     <table>
         <thead><tr><th>CC</th><th>Name</th><th>Subregion</th><th>ASNs</th>
-            <th>Active probes</th><th>Untested pathways</th></tr></thead>
+            <th>Listed probes</th><th>Active probes</th><th>Untested pathways</th></tr></thead>
         <tbody>{pathway_coverage_rows}</tbody>
     </table>
 

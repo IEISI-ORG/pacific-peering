@@ -35,6 +35,7 @@ from pacific_peering.analysis.fishbowl import DEFAULT_SUMMARY_PATH
 from pacific_peering.analysis.ixp_lan_registry import DEFAULT_REGISTRY_PATH
 from pacific_peering.analysis.traceroute_topology import DEFAULT_TRIANGULATION_DIR
 from pacific_peering.atlas.asn_probes import load_asn_probe_registry
+from pacific_peering.atlas.probes import asn_listed_registry, load_probe_listing
 from pacific_peering.discovery import cloudflare_radar
 from pacific_peering.discovery.registry import DEFAULT_OUTPUT_PATH
 
@@ -610,22 +611,29 @@ class Ipv6EconomySummary:
 class PathwayCoverageSummary:
     """One economy's test-coverage picture.
 
-    `active_probes` is the total count of connected Atlas probes across
-    this economy's own ASNs (zero means this economy can never be a
-    traceroute *source* -- it can only ever be reached as a target from
-    elsewhere). `untested_pathways` is how many of the other 19 in-scope
-    economies have zero finding connecting to this one yet, in either
-    direction -- includes economy pairs blocked by missing probe
-    coverage on both sides, pairs already attempted but inconclusive,
-    and any pair currently sitting in the corridor backlog as a live
-    candidate; it does not distinguish between those, only "not yet
-    resolved with a real finding."
+    `listed_probes` is every Atlas probe ever registered on this
+    economy's own ASNs, any status -- `active_probes` is the subset of
+    those currently Connected (zero active means this economy can never
+    be a traceroute *source* right now -- it can only ever be reached as
+    a target from elsewhere). The gap between the two is deliberately
+    surfaced, not just the active count alone: a listed-but-inactive
+    probe is either a stale Atlas registration (a data-quality issue) or
+    a real host that could be brought back online -- either way,
+    something an Atlas host or the wider community can act on, which a
+    bare "0 active" can't distinguish on its own. `untested_pathways` is
+    how many of the other 19 in-scope economies have zero finding
+    connecting to this one yet, in either direction -- includes economy
+    pairs blocked by missing probe coverage on both sides, pairs already
+    attempted but inconclusive, and any pair currently sitting in the
+    corridor backlog as a live candidate; it does not distinguish
+    between those, only "not yet resolved with a real finding."
     """
 
     cc: str
     name: str
     subregion: str
     asn_count: int
+    listed_probes: int
     active_probes: int
     untested_pathways: int
 
@@ -785,13 +793,26 @@ def _zero_aspa_progress(registry: dict) -> _AspaProgress:
 
 
 def _compute_pathway_coverage(
-    registry: dict, probe_registry: dict[int, list[int]]
+    registry: dict,
+    probe_registry: dict[int, list[int]],
+    listed_registry: dict[int, list[int]] | None = None,
 ) -> tuple[PathwayCoverageSummary, ...]:
-    """Per-economy pathway test coverage: ASN count, connected-probe count,
-    and how many of the other 19 in-scope economies still have zero
+    """Per-economy pathway test coverage: ASN count, listed vs active probe
+    count, and how many of the other 19 in-scope economies still have zero
     finding connecting to this one -- the same analysis behind the
     "missing pathways" question this was built to answer, now kept live
-    in the report instead of re-derived by hand each time."""
+    in the report instead of re-derived by hand each time.
+
+    Args:
+        registry: Phase 0b ASN registry (cc -> {"asns": [...], ...}).
+        probe_registry: ASN -> currently-Connected probe IDs (see
+            `atlas.asn_probes.load_asn_probe_registry`).
+        listed_registry: ASN -> every registered probe ID, any status
+            (see `atlas.probes.asn_listed_registry`). Falls back to
+            `probe_registry` (so `listed_probes == active_probes`) when
+            not given -- e.g. before the listing has ever been fetched.
+    """
+    listed_registry = listed_registry if listed_registry is not None else probe_registry
     ccs = sorted(registry.keys())
     all_pairs = {tuple(sorted((a, b))) for a, b in combinations(ccs, 2)}
     tested = {p for p in _tested_economy_pairs_from_findings() if p in all_pairs}
@@ -801,6 +822,7 @@ def _compute_pathway_coverage(
         entry = registry[cc]
         asns = entry["asns"]
         active_probes = sum(len(probe_registry.get(asn, [])) for asn in asns)
+        listed_probes = sum(len(listed_registry.get(asn, [])) for asn in asns)
         untested = sum(
             1 for other in ccs if other != cc and tuple(sorted((cc, other))) not in tested
         )
@@ -810,6 +832,7 @@ def _compute_pathway_coverage(
                 name=entry["name"],
                 subregion=entry["subregion"],
                 asn_count=len(asns),
+                listed_probes=listed_probes,
                 active_probes=active_probes,
                 untested_pathways=untested,
             )
@@ -1059,7 +1082,11 @@ def build_report_data(
         probe_registry = load_asn_probe_registry()
     except FileNotFoundError:
         probe_registry = {}
-    pathway_coverage = _compute_pathway_coverage(registry, probe_registry)
+    try:
+        listed_registry = asn_listed_registry(load_probe_listing())
+    except FileNotFoundError:
+        listed_registry = probe_registry
+    pathway_coverage = _compute_pathway_coverage(registry, probe_registry, listed_registry)
     ipv6_economies = _compute_ipv6_coverage(registry, fishbowl)
     ipv6_asns_with_routes = sum(e.asns_with_ipv6 for e in ipv6_economies)
     ipv6_probes_total, ipv6_probes_working, ipv6_probes_capable_not_working = (
