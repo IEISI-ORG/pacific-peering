@@ -32,8 +32,10 @@ from pacific_peering.discovery.economies import ECONOMIES
 from pacific_peering.discovery.peeringdb import (
     fetch_ix_info,
     fetch_ixp_by_country,
+    fetch_ixp_members,
     fetch_ixp_prefixes,
 )
+from pacific_peering.discovery.registry import DEFAULT_OUTPUT_PATH as ASN_REGISTRY_PATH
 
 logger = logging.getLogger(__name__)
 
@@ -297,6 +299,67 @@ def add_or_confirm_ixp(
         len(entry.prefixes),
     )
     return entry
+
+
+def prune_orphaned_entries(
+    registry_path: Path = DEFAULT_REGISTRY_PATH,
+    asn_registry_path: Path = ASN_REGISTRY_PATH,
+) -> list[int]:
+    """Remove registry entries with zero current real Pacific ASN connection.
+
+    The opposite of `build_ixp_lan_registry`'s own governance rule
+    (existing entries are otherwise *never* dropped on a rebuild, since a
+    human's in/out-of-fishbowl classification is load-bearing and must
+    never silently vanish) -- this is a deliberate, explicit action, run
+    only when asked, never as part of a routine rebuild. An entry only
+    ever entered this registry via `_collect_known_ixps` (a tracked ASN
+    was a real member there) or `_collect_ixps_by_country` (PeeringDB
+    lists it directly under an in-scope economy's own country code). If
+    neither is true any more -- checked live against PeeringDB, not the
+    possibly-stale cached fishbowl.json -- the exchange has no remaining
+    connection to this project's actual Pacific scope at all.
+
+    Built for the concrete case that surfaced it: AS137064 (ISC F-root)
+    and AS24013 (DNS.SB) -- both excluded as DNS anycast infrastructure,
+    see `discovery.excluded_asns` -- were the *sole* in-scope-ASN
+    connections to ABQIX and seven German exchanges (DE-CIX Dusseldorf/
+    Frankfurt/Hamburg/Munich, LOCIX Dusseldorf/Frankfurt, MegaIX
+    Dusseldorf) respectively. Once those two ASNs were excluded, none of
+    those eight exchanges had any real Pacific member left, and none of
+    them (US/Germany) can be found via the country-code path either.
+
+    Returns:
+        The ix_ids actually removed.
+    """
+    existing = load_ixp_lan_registry(registry_path)
+    asn_registry = json.loads(asn_registry_path.read_text())
+    in_scope_asns = {asn for entry in asn_registry.values() for asn in entry["asns"]}
+    in_scope_ccs = set(asn_registry.keys())
+
+    removed: list[int] = []
+    for ix_id, entry in list(existing.items()):
+        if entry.country in in_scope_ccs:
+            continue  # still discoverable via the country path regardless of membership
+        members = fetch_ixp_members(ix_id)
+        if any(asn in in_scope_asns for asn in members):
+            continue  # a real in-scope ASN is still a genuine member
+        logger.warning(
+            "Pruning orphaned IXP entry: %s (%s, %s) ix_id=%d -- zero remaining in-scope "
+            "ASN members and not derivable from any in-scope economy's own country code",
+            entry.name,
+            entry.city,
+            entry.country,
+            ix_id,
+        )
+        del existing[ix_id]
+        removed.append(ix_id)
+
+    if removed:
+        _save_registry(existing, registry_path)
+        logger.info("Pruned %d orphaned IXP entries; %d remain", len(removed), len(existing))
+    else:
+        logger.info("No orphaned IXP entries found")
+    return removed
 
 
 def classify_ixp_fabric(ip: str, registry: dict[int, IxpLanEntry]) -> IxpLanEntry | None:

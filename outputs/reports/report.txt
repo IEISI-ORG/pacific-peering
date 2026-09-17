@@ -1,11 +1,11 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-09-17T00:29:47.524451+00:00                  
+                 Generated: 2026-09-17T00:47:40.532268+00:00                  
 ==============================================================================
 
 SUMMARY
 ==============================================================================
-HEADLINE: 68% of the real peering points this region's own networks use sit OUTSIDE the fish bowl (21 of 31)
+HEADLINE: 57% of the real peering points this region's own networks use sit OUTSIDE the fish bowl (13 of 23)
 
 PATHWAYS (every corridor with a filed finding, of any kind):
   Total pathways found:                    189
@@ -18,7 +18,7 @@ ASNs in scope:                  162
 ASNs with >=1 RIS neighbor:     124
 ASNs with >=1 IXP membership:   37
 ASNs with >=1 facility presence:22
-IXP LAN registry: 10 in-fishbowl, 21 out-of-fishbowl, 0 unconfirmed
+IXP LAN registry: 10 in-fishbowl, 13 out-of-fishbowl, 0 unconfirmed
 
 ECONOMIES
 ==============================================================================
@@ -182,14 +182,9 @@ IXPS (registered exchanges, this project's confirmed classification)
 ==============================================================================
 Name                         City             CC   In fishbowl  Members
 ------------------------------------------------------------------------------
-ABQIX                        Albuquerque      US   False              0
 Any2West                     Los Angeles and  US   False              4
 BBIX Tokyo                   Tokyo            JP   False              4
 CAN'L IX                     NOUMEA           NC   True               5
-DE-CIX Dusseldorf            Düsseldorf       DE   False              0
-DE-CIX Frankfurt             Frankfurt        DE   False              0
-DE-CIX Hamburg               Hamburg          DE   False              0
-DE-CIX Munich                Munich           DE   False              0
 DRF IX                       Honolulu         US   False              2
 EdgeIX - Auckland            Auckland         NZ   False              1
 Equinix Los Angeles          Los Angeles      US   False              1
@@ -203,10 +198,7 @@ Guam IX                      Tamuning         GU   True               5
 IX Australia Sydney (NSW-IX) Sydney           AU   False              1
 JPIX TOKYO                   Tokyo            JP   False              1
 JPNAP Tokyo                  Tokyo            JP   False              1
-LOCIX DUSSELDORF             Dusseldorf       DE   False              0
-LOCIX FRANKFURT              Frankfurt am Mai DE   False              0
 MARIIX                       Mangilao         GU   True               5
-MegaIX Dusseldorf            Dusseldorf       DE   False              0
 MegaIX Sydney                Sydney           AU   False              6
 PNG Neutral IX Hagen         Mt Hagen         PG   True               1
 PNG Neutral IX Lae           Lae              PG   True               2
