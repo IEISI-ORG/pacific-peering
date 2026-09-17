@@ -36,6 +36,13 @@ h1 {{ font-size: 1.5rem; margin-bottom: 0.2em; }}
 .meta {{ color: {_MUTED}; font-size: 0.85rem; margin-bottom: 1.5em; }}
 h2 {{ font-size: 1.1rem; border-bottom: 1px solid #e1e0d9; padding-bottom: 0.3em;
       margin-top: 2em; }}
+details.section-toggle {{ margin-top: 2em; }}
+details.section-toggle > summary {{ font-size: 1.1rem; font-weight: 600; cursor: pointer;
+      border-bottom: 1px solid #e1e0d9; padding-bottom: 0.3em; list-style: none; }}
+details.section-toggle > summary::-webkit-details-marker {{ display: none; }}
+details.section-toggle > summary::before {{ content: "▶ "; font-size: 0.8em; }}
+details.section-toggle[open] > summary::before {{ content: "▼ "; }}
+details.section-toggle > summary .count {{ font-weight: 400; color: {_MUTED}; }}
 .headline-banner {{ background: #fdecec; border: 1px solid {_CRITICAL}; border-radius: 8px;
               padding: 14px 18px; margin: 1em 0; font-size: 1.05rem; }}
 .headline-banner .value {{ font-weight: 700; color: {_CRITICAL}; }}
@@ -44,6 +51,8 @@ h2 {{ font-size: 1.1rem; border-bottom: 1px solid #e1e0d9; padding-bottom: 0.3em
               padding: 10px 16px; min-width: 140px; }}
 .stat-tile .value {{ font-size: 1.4rem; font-weight: 600; }}
 .stat-tile .label {{ font-size: 0.78rem; color: {_MUTED}; }}
+.stat-tile.red-box {{ background: #fdecec; border-color: {_CRITICAL}; }}
+.stat-tile.red-box .value {{ color: {_CRITICAL}; }}
 table {{ border-collapse: collapse; width: 100%; font-size: 0.85rem; }}
 th, td {{ text-align: left; padding: 5px 8px; border-bottom: 1px solid #e1e0d9; }}
 th {{ color: {_MUTED}; font-weight: 600; font-size: 0.78rem; text-transform: uppercase; }}
@@ -260,6 +269,16 @@ def render_html_report(data: ReportData, viz_dir: Path | None = Path("../viz")) 
         for ix in data.ixps
     )
 
+    peeringdb_economy_rows = "".join(
+        f"""<tr>
+            <td>{html.escape(e.cc)}</td><td>{html.escape(e.name)}</td>
+            <td>{e.asn_count}</td><td>{e.on_peeringdb}</td>
+            <td>{e.with_facility}</td><td>{e.with_ixp}</td>
+        </tr>"""
+        for e in data.peeringdb_economies
+        if e.on_peeringdb
+    ) or "<p>(no in-scope ASN is on PeeringDB)</p>"
+
     aspa_economy_rows = "".join(
         f"""<tr>
             <td>{html.escape(e.cc)}</td><td>{html.escape(e.name)}</td>
@@ -305,6 +324,18 @@ def render_html_report(data: ReportData, viz_dir: Path | None = Path("../viz")) 
         ({data.ixp_registry_out_of_fishbowl} of
         {data.ixp_registry_in_fishbowl + data.ixp_registry_out_of_fishbowl})
     </div>
+
+    <div class="stat-row">
+        {_stat_tile(data.pathways_total, "Pathways found (total)")}
+        {_stat_tile(data.pathways_internal, "Internal (never leave the fish bowl)")}
+        <div class="stat-tile red-box"><div class="value">{data.pathways_external}</div>
+            <div class="label">External / RED BOX (leaves the region)</div></div>
+    </div>
+    <p class="section-intro">Full corridor-by-corridor detail for all
+        {data.pathways_total} pathways above is further down this report
+        (Confirmed sub-optimal routes / Confirmed local transit / Candidate
+        peering), collapsed by default so it doesn't dominate the page &mdash;
+        click any of those section headings to expand.</p>
 
     <div class="stat-row">{stat_tiles}</div>
 
@@ -401,14 +432,45 @@ def render_html_report(data: ReportData, viz_dir: Path | None = Path("../viz")) 
         <ul>{satellite_narrative_items}</ul>
     </div>
 
-    <h2>Confirmed sub-optimal routes (RIS + Atlas both agree)</h2>
-    {detour_cards}
+    <details class="section-toggle">
+        <summary>Confirmed sub-optimal routes (RIS + Atlas both agree)
+            <span class="count">({len(data.confirmed_detours)})</span></summary>
+        {detour_cards}
+    </details>
 
-    <h2>Confirmed local transit (RIS + Atlas both agree, stays in-fishbowl)</h2>
-    {transit_cards}
+    <details class="section-toggle">
+        <summary>Confirmed local transit (RIS + Atlas both agree, stays in-fishbowl)
+            <span class="count">({len(data.confirmed_local_transit)})</span></summary>
+        {transit_cards}
+    </details>
 
-    <h2>Candidate peering (strong traceroute signal, RIS disagrees &mdash; unconfirmed)</h2>
-    {candidate_cards}
+    <details class="section-toggle">
+        <summary>Candidate peering (strong traceroute signal, RIS disagrees &mdash; unconfirmed)
+            <span class="count">({len(data.candidate_peering)})</span></summary>
+        {candidate_cards}
+    </details>
+
+    <h2>PeeringDB data quality</h2>
+    <p class="section-intro">
+        <strong>{data.peeringdb_asns_on_pdb} of {data.total_asns}</strong> in-scope ASNs have a
+        PeeringDB <code>net</code> record at all. "Zero facilities"/"zero IXP memberships"
+        elsewhere in this report can mean either of two very different things: this ASN was
+        never on PeeringDB to begin with, or it <em>is</em> registered and simply declared
+        nothing. The two columns below are counted against ASNs that are on PeeringDB, not
+        against every in-scope ASN, so they show the real gap rather than re-blending the two.
+    </p>
+    <table>
+        <thead><tr><th>CC</th><th>Name</th><th>ASNs</th><th>On PeeringDB</th>
+            <th>w/ Facility</th><th>w/ IXP</th></tr></thead>
+        <tbody>{peeringdb_economy_rows}</tbody>
+    </table>
+    <div class="callout"><strong>AS12684 (SES Astra)</strong> and
+        <strong>AS3549</strong> (the former Global Crossing backbone ASN) are both real,
+        traceroute-confirmed carriers this project has on record with zero PeeringDB
+        facilities &mdash; PeeringDB's own coverage gap, not a measurement gap here.</div>
+    <!-- TODO: PeeringDB net-record `updated` staleness (a registered-but-
+         abandoned org is weaker evidence than a maintained one) -- deferred,
+         not in this pass. -->
 
     <h2>ASPA progress (RFC 9582 upstream-authorization adoption)</h2>
     <p class="section-intro">

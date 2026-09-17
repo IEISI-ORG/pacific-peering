@@ -350,8 +350,17 @@ def fetch_irr_as_set_names(
     return as_sets
 
 
-def _fetch_net_ids(asns: list[int], timeout: float = _DEFAULT_TIMEOUT) -> dict[int, int]:
-    """Map ASN -> PeeringDB internal `net` id, chunked."""
+def fetch_net_ids(asns: list[int], timeout: float = _DEFAULT_TIMEOUT) -> dict[int, int]:
+    """Map ASN -> PeeringDB internal `net` id, chunked.
+
+    An ASN absent from the returned mapping has no PeeringDB `net` record
+    at all -- genuinely no PeeringDB presence, not just "zero facilities/
+    IXP memberships declared." Two different things this project's data
+    conflated until the PeeringDB data-quality report section: an ASN
+    with no `net` record can't have declared anything, while one that
+    *has* a `net` record but zero facilities is a real gap in what an
+    otherwise-real, registered network bothered to fill in.
+    """
     asn_to_net_id: dict[int, int] = {}
     for chunk in _chunked(asns):
         response = _get(
@@ -382,7 +391,7 @@ def fetch_facility_presence(asns: list[int]) -> dict[int, list[FacilityPresence]
         an empty list.
     """
     unique_asns = sorted(set(asns))
-    asn_to_net_id = _fetch_net_ids(unique_asns)
+    asn_to_net_id = fetch_net_ids(unique_asns)
     net_id_to_asn = {net_id: asn for asn, net_id in asn_to_net_id.items()}
 
     presence: dict[int, list[FacilityPresence]] = {asn: [] for asn in unique_asns}

@@ -581,6 +581,32 @@ class IxpSummary:
 
 
 @dataclass(frozen=True)
+class PeeringDbEconomySummary:
+    """One economy's PeeringDB data-quality picture.
+
+    `on_peeringdb` is how many of this economy's own in-scope ASNs have a
+    PeeringDB `net` record at all -- genuinely no presence, not just zero
+    declared content. `with_facility`/`with_ixp` are counted *of those*
+    (not of `asn_count`), because an ASN with no `net` record can't have
+    declared a facility or IXP membership either -- denominating against
+    every in-scope ASN would silently re-conflate "not on PeeringDB" with
+    "on PeeringDB, declared nothing," the exact gap this section exists
+    to make visible. Concrete real cases already on record elsewhere in
+    this project: AS12684 (SES Astra) and AS3549 (the former Global
+    Crossing backbone ASN) are both real, traceroute-confirmed carriers
+    with zero PeeringDB facilities -- PeeringDB's own coverage, not a
+    measurement gap.
+    """
+
+    cc: str
+    name: str
+    asn_count: int
+    on_peeringdb: int
+    with_facility: int
+    with_ixp: int
+
+
+@dataclass(frozen=True)
 class AspaEconomySummary:
     """One economy's ASPA (RFC 9582) adoption progress.
 
@@ -620,6 +646,8 @@ class ReportData:
     ixp_registry_tba: int
     economies: tuple[EconomySummary, ...]
     ixps: tuple[IxpSummary, ...]
+    peeringdb_economies: tuple[PeeringDbEconomySummary, ...]
+    peeringdb_asns_on_pdb: int
     aspa_economies: tuple[AspaEconomySummary, ...]
     aspa_asns_with_record: int
     aspa_global_total_records: int
@@ -635,6 +663,30 @@ class ReportData:
     def to_dict(self) -> dict:
         """Return a plain, JSON-serializable dict of this report data."""
         return asdict(self)
+
+    @property
+    def pathways_total(self) -> int:
+        """Every corridor this project has filed a finding for, of any kind."""
+        return (
+            len(self.confirmed_detours)
+            + len(self.confirmed_local_transit)
+            + len(self.candidate_peering)
+        )
+
+    @property
+    def pathways_internal(self) -> int:
+        """Corridors that never leave the fishbowl: confirmed local transit
+        (explicitly in-fishbowl by definition) plus candidate peering
+        (Validation Rule 4's shape is specifically hidden peering *between
+        two in-scope Pacific networks* -- it was never a detour-shaped
+        finding to begin with)."""
+        return len(self.confirmed_local_transit) + len(self.candidate_peering)
+
+    @property
+    def pathways_external(self) -> int:
+        """The "red box" number: confirmed detours, where the path actually
+        leaves the fishbowl to an external hub (Tokyo, Los Angeles, etc.)."""
+        return len(self.confirmed_detours)
 
     @property
     def ixp_registry_out_of_fishbowl_share(self) -> float:
@@ -673,6 +725,43 @@ def _zero_aspa_progress(registry: dict) -> _AspaProgress:
         asns_with_record=0,
         global_total_records=0,
     )
+
+
+def _compute_peeringdb_quality(
+    registry: dict, fishbowl: dict
+) -> tuple[PeeringDbEconomySummary, ...]:
+    """Per-economy PeeringDB data quality, reading `on_peeringdb` (cached
+    for 30 days -- see `analysis/fishbowl.py`) straight from the already-
+    loaded fishbowl dataset. No live PeeringDB call here at all -- this
+    project has already been rate-limited by PeeringDB once, and the
+    30-day cache exists precisely so report generation never needs to
+    touch the live API."""
+    summaries = []
+    for cc, entry in sorted(registry.items()):
+        asns = entry["asns"]
+        on_pdb = 0
+        with_facility = 0
+        with_ixp = 0
+        for asn in asns:
+            fb = fishbowl.get(str(asn), {})
+            if not fb.get("on_peeringdb"):
+                continue
+            on_pdb += 1
+            if fb.get("facility_presence"):
+                with_facility += 1
+            if fb.get("ixp_memberships"):
+                with_ixp += 1
+        summaries.append(
+            PeeringDbEconomySummary(
+                cc=cc,
+                name=entry["name"],
+                asn_count=len(asns),
+                on_peeringdb=on_pdb,
+                with_facility=with_facility,
+                with_ixp=with_ixp,
+            )
+        )
+    return tuple(summaries)
 
 
 def _compute_aspa_progress(registry: dict, fishbowl_asns: set[int]) -> _AspaProgress:
@@ -803,6 +892,8 @@ def build_report_data(
     satellite_narrative = tuple(
         describe_satellite_pathway(s, economy_names) for s in satellite_pathways
     )
+    peeringdb_economies = _compute_peeringdb_quality(registry, fishbowl)
+    peeringdb_asns_on_pdb = sum(e.on_peeringdb for e in peeringdb_economies)
     aspa_progress = _compute_aspa_progress(registry, set(asn_to_cc))
 
     return ReportData(
@@ -821,6 +912,8 @@ def build_report_data(
         ixp_registry_tba=sum(1 for v in ixp_registry.values() if v["in_fishbowl"] == "TBA"),
         economies=tuple(economies),
         ixps=ixps,
+        peeringdb_economies=peeringdb_economies,
+        peeringdb_asns_on_pdb=peeringdb_asns_on_pdb,
         aspa_economies=aspa_progress.economies,
         aspa_asns_with_record=aspa_progress.asns_with_record,
         aspa_global_total_records=aspa_progress.global_total_records,

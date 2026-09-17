@@ -47,6 +47,16 @@ def render_ascii_report(data: ReportData) -> str:
         f"{data.ixp_registry_in_fishbowl + data.ixp_registry_out_of_fishbowl})"
     )
     lines.append("")
+    lines.append("PATHWAYS (every corridor with a filed finding, of any kind):")
+    lines.append(f"  Total pathways found:                    {data.pathways_total}")
+    lines.append(f"  Internal (never leave the fish bowl):    {data.pathways_internal}")
+    lines.append(f"  External / RED BOX (leaves the region):  {data.pathways_external}")
+    lines.append(
+        "  (full corridor-by-corridor detail -- every confirmed detour, confirmed "
+        "local transit, and candidate peering entry -- is in the appendix at the "
+        "end of this report, not repeated here)"
+    )
+    lines.append("")
     lines.append(f"Economies in scope:            {data.total_economies}")
     lines.append(f"ASNs in scope:                  {data.total_asns}")
     lines.append(f"ASNs with >=1 RIS neighbor:     {data.asns_with_neighbors}")
@@ -231,52 +241,35 @@ def render_ascii_report(data: ReportData) -> str:
     for narrative in data.satellite_narrative:
         lines.append(f"- {narrative}")
 
-    lines.append(_section("CONFIRMED SUB-OPTIMAL ROUTES (RIS + Atlas both agree)"))
-    if not data.confirmed_detours:
-        lines.append("(none recorded yet)")
-    for detour in data.confirmed_detours:
-        lines.append(
-            f"{detour['source_cc']} -> {detour['target_cc']} (AS{detour['target_asn']}): "
-            f"detours via {detour['detour_ix_name']} ({detour['detour_hub']})"
-        )
-        lines.append(
-            f"    RIS observation count: {detour['ris_observation_count']}  "
-            f"[measurement {detour['measurement_id']}]"
-        )
-        lines.append(f"    {detour['note']}")
-
-    lines.append(_section("CONFIRMED LOCAL TRANSIT (RIS + Atlas both agree, stays in-fishbowl)"))
-    if not data.confirmed_local_transit:
-        lines.append("(none recorded yet)")
-    for transit in data.confirmed_local_transit:
-        lines.append(
-            f"AS{transit['provider_asn']} ({transit['provider_name']}, "
-            f"{transit['provider_cc']}) -> AS{transit['customer_asn']} "
-            f"({transit['customer_name']}, {transit['customer_cc']})"
-        )
-        lines.append(
-            f"    RIS observation count: {transit['ris_observation_count']}  "
-            f"[measurement {transit['measurement_id']}, vantage: {transit['vantage_point_cc']}]"
-        )
-        lines.append(f"    {transit['note']}")
-
+    lines.append(_section("PEERINGDB DATA QUALITY"))
     lines.append(
-        _section("CANDIDATE PEERING (strong traceroute signal, RIS disagrees -- unconfirmed)")
+        f"{data.peeringdb_asns_on_pdb} of {data.total_asns} in-scope ASNs have a PeeringDB "
+        "net record at all. 'Zero facilities'/'zero IXP memberships' elsewhere in this report "
+        "can mean either of two very different things: this ASN was never on PeeringDB to "
+        "begin with, or it IS registered and simply declared nothing. The two columns below "
+        "are counted against ASNs that ARE on PeeringDB, not against every in-scope ASN, so "
+        "they show the real gap, not a re-blend of the two. Known concrete cases: AS12684 "
+        "(SES Astra) and AS3549 (the former Global Crossing backbone ASN) are both real, "
+        "traceroute-confirmed carriers with zero PeeringDB facilities -- this is PeeringDB's "
+        "own coverage gap, not a measurement gap in this project's findings."
     )
-    if not data.candidate_peering:
-        lines.append("(none recorded yet)")
-    for candidate in data.candidate_peering:
+    lines.append(
+        f"{'CC':<4} {'Name':<24} {'ASNs':>5} {'On PDB':>7} "
+        f"{'w/ Facility':>12} {'w/ IXP':>7}"
+    )
+    lines.append(_rule())
+    for e in data.peeringdb_economies:
+        if e.on_peeringdb == 0:
+            continue
         lines.append(
-            f"AS{candidate['upstream_asn']} ({candidate['upstream_name']}, "
-            f"{candidate['upstream_cc']}) -> AS{candidate['target_asn']} "
-            f"({candidate['target_name']}, {candidate['target_cc']})"
+            f"{e.cc:<4} {e.name:<24.24} {e.asn_count:>5} {e.on_peeringdb:>7} "
+            f"{e.with_facility:>12} {e.with_ixp:>7}"
         )
-        lines.append(
-            f"    Traceroute agreement: {candidate['probe_agreement']}  "
-            f"[measurement {candidate['measurement_id']}, "
-            f"vantage: {candidate['vantage_point_cc']}]"
-        )
-        lines.append(f"    {candidate['note']}")
+    if not any(e.on_peeringdb for e in data.peeringdb_economies):
+        lines.append("(no in-scope ASN is on PeeringDB)")
+    # TODO: PeeringDB net-record `updated` staleness (a registered-but-
+    # abandoned org is weaker evidence than a maintained one) -- deferred,
+    # not in this pass.
 
     lines.append(_section("ASPA PROGRESS (RFC 9582 upstream-authorization adoption)"))
     lines.append(
@@ -329,6 +322,59 @@ def render_ascii_report(data: ReportData) -> str:
             f"{ix.name:<28.28} {ix.city:<16.16} {ix.country:<4} "
             f"{in_fishbowl_str:<12} {ix.member_count:>7}"
         )
+
+    lines.append(
+        _section(
+            f"APPENDIX: FULL CORRIDOR DETAIL ({data.pathways_total} pathways -- "
+            "see the PATHWAYS summary at the top of this report for the plain counts)"
+        )
+    )
+    lines.append(_section("Confirmed sub-optimal routes (RIS + Atlas both agree)"))
+    if not data.confirmed_detours:
+        lines.append("(none recorded yet)")
+    for detour in data.confirmed_detours:
+        lines.append(
+            f"{detour['source_cc']} -> {detour['target_cc']} (AS{detour['target_asn']}): "
+            f"detours via {detour['detour_ix_name']} ({detour['detour_hub']})"
+        )
+        lines.append(
+            f"    RIS observation count: {detour['ris_observation_count']}  "
+            f"[measurement {detour['measurement_id']}]"
+        )
+        lines.append(f"    {detour['note']}")
+
+    lines.append(_section("Confirmed local transit (RIS + Atlas both agree, stays in-fishbowl)"))
+    if not data.confirmed_local_transit:
+        lines.append("(none recorded yet)")
+    for transit in data.confirmed_local_transit:
+        lines.append(
+            f"AS{transit['provider_asn']} ({transit['provider_name']}, "
+            f"{transit['provider_cc']}) -> AS{transit['customer_asn']} "
+            f"({transit['customer_name']}, {transit['customer_cc']})"
+        )
+        lines.append(
+            f"    RIS observation count: {transit['ris_observation_count']}  "
+            f"[measurement {transit['measurement_id']}, vantage: {transit['vantage_point_cc']}]"
+        )
+        lines.append(f"    {transit['note']}")
+
+    lines.append(
+        _section("Candidate peering (strong traceroute signal, RIS disagrees -- unconfirmed)")
+    )
+    if not data.candidate_peering:
+        lines.append("(none recorded yet)")
+    for candidate in data.candidate_peering:
+        lines.append(
+            f"AS{candidate['upstream_asn']} ({candidate['upstream_name']}, "
+            f"{candidate['upstream_cc']}) -> AS{candidate['target_asn']} "
+            f"({candidate['target_name']}, {candidate['target_cc']})"
+        )
+        lines.append(
+            f"    Traceroute agreement: {candidate['probe_agreement']}  "
+            f"[measurement {candidate['measurement_id']}, "
+            f"vantage: {candidate['vantage_point_cc']}]"
+        )
+        lines.append(f"    {candidate['note']}")
 
     lines.append(_section("ABOUT THIS PROJECT"))
     lines.append(FISHBOWL_EXPLANATION)

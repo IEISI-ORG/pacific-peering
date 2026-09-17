@@ -50,6 +50,7 @@ def _summarize(step_name: str, result: Any) -> dict:
         return {
             "asns": len(result),
             "with_neighbors": sum(1 for v in result.values() if v["neighbors"]),
+            "on_peeringdb": sum(1 for v in result.values() if v["on_peeringdb"]),
             "with_ixp": sum(1 for v in result.values() if v["ixp_memberships"]),
             "with_facility": sum(1 for v in result.values() if v["facility_presence"]),
         }

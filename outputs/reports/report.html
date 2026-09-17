@@ -11,6 +11,13 @@ h1 { font-size: 1.5rem; margin-bottom: 0.2em; }
 .meta { color: #898781; font-size: 0.85rem; margin-bottom: 1.5em; }
 h2 { font-size: 1.1rem; border-bottom: 1px solid #e1e0d9; padding-bottom: 0.3em;
       margin-top: 2em; }
+details.section-toggle { margin-top: 2em; }
+details.section-toggle > summary { font-size: 1.1rem; font-weight: 600; cursor: pointer;
+      border-bottom: 1px solid #e1e0d9; padding-bottom: 0.3em; list-style: none; }
+details.section-toggle > summary::-webkit-details-marker { display: none; }
+details.section-toggle > summary::before { content: "▶ "; font-size: 0.8em; }
+details.section-toggle[open] > summary::before { content: "▼ "; }
+details.section-toggle > summary .count { font-weight: 400; color: #898781; }
 .headline-banner { background: #fdecec; border: 1px solid #d03b3b; border-radius: 8px;
               padding: 14px 18px; margin: 1em 0; font-size: 1.05rem; }
 .headline-banner .value { font-weight: 700; color: #d03b3b; }
@@ -19,6 +26,8 @@ h2 { font-size: 1.1rem; border-bottom: 1px solid #e1e0d9; padding-bottom: 0.3em;
               padding: 10px 16px; min-width: 140px; }
 .stat-tile .value { font-size: 1.4rem; font-weight: 600; }
 .stat-tile .label { font-size: 0.78rem; color: #898781; }
+.stat-tile.red-box { background: #fdecec; border-color: #d03b3b; }
+.stat-tile.red-box .value { color: #d03b3b; }
 table { border-collapse: collapse; width: 100%; font-size: 0.85rem; }
 th, td { text-align: left; padding: 5px 8px; border-bottom: 1px solid #e1e0d9; }
 th { color: #898781; font-weight: 600; font-size: 0.78rem; text-transform: uppercase; }
@@ -56,7 +65,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
 <body>
 <div class="wrap">
     <h1>Pacific Peering — Regional Routing Report</h1>
-    <div class="meta">Generated 2026-09-16T23:45:00.727618+00:00</div>
+    <div class="meta">Generated 2026-09-17T00:13:57.231658+00:00</div>
 
     <div class="headline-banner">
         <span class="value">68%</span>
@@ -65,6 +74,18 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
         (21 of
         31)
     </div>
+
+    <div class="stat-row">
+        <div class="stat-tile"><div class="value">189</div><div class="label">Pathways found (total)</div></div>
+        <div class="stat-tile"><div class="value">32</div><div class="label">Internal (never leave the fish bowl)</div></div>
+        <div class="stat-tile red-box"><div class="value">157</div>
+            <div class="label">External / RED BOX (leaves the region)</div></div>
+    </div>
+    <p class="section-intro">Full corridor-by-corridor detail for all
+        189 pathways above is further down this report
+        (Confirmed sub-optimal routes / Confirmed local transit / Candidate
+        peering), collapsed by default so it doesn't dominate the page &mdash;
+        click any of those section headings to expand.</p>
 
     <div class="stat-row"><div class="stat-tile"><div class="value">20</div><div class="label">Economies in scope</div></div><div class="stat-tile"><div class="value">163</div><div class="label">ASNs in scope</div></div><div class="stat-tile"><div class="value">124</div><div class="label">ASNs w/ RIS neighbor</div></div><div class="stat-tile"><div class="value">38</div><div class="label">ASNs w/ IXP membership</div></div><div class="stat-tile"><div class="value">22</div><div class="label">ASNs w/ facility presence</div></div><div class="stat-tile"><div class="value">10/21</div><div class="label">IXPs in/out of fishbowl</div></div></div>
 
@@ -297,8 +318,10 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
         <ul><li>AS14593 (SpaceX Starlink) is traceroute-confirmed reaching Kiribati (KI), Tuvalu (TV), tested from 4 distinct vantage points (Micronesia, Federated States of (FM), Guam (GU), Niue (NU), Tuvalu (TV)).</li><li>AS12684 (SES ASTRA S.A.) is traceroute-confirmed reaching Nauru (NR), tested from 4 distinct vantage points (Cook Islands (CK), Fiji (FJ), French Polynesia (PF), Tuvalu (TV)). Still untested: Cook Islands (CK), Kiribati (KI), Papua New Guinea (PG) -- a real RIS-observed relationship this project has never traceroute-confirmed.</li><li>AS135409 (Kacific Broadband Satellites) is traceroute-confirmed reaching Tonga (TO), tested from 4 distinct vantage points (Fiji (FJ), Micronesia, Federated States of (FM), New Caledonia (NC), Niue (NU)). Still untested: Papua New Guinea (PG) -- a real RIS-observed relationship this project has never traceroute-confirmed.</li></ul>
     </div>
 
-    <h2>Confirmed sub-optimal routes (RIS + Atlas both agree)</h2>
-    <div class="detour-card">
+    <details class="section-toggle">
+        <summary>Confirmed sub-optimal routes (RIS + Atlas both agree)
+            <span class="count">(157)</span></summary>
+        <div class="detour-card">
             <div class="headline">NC -&gt; FJ
                 (AS4638): detours via MegaIX Sydney
                 (Sydney)</div>
@@ -1402,9 +1425,12 @@ Twelfth confirmation of AS139609(SISCC)&lt;-&gt;AS45891. `AS55885 -&gt; AS9471 -
                 &middot; measurement 212158151</div>
             <details class="note"><summary>Fourteenth direct confirmation of AS154100&lt;-&gt;AS14593 (Starlink)…</summary>Fourteenth direct confirmation of AS154100&lt;-&gt;AS14593 (Starlink). `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS14593`, RIS agrees exactly (361). `has_routing_loop` False.</details>
         </div>
+    </details>
 
-    <h2>Confirmed local transit (RIS + Atlas both agree, stays in-fishbowl)</h2>
-    <div class="transit-card">
+    <details class="section-toggle">
+        <summary>Confirmed local transit (RIS + Atlas both agree, stays in-fishbowl)
+            <span class="count">(13)</span></summary>
+        <div class="transit-card">
             <div class="headline">AS38442 (Vodafone Fiji,
                 FJ) -&gt; AS9249
                 (Telecom Vanuatu, VU)</div>
@@ -1509,9 +1535,12 @@ Twelfth confirmation of AS139609(SISCC)&lt;-&gt;AS45891. `AS55885 -&gt; AS9471 -
                 &middot; vantage point GU</div>
             <details class="note"><summary>A domestic (intra-Guam) adjacency, surfaced while testing the actual question this measurement was built for: does University of Guam&#x27;s own traffic really use…</summary>A domestic (intra-Guam) adjacency, surfaced while testing the actual question this measurement was built for: does University of Guam&#x27;s own traffic really use GOREX locally (per the project owner&#x27;s ask), given its confirmed presence there? Targeted University of Guam&#x27;s own GOREX netixlan address (192.35.145.18) directly from a Guam-sourced probe. Of 3 probes: one resolved nothing at all; one (probe 7385) transited AS152735 then AS7131 (Northern Mariana Islands) before going dark, RIS disagreeing (not a finding); the third (probe 329) resolved cleanly to AS3605 (Guam Cablevision) as the last hop before the target -- RIS&#x27;s neighbor list for AS395400 lists AS3605 with an *exact* matching count (1,091), a real confirmed adjacency in its own right. But the actual question -- does this traffic cross GOREX&#x27;s own fabric -- comes back negative: none of the 3 probes showed a hop inside GOREX&#x27;s registered LAN prefix (192.35.145.0/24) before going dark. Read honestly, this doesn&#x27;t confirm GOREX goes unused (ICMP filtering right at the target, or at the exchange&#x27;s own switch fabric, could explain it just as well as the traffic genuinely bypassing GOREX) -- it&#x27;s inconclusive on the motivating question, while still yielding this separate, real, confirmed finding along the way. Reinforced a third time, from a genuinely distant vantage point: sourced directly from AS141682 (ARENA-PAC, the Pacific research/education network the project owner pointed at) toward this same target. Both probes fully contiguous end-to-end: AS141682 -&gt; AS2500 (WIDE Project, Japan) -&gt; AS2497 (IIJ, Japan) -&gt; AS3605 -&gt; AS395400, landing on this exact adjacency again with the same 1,091-observation match. Notable in its own right: ARENA-PAC and University of Guam are both *confirmed* GOREX members (see the candidate-peering module&#x27;s AS3605&lt;-&gt;AS17893 entry for how GOREX&#x27;s real membership was mapped), yet this traceroute between two of GOREX&#x27;s own members still doesn&#x27;t cross GOREX -- it goes via Japan and Guam Cablevision instead. The same pattern as the AS3605-&gt;Cogent/Tokyo confirmed detour: a real local exchange exists and has real, confirmed members, but real measured traffic between those members doesn&#x27;t necessarily use it.</details>
         </div>
+    </details>
 
-    <h2>Candidate peering (strong traceroute signal, RIS disagrees &mdash; unconfirmed)</h2>
-    <div class="candidate-card">
+    <details class="section-toggle">
+        <summary>Candidate peering (strong traceroute signal, RIS disagrees &mdash; unconfirmed)
+            <span class="count">(19)</span></summary>
+        <div class="candidate-card">
             <div class="headline">AS17893 (Palau National Communications Corp,
                 PW) -&gt; AS3605
                 (Guam Cablevision, LLC, GU)</div>
@@ -1706,6 +1735,93 @@ Sourced from AS17828 (PNG DataCo) toward AS140504 (Digicel Nauru) -- a fresh PG&
 
 NU(AS55885) -&gt; AS150403: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS139609 -&gt; AS150403`, same mismatch already found via FM -- real relationship is AS45891 (331 of 331 observations), not SISCC directly. Second candidate entry for this target. `has_routing_loop` False.</details>
         </div>
+    </details>
+
+    <h2>PeeringDB data quality</h2>
+    <p class="section-intro">
+        <strong>76 of 163</strong> in-scope ASNs have a
+        PeeringDB <code>net</code> record at all. "Zero facilities"/"zero IXP memberships"
+        elsewhere in this report can mean either of two very different things: this ASN was
+        never on PeeringDB to begin with, or it <em>is</em> registered and simply declared
+        nothing. The two columns below are counted against ASNs that are on PeeringDB, not
+        against every in-scope ASN, so they show the real gap rather than re-blending the two.
+    </p>
+    <table>
+        <thead><tr><th>CC</th><th>Name</th><th>ASNs</th><th>On PeeringDB</th>
+            <th>w/ Facility</th><th>w/ IXP</th></tr></thead>
+        <tbody><tr>
+            <td>AS</td><td>American Samoa</td>
+            <td>2</td><td>1</td>
+            <td>0</td><td>1</td>
+        </tr><tr>
+            <td>CK</td><td>Cook Islands</td>
+            <td>2</td><td>1</td>
+            <td>0</td><td>1</td>
+        </tr><tr>
+            <td>FJ</td><td>Fiji</td>
+            <td>20</td><td>15</td>
+            <td>1</td><td>3</td>
+        </tr><tr>
+            <td>FM</td><td>Micronesia, Federated States of</td>
+            <td>6</td><td>6</td>
+            <td>1</td><td>1</td>
+        </tr><tr>
+            <td>GU</td><td>Guam</td>
+            <td>10</td><td>6</td>
+            <td>5</td><td>5</td>
+        </tr><tr>
+            <td>MH</td><td>Marshall Islands</td>
+            <td>2</td><td>1</td>
+            <td>1</td><td>0</td>
+        </tr><tr>
+            <td>MP</td><td>Northern Mariana Islands</td>
+            <td>2</td><td>1</td>
+            <td>1</td><td>1</td>
+        </tr><tr>
+            <td>NC</td><td>New Caledonia</td>
+            <td>19</td><td>11</td>
+            <td>4</td><td>6</td>
+        </tr><tr>
+            <td>NR</td><td>Nauru</td>
+            <td>5</td><td>3</td>
+            <td>1</td><td>1</td>
+        </tr><tr>
+            <td>PF</td><td>French Polynesia</td>
+            <td>6</td><td>3</td>
+            <td>1</td><td>1</td>
+        </tr><tr>
+            <td>PG</td><td>Papua New Guinea</td>
+            <td>39</td><td>12</td>
+            <td>3</td><td>10</td>
+        </tr><tr>
+            <td>PW</td><td>Palau</td>
+            <td>3</td><td>1</td>
+            <td>1</td><td>1</td>
+        </tr><tr>
+            <td>SB</td><td>Solomon Islands</td>
+            <td>10</td><td>2</td>
+            <td>0</td><td>1</td>
+        </tr><tr>
+            <td>TO</td><td>Tonga</td>
+            <td>5</td><td>3</td>
+            <td>0</td><td>1</td>
+        </tr><tr>
+            <td>VU</td><td>Vanuatu</td>
+            <td>12</td><td>7</td>
+            <td>2</td><td>3</td>
+        </tr><tr>
+            <td>WS</td><td>Samoa</td>
+            <td>10</td><td>3</td>
+            <td>1</td><td>2</td>
+        </tr></tbody>
+    </table>
+    <div class="callout"><strong>AS12684 (SES Astra)</strong> and
+        <strong>AS3549</strong> (the former Global Crossing backbone ASN) are both real,
+        traceroute-confirmed carriers this project has on record with zero PeeringDB
+        facilities &mdash; PeeringDB's own coverage gap, not a measurement gap here.</div>
+    <!-- TODO: PeeringDB net-record `updated` staleness (a registered-but-
+         abandoned org is weaker evidence than a maintained one) -- deferred,
+         not in this pass. -->
 
     <h2>ASPA progress (RFC 9582 upstream-authorization adoption)</h2>
     <p class="section-intro">
