@@ -329,7 +329,7 @@ def render_html_report(data: ReportData, viz_dir: Path | None = Path("../viz")) 
         {_stat_tile(data.pathways_total, "Pathways found (total)")}
         {_stat_tile(data.pathways_internal, "Internal (never leave the fish bowl)")}
         <div class="stat-tile red-box"><div class="value">{data.pathways_external}</div>
-            <div class="label">External / RED BOX (leaves the region)</div></div>
+            <div class="label">External / Leaves the region</div></div>
     </div>
     <p class="section-intro">Full corridor-by-corridor detail for all
         {data.pathways_total} pathways above is further down this report
@@ -338,6 +338,13 @@ def render_html_report(data: ReportData, viz_dir: Path | None = Path("../viz")) 
         click any of those section headings to expand.</p>
 
     <div class="stat-row">{stat_tiles}</div>
+
+    <h2>Economies</h2>
+    <table>
+        <thead><tr><th>CC</th><th>Name</th><th>Subregion</th><th>ASNs</th>
+            <th>w/ Neighbor</th><th>w/ IXP</th><th>w/ Facility</th></tr></thead>
+        <tbody>{economy_rows}</tbody>
+    </table>
 
     <h2>Findings: transit supplier concentration</h2>
     <p class="section-intro">Ranked by <strong>dependent</strong> economies
@@ -494,13 +501,6 @@ def render_html_report(data: ReportData, viz_dir: Path | None = Path("../viz")) 
          store.mark_aspa_checked's aspa_confirmed field, already tracked). -->
 
     {viz_html}
-
-    <h2>Economies</h2>
-    <table>
-        <thead><tr><th>CC</th><th>Name</th><th>Subregion</th><th>ASNs</th>
-            <th>w/ Neighbor</th><th>w/ IXP</th><th>w/ Facility</th></tr></thead>
-        <tbody>{economy_rows}</tbody>
-    </table>
 
     <h2>IXPs</h2>
     <table>

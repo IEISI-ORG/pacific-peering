@@ -50,7 +50,7 @@ def render_ascii_report(data: ReportData) -> str:
     lines.append("PATHWAYS (every corridor with a filed finding, of any kind):")
     lines.append(f"  Total pathways found:                    {data.pathways_total}")
     lines.append(f"  Internal (never leave the fish bowl):    {data.pathways_internal}")
-    lines.append(f"  External / RED BOX (leaves the region):  {data.pathways_external}")
+    lines.append(f"  External / Leaves the region:            {data.pathways_external}")
     lines.append(
         "  (full corridor-by-corridor detail -- every confirmed detour, confirmed "
         "local transit, and candidate peering entry -- is in the appendix at the "
@@ -67,6 +67,17 @@ def render_ascii_report(data: ReportData) -> str:
         f"{data.ixp_registry_out_of_fishbowl} out-of-fishbowl, "
         f"{data.ixp_registry_tba} unconfirmed"
     )
+
+    lines.append(_section("ECONOMIES"))
+    header = f"{'CC':<4} {'Name':<32} {'Subregion':<12} {'ASNs':>5} {'Nbr':>5} {'IXP':>5} {'Fac':>5}"
+    lines.append(header)
+    lines.append(_rule())
+    for economy in data.economies:
+        lines.append(
+            f"{economy.cc:<4} {economy.name:<32} {economy.subregion:<12} "
+            f"{economy.asn_count:>5} {economy.asns_with_neighbors:>5} "
+            f"{economy.asns_with_ixp:>5} {economy.asns_with_facility:>5}"
+        )
 
     lines.append(
         _section(
@@ -300,17 +311,6 @@ def render_ascii_report(data: ReportData) -> str:
     # sections above so an ASPA-backed confirmation is visually
     # distinguishable from a RIS-agreement-only one (see
     # store.mark_aspa_checked's aspa_confirmed field, already tracked).
-
-    lines.append(_section("ECONOMIES"))
-    header = f"{'CC':<4} {'Name':<32} {'Subregion':<12} {'ASNs':>5} {'Nbr':>5} {'IXP':>5} {'Fac':>5}"
-    lines.append(header)
-    lines.append(_rule())
-    for economy in data.economies:
-        lines.append(
-            f"{economy.cc:<4} {economy.name:<32} {economy.subregion:<12} "
-            f"{economy.asn_count:>5} {economy.asns_with_neighbors:>5} "
-            f"{economy.asns_with_ixp:>5} {economy.asns_with_facility:>5}"
-        )
 
     lines.append(_section("IXPS (registered exchanges, this project's confirmed classification)"))
     header = f"{'Name':<28} {'City':<16} {'CC':<4} {'In fishbowl':<12} {'Members':>7}"

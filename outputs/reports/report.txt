@@ -1,6 +1,6 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-09-17T00:13:57.036524+00:00                  
+                 Generated: 2026-09-17T00:21:48.707776+00:00                  
 ==============================================================================
 
 SUMMARY
@@ -10,7 +10,7 @@ HEADLINE: 68% of the real peering points this region's own networks use sit OUTS
 PATHWAYS (every corridor with a filed finding, of any kind):
   Total pathways found:                    189
   Internal (never leave the fish bowl):    32
-  External / RED BOX (leaves the region):  157
+  External / Leaves the region:            157
   (full corridor-by-corridor detail -- every confirmed detour, confirmed local transit, and candidate peering entry -- is in the appendix at the end of this report, not repeated here)
 
 Economies in scope:            20
@@ -19,6 +19,31 @@ ASNs with >=1 RIS neighbor:     124
 ASNs with >=1 IXP membership:   38
 ASNs with >=1 facility presence:22
 IXP LAN registry: 10 in-fishbowl, 21 out-of-fishbowl, 0 unconfirmed
+
+ECONOMIES
+==============================================================================
+CC   Name                             Subregion     ASNs   Nbr   IXP   Fac
+------------------------------------------------------------------------------
+AS   American Samoa                   Polynesia        2     2     1     0
+CK   Cook Islands                     Polynesia        2     2     1     0
+FJ   Fiji                             Melanesia       20    14     3     1
+FM   Micronesia, Federated States of  Micronesia       6     5     1     1
+GU   Guam                             Micronesia      10     7     5     5
+KI   Kiribati                         Micronesia       5     3     0     0
+MH   Marshall Islands                 Micronesia       2     2     0     1
+MP   Northern Mariana Islands         Micronesia       2     1     1     1
+NC   New Caledonia                    Melanesia       19    15     6     4
+NR   Nauru                            Micronesia       5     4     1     1
+NU   Niue                             Polynesia        1     1     0     0
+PF   French Polynesia                 Polynesia        6     5     1     1
+PG   Papua New Guinea                 Melanesia       39    29    10     3
+PW   Palau                            Micronesia       3     3     1     1
+SB   Solomon Islands                  Melanesia       10     9     1     0
+TO   Tonga                            Polynesia        5     4     1     0
+TV   Tuvalu                           Polynesia        3     1     0     0
+VU   Vanuatu                          Melanesia       12    10     3     2
+WF   Wallis and Futuna                Polynesia        1     1     0     0
+WS   Samoa                            Polynesia       10     6     2     1
 
 FINDINGS: TRANSIT SUPPLIER CONCENTRATION (RIS + Atlas confirmed immediate upstream)
 ==============================================================================
@@ -152,31 +177,6 @@ PG   Papua New Guinea            39        2            1          1
 TO   Tonga                        5        3            3          4
 VU   Vanuatu                     12        1            1          0
 WS   Samoa                       10        1            0          1
-
-ECONOMIES
-==============================================================================
-CC   Name                             Subregion     ASNs   Nbr   IXP   Fac
-------------------------------------------------------------------------------
-AS   American Samoa                   Polynesia        2     2     1     0
-CK   Cook Islands                     Polynesia        2     2     1     0
-FJ   Fiji                             Melanesia       20    14     3     1
-FM   Micronesia, Federated States of  Micronesia       6     5     1     1
-GU   Guam                             Micronesia      10     7     5     5
-KI   Kiribati                         Micronesia       5     3     0     0
-MH   Marshall Islands                 Micronesia       2     2     0     1
-MP   Northern Mariana Islands         Micronesia       2     1     1     1
-NC   New Caledonia                    Melanesia       19    15     6     4
-NR   Nauru                            Micronesia       5     4     1     1
-NU   Niue                             Polynesia        1     1     0     0
-PF   French Polynesia                 Polynesia        6     5     1     1
-PG   Papua New Guinea                 Melanesia       39    29    10     3
-PW   Palau                            Micronesia       3     3     1     1
-SB   Solomon Islands                  Melanesia       10     9     1     0
-TO   Tonga                            Polynesia        5     4     1     0
-TV   Tuvalu                           Polynesia        3     1     0     0
-VU   Vanuatu                          Melanesia       12    10     3     2
-WF   Wallis and Futuna                Polynesia        1     1     0     0
-WS   Samoa                            Polynesia       10     6     2     1
 
 IXPS (registered exchanges, this project's confirmed classification)
 ==============================================================================
