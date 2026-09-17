@@ -2722,6 +2722,7 @@ Not yet validated: a genuine live concurrent batch run (backlog has been empty t
 - **`outputs/reports/probe_gaps.txt` drifts stale** -- from the same review. Not in `_regenerate_artifacts()`'s 5-command list or either cron script's tracked paths, so it silently falls out of sync with new findings.
 - **"Certified supply" marker** -- TODO left in both report renderers (2026-09-17): mark `confirmed_local_transit`/`candidate_peering` entries whose `aspa_confirmed` field is set so an ASPA-backed confirmation reads as visually distinct from a RIS-agreement-only one. Not built yet.
 - **PeeringDB data-quality report section -- RESOLVED (2026-09-17).** Built: `on_peeringdb` tracked per-ASN (cached 30 days), new report section per economy. See the dedicated entry below for detail. Net-record staleness (`updated` timestamp) remains a deferred follow-up.
+- **CSL (Samoa, AS38227/AS55579) is working on deploying a RIPE Atlas probe.** Project owner's own direct confirmation (2026-09-17), not derivable from any API -- Samoa (WS) is currently one of the confirmed genuinely-zero-probe economies (see the Pathway Coverage audit above). No action needed now; the weekly pipeline's own `asn_probe_registry` refresh will naturally pick it up once CSL's probe actually connects. Worth checking `outputs/reports/probe_pathways.txt`/the main report's Pathway Coverage table after that happens, to confirm WS moves off the zero-probe list.
 
 ---
 
@@ -2836,3 +2837,7 @@ Fixed `_pathway_label()` to key off the corroboration's own `vantage_point_cc`/`
 - **NR, AS, SB, WF, WS**: genuinely zero connected Atlas probes anywhere in the country, on any ASN. Nothing to reconcile.
 
 No hidden data-quality problem found. The Pathway Coverage table is measuring exactly what it's supposed to; the apparent discrepancy with `probe_gap_report.py` was two different, both-legitimate questions, not an inconsistency. Regenerated everything with the refreshed registry (corridor-backlog, both main reports, both probe reports, geographic viz) -- `data/atlas/asn_probe_registry.json` itself stays local/gitignored, refreshed in place, nothing new to commit there.
+
+---
+
+**CSL (Samoa) confirmed working on a RIPE Atlas probe deployment (2026-09-17).** Project owner's own direct word, not derivable from any API check -- CSL (Computer Services Limited, AS38227/AS55579 in this project's own WS registry) is actively working on deploying a probe. Samoa is currently one of the 5 genuinely-zero-probe economies confirmed by today's audit (alongside NR, AS, SB, WF). Nothing to build or change now -- this is a heads-up to watch for: once CSL's probe actually connects, the next `pacific-peering-pipeline` run (weekly, or a manual `asn_probes` refresh) will pick it up automatically, and WS should move off the zero-probe list in both `probe_gaps.txt` and the main report's Pathway Coverage table.
