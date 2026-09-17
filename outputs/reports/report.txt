@@ -1,6 +1,6 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-09-17T04:18:15.859541+00:00                  
+                 Generated: 2026-09-17T15:06:13.995719+00:00                  
 ==============================================================================
 
 SUMMARY
@@ -8,9 +8,9 @@ SUMMARY
 HEADLINE: 57% of the real peering points this region's own networks use sit OUTSIDE the fish bowl (13 of 23)
 
 PATHWAYS (every corridor with a filed finding, of any kind):
-  Total pathways found:                    189
-  Internal (never leave the fish bowl):    32
-  External / Leaves the region:            157
+  Total pathways found:                    191
+  Internal (never leave the fish bowl):    33
+  External / Leaves the region:            158
   (full corridor-by-corridor detail -- every confirmed detour, confirmed local transit, and candidate peering entry -- is in the appendix at the end of this report, not repeated here)
 
 Economies in scope:            20
@@ -103,8 +103,8 @@ The mirror image of the regional hubs above: the real external cities where conf
 
 City           Entries  Share Carriers Subregions reached            
 ------------------------------------------------------------------------------
-Sydney              92    59%       23 Melanesia, Micronesia, Polynesia
-    Dependent economies: AS, CK, FJ, KI, MH, NC, PG, PW, SB, TO, VU, WS
+Sydney              93    59%       24 Melanesia, Micronesia, Polynesia
+    Dependent economies: AS, CK, FJ, KI, MH, NC, NR, PG, PW, SB, TO, VU, WS
 Los Angeles         36    23%        7 Melanesia, Micronesia, Polynesia
     Dependent economies: FJ, FM, GU, MH, NR, PF, WF
 Tokyo               21    13%        8 Melanesia, Micronesia, Polynesia
@@ -180,7 +180,7 @@ WS   Samoa                       10        1            0          1
 
 IPV6 COVERAGE (adoption signal only -- no IPv6 testing yet)
 ==============================================================================
-47 of 162 in-scope ASNs have >=1 RIS-observed IPv6-originated prefix. 9 of 37 connected Atlas probes work over IPv6 (2 more are IPv6-capable but tagged as not working). Adoption tracking only -- this project deliberately isn't testing IPv6 corridors yet; queued until adoption has advanced further (see TODO below).
+47 of 162 in-scope ASNs have >=1 RIS-observed IPv6-originated prefix. 9 of 37 connected Atlas probes work over IPv6 (1 more are IPv6-capable but tagged as not working). Adoption tracking only -- this project deliberately isn't testing IPv6 corridors yet; queued until adoption has advanced further (see TODO below).
 CC   Name                      ASNs  w/ IPv6
 ------------------------------------------------------------------------------
 AS   American Samoa               2        1
@@ -235,7 +235,7 @@ How many of this economy's own ASNs have a connected Atlas probe (zero means it 
 CC   Name                             Subregion     ASNs  Probes  Untested
 ------------------------------------------------------------------------------
 KI   Kiribati                         Micronesia       5       0        17
-NR   Nauru                            Micronesia       5       0         9
+NR   Nauru                            Micronesia       5       0         8
 AS   American Samoa                   Polynesia        2       0         7
 MH   Marshall Islands                 Micronesia       2       0         7
 SB   Solomon Islands                  Melanesia       10       0         7
@@ -247,11 +247,11 @@ MP   Northern Mariana Islands         Micronesia       2       3         3
 NU   Niue                             Polynesia        1       1         3
 PW   Palau                            Micronesia       3       1         3
 FJ   Fiji                             Melanesia       20       1         2
-PG   Papua New Guinea                 Melanesia       38       1         2
 CK   Cook Islands                     Polynesia        2       1         1
 GU   Guam                             Micronesia      10       6         1
 NC   New Caledonia                    Melanesia       19       5         1
 PF   French Polynesia                 Polynesia        6       6         1
+PG   Papua New Guinea                 Melanesia       38       1         1
 VU   Vanuatu                          Melanesia       12       2         1
 FM   Micronesia, Federated States of  Micronesia       6       3         0
 
@@ -265,7 +265,7 @@ AS24013 (SB Professional Services) -- registered SB  [DNS anycast infrastructure
 AS137064 (ISC-AS-POM1) -- registered PG  [DNS anycast infrastructure, opportunistically registered]
     Surfaced by a direct sanity check on ABQIX (Albuquerque, US, ix_id 3322, already correctly out-of-fishbowl): asked which in-scope Pacific ASN is a real member there, expecting the answer to matter. Cross-checked two independent sources before excluding, same as AS24013: bgp.tools names it "ISC F-ROOT ABQ1"; PeeringDB's own `net` record gives `aka: F-ROOT`, `info_type: Network Services`; RIPEstat WHOIS gives the authoritative `as-name: ISC-AS-POM1` with `descr: For use by ISC/F-Root exclusively for announcements at POM1/PNGIXP` (POM1 = Port Moresby, PNG's own IXP). All three agree: this is ISC's F-root DNS anycast infrastructure, not a Papua New Guinea network with a real footprint in Albuquerque -- its PG registration reflects where ISC arranged BGP announcement for this specific instance (PNGIXP), not a genuine local operator. Checked for siblings before excluding just this one ASN: swept all 163 then-in-scope ASNs' bgp.tools names and PeeringDB net names/akas for anycast-DNS-operator keywords (root, isc, verisign, netnod, icann, pch, quad9, opendns, cloudflare, google, etc.) -- one other hit (AS139609/SISCC) was a false positive ("isc" substring-matching inside "SISCC"'s own `aka", a real, already-extensively-verified Solomon Islands submarine cable operator), no other genuine anycast instance found. No prior findings or tested-pairs history involved AS137064 -- a clean exclusion, nothing else to unwind.
 
-APPENDIX: FULL CORRIDOR DETAIL (189 pathways -- see the PATHWAYS summary at the top of this report for the plain counts)
+APPENDIX: FULL CORRIDOR DETAIL (191 pathways -- see the PATHWAYS summary at the top of this report for the plain counts)
 ==============================================================================
 
 Confirmed sub-optimal routes (RIS + Atlas both agree)
@@ -700,6 +700,9 @@ PF -> NR (AS140504): detours via AS12684 (SES ASTRA S.A.) -- satellite operator,
 TV -> NR (AS140504): detours via AS12684 (SES ASTRA S.A.) -- satellite operator, international transit (Los Angeles)
     RIS observation count: 1347  [measurement 212088551]
     Tuvalu (AS23917) -> AS140504 -- a fresh TV<->NR pair, a third independent confirmation of the AS140504<->AS12684 (SES Astra) relationship (after PF, CK). First address (103.20.124.1) dead-ended the same way as every prior first attempt: resolved only as far as AS36149 (Hawaiian Telcom), `ris_agrees: False`. Applied the standing retry policy against a different cached prefix (103.49.173.1, from `list_target_ips`). **The retry reached the target address directly** -- the first time this project has actually landed on AS140504's own address rather than dead-ending near it: `AS23917 -> AS9241 (FINTEL) -> AS6939 (Hurricane Electric) -> AS36149 (Hawaiian Telcom) -> [one-hop silent gap, the satellite leg] -> 103.49.173.1 (target)`. `analyze_measurement`'s automated check reads `ris_agrees: False` because it compares the last *resolved* ASN (AS36149, not a registered neighbor of AS140504) rather than the satellite hop sitting silently in the gap -- checked RIS directly instead: AS140504's real neighbor list is `{12684: 1347, 132528: 521}` (1,868 total observations, counts naturally shifted from the PF/CK entries' snapshot since RIS data is always current-state, not a fixed historical record) -- AS12684 remains dominant, an exact match for the gap this traceroute shows. Kept `detour_hub` as Los Angeles, matching the PF/CK entries' verified attribution.
+PG -> NR (AS141368): detours via IX Australia Sydney (NSW-IX) (Sydney)
+    RIS observation count: 382  [measurement 212645252]
+    measurement 212645252 (from PG); chain: AS17828 -> AS4826 -> AS140627 -> AS7131 -> AS55722; RIS count 382; RIS agrees.
 NU -> SB (AS142279): detours via AS6939 (Hurricane Electric), then AS139609 (SISCC) (Sydney)
     RIS observation count: 330  [measurement 212158139]
     **First-ever confirmation for this target** (the FM-sourced attempt at this same target dead-ended one hop short and was logged inconclusive; this one reaches far enough): AS139609(SISCC)<->AS142279 (Solitech Ltd), directly RIS-confirmed. `AS55885 -> AS9471 -> AS6939 -> AS139609 -> AS142279`, RIS agrees exactly (330). `has_routing_loop` False.
@@ -889,6 +892,9 @@ AS139609 (SISCC, SB) -> AS150403 (Solomon Islands National Provident Fund Board,
 ---
 
 NU(AS55885) -> AS150403: `AS55885 -> AS9471 -> AS6939 -> AS139609 -> AS150403`, same mismatch already found via FM -- real relationship is AS45891 (331 of 331 observations), not SISCC directly. Second candidate entry for this target. `has_routing_loop` False.
+AS38008 (Aperture Science Limited, ??) -> AS152706 (Neotel, NR)
+    Traceroute agreement: 1/1 probes  [measurement 212646052, vantage: PG]
+    measurement 212646052 (from PG); chain: AS17828 -> AS4826 -> AS3356 -> AS38008; RIS disagrees.
 
 ABOUT THIS PROJECT
 ==============================================================================
