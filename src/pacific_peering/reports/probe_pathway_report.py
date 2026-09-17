@@ -33,14 +33,29 @@ DEFAULT_PARSED_DIR = Path("data/atlas/parsed")
 DEFAULT_FINDINGS_PATH = Path("findings_export.jsonl")
 
 
-def _pathway_label(finding: dict) -> str:
-    # confirmed_detour findings are economy-keyed, not ASN-keyed -- source_asn
-    # is legitimately absent (never a bug), so the label just names the
-    # economy rather than a misleading "(?)" placeholder.
-    source = f" (AS{finding['source_asn']})" if finding.get("source_asn") else ""
+def _pathway_label(corrob: dict, finding: dict) -> str:
+    """Describe one corroboration's real pathway: where the traceroute
+    actually originated -> the finding's target.
+
+    Deliberately keyed off the *corroboration's own* `vantage_point_cc`/
+    `vantage_point_asn`, not the finding's `source_cc`/`source_asn` --
+    those two only coincide for `confirmed_detour` (verified directly:
+    198/198 corroborations match). For `confirmed_local_transit`/
+    `candidate_peering`, `source_*` names the upstream/provider being
+    tested, not where the probe fired from -- a single finding can carry
+    corroborations from several different real vantage points (e.g. one
+    SISCC<->Solomon-Islands finding corroborated once from FM and once
+    from NU). Using the finding-level fields here silently misattributes
+    every probe involved in a non-detour finding to the wrong "source"
+    economy -- caught by checking a probe whose pathway list looked
+    anomalously broad, not a real Atlas anomaly.
+    """
+    vantage_cc = corrob.get("vantage_point_cc") or "?"
+    vantage_asn = corrob.get("vantage_point_asn")
+    vantage = f" (AS{vantage_asn})" if vantage_asn else ""
     target_name = f", {finding['target_name']}" if finding.get("target_name") else ""
     return (
-        f"{finding['source_cc']}{source} -> "
+        f"{vantage_cc}{vantage} -> "
         f"{finding['target_cc']} (AS{finding['target_asn']}{target_name})"
     )
 
@@ -71,8 +86,8 @@ def build_probe_pathways(
         if not line.strip():
             continue
         finding = json.loads(line)
-        label = _pathway_label(finding)
         for corrob in finding.get("corroborations", []):
+            label = _pathway_label(corrob, finding)
             mid = corrob.get("measurement_id")
             if mid is None:
                 continue
