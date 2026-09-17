@@ -27,7 +27,7 @@ from pacific_peering.analysis.ixp import fetch_ixp_membership_for_registry
 from pacific_peering.analysis.peering import infer_neighbors
 from pacific_peering.discovery.peeringdb import fetch_facility_presence, fetch_net_ids
 from pacific_peering.discovery.registry import DEFAULT_OUTPUT_PATH
-from pacific_peering.ris.bulk import fetch_aspaths_for_registry
+from pacific_peering.ris.bulk import fetch_aspaths_for_registry, fetch_ipv6_prefix_counts_for_registry
 
 logger = logging.getLogger(__name__)
 
@@ -109,6 +109,7 @@ def build_fishbowl(
 
     aspaths_by_asn = fetch_aspaths_for_registry(registry_path=registry_path)
     neighbors_by_asn = infer_neighbors(aspaths_by_asn)
+    ipv6_prefix_counts = fetch_ipv6_prefix_counts_for_registry(registry_path=registry_path)
     peeringdb_data = _fetch_peeringdb_data(
         list(asn_to_economy), registry_path, peeringdb_cache_path, refresh_peeringdb
     )
@@ -124,6 +125,7 @@ def build_fishbowl(
             "economy": economy,
             "num_path_observations": len(records),
             "num_distinct_prefixes": len({record.target_prefix for record in records}),
+            "num_ipv6_prefixes": ipv6_prefix_counts.get(asn, 0),
             "neighbors": dict(sorted(neighbors.items(), key=lambda kv: -kv[1])),
             # Whether this ASN has a PeeringDB `net` record at all --
             # distinct from (and a prerequisite for) having any real

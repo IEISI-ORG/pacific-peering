@@ -312,6 +312,15 @@ def render_html_report(data: ReportData, viz_dir: Path | None = Path("../viz")) 
         if e.asns_with_aspa
     ) or "<p>(no in-scope ASN publishes an ASPA record yet)</p>"
 
+    ipv6_economy_rows = "".join(
+        f"""<tr>
+            <td>{html.escape(e.cc)}</td><td>{html.escape(e.name)}</td>
+            <td>{e.asn_count}</td><td>{e.asns_with_ipv6}</td>
+        </tr>"""
+        for e in data.ipv6_economies
+        if e.asns_with_ipv6
+    ) or "<p>(no in-scope ASN has an RIS-observed IPv6 prefix yet)</p>"
+
     viz_html = ""
     if viz_dir is not None:
         viz_html = f"""
@@ -521,6 +530,25 @@ def render_html_report(data: ReportData, viz_dir: Path | None = Path("../viz")) 
          sections above so an ASPA-backed confirmation is visually
          distinguishable from a RIS-agreement-only one (see
          store.mark_aspa_checked's aspa_confirmed field, already tracked). -->
+
+    <h2>IPv6 coverage</h2>
+    <p class="section-intro">
+        Adoption signal only &mdash; this project deliberately isn't testing IPv6 corridors
+        yet, queued until adoption has advanced further.
+        <strong>{data.ipv6_asns_with_routes} of {data.total_asns}</strong> in-scope ASNs
+        have at least one RIS-observed IPv6-originated prefix.
+        <strong>{data.ipv6_probes_working} of {data.ipv6_probes_total}</strong> connected
+        Atlas probes work over IPv6 ({data.ipv6_probes_capable_not_working} more are
+        IPv6-capable but tagged as not working).
+    </p>
+    <table>
+        <thead><tr><th>CC</th><th>Name</th><th>ASNs</th><th>w/ IPv6</th></tr></thead>
+        <tbody>{ipv6_economy_rows}</tbody>
+    </table>
+    <!-- TODO: IPv6 corridor testing (traceroute/RIS validation over v6) --
+         deliberately deferred per the project owner until adoption advances
+         further. Revisit once the ASN/probe counts above look meaningfully
+         higher. -->
 
     {viz_html}
 

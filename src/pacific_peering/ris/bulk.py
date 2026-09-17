@@ -15,11 +15,16 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 
 from pacific_peering.discovery.registry import DEFAULT_OUTPUT_PATH
-from pacific_peering.ris.ripestat import BgpStateRecord, fetch_aspaths_for_asn
+from pacific_peering.ris.ripestat import (
+    BgpStateRecord,
+    fetch_aspaths_for_asn,
+    fetch_originated_prefixes,
+)
 
 logger = logging.getLogger(__name__)
 
 DEFAULT_CACHE_DIR = Path("data/ris/raw")
+DEFAULT_CACHE_DIR_V6 = Path("data/ris/raw_v6_prefix_counts")
 DEFAULT_MAX_PREFIXES_PER_ASN = 5
 DEFAULT_MAX_WORKERS = 8
 
@@ -106,5 +111,68 @@ def fetch_aspaths_for_registry(
             asn, records = future.result()
             results[asn] = records
             _write_cache(cache_dir, asn, records)
+
+    return results
+
+
+def _cache_path_v6(cache_dir: Path, asn: int) -> Path:
+    return cache_dir / f"{asn}.json"
+
+
+def fetch_ipv6_prefix_counts_for_registry(
+    registry_path: Path = DEFAULT_OUTPUT_PATH,
+    cache_dir: Path = DEFAULT_CACHE_DIR_V6,
+    max_workers: int = DEFAULT_MAX_WORKERS,
+    use_cache: bool = True,
+) -> dict[int, int]:
+    """How many IPv6 prefixes every in-scope ASN originates, per RIS.
+
+    Deliberately lighter than `fetch_aspaths_for_registry`: this project
+    isn't testing IPv6 corridors yet (adoption is still too early --
+    per the project owner, revisit once it's advanced more), so there's
+    no need for full per-prefix BGP-state/neighbor data here, just an
+    adoption signal -- one `fetch_originated_prefixes(af="v6")` call per
+    ASN, cached the same way and on the same cadence as the existing
+    IPv4 AS-path cache.
+
+    Returns:
+        Mapping of ASN to its count of RIS-observed IPv6-originated
+        prefixes. An ASN with zero simply hasn't been seen originating
+        any IPv6 space -- absence of evidence, same posture this
+        project takes elsewhere, not a claim it never will.
+    """
+    asns = _load_all_registry_asns(registry_path)
+    results: dict[int, int] = {}
+    to_fetch: list[int] = []
+
+    for asn in asns:
+        cache_path = _cache_path_v6(cache_dir, asn)
+        if use_cache and cache_path.exists():
+            results[asn] = json.loads(cache_path.read_text())["count"]
+        else:
+            to_fetch.append(asn)
+
+    logger.info(
+        "IPv6 prefix-count fetch: %d ASNs total, %d from cache, %d to fetch live",
+        len(asns),
+        len(asns) - len(to_fetch),
+        len(to_fetch),
+    )
+
+    def _fetch_one(asn: int) -> tuple[int, int]:
+        try:
+            prefixes = fetch_originated_prefixes(asn, af="v6")
+        except Exception:
+            logger.exception("Failed to fetch IPv6 prefixes for AS%d", asn)
+            prefixes = []
+        return asn, len(prefixes)
+
+    with ThreadPoolExecutor(max_workers=max_workers) as pool:
+        futures = [pool.submit(_fetch_one, asn) for asn in to_fetch]
+        for future in as_completed(futures):
+            asn, count = future.result()
+            results[asn] = count
+            cache_dir.mkdir(parents=True, exist_ok=True)
+            _cache_path_v6(cache_dir, asn).write_text(json.dumps({"count": count}) + "\n")
 
     return results

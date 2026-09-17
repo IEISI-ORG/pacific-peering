@@ -26,6 +26,8 @@ from datetime import datetime, timezone
 from itertools import combinations
 from pathlib import Path
 
+import requests
+
 from pacific_peering.analysis import store as _store
 from pacific_peering.analysis.corridor_backlog import _tested_economy_pairs_from_findings
 from pacific_peering.analysis.data_quality_issues import DATA_QUALITY_ISSUES, DataQualityIssue
@@ -585,6 +587,25 @@ class IxpSummary:
 
 
 @dataclass(frozen=True)
+class Ipv6EconomySummary:
+    """One economy's IPv6 route-origination adoption.
+
+    `asns_with_ipv6` is how many of this economy's own in-scope ASNs
+    have RIS-observed IPv6-originated space at all (any count > 0) --
+    an adoption signal only, not a claim this project tests over IPv6
+    (it deliberately doesn't yet -- see `ReportData.ipv6_probes_working`
+    and the project owner's own call to leave IPv6 *testing* queued
+    until adoption has advanced further).
+    """
+
+    cc: str
+    name: str
+    subregion: str
+    asn_count: int
+    asns_with_ipv6: int
+
+
+@dataclass(frozen=True)
 class PathwayCoverageSummary:
     """One economy's test-coverage picture.
 
@@ -681,6 +702,11 @@ class ReportData:
     aspa_economies: tuple[AspaEconomySummary, ...]
     aspa_asns_with_record: int
     aspa_global_total_records: int
+    ipv6_economies: tuple[Ipv6EconomySummary, ...]
+    ipv6_asns_with_routes: int
+    ipv6_probes_total: int
+    ipv6_probes_working: int
+    ipv6_probes_capable_not_working: int
     transit_suppliers: tuple[dict, ...]
     regional_hubs: tuple[dict, ...]
     external_hubs: tuple[dict, ...]
@@ -789,6 +815,69 @@ def _compute_pathway_coverage(
         )
     summaries.sort(key=lambda p: p.untested_pathways, reverse=True)
     return tuple(summaries)
+
+
+def _compute_ipv6_coverage(registry: dict, fishbowl: dict) -> tuple[Ipv6EconomySummary, ...]:
+    """Per-economy IPv6 route-origination adoption, reading `num_ipv6_prefixes`
+    (RIS-cached, same cadence as the rest of `fishbowl.json`) -- no live
+    call here at all."""
+    summaries = []
+    for cc, entry in sorted(registry.items()):
+        asns = entry["asns"]
+        with_ipv6 = sum(
+            1 for asn in asns if fishbowl.get(str(asn), {}).get("num_ipv6_prefixes", 0) > 0
+        )
+        summaries.append(
+            Ipv6EconomySummary(
+                cc=cc,
+                name=entry["name"],
+                subregion=entry["subregion"],
+                asn_count=len(asns),
+                asns_with_ipv6=with_ipv6,
+            )
+        )
+    return tuple(summaries)
+
+
+def _compute_ipv6_probe_coverage(probe_registry: dict) -> tuple[int, int, int]:
+    """Live count of connected probes with working IPv6, out of the total
+    tracked. One cheap, batched Atlas API call (all tracked probe IDs in
+    a single `id__in` request) -- same "cheap, live, no cache needed"
+    posture `probe_gap_report.py` already takes for its own Atlas calls.
+    Degrades to (total, 0, 0) on any failure rather than blocking the
+    whole report.
+
+    Returns:
+        (total_probes, working_ipv6, capable_but_not_working).
+    """
+    probe_ids = sorted({pid for ids in probe_registry.values() for pid in ids})
+    if not probe_ids:
+        return 0, 0, 0
+    try:
+        response = requests.get(
+            "https://atlas.ripe.net/api/v2/probes/",
+            params={"id__in": ",".join(map(str, probe_ids))},
+            timeout=30,
+        )
+        response.raise_for_status()
+        results = response.json().get("results", [])
+    except Exception:
+        logger.warning(
+            "IPv6 probe coverage check failed (network error or API failure) -- "
+            "reporting zero rather than failing the whole report",
+            exc_info=True,
+        )
+        return len(probe_ids), 0, 0
+
+    working = 0
+    capable_not_working = 0
+    for probe in results:
+        tags = {t["slug"] for t in probe.get("tags", [])}
+        if "system-ipv6-works" in tags:
+            working += 1
+        elif "system-ipv6-doesnt-work" in tags:
+            capable_not_working += 1
+    return len(probe_ids), working, capable_not_working
 
 
 def _compute_peeringdb_quality(
@@ -964,6 +1053,11 @@ def build_report_data(
     except FileNotFoundError:
         probe_registry = {}
     pathway_coverage = _compute_pathway_coverage(registry, probe_registry)
+    ipv6_economies = _compute_ipv6_coverage(registry, fishbowl)
+    ipv6_asns_with_routes = sum(e.asns_with_ipv6 for e in ipv6_economies)
+    ipv6_probes_total, ipv6_probes_working, ipv6_probes_capable_not_working = (
+        _compute_ipv6_probe_coverage(probe_registry)
+    )
 
     return ReportData(
         generated_at=datetime.now(timezone.utc).isoformat(),
@@ -988,6 +1082,11 @@ def build_report_data(
         aspa_economies=aspa_progress.economies,
         aspa_asns_with_record=aspa_progress.asns_with_record,
         aspa_global_total_records=aspa_progress.global_total_records,
+        ipv6_economies=ipv6_economies,
+        ipv6_asns_with_routes=ipv6_asns_with_routes,
+        ipv6_probes_total=ipv6_probes_total,
+        ipv6_probes_working=ipv6_probes_working,
+        ipv6_probes_capable_not_working=ipv6_probes_capable_not_working,
         transit_suppliers=transit_suppliers,
         regional_hubs=regional_hubs,
         external_hubs=external_hubs,

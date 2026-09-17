@@ -312,6 +312,29 @@ def render_ascii_report(data: ReportData) -> str:
     # distinguishable from a RIS-agreement-only one (see
     # store.mark_aspa_checked's aspa_confirmed field, already tracked).
 
+    lines.append(_section("IPV6 COVERAGE (adoption signal only -- no IPv6 testing yet)"))
+    lines.append(
+        f"{data.ipv6_asns_with_routes} of {data.total_asns} in-scope ASNs have >=1 "
+        "RIS-observed IPv6-originated prefix. "
+        f"{data.ipv6_probes_working} of {data.ipv6_probes_total} connected Atlas probes "
+        f"work over IPv6 ({data.ipv6_probes_capable_not_working} more are IPv6-capable but "
+        "tagged as not working). Adoption tracking only -- this project deliberately isn't "
+        "testing IPv6 corridors yet; queued until adoption has advanced further (see TODO "
+        "below)."
+    )
+    lines.append(f"{'CC':<4} {'Name':<24} {'ASNs':>5} {'w/ IPv6':>8}")
+    lines.append(_rule())
+    for e in data.ipv6_economies:
+        if e.asns_with_ipv6 == 0:
+            continue
+        lines.append(f"{e.cc:<4} {e.name:<24.24} {e.asn_count:>5} {e.asns_with_ipv6:>8}")
+    if not any(e.asns_with_ipv6 for e in data.ipv6_economies):
+        lines.append("(no in-scope ASN has an RIS-observed IPv6 prefix yet)")
+    # TODO: IPv6 corridor testing (traceroute/RIS validation over v6) --
+    # deliberately deferred per the project owner until adoption advances
+    # further. Revisit this once the ASN/probe counts above look
+    # meaningfully higher.
+
     lines.append(_section("IXPS (registered exchanges, this project's confirmed classification)"))
     header = f"{'Name':<28} {'City':<16} {'CC':<4} {'In fishbowl':<12} {'Members':>7}"
     lines.append(header)
