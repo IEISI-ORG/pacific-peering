@@ -46,17 +46,13 @@ DEFAULT_OUTPUT_PATH = Path("outputs/reports/probe_gaps.txt")
 # never speculatively.
 KNOWN_ISSUES: dict[str, str] = {
     "FJ": (
-        "Fiji's only connected probe (id 60575, operated by the Pacific "
-        "Community/SPC in Suva) sits behind AS53813 (Zscaler corporate VPN) "
-        "-- a traceroute sourced from it shows Zscaler's own routing, not "
-        "real Fiji ISP behavior. Confirmed unusable for path analysis as-is. "
-        "UPDATE (2026-09-17): SPC (Usaia Tawakevou, via the pacnog mailing "
-        "list) confirmed they're actively working on taking this specific "
-        "probe out of the Zscaler tunnel -- not a request for a new probe, "
-        "an existing one about to become usable. They also confirmed real "
-        "Fiji peering with both Digicel and TFL once it's off Zscaler. No "
-        "action needed here; the next `asn_probes`/`probe_coverage` refresh "
-        "will pick up the ASN change once it happens."
+        "Fiji's only connected probe (id 60575, hosted on AS53813 -- "
+        "Zscaler corporate VPN) sits behind Zscaler's own routing, not "
+        "real Fiji ISP behavior. Confirmed unusable for path analysis "
+        "as-is; not a request for a new probe -- this one becomes usable "
+        "automatically, with no code/data action needed, if its hosting "
+        "ASN ever changes off Zscaler (the next `asn_probes`/"
+        "`probe_coverage` refresh would pick that up on its own)."
     ),
 }
 

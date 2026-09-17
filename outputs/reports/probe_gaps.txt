@@ -18,7 +18,7 @@ FRAGILE -- exactly 1 connected probe (9/20) -- a single point of failure, and th
   CK  Cook Islands [used in a confirmed/candidate finding]
       ASNs: 10131, 152093
   FJ  Fiji [used in a confirmed/candidate finding]
-      KNOWN ISSUE: Fiji's only connected probe (id 60575, operated by the Pacific Community/SPC in Suva) sits behind AS53813 (Zscaler corporate VPN) -- a traceroute sourced from it shows Zscaler's own routing, not real Fiji ISP behavior. Confirmed unusable for path analysis as-is. UPDATE (2026-09-17): SPC (Usaia Tawakevou, via the pacnog mailing list) confirmed they're actively working on taking this specific probe out of the Zscaler tunnel -- not a request for a new probe, an existing one about to become usable. They also confirmed real Fiji peering with both Digicel and TFL once it's off Zscaler. No action needed here; the next `asn_probes`/`probe_coverage` refresh will pick up the ASN change once it happens.
+      KNOWN ISSUE: Fiji's only connected probe (id 60575, hosted on AS53813 -- Zscaler corporate VPN) sits behind Zscaler's own routing, not real Fiji ISP behavior. Confirmed unusable for path analysis as-is; not a request for a new probe -- this one becomes usable automatically, with no code/data action needed, if its hosting ASN ever changes off Zscaler (the next `asn_probes`/`probe_coverage` refresh would pick that up on its own).
       ASNs: 4638, 9241, 24390, 37976, 38442, 45349, 45355, 132248, 133625, 134208, 135647, 136415, 136921, 137890, 140046, 141470, 142245, 149429, 153509, 154229
   MH  Marshall Islands [used in a confirmed/candidate finding]
       ASNs: 24439, 154410
