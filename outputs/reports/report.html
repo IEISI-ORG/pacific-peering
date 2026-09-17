@@ -46,6 +46,10 @@ tr:hover { background: #f5f4f0; }
                 margin-bottom: 10px; border-radius: 4px; }
 .candidate-card .headline { font-weight: 600; }
 .candidate-card .note { color: #898781; font-size: 0.85rem; margin-top: 4px; }
+.issue-card { border-left: 4px solid #898781; background: #f4f4f2; padding: 10px 14px;
+                margin-bottom: 10px; border-radius: 4px; }
+.issue-card .headline { font-weight: 600; }
+.issue-card .headline .count { font-weight: 400; color: #898781; font-size: 0.8rem; }
 .note summary { cursor: pointer; user-select: none; }
 .note summary:hover { color: #0b0b0b; }
 .note[open] summary { margin-bottom: 6px; }
@@ -65,7 +69,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
 <body>
 <div class="wrap">
     <h1>Pacific Peering — Regional Routing Report</h1>
-    <div class="meta">Generated 2026-09-17T00:21:48.906086+00:00</div>
+    <div class="meta">Generated 2026-09-17T00:29:47.721921+00:00</div>
 
     <div class="headline-banner">
         <span class="value">68%</span>
@@ -87,7 +91,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
         peering), collapsed by default so it doesn't dominate the page &mdash;
         click any of those section headings to expand.</p>
 
-    <div class="stat-row"><div class="stat-tile"><div class="value">20</div><div class="label">Economies in scope</div></div><div class="stat-tile"><div class="value">163</div><div class="label">ASNs in scope</div></div><div class="stat-tile"><div class="value">124</div><div class="label">ASNs w/ RIS neighbor</div></div><div class="stat-tile"><div class="value">38</div><div class="label">ASNs w/ IXP membership</div></div><div class="stat-tile"><div class="value">22</div><div class="label">ASNs w/ facility presence</div></div><div class="stat-tile"><div class="value">10/21</div><div class="label">IXPs in/out of fishbowl</div></div></div>
+    <div class="stat-row"><div class="stat-tile"><div class="value">20</div><div class="label">Economies in scope</div></div><div class="stat-tile"><div class="value">162</div><div class="label">ASNs in scope</div></div><div class="stat-tile"><div class="value">124</div><div class="label">ASNs w/ RIS neighbor</div></div><div class="stat-tile"><div class="value">37</div><div class="label">ASNs w/ IXP membership</div></div><div class="stat-tile"><div class="value">22</div><div class="label">ASNs w/ facility presence</div></div><div class="stat-tile"><div class="value">10/21</div><div class="label">IXPs in/out of fishbowl</div></div></div>
 
     <h2>Economies</h2>
     <table>
@@ -182,8 +186,8 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
                 </span>PG</td>
             <td>Papua New Guinea</td>
             <td>Melanesia</td>
-            <td>39</td><td>29</td>
-            <td>10</td><td>3</td>
+            <td>38</td><td>29</td>
+            <td>9</td><td>3</td>
         </tr><tr>
             <td><span class="subregion-dot" style="background:#1baf7a">
                 </span>PW</td>
@@ -1886,7 +1890,7 @@ NU(AS55885) -&gt; AS150403: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS139609 -&
 
     <h2>PeeringDB data quality</h2>
     <p class="section-intro">
-        <strong>76 of 163</strong> in-scope ASNs have a
+        <strong>75 of 162</strong> in-scope ASNs have a
         PeeringDB <code>net</code> record at all. "Zero facilities"/"zero IXP memberships"
         elsewhere in this report can mean either of two very different things: this ASN was
         never on PeeringDB to begin with, or it <em>is</em> registered and simply declared
@@ -1938,8 +1942,8 @@ NU(AS55885) -&gt; AS150403: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS139609 -&
             <td>1</td><td>1</td>
         </tr><tr>
             <td>PG</td><td>Papua New Guinea</td>
-            <td>39</td><td>12</td>
-            <td>3</td><td>10</td>
+            <td>38</td><td>11</td>
+            <td>3</td><td>9</td>
         </tr><tr>
             <td>PW</td><td>Palau</td>
             <td>3</td><td>1</td>
@@ -1972,7 +1976,7 @@ NU(AS55885) -&gt; AS150403: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS139609 -&
 
     <h2>ASPA progress (RFC 9582 upstream-authorization adoption)</h2>
     <p class="section-intro">
-        <strong>16 of 163</strong> in-scope ASNs
+        <strong>16 of 162</strong> in-scope ASNs
         now publish an ASPA record (3104 total across the
         whole internet, per Cloudflare Radar). Adoption is still early &mdash; absence
         means "not published yet," not "no real upstream." Per economy: how many of its
@@ -2005,7 +2009,7 @@ NU(AS55885) -&gt; AS150403: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS139609 -&
             <td>3</td>
         </tr><tr>
             <td>PG</td><td>Papua New Guinea</td>
-            <td>39</td><td>2</td>
+            <td>38</td><td>2</td>
             <td>1</td>
             <td>1</td>
         </tr><tr>
@@ -2051,7 +2055,7 @@ NU(AS55885) -&gt; AS150403: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS139609 -&
         <tbody><tr>
             <td>ABQIX</td><td>Albuquerque</td>
             <td>US</td><td><span class="bool-false">out-of-fishbowl</span></td>
-            <td>1</td>
+            <td>0</td>
         </tr><tr>
             <td>Any2West</td><td>Los Angeles and Silicon Valley</td>
             <td>US</td><td><span class="bool-false">out-of-fishbowl</span></td>
@@ -2174,6 +2178,24 @@ NU(AS55885) -&gt; AS150403: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS139609 -&
             <td>3</td>
         </tr></tbody>
     </table>
+
+    <h2>Appendix: Low data quality issues
+        <span class="count">(2 known, resolved)</span></h2>
+    <p class="section-intro">Known problems in this project's underlying sources
+        (APNIC delegation, PeeringDB, ASPA, etc.) that have already been found,
+        verified, and corrected for elsewhere in the pipeline &mdash; kept visible
+        here rather than left implicit, so the counts and tables earlier in this
+        report can be trusted without re-deriving why they exclude what they
+        exclude.</p>
+    <div class="issue-card">
+            <div class="headline">AS24013 (SB Professional Services) -- registered SB
+                <span class="count">[DNS anycast infrastructure, opportunistically registered]</span></div>
+            <details class="note"><summary>Flagged as a likely anomaly as early as Phase 1a (Germany-only PeeringDB IXP records for a nominally Solomon Islands ASN -- logged then as &quot;likely…</summary>Flagged as a likely anomaly as early as Phase 1a (Germany-only PeeringDB IXP records for a nominally Solomon Islands ASN -- logged then as &quot;likely anycast/hosting presence, not real network location&quot;) but left in the registry until the corridor backlog picked it as a target and the anomaly could be checked directly rather than acted on from memory. Confirmed: `pick_target_ip(24013)` resolves to 185.222.222.1, which is RIPE NCC (not APNIC) address space -- WHOIS shows `inetnum 185.222.222.0/24`, `netname DNS-SB-IPV4-01`, `descr DNS.SB`, `country EU`. AS24013 is DNS.SB, a global anycast public DNS resolver service, not a Solomon Islands ISP -- its holder name (&quot;SB - SB Professional Services&quot;) appears to be an opportunistic APNIC registration under the SB country code with no real Solomon Islands presence, the same pattern already confirmed and excluded for 8 &quot;Marshall Islands&quot;-registered shell ASNs in `supplementary_asns.py`. Excluded per the project owner&#x27;s explicit direction (consulted directly rather than resolved unilaterally, per the standing order on anomalous data) rather than tested with a traceroute that would have measured anycast DNS reachability and mislabeled it as Solomon Islands connectivity.</details>
+        </div><div class="issue-card">
+            <div class="headline">AS137064 (ISC-AS-POM1) -- registered PG
+                <span class="count">[DNS anycast infrastructure, opportunistically registered]</span></div>
+            <details class="note"><summary>Surfaced by a direct sanity check on ABQIX (Albuquerque, US, ix_id 3322, already correctly out-of-fishbowl): asked which in-scope Pacific ASN is a real member…</summary>Surfaced by a direct sanity check on ABQIX (Albuquerque, US, ix_id 3322, already correctly out-of-fishbowl): asked which in-scope Pacific ASN is a real member there, expecting the answer to matter. Cross-checked two independent sources before excluding, same as AS24013: bgp.tools names it &quot;ISC F-ROOT ABQ1&quot;; PeeringDB&#x27;s own `net` record gives `aka: F-ROOT`, `info_type: Network Services`; RIPEstat WHOIS gives the authoritative `as-name: ISC-AS-POM1` with `descr: For use by ISC/F-Root exclusively for announcements at POM1/PNGIXP` (POM1 = Port Moresby, PNG&#x27;s own IXP). All three agree: this is ISC&#x27;s F-root DNS anycast infrastructure, not a Papua New Guinea network with a real footprint in Albuquerque -- its PG registration reflects where ISC arranged BGP announcement for this specific instance (PNGIXP), not a genuine local operator. Checked for siblings before excluding just this one ASN: swept all 163 then-in-scope ASNs&#x27; bgp.tools names and PeeringDB net names/akas for anycast-DNS-operator keywords (root, isc, verisign, netnod, icann, pch, quad9, opendns, cloudflare, google, etc.) -- one other hit (AS139609/SISCC) was a false positive (&quot;isc&quot; substring-matching inside &quot;SISCC&quot;&#x27;s own `aka&quot;, a real, already-extensively-verified Solomon Islands submarine cable operator), no other genuine anycast instance found. No prior findings or tested-pairs history involved AS137064 -- a clean exclusion, nothing else to unwind.</details>
+        </div>
 
     <footer class="about">
         <h2>About this project</h2>

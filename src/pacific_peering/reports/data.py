@@ -26,6 +26,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from pacific_peering.analysis import store as _store
+from pacific_peering.analysis.data_quality_issues import DATA_QUALITY_ISSUES, DataQualityIssue
 from pacific_peering.analysis.fishbowl import DEFAULT_SUMMARY_PATH
 from pacific_peering.analysis.ixp_lan_registry import DEFAULT_REGISTRY_PATH
 from pacific_peering.analysis.traceroute_topology import DEFAULT_TRIANGULATION_DIR
@@ -646,6 +647,7 @@ class ReportData:
     ixp_registry_tba: int
     economies: tuple[EconomySummary, ...]
     ixps: tuple[IxpSummary, ...]
+    data_quality_issues: tuple[DataQualityIssue, ...]
     peeringdb_economies: tuple[PeeringDbEconomySummary, ...]
     peeringdb_asns_on_pdb: int
     aspa_economies: tuple[AspaEconomySummary, ...]
@@ -912,6 +914,7 @@ def build_report_data(
         ixp_registry_tba=sum(1 for v in ixp_registry.values() if v["in_fishbowl"] == "TBA"),
         economies=tuple(economies),
         ixps=ixps,
+        data_quality_issues=DATA_QUALITY_ISSUES,
         peeringdb_economies=peeringdb_economies,
         peeringdb_asns_on_pdb=peeringdb_asns_on_pdb,
         aspa_economies=aspa_progress.economies,

@@ -71,6 +71,10 @@ tr:hover {{ background: #f5f4f0; }}
                 margin-bottom: 10px; border-radius: 4px; }}
 .candidate-card .headline {{ font-weight: 600; }}
 .candidate-card .note {{ color: {_MUTED}; font-size: 0.85rem; margin-top: 4px; }}
+.issue-card {{ border-left: 4px solid {_MUTED}; background: #f4f4f2; padding: 10px 14px;
+                margin-bottom: 10px; border-radius: 4px; }}
+.issue-card .headline {{ font-weight: 600; }}
+.issue-card .headline .count {{ font-weight: 400; color: {_MUTED}; font-size: 0.8rem; }}
 .note summary {{ cursor: pointer; user-select: none; }}
 .note summary:hover {{ color: {_INK}; }}
 .note[open] summary {{ margin-bottom: 6px; }}
@@ -278,6 +282,15 @@ def render_html_report(data: ReportData, viz_dir: Path | None = Path("../viz")) 
         for e in data.peeringdb_economies
         if e.on_peeringdb
     ) or "<p>(no in-scope ASN is on PeeringDB)</p>"
+
+    data_quality_issue_blocks = "".join(
+        f"""<div class="issue-card">
+            <div class="headline">{html.escape(issue.title)}
+                <span class="count">[{html.escape(issue.category_label)}]</span></div>
+            {_note_block(issue.description)}
+        </div>"""
+        for issue in data.data_quality_issues
+    ) or "<p>(none recorded yet)</p>"
 
     aspa_economy_rows = "".join(
         f"""<tr>
@@ -508,6 +521,16 @@ def render_html_report(data: ReportData, viz_dir: Path | None = Path("../viz")) 
             <th>Members</th></tr></thead>
         <tbody>{ixp_rows}</tbody>
     </table>
+
+    <h2>Appendix: Low data quality issues
+        <span class="count">({len(data.data_quality_issues)} known, resolved)</span></h2>
+    <p class="section-intro">Known problems in this project's underlying sources
+        (APNIC delegation, PeeringDB, ASPA, etc.) that have already been found,
+        verified, and corrected for elsewhere in the pipeline &mdash; kept visible
+        here rather than left implicit, so the counts and tables earlier in this
+        report can be trusted without re-deriving why they exclude what they
+        exclude.</p>
+    {data_quality_issue_blocks}
 
     <footer class="about">
         <h2>About this project</h2>

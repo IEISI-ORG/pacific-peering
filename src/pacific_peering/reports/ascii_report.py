@@ -325,6 +325,25 @@ def render_ascii_report(data: ReportData) -> str:
 
     lines.append(
         _section(
+            f"APPENDIX: LOW DATA QUALITY ISSUES ({len(data.data_quality_issues)} known, resolved)"
+        )
+    )
+    lines.append(
+        "Known problems in this project's underlying sources (APNIC delegation, "
+        "PeeringDB, ASPA, etc.) that have already been found, verified, and "
+        "corrected for elsewhere in the pipeline -- kept visible here rather than "
+        "left implicit, so the counts and tables earlier in this report can be "
+        "trusted without re-deriving why they exclude what they exclude."
+    )
+    if not data.data_quality_issues:
+        lines.append("(none recorded yet)")
+    for issue in data.data_quality_issues:
+        lines.append("")
+        lines.append(f"{issue.title}  [{issue.category_label}]")
+        lines.append(f"    {issue.description}")
+
+    lines.append(
+        _section(
             f"APPENDIX: FULL CORRIDOR DETAIL ({data.pathways_total} pathways -- "
             "see the PATHWAYS summary at the top of this report for the plain counts)"
         )
