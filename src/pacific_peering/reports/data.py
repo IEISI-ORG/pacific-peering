@@ -23,13 +23,16 @@ import logging
 import re
 from dataclasses import asdict, dataclass
 from datetime import datetime, timezone
+from itertools import combinations
 from pathlib import Path
 
 from pacific_peering.analysis import store as _store
+from pacific_peering.analysis.corridor_backlog import _tested_economy_pairs_from_findings
 from pacific_peering.analysis.data_quality_issues import DATA_QUALITY_ISSUES, DataQualityIssue
 from pacific_peering.analysis.fishbowl import DEFAULT_SUMMARY_PATH
 from pacific_peering.analysis.ixp_lan_registry import DEFAULT_REGISTRY_PATH
 from pacific_peering.analysis.traceroute_topology import DEFAULT_TRIANGULATION_DIR
+from pacific_peering.atlas.asn_probes import load_asn_probe_registry
 from pacific_peering.discovery import cloudflare_radar
 from pacific_peering.discovery.registry import DEFAULT_OUTPUT_PATH
 
@@ -582,6 +585,30 @@ class IxpSummary:
 
 
 @dataclass(frozen=True)
+class PathwayCoverageSummary:
+    """One economy's test-coverage picture.
+
+    `active_probes` is the total count of connected Atlas probes across
+    this economy's own ASNs (zero means this economy can never be a
+    traceroute *source* -- it can only ever be reached as a target from
+    elsewhere). `untested_pathways` is how many of the other 19 in-scope
+    economies have zero finding connecting to this one yet, in either
+    direction -- includes economy pairs blocked by missing probe
+    coverage on both sides, pairs already attempted but inconclusive,
+    and any pair currently sitting in the corridor backlog as a live
+    candidate; it does not distinguish between those, only "not yet
+    resolved with a real finding."
+    """
+
+    cc: str
+    name: str
+    subregion: str
+    asn_count: int
+    active_probes: int
+    untested_pathways: int
+
+
+@dataclass(frozen=True)
 class PeeringDbEconomySummary:
     """One economy's PeeringDB data-quality picture.
 
@@ -647,6 +674,7 @@ class ReportData:
     ixp_registry_tba: int
     economies: tuple[EconomySummary, ...]
     ixps: tuple[IxpSummary, ...]
+    pathway_coverage: tuple[PathwayCoverageSummary, ...]
     data_quality_issues: tuple[DataQualityIssue, ...]
     peeringdb_economies: tuple[PeeringDbEconomySummary, ...]
     peeringdb_asns_on_pdb: int
@@ -727,6 +755,39 @@ def _zero_aspa_progress(registry: dict) -> _AspaProgress:
         asns_with_record=0,
         global_total_records=0,
     )
+
+
+def _compute_pathway_coverage(
+    registry: dict, probe_registry: dict[int, list[int]]
+) -> tuple[PathwayCoverageSummary, ...]:
+    """Per-economy pathway test coverage: ASN count, connected-probe count,
+    and how many of the other 19 in-scope economies still have zero
+    finding connecting to this one -- the same analysis behind the
+    "missing pathways" question this was built to answer, now kept live
+    in the report instead of re-derived by hand each time."""
+    ccs = sorted(registry.keys())
+    all_pairs = {tuple(sorted((a, b))) for a, b in combinations(ccs, 2)}
+    tested = {p for p in _tested_economy_pairs_from_findings() if p in all_pairs}
+
+    summaries = []
+    for cc in ccs:
+        entry = registry[cc]
+        asns = entry["asns"]
+        active_probes = sum(len(probe_registry.get(asn, [])) for asn in asns)
+        untested = sum(
+            1 for other in ccs if other != cc and tuple(sorted((cc, other))) not in tested
+        )
+        summaries.append(
+            PathwayCoverageSummary(
+                cc=cc,
+                name=entry["name"],
+                subregion=entry["subregion"],
+                asn_count=len(asns),
+                active_probes=active_probes,
+                untested_pathways=untested,
+            )
+        )
+    return tuple(summaries)
 
 
 def _compute_peeringdb_quality(
@@ -897,6 +958,11 @@ def build_report_data(
     peeringdb_economies = _compute_peeringdb_quality(registry, fishbowl)
     peeringdb_asns_on_pdb = sum(e.on_peeringdb for e in peeringdb_economies)
     aspa_progress = _compute_aspa_progress(registry, set(asn_to_cc))
+    try:
+        probe_registry = load_asn_probe_registry()
+    except FileNotFoundError:
+        probe_registry = {}
+    pathway_coverage = _compute_pathway_coverage(registry, probe_registry)
 
     return ReportData(
         generated_at=datetime.now(timezone.utc).isoformat(),
@@ -914,6 +980,7 @@ def build_report_data(
         ixp_registry_tba=sum(1 for v in ixp_registry.values() if v["in_fishbowl"] == "TBA"),
         economies=tuple(economies),
         ixps=ixps,
+        pathway_coverage=pathway_coverage,
         data_quality_issues=DATA_QUALITY_ISSUES,
         peeringdb_economies=peeringdb_economies,
         peeringdb_asns_on_pdb=peeringdb_asns_on_pdb,

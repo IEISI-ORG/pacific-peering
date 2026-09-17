@@ -273,6 +273,15 @@ def render_html_report(data: ReportData, viz_dir: Path | None = Path("../viz")) 
         for ix in data.ixps
     )
 
+    pathway_coverage_rows = "".join(
+        f"""<tr>
+            <td>{html.escape(p.cc)}</td><td>{html.escape(p.name)}</td>
+            <td>{html.escape(p.subregion)}</td>
+            <td>{p.asn_count}</td><td>{p.active_probes}</td><td>{p.untested_pathways}</td>
+        </tr>"""
+        for p in data.pathway_coverage
+    )
+
     peeringdb_economy_rows = "".join(
         f"""<tr>
             <td>{html.escape(e.cc)}</td><td>{html.escape(e.name)}</td>
@@ -520,6 +529,18 @@ def render_html_report(data: ReportData, viz_dir: Path | None = Path("../viz")) 
         <thead><tr><th>Name</th><th>City</th><th>CC</th><th>Region</th>
             <th>Members</th></tr></thead>
         <tbody>{ixp_rows}</tbody>
+    </table>
+
+    <h2>Pathway coverage</h2>
+    <p class="section-intro">How many of this economy's own ASNs have a connected Atlas
+        probe (zero means it can never be a traceroute source, only ever reached as a
+        target) and how many of the other 19 in-scope economies still have zero finding
+        connecting to it &mdash; see the pathway counts at the top of this report for the
+        region-wide totals this is derived from.</p>
+    <table>
+        <thead><tr><th>CC</th><th>Name</th><th>Subregion</th><th>ASNs</th>
+            <th>Active probes</th><th>Untested pathways</th></tr></thead>
+        <tbody>{pathway_coverage_rows}</tbody>
     </table>
 
     <h2>Appendix: Low data quality issues
