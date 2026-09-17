@@ -2,17 +2,17 @@ PACIFIC PEERING -- RIPE ATLAS PROBE COVERAGE GAPS
 Sole purpose: where to request a new probe next. Not a findings report.
 ==============================================================================
 
-ZERO CONNECTED PROBES (6/20) -- cannot source or target a traceroute here at all:
+ZERO CONNECTED PROBES (5/20) -- cannot source or target a traceroute here at all:
   AS  American Samoa [used in a confirmed/candidate finding]
-  FJ  Fiji [used in a confirmed/candidate finding]
-      KNOWN ISSUE: Fiji's only connected probe sits behind AS53813 (Zscaler corporate VPN) -- a traceroute sourced from it shows Zscaler's own routing, not real Fiji ISP behavior. Confirmed unusable for path analysis; a new, non-proxied probe is needed to actually study Fiji's routing.
   NR  Nauru [used in a confirmed/candidate finding]
   SB  Solomon Islands [used in a confirmed/candidate finding]
   WF  Wallis and Futuna [used in a confirmed/candidate finding]
   WS  Samoa [used in a confirmed/candidate finding]
 
-FRAGILE -- exactly 1 connected probe (8/20) -- a single point of failure, and there's no second probe to cross-check it against:
+FRAGILE -- exactly 1 connected probe (9/20) -- a single point of failure, and there's no second probe to cross-check it against:
   CK  Cook Islands [used in a confirmed/candidate finding]
+  FJ  Fiji [used in a confirmed/candidate finding]
+      KNOWN ISSUE: Fiji's only connected probe sits behind AS53813 (Zscaler corporate VPN) -- a traceroute sourced from it shows Zscaler's own routing, not real Fiji ISP behavior. Confirmed unusable for path analysis; a new, non-proxied probe is needed to actually study Fiji's routing.
   MH  Marshall Islands [used in a confirmed/candidate finding]
   MP  Northern Mariana Islands [used in a confirmed/candidate finding]
   NU  Niue [used in a confirmed/candidate finding]

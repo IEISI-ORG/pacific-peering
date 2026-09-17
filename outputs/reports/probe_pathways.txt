@@ -2,7 +2,7 @@ PACIFIC PEERING -- PROBE-LEVEL PATHWAY AUDIT
 Which specific connected Atlas probe has actually contributed to which corridor -- not just how many probes an economy has (see the main report's Pathway Coverage table) or where a new one is most needed (see probe_gaps.txt).
 ==============================================================================
 
-30 of 35 currently-connected probes have contributed to at least one filed finding so far.
+32 of 37 currently-connected probes have contributed to at least one filed finding so far.
 
 AS2200  (1 connected probe(s))
   probe 23002:
@@ -349,6 +349,48 @@ AS53813  (1 connected probe(s))
   probe 60575:
     FJ (AS24390) -> VU (AS9249)
 
+AS55885  Niue (NU)  (1 connected probe(s))
+  probe 64391:
+    NU -> AS (AS23657)
+    NU -> AS (AS9751)
+    NU -> CK (AS152093)
+    NU -> FJ (AS38442)
+    NU -> FJ (AS4638, Telecom Fiji Limited)
+    NU -> FJ (AS9241)
+    NU -> FM (AS38875, FSM Telecommunications Corporation)
+    NU -> FM (AS45193)
+    NU -> GU (AS23676, University of Guam)
+    NU -> GU (AS9246)
+    NU -> KI (AS154100)
+    NU -> MH (AS24439)
+    NU -> NC (AS17480)
+    NU -> NC (AS18200)
+    NU -> NR (AS152706)
+    NU -> NU (AS55885, No. 1 Commercial Center)
+    NU -> PG (AS38009)
+    NU -> SB (AS132462, Bemobile Solomon Islands Ltd)
+    NU -> SB (AS132468)
+    NU -> SB (AS136996)
+    NU -> SB (AS139277, Solomon Islands Government ICT Support Department)
+    NU -> SB (AS139609)
+    NU -> SB (AS142279)
+    NU -> SB (AS150403, Solomon Islands National Provident Fund Board)
+    NU -> SB (AS45891)
+    NU -> TO (AS38198)
+    NU -> TO (AS38201)
+    NU -> VU (AS132228)
+    NU -> VU (AS132254)
+    NU -> VU (AS132429)
+    NU -> VU (AS132797, (Vanuatu ASN))
+    NU -> VU (AS133383)
+    NU -> VU (AS23959, Wantok Network (Vanuatu))
+    NU -> VU (AS45495)
+    NU -> VU (AS45935)
+    NU -> WF (AS45879)
+    NU -> WS (AS150349)
+    NU -> WS (AS17993)
+    NU -> WS (AS38800)
+
 AS56089  New Caledonia (NC)  (1 connected probe(s))
   probe 61210:
     NC (AS45345) -> FJ (AS45355)
@@ -421,59 +463,16 @@ AS139759  Micronesia, Federated States of (FM)  (3 connected probe(s))
     FM -> WS (AS17993)
     FM -> WS (AS38800)
 
-AS152735  Guam (GU)  (2 connected probe(s))
+AS152735  Guam (GU)  (3 connected probe(s))
   probe 7385:
     GU -> GU (AS395400, University of Guam)
     GU -> PG (AS17828)
-  probe 1012513:
-    (never contributed to a filed finding yet)
-
-PROBES SEEN IN PAST MEASUREMENTS, NO LONGER IN THE CURRENT REGISTRY (2)
-Contributed to a filed finding at some point, but the ASN probe registry (refreshed periodically, reflects current connectivity) no longer lists them as connected -- flagged rather than silently dropped.
-  probe 60703 (4 pathway(s)):
+  probe 60703:
     GU (AS3605) -> CK (AS152093)
     GU (AS3605) -> PG (AS17828)
     GU (AS3605) -> PW (AS17893)
     GU -> PG (AS17828)
-  probe 64391 (39 pathway(s)):
-    NU -> AS (AS23657)
-    NU -> AS (AS9751)
-    NU -> CK (AS152093)
-    NU -> FJ (AS38442)
-    NU -> FJ (AS4638, Telecom Fiji Limited)
-    NU -> FJ (AS9241)
-    NU -> FM (AS38875, FSM Telecommunications Corporation)
-    NU -> FM (AS45193)
-    NU -> GU (AS23676, University of Guam)
-    NU -> GU (AS9246)
-    NU -> KI (AS154100)
-    NU -> MH (AS24439)
-    NU -> NC (AS17480)
-    NU -> NC (AS18200)
-    NU -> NR (AS152706)
-    NU -> NU (AS55885, No. 1 Commercial Center)
-    NU -> PG (AS38009)
-    NU -> SB (AS132462, Bemobile Solomon Islands Ltd)
-    NU -> SB (AS132468)
-    NU -> SB (AS136996)
-    NU -> SB (AS139277, Solomon Islands Government ICT Support Department)
-    NU -> SB (AS139609)
-    NU -> SB (AS142279)
-    NU -> SB (AS150403, Solomon Islands National Provident Fund Board)
-    NU -> SB (AS45891)
-    NU -> TO (AS38198)
-    NU -> TO (AS38201)
-    NU -> VU (AS132228)
-    NU -> VU (AS132254)
-    NU -> VU (AS132429)
-    NU -> VU (AS132797, (Vanuatu ASN))
-    NU -> VU (AS133383)
-    NU -> VU (AS23959, Wantok Network (Vanuatu))
-    NU -> VU (AS45495)
-    NU -> VU (AS45935)
-    NU -> WF (AS45879)
-    NU -> WS (AS150349)
-    NU -> WS (AS17993)
-    NU -> WS (AS38800)
+  probe 1012513:
+    (never contributed to a filed finding yet)
 
 ==============================================================================
