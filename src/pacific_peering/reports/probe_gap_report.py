@@ -29,9 +29,12 @@ CONFIRMED_DETOURS = _store.load_confirmed_detours(_conn)
 CONFIRMED_LOCAL_TRANSIT = _store.load_confirmed_local_transit(_conn)
 CANDIDATE_PEERING = _store.load_candidate_peering(_conn)
 _conn.close()
+from pacific_peering.atlas.asn_probes import load_asn_probe_registry
 from pacific_peering.atlas.probes import build_probe_coverage
 from pacific_peering.discovery.economies import ECONOMIES_BY_CC
-from pacific_peering.reports.data import FISHBOWL_EXPLANATION
+from pacific_peering.discovery.registry import DEFAULT_OUTPUT_PATH as _ASN_REGISTRY_PATH
+from pacific_peering.reports.data import FISHBOWL_EXPLANATION, PathwayCoverageSummary
+from pacific_peering.reports.data import _compute_pathway_coverage
 
 logger = logging.getLogger(__name__)
 
@@ -75,12 +78,28 @@ def _economies_used_in_findings() -> set[str]:
     return ccs
 
 
-def render_probe_gap_report(coverage: dict[str, int]) -> str:
+def render_probe_gap_report(
+    coverage: dict[str, int],
+    asn_registry: dict,
+    pathway_coverage: tuple[PathwayCoverageSummary, ...],
+) -> str:
     """Render the probe-gap report as plain text.
 
     Args:
         coverage: economy cc -> connected Atlas probe count, from
-            `atlas.probes.build_probe_coverage`.
+            `atlas.probes.build_probe_coverage` (a live, geographic
+            "is any probe physically in this country" count).
+        asn_registry: The Phase 0b ASN registry (cc -> {"asns": [...], ...}),
+            used to name the actual in-scope ASNs a new probe should be
+            requested against for each zero/fragile economy below --
+            "where to request a probe" is more actionable as a specific
+            ASN than a bare country code.
+        pathway_coverage: Per-economy test-coverage summaries from
+            `reports.data._compute_pathway_coverage` -- ASN-tracked
+            active-probe counts (deliberately a different question from
+            `coverage` above -- see `PathwayCoverageSummary`'s own
+            docstring) plus how many of the other in-scope economies
+            still have zero finding connecting to this one.
 
     Returns:
         The full report as a single string.
@@ -91,6 +110,10 @@ def render_probe_gap_report(coverage: dict[str, int]) -> str:
         marker = " [used in a confirmed/candidate finding]" if cc in finding_ccs else ""
         issue = f"\n      KNOWN ISSUE: {KNOWN_ISSUES[cc]}" if cc in KNOWN_ISSUES else ""
         return marker + issue
+
+    def _asns(cc: str) -> str:
+        asns = sorted(asn_registry.get(cc, {}).get("asns", []))
+        return f"\n      ASNs: {', '.join(str(a) for a in asns)}" if asns else ""
 
     zero = sorted(cc for cc, n in coverage.items() if n == 0)
     fragile = sorted(cc for cc, n in coverage.items() if n == 1)
@@ -104,22 +127,24 @@ def render_probe_gap_report(coverage: dict[str, int]) -> str:
 
     lines.append(
         f"ZERO CONNECTED PROBES ({len(zero)}/{len(coverage)}) -- cannot source or "
-        "target a traceroute here at all:"
+        "target a traceroute here at all. ASNs listed are this economy's own "
+        "in-scope ASNs -- candidates to approach for hosting a new probe:"
     )
     if not zero:
         lines.append("  (none -- every in-scope economy has at least one connected probe)")
     for cc in zero:
-        lines.append(f"  {cc}  {ECONOMIES_BY_CC[cc].name}{_flag(cc)}")
+        lines.append(f"  {cc}  {ECONOMIES_BY_CC[cc].name}{_flag(cc)}{_asns(cc)}")
     lines.append("")
 
     lines.append(
         f"FRAGILE -- exactly 1 connected probe ({len(fragile)}/{len(coverage)}) -- a "
-        "single point of failure, and there's no second probe to cross-check it against:"
+        "single point of failure, and there's no second probe to cross-check it "
+        "against. ASNs listed are candidates for a second, independent probe:"
     )
     if not fragile:
         lines.append("  (none)")
     for cc in fragile:
-        lines.append(f"  {cc}  {ECONOMIES_BY_CC[cc].name}{_flag(cc)}")
+        lines.append(f"  {cc}  {ECONOMIES_BY_CC[cc].name}{_flag(cc)}{_asns(cc)}")
     lines.append("")
 
     lines.append(f"ADEQUATE -- 2+ connected probes ({len(adequate)}/{len(coverage)}):")
@@ -127,6 +152,35 @@ def render_probe_gap_report(coverage: dict[str, int]) -> str:
         lines.append("  (none)")
     for cc in adequate:
         lines.append(f"  {cc}  {ECONOMIES_BY_CC[cc].name} ({coverage[cc]} connected)")
+    lines.append("")
+    lines.append("=" * 78)
+    lines.append("")
+
+    lines.append(
+        f"PATHWAY COVERAGE ({len(pathway_coverage)} economies) -- same table as the "
+        "main report's Pathway Coverage section, kept here too since it's the "
+        "other half of \"where does a new probe actually help\": ASN count, "
+        "active probes on this project's own tracked ASNs (not the same count "
+        "as above -- see note below), and how many of the other in-scope "
+        "economies still have zero finding connecting to this one. Sorted by "
+        "untested pathways, most first:"
+    )
+    for p in pathway_coverage:
+        lines.append(
+            f"  {p.cc}  {p.name} ({p.subregion}) -- {p.asn_count} ASN(s), "
+            f"{p.active_probes} active probe(s) on a tracked ASN, "
+            f"{p.untested_pathways} untested pathway(s)"
+        )
+    lines.append("")
+    lines.append(
+        "  Note: this section's \"active probes\" counts only probes hosted on "
+        "one of this project's own tracked in-scope ASNs -- a different, "
+        "stricter question than the ZERO/FRAGILE/ADEQUATE breakdown above, "
+        "which counts any physically-connected probe in the country. A country "
+        "can show >=1 above and 0 here (e.g. a probe hosted on a Starlink ASN, "
+        "or on an ASN registered to a different country) -- that's expected, not "
+        "a data-quality problem."
+    )
     lines.append("")
     lines.append("=" * 78)
     lines.append("")
@@ -153,7 +207,9 @@ def write_probe_gap_report(
         if refresh
         else json.loads(Path("data/atlas/probe_coverage.json").read_text())
     )
-    text = render_probe_gap_report(coverage)
+    asn_registry = json.loads(_ASN_REGISTRY_PATH.read_text())
+    pathway_coverage = _compute_pathway_coverage(asn_registry, load_asn_probe_registry())
+    text = render_probe_gap_report(coverage, asn_registry, pathway_coverage)
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(text + "\n")
     logger.info("Wrote probe-gap report to %s", output_path)

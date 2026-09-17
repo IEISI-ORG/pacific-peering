@@ -2,24 +2,38 @@ PACIFIC PEERING -- RIPE ATLAS PROBE COVERAGE GAPS
 Sole purpose: where to request a new probe next. Not a findings report.
 ==============================================================================
 
-ZERO CONNECTED PROBES (5/20) -- cannot source or target a traceroute here at all:
+ZERO CONNECTED PROBES (5/20) -- cannot source or target a traceroute here at all. ASNs listed are this economy's own in-scope ASNs -- candidates to approach for hosting a new probe:
   AS  American Samoa [used in a confirmed/candidate finding]
+      ASNs: 9751, 23657
   NR  Nauru [used in a confirmed/candidate finding]
+      ASNs: 55722, 55723, 140504, 141368, 152706
   SB  Solomon Islands [used in a confirmed/candidate finding]
+      ASNs: 45891, 132260, 132462, 132468, 134525, 139277, 139609, 142279, 150349, 150403
   WF  Wallis and Futuna [used in a confirmed/candidate finding]
+      ASNs: 45879
   WS  Samoa [used in a confirmed/candidate finding]
+      ASNs: 9218, 17993, 38227, 38800, 55579, 134376, 138356, 139679, 150321, 153053
 
-FRAGILE -- exactly 1 connected probe (9/20) -- a single point of failure, and there's no second probe to cross-check it against:
+FRAGILE -- exactly 1 connected probe (9/20) -- a single point of failure, and there's no second probe to cross-check it against. ASNs listed are candidates for a second, independent probe:
   CK  Cook Islands [used in a confirmed/candidate finding]
+      ASNs: 10131, 152093
   FJ  Fiji [used in a confirmed/candidate finding]
       KNOWN ISSUE: Fiji's only connected probe (id 60575, operated by the Pacific Community/SPC in Suva) sits behind AS53813 (Zscaler corporate VPN) -- a traceroute sourced from it shows Zscaler's own routing, not real Fiji ISP behavior. Confirmed unusable for path analysis as-is. UPDATE (2026-09-17): SPC (Usaia Tawakevou, via the pacnog mailing list) confirmed they're actively working on taking this specific probe out of the Zscaler tunnel -- not a request for a new probe, an existing one about to become usable. They also confirmed real Fiji peering with both Digicel and TFL once it's off Zscaler. No action needed here; the next `asn_probes`/`probe_coverage` refresh will pick up the ASN change once it happens.
+      ASNs: 4638, 9241, 24390, 37976, 38442, 45349, 45355, 132248, 133625, 134208, 135647, 136415, 136921, 137890, 140046, 141470, 142245, 149429, 153509, 154229
   MH  Marshall Islands [used in a confirmed/candidate finding]
+      ASNs: 24439, 154410
   MP  Northern Mariana Islands [used in a confirmed/candidate finding]
+      ASNs: 7131, 9839
   NU  Niue [used in a confirmed/candidate finding]
+      ASNs: 55885
   PG  Papua New Guinea [used in a confirmed/candidate finding]
+      ASNs: 17828, 38009, 45826, 45924, 55792, 58460, 63945, 132786, 133137, 133428, 134151, 134605, 135571, 136239, 136587, 136802, 136940, 137054, 137068, 138506, 138902, 139778, 139898, 140665, 140935, 142269, 146949, 147024, 150392, 150693, 151398, 151647, 152477, 152655, 152883, 153621, 153781, 154868
   PW  Palau [used in a confirmed/candidate finding]
+      ASNs: 17893, 58932, 133897
   TO  Tonga [used in a confirmed/candidate finding]
+      ASNs: 38198, 38201, 132579, 132831, 140987
   TV  Tuvalu [used in a confirmed/candidate finding]
+      ASNs: 23917, 133117, 142573
 
 ADEQUATE -- 2+ connected probes (6/20):
   FM  Micronesia, Federated States of (3 connected)
@@ -28,6 +42,32 @@ ADEQUATE -- 2+ connected probes (6/20):
   NC  New Caledonia (5 connected)
   PF  French Polynesia (7 connected)
   VU  Vanuatu (2 connected)
+
+==============================================================================
+
+PATHWAY COVERAGE (20 economies) -- same table as the main report's Pathway Coverage section, kept here too since it's the other half of "where does a new probe actually help": ASN count, active probes on this project's own tracked ASNs (not the same count as above -- see note below), and how many of the other in-scope economies still have zero finding connecting to this one. Sorted by untested pathways, most first:
+  KI  Kiribati (Micronesia) -- 5 ASN(s), 0 active probe(s) on a tracked ASN, 17 untested pathway(s)
+  NR  Nauru (Micronesia) -- 5 ASN(s), 0 active probe(s) on a tracked ASN, 8 untested pathway(s)
+  AS  American Samoa (Polynesia) -- 2 ASN(s), 0 active probe(s) on a tracked ASN, 7 untested pathway(s)
+  MH  Marshall Islands (Micronesia) -- 2 ASN(s), 0 active probe(s) on a tracked ASN, 7 untested pathway(s)
+  SB  Solomon Islands (Melanesia) -- 10 ASN(s), 0 active probe(s) on a tracked ASN, 7 untested pathway(s)
+  TO  Tonga (Polynesia) -- 5 ASN(s), 0 active probe(s) on a tracked ASN, 7 untested pathway(s)
+  WF  Wallis and Futuna (Polynesia) -- 1 ASN(s), 0 active probe(s) on a tracked ASN, 7 untested pathway(s)
+  WS  Samoa (Polynesia) -- 10 ASN(s), 0 active probe(s) on a tracked ASN, 7 untested pathway(s)
+  TV  Tuvalu (Polynesia) -- 3 ASN(s), 1 active probe(s) on a tracked ASN, 4 untested pathway(s)
+  MP  Northern Mariana Islands (Micronesia) -- 2 ASN(s), 3 active probe(s) on a tracked ASN, 3 untested pathway(s)
+  NU  Niue (Polynesia) -- 1 ASN(s), 1 active probe(s) on a tracked ASN, 3 untested pathway(s)
+  PW  Palau (Micronesia) -- 3 ASN(s), 1 active probe(s) on a tracked ASN, 3 untested pathway(s)
+  FJ  Fiji (Melanesia) -- 20 ASN(s), 1 active probe(s) on a tracked ASN, 2 untested pathway(s)
+  CK  Cook Islands (Polynesia) -- 2 ASN(s), 1 active probe(s) on a tracked ASN, 1 untested pathway(s)
+  GU  Guam (Micronesia) -- 10 ASN(s), 6 active probe(s) on a tracked ASN, 1 untested pathway(s)
+  NC  New Caledonia (Melanesia) -- 19 ASN(s), 5 active probe(s) on a tracked ASN, 1 untested pathway(s)
+  PF  French Polynesia (Polynesia) -- 6 ASN(s), 6 active probe(s) on a tracked ASN, 1 untested pathway(s)
+  PG  Papua New Guinea (Melanesia) -- 38 ASN(s), 1 active probe(s) on a tracked ASN, 1 untested pathway(s)
+  VU  Vanuatu (Melanesia) -- 12 ASN(s), 2 active probe(s) on a tracked ASN, 1 untested pathway(s)
+  FM  Micronesia, Federated States of (Micronesia) -- 6 ASN(s), 3 active probe(s) on a tracked ASN, 0 untested pathway(s)
+
+  Note: this section's "active probes" counts only probes hosted on one of this project's own tracked in-scope ASNs -- a different, stricter question than the ZERO/FRAGILE/ADEQUATE breakdown above, which counts any physically-connected probe in the country. A country can show >=1 above and 0 here (e.g. a probe hosted on a Starlink ASN, or on an ASN registered to a different country) -- that's expected, not a data-quality problem.
 
 ==============================================================================
 

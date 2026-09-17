@@ -40,12 +40,18 @@ echo "=== nightly corridor testing: $(date -u +%Y-%m-%dT%H:%M:%SZ) ==="
 
 "$UV" run pacific-peering-auto-classify-batch --hours 2 --max-concurrent 5
 
+# Probe-gap report, regenerated daily rather than only on the weekly
+# refresh -- per the project owner, cheap (20 unauthenticated Atlas calls,
+# no credits) and worth keeping current every night rather than letting it
+# drift stale between Sunday runs.
+"$UV" run pacific-peering-report-probe-gaps
+
 # Everything this step can change that's git-tracked: findings_export.jsonl,
-# corridor_backlog.md, the ASCII/HTML reports, the geographic map, and
-# escalations.md if anything needed a human look (only added if it exists --
-# `git add` errors on a path that was never created, and no escalation may
-# have happened tonight). data/* (the SQLite store itself) stays local/
-# gitignored by design.
+# corridor_backlog.md, the ASCII/HTML reports, outputs/reports/probe_gaps.txt,
+# the geographic map, and escalations.md if anything needed a human look
+# (only added if it exists -- `git add` errors on a path that was never
+# created, and no escalation may have happened tonight). data/* (the SQLite
+# store itself) stays local/gitignored by design.
 TRACK_PATHS=(findings_export.jsonl corridor_backlog.md outputs/reports outputs/viz)
 [ -f escalations.md ] && TRACK_PATHS+=(escalations.md)
 
