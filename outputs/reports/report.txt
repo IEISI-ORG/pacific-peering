@@ -1,6 +1,6 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-09-17T02:31:52.058274+00:00                  
+                 Generated: 2026-09-17T02:43:12.698594+00:00                  
 ==============================================================================
 
 SUMMARY
@@ -203,31 +203,31 @@ WS   Samoa                       10        2
 
 IXPS (registered exchanges, this project's confirmed classification)
 ==============================================================================
-Name                         City             CC   In fishbowl  Members
+Name                         City             CC   In fishbowl  Members  Economies
 ------------------------------------------------------------------------------
-Any2West                     Los Angeles and  US   False              4
-BBIX Tokyo                   Tokyo            JP   False              4
-CAN'L IX                     NOUMEA           NC   True               5
-DRF IX                       Honolulu         US   False              2
-EdgeIX - Auckland            Auckland         NZ   False              1
-Equinix Los Angeles          Los Angeles      US   False              1
-Equinix San Jose             San Jose         US   False              1
-Equinix Singapore            Singapore        SG   False              1
-Equinix Sydney               Sydney           AU   False              9
-Fiji-IXP                     Suva             FJ   True               3
-GOREX                        Piti             GU   True               1
-GU-IX                        Guam             GU   True               1
-Guam IX                      Tamuning         GU   True               5
-IX Australia Sydney (NSW-IX) Sydney           AU   False              1
-JPIX TOKYO                   Tokyo            JP   False              1
-JPNAP Tokyo                  Tokyo            JP   False              1
-MARIIX                       Mangilao         GU   True               5
-MegaIX Sydney                Sydney           AU   False              6
-PNG Neutral IX Hagen         Mt Hagen         PG   True               1
-PNG Neutral IX Lae           Lae              PG   True               2
-PNG Neutral IX POM           Port Moresby     PG   True               9
-SIX Seattle                  Seattle          US   False              1
-VIX.VU                       Port Vila        VU   True               3
+Any2West                     Los Angeles and  US   False              4  GU, MP, PF
+BBIX Tokyo                   Tokyo            JP   False              4  GU, MP, PW
+CAN'L IX                     NOUMEA           NC   True               5  NC
+DRF IX                       Honolulu         US   False              2  AS, PF
+EdgeIX - Auckland            Auckland         NZ   False              1  WS
+Equinix Los Angeles          Los Angeles      US   False              1  PF
+Equinix San Jose             San Jose         US   False              1  GU
+Equinix Singapore            Singapore        SG   False              1  GU
+Equinix Sydney               Sydney           AU   False              9  CK, FJ, NC, PF, PG, TO, WS
+Fiji-IXP                     Suva             FJ   True               3  FJ
+GOREX                        Piti             GU   True               1  GU
+GU-IX                        Guam             GU   True               1  GU
+Guam IX                      Tamuning         GU   True               5  FM, GU, MP, NR, PW
+IX Australia Sydney (NSW-IX) Sydney           AU   False              1  SB
+JPIX TOKYO                   Tokyo            JP   False              1  GU
+JPNAP Tokyo                  Tokyo            JP   False              1  GU
+MARIIX                       Mangilao         GU   True               5  GU, MP
+MegaIX Sydney                Sydney           AU   False              6  FJ, NC, PG, SB
+PNG Neutral IX Hagen         Mt Hagen         PG   True               1  PG
+PNG Neutral IX Lae           Lae              PG   True               2  PG
+PNG Neutral IX POM           Port Moresby     PG   True               9  PG
+SIX Seattle                  Seattle          US   False              1  GU
+VIX.VU                       Port Vila        VU   True               3  VU
 
 PATHWAY COVERAGE (per economy)
 ==============================================================================

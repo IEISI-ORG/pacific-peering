@@ -269,6 +269,7 @@ def render_html_report(data: ReportData, viz_dir: Path | None = Path("../viz")) 
             <td>{html.escape(ix.name)}</td><td>{html.escape(ix.city)}</td>
             <td>{html.escape(ix.country)}</td><td>{_bool_cell(ix.in_fishbowl)}</td>
             <td>{ix.member_count}</td>
+            <td>{html.escape(', '.join(ix.economies))}</td>
         </tr>"""
         for ix in data.ixps
     )
@@ -555,7 +556,7 @@ def render_html_report(data: ReportData, viz_dir: Path | None = Path("../viz")) 
     <h2>IXPs</h2>
     <table>
         <thead><tr><th>Name</th><th>City</th><th>CC</th><th>Region</th>
-            <th>Members</th></tr></thead>
+            <th>Members</th><th>Economies</th></tr></thead>
         <tbody>{ixp_rows}</tbody>
     </table>
 

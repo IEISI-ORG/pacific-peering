@@ -584,6 +584,7 @@ class IxpSummary:
     country: str
     in_fishbowl: bool | str
     member_count: int
+    economies: tuple[str, ...]  # distinct in-scope economies with a member ASN here
 
 
 @dataclass(frozen=True)
@@ -1015,9 +1016,14 @@ def build_report_data(
         )
 
     member_counts: dict[int, int] = {}
+    member_economies: dict[int, set[str]] = {}
     for asn_entry in fishbowl.values():
+        cc = asn_entry.get("economy", {}).get("cc")
         for ix in asn_entry.get("ixp_memberships", []):
-            member_counts[ix["ix_id"]] = member_counts.get(ix["ix_id"], 0) + 1
+            ix_id = ix["ix_id"]
+            member_counts[ix_id] = member_counts.get(ix_id, 0) + 1
+            if cc:
+                member_economies.setdefault(ix_id, set()).add(cc)
 
     ixps = tuple(
         IxpSummary(
@@ -1027,6 +1033,7 @@ def build_report_data(
             country=v["country"],
             in_fishbowl=v["in_fishbowl"],
             member_count=member_counts.get(int(ix_id), 0),
+            economies=tuple(sorted(member_economies.get(int(ix_id), set()))),
         )
         for ix_id, v in sorted(ixp_registry.items(), key=lambda kv: kv[1]["name"])
     )
