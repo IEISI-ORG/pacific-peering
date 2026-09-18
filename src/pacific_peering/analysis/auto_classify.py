@@ -89,6 +89,19 @@ _MAX_TARGET_IP_ATTEMPTS = 2  # primary + one alternate prefix, per the retry-on-
 _REVERIFY_FRACTION = 0.25  # oldest quarter each week -> full rotation roughly every 4 weeks
 _ASPA_RECHECK_MAX_AGE_DAYS = 30  # project owner's own cadence choice
 
+# A hop crossing a *local* (in_fishbowl=True) IXP should show fiber-propagation-
+# scale RTT, not international-detour-scale RTT -- per the project owner, real
+# fiber runs ~10 microseconds/km round-trip (2x the ~4.9us/km one-way speed of
+# light in standard single-mode fiber), so even Fiji's largest inter-island
+# span (a few hundred km) has a theoretical floor of a few ms, while any real
+# Sydney/Auckland/LA/Tokyo detour is tens to a hundred-plus ms -- an order-of-
+# magnitude physical separation, not a fitted statistical threshold (this
+# project has zero recorded genuinely-local-IXP RTT samples yet to fit one).
+# 10ms is a physically-grounded engineering margin for now, confirmed fiber
+# (not microwave/satellite) end to end; expect to push it down once real
+# local-IXP-crossing RTT data accumulates.
+LOCAL_IXP_LATENCY_THRESHOLD_MS = 10.0
+
 
 @dataclass
 class _Escalation:
@@ -229,6 +242,7 @@ def classify_corridor(
     local_transit_pick: dict | None = None
     candidate_picks: list[dict] = []
     tba_ixp_hit = False
+    high_latency_local_crossings: list[dict] = []
 
     for probe in triangulation["probes"]:
         for crossing in probe.get("ixp_crossings", []):
@@ -241,6 +255,10 @@ def classify_corridor(
                 hub_city = entry.city if entry else None
                 if hub_city in EXTERNAL_HUB_LATLON:
                     detour_pick = detour_pick or (crossing, crossing.get("name", "?"), hub_city)
+            elif in_fishbowl is True:
+                rtt = crossing.get("min_rtt_ms")
+                if rtt is not None and rtt > LOCAL_IXP_LATENCY_THRESHOLD_MS:
+                    high_latency_local_crossings.append({**crossing, "probe_id": probe["probe_id"]})
 
         upstream_asn = probe.get("traceroute_upstream_asn")
         if upstream_asn is None:
@@ -259,6 +277,23 @@ def classify_corridor(
                 reason="unclassified (TBA) IXP crossing",
                 detail="traceroute crosses an exchange ixp_lan_registry.json has not yet "
                 "been told is in- or out-of-fishbowl; needs a human call, not a guess",
+            )
+        )
+
+    for crossing in high_latency_local_crossings:
+        escalations.append(
+            _Escalation(
+                candidate=candidate,
+                measurement_id=measurement_id,
+                reason="local IXP crossing with implausibly high latency",
+                detail=(
+                    f"probe {crossing['probe_id']}: hop {crossing['hop']} crosses "
+                    f"{crossing.get('name', '?')} (in-fishbowl) at {crossing['min_rtt_ms']}ms, "
+                    f"above the {LOCAL_IXP_LATENCY_THRESHOLD_MS}ms local-fiber threshold -- "
+                    "either this hop isn't genuinely local despite the registry, or there's "
+                    "an unexpected detour/backhaul before reaching it; needs a human look, "
+                    "not a guess"
+                ),
             )
         )
 

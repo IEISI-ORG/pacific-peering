@@ -369,8 +369,14 @@ def analyze_measurement(
             }
             for entry in as_sequence
         ]
+        rtt_by_hop = {h["hop"]: h.get("min_rtt_ms") for h in traceroute["hops"]}
         ixp_crossings = [
-            {"hop": h.hop, "member_asns": list(h.asns), **h.ixp_context}
+            {
+                "hop": h.hop,
+                "member_asns": list(h.asns),
+                "min_rtt_ms": rtt_by_hop.get(h.hop),
+                **h.ixp_context,
+            }
             for h in resolved_hops
             if h.ixp_context is not None
         ]
