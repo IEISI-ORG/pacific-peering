@@ -43,7 +43,11 @@ from pathlib import Path
 from pacific_peering.analysis import store as _store
 from pacific_peering.analysis.fishbowl import DEFAULT_SUMMARY_PATH
 from pacific_peering.atlas.asn_probes import DEFAULT_REGISTRY_PATH, load_asn_probe_registry
-from pacific_peering.atlas.probes import DEFAULT_LISTING_PATH, load_probe_listing
+from pacific_peering.atlas.probe_geo_audit import (
+    DEFAULT_QUARANTINE_PATH,
+    is_asn_quarantined_for,
+    load_quarantine,
+)
 
 # Loaded from the SQLite store (analysis/store.py), not the legacy
 # confirmed_detours.py/confirmed_local_transit.py/candidate_peering.py
@@ -229,44 +233,12 @@ def detect_new_ris_neighbors(previous: dict, current_fishbowl: dict) -> set[tupl
     return new_pairs
 
 
-def _geographically_verified_domestic_sources(
-    probe_registry: dict[int, list[int]], listing_path: Path = DEFAULT_LISTING_PATH
-) -> dict[int, str]:
-    """ASNs whose own connected probe is *physically* in the economy this project tracks it under.
-
-    `run_smoketest` fires by Atlas's own "country" probe targeting
-    (`source_cc`), not by the specific source ASN -- so the real question
-    for domestic (same-economy) candidates is "does this ASN's connected
-    probe actually sit where we think it does", not just "which economy
-    does the registry file this ASN under". Regional organizations with one
-    ASN and campuses/offices spread across several countries (Pacific
-    Community/AS141695, University of the South Pacific/AS24390) break the
-    one-ASN-one-country assumption `fishbowl.json`'s economy tagging
-    otherwise relies on: USP's own tracked ASN is filed under FJ, but its
-    currently connected probe (11691) is live-geolocated in Tonga by
-    Atlas -- using it as a domestic FJ source would silently fire from a
-    Tongan vantage point while filing the resulting finding under AS24390.
-    Only matters for the domestic path: cross-economy candidates already
-    can't misfire this way in practice, because every economy in this
-    project's scope besides these regional orgs currently has at most one
-    ASN with a connected probe.
-    """
-    listing = load_probe_listing(listing_path)
-    verified: dict[int, str] = {}
-    for cc, probes in listing.items():
-        connected_asns = {p["asn_v4"] for p in probes if p["status"] == "Connected"}
-        for asn in connected_asns:
-            if asn in probe_registry:
-                verified[asn] = cc
-    return verified
-
-
 def enumerate_candidate_corridors(
     probe_registry_path: Path = DEFAULT_REGISTRY_PATH,
     fishbowl_path: Path = DEFAULT_SUMMARY_PATH,
     tested_pairs_path: Path = DEFAULT_TESTED_PAIRS_PATH,
     snapshot_path: Path = DEFAULT_SNAPSHOT_PATH,
-    probe_listing_path: Path = DEFAULT_LISTING_PATH,
+    quarantine_path: Path = DEFAULT_QUARANTINE_PATH,
 ) -> list[CorridorCandidate]:
     """Build the ranked list of untested (source ASN, target ASN) pairs.
 
@@ -276,9 +248,16 @@ def enumerate_candidate_corridors(
     in `fishbowl.json`, which mirrors the same RIS fetch `pick_target_ip`
     relies on). Cross-economy pairs are always proposed -- domestic pairs
     only for economies in `DOMESTIC_TEST_ECONOMIES` (see that constant's
-    docstring for why domestic testing is opt-in, not blanket), and only
-    when the source ASN's own probe is geographically verified to actually
-    sit in that economy (see `_geographically_verified_domestic_sources`).
+    docstring for why domestic testing is opt-in, not blanket). Both kinds
+    exclude a source ASN whose only connected probe(s) are quarantined
+    against its claimed economy (`atlas.probe_geo_audit`'s persisted
+    `probe_quarantine.json`) -- `run_smoketest` fires by Atlas's own
+    "country" probe targeting, not the specific source ASN, so a source
+    ASN whose probe isn't geographically confirmed in the economy it's
+    filed under would silently fire from wherever that probe really is
+    while filing the resulting finding under the wrong ASN/economy (see
+    `atlas.probe_geo_audit`'s module docstring for the AS24390/AS141695
+    cases this caught).
 
     Excludes: external/proxy ASNs (`EXTERNAL_NON_CANDIDATE_ASNS`), any
     exact ASN pair already tested (`tested_pairs.json` + the two
@@ -295,9 +274,7 @@ def enumerate_candidate_corridors(
     """
     probe_registry = load_asn_probe_registry(probe_registry_path)
     fishbowl = json.loads(fishbowl_path.read_text())
-    verified_domestic_sources = _geographically_verified_domestic_sources(
-        probe_registry, probe_listing_path
-    )
+    quarantine = load_quarantine(quarantine_path)
     tested_pairs = _load_tested_pairs(tested_pairs_path) | _tested_pairs_from_findings()
     tested_economy_pairs = _tested_economy_pairs_from_findings()
     snapshot = _load_snapshot(snapshot_path)
@@ -326,6 +303,8 @@ def enumerate_candidate_corridors(
         source_cc = asn_cc.get(source_asn)
         if source_cc is None:
             continue
+        if is_asn_quarantined_for(source_asn, source_cc, quarantine):
+            continue
         for target_asn in target_asns:
             if source_asn == target_asn:
                 continue
@@ -334,8 +313,6 @@ def enumerate_candidate_corridors(
                 continue
             is_domestic = target_cc == source_cc
             if is_domestic and source_cc not in DOMESTIC_TEST_ECONOMIES:
-                continue
-            if is_domestic and verified_domestic_sources.get(source_asn) != source_cc:
                 continue
             pair = (source_asn, target_asn)
             reverse_pair = (target_asn, source_asn)
