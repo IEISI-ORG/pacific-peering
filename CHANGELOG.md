@@ -2074,3 +2074,79 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   respectively - see `task_plan.md`), and add a consolidated
   "current open items" list, including a queued full code review of
   Phases 6-8's fast-shipped code.
+- fix(fj): reclassify AS141695 (Pacific Community) as Fiji, not New
+  Caledonia - its only connected probe (60575) live-geolocates to
+  Suva and its own Atlas description reads "Pacific Community, Suva,
+  Fiji"; both RIS-observed neighbors are Fiji ASNs, none in NC.
+  Relabeled the two `confirmed_detour` findings (FJ->KI via AS134783
+  and AS154100) fired from this probe, previously attributed to NC.
+  Removed the now-stale Zscaler `KNOWN_ISSUES` note on Fiji's probe in
+  `probe_gap_report.py` (the probe moved off Zscaler on 2026-09-17),
+  and added a Local IXP Presence section to that report (real
+  same-country exchanges this project's tracked ASNs belong to, e.g.
+  Fiji-IXP/Suva - a different question from Atlas probe coverage).
+- feat(analysis): opt-in domestic corridor testing
+  (`DOMESTIC_TEST_ECONOMIES` in `corridor_backlog.py`, starting with
+  FJ) - `enumerate_candidate_corridors` had excluded every
+  same-economy pair unconditionally, so a domestic detour (two ASNs
+  in the same country routing through an external hub) could never be
+  found automatically: 0 of 160 confirmed detours were domestic,
+  project-wide, not just Fiji.
+- feat(analysis): flag implausibly high latency on local IXP
+  crossings - a hop crossing a known, in-fishbowl exchange should show
+  fiber-propagation-scale RTT (~10 microseconds/km round-trip), not
+  international-detour-scale RTT. Surfaced `min_rtt_ms` on every
+  `ixp_crossings` entry in `traceroute_topology.py` and added a new
+  `auto_classify.py` escalation above `LOCAL_IXP_LATENCY_THRESHOLD_MS`
+  (10ms for now - a physically-grounded engineering margin, not a
+  fitted statistic; expect to tighten once real local-IXP RTT data
+  accumulates).
+- fix(corridor-backlog): trust each connected probe's own live
+  `country_code` for *source* selection instead of the ASN registry -
+  confirmed via two probes' own Atlas descriptions ("Pacific
+  Community, Suva, Fiji"; "USP Tonga Campus"), both matching their
+  live location exactly, neither matching what the ASN registry alone
+  would have implied. `_probe_live_cc_by_asn` in `corridor_backlog.py`
+  now groups each ASN's connected probes by live economy; a single ASN
+  can produce candidates for more than one economy if its probes sit
+  in different countries (e.g. AS7131/Docomo Pacific: Guam and the
+  Northern Mariana Islands). Real capability gain, not just a bugfix:
+  AS24390 (University of the South Pacific) is now a correct Tonga
+  source rather than an excluded mislabeled-Fiji one - Tonga had zero
+  usable sources before this. `atlas/probe_geo_audit.py` (new) is a
+  standalone, persisted audit of every tracked probe's live location
+  against the ASN registry, wired into `pacific-peering-pipeline` as
+  its final step; no longer consulted at runtime by corridor_backlog.py
+  (superseded by trusting live location directly).
+- fix(discovery): add `discovery/reclassified_asns.py`
+  (`RECLASSIFIED_ASNS`), applied last in `build_registry()` - a
+  regenerated `asn_registry.json` was silently reverting the AS141695
+  NC->FJ fix back to NC on every discovery refresh, since that file is
+  rebuilt fresh from live APNIC delegation data each time. Scoped
+  narrowly to AS141695 specifically, not a general mechanism: unlike
+  AS24390 (a genuinely multi-country regional network whose *core*
+  identity/aggregate gateway address is still correctly Fiji - its one
+  Tonga probe is a real but narrow exception, already handled on the
+  source side), AS141695's entire visible footprint (its one probe,
+  both RIS-observed neighbors) points to Fiji, not just one data point
+  among several.
+- fix(findings): retract finding 25 (FJ->VU via AS9249, USP
+  inter-campus corridor) - its raw hop data (measurement 212236337)
+  showed private IPs followed by Zscaler-range addresses, meaning it
+  was measured while probe 60575 was still behind the Zscaler
+  corporate VPN; the AS-path narrative in its `legacy_note` doesn't
+  reflect real network behavior. Removed the finding and its
+  corroboration, and un-marked `(24390, 9249)` as tested so a genuine
+  retest can happen (now correctly sourced from whichever economy
+  AS24390's probe actually reports).
+- docs(atlas): note in `atlas/targets.py` that a target IP needs the
+  same care as a source probe before trusting its economy label - a
+  single ASN can announce geographically-separate prefixes (confirmed
+  live: AS24390's `144.120.0.0/16` spans multiple countries). Checked
+  the one live case this project has (AS24390's five existing
+  target-side findings, all landing on the identical deterministic
+  `144.120.0.1` since `pick_target_ip` always returns the same address
+  per ASN): correctly Fiji, per that address's own route-object
+  `descr` ("Laucala Bay Campus", USP's real Fiji HQ) - not a bug, but
+  worth checking again for the next multi-prefix target ASN rather
+  than assumed safe by default.

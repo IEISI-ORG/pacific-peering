@@ -3,6 +3,25 @@
 Reuses the Phase 1a RIS cache (`data/ris/raw/<asn>.json`) rather than
 re-querying RIPEstat, since real originated prefixes are already on disk
 for every in-scope ASN.
+
+**For future reference, per the project owner: verify (geolocate) the
+specific target IP with care before trusting its economy label, not just
+the target ASN's registry classification.** The source-side equivalent
+of this (trusting a probe's own live location over the ASN registry) is
+already handled in `corridor_backlog._probe_live_cc_by_asn` -- but a
+target has no probe to self-report a location, so this needs a
+different check: a single ASN can announce many geographically-separate
+prefixes (a real, now-confirmed live case: AS24390/University of the
+South Pacific's `144.120.0.0/16` covers campuses in multiple countries,
+not just its Fiji headquarters). `pick_target_ip` always returns the
+same deterministic address per ASN (first sorted prefix, first host) --
+which is exactly why this only needs checking once per ASN, not once
+per measurement, and why AS24390's five existing target-side findings
+all landed on the identical `144.120.0.1` and could be verified as one
+case (confirmed genuinely Fiji: that address's own route object `descr`
+reads "Laucala Bay Campus", USP's real Fiji HQ -- correct as filed, not
+a bug, but a near miss worth checking again for the next multi-prefix
+target ASN rather than assumed safe by default).
 """
 
 from __future__ import annotations

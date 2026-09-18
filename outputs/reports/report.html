@@ -69,7 +69,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
 <body>
 <div class="wrap">
     <h1>Pacific Peering — Regional Routing Report</h1>
-    <div class="meta">Generated 2026-09-18T23:41:55.543162+00:00</div>
+    <div class="meta">Generated 2026-09-18T23:56:47.589204+00:00</div>
 
     <div class="headline-banner">
         <span class="value">57%</span>
@@ -80,13 +80,13 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
     </div>
 
     <div class="stat-row">
-        <div class="stat-tile"><div class="value">193</div><div class="label">Pathways found (total)</div></div>
+        <div class="stat-tile"><div class="value">192</div><div class="label">Pathways found (total)</div></div>
         <div class="stat-tile"><div class="value">33</div><div class="label">Internal (never leave the fish bowl)</div></div>
-        <div class="stat-tile red-box"><div class="value">160</div>
+        <div class="stat-tile red-box"><div class="value">159</div>
             <div class="label">External / Leaves the region</div></div>
     </div>
     <p class="section-intro">Full corridor-by-corridor detail for all
-        193 pathways above is further down this report
+        192 pathways above is further down this report
         (Confirmed sub-optimal routes / Confirmed local transit / Candidate
         peering), collapsed by default so it doesn't dominate the page &mdash;
         click any of those section headings to expand.</p>
@@ -380,7 +380,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <th>Dependent economies</th></tr></thead>
         <tbody><tr>
             <td>Sydney</td>
-            <td>95</td>
+            <td>94</td>
             <td>59%</td>
             <td>25</td>
             <td>Melanesia, Micronesia, Polynesia</td>
@@ -388,7 +388,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
         </tr><tr>
             <td>Los Angeles</td>
             <td>36</td>
-            <td>22%</td>
+            <td>23%</td>
             <td>7</td>
             <td>Melanesia, Micronesia, Polynesia</td>
             <td>FJ, FM, GU, MH, NR, PF, WF</td>
@@ -471,7 +471,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
 
     <details class="section-toggle">
         <summary>Confirmed sub-optimal routes (RIS + Atlas both agree)
-            <span class="count">(160)</span></summary>
+            <span class="count">(159)</span></summary>
         <div class="detour-card">
             <div class="headline">NC -&gt; FJ
                 (AS4638): detours via MegaIX Sydney
@@ -507,13 +507,6 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <div>RIS observation count: 71
                 &middot; measurement 212048367</div>
             <details class="note"><summary>Tuvalu (AS23917) -&gt; Teleguam Holdings/GTA (AS9246) -- **first-ever confirmation with AS9246 as the actual target** (every prior appearance in this dataclass…</summary>Tuvalu (AS23917) -&gt; Teleguam Holdings/GTA (AS9246) -- **first-ever confirmation with AS9246 as the actual target** (every prior appearance in this dataclass had AS9246 as an intermediate hop en route to a different final target). `AS23917 -&gt; AS9241 (FINTEL) -&gt; AS6939 (Hurricane Electric) -&gt; AS9246`, fully contiguous, RIS-agreeing with the identical exact match (71) -- a notably thinner observation count than most adjacencies on record, but an exact match is an exact match. Crosses **Equinix Sydney** first (`ixp_crossings` confirms it, member AS6939), then lands directly inside AS9246&#x27;s own registered LAN prefix at **Any2West** (`ixp_crossings` confirms it too, member AS9246 itself) -- Any2West is based in Los Angeles, the same hub already established for AS9246&#x27;s other appearances in this dataclass. Notable: Tuvalu&#x27;s own outbound path transits FINTEL (Fiji) before ever reaching Hurricane Electric -- consistent with FINTEL&#x27;s role as Tuvalu&#x27;s dominant, near-exclusive real upstream, already extensively documented in `confirmed_local_transit`.</details>
-        </div><div class="detour-card">
-            <div class="headline">FJ -&gt; VU
-                (AS9249): detours via MegaIX Sydney
-                (Sydney)</div>
-            <div>RIS observation count: 1346
-                &middot; measurement 211239396</div>
-            <details class="note"><summary>Fiji -&gt; Telecom Vanuatu (AS9249), but sourced from a genuinely different, institutionally-motivated vantage point: AS24390, the University of the South…</summary>Fiji -&gt; Telecom Vanuatu (AS9249), but sourced from a genuinely different, institutionally-motivated vantage point: AS24390, the University of the South Pacific&#x27;s own network (Fiji-based, but with a real campus in Vanuatu -- Emalus Campus -- making this an actual inter-campus corridor, not an arbitrary ASN pair). Picked from the ASN probe registry precisely because AS24390&#x27;s only RIS-observed neighbor at all is AS7575 (AARNet, Australia&#x27;s research/education network) -- worth testing directly rather than assumed, given ARENA-PAC/GOREX&#x27;s Pacific-research-network relevance surfaced earlier this session. Confirmed: the path runs AS24390 -&gt; AS7575 (AARNet) -&gt; AS38442 (Vodafone Fiji, resolved via PeeringDB netixlan) -&gt; crosses MegaIX Sydney -&gt; AS9249. Upstream of the target is AS38442, matching RIS&#x27;s independently-observed count *exactly* (1,346) -- the identical count already on record for this project&#x27;s very first confirmed finding (AS38442&lt;-&gt;AS9249, see confirmed_local_transit.py), now independently reinforced from a third vantage point and a genuinely different source network. The final hop (AS38442&#x27;s own address to AS9249&#x27;s) shows `contiguous: false`, but checked directly against the raw hop data before accepting that at face value: hop 11 returned no address at all (a true ICMP timeout, not a private-address artifact the recent RFC1918 fix would catch), so this is a genuine unresolved final hop, not a resolver limitation -- consistent with how this exact adjacency&#x27;s last leg has read in every prior measurement of it. **The real, new finding here isn&#x27;t the AS38442&lt;-&gt;AS9249 adjacency itself (already this project&#x27;s most solid) -- it&#x27;s that a Pacific regional university&#x27;s own inter-campus traffic, between two islands roughly 1,100km apart, detours all the way out to Australia and back rather than routing directly within the region**, exactly the kind of sub-optimal transpacific routing this project exists to document. Only 1 of 3 requested probes returned in time; not re-fired for the other two, since the one result already lands on an extremely well-characterized adjacency with an exact RIS match -- a small-tranche judgment call, not a data gap that changes the finding.</details>
         </div><div class="detour-card">
             <div class="headline">GU -&gt; VU
                 (AS9249): detours via Level 3/Lumen (AS3356) + AS4637 (Telstra Global) -- international transit
@@ -2334,7 +2327,7 @@ NU(AS55885) -&gt; AS150403: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS139609 -&
         </tr><tr>
             <td>NU</td><td>Niue</td>
             <td>Polynesia</td>
-            <td>1</td><td>1</td><td>0</td>
+            <td>1</td><td>1</td><td>1</td>
             <td>3</td>
         </tr><tr>
             <td>PW</td><td>Palau</td>
@@ -2354,7 +2347,7 @@ NU(AS55885) -&gt; AS150403: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS139609 -&
         </tr><tr>
             <td>GU</td><td>Guam</td>
             <td>Micronesia</td>
-            <td>10</td><td>14</td><td>5</td>
+            <td>10</td><td>14</td><td>6</td>
             <td>1</td>
         </tr><tr>
             <td>NC</td><td>New Caledonia</td>
@@ -2379,7 +2372,7 @@ NU(AS55885) -&gt; AS150403: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS139609 -&
         </tr><tr>
             <td>FM</td><td>Micronesia, Federated States of</td>
             <td>Micronesia</td>
-            <td>6</td><td>6</td><td>3</td>
+            <td>6</td><td>6</td><td>2</td>
             <td>0</td>
         </tr></tbody>
     </table>

@@ -32,6 +32,7 @@ from pacific_peering.analysis.fishbowl import build_fishbowl
 from pacific_peering.analysis.irr_leads import build_irr_leads
 from pacific_peering.analysis.ixp_lan_registry import build_ixp_lan_registry
 from pacific_peering.atlas.asn_probes import build_asn_probe_registry
+from pacific_peering.atlas.probe_geo_audit import audit_tracked_probes, write_quarantine
 from pacific_peering.discovery.registry import build_registry
 
 logger = logging.getLogger(__name__)
@@ -75,7 +76,14 @@ def _summarize(step_name: str, result: Any) -> dict:
             "asns_with_connected_probe": len(result),
             "total_connected_probes": sum(len(ids) for ids in result.values()),
         }
+    if step_name == "probe_geo_audit":
+        return {"probes_quarantined": len(result)}
     return {}
+
+
+def _run_probe_geo_audit() -> dict:
+    """Audit step wrapper: depends on the freshly-rebuilt asn_probe_registry above."""
+    return write_quarantine(audit_tracked_probes())
 
 
 def run_pipeline(runs_dir: Path = DEFAULT_RUNS_DIR) -> dict:
@@ -83,9 +91,13 @@ def run_pipeline(runs_dir: Path = DEFAULT_RUNS_DIR) -> dict:
 
     Steps: ASN registry -> fish bowl (RIS + IXP membership + facility
     presence) -> IXP LAN subnet registry -> IRR AS-SET leads -> ASN
-    probe registry. Each step's failure is caught and recorded rather
-    than aborting the whole run, so a transient upstream API issue in
-    one step doesn't prevent the others from completing.
+    probe registry -> probe geo-audit. Each step's failure is caught and
+    recorded rather than aborting the whole run, so a transient upstream
+    API issue in one step doesn't prevent the others from completing.
+    The final step re-checks every connected probe's live Atlas location
+    against this project's ASN registry (see `atlas.probe_geo_audit`) --
+    read-only, no credits, but only meaningful once asn_probe_registry
+    is current, hence running last.
 
     Args:
         runs_dir: Directory to write this run's timestamped manifest under.
@@ -104,6 +116,7 @@ def run_pipeline(runs_dir: Path = DEFAULT_RUNS_DIR) -> dict:
         ("ixp_lan_registry", build_ixp_lan_registry),
         ("irr_leads", build_irr_leads),
         ("asn_probe_registry", build_asn_probe_registry),
+        ("probe_geo_audit", _run_probe_geo_audit),
     ]
 
     for name, step in steps:

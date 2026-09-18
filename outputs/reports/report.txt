@@ -1,6 +1,6 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-09-18T23:41:54.414744+00:00                  
+                 Generated: 2026-09-18T23:56:46.458316+00:00                  
 ==============================================================================
 
 SUMMARY
@@ -8,9 +8,9 @@ SUMMARY
 HEADLINE: 57% of the real peering points this region's own networks use sit OUTSIDE the fish bowl (13 of 23)
 
 PATHWAYS (every corridor with a filed finding, of any kind):
-  Total pathways found:                    193
+  Total pathways found:                    192
   Internal (never leave the fish bowl):    33
-  External / Leaves the region:            160
+  External / Leaves the region:            159
   (full corridor-by-corridor detail -- every confirmed detour, confirmed local transit, and candidate peering entry -- is in the appendix at the end of this report, not repeated here)
 
 Economies in scope:            20
@@ -103,9 +103,9 @@ The mirror image of the regional hubs above: the real external cities where conf
 
 City           Entries  Share Carriers Subregions reached            
 ------------------------------------------------------------------------------
-Sydney              95    59%       25 Melanesia, Micronesia, Polynesia
+Sydney              94    59%       25 Melanesia, Micronesia, Polynesia
     Dependent economies: AS, CK, FJ, KI, MH, NC, NR, PG, PW, SB, TO, VU, WS
-Los Angeles         36    22%        7 Melanesia, Micronesia, Polynesia
+Los Angeles         36    23%        7 Melanesia, Micronesia, Polynesia
     Dependent economies: FJ, FM, GU, MH, NR, PF, WF
 Tokyo               21    13%        8 Melanesia, Micronesia, Polynesia
     Dependent economies: AS, CK, FJ, MH, NC, NR, PW, SB, VU, WF
@@ -244,16 +244,16 @@ WF   Wallis and Futuna                Polynesia        1       0       0        
 WS   Samoa                            Polynesia       10       3       0         7
 TV   Tuvalu                           Polynesia        3       1       1         4
 MP   Northern Mariana Islands         Micronesia       2       6       3         3
-NU   Niue                             Polynesia        1       1       0         3
+NU   Niue                             Polynesia        1       1       1         3
 PW   Palau                            Micronesia       3       3       1         3
 CK   Cook Islands                     Polynesia        2       6       1         1
 FJ   Fiji                             Melanesia       21      20       2         1
-GU   Guam                             Micronesia      10      14       5         1
+GU   Guam                             Micronesia      10      14       6         1
 NC   New Caledonia                    Melanesia       18      20       5         1
 PF   French Polynesia                 Polynesia        6       9       6         1
 PG   Papua New Guinea                 Melanesia       38      10       1         1
 VU   Vanuatu                          Melanesia       12       5       2         1
-FM   Micronesia, Federated States of  Micronesia       6       6       3         0
+FM   Micronesia, Federated States of  Micronesia       6       6       2         0
 
 APPENDIX: LOW DATA QUALITY ISSUES (2 known, resolved)
 ==============================================================================
@@ -265,7 +265,7 @@ AS24013 (SB Professional Services) -- registered SB  [DNS anycast infrastructure
 AS137064 (ISC-AS-POM1) -- registered PG  [DNS anycast infrastructure, opportunistically registered]
     Surfaced by a direct sanity check on ABQIX (Albuquerque, US, ix_id 3322, already correctly out-of-fishbowl): asked which in-scope Pacific ASN is a real member there, expecting the answer to matter. Cross-checked two independent sources before excluding, same as AS24013: bgp.tools names it "ISC F-ROOT ABQ1"; PeeringDB's own `net` record gives `aka: F-ROOT`, `info_type: Network Services`; RIPEstat WHOIS gives the authoritative `as-name: ISC-AS-POM1` with `descr: For use by ISC/F-Root exclusively for announcements at POM1/PNGIXP` (POM1 = Port Moresby, PNG's own IXP). All three agree: this is ISC's F-root DNS anycast infrastructure, not a Papua New Guinea network with a real footprint in Albuquerque -- its PG registration reflects where ISC arranged BGP announcement for this specific instance (PNGIXP), not a genuine local operator. Checked for siblings before excluding just this one ASN: swept all 163 then-in-scope ASNs' bgp.tools names and PeeringDB net names/akas for anycast-DNS-operator keywords (root, isc, verisign, netnod, icann, pch, quad9, opendns, cloudflare, google, etc.) -- one other hit (AS139609/SISCC) was a false positive ("isc" substring-matching inside "SISCC"'s own `aka", a real, already-extensively-verified Solomon Islands submarine cable operator), no other genuine anycast instance found. No prior findings or tested-pairs history involved AS137064 -- a clean exclusion, nothing else to unwind.
 
-APPENDIX: FULL CORRIDOR DETAIL (193 pathways -- see the PATHWAYS summary at the top of this report for the plain counts)
+APPENDIX: FULL CORRIDOR DETAIL (192 pathways -- see the PATHWAYS summary at the top of this report for the plain counts)
 ==============================================================================
 
 Confirmed sub-optimal routes (RIS + Atlas both agree)
@@ -285,9 +285,6 @@ NU -> GU (AS9246): detours via Any2West (Los Angeles)
 TV -> GU (AS9246): detours via Any2West (Los Angeles)
     RIS observation count: 71  [measurement 212048367]
     Tuvalu (AS23917) -> Teleguam Holdings/GTA (AS9246) -- **first-ever confirmation with AS9246 as the actual target** (every prior appearance in this dataclass had AS9246 as an intermediate hop en route to a different final target). `AS23917 -> AS9241 (FINTEL) -> AS6939 (Hurricane Electric) -> AS9246`, fully contiguous, RIS-agreeing with the identical exact match (71) -- a notably thinner observation count than most adjacencies on record, but an exact match is an exact match. Crosses **Equinix Sydney** first (`ixp_crossings` confirms it, member AS6939), then lands directly inside AS9246's own registered LAN prefix at **Any2West** (`ixp_crossings` confirms it too, member AS9246 itself) -- Any2West is based in Los Angeles, the same hub already established for AS9246's other appearances in this dataclass. Notable: Tuvalu's own outbound path transits FINTEL (Fiji) before ever reaching Hurricane Electric -- consistent with FINTEL's role as Tuvalu's dominant, near-exclusive real upstream, already extensively documented in `confirmed_local_transit`.
-FJ -> VU (AS9249): detours via MegaIX Sydney (Sydney)
-    RIS observation count: 1346  [measurement 211239396]
-    Fiji -> Telecom Vanuatu (AS9249), but sourced from a genuinely different, institutionally-motivated vantage point: AS24390, the University of the South Pacific's own network (Fiji-based, but with a real campus in Vanuatu -- Emalus Campus -- making this an actual inter-campus corridor, not an arbitrary ASN pair). Picked from the ASN probe registry precisely because AS24390's only RIS-observed neighbor at all is AS7575 (AARNet, Australia's research/education network) -- worth testing directly rather than assumed, given ARENA-PAC/GOREX's Pacific-research-network relevance surfaced earlier this session. Confirmed: the path runs AS24390 -> AS7575 (AARNet) -> AS38442 (Vodafone Fiji, resolved via PeeringDB netixlan) -> crosses MegaIX Sydney -> AS9249. Upstream of the target is AS38442, matching RIS's independently-observed count *exactly* (1,346) -- the identical count already on record for this project's very first confirmed finding (AS38442<->AS9249, see confirmed_local_transit.py), now independently reinforced from a third vantage point and a genuinely different source network. The final hop (AS38442's own address to AS9249's) shows `contiguous: false`, but checked directly against the raw hop data before accepting that at face value: hop 11 returned no address at all (a true ICMP timeout, not a private-address artifact the recent RFC1918 fix would catch), so this is a genuine unresolved final hop, not a resolver limitation -- consistent with how this exact adjacency's last leg has read in every prior measurement of it. **The real, new finding here isn't the AS38442<->AS9249 adjacency itself (already this project's most solid) -- it's that a Pacific regional university's own inter-campus traffic, between two islands roughly 1,100km apart, detours all the way out to Australia and back rather than routing directly within the region**, exactly the kind of sub-optimal transpacific routing this project exists to document. Only 1 of 3 requested probes returned in time; not re-fired for the other two, since the one result already lands on an extremely well-characterized adjacency with an exact RIS match -- a small-tranche judgment call, not a data gap that changes the finding.
 GU -> VU (AS9249): detours via Level 3/Lumen (AS3356) + AS4637 (Telstra Global) -- international transit (Sydney)
     RIS observation count: 1346  [measurement 211334940]
     Guam Cablevision (AS3605) -> Telecom Vanuatu (AS9249) -- pulled from the corridor backlog's top pick: a genuinely untested GU<->VU economy pair. Both probes: AS3605 -> AS3356 (Level 3/Lumen) -> AS4637 (Telstra Global) -> AS38442 (Vodafone Fiji) -> AS9249. Upstream of the target is AS38442, RIS-agreeing with an *exact* match (1,346) -- this project's very first confirmed finding, now independently reinforced a **sixth** time, from a sixth distinct source network (after AS18200/OPT NC, AS45345/Nautile, AS56089/OFFRATEL, AS24390/USP, and AS17828/PNG DataCo). The final AS38442->AS9249 leg shows a single silent (non-responding) hop immediately before the target on both probes -- checked directly, not assumed: the same ordinary ICMP-filtering-right-at-the-destination pattern already seen in essentially every measurement that has ever targeted AS9249 this session, not a new or unusual gap. No IXP crossing this time (`ixp_crossings` empty) -- plain Tier-1 transit (Level 3/Lumen then Telstra Global), the same no-named-exchange shape as the AS17828->AS9249 and AS3605->AS9241 entries. Six independent, differently-sourced measurements landing on one identical adjacency, all with exact observation-count matches, is about as strong a single fact as this project has produced.

@@ -19,6 +19,15 @@ ASNs APNIC *does* delegate to an in-scope economy but that this
 project has individually verified aren't real Pacific networks (e.g.
 AS24013/DNS.SB, a global anycast DNS resolver opportunistically
 registered under a Solomon Islands country code).
+
+It also moves `discovery.reclassified_asns.RECLASSIFIED_ASNS` — ASNs
+APNIC delegates to one economy (typically a regional organization's
+registered headquarters) but whose real, verified Pacific presence
+this project cares about is physically in a different one (e.g.
+AS141695/Pacific Community: delegated to New Caledonia, but its only
+connected probe is in Fiji). Applied last, so it survives every future
+`build_registry()` refresh instead of being a one-off hand-edit to the
+generated output that the next refresh would silently undo.
 """
 
 from __future__ import annotations
@@ -31,6 +40,7 @@ from typing import TypedDict
 from pacific_peering.discovery.apnic_stats import fetch_delegated_stats, parse_asn_allocations
 from pacific_peering.discovery.economies import ECONOMIES
 from pacific_peering.discovery.excluded_asns import EXCLUDED_ASNS
+from pacific_peering.discovery.reclassified_asns import RECLASSIFIED_ASNS
 from pacific_peering.discovery.supplementary_asns import SUPPLEMENTARY_ASNS
 
 logger = logging.getLogger(__name__)
@@ -71,6 +81,11 @@ def build_registry(output_path: Path = DEFAULT_OUTPUT_PATH) -> dict[str, Economy
     for excluded in EXCLUDED_ASNS:
         if excluded.asn in registry[excluded.country_cc]["asns"]:
             registry[excluded.country_cc]["asns"].remove(excluded.asn)
+    for reclassified in RECLASSIFIED_ASNS:
+        if reclassified.asn in registry[reclassified.from_cc]["asns"]:
+            registry[reclassified.from_cc]["asns"].remove(reclassified.asn)
+        if reclassified.asn not in registry[reclassified.to_cc]["asns"]:
+            registry[reclassified.to_cc]["asns"].append(reclassified.asn)
     for entry in registry.values():
         entry["asns"].sort()
 
