@@ -17,17 +17,23 @@ Two real cases found this way (2026-09-19): AS141695 (Pacific Community)
 was tracked as New Caledonia but its only connected probe live-geolocates
 to Fiji (since reclassified); AS24390 (University of the South Pacific) is
 correctly tracked as Fiji for the organization, but its only connected
-probe live-geolocates to Tonga, a real USP satellite campus -- not
-reclassified, since USP genuinely has a Fiji home base, but quarantined
-from being used as a Fiji source (see `load_quarantine`).
+probe live-geolocates to Tonga, a real USP satellite campus (confirmed
+directly from the probe's own Atlas description: "USP Tonga Campus").
 
-This checks every ASN in `asn_probe_registry.json` (i.e. every ASN this
+Per the project owner: for *source selection*, trust each probe's own
+live location over the ASN registry outright, rather than gating on a
+mismatch -- `corridor_backlog.enumerate_candidate_corridors` now builds
+sources from `_probe_live_cc_by_asn` directly, so AS24390 is simply a
+correct Tonga source there, not a quarantined Fiji one (a real capability
+gain: Tonga had zero previously-usable sources). This module's job is
+narrower now -- a standalone audit report that surfaces when an ASN's
+*own* registry classification doesn't match any of its connected probes,
+which is exactly the signal that prompted reclassifying AS141695. It
+checks every ASN in `asn_probe_registry.json` (i.e. every ASN this
 project could actually fire a measurement from) against each of its
 connected probes' live Atlas country_code and geometry -- 20 economies'
 worth of ASNs is a handful of probes, so a live per-probe API call each
-run is cheap and avoids trusting a geographic classification that could
-have gone stale (probes reconnect on different networks; RIPE Atlas
-`country_code` is authoritative for where the equipment actually is).
+run is cheap.
 """
 
 from __future__ import annotations

@@ -43,11 +43,8 @@ from pathlib import Path
 from pacific_peering.analysis import store as _store
 from pacific_peering.analysis.fishbowl import DEFAULT_SUMMARY_PATH
 from pacific_peering.atlas.asn_probes import DEFAULT_REGISTRY_PATH, load_asn_probe_registry
-from pacific_peering.atlas.probe_geo_audit import (
-    DEFAULT_QUARANTINE_PATH,
-    is_asn_quarantined_for,
-    load_quarantine,
-)
+from pacific_peering.atlas.probes import DEFAULT_LISTING_PATH, load_probe_listing
+from pacific_peering.discovery.economies import ECONOMIES_BY_CC
 
 # Loaded from the SQLite store (analysis/store.py), not the legacy
 # confirmed_detours.py/confirmed_local_transit.py/candidate_peering.py
@@ -122,6 +119,37 @@ SEED_TESTED_ECONOMY_PAIRS: frozenset[tuple[str, str]] = frozenset(
         ]
     }
 )
+
+
+def _probe_live_cc_by_asn(
+    probe_registry: dict[int, list[int]], listing_path: Path = DEFAULT_LISTING_PATH
+) -> dict[int, set[str]]:
+    """For each ASN with a connected probe, which economies its probes are *actually* live in.
+
+    Per the project owner: trust each probe's own Atlas-reported
+    country_code over this project's ASN-level registry classification --
+    a probe's own live location is ground truth (confirmed independently
+    from two probes' own `description` fields: 60575 reads "Pacific
+    Community, Suva, Fiji", 11691 reads "USP Tonga Campus", both matching
+    their live country_code exactly), whereas the ASN registry answers a
+    different question (who legally operates the network, per WHOIS/
+    APNIC), not where a specific measurement physically originates.
+
+    A single ASN can map to more than one live economy when its
+    connected probes sit in different countries -- e.g. AS7131 (Docomo
+    Pacific): two probes live in Guam, one in the Northern Mariana
+    Islands. Each becomes its own independent, correctly-labeled source.
+    """
+    listing = load_probe_listing(listing_path)
+    live_cc_by_probe = {
+        p["id"]: cc for cc, probes in listing.items() for p in probes if p["status"] == "Connected"
+    }
+    result: dict[int, set[str]] = {}
+    for asn, probe_ids in probe_registry.items():
+        ccs = {live_cc_by_probe[pid] for pid in probe_ids if pid in live_cc_by_probe}
+        if ccs:
+            result[asn] = ccs
+    return result
 
 
 @dataclass(frozen=True)
@@ -238,26 +266,31 @@ def enumerate_candidate_corridors(
     fishbowl_path: Path = DEFAULT_SUMMARY_PATH,
     tested_pairs_path: Path = DEFAULT_TESTED_PAIRS_PATH,
     snapshot_path: Path = DEFAULT_SNAPSHOT_PATH,
-    quarantine_path: Path = DEFAULT_QUARANTINE_PATH,
+    probe_listing_path: Path = DEFAULT_LISTING_PATH,
 ) -> list[CorridorCandidate]:
-    """Build the ranked list of untested (source ASN, target ASN) pairs.
+    """Build the ranked list of untested (source ASN, source economy, target ASN) pairs.
 
-    Scope, deliberately: sources are every ASN with a connected Atlas
-    probe (the only kind this project can actually traceroute from);
-    targets are every in-scope ASN with cached RIS prefix data (anything
-    in `fishbowl.json`, which mirrors the same RIS fetch `pick_target_ip`
-    relies on). Cross-economy pairs are always proposed -- domestic pairs
-    only for economies in `DOMESTIC_TEST_ECONOMIES` (see that constant's
-    docstring for why domestic testing is opt-in, not blanket). Both kinds
-    exclude a source ASN whose only connected probe(s) are quarantined
-    against its claimed economy (`atlas.probe_geo_audit`'s persisted
-    `probe_quarantine.json`) -- `run_smoketest` fires by Atlas's own
-    "country" probe targeting, not the specific source ASN, so a source
-    ASN whose probe isn't geographically confirmed in the economy it's
-    filed under would silently fire from wherever that probe really is
-    while filing the resulting finding under the wrong ASN/economy (see
-    `atlas.probe_geo_audit`'s module docstring for the AS24390/AS141695
-    cases this caught).
+    Scope, deliberately: sources are every (ASN, live economy) pair with a
+    connected Atlas probe -- per the project owner, each probe's own live
+    `country_code` is ground truth for where a measurement actually fires
+    from, trusted over this project's ASN-level registry classification
+    (`_probe_live_cc_by_asn`; confirmed against two probes' own Atlas
+    `description` fields, which independently corroborate their live
+    location). A single ASN can therefore appear as a source for more than
+    one economy if its different connected probes physically sit in
+    different countries (e.g. AS7131/Docomo Pacific: Guam and the
+    Northern Mariana Islands), and an ASN whose registry economy doesn't
+    match any of its own probes' live locations (e.g. AS24390/University
+    of the South Pacific, tracked as Fiji but its only probe live in
+    Tonga) is simply a source for whichever economy its probe is actually
+    in, not excluded. Targets are every in-scope ASN with cached RIS
+    prefix data (anything in `fishbowl.json`, which mirrors the same RIS
+    fetch `pick_target_ip` relies on) -- unlike sources, target economy is
+    correctly the registry classification (who operates the network),
+    since there's no specific probe location question on that side.
+    Cross-economy pairs are always proposed -- domestic pairs only for
+    economies in `DOMESTIC_TEST_ECONOMIES` (see that constant's docstring
+    for why domestic testing is opt-in, not blanket).
 
     Excludes: external/proxy ASNs (`EXTERNAL_NON_CANDIDATE_ASNS`), any
     exact ASN pair already tested (`tested_pairs.json` + the two
@@ -274,7 +307,6 @@ def enumerate_candidate_corridors(
     """
     probe_registry = load_asn_probe_registry(probe_registry_path)
     fishbowl = json.loads(fishbowl_path.read_text())
-    quarantine = load_quarantine(quarantine_path)
     tested_pairs = _load_tested_pairs(tested_pairs_path) | _tested_pairs_from_findings()
     tested_economy_pairs = _tested_economy_pairs_from_findings()
     snapshot = _load_snapshot(snapshot_path)
@@ -282,29 +314,29 @@ def enumerate_candidate_corridors(
     new_ris_pairs = detect_new_ris_neighbors(snapshot, fishbowl)
 
     asn_cc: dict[int, str] = {}
-    asn_name: dict[int, str] = {}
     for asn_str, entry in fishbowl.items():
         asn = int(asn_str)
-        economy = entry.get("economy", {})
-        asn_cc[asn] = economy.get("cc", "??")
-        asn_name[asn] = economy.get("name", "??")
+        asn_cc[asn] = entry.get("economy", {}).get("cc", "??")
 
-    source_asns = sorted(
-        a for a in (int(x) for x in probe_registry) if a not in EXTERNAL_NON_CANDIDATE_ASNS
+    probe_live_cc = _probe_live_cc_by_asn(probe_registry, probe_listing_path)
+    source_pairs = sorted(
+        (asn, cc)
+        for asn, ccs in probe_live_cc.items()
+        if asn not in EXTERNAL_NON_CANDIDATE_ASNS
+        for cc in ccs
     )
     target_asns = sorted(
         a
         for a, entry in ((int(k), v) for k, v in fishbowl.items())
         if a not in EXTERNAL_NON_CANDIDATE_ASNS and entry.get("num_distinct_prefixes", 0) > 0
     )
+    target_name: dict[int, str] = {
+        int(k): v.get("economy", {}).get("name", "??") for k, v in fishbowl.items()
+    }
 
     candidates: list[CorridorCandidate] = []
-    for source_asn in source_asns:
-        source_cc = asn_cc.get(source_asn)
-        if source_cc is None:
-            continue
-        if is_asn_quarantined_for(source_asn, source_cc, quarantine):
-            continue
+    for source_asn, source_cc in source_pairs:
+        source_name = ECONOMIES_BY_CC[source_cc].name if source_cc in ECONOMIES_BY_CC else "??"
         for target_asn in target_asns:
             if source_asn == target_asn:
                 continue
@@ -340,10 +372,10 @@ def enumerate_candidate_corridors(
                 CorridorCandidate(
                     source_asn=source_asn,
                     source_cc=source_cc,
-                    source_name=asn_name.get(source_asn, "?"),
+                    source_name=source_name,
                     target_asn=target_asn,
                     target_cc=target_cc,
-                    target_name=asn_name.get(target_asn, "?"),
+                    target_name=target_name.get(target_asn, "?"),
                     rationale=rationale,
                     is_new_probe=is_new_probe,
                     is_new_ris_relationship=is_new_ris,
