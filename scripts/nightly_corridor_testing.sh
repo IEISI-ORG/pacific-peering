@@ -38,19 +38,22 @@ cd "$REPO_DIR"
 
 echo "=== nightly corridor testing: $(date -u +%Y-%m-%dT%H:%M:%SZ) ==="
 
-# Full ASN probe registry refresh, Friday only -- per the project owner.
-# `build_asn_probe_registry()` (data/atlas/asn_probe_registry.json) is the
-# ASN-tracked, Connected-only registry `auto_classify.run_batch()` actually
-# sources real measurements from; it's otherwise only refreshed once a week
-# by weekly_discovery_refresh.sh's Sunday pipeline run. A probe that
-# reconnects mid-week would otherwise sit unusable for ASN-based sourcing
-# until the following Sunday -- this mid-week refresh closes that gap
-# without adding a new cron entry, riding the existing Mon-Sat 1am job.
-# Runs before the batch below so tonight's own corridor testing benefits
-# from the freshest registry. Read-only Atlas API lookup, no credits spent
-# (same as the Sunday pipeline's own use of this step).
-if [ "$(date +%u)" = "5" ]; then
-    echo "Friday: refreshing the full ASN probe registry."
+# Full ASN probe registry refresh, Tuesday and Friday -- per the project
+# owner, who wants new/returned probes found in a timely manner, not just
+# once a week. `build_asn_probe_registry()` (data/atlas/asn_probe_registry.json)
+# is the ASN-tracked, Connected-only registry `auto_classify.run_batch()`
+# actually sources real measurements from; it's otherwise only refreshed
+# once a week by weekly_discovery_refresh.sh's Sunday pipeline run. A probe
+# that reconnects mid-week would otherwise sit unusable for ASN-based
+# sourcing for days -- Tuesday+Friday (roughly every 3-4 days, spread
+# across the Sunday-to-Sunday week) closes that gap without adding new
+# cron entries, riding the existing Mon-Sat 1am job. Runs before the batch
+# below so that day's own corridor testing benefits from the freshest
+# registry. Read-only Atlas API lookup, no credits spent (same as the
+# Sunday pipeline's own use of this step).
+_dow="$(date +%u)"  # ISO: Monday=1 ... Sunday=7
+if [ "$_dow" = "2" ] || [ "$_dow" = "5" ]; then
+    echo "$(date +%A): refreshing the full ASN probe registry."
     "$UV" run pacific-peering-atlas-asn-probes
 fi
 
