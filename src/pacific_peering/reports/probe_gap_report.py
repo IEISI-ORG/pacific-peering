@@ -68,6 +68,26 @@ KNOWN_ISSUES: dict[str, str] = {
     ),
 }
 
+# Same restraint as KNOWN_ISSUES above, for the opposite situation: a real,
+# verifiable organization already has a physical presence in an economy
+# with zero (or fragile) Atlas coverage, making it a concrete lead for
+# requesting a new probe -- not a confirmed commitment, just somewhere
+# worth actually asking. Only add an entry once the organization's
+# presence is confirmed from its own material or an independent report,
+# never speculatively.
+HOST_LEADS: dict[str, str] = {
+    "SB": (
+        "No Atlas probe has ever been registered here (confirmed live, "
+        "any status). The Pacific Community (SPC) has operated a real "
+        "national coordination office in Honiara since 2009 (Anthony Saru "
+        "building, under a formal Host Country Agreement -- Solomon "
+        "Islands was the first member country to host one) -- the same "
+        "kind of organization that already hosts a real Atlas probe for "
+        "this project in Fiji, New Caledonia, and FSM. Not yet contacted "
+        "about hosting one here; a lead, not a commitment."
+    ),
+}
+
 
 def _economies_used_in_findings() -> set[str]:
     """Every economy referenced (as source/target/vantage) by a confirmed or candidate finding.
@@ -123,7 +143,8 @@ def render_probe_gap_report(
     def _flag(cc: str) -> str:
         marker = " [used in a confirmed/candidate finding]" if cc in finding_ccs else ""
         issue = f"\n      KNOWN ISSUE: {KNOWN_ISSUES[cc]}" if cc in KNOWN_ISSUES else ""
-        return marker + issue
+        lead = f"\n      HOST LEAD: {HOST_LEADS[cc]}" if cc in HOST_LEADS else ""
+        return marker + issue + lead
 
     def _asns(cc: str) -> str:
         asns = sorted(asn_registry.get(cc, {}).get("asns", []))

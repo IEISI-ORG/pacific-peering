@@ -13,6 +13,7 @@ ZERO CONNECTED PROBES (5/20) -- cannot source or target a traceroute here at all
       Probes: 2 listed, 0 actually useful
         Not useful yet -- fix the data or get it back online: 50 (Written Off), 64666 (Abandoned)
   SB  Solomon Islands [used in a confirmed/candidate finding]
+      HOST LEAD: No Atlas probe has ever been registered here (confirmed live, any status). The Pacific Community (SPC) has operated a real national coordination office in Honiara since 2009 (Anthony Saru building, under a formal Host Country Agreement -- Solomon Islands was the first member country to host one) -- the same kind of organization that already hosts a real Atlas probe for this project in Fiji, New Caledonia, and FSM. Not yet contacted about hosting one here; a lead, not a commitment.
       ASNs: 45891, 132260, 132462, 132468, 134525, 139277, 139609, 142279, 150349, 150403
   WF  Wallis and Futuna [used in a confirmed/candidate finding]
       ASNs: 45879
