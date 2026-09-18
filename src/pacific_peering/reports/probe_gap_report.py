@@ -37,6 +37,7 @@ CONFIRMED_DETOURS = _store.load_confirmed_detours(_conn)
 CONFIRMED_LOCAL_TRANSIT = _store.load_confirmed_local_transit(_conn)
 CANDIDATE_PEERING = _store.load_candidate_peering(_conn)
 _conn.close()
+from pacific_peering.analysis.fishbowl import DEFAULT_PEERINGDB_CACHE_PATH
 from pacific_peering.atlas.asn_probes import load_asn_probe_registry
 from pacific_peering.atlas.probes import (
     asn_listed_registry,
@@ -56,17 +57,13 @@ DEFAULT_OUTPUT_PATH = Path("outputs/reports/probe_gaps.txt")
 # structures (confirmed_detours.py etc.) — only add an entry once a
 # specific probe's unsuitability has actually been confirmed directly,
 # never speculatively.
-KNOWN_ISSUES: dict[str, str] = {
-    "FJ": (
-        "Fiji's only connected probe (id 60575, hosted on AS53813 -- "
-        "Zscaler corporate VPN) sits behind Zscaler's own routing, not "
-        "real Fiji ISP behavior. Confirmed unusable for path analysis "
-        "as-is; not a request for a new probe -- this one becomes usable "
-        "automatically, with no code/data action needed, if its hosting "
-        "ASN ever changes off Zscaler (the next `asn_probes`/"
-        "`probe_coverage` refresh would pick that up on its own)."
-    ),
-}
+#
+# Note: previously carried an FJ entry -- probe 60575 sat behind AS53813
+# (Zscaler corporate VPN). Removed 2026-09-19: the probe reconnected on
+# AS141695 (Pacific Community/SPC, the same host org already trusted for
+# the NC and FSM probes) on 2026-09-17, exactly the "hosting ASN changes
+# off Zscaler" recovery this comment used to describe.
+KNOWN_ISSUES: dict[str, str] = {}
 
 # Same restraint as KNOWN_ISSUES above, for the opposite situation: a real,
 # verifiable organization already has a physical presence in an economy
@@ -87,6 +84,38 @@ HOST_LEADS: dict[str, str] = {
         "about hosting one here; a lead, not a commitment."
     ),
 }
+
+
+def _compute_local_ixps(
+    asn_registry: dict, peeringdb_cache: dict
+) -> dict[str, list[tuple[str, str, list[int]]]]:
+    """Per-economy, same-country IXPs this project's own tracked ASNs actually belong to.
+
+    A "local" IXP here means: physically located in the same economy as the
+    member ASN, per PeeringDB's own `country` field on the membership record
+    -- not just any exchange the ASN happens to peer at abroad (Equinix
+    Sydney et al. show up in `ixp_memberships` too, but those aren't local
+    presence, they're evidence of a detour). Answers a different question
+    than the ZERO/FRAGILE/ADEQUATE probe-coverage breakdown above: whether
+    this economy has a real domestic peering fabric at all, independent of
+    whether Atlas can currently reach it.
+    """
+    ixp_memberships = peeringdb_cache.get("ixp_memberships", {})
+    local: dict[str, dict[tuple[int, str, str], list[int]]] = {}
+    for cc, entry in asn_registry.items():
+        for asn in entry.get("asns", []):
+            for ix in ixp_memberships.get(str(asn), []):
+                if ix.get("country") != cc:
+                    continue
+                key = (ix["ix_id"], ix["name"], ix["city"])
+                local.setdefault(cc, {}).setdefault(key, []).append(asn)
+    return {
+        cc: sorted(
+            ((name, city, sorted(members)) for (_ix_id, name, city), members in ixs.items()),
+            key=lambda row: row[0],
+        )
+        for cc, ixs in local.items()
+    }
 
 
 def _economies_used_in_findings() -> set[str]:
@@ -111,6 +140,7 @@ def render_probe_gap_report(
     asn_registry: dict,
     pathway_coverage: tuple[PathwayCoverageSummary, ...],
     listing: dict[str, list[dict]],
+    local_ixps: dict[str, list[tuple[str, str, list[int]]]] | None = None,
 ) -> str:
     """Render the probe-gap report as plain text.
 
@@ -134,11 +164,17 @@ def render_probe_gap_report(
             used to name the specific probe IDs that are actually useful
             (Connected) versus listed-but-not (a data-quality fix or a
             reconnection opportunity, either way a concrete target).
+        local_ixps: economy cc -> its own same-country IXPs (name, city,
+            member ASNs), from `_compute_local_ixps` -- whether this
+            economy has a real domestic peering fabric at all, independent
+            of Atlas probe coverage. A probe host candidate that's also a
+            member of a local IXP is a stronger pick than one that isn't.
 
     Returns:
         The full report as a single string.
     """
     finding_ccs = _economies_used_in_findings()
+    local_ixps = local_ixps or {}
 
     def _flag(cc: str) -> str:
         marker = " [used in a confirmed/candidate finding]" if cc in finding_ccs else ""
@@ -149,6 +185,16 @@ def render_probe_gap_report(
     def _asns(cc: str) -> str:
         asns = sorted(asn_registry.get(cc, {}).get("asns", []))
         return f"\n      ASNs: {', '.join(str(a) for a in asns)}" if asns else ""
+
+    def _local_ixp(cc: str) -> str:
+        ixs = local_ixps.get(cc)
+        if not ixs:
+            return ""
+        out = []
+        for name, city, members in ixs:
+            member_str = ", ".join(f"AS{a}" for a in members)
+            out.append(f"\n      Local IXP: {name} ({city}) -- members: {member_str}")
+        return "".join(out)
 
     def _probes(cc: str) -> str:
         probes = sorted(listing.get(cc, []), key=lambda p: p["id"])
@@ -192,7 +238,9 @@ def render_probe_gap_report(
     if not zero:
         lines.append("  (none -- every in-scope economy has at least one connected probe)")
     for cc in zero:
-        lines.append(f"  {cc}  {ECONOMIES_BY_CC[cc].name}{_flag(cc)}{_asns(cc)}{_probes(cc)}")
+        lines.append(
+            f"  {cc}  {ECONOMIES_BY_CC[cc].name}{_flag(cc)}{_asns(cc)}{_probes(cc)}{_local_ixp(cc)}"
+        )
     lines.append("")
 
     lines.append(
@@ -203,7 +251,9 @@ def render_probe_gap_report(
     if not fragile:
         lines.append("  (none)")
     for cc in fragile:
-        lines.append(f"  {cc}  {ECONOMIES_BY_CC[cc].name}{_flag(cc)}{_asns(cc)}{_probes(cc)}")
+        lines.append(
+            f"  {cc}  {ECONOMIES_BY_CC[cc].name}{_flag(cc)}{_asns(cc)}{_probes(cc)}{_local_ixp(cc)}"
+        )
     lines.append("")
 
     lines.append(f"ADEQUATE -- 2+ connected probes ({len(adequate)}/{len(coverage)}):")
@@ -211,8 +261,28 @@ def render_probe_gap_report(
         lines.append("  (none)")
     for cc in adequate:
         lines.append(
-            f"  {cc}  {ECONOMIES_BY_CC[cc].name} ({coverage[cc]} connected){_probes(cc)}"
+            f"  {cc}  {ECONOMIES_BY_CC[cc].name} ({coverage[cc]} connected)"
+            f"{_probes(cc)}{_local_ixp(cc)}"
         )
+    lines.append("")
+    lines.append("=" * 78)
+    lines.append("")
+
+    lines.append(
+        f"LOCAL IXP PRESENCE ({len(local_ixps)}/{len(coverage)} economies) -- same-country "
+        "exchanges this project's own tracked ASNs actually belong to, per PeeringDB "
+        "membership records. This is the domestic-peering-fabric question, independent "
+        "of whether Atlas can currently reach it: an economy can have real local IXP "
+        "members here and still show zero/fragile probe coverage above, or vice versa."
+    )
+    if not local_ixps:
+        lines.append(
+            "  (none found -- no economy's tracked ASNs declare a same-country IXP "
+            "membership on PeeringDB; doesn't rule out a real exchange PeeringDB "
+            "doesn't know about, e.g. an informal or unregistered peering fabric)"
+        )
+    for cc in sorted(local_ixps):
+        lines.append(f"  {cc}  {ECONOMIES_BY_CC[cc].name}{_local_ixp(cc)}")
     lines.append("")
     lines.append("=" * 78)
     lines.append("")
@@ -278,7 +348,9 @@ def write_probe_gap_report(
     pathway_coverage = _compute_pathway_coverage(
         asn_registry, load_asn_probe_registry(), asn_listed_registry(listing)
     )
-    text = render_probe_gap_report(coverage, asn_registry, pathway_coverage, listing)
+    peeringdb_cache = json.loads(DEFAULT_PEERINGDB_CACHE_PATH.read_text())
+    local_ixps = _compute_local_ixps(asn_registry, peeringdb_cache)
+    text = render_probe_gap_report(coverage, asn_registry, pathway_coverage, listing, local_ixps)
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(text + "\n")
     logger.info("Wrote probe-gap report to %s", output_path)
