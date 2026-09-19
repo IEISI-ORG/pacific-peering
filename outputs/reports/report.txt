@@ -1,6 +1,6 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-09-19T01:51:02.218032+00:00                  
+                 Generated: 2026-09-19T11:20:08.859457+00:00                  
 ==============================================================================
 
 SUMMARY
@@ -180,7 +180,7 @@ WS   Samoa                       10        1            0          1
 
 IPV6 COVERAGE (adoption signal only -- no IPv6 testing yet)
 ==============================================================================
-47 of 162 in-scope ASNs have >=1 RIS-observed IPv6-originated prefix. 9 of 36 connected Atlas probes work over IPv6 (2 more are IPv6-capable but tagged as not working). Adoption tracking only -- this project deliberately isn't testing IPv6 corridors yet; queued until adoption has advanced further (see TODO below).
+47 of 162 in-scope ASNs have >=1 RIS-observed IPv6-originated prefix. 9 of 36 connected Atlas probes work over IPv6 (1 more are IPv6-capable but tagged as not working). Adoption tracking only -- this project deliberately isn't testing IPv6 corridors yet; queued until adoption has advanced further (see TODO below).
 CC   Name                      ASNs  w/ IPv6
 ------------------------------------------------------------------------------
 AS   American Samoa               2        1

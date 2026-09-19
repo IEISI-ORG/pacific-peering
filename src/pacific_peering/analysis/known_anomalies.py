@@ -126,6 +126,44 @@ KNOWN_LOOP_LOCATIONS: tuple[KnownLoopLocation, ...] = (
         "artifact at the network's own edge, not a genuine new anomaly.",
         asn=7131,
     ),
+    KnownLoopLocation(
+        "202.84.128.0/17",
+        "AS4637's (Telstra Global) own backbone -- confirmed via "
+        "RIPEstat network-info (WHOIS descr names 'Reach Multi Media "
+        "Satellite Services', Telstra/PCCW's satellite/undersea joint "
+        "venture, but the actual announcing ASN is Telstra Global "
+        "itself). Address 202.84.222.81 looped on both probes of the "
+        "VU(AS9249)->Owl Limited corridor, sitting exactly inside the "
+        "already-confirmed detour chain AS9249 -> AS38442 (Vodafone "
+        "Fiji) -> AS4637 (Telstra Global) -> AS2497 (IIJ, Japan) -- an "
+        "ordinary intra-carrier artifact inside a large international "
+        "transit network, same pattern as the existing Hurricane "
+        "Electric/GTT/Superloop entries above.",
+        asn=4637,
+    ),
+    KnownLoopLocation(
+        "202.95.200.0/24",
+        "Datec-PNG's (AS55792) own address space -- confirmed via "
+        "RIPEstat network-info. Address 202.95.200.36 looped while "
+        "reaching Datec-PNG as the traceroute's own target (the "
+        "PG(AS17828)->Datec-PNG corridor, confirmed_local_transit), the "
+        "same 'loop inside the destination's own network, not a third "
+        "party' pattern already established for BNL Tarawa "
+        "(202.1.22.0/24) above.",
+        asn=55792,
+    ),
+    KnownLoopLocation(
+        "154.18.72.0/21",
+        "A different block within AS7131's own network than the "
+        "103.57.234.0/24 entry above -- confirmed via RIPEstat "
+        "network-info (WHOIS ASN registration separately names Cogent "
+        "Communications for this /21, but it's announced by AS7131 "
+        "itself). Address 154.18.76.1 looped on the "
+        "GU(AS7131)->Guam Community College corridor -- the same source "
+        "carrier's own infrastructure, consistent with the existing "
+        "AS7131 precedent rather than a new third-party anomaly.",
+        asn=7131,
+    ),
 )
 
 
