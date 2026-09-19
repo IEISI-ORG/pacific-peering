@@ -91,6 +91,29 @@ EXTERNAL_NON_CANDIDATE_ASNS = frozenset(
     }
 )
 
+# ASNs that are a real, legitimate *cross-economy* source (their own
+# international backbone/gateway is exactly what a cross-economy corridor
+# test should measure) but a structurally uninteresting *domestic* one --
+# per the project owner: "everybody has an upstream relationship with PNG
+# DataCo, so we're not going to get PNG IXP data from their probe." AS17828
+# (PNG DataCo) is PNG's own wholesale national backbone; nearly every other
+# in-scope PG ASN is a transit *customer* of it, so a domestic test sourced
+# from it mostly just reconfirms trivial customer-provider relationships
+# (confirmed live, 2026-09-19: AS17828->AS38009 resolved as
+# confirmed_local_transit with chain "AS17828" alone -- Telikom PNG's
+# satellite service buying transit from DataCo, not independent peering)
+# rather than telling us anything about whether PNG Neutral IX gets used
+# between genuinely independent operators. That question needs a probe on
+# one of Neutral IX's *other* members (AS38009, AS55792, AS58460, AS63945,
+# AS133137, AS134605, AS139898, AS147024) -- none connected yet. Only
+# excluded from DOMESTIC_TEST_ECONOMIES candidacy, not from
+# EXTERNAL_NON_CANDIDATE_ASNS -- AS17828 stays a fine cross-economy source.
+DOMESTIC_WHOLESALE_ONLY_ASNS = frozenset(
+    {
+        17828,  # PNG DataCo -- PNG's own wholesale national backbone
+    }
+)
+
 # Economies explicitly opted into domestic (same-economy) corridor testing --
 # an intentional exception to the cross-economy-only scope below. Per the
 # project owner: this project's whole point is measuring local peering
@@ -366,6 +389,8 @@ def enumerate_candidate_corridors(
                 continue
             is_domestic = target_cc == source_cc
             if is_domestic and source_cc not in DOMESTIC_TEST_ECONOMIES:
+                continue
+            if is_domestic and source_asn in DOMESTIC_WHOLESALE_ONLY_ASNS:
                 continue
             pair = (source_asn, target_asn)
             reverse_pair = (target_asn, source_asn)
