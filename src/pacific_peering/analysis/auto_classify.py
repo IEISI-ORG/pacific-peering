@@ -117,6 +117,19 @@ _ASPA_RECHECK_MAX_AGE_DAYS = 30  # project owner's own cadence choice
 # 10ms is a physically-grounded engineering margin for now, confirmed fiber
 # (not microwave/satellite) end to end; expect to push it down once real
 # local-IXP-crossing RTT data accumulates.
+#
+# First real data point (2026-09-19, GU domestic exploration) already
+# revealed a methodological caveat worth remembering: `min_rtt_ms` on an
+# `ixp_crossings` entry is the *cumulative* RTT from the probe to that hop,
+# not the exchange segment's own marginal latency. The same physical probe
+# (62689) crossed MARIIX at hop 5 with 3.489ms in one measurement and
+# 24.484ms in another -- the high reading came from a longer path *before*
+# reaching the fabric (a different probe's crossing at hop 8 also read
+# high), not from MARIIX itself being non-local. A flagged escalation here
+# means "this specific vantage point's cumulative path to the exchange was
+# slow", not "this exchange is secretly a detour" -- worth checking the
+# hop position and the other probes' readings for the same target before
+# concluding anything about the exchange itself.
 LOCAL_IXP_LATENCY_THRESHOLD_MS = 10.0
 
 # ASNs known to be corporate proxy/VPN egress points, not real network
