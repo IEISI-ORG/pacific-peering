@@ -4,9 +4,10 @@ BUSINESS CASE: HOSTING A RIPE ATLAS ANCHOR OR PROBE
 THE ASK
 -------
 Approval to host a RIPE Atlas measurement node -- either a software probe
-(a small process on existing infrastructure) or a full hardware anchor (a
-dedicated appliance with higher bandwidth and a public-facing measurement
-target) -- provided free of charge by RIPE NCC, a non-profit Regional
+(a small process on existing infrastructure) or a full anchor (a
+higher-bandwidth node with a public-facing measurement target, run either
+as a virtual machine or on dedicated hardware) -- as part of RIPE Atlas,
+the free measurement platform run by RIPE NCC, a non-profit Regional
 Internet Registry.
 
 WHAT IT DOES
@@ -39,10 +40,11 @@ BENEFITS TO THE REGION
    submarine cable RFPs -- without relying on any single carrier's
    self-reported numbers.
 
-4. A public good with no ongoing local cost.
-   RIPE NCC supplies the hardware (for anchors) and covers all software
-   maintenance and development; the network operator community broadly
-   benefits from every additional Pacific vantage point.
+4. A public good backed by RIPE NCC.
+   RIPE NCC covers all Atlas platform software development and
+   maintenance, and offers hardware sponsorship to eligible hosts of
+   physical anchors; the network operator community broadly benefits
+   from every additional Pacific vantage point.
 
 BENEFITS TO THE HOST ORGANIZATION
 ----------------------------------
@@ -60,23 +62,30 @@ BENEFITS TO THE HOST ORGANIZATION
    anchor/probe operator, signaling technical maturity and community
    contribution to peers, regulators, and prospective peering partners.
 
-4. Minimal resource footprint. A software probe needs only a spare VM
-   with an Internet-facing IP; a hardware anchor needs 1U of rack space,
-   power, and a routed subnet -- RIPE NCC provides full setup
-   documentation and support.
+4. Flexible, low resource footprint. A software probe needs only a spare
+   VM with an Internet-facing IP. A full anchor can likewise run as a VM
+   (minimum spec, unfiltered static IPv4/IPv6) with no dedicated hardware
+   required, or as a 1U rack-mounted appliance for hosts that prefer
+   physical separation -- RIPE NCC provides full setup documentation and
+   support either way.
 
 COST AND RISK
 -------------
-Cost to host is rack space/power (anchor) or a VM (probe); no license or
-usage fee, and RIPE NCC owns and remotely manages anchor hardware. Risk
-is negligible: the node originates only outbound measurement traffic and
-standard inbound probe traffic on well-known ports, and cannot be used to
-route or proxy customer data.
+The probe or VM anchor itself runs on infrastructure the host already
+provides (a spare VM and an unfiltered IP); a physical anchor instead
+requires purchasing a 1U appliance, for which RIPE NCC offers hardware
+sponsorship to eligible hosts. There is no license or usage fee in either
+case. Risk is negligible: the node originates only outbound measurement
+traffic and standard inbound probe traffic on well-known ports, and
+cannot be used to route or proxy customer data.
 
 RECOMMENDATION
 --------------
-Approve hosting at least a software probe as a low-risk first step, with
-a path to a full anchor once operational comfort is established.
+Approve hosting at least a software probe as a low-risk first step. A VM
+anchor is a natural next step once operational comfort is established --
+it needs no new hardware purchase -- with a physical hardware anchor as
+a further option if greater independence from existing infrastructure is
+wanted.
 
 Reference:
 https://www.ripe.net/analyse/internet-measurements/ripe-atlas/host-an-anchor/
