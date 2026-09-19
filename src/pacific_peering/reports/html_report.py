@@ -269,6 +269,7 @@ def render_html_report(data: ReportData, viz_dir: Path | None = Path("../viz")) 
             <td>{html.escape(ix.name)}</td><td>{html.escape(ix.city)}</td>
             <td>{html.escape(ix.country)}</td><td>{_bool_cell(ix.in_fishbowl)}</td>
             <td>{ix.member_count}</td>
+            <td>{ix.verified_corridors}</td>
             <td>{html.escape(', '.join(ix.economies))}</td>
         </tr>"""
         for ix in data.ixps
@@ -555,9 +556,15 @@ def render_html_report(data: ReportData, viz_dir: Path | None = Path("../viz")) 
     {viz_html}
 
     <h2>IXPs</h2>
+    <p class="section-intro">"Verified" is how many distinct findings are actually confirmed
+        to cross this exchange's fabric, in- or out-of-fishbowl: a genuine local-peering hop
+        for an in-fishbowl exchange (a resolved hop inside its registered LAN prefix), or the
+        confirmed international hub for an out-of-fishbowl one. A real corridor reaching this
+        exchange's own member ASNs via some other path doesn't count -- only a traceroute hop
+        actually confirmed to touch the fabric itself does.</p>
     <table>
         <thead><tr><th>Name</th><th>City</th><th>CC</th><th>Region</th>
-            <th>Members</th><th>Economies</th></tr></thead>
+            <th>Members</th><th>Verified</th><th>Economies</th></tr></thead>
         <tbody>{ixp_rows}</tbody>
     </table>
 

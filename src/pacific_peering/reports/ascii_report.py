@@ -336,8 +336,17 @@ def render_ascii_report(data: ReportData) -> str:
     # meaningfully higher.
 
     lines.append(_section("IXPS (registered exchanges, this project's confirmed classification)"))
+    lines.append(
+        "\"Verified corridors\" -- distinct findings actually confirmed to cross this "
+        "exchange's fabric, in- or out-of-fishbowl: a genuine local-peering hop for an "
+        "in-fishbowl exchange (a resolved hop inside its registered LAN prefix), or the "
+        "confirmed international hub for an out-of-fishbowl one. A real corridor "
+        "reaching this exchange's own member ASNs via some other path doesn't count -- "
+        "only a traceroute hop actually confirmed to touch the fabric itself does."
+    )
     header = (
-        f"{'Name':<28} {'City':<16} {'CC':<4} {'In fishbowl':<12} {'Members':>7}  Economies"
+        f"{'Name':<28} {'City':<16} {'CC':<4} {'In fishbowl':<12} {'Members':>7} "
+        f"{'Verified':>8}  Economies"
     )
     lines.append(header)
     lines.append(_rule())
@@ -345,7 +354,8 @@ def render_ascii_report(data: ReportData) -> str:
         in_fishbowl_str = str(ix.in_fishbowl)
         lines.append(
             f"{ix.name:<28.28} {ix.city:<16.16} {ix.country:<4} "
-            f"{in_fishbowl_str:<12} {ix.member_count:>7}  {', '.join(ix.economies)}"
+            f"{in_fishbowl_str:<12} {ix.member_count:>7} {ix.verified_corridors:>8}  "
+            f"{', '.join(ix.economies)}"
         )
 
     lines.append(_section("PATHWAY COVERAGE (per economy)"))

@@ -69,7 +69,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
 <body>
 <div class="wrap">
     <h1>Pacific Peering — Regional Routing Report</h1>
-    <div class="meta">Generated 2026-09-19T01:24:40.648793+00:00</div>
+    <div class="meta">Generated 2026-09-19T01:30:16.213911+00:00</div>
 
     <div class="headline-banner">
         <span class="value">57%</span>
@@ -2307,123 +2307,152 @@ NU(AS55885) -&gt; AS150403: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS139609 -&
         </figure>
 
     <h2>IXPs</h2>
+    <p class="section-intro">"Verified" is how many distinct findings are actually confirmed
+        to cross this exchange's fabric, in- or out-of-fishbowl: a genuine local-peering hop
+        for an in-fishbowl exchange (a resolved hop inside its registered LAN prefix), or the
+        confirmed international hub for an out-of-fishbowl one. A real corridor reaching this
+        exchange's own member ASNs via some other path doesn't count -- only a traceroute hop
+        actually confirmed to touch the fabric itself does.</p>
     <table>
         <thead><tr><th>Name</th><th>City</th><th>CC</th><th>Region</th>
-            <th>Members</th><th>Economies</th></tr></thead>
+            <th>Members</th><th>Verified</th><th>Economies</th></tr></thead>
         <tbody><tr>
             <td>Any2West</td><td>Los Angeles and Silicon Valley</td>
             <td>US</td><td><span class="bool-false">out-of-fishbowl</span></td>
             <td>4</td>
+            <td>11</td>
             <td>GU, MP, PF</td>
         </tr><tr>
             <td>BBIX Tokyo</td><td>Tokyo</td>
             <td>JP</td><td><span class="bool-false">out-of-fishbowl</span></td>
             <td>4</td>
+            <td>6</td>
             <td>GU, MP, PW</td>
         </tr><tr>
             <td>CAN&#x27;L IX</td><td>NOUMEA</td>
             <td>NC</td><td><span class="bool-true">in-fishbowl</span></td>
             <td>5</td>
+            <td>1</td>
             <td>NC</td>
         </tr><tr>
             <td>DRF IX</td><td>Honolulu</td>
             <td>US</td><td><span class="bool-false">out-of-fishbowl</span></td>
             <td>2</td>
+            <td>0</td>
             <td>AS, PF</td>
         </tr><tr>
             <td>EdgeIX - Auckland</td><td>Auckland</td>
             <td>NZ</td><td><span class="bool-false">out-of-fishbowl</span></td>
             <td>1</td>
+            <td>0</td>
             <td>WS</td>
         </tr><tr>
             <td>Equinix Los Angeles</td><td>Los Angeles</td>
             <td>US</td><td><span class="bool-false">out-of-fishbowl</span></td>
             <td>1</td>
+            <td>0</td>
             <td>PF</td>
         </tr><tr>
             <td>Equinix San Jose</td><td>San Jose</td>
             <td>US</td><td><span class="bool-false">out-of-fishbowl</span></td>
             <td>1</td>
+            <td>3</td>
             <td>GU</td>
         </tr><tr>
             <td>Equinix Singapore</td><td>Singapore</td>
             <td>SG</td><td><span class="bool-false">out-of-fishbowl</span></td>
             <td>1</td>
+            <td>0</td>
             <td>GU</td>
         </tr><tr>
             <td>Equinix Sydney</td><td>Sydney</td>
             <td>AU</td><td><span class="bool-false">out-of-fishbowl</span></td>
             <td>9</td>
+            <td>28</td>
             <td>CK, FJ, NC, PF, PG, TO, WS</td>
         </tr><tr>
             <td>Fiji-IXP</td><td>Suva</td>
             <td>FJ</td><td><span class="bool-true">in-fishbowl</span></td>
             <td>3</td>
+            <td>0</td>
             <td>FJ</td>
         </tr><tr>
             <td>GOREX</td><td>Piti</td>
             <td>GU</td><td><span class="bool-true">in-fishbowl</span></td>
             <td>1</td>
+            <td>0</td>
             <td>GU</td>
         </tr><tr>
             <td>GU-IX</td><td>Guam</td>
             <td>GU</td><td><span class="bool-true">in-fishbowl</span></td>
             <td>1</td>
+            <td>0</td>
             <td>GU</td>
         </tr><tr>
             <td>Guam IX</td><td>Tamuning</td>
             <td>GU</td><td><span class="bool-true">in-fishbowl</span></td>
             <td>5</td>
+            <td>0</td>
             <td>FM, GU, MP, NR, PW</td>
         </tr><tr>
             <td>IX Australia Sydney (NSW-IX)</td><td>Sydney</td>
             <td>AU</td><td><span class="bool-false">out-of-fishbowl</span></td>
             <td>1</td>
+            <td>4</td>
             <td>SB</td>
         </tr><tr>
             <td>JPIX TOKYO</td><td>Tokyo</td>
             <td>JP</td><td><span class="bool-false">out-of-fishbowl</span></td>
             <td>1</td>
+            <td>0</td>
             <td>GU</td>
         </tr><tr>
             <td>JPNAP Tokyo</td><td>Tokyo</td>
             <td>JP</td><td><span class="bool-false">out-of-fishbowl</span></td>
             <td>1</td>
+            <td>0</td>
             <td>GU</td>
         </tr><tr>
             <td>MARIIX</td><td>Mangilao</td>
             <td>GU</td><td><span class="bool-true">in-fishbowl</span></td>
             <td>5</td>
+            <td>0</td>
             <td>GU, MP</td>
         </tr><tr>
             <td>MegaIX Sydney</td><td>Sydney</td>
             <td>AU</td><td><span class="bool-false">out-of-fishbowl</span></td>
             <td>6</td>
+            <td>7</td>
             <td>FJ, NC, PG, SB</td>
         </tr><tr>
             <td>PNG Neutral IX Hagen</td><td>Mt Hagen</td>
             <td>PG</td><td><span class="bool-true">in-fishbowl</span></td>
             <td>1</td>
+            <td>0</td>
             <td>PG</td>
         </tr><tr>
             <td>PNG Neutral IX Lae</td><td>Lae</td>
             <td>PG</td><td><span class="bool-true">in-fishbowl</span></td>
             <td>2</td>
+            <td>0</td>
             <td>PG</td>
         </tr><tr>
             <td>PNG Neutral IX POM</td><td>Port Moresby</td>
             <td>PG</td><td><span class="bool-true">in-fishbowl</span></td>
             <td>9</td>
+            <td>0</td>
             <td>PG</td>
         </tr><tr>
             <td>SIX Seattle</td><td>Seattle</td>
             <td>US</td><td><span class="bool-false">out-of-fishbowl</span></td>
             <td>1</td>
+            <td>0</td>
             <td>GU</td>
         </tr><tr>
             <td>VIX.VU</td><td>Port Vila</td>
             <td>VU</td><td><span class="bool-true">in-fishbowl</span></td>
             <td>3</td>
+            <td>2</td>
             <td>VU</td>
         </tr></tbody>
     </table>

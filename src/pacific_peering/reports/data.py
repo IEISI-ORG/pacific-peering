@@ -586,6 +586,7 @@ class IxpSummary:
     in_fishbowl: bool | str
     member_count: int
     economies: tuple[str, ...]  # distinct in-scope economies with a member ASN here
+    verified_corridors: int  # distinct findings confirmed to actually cross this fabric
 
 
 @dataclass(frozen=True)
@@ -999,6 +1000,51 @@ def _compute_aspa_progress(registry: dict, fishbowl_asns: set[int]) -> _AspaProg
     )
 
 
+def _compute_ixp_verified_corridors(ixp_registry: dict) -> dict[int, int]:
+    """Per-IXP count of distinct findings actually confirmed to cross its fabric.
+
+    Deliberately counts *both* directions the fabric can matter, per the
+    project owner: an in-fishbowl exchange gets used for genuine local
+    peering (`corroborations.crosses_ixp`, set by
+    `auto_classify._local_ixp_crossing_name` whenever a hop resolves
+    inside the exchange's own registered LAN prefix -- not just "this
+    corridor happens to be domestic"), while an out-of-fishbowl exchange
+    is exactly what a `confirmed_detour` finding's own `detour_ix_name`
+    names as the international hub a corridor was confirmed to route
+    through. Only an exact match against this exchange's own registered
+    name counts -- `detour_ix_name` is sometimes free-text naming an
+    intermediate carrier instead (see `_compute_transit_suppliers`'s own
+    docstring for a real example), and a fuzzy match would overclaim an
+    exchange crossing this project hasn't actually confirmed.
+
+    A finding can corroborate the same IXP via multiple probes; counted
+    once per finding (a corridor), not once per corroboration row.
+    """
+    name_to_ix_id = {v["name"]: int(k) for k, v in ixp_registry.items()}
+    verified: dict[int, set[int]] = {}
+
+    conn = _store.connect()
+    try:
+        for row in conn.execute(
+            "SELECT DISTINCT finding_id, crosses_ixp FROM corroborations "
+            "WHERE crosses_ixp IS NOT NULL"
+        ):
+            ix_id = name_to_ix_id.get(row["crosses_ixp"])
+            if ix_id is not None:
+                verified.setdefault(ix_id, set()).add(row["finding_id"])
+        for row in conn.execute(
+            "SELECT id, detour_ix_name FROM findings "
+            "WHERE kind = 'confirmed_detour' AND detour_ix_name IS NOT NULL"
+        ):
+            ix_id = name_to_ix_id.get(row["detour_ix_name"])
+            if ix_id is not None:
+                verified.setdefault(ix_id, set()).add(row["id"])
+    finally:
+        conn.close()
+
+    return {ix_id: len(finding_ids) for ix_id, finding_ids in verified.items()}
+
+
 def build_report_data(
     registry_path: Path = DEFAULT_OUTPUT_PATH,
     fishbowl_path: Path = DEFAULT_SUMMARY_PATH,
@@ -1048,6 +1094,7 @@ def build_report_data(
             if cc:
                 member_economies.setdefault(ix_id, set()).add(cc)
 
+    ixp_verified_corridors = _compute_ixp_verified_corridors(ixp_registry)
     ixps = tuple(
         IxpSummary(
             ix_id=int(ix_id),
@@ -1057,6 +1104,7 @@ def build_report_data(
             in_fishbowl=v["in_fishbowl"],
             member_count=member_counts.get(int(ix_id), 0),
             economies=tuple(sorted(member_economies.get(int(ix_id), set()))),
+            verified_corridors=ixp_verified_corridors.get(int(ix_id), 0),
         )
         for ix_id, v in sorted(ixp_registry.items(), key=lambda kv: kv[1]["name"])
     )
