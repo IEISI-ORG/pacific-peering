@@ -65,17 +65,29 @@ DEFAULT_TESTED_PAIRS_PATH = Path("data/analysis/tested_pairs.json")
 DEFAULT_SNAPSHOT_PATH = Path("data/analysis/corridor_backlog_snapshot.json")
 DEFAULT_BACKLOG_MD_PATH = Path("corridor_backlog.md")
 
-# ASNs that show up in the probe registry or fishbowl neighbor data but
-# aren't real Pacific-region candidates -- external carriers/proxies
-# incidentally surfaced by country-based probe selection or transit paths.
-# Excluded as both source and target. Extend this as more turn up (matches
-# the exclusions already applied by hand across many tranches this
-# session -- see task_plan.md).
+# ASNs excluded as both source and target -- either not a real
+# Pacific-region candidate at all (external carriers/proxies incidentally
+# surfaced by country-based probe selection or transit paths), or a real
+# Pacific ASN whose only connected probe's data is permanently unusable
+# for path analysis regardless of geography. Extend this as more turn up
+# (matches the exclusions already applied by hand across many tranches
+# this session -- see task_plan.md).
 EXTERNAL_NON_CANDIDATE_ASNS = frozenset(
     {
         2200,  # Renater (France)
         14593,  # SpaceX Starlink
         53813,  # Zscaler (proxy artifact)
+        141695,  # Pacific Community -- real Fiji presence, but its only connected
+        # probe (60575) still egresses through Zscaler (AS53813 as the first
+        # resolved hop on every 2026-09-19 measurement fired from it) despite
+        # its LAN-level ASN metadata correctly reading Fiji -- the ASN/geo
+        # reclassification (reclassified_asns.py) fixed the economy label, not
+        # the underlying path corruption. Confirmed on 6 separate FJ-domestic
+        # measurements (findings 197-202, retracted) all showing AS53813 as
+        # the first hop, and on the original finding 25 (also retracted).
+        # Excluded here as a source *and* target until a probe on one of
+        # Fiji's actual commercial ISPs (Vodafone/AS38442, Telecom Fiji/
+        # AS4638 or AS45349, Digicel/AS45355, FINTEL/AS9241) comes online.
     }
 )
 

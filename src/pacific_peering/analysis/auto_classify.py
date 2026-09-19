@@ -12,6 +12,23 @@ else is fully automatic.
 
 Classification rules, in priority order, per probe:
 
+0. **Proxy/VPN egress check** (`KNOWN_PROXY_ASNS`). If a probe's resolved
+   AS-path *starts* with a known corporate proxy/VPN ASN (e.g. Zscaler),
+   every hop after it reflects that proxy's own infrastructure, not the
+   source network's real path -- discarded before any other check runs,
+   not just noted. First caught the hard way (2026-09-19): a probe's LAN-
+   level ASN metadata changing off a known-bad ASN was wrongly trusted as
+   "fixed" without checking whether its actual egress still routed
+   through the same proxy, producing 6 filed findings (later retracted)
+   that were really just describing Zscaler's own network. If *every*
+   probe in a measurement is proxy-corrupted, that's a genuine escalation
+   (this source's own probe is currently unusable, not a real result to
+   retry against a different target IP) -- see `atlas/targets.py` and
+   `corridor_backlog.py`'s `EXTERNAL_NON_CANDIDATE_ASNS` for the related
+   principle of not trusting a probe's/ASN's *previous* classification
+   after any material detail about it changes; regression-check the
+   actual path data every time, don't assume a metadata change means
+   what it seems to.
 1. **Loop check** (`has_routing_loop`, called with the real target IP --
    omitting it silently defeats the target-reached exemption, a bug this
    project hit once already). A loop at an address `known_anomalies.py`
@@ -101,6 +118,20 @@ _ASPA_RECHECK_MAX_AGE_DAYS = 30  # project owner's own cadence choice
 # (not microwave/satellite) end to end; expect to push it down once real
 # local-IXP-crossing RTT data accumulates.
 LOCAL_IXP_LATENCY_THRESHOLD_MS = 10.0
+
+# ASNs known to be corporate proxy/VPN egress points, not real network
+# infrastructure -- when a resolved AS-path *starts* with one of these,
+# every hop after it describes the proxy's own routing, not the source
+# network's real path. Only add an entry once confirmed directly (same
+# restraint as corridor_backlog.py's EXTERNAL_NON_CANDIDATE_ASNS and
+# excluded_asns.py) -- this one caught the hard way: probe 60575's LAN-
+# level ASN metadata changed off Zscaler on 2026-09-17, wrongly trusted
+# as "fixed" without checking the actual path, producing 6 findings
+# (2026-09-19, later retracted) that were really just Zscaler's own
+# network. A probe's metadata changing is a reason to regression-test
+# its next real path, not a reason to assume the underlying issue is
+# gone.
+KNOWN_PROXY_ASNS: dict[int, str] = {53813: "Zscaler"}
 
 
 @dataclass
@@ -215,9 +246,55 @@ def classify_corridor(
     assert measurement_id is not None and triangulation is not None
     hops_by_probe = {p["probe_id"]: p["hops"] for p in parsed}
 
+    # Proxy/VPN egress check -- discard any probe whose resolved AS-path
+    # starts with a known corporate proxy ASN before any other classification
+    # logic runs; every hop after it describes the proxy's own network, not
+    # this probe's real path (see KNOWN_PROXY_ASNS and the module docstring's
+    # rule 0). All downstream classification and corroboration-writing uses
+    # clean_probes, never the raw triangulation list, from here on.
+    proxy_corrupted: dict[int, str] = {}
+    clean_probes: list[dict] = []
+    for probe in triangulation["probes"]:
+        as_sequence = probe.get("as_sequence", [])
+        first_asn = as_sequence[0]["asn"] if as_sequence else None
+        proxy_name = KNOWN_PROXY_ASNS.get(first_asn)
+        if proxy_name is not None:
+            proxy_corrupted[probe["probe_id"]] = proxy_name
+        else:
+            clean_probes.append(probe)
+
+    if not clean_probes:
+        mark_corridor_tested(candidate.source_asn, candidate.target_asn)
+        escalations.append(
+            _Escalation(
+                candidate=candidate,
+                measurement_id=measurement_id,
+                reason="all probes proxy-corrupted",
+                detail=(
+                    "every probe in this measurement resolved a known "
+                    "corporate proxy/VPN ASN as its first hop ("
+                    + ", ".join(f"probe {pid} via {name}" for pid, name in proxy_corrupted.items())
+                    + ") -- this source's own probe currently can't produce a "
+                    "real path; needs a human look (a different source, or "
+                    "wait for the proxy egress to genuinely change), not a "
+                    "target-IP retry"
+                ),
+            )
+        )
+        _write_escalations(escalations)
+        return ClassifyResult(candidate, "escalated", None, escalations)
+
+    if proxy_corrupted:
+        logger.warning(
+            "AS%d -> AS%d: %d of %d probe(s) proxy-corrupted (%s), continuing with %d clean",
+            candidate.source_asn, candidate.target_asn, len(proxy_corrupted),
+            len(triangulation["probes"]), ", ".join(sorted(set(proxy_corrupted.values()))),
+            len(clean_probes),
+        )
+
     # Loop check, per probe -- always with the real target IP for this attempt.
     loop_notes: dict[int, str] = {}
-    for probe in triangulation["probes"]:
+    for probe in clean_probes:
         hops = hops_by_probe.get(probe["probe_id"], [])
         if not has_routing_loop(hops, target=target_ip):
             continue
@@ -244,7 +321,7 @@ def classify_corridor(
     tba_ixp_hit = False
     high_latency_local_crossings: list[dict] = []
 
-    for probe in triangulation["probes"]:
+    for probe in clean_probes:
         for crossing in probe.get("ixp_crossings", []):
             in_fishbowl = crossing.get("in_fishbowl")
             if in_fishbowl == "TBA":
@@ -318,7 +395,7 @@ def classify_corridor(
                     )
                 else:
                     finding_id = finding.id
-                for probe in triangulation["probes"]:
+                for probe in clean_probes:
                     chain = " -> ".join(f"AS{e['asn']}" for e in probe.get("as_sequence", []))
                     _store.add_corroboration(
                         conn,
@@ -357,7 +434,7 @@ def classify_corridor(
                     )
                 else:
                     finding_id = finding.id
-                for probe in triangulation["probes"]:
+                for probe in clean_probes:
                     chain = " -> ".join(f"AS{e['asn']}" for e in probe.get("as_sequence", []))
                     _store.add_corroboration(
                         conn,
@@ -396,11 +473,11 @@ def classify_corridor(
                         target_cc=candidate.target_cc,
                         target_asn=candidate.target_asn,
                         target_name=_asn_holder_name(candidate.target_asn, name_cache),
-                        probe_agreement=f"{agree_count}/{len(triangulation['probes'])} probes",
+                        probe_agreement=f"{agree_count}/{len(clean_probes)} probes",
                     )
                 else:
                     finding_id = finding.id
-                for probe in triangulation["probes"]:
+                for probe in clean_probes:
                     chain = " -> ".join(f"AS{e['asn']}" for e in probe.get("as_sequence", []))
                     _store.add_corroboration(
                         conn,

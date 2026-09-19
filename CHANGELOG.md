@@ -2150,3 +2150,39 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   `descr` ("Laucala Bay Campus", USP's real Fiji HQ) - not a bug, but
   worth checking again for the next multi-prefix target ASN rather
   than assumed safe by default.
+- fix(critical): the AS141695 "fix" didn't fix anything - its probe's
+  egress is still Zscaler, every new finding fired from it was invalid.
+  Ran all 14 queued FJ-FJ domestic tests; the first 6 to complete
+  (before the run was stopped) all resolved `AS53813` (Zscaler) as
+  their literal first hop - the probe's LAN-level ASN metadata change
+  (NC->FJ, 2026-09-17) never actually took it off the Zscaler proxy it
+  was already known to sit behind, it just changed which ASN reports
+  that LAN. Retracted all 6 (findings 197-202). Re-verifying in the
+  same pass caught a second, independent error: findings 195/196 (the
+  two NC->KI detours "corrected" to FJ in the prior session entry)
+  were never sourced from this probe at all - the actual parsed
+  measurement data proves both fired from genuine New Caledonia probes
+  (AS45345, AS56089); the `source_asn=141695` on those candidates was
+  only "which ASN just gained a probe, triggering this candidate's
+  generation," never a claim about which probe really fired the
+  traceroute. Reverted both back to NC, their original, correct
+  attribution. Added AS141695 to `EXTERNAL_NON_CANDIDATE_ASNS` outright
+  (excluded as both source and target) until a probe on one of Fiji's
+  real commercial ISPs comes online - Fiji is back to zero usable
+  sources, an accurate reflection of reality, not a false positive.
+- feat(analysis): add a proxy/VPN egress check as classification rule
+  0, ahead of the loop/IXP/RIS checks - a resolved AS-path starting
+  with a known corporate proxy ASN (`KNOWN_PROXY_ASNS`, currently just
+  `{53813: "Zscaler"}`) means every hop after it describes the proxy's
+  own network, not the source's real path, so that probe is dropped
+  from classification and corroboration-writing entirely
+  (`clean_probes`, not the raw triangulation list); if every probe in a
+  measurement is proxy-corrupted, that's a genuine escalation
+  ("this source's probe currently can't produce a real result"), not a
+  target-IP retry. Validated by re-analyzing the six already-fired,
+  already-retracted measurements from cached data (no new Atlas
+  credits): confirms the new check would have caught the corruption on
+  the very first corridor instead of six findings later. The general
+  lesson, not just this one probe: a probe's metadata changing (ASN,
+  status, reconnection) is a reason to regression-test its next real
+  path, never a reason to assume a previously-known issue is resolved.

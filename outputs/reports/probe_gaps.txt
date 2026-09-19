@@ -137,14 +137,14 @@ PATHWAY COVERAGE (20 economies) -- same table as the main report's Pathway Cover
   MP  Northern Mariana Islands (Micronesia) -- 2 ASN(s), 6 listed / 3 active probe(s) on a tracked ASN, 3 untested pathway(s)
   NU  Niue (Polynesia) -- 1 ASN(s), 1 listed / 1 active probe(s) on a tracked ASN, 3 untested pathway(s)
   PW  Palau (Micronesia) -- 3 ASN(s), 3 listed / 1 active probe(s) on a tracked ASN, 3 untested pathway(s)
+  FJ  Fiji (Melanesia) -- 21 ASN(s), 20 listed / 2 active probe(s) on a tracked ASN, 2 untested pathway(s)
   CK  Cook Islands (Polynesia) -- 2 ASN(s), 6 listed / 1 active probe(s) on a tracked ASN, 1 untested pathway(s)
-  FJ  Fiji (Melanesia) -- 21 ASN(s), 20 listed / 2 active probe(s) on a tracked ASN, 1 untested pathway(s)
   GU  Guam (Micronesia) -- 10 ASN(s), 14 listed / 6 active probe(s) on a tracked ASN, 1 untested pathway(s)
-  NC  New Caledonia (Melanesia) -- 18 ASN(s), 20 listed / 5 active probe(s) on a tracked ASN, 1 untested pathway(s)
   PF  French Polynesia (Polynesia) -- 6 ASN(s), 9 listed / 6 active probe(s) on a tracked ASN, 1 untested pathway(s)
   PG  Papua New Guinea (Melanesia) -- 38 ASN(s), 10 listed / 1 active probe(s) on a tracked ASN, 1 untested pathway(s)
   VU  Vanuatu (Melanesia) -- 12 ASN(s), 5 listed / 2 active probe(s) on a tracked ASN, 1 untested pathway(s)
   FM  Micronesia, Federated States of (Micronesia) -- 6 ASN(s), 6 listed / 2 active probe(s) on a tracked ASN, 0 untested pathway(s)
+  NC  New Caledonia (Melanesia) -- 18 ASN(s), 20 listed / 5 active probe(s) on a tracked ASN, 0 untested pathway(s)
 
   Note: this section's "listed"/"active" counts only probes hosted on one of this project's own tracked in-scope ASNs -- a different, stricter question than the ZERO/FRAGILE/ADEQUATE breakdown above, which counts any physically-connected probe in the country. A country can show >=1 active above and 0 here (e.g. a probe hosted on a Starlink ASN, or on an ASN registered to a different country) -- that's expected, not a data-quality problem.
 

@@ -1,6 +1,6 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-09-19T00:10:50.114508+00:00                  
+                 Generated: 2026-09-19T00:30:59.810812+00:00                  
 ==============================================================================
 
 SUMMARY
@@ -8,9 +8,9 @@ SUMMARY
 HEADLINE: 57% of the real peering points this region's own networks use sit OUTSIDE the fish bowl (13 of 23)
 
 PATHWAYS (every corridor with a filed finding, of any kind):
-  Total pathways found:                    194
+  Total pathways found:                    192
   Internal (never leave the fish bowl):    33
-  External / Leaves the region:            161
+  External / Leaves the region:            159
   (full corridor-by-corridor detail -- every confirmed detour, confirmed local transit, and candidate peering entry -- is in the appendix at the end of this report, not repeated here)
 
 Economies in scope:            20
@@ -103,9 +103,9 @@ The mirror image of the regional hubs above: the real external cities where conf
 
 City           Entries  Share Carriers Subregions reached            
 ------------------------------------------------------------------------------
-Sydney              96    60%       26 Melanesia, Micronesia, Polynesia
+Sydney              94    59%       25 Melanesia, Micronesia, Polynesia
     Dependent economies: AS, CK, FJ, KI, MH, NC, NR, PG, PW, SB, TO, VU, WS
-Los Angeles         36    22%        7 Melanesia, Micronesia, Polynesia
+Los Angeles         36    23%        7 Melanesia, Micronesia, Polynesia
     Dependent economies: FJ, FM, GU, MH, NR, PF, WF
 Tokyo               21    13%        8 Melanesia, Micronesia, Polynesia
     Dependent economies: AS, CK, FJ, MH, NC, NR, PW, SB, VU, WF
@@ -127,7 +127,7 @@ ASN        Operator                       Subregions reached
 AS14593    SpaceX Starlink                Micronesia, Polynesia       
     RIS economies: KI, TV
     Traceroute-confirmed (served): KI, TV
-    Tested from (vantage points): FJ, FM, GU, NU, TV
+    Tested from (vantage points): FM, GU, NC, NU, TV
 AS12684    SES ASTRA S.A.                 Melanesia, Micronesia, Polynesia
     RIS economies: CK, KI, NR, PG
     Traceroute-confirmed (served): NR
@@ -138,7 +138,7 @@ AS135409   Kacific Broadband Satellites   Melanesia, Polynesia
     Tested from (vantage points): FJ, FM, NC, NU
 
 Per-operator evidence summary, computed fresh from the current finding dataclasses every regeneration -- "served" means the economy's own reachability was confirmed to depend on this operator; "vantage points" just means a traceroute was fired from there, which is a measure of testing breadth, not reach:
-- AS14593 (SpaceX Starlink) is traceroute-confirmed reaching Kiribati (KI), Tuvalu (TV), tested from 5 distinct vantage points (Fiji (FJ), Micronesia, Federated States of (FM), Guam (GU), Niue (NU), Tuvalu (TV)).
+- AS14593 (SpaceX Starlink) is traceroute-confirmed reaching Kiribati (KI), Tuvalu (TV), tested from 5 distinct vantage points (Micronesia, Federated States of (FM), Guam (GU), New Caledonia (NC), Niue (NU), Tuvalu (TV)).
 - AS12684 (SES ASTRA S.A.) is traceroute-confirmed reaching Nauru (NR), tested from 4 distinct vantage points (Cook Islands (CK), Fiji (FJ), French Polynesia (PF), Tuvalu (TV)). Still untested: Cook Islands (CK), Kiribati (KI), Papua New Guinea (PG) -- a real RIS-observed relationship this project has never traceroute-confirmed.
 - AS135409 (Kacific Broadband Satellites) is traceroute-confirmed reaching Tonga (TO), tested from 4 distinct vantage points (Fiji (FJ), Micronesia, Federated States of (FM), New Caledonia (NC), Niue (NU)). Still untested: Papua New Guinea (PG) -- a real RIS-observed relationship this project has never traceroute-confirmed.
 
@@ -246,14 +246,14 @@ TV   Tuvalu                           Polynesia        3       1       1        
 MP   Northern Mariana Islands         Micronesia       2       6       3         3
 NU   Niue                             Polynesia        1       1       1         3
 PW   Palau                            Micronesia       3       3       1         3
+FJ   Fiji                             Melanesia       21      20       2         2
 CK   Cook Islands                     Polynesia        2       6       1         1
-FJ   Fiji                             Melanesia       21      20       2         1
 GU   Guam                             Micronesia      10      14       6         1
-NC   New Caledonia                    Melanesia       18      20       5         1
 PF   French Polynesia                 Polynesia        6       9       6         1
 PG   Papua New Guinea                 Melanesia       38      10       1         1
 VU   Vanuatu                          Melanesia       12       5       2         1
 FM   Micronesia, Federated States of  Micronesia       6       6       2         0
+NC   New Caledonia                    Melanesia       18      20       5         0
 
 APPENDIX: LOW DATA QUALITY ISSUES (2 known, resolved)
 ==============================================================================
@@ -265,20 +265,14 @@ AS24013 (SB Professional Services) -- registered SB  [DNS anycast infrastructure
 AS137064 (ISC-AS-POM1) -- registered PG  [DNS anycast infrastructure, opportunistically registered]
     Surfaced by a direct sanity check on ABQIX (Albuquerque, US, ix_id 3322, already correctly out-of-fishbowl): asked which in-scope Pacific ASN is a real member there, expecting the answer to matter. Cross-checked two independent sources before excluding, same as AS24013: bgp.tools names it "ISC F-ROOT ABQ1"; PeeringDB's own `net` record gives `aka: F-ROOT`, `info_type: Network Services`; RIPEstat WHOIS gives the authoritative `as-name: ISC-AS-POM1` with `descr: For use by ISC/F-Root exclusively for announcements at POM1/PNGIXP` (POM1 = Port Moresby, PNG's own IXP). All three agree: this is ISC's F-root DNS anycast infrastructure, not a Papua New Guinea network with a real footprint in Albuquerque -- its PG registration reflects where ISC arranged BGP announcement for this specific instance (PNGIXP), not a genuine local operator. Checked for siblings before excluding just this one ASN: swept all 163 then-in-scope ASNs' bgp.tools names and PeeringDB net names/akas for anycast-DNS-operator keywords (root, isc, verisign, netnod, icann, pch, quad9, opendns, cloudflare, google, etc.) -- one other hit (AS139609/SISCC) was a false positive ("isc" substring-matching inside "SISCC"'s own `aka", a real, already-extensively-verified Solomon Islands submarine cable operator), no other genuine anycast instance found. No prior findings or tested-pairs history involved AS137064 -- a clean exclusion, nothing else to unwind.
 
-APPENDIX: FULL CORRIDOR DETAIL (194 pathways -- see the PATHWAYS summary at the top of this report for the plain counts)
+APPENDIX: FULL CORRIDOR DETAIL (192 pathways -- see the PATHWAYS summary at the top of this report for the plain counts)
 ==============================================================================
 
 Confirmed sub-optimal routes (RIS + Atlas both agree)
 ==============================================================================
-FJ -> FJ (AS4638): detours via MegaIX Sydney (Sydney)
-    RIS observation count: 1669  [measurement 213176496]
-    measurement 213176496 (from FJ); chain: AS53813 -> AS2914 -> AS45349 -> AS4638; RIS count 1669; RIS agrees.
 NC -> FJ (AS4638): detours via MegaIX Sydney (Sydney)
     RIS observation count: 1669  [measurement 210919078]
     New Caledonia -> Telecom Fiji (AS4638); upstream AS45349 confirmed by RIS+Atlas. Also IRR-corroborated: AS45349's own PeeringDB-declared AS-SET (AS45349:AS-TFL-TRANSIT) names AS4638 directly -- a declared transit intention, independently sourced (APNIC), matching what the traceroute actually shows.
-FJ -> FJ (AS9241): detours via Equinix Sydney (Sydney)
-    RIS observation count: 542  [measurement 213177157]
-    measurement 213177157 (from FJ); chain: AS53813 -> AS4648 -> AS9241; RIS count 542; RIS agrees; loop noted (loop at 202.170.33.17 (A genuine 2-node alternating loop inside AS174's (Cogent) own network, discovere...)).
 GU -> FJ (AS9241): detours via AS174 (Cogent Communications), via AS2497 (IIJ, Japan) -- international transit (Tokyo)
     RIS observation count: 830  [measurement 211316239]
     Guam (AS3605, Guam Cablevision) -> FINTEL (AS9241, Fiji International Telecommunications Ltd) -- pulled from the maintained corridor backlog's top pick (the first hourly `/loop` firing to run against it): a genuinely untested GU<->FJ economy pair despite both being among the most-characterized economies in the project. The measurement itself ran unusually slowly to schedule (stuck at `Scheduled` status for several minutes before any probe activity, versus the usual 5-15 seconds) -- checked directly rather than assumed transient: `participant_count: 2` confirmed both of AS3605's connected probes were queued, and a second, longer poll resolved cleanly with both probes returning -- an ordinary Atlas-side scheduling delay, not a network anomaly, so not escalated under the standing consult-the-owner order (which is for strange *routing*, not platform latency). Result: AS3605 -> AS2497 (IIJ, Japan) -> AS174 (Cogent Communications) -> AS9241, the same Tokyo/Cogent global-transit shape already seen for AS3605's Palau corridor (see the GU->PW entry above) -- this project's second example of AS3605 reaching an in-scope target via Cogent through Japan rather than any regional path. Upstream of the target is AS174, RIS-agreeing with an *exact* match (830) -- and checked against AS9241's full neighbor list directly: AS174 is its single largest RIS-observed relationship (830 of ~1,700 total observations across all three of its neighbors), not a minor or coincidental one. One of two probes (329) was fully contiguous end-to-end; the other (64953) showed a gap immediately at the source hop too, but the RIS-agreeing upstream adjacency itself is identical and unambiguous on both.
@@ -682,9 +676,9 @@ FM -> TO (AS132579): detours via AS4637 (Telstra Global), then AS174 (Cogent Com
 NU -> VU (AS133383): detours via Equinix Sydney (Sydney)
     RIS observation count: 333  [measurement 212158121]
     **First-ever confirmation for this target**: AS45495<->AS133383, directly RIS-confirmed (332 of 332 observations fresh-checked -- AS45495 is its only real neighbor). `AS55885 -> AS9471 -> AS6939 -> AS15830 -> AS45495`, RIS agrees exactly (333). `has_routing_loop` False.
-FJ -> KI (AS134783): detours via Equinix Sydney (Sydney)
+NC -> KI (AS134783): detours via Equinix Sydney (Sydney)
     RIS observation count: 1392  [measurement 213022059]
-    measurement 213022059 (from FJ); chain: AS56089 -> AS18200 -> AS4826 -> AS14593 -> AS154100; RIS count 1392; RIS agrees; loop noted (loop at 45.127.172.74 (Equinix Sydney IXP fabric (ix_id 94 in ixp_lan_registry.json, independently conf...)). measurement 213022059 (from FJ); chain: AS45345 -> AS18200 -> AS4826 -> AS14593 -> AS154100; RIS count 1392; RIS agrees; loop noted (loop at 45.127.172.74 (Equinix Sydney IXP fabric (ix_id 94 in ixp_lan_registry.json, independently conf...)). measurement 213022059 (from FJ); chain: AS45345 -> AS18200 -> AS4826 -> AS14593 -> AS154100; RIS count 1392; RIS agrees; loop noted (loop at 45.127.172.74 (Equinix Sydney IXP fabric (ix_id 94 in ixp_lan_registry.json, independently conf...)).
+    measurement 213022059 (from NC); chain: AS56089 -> AS18200 -> AS4826 -> AS14593 -> AS154100; RIS count 1392; RIS agrees; loop noted (loop at 45.127.172.74 (Equinix Sydney IXP fabric (ix_id 94 in ixp_lan_registry.json, independently conf...)). measurement 213022059 (from NC); chain: AS45345 -> AS18200 -> AS4826 -> AS14593 -> AS154100; RIS count 1392; RIS agrees; loop noted (loop at 45.127.172.74 (Equinix Sydney IXP fabric (ix_id 94 in ixp_lan_registry.json, independently conf...)). measurement 213022059 (from NC); chain: AS45345 -> AS18200 -> AS4826 -> AS14593 -> AS154100; RIS count 1392; RIS agrees; loop noted (loop at 45.127.172.74 (Equinix Sydney IXP fabric (ix_id 94 in ixp_lan_registry.json, independently conf...)).
 NU -> SB (AS136996): detours via AS174 (Cogent Communications), then AS136557 (Sydney)
     RIS observation count: 336  [measurement 212158127]
     **First-ever confirmation for this target**: AS136557<->AS136996, directly RIS-confirmed (336 of 336 observations -- AS136557 is its only real neighbor, a genuinely new intermediate carrier for this project). `AS55885 -> AS9471 -> AS174 -> AS136557 -> AS136996`, RIS agrees exactly (336). `has_routing_loop` False.
@@ -751,9 +745,9 @@ VU -> NR (AS152706): detours via AS4637 (Telstra Global), then AS6453 (Tata Comm
 FM -> WS (AS153053): detours via AS4637 (Telstra Global), then AS45177 and AS18400 (Sydney)
     RIS observation count: 382  [measurement 212143021]
     **First-ever confirmation for this target**: AS18400<->AS153053 (Lesamoa.net), directly RIS-confirmed. A long, genuinely deep traceroute (22-25 real hops) reaching the target directly on all 3 probes: `AS139759 -> AS9246 -> AS4637 -> AS45177 -> AS18400 -> AS153053`, RIS agrees exactly (382). `has_routing_loop` False on all 3 once the correct target IP was checked -- an earlier internal processing pass wrongly flagged all 3 probes as loops by omitting the target IP from the check; caught and corrected before filing (one benign consecutive-address repeat mid-path, ordinary ECMP noise, not a real loop, since the target was cleanly reached).
-FJ -> KI (AS154100): detours via Equinix Sydney (Sydney)
+NC -> KI (AS154100): detours via Equinix Sydney (Sydney)
     RIS observation count: 361  [measurement 213022811]
-    measurement 213022811 (from FJ); chain: AS45345 -> AS18200 -> AS55850 -> AS14593; RIS count 361; RIS agrees; loop noted (loop at 45.127.172.162 (Equinix Sydney IXP fabric (ix_id 94 in ixp_lan_registry.json, independently conf...)). measurement 213022811 (from FJ); chain: AS45345 -> AS18200 -> AS55850 -> AS14593; RIS count 361; RIS agrees; loop noted (loop at 45.127.172.162 (Equinix Sydney IXP fabric (ix_id 94 in ixp_lan_registry.json, independently conf...)). measurement 213022811 (from FJ); chain: AS45345 -> AS18200 -> AS55850 -> AS14593; RIS count 361; RIS agrees; loop noted (loop at 45.127.172.162 (Equinix Sydney IXP fabric (ix_id 94 in ixp_lan_registry.json, independently conf...)).
+    measurement 213022811 (from NC); chain: AS45345 -> AS18200 -> AS55850 -> AS14593; RIS count 361; RIS agrees; loop noted (loop at 45.127.172.162 (Equinix Sydney IXP fabric (ix_id 94 in ixp_lan_registry.json, independently conf...)). measurement 213022811 (from NC); chain: AS45345 -> AS18200 -> AS55850 -> AS14593; RIS count 361; RIS agrees; loop noted (loop at 45.127.172.162 (Equinix Sydney IXP fabric (ix_id 94 in ixp_lan_registry.json, independently conf...)). measurement 213022811 (from NC); chain: AS45345 -> AS18200 -> AS55850 -> AS14593; RIS count 361; RIS agrees; loop noted (loop at 45.127.172.162 (Equinix Sydney IXP fabric (ix_id 94 in ixp_lan_registry.json, independently conf...)).
 NU -> KI (AS154100): detours via AS6939 (Hurricane Electric) (Sydney)
     RIS observation count: 361  [measurement 212158151]
     Fourteenth direct confirmation of AS154100<->AS14593 (Starlink). `AS55885 -> AS9471 -> AS6939 -> AS14593`, RIS agrees exactly (361). `has_routing_loop` False.
