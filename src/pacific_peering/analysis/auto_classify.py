@@ -184,6 +184,30 @@ def _first_looping_address(hops: list[dict]) -> str | None:
     return None
 
 
+def _local_ixp_crossing_name(probe: dict) -> str | None:
+    """The name of the first *local* (in_fishbowl=True) IXP this probe's path crosses, if any.
+
+    Distinct from the detour_pick/high_latency_local_crossings checks above:
+    those ask "does this path cross an *external* hub" or "is a local
+    crossing's RTT plausible", this asks the positive question a domestic
+    finding otherwise has no record of at all -- did the traceroute actually
+    touch the local exchange fabric, or just happen to stay in-country via
+    some other path (a carrier's own private backbone, for instance)? Per
+    the project owner: "no international detour" and "actually uses the
+    local IXP" are two different claims, and only checking `ixp_crossings`
+    hop-by-hop tells them apart -- confirmed concretely on the first NC
+    domestic sample, where one probe's path to the same target crossed
+    CAN'L IX directly (1.154ms RTT) while two other probes reached the
+    identical target with zero IXP crossings, via the incumbent's own
+    backbone instead. Persisted onto `corroborations.crosses_ixp`, a column
+    that already existed in the schema but was never actually populated.
+    """
+    for crossing in probe.get("ixp_crossings", []):
+        if crossing.get("in_fishbowl") is True:
+            return crossing.get("name")
+    return None
+
+
 def _fire_measurement(candidate: CorridorCandidate, target_ip: str) -> int:
     return run_smoketest(
         target_asn=candidate.target_asn,
@@ -408,6 +432,7 @@ def classify_corridor(
                         ris_agrees=probe.get("ris_agrees"),
                         has_loop=probe["probe_id"] in loop_notes,
                         loop_note=loop_notes.get(probe["probe_id"]),
+                        crosses_ixp=_local_ixp_crossing_name(probe),
                     )
                 mark_corridor_tested(candidate.source_asn, candidate.target_asn)
                 if regenerate:
@@ -447,6 +472,7 @@ def classify_corridor(
                         ris_agrees=probe.get("ris_agrees"),
                         has_loop=probe["probe_id"] in loop_notes,
                         loop_note=loop_notes.get(probe["probe_id"]),
+                        crosses_ixp=_local_ixp_crossing_name(probe),
                     )
                 mark_corridor_tested(candidate.source_asn, candidate.target_asn)
                 if regenerate:
@@ -490,6 +516,7 @@ def classify_corridor(
                         ris_agrees=probe.get("ris_agrees"),
                         has_loop=probe["probe_id"] in loop_notes,
                         loop_note=loop_notes.get(probe["probe_id"]),
+                        crosses_ixp=_local_ixp_crossing_name(probe),
                     )
                 mark_corridor_tested(candidate.source_asn, candidate.target_asn)
                 if regenerate:

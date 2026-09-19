@@ -69,7 +69,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
 <body>
 <div class="wrap">
     <h1>Pacific Peering — Regional Routing Report</h1>
-    <div class="meta">Generated 2026-09-19T00:48:21.454434+00:00</div>
+    <div class="meta">Generated 2026-09-19T00:56:54.036733+00:00</div>
 
     <div class="headline-banner">
         <span class="value">57%</span>
@@ -80,13 +80,13 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
     </div>
 
     <div class="stat-row">
-        <div class="stat-tile"><div class="value">196</div><div class="label">Pathways found (total)</div></div>
-        <div class="stat-tile"><div class="value">37</div><div class="label">Internal (never leave the fish bowl)</div></div>
+        <div class="stat-tile"><div class="value">200</div><div class="label">Pathways found (total)</div></div>
+        <div class="stat-tile"><div class="value">41</div><div class="label">Internal (never leave the fish bowl)</div></div>
         <div class="stat-tile red-box"><div class="value">159</div>
             <div class="label">External / Leaves the region</div></div>
     </div>
     <p class="section-intro">Full corridor-by-corridor detail for all
-        196 pathways above is further down this report
+        200 pathways above is further down this report
         (Confirmed sub-optimal routes / Confirmed local transit / Candidate
         peering), collapsed by default so it doesn't dominate the page &mdash;
         click any of those section headings to expand.</p>
@@ -1594,7 +1594,7 @@ Twelfth confirmation of AS139609(SISCC)&lt;-&gt;AS45891. `AS55885 -&gt; AS9471 -
 
     <details class="section-toggle">
         <summary>Confirmed local transit (RIS + Atlas both agree, stays in-fishbowl)
-            <span class="count">(16)</span></summary>
+            <span class="count">(18)</span></summary>
         <div class="transit-card">
             <div class="headline">AS38442 (Vodafone Fiji,
                 FJ) -&gt; AS9249
@@ -1620,6 +1620,14 @@ Twelfth confirmation of AS139609(SISCC)&lt;-&gt;AS45891. `AS55885 -&gt; AS9471 -
                 &middot; vantage point NC</div>
             <details class="note"><summary>measurement 213187776 (from NC); chain: AS56089 -&gt; AS17480; RIS disagrees…</summary>measurement 213187776 (from NC); chain: AS56089 -&gt; AS17480; RIS disagrees. measurement 213187776 (from NC); chain: AS45345 -&gt; AS18200 -&gt; AS17480; RIS count 1665; RIS agrees. measurement 213187776 (from NC); chain: AS45345 -&gt; AS18200 -&gt; AS17480; RIS count 1665; RIS agrees.</details>
         </div><div class="transit-card">
+            <div class="headline">AS45345 (Nautile,
+                NC) -&gt; AS18200
+                (Office des Postes et Telecommunications New-Caledonia, NC)</div>
+            <div>RIS observation count: 1668
+                &middot; measurement 213188863
+                &middot; vantage point NC</div>
+            <details class="note"><summary>measurement 213188863 (from NC); chain: AS45345 -&gt; AS18200; RIS count 1668; RIS agrees…</summary>measurement 213188863 (from NC); chain: AS45345 -&gt; AS18200; RIS count 1668; RIS agrees. measurement 213188863 (from NC); chain: AS56089 -&gt; AS18200; RIS count 1669; RIS agrees. measurement 213188863 (from NC); chain: AS45345 -&gt; AS18200; RIS count 1668; RIS agrees.</details>
+        </div><div class="transit-card">
             <div class="headline">AS9241 (FINTEL (Fiji International Telecommunications Ltd),
                 FJ) -&gt; AS23917
                 (Tuvalu Telecommunications Corporation, TV)</div>
@@ -1643,6 +1651,14 @@ Twelfth confirmation of AS139609(SISCC)&lt;-&gt;AS45891. `AS55885 -&gt; AS9471 -
                 &middot; measurement 211629998
                 &middot; vantage point VU</div>
             <details class="note"><summary>Sourced from AS9249 (Telecom Vanuatu) toward AS38227 -- a fresh VU&lt;-&gt;WS pair, and a genuinely new adjacency this project hadn&#x27;t recorded before…</summary>Sourced from AS9249 (Telecom Vanuatu) toward AS38227 -- a fresh VU&lt;-&gt;WS pair, and a genuinely new adjacency this project hadn&#x27;t recorded before. Both probes fully contiguous, target reached directly: AS9249 -&gt; AS38442 (Vodafone Fiji) -&gt; AS132528 (Digicel Australia/Telstra backbone, crossing Equinix Sydney -- a **fourth** occurrence of this same real infrastructure this session) -&gt; **AS38800 (Digicel Samoa Ltd)** -&gt; AS38227 (Computer Services Limited, Samoa&#x27;s incumbent). Upstream of the target is AS38800, RIS-agreeing with an *exact* match (990) -- checked directly: AS38800 is AS38227&#x27;s *only* RIS-observed neighbor at all. A domestic (intra-Samoa) adjacency, the same shape as the established ONATI&lt;-&gt;Cook-Islands and FINTEL&lt;-&gt;Tuvalu patterns: an in-fishbowl Pacific carrier (here, Digicel Samoa) acting as a real transit waypoint for another Pacific carrier&#x27;s network (CSL Samoa), for traffic originating from a third economy (Vanuatu) -- another real data point for regional-hub structure within the fishbowl, this time at the intra-country level rather than inter-economy. **Second independent corroboration** (measurement 212142995, FM/AS139759 -&gt; WS/AS38227, part of the bulk NU/FM/GU/NC clear-out): `AS139759 -&gt; AS9246 -&gt; AS4637 (Telstra Global) -&gt; AS132528 -&gt; AS38800 -&gt; AS38227`, RIS agrees with the identical exact match (990). Same measurement also confirmed the chain extends one hop further, to AS139679 (Electoral Commission) -- see the new `ConfirmedDetour` entry. `has_routing_loop` False. **Third independent corroboration** (measurement 212141147, NU/AS55885, part of the bulk NU/FM/GU/NC clear-out): `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS132528 -&gt; AS38800 -&gt; AS38227`, RIS agrees exactly (990). `has_routing_loop` False.</details>
+        </div><div class="transit-card">
+            <div class="headline">AS18200 (Office des Postes et Telecommunications New-Caledonia,
+                NC) -&gt; AS45461
+                (TeleNet, NC)</div>
+            <div>RIS observation count: 667
+                &middot; measurement 213190028
+                &middot; vantage point NC</div>
+            <details class="note"><summary>measurement 213190028 (from NC); chain: AS56089 -&gt; AS18200 -&gt; AS45461; RIS count 667; RIS agrees…</summary>measurement 213190028 (from NC); chain: AS56089 -&gt; AS18200 -&gt; AS45461; RIS count 667; RIS agrees. measurement 213190028 (from NC); chain: AS45345 -&gt; AS18200 -&gt; AS45461; RIS count 667; RIS agrees. measurement 213190028 (from NC); chain: AS45345 -&gt; AS18200 -&gt; AS45461; RIS count 667; RIS agrees.</details>
         </div><div class="transit-card">
             <div class="headline">AS7131 (PTI Pacifica Inc.,
                 MP) -&gt; AS55722
@@ -1728,7 +1744,7 @@ Twelfth confirmation of AS139609(SISCC)&lt;-&gt;AS45891. `AS55885 -&gt; AS9471 -
 
     <details class="section-toggle">
         <summary>Candidate peering (strong traceroute signal, RIS disagrees &mdash; unconfirmed)
-            <span class="count">(21)</span></summary>
+            <span class="count">(23)</span></summary>
         <div class="candidate-card">
             <div class="headline">AS17893 (Palau National Communications Corp,
                 PW) -&gt; AS3605
@@ -1862,6 +1878,14 @@ NU(AS55885) -&gt; AS38875: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS9246 -&gt;
                 &middot; vantage point MP</div>
             <details class="note"><summary>A fresh MP&lt;-&gt;FM pair, pulled from the corridor backlog…</summary>A fresh MP&lt;-&gt;FM pair, pulled from the corridor backlog. Unusually fast for this source (9-21ms RTT, a genuinely regional path, not a Tokyo/Sydney detour). Both probes cross **Guam IX** directly -- `ixp_crossings` confirms it, and unlike every other IXP crossing this project has recorded, this one is **in-fishbowl** (`in_fishbowl: true`): the member ASN is AS10130, itself one of FSM Telecommunications Corporation&#x27;s own sibling ASNs (alongside AS38875 and AS139759, all sharing the same real operator, established earlier this session). The literal target (AS38875) never resolved; the traceroute lands on sibling AS139759 instead -- the same substitution already seen for this operator&#x27;s other corridors. Applying the sibling-identity correction and checking both siblings&#x27; own RIS neighbor lists directly: AS38875&#x27;s only neighbor is AS10130 (1,014 observations) and AS139759&#x27;s only neighbor is also AS10130 (1,009) -- so RIS *does* confirm the internal FSM sibling relationship crossed here. But that&#x27;s not the same as confirming *this* adjacency: AS10130 itself has zero RIS-observed neighbors on record, and AS7131&#x27;s own neighbor list doesn&#x27;t include AS10130 either -- so the actual traceroute-observed leg (AS7131 -&gt; AS10130) remains unconfirmed by RIS from either side, exactly the same shape as the earlier GU(AS3605)-&gt;FM(AS38875) MARIIX entry above, just at a different in-fishbowl exchange. Kept as a candidate, not promoted, per Validation Rule 1 -- a real in-fishbowl crossing and a real sibling-confirmed downstream relationship still don&#x27;t add up to RIS confirming the specific source-to-target leg itself.</details>
         </div><div class="candidate-card">
+            <div class="headline">AS1221 (Telstra Limited,
+                ??) -&gt; AS45495
+                (Interchange Ltd., VU)</div>
+            <div>Traceroute agreement: 2/2 probes
+                &middot; measurement 213188879
+                &middot; vantage point VU</div>
+            <details class="note"><summary>measurement 213188879 (from VU); chain: AS9249 -&gt; AS38442 -&gt; AS4637 -&gt; AS1221; RIS disagrees…</summary>measurement 213188879 (from VU); chain: AS9249 -&gt; AS38442 -&gt; AS4637 -&gt; AS1221; RIS disagrees. measurement 213188879 (from VU); chain: AS9249 -&gt; AS38442 -&gt; AS4637 -&gt; AS1221; RIS disagrees.</details>
+        </div><div class="candidate-card">
             <div class="headline">AS7131 (PTI Pacifica Inc.,
                 MP) -&gt; AS45891
                 (Solomon Telekom Co Ltd, SB)</div>
@@ -1869,6 +1893,14 @@ NU(AS55885) -&gt; AS38875: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS9246 -&gt;
                 &middot; measurement 212246188
                 &middot; vantage point MP</div>
             <details class="note"><summary>measurement 212246188 (from MP); chain: AS7131; RIS disagrees.</summary>measurement 212246188 (from MP); chain: AS7131; RIS disagrees.</details>
+        </div><div class="candidate-card">
+            <div class="headline">AS9249 (Telecom Vanuatu Limited,
+                VU) -&gt; AS45935
+                (Wantok Network Limited, VU)</div>
+            <div>Traceroute agreement: 2/2 probes
+                &middot; measurement 213190215
+                &middot; vantage point VU</div>
+            <details class="note"><summary>measurement 213190215 (from VU); chain: AS9249 -&gt; AS45935; RIS disagrees…</summary>measurement 213190215 (from VU); chain: AS9249 -&gt; AS45935; RIS disagrees. measurement 213190215 (from VU); chain: AS9249 -&gt; AS45935; RIS disagrees.</details>
         </div><div class="candidate-card">
             <div class="headline">AS17893 (Palau National Communications Corp,
                 PW) -&gt; AS55722
