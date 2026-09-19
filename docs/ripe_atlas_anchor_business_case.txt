@@ -1,0 +1,82 @@
+BUSINESS CASE: HOSTING A RIPE ATLAS ANCHOR OR PROBE
+====================================================
+
+THE ASK
+-------
+Approval to host a RIPE Atlas measurement node -- either a software probe
+(a small process on existing infrastructure) or a full hardware anchor (a
+dedicated appliance with higher bandwidth and a public-facing measurement
+target) -- provided free of charge by RIPE NCC, a non-profit Regional
+Internet Registry.
+
+WHAT IT DOES
+------------
+RIPE Atlas is the world's largest Internet measurement network, with
+roughly 12,000 active probes and anchors globally. Each node continuously
+runs lightweight, passive measurements (ping, traceroute, DNS, HTTP,
+SSL/TLS, NTP) to and from thousands of other vantage points. It does not
+proxy, route, or carry any customer traffic, and it does not expose the
+host network to inbound production risk.
+
+BENEFITS TO THE REGION
+-----------------------
+1. Visibility where none exists today.
+   Pacific and small-island networks are chronically under-measured --
+   most global routing and latency datasets have zero or one vantage
+   point across an entire ocean. A local anchor turns "we assume" into
+   "we measured," for regulators, NOGs, and researchers alike.
+
+2. Faster fault diagnosis for everyone.
+   When a submarine cable cut or BGP misconfiguration degrades a
+   corridor, a nearby anchor lets any operator in the region run instant
+   traceroutes/pings from that vantage point -- including during the
+   outage itself, since anchors run independent of the host's own
+   monitoring stack.
+
+3. Independent evidence for peering and IXP decisions.
+   Anchors provide third-party, publicly citable latency and path data
+   that strengthens peering negotiations, IXP business cases, and
+   submarine cable RFPs -- without relying on any single carrier's
+   self-reported numbers.
+
+4. A public good with no ongoing local cost.
+   RIPE NCC supplies the hardware (for anchors) and covers all software
+   maintenance and development; the network operator community broadly
+   benefits from every additional Pacific vantage point.
+
+BENEFITS TO THE HOST ORGANIZATION
+----------------------------------
+1. Free, permanent visibility into your own network's reachability from
+   thousands of global vantage points -- a diagnostic capability that
+   would otherwise require building or buying a commercial measurement
+   platform.
+
+2. RIPE Atlas credits, earned by hosting, which can be spent running
+   custom on-demand measurements from any other probe in the network --
+   directly useful for a host's own peering, transit, and
+   incident-response work.
+
+3. Reputational standing. The host is listed publicly as a RIPE Atlas
+   anchor/probe operator, signaling technical maturity and community
+   contribution to peers, regulators, and prospective peering partners.
+
+4. Minimal resource footprint. A software probe needs only a spare VM
+   with an Internet-facing IP; a hardware anchor needs 1U of rack space,
+   power, and a routed subnet -- RIPE NCC provides full setup
+   documentation and support.
+
+COST AND RISK
+-------------
+Cost to host is rack space/power (anchor) or a VM (probe); no license or
+usage fee, and RIPE NCC owns and remotely manages anchor hardware. Risk
+is negligible: the node originates only outbound measurement traffic and
+standard inbound probe traffic on well-known ports, and cannot be used to
+route or proxy customer data.
+
+RECOMMENDATION
+--------------
+Approve hosting at least a software probe as a low-risk first step, with
+a path to a full anchor once operational comfort is established.
+
+Reference:
+https://www.ripe.net/analyse/internet-measurements/ripe-atlas/host-an-anchor/
