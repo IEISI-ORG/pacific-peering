@@ -69,7 +69,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
 <body>
 <div class="wrap">
     <h1>Pacific Peering — Regional Routing Report</h1>
-    <div class="meta">Generated 2026-09-18T23:56:47.589204+00:00</div>
+    <div class="meta">Generated 2026-09-19T00:10:51.958790+00:00</div>
 
     <div class="headline-banner">
         <span class="value">57%</span>
@@ -80,13 +80,13 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
     </div>
 
     <div class="stat-row">
-        <div class="stat-tile"><div class="value">192</div><div class="label">Pathways found (total)</div></div>
+        <div class="stat-tile"><div class="value">194</div><div class="label">Pathways found (total)</div></div>
         <div class="stat-tile"><div class="value">33</div><div class="label">Internal (never leave the fish bowl)</div></div>
-        <div class="stat-tile red-box"><div class="value">159</div>
+        <div class="stat-tile red-box"><div class="value">161</div>
             <div class="label">External / Leaves the region</div></div>
     </div>
     <p class="section-intro">Full corridor-by-corridor detail for all
-        192 pathways above is further down this report
+        194 pathways above is further down this report
         (Confirmed sub-optimal routes / Confirmed local transit / Candidate
         peering), collapsed by default so it doesn't dominate the page &mdash;
         click any of those section headings to expand.</p>
@@ -380,15 +380,15 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <th>Dependent economies</th></tr></thead>
         <tbody><tr>
             <td>Sydney</td>
-            <td>94</td>
-            <td>59%</td>
-            <td>25</td>
+            <td>96</td>
+            <td>60%</td>
+            <td>26</td>
             <td>Melanesia, Micronesia, Polynesia</td>
             <td>AS, CK, FJ, KI, MH, NC, NR, PG, PW, SB, TO, VU, WS</td>
         </tr><tr>
             <td>Los Angeles</td>
             <td>36</td>
-            <td>23%</td>
+            <td>22%</td>
             <td>7</td>
             <td>Melanesia, Micronesia, Polynesia</td>
             <td>FJ, FM, GU, MH, NR, PF, WF</td>
@@ -471,14 +471,28 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
 
     <details class="section-toggle">
         <summary>Confirmed sub-optimal routes (RIS + Atlas both agree)
-            <span class="count">(159)</span></summary>
+            <span class="count">(161)</span></summary>
         <div class="detour-card">
+            <div class="headline">FJ -&gt; FJ
+                (AS4638): detours via MegaIX Sydney
+                (Sydney)</div>
+            <div>RIS observation count: 1669
+                &middot; measurement 213176496</div>
+            <details class="note"><summary>measurement 213176496 (from FJ); chain: AS53813 -&gt; AS2914 -&gt; AS45349 -&gt; AS4638; RIS count 1669; RIS agrees.</summary>measurement 213176496 (from FJ); chain: AS53813 -&gt; AS2914 -&gt; AS45349 -&gt; AS4638; RIS count 1669; RIS agrees.</details>
+        </div><div class="detour-card">
             <div class="headline">NC -&gt; FJ
                 (AS4638): detours via MegaIX Sydney
                 (Sydney)</div>
             <div>RIS observation count: 1669
                 &middot; measurement 210919078</div>
             <details class="note"><summary>New Caledonia -&gt; Telecom Fiji (AS4638); upstream AS45349 confirmed by RIS+Atlas…</summary>New Caledonia -&gt; Telecom Fiji (AS4638); upstream AS45349 confirmed by RIS+Atlas. Also IRR-corroborated: AS45349&#x27;s own PeeringDB-declared AS-SET (AS45349:AS-TFL-TRANSIT) names AS4638 directly -- a declared transit intention, independently sourced (APNIC), matching what the traceroute actually shows.</details>
+        </div><div class="detour-card">
+            <div class="headline">FJ -&gt; FJ
+                (AS9241): detours via Equinix Sydney
+                (Sydney)</div>
+            <div>RIS observation count: 542
+                &middot; measurement 213177157</div>
+            <details class="note"><summary>measurement 213177157 (from FJ); chain: AS53813 -&gt; AS4648 -&gt; AS9241; RIS count 542; RIS agrees; loop noted (loop at 202.170.33.17 (A genuine 2-node alternating…</summary>measurement 213177157 (from FJ); chain: AS53813 -&gt; AS4648 -&gt; AS9241; RIS count 542; RIS agrees; loop noted (loop at 202.170.33.17 (A genuine 2-node alternating loop inside AS174&#x27;s (Cogent) own network, discovere...)).</details>
         </div><div class="detour-card">
             <div class="headline">GU -&gt; FJ
                 (AS9241): detours via AS174 (Cogent Communications), via AS2497 (IIJ, Japan) -- international transit

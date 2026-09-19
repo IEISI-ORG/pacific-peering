@@ -1,6 +1,6 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-09-18T23:56:46.458316+00:00                  
+                 Generated: 2026-09-19T00:10:50.114508+00:00                  
 ==============================================================================
 
 SUMMARY
@@ -8,9 +8,9 @@ SUMMARY
 HEADLINE: 57% of the real peering points this region's own networks use sit OUTSIDE the fish bowl (13 of 23)
 
 PATHWAYS (every corridor with a filed finding, of any kind):
-  Total pathways found:                    192
+  Total pathways found:                    194
   Internal (never leave the fish bowl):    33
-  External / Leaves the region:            159
+  External / Leaves the region:            161
   (full corridor-by-corridor detail -- every confirmed detour, confirmed local transit, and candidate peering entry -- is in the appendix at the end of this report, not repeated here)
 
 Economies in scope:            20
@@ -103,9 +103,9 @@ The mirror image of the regional hubs above: the real external cities where conf
 
 City           Entries  Share Carriers Subregions reached            
 ------------------------------------------------------------------------------
-Sydney              94    59%       25 Melanesia, Micronesia, Polynesia
+Sydney              96    60%       26 Melanesia, Micronesia, Polynesia
     Dependent economies: AS, CK, FJ, KI, MH, NC, NR, PG, PW, SB, TO, VU, WS
-Los Angeles         36    23%        7 Melanesia, Micronesia, Polynesia
+Los Angeles         36    22%        7 Melanesia, Micronesia, Polynesia
     Dependent economies: FJ, FM, GU, MH, NR, PF, WF
 Tokyo               21    13%        8 Melanesia, Micronesia, Polynesia
     Dependent economies: AS, CK, FJ, MH, NC, NR, PW, SB, VU, WF
@@ -265,14 +265,20 @@ AS24013 (SB Professional Services) -- registered SB  [DNS anycast infrastructure
 AS137064 (ISC-AS-POM1) -- registered PG  [DNS anycast infrastructure, opportunistically registered]
     Surfaced by a direct sanity check on ABQIX (Albuquerque, US, ix_id 3322, already correctly out-of-fishbowl): asked which in-scope Pacific ASN is a real member there, expecting the answer to matter. Cross-checked two independent sources before excluding, same as AS24013: bgp.tools names it "ISC F-ROOT ABQ1"; PeeringDB's own `net` record gives `aka: F-ROOT`, `info_type: Network Services`; RIPEstat WHOIS gives the authoritative `as-name: ISC-AS-POM1` with `descr: For use by ISC/F-Root exclusively for announcements at POM1/PNGIXP` (POM1 = Port Moresby, PNG's own IXP). All three agree: this is ISC's F-root DNS anycast infrastructure, not a Papua New Guinea network with a real footprint in Albuquerque -- its PG registration reflects where ISC arranged BGP announcement for this specific instance (PNGIXP), not a genuine local operator. Checked for siblings before excluding just this one ASN: swept all 163 then-in-scope ASNs' bgp.tools names and PeeringDB net names/akas for anycast-DNS-operator keywords (root, isc, verisign, netnod, icann, pch, quad9, opendns, cloudflare, google, etc.) -- one other hit (AS139609/SISCC) was a false positive ("isc" substring-matching inside "SISCC"'s own `aka", a real, already-extensively-verified Solomon Islands submarine cable operator), no other genuine anycast instance found. No prior findings or tested-pairs history involved AS137064 -- a clean exclusion, nothing else to unwind.
 
-APPENDIX: FULL CORRIDOR DETAIL (192 pathways -- see the PATHWAYS summary at the top of this report for the plain counts)
+APPENDIX: FULL CORRIDOR DETAIL (194 pathways -- see the PATHWAYS summary at the top of this report for the plain counts)
 ==============================================================================
 
 Confirmed sub-optimal routes (RIS + Atlas both agree)
 ==============================================================================
+FJ -> FJ (AS4638): detours via MegaIX Sydney (Sydney)
+    RIS observation count: 1669  [measurement 213176496]
+    measurement 213176496 (from FJ); chain: AS53813 -> AS2914 -> AS45349 -> AS4638; RIS count 1669; RIS agrees.
 NC -> FJ (AS4638): detours via MegaIX Sydney (Sydney)
     RIS observation count: 1669  [measurement 210919078]
     New Caledonia -> Telecom Fiji (AS4638); upstream AS45349 confirmed by RIS+Atlas. Also IRR-corroborated: AS45349's own PeeringDB-declared AS-SET (AS45349:AS-TFL-TRANSIT) names AS4638 directly -- a declared transit intention, independently sourced (APNIC), matching what the traceroute actually shows.
+FJ -> FJ (AS9241): detours via Equinix Sydney (Sydney)
+    RIS observation count: 542  [measurement 213177157]
+    measurement 213177157 (from FJ); chain: AS53813 -> AS4648 -> AS9241; RIS count 542; RIS agrees; loop noted (loop at 202.170.33.17 (A genuine 2-node alternating loop inside AS174's (Cogent) own network, discovere...)).
 GU -> FJ (AS9241): detours via AS174 (Cogent Communications), via AS2497 (IIJ, Japan) -- international transit (Tokyo)
     RIS observation count: 830  [measurement 211316239]
     Guam (AS3605, Guam Cablevision) -> FINTEL (AS9241, Fiji International Telecommunications Ltd) -- pulled from the maintained corridor backlog's top pick (the first hourly `/loop` firing to run against it): a genuinely untested GU<->FJ economy pair despite both being among the most-characterized economies in the project. The measurement itself ran unusually slowly to schedule (stuck at `Scheduled` status for several minutes before any probe activity, versus the usual 5-15 seconds) -- checked directly rather than assumed transient: `participant_count: 2` confirmed both of AS3605's connected probes were queued, and a second, longer poll resolved cleanly with both probes returning -- an ordinary Atlas-side scheduling delay, not a network anomaly, so not escalated under the standing consult-the-owner order (which is for strange *routing*, not platform latency). Result: AS3605 -> AS2497 (IIJ, Japan) -> AS174 (Cogent Communications) -> AS9241, the same Tokyo/Cogent global-transit shape already seen for AS3605's Palau corridor (see the GU->PW entry above) -- this project's second example of AS3605 reaching an in-scope target via Cogent through Japan rather than any regional path. Upstream of the target is AS174, RIS-agreeing with an *exact* match (830) -- and checked against AS9241's full neighbor list directly: AS174 is its single largest RIS-observed relationship (830 of ~1,700 total observations across all three of its neighbors), not a minor or coincidental one. One of two probes (329) was fully contiguous end-to-end; the other (64953) showed a gap immediately at the source hop too, but the RIS-agreeing upstream adjacency itself is identical and unambiguous on both.

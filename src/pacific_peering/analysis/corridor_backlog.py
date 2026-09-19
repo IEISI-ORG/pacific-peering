@@ -90,7 +90,16 @@ EXTERNAL_NON_CANDIDATE_ASNS = frozenset(
 # to avoid combinatorial blowup on large in-scope ASN lists (e.g. PG's 38
 # ASNs) where only a handful of pairs are actually reachable from a
 # connected probe.
-DOMESTIC_TEST_ECONOMIES: frozenset[str] = frozenset({"FJ"})
+#
+# Scoped to every economy with a real, same-country IXP on PeeringDB (per
+# `probe_gap_report.py`'s Local IXP Presence section) -- per the project
+# owner: "schedule all CC [with] an IXP next". A domestic detour is most
+# interesting precisely where a local exchange exists to *not* be used;
+# an economy with no local IXP at all has a different, less specific
+# question ("is there any real local peering fabric here"), not this
+# one. Recompute via the same query as `_compute_local_ixps` before
+# adding an economy here -- don't hand-guess which ones qualify.
+DOMESTIC_TEST_ECONOMIES: frozenset[str] = frozenset({"FJ", "GU", "NC", "PG", "VU"})
 
 # Economy pairs already known to have a real result on record from before
 # this backlog system existed, but only in task_plan.md prose (not
