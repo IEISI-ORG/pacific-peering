@@ -3,11 +3,15 @@ Sole purpose: where to request a new probe next. Not a findings report.
 "Probes" breakdowns below distinguish every probe Atlas has ever listed for an economy (any status) from the subset that's actually useful right now (status: Connected) -- a listed-but-not-Connected probe is either a stale registration worth cleaning up or a real host that could be brought back online, and naming the specific probe IDs gives the Atlas/Pacific-networking community a concrete target either way.
 ==============================================================================
 
-ZERO CONNECTED PROBES (5/20) -- cannot source or target a traceroute here at all. ASNs listed are this economy's own in-scope ASNs -- candidates to approach for hosting a new probe:
+ZERO CONNECTED PROBES (6/20) -- cannot source or target a traceroute here at all. ASNs listed are this economy's own in-scope ASNs -- candidates to approach for hosting a new probe:
   AS  American Samoa [used in a confirmed/candidate finding]
       ASNs: 9751, 23657
       Probes: 2 listed, 0 actually useful
         Not useful yet -- fix the data or get it back online: 272 (Written Off), 22834 (Abandoned)
+  KI  Kiribati [used in a confirmed/candidate finding]
+      ASNs: 4865, 132486, 134783, 154100, 154102
+      Probes: 3 listed, 0 actually useful
+        Not useful yet -- fix the data or get it back online: 3630 (Abandoned), 1008228 (Disconnected), 1008229 (Disconnected)
   NR  Nauru [used in a confirmed/candidate finding]
       ASNs: 55722, 55723, 140504, 141368, 152706
       Probes: 2 listed, 0 actually useful
@@ -71,7 +75,7 @@ FRAGILE -- exactly 1 connected probe (9/20) -- a single point of failure, and th
       Probes: 1 listed, 1 actually useful
         Useful (Connected): 7588
 
-ADEQUATE -- 2+ connected probes (6/20):
+ADEQUATE -- 2+ connected probes (5/20):
   FM  Micronesia, Federated States of (2 connected)
       Probes: 8 listed, 2 actually useful
         Useful (Connected): 7448, 50897
@@ -84,10 +88,6 @@ ADEQUATE -- 2+ connected probes (6/20):
       Local IXP: GU-IX (Guam) -- members: AS3605
       Local IXP: Guam IX (Tamuning) -- members: AS152735
       Local IXP: MARIIX (Mangilao) -- members: AS3605, AS9246, AS23676, AS395400
-  KI  Kiribati (2 connected)
-      Probes: 3 listed, 2 actually useful
-        Useful (Connected): 1008228, 1008229
-        Not useful yet -- fix the data or get it back online: 3630 (Abandoned)
   NC  New Caledonia (5 connected)
       Probes: 23 listed, 5 actually useful
         Useful (Connected): 7018, 33674, 61210, 63050, 1008625
@@ -127,12 +127,12 @@ LOCAL IXP PRESENCE (5/20 economies) -- same-country exchanges this project's own
 PATHWAY COVERAGE (20 economies) -- same table as the main report's Pathway Coverage section, kept here too since it's the other half of "where does a new probe actually help": ASN count, listed vs. active probes on this project's own tracked ASNs (not the same count as above -- see note below), and how many of the other in-scope economies still have zero finding connecting to this one. Sorted by untested pathways, most first:
   KI  Kiribati (Micronesia) -- 5 ASN(s), 0 listed / 0 active probe(s) on a tracked ASN, 16 untested pathway(s)
   NR  Nauru (Micronesia) -- 5 ASN(s), 0 listed / 0 active probe(s) on a tracked ASN, 8 untested pathway(s)
-  AS  American Samoa (Polynesia) -- 2 ASN(s), 2 listed / 0 active probe(s) on a tracked ASN, 7 untested pathway(s)
   MH  Marshall Islands (Micronesia) -- 2 ASN(s), 4 listed / 0 active probe(s) on a tracked ASN, 7 untested pathway(s)
-  SB  Solomon Islands (Melanesia) -- 10 ASN(s), 0 listed / 0 active probe(s) on a tracked ASN, 7 untested pathway(s)
-  TO  Tonga (Polynesia) -- 5 ASN(s), 2 listed / 0 active probe(s) on a tracked ASN, 7 untested pathway(s)
   WF  Wallis and Futuna (Polynesia) -- 1 ASN(s), 0 listed / 0 active probe(s) on a tracked ASN, 7 untested pathway(s)
-  WS  Samoa (Polynesia) -- 10 ASN(s), 3 listed / 0 active probe(s) on a tracked ASN, 7 untested pathway(s)
+  AS  American Samoa (Polynesia) -- 2 ASN(s), 2 listed / 0 active probe(s) on a tracked ASN, 6 untested pathway(s)
+  SB  Solomon Islands (Melanesia) -- 10 ASN(s), 0 listed / 0 active probe(s) on a tracked ASN, 6 untested pathway(s)
+  WS  Samoa (Polynesia) -- 10 ASN(s), 3 listed / 0 active probe(s) on a tracked ASN, 6 untested pathway(s)
+  TO  Tonga (Polynesia) -- 5 ASN(s), 2 listed / 0 active probe(s) on a tracked ASN, 4 untested pathway(s)
   TV  Tuvalu (Polynesia) -- 3 ASN(s), 1 listed / 1 active probe(s) on a tracked ASN, 4 untested pathway(s)
   MP  Northern Mariana Islands (Micronesia) -- 2 ASN(s), 6 listed / 3 active probe(s) on a tracked ASN, 3 untested pathway(s)
   NU  Niue (Polynesia) -- 1 ASN(s), 1 listed / 1 active probe(s) on a tracked ASN, 3 untested pathway(s)
