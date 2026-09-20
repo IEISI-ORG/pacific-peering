@@ -74,7 +74,14 @@ DEFAULT_BACKLOG_MD_PATH = Path("corridor_backlog.md")
 # this session -- see task_plan.md).
 EXTERNAL_NON_CANDIDATE_ASNS = frozenset(
     {
-        2200,  # Renater (France)
+        2200,  # Renater (France) -- probe 23002 may well physically sit at the
+        # Universite de la Polynesie Francaise (its live geometry resolves to
+        # PF), but its routing backhauls straight to metropolitan France:
+        # traceroute to its public address (194.214.253.13, 2026-09-20) exits
+        # via AS7578 (GSL Australia) straight into Renater's own French
+        # backbone (AS2200 hops in FR), ~500ms RTT. A real Pacific site, but
+        # not a useful local vantage point -- it never touches Pacific
+        # transit at all.
         14593,  # SpaceX Starlink
         53813,  # Zscaler (proxy artifact)
         141695,  # Pacific Community -- real Fiji presence, but its only connected
