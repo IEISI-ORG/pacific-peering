@@ -8,10 +8,10 @@ ZERO CONNECTED PROBES (6/20) -- cannot source or target a traceroute here at all
       ASNs: 9751, 23657
       Probes: 2 listed, 0 actually useful
         Not useful yet -- fix the data or get it back online: 272 (Written Off), 22834 (Abandoned)
-  KI  Kiribati [used in a confirmed/candidate finding]
-      ASNs: 4865, 132486, 134783, 154100, 154102
-      Probes: 3 listed, 0 actually useful
-        Not useful yet -- fix the data or get it back online: 3630 (Abandoned), 1008228 (Disconnected), 1008229 (Disconnected)
+  MH  Marshall Islands [used in a confirmed/candidate finding]
+      ASNs: 24439, 154410
+      Probes: 5 listed, 0 actually useful
+        Not useful yet -- fix the data or get it back online: 14449 (Abandoned), 26561 (Abandoned), 29407 (Abandoned), 35687 (Abandoned), 64237 (Disconnected)
   NR  Nauru [used in a confirmed/candidate finding]
       ASNs: 55722, 55723, 140504, 141368, 152706
       Probes: 2 listed, 0 actually useful
@@ -26,7 +26,7 @@ ZERO CONNECTED PROBES (6/20) -- cannot source or target a traceroute here at all
       Probes: 6 listed, 0 actually useful
         Not useful yet -- fix the data or get it back online: 14446 (Abandoned), 14448 (Never Connected), 21019 (Abandoned), 21159 (Abandoned), 23008 (Abandoned), 23105 (Abandoned)
 
-FRAGILE -- exactly 1 connected probe (9/20) -- a single point of failure, and there's no second probe to cross-check it against. ASNs listed are candidates for a second, independent probe:
+FRAGILE -- exactly 1 connected probe (8/20) -- a single point of failure, and there's no second probe to cross-check it against. ASNs listed are candidates for a second, independent probe:
   CK  Cook Islands [used in a confirmed/candidate finding]
       ASNs: 10131, 152093
       Probes: 7 listed, 1 actually useful
@@ -38,11 +38,6 @@ FRAGILE -- exactly 1 connected probe (9/20) -- a single point of failure, and th
         Useful (Connected): 60575
         Not useful yet -- fix the data or get it back online: 64 (Abandoned), 14450 (Abandoned), 18627 (Abandoned), 21005 (Never Connected), 21075 (Abandoned), 21077 (Abandoned), 21753 (Never Connected), 22804 (Abandoned), 22845 (Abandoned), 22850 (Abandoned), 23031 (Abandoned), 24807 (Abandoned), 24944 (Disconnected), 24966 (Written Off), 32810 (Abandoned), 32841 (Abandoned), 64611 (Abandoned), 65264 (Abandoned)
       Local IXP: Fiji-IXP (Suva) -- members: AS38442, AS45349, AS45355
-  MH  Marshall Islands [used in a confirmed/candidate finding]
-      ASNs: 24439, 154410
-      Probes: 5 listed, 1 actually useful
-        Useful (Connected): 64237
-        Not useful yet -- fix the data or get it back online: 14449 (Abandoned), 26561 (Abandoned), 29407 (Abandoned), 35687 (Abandoned)
   MP  Northern Mariana Islands [used in a confirmed/candidate finding]
       ASNs: 7131, 9839
       Probes: 1 listed, 1 actually useful
@@ -75,11 +70,11 @@ FRAGILE -- exactly 1 connected probe (9/20) -- a single point of failure, and th
       Probes: 1 listed, 1 actually useful
         Useful (Connected): 7588
 
-ADEQUATE -- 2+ connected probes (5/20):
-  FM  Micronesia, Federated States of (2 connected)
-      Probes: 8 listed, 2 actually useful
-        Useful (Connected): 7448, 50897
-        Not useful yet -- fix the data or get it back online: 1057 (Written Off), 24222 (Abandoned), 24900 (Abandoned), 25082 (Abandoned), 26163 (Abandoned), 62046 (Disconnected)
+ADEQUATE -- 2+ connected probes (6/20):
+  FM  Micronesia, Federated States of (3 connected)
+      Probes: 8 listed, 3 actually useful
+        Useful (Connected): 7448, 50897, 62046
+        Not useful yet -- fix the data or get it back online: 1057 (Written Off), 24222 (Abandoned), 24900 (Abandoned), 25082 (Abandoned), 26163 (Abandoned)
   GU  Guam (9 connected)
       Probes: 23 listed, 9 actually useful
         Useful (Connected): 329, 7385, 23039, 60689, 60703, 62689, 64953, 65337, 1012513
@@ -88,6 +83,10 @@ ADEQUATE -- 2+ connected probes (5/20):
       Local IXP: GU-IX (Guam) -- members: AS3605
       Local IXP: Guam IX (Tamuning) -- members: AS152735
       Local IXP: MARIIX (Mangilao) -- members: AS3605, AS9246, AS23676, AS395400
+  KI  Kiribati (2 connected)
+      Probes: 3 listed, 2 actually useful
+        Useful (Connected): 1008228, 1008229
+        Not useful yet -- fix the data or get it back online: 3630 (Abandoned)
   NC  New Caledonia (5 connected)
       Probes: 23 listed, 5 actually useful
         Useful (Connected): 7018, 33674, 61210, 63050, 1008625
@@ -143,7 +142,7 @@ PATHWAY COVERAGE (20 economies) -- same table as the main report's Pathway Cover
   PF  French Polynesia (Polynesia) -- 6 ASN(s), 9 listed / 6 active probe(s) on a tracked ASN, 1 untested pathway(s)
   PG  Papua New Guinea (Melanesia) -- 38 ASN(s), 10 listed / 1 active probe(s) on a tracked ASN, 1 untested pathway(s)
   VU  Vanuatu (Melanesia) -- 12 ASN(s), 5 listed / 2 active probe(s) on a tracked ASN, 1 untested pathway(s)
-  FM  Micronesia, Federated States of (Micronesia) -- 6 ASN(s), 6 listed / 2 active probe(s) on a tracked ASN, 0 untested pathway(s)
+  FM  Micronesia, Federated States of (Micronesia) -- 6 ASN(s), 6 listed / 3 active probe(s) on a tracked ASN, 0 untested pathway(s)
   NC  New Caledonia (Melanesia) -- 18 ASN(s), 20 listed / 5 active probe(s) on a tracked ASN, 0 untested pathway(s)
 
   Note: this section's "listed"/"active" counts only probes hosted on one of this project's own tracked in-scope ASNs -- a different, stricter question than the ZERO/FRAGILE/ADEQUATE breakdown above, which counts any physically-connected probe in the country. A country can show >=1 active above and 0 here (e.g. a probe hosted on a Starlink ASN, or on an ASN registered to a different country) -- that's expected, not a data-quality problem.
