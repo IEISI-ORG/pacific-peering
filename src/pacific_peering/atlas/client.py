@@ -19,7 +19,17 @@ logger = logging.getLogger(__name__)
 
 ATLAS_BASE_URL = "https://atlas.ripe.net/api/v2"
 _DEFAULT_TIMEOUT = 30.0
-_TERMINAL_STATUSES = ("Stopped", "Forced to stop", "No suitable probes")
+_TERMINAL_STATUSES = (
+    "Stopped", "Forced to stop", "No suitable probes", "Failed", "Archived",
+)
+# A measurement genuinely stuck here will never produce results no matter
+# how long we retry -- distinct from the other terminal statuses, where an
+# empty first fetch can still just be Atlas's results endpoint lagging its
+# own status endpoint (see wait_for_results). Retrying a "No suitable
+# probes" measurement for results only wastes empty_result_retries *
+# empty_result_retry_delay seconds for a result that was already knowable
+# from the status alone.
+_NO_RETRY_STATUSES = ("No suitable probes",)
 
 
 @dataclass(frozen=True)
@@ -134,6 +144,8 @@ def wait_for_results(
     measurement_id: int,
     poll_interval: float = 5.0,
     max_wait: float = 180.0,
+    empty_result_retries: int = 3,
+    empty_result_retry_delay: float = 5.0,
 ) -> list[dict]:
     """Poll until a one-off measurement finishes, then return its raw results.
 
@@ -141,6 +153,13 @@ def wait_for_results(
         measurement_id: Atlas measurement ID.
         poll_interval: Seconds between status checks.
         max_wait: Give up (and return whatever results exist) after this long.
+        empty_result_retries: Extra attempts to re-fetch if the first fetch
+            right after reaching a terminal status comes back empty. Not
+            applied when the status is one of `_NO_RETRY_STATUSES` (e.g.
+            "No suitable probes"), where retrying can't ever help. Total
+            wall clock can exceed `max_wait` by up to
+            `empty_result_retries * empty_result_retry_delay` seconds.
+        empty_result_retry_delay: Seconds to wait between those retries.
     """
     deadline = time.monotonic() + max_wait
     status = fetch_measurement_status(measurement_id)
@@ -155,7 +174,46 @@ def wait_for_results(
             status,
             max_wait,
         )
-    return fetch_raw_results(measurement_id)
+
+    if status in _NO_RETRY_STATUSES:
+        # A durable fact about the measurement, not a fetch race -- no
+        # number of retries will ever produce results here.
+        logger.warning(
+            "Measurement %d: status=%s, not retrying for results", measurement_id, status
+        )
+        return fetch_raw_results(measurement_id)
+
+    results = fetch_raw_results(measurement_id)
+    # Atlas's own status and results endpoints aren't atomically consistent:
+    # a measurement can read as terminal (e.g. "Stopped") moments before its
+    # results are actually indexed, so the very first fetch after reaching
+    # terminal status can come back empty even though real data lands
+    # seconds later. Caught 2026-09-20 (measurement 213457173): an empty
+    # result here was cached as "zero probes", which downstream in
+    # auto_classify.py misfired as "all probes proxy-corrupted" -- a
+    # misleading escalation for what was really just an early fetch, not a
+    # genuine empty result. Retry a few times before accepting empty as real.
+    attempt = 0
+    while not results and attempt < empty_result_retries:
+        time.sleep(empty_result_retry_delay)
+        try:
+            results = fetch_raw_results(measurement_id)
+        except requests.RequestException as exc:
+            # A single transient fetch error (timeout, 5xx) shouldn't throw
+            # away the retries whose whole purpose is tolerating Atlas
+            # flakiness -- treat it the same as an empty result and try again.
+            logger.warning(
+                "Measurement %d: results fetch failed (%s), retrying (%d/%d)",
+                measurement_id, exc, attempt + 1, empty_result_retries,
+            )
+        attempt += 1
+    if not results:
+        logger.warning(
+            "Measurement %d returned zero results after %d retries; likely genuinely empty",
+            measurement_id,
+            empty_result_retries,
+        )
+    return results
 
 
 def parse_traceroute_results(raw_results: list[dict]) -> list[TracerouteResult]:

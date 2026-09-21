@@ -53,6 +53,17 @@ def _fire_and_persist(
         probe_count=probe_count,
     )
     raw_results = wait_for_results(measurement_id)
+    if not raw_results:
+        # wait_for_results already retries a genuinely empty fetch, so by
+        # the time it's still empty here that's either a durable "No
+        # suitable probes" fact or a real (rare) exhausted-retries case --
+        # either way, worth a visible marker on the cached files, since an
+        # empty raw/parsed pair on disk is otherwise indistinguishable from
+        # a real zero-probe measurement to anything reprocessing the cache.
+        logger.warning(
+            "Measurement %d: zero raw results persisted to %s -- see logs above for why",
+            measurement_id, DEFAULT_RAW_DIR,
+        )
 
     DEFAULT_RAW_DIR.mkdir(parents=True, exist_ok=True)
     (DEFAULT_RAW_DIR / f"{measurement_id}.json").write_text(

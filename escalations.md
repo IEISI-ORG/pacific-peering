@@ -49,9 +49,3 @@ Corridors `auto_classify.py`'s mechanical rules couldn't confidently resolve on 
 - detail: probe 60689: hop 8 crosses MARIIX (in-fishbowl) at 23.234ms, above the 10.0ms local-fiber threshold -- either this hop isn't genuinely local despite the registry, or there's an unexpected detour/backhaul before reaching it; needs a human look, not a guess
 - flagged: 2026-09-19T01:51:00.839704+00:00
 
-## AS7131 (MP) -> AS24439 (MH)
-- measurement: 213457173
-- reason: all probes proxy-corrupted
-- detail: every probe in this measurement resolved a known corporate proxy/VPN ASN as its first hop () -- this source's own probe currently can't produce a real path; needs a human look (a different source, or wait for the proxy egress to genuinely change), not a target-IP retry
-- flagged: 2026-09-20T15:18:22.810549+00:00
-

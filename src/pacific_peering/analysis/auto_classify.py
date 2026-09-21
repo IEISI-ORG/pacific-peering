@@ -12,6 +12,19 @@ else is fully automatic.
 
 Classification rules, in priority order, per probe:
 
+-1. **Zero probe data at all.** If Atlas returned no probe results for a
+   measurement, that's a distinct escalation ("no probe data returned"),
+   never conflated with rule 0's "every probe is proxy-corrupted" -- the
+   two look similar (both end with an empty `clean_probes`) but mean
+   opposite things: rule 0 means real data exists and *all of it* shows a
+   proxy; this means there was nothing to check in the first place, most
+   likely a transient Atlas results-fetch race (see `atlas.client.
+   wait_for_results`'s retry-on-empty logic) rather than a fact about the
+   corridor. Caught 2026-09-20 the hard way: the old code let rule 0 catch
+   this case too, producing a misleading "all probes proxy-corrupted"
+   escalation with an empty `()` in its own detail string -- the tell that
+   nothing had actually been checked. Deliberately does not mark the
+   corridor tested, unlike every other rule here, so it retries on its own.
 0. **Proxy/VPN egress check** (`KNOWN_PROXY_ASNS`). If a probe's resolved
    AS-path *starts* with a known corporate proxy/VPN ASN (e.g. Zscaler),
    every hop after it reflects that proxy's own infrastructure, not the
@@ -230,13 +243,44 @@ def _fire_measurement(candidate: CorridorCandidate, target_ip: str) -> int:
     )
 
 
+def _escalate_and_return(
+    escalations: list[_Escalation],
+    candidate: CorridorCandidate,
+    measurement_id: int,
+    reason: str,
+    detail: str,
+    lock: threading.Lock | None,
+    also_mark_tested: bool = False,
+) -> ClassifyResult:
+    """File an escalation and return immediately, before `_finalize()`'s own
+    locking takes over -- both early-return escalation branches in
+    `classify_corridor` need this, and both used to write `escalations.md`
+    (and, for the proxy-corrupted branch, `tested_pairs.json`) *outside*
+    `classify_corridor`'s own documented lock contract, a real race under
+    `run_batch`'s concurrent workers (two workers's escalation writes could
+    interleave, or two `mark_corridor_tested` read-modify-writes could lose
+    an update). Centralized here so both branches -- and any future one --
+    get the same lock discipline `_finalize()` already has.
+    """
+    escalations.append(_Escalation(candidate, measurement_id, reason, detail))
+    with lock if lock is not None else contextlib.nullcontext():
+        if also_mark_tested:
+            mark_corridor_tested(candidate.source_asn, candidate.target_asn)
+        _write_escalations(escalations)
+    return ClassifyResult(candidate, "escalated", None, escalations)
+
+
 def classify_corridor(
     candidate: CorridorCandidate,
     lock: threading.Lock | None = None,
     regenerate: bool = True,
 ) -> ClassifyResult:
     """Fire, triangulate, and classify one corridor. Files a finding (or an
-    escalation) and always marks the corridor tested, any outcome.
+    escalation) and marks the corridor tested for every real outcome --
+    except a "no probe data returned" escalation (zero probes reported
+    anything at all, most likely a transient Atlas results-fetch race, not
+    a real result about this corridor), which deliberately leaves it
+    untested so it retries on its own.
 
     Args:
         lock: when given (batch mode -- see `run_batch`), every local
@@ -269,6 +313,21 @@ def classify_corridor(
         parsed_path = DEFAULT_ATLAS_PARSED_DIR / f"{measurement_id}.json"
         parsed = json.loads(parsed_path.read_text())
 
+        if not triangulation["probes"]:
+            # Zero probes reported *any* data -- a source-side failure (see
+            # the zero-probe escalation below), not a property of this one
+            # target IP. Retrying against an alternate prefix can't fix a
+            # source that returned nothing, so stop here: doubling Atlas
+            # spend on a second, equally-empty measurement previously also
+            # overwrote the first attempt's real (merely dark) data, hiding
+            # it from the resulting escalation entirely (caught 2026-09-20,
+            # reverification of finding #77: the first attempt against
+            # 103.202.149.1 was genuinely dark with real probe data; the
+            # retry against 203.78.152.1 came back with zero probes due to
+            # the client.wait_for_results race, and only that second,
+            # information-free measurement ID ended up in the escalation).
+            break
+
         any_signal = any(
             p.get("traceroute_upstream_asn") is not None for p in triangulation["probes"]
         )
@@ -280,8 +339,41 @@ def classify_corridor(
             target_ips[attempt + 1], "alternate cached prefix",
         )
 
-    assert measurement_id is not None and triangulation is not None
+    if measurement_id is None or triangulation is None:
+        raise RuntimeError(
+            f"AS{candidate.source_asn} -> AS{candidate.target_asn}: "
+            "list_target_ips returned no target IPs at all"
+        )
     hops_by_probe = {p["probe_id"]: p["hops"] for p in parsed}
+
+    # Zero probes at all is a different failure mode from "every probe is
+    # proxy-corrupted" below, and must not be conflated with it -- caught
+    # 2026-09-20 (measurement 213457173, AS7131->AS24439): a transient Atlas
+    # results-fetch race (see client.wait_for_results, now fixed at the
+    # source) left triangulation["probes"] empty, which the old code below
+    # unconditionally read as "all probes proxy-corrupted" even though zero
+    # probes ever reported data to check for a proxy in the first place --
+    # visible in hindsight from the escalation's own empty "()" in its
+    # detail string, an empty join over a dict that was never populated.
+    # Deliberately does NOT call mark_corridor_tested: this measurement
+    # produced no real signal at all, so the corridor should retry on its
+    # own next run rather than being permanently skipped.
+    if not triangulation["probes"]:
+        return _escalate_and_return(
+            escalations,
+            candidate,
+            measurement_id,
+            reason="no probe data returned",
+            detail=(
+                "Atlas returned zero probe results for this measurement -- "
+                "most likely a transient results-fetch race (status went "
+                "terminal moments before results were indexed) rather than "
+                "a real network outcome; not marked tested so it retries "
+                "on its own, not a signal about this corridor itself"
+            ),
+            lock=lock,
+            also_mark_tested=False,
+        )
 
     # Proxy/VPN egress check -- discard any probe whose resolved AS-path
     # starts with a known corporate proxy ASN before any other classification
@@ -301,25 +393,23 @@ def classify_corridor(
             clean_probes.append(probe)
 
     if not clean_probes:
-        mark_corridor_tested(candidate.source_asn, candidate.target_asn)
-        escalations.append(
-            _Escalation(
-                candidate=candidate,
-                measurement_id=measurement_id,
-                reason="all probes proxy-corrupted",
-                detail=(
-                    "every probe in this measurement resolved a known "
-                    "corporate proxy/VPN ASN as its first hop ("
-                    + ", ".join(f"probe {pid} via {name}" for pid, name in proxy_corrupted.items())
-                    + ") -- this source's own probe currently can't produce a "
-                    "real path; needs a human look (a different source, or "
-                    "wait for the proxy egress to genuinely change), not a "
-                    "target-IP retry"
-                ),
-            )
+        return _escalate_and_return(
+            escalations,
+            candidate,
+            measurement_id,
+            reason="all probes proxy-corrupted",
+            detail=(
+                "every probe in this measurement resolved a known "
+                "corporate proxy/VPN ASN as its first hop ("
+                + ", ".join(f"probe {pid} via {name}" for pid, name in proxy_corrupted.items())
+                + ") -- this source's own probe currently can't produce a "
+                "real path; needs a human look (a different source, or "
+                "wait for the proxy egress to genuinely change), not a "
+                "target-IP retry"
+            ),
+            lock=lock,
+            also_mark_tested=True,
         )
-        _write_escalations(escalations)
-        return ClassifyResult(candidate, "escalated", None, escalations)
 
     if proxy_corrupted:
         logger.warning(
@@ -552,7 +642,6 @@ def classify_corridor(
 
     with lock if lock is not None else contextlib.nullcontext():
         return _finalize()
-    return ClassifyResult(candidate, "inconclusive", None, escalations)
 
 
 def _write_escalations(escalations: list[_Escalation], path: Path = DEFAULT_ESCALATIONS_PATH) -> None:
@@ -825,16 +914,33 @@ def _pop_reverify_candidate(
     return picked
 
 
-def _pick_next_for_batch(exclude_source_asns: set[int]) -> CorridorCandidate | None:
+def _pick_next_for_batch(
+    exclude_source_asns: set[int],
+    exclude_pairs: frozenset[tuple[int, int]] = frozenset(),
+) -> CorridorCandidate | None:
     """Like `pick_next_corridor`, but skips any candidate whose source ASN
     is currently in flight in another worker. Atlas serializes measurements
     per source probe regardless of how fast we submit to it, so two workers
     racing the same source ASN would just queue behind each other for zero
     throughput gain -- the actual lever is running *different* source ASNs
-    concurrently, not more work against one."""
+    concurrently, not more work against one.
+
+    `exclude_pairs` additionally skips specific (source_asn, target_asn)
+    pairs this same `run_batch` call has already tried and gotten zero
+    probe data for (or an uncaught exception from) -- unlike the
+    reverification queue, a fresh candidate here isn't consumed on pick, so
+    without this a worker would just re-pick the identical still-untested
+    pair every time its source ASN frees up, spending the whole time
+    budget re-firing one broken corridor instead of covering others
+    (caught 2026-09-20, in code review of the "no probe data returned" fix
+    before it shipped).
+    """
     for candidate in enumerate_candidate_corridors():
-        if candidate.source_asn not in exclude_source_asns:
-            return candidate
+        if candidate.source_asn in exclude_source_asns:
+            continue
+        if (candidate.source_asn, candidate.target_asn) in exclude_pairs:
+            continue
+        return candidate
     return None
 
 
@@ -862,6 +968,13 @@ def run_batch(time_budget_seconds: float, max_concurrent: int = 5) -> list[Class
     deadline = time.monotonic() + time_budget_seconds
     write_lock = threading.Lock()
     in_flight: set[int] = set()
+    # (source_asn, target_asn) pairs this run has already tried and gotten
+    # zero probe data (or an uncaught exception) for -- neither leaves the
+    # corridor marked tested, so without tracking it here separately from
+    # `in_flight` (which frees up again the instant the worker finishes),
+    # the exact same still-untested pair gets re-picked and re-fired for
+    # the rest of the time budget instead of moving on to other corridors.
+    skip_this_run: set[tuple[int, int]] = set()
     results: list[ClassifyResult] = []
     results_lock = threading.Lock()
 
@@ -871,9 +984,12 @@ def run_batch(time_budget_seconds: float, max_concurrent: int = 5) -> list[Class
                 # Reverification queue first -- it's a fixed weekly ration
                 # meant to finish within the week, whereas new corridors
                 # just keep accumulating regardless of when they're tested.
+                # (Reverify candidates are popped from their queue on pick,
+                # so they can't loop the same way a fresh candidate can --
+                # skip_this_run only needs to guard _pick_next_for_batch.)
                 candidate = _pop_reverify_candidate(in_flight)
                 if candidate is None:
-                    candidate = _pick_next_for_batch(in_flight)
+                    candidate = _pick_next_for_batch(in_flight, frozenset(skip_this_run))
                 if candidate is not None:
                     in_flight.add(candidate.source_asn)
                 elif not in_flight:
@@ -895,11 +1011,16 @@ def run_batch(time_budget_seconds: float, max_concurrent: int = 5) -> list[Class
                     candidate.source_asn, candidate.target_asn, result.outcome,
                     f" ({len(result.escalations)} escalation(s))" if result.escalations else "",
                 )
+                if any(e.reason == "no probe data returned" for e in result.escalations):
+                    with write_lock:
+                        skip_this_run.add((candidate.source_asn, candidate.target_asn))
             except Exception:  # noqa: BLE001 - one corridor's failure must not sink the worker
                 logger.exception(
                     "AS%d -> AS%d: classification failed, leaving untested for a future pull",
                     candidate.source_asn, candidate.target_asn,
                 )
+                with write_lock:
+                    skip_this_run.add((candidate.source_asn, candidate.target_asn))
             finally:
                 with write_lock:
                     in_flight.discard(candidate.source_asn)
