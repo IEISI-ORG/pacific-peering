@@ -170,3 +170,21 @@ def test_pick_next_for_batch_skips_excluded_pairs(monkeypatch):
     )
 
     assert picked is other
+
+
+def test_fire_measurement_forwards_target_ip_to_run_smoketest(monkeypatch):
+    """Caught 2026-09-21: this used to accept target_ip and silently drop it,
+    so the alternate-cached-prefix retry never actually retried a different
+    address (see tests/atlas/test_smoketest.py for the other end of this)."""
+    captured = {}
+
+    def _run_smoketest(target_asn, target_cc, probe_count, source_cc, target_ip):
+        captured["target_ip"] = target_ip
+        return 900000002
+
+    monkeypatch.setattr(auto_classify, "run_smoketest", _run_smoketest)
+
+    measurement_id = auto_classify._fire_measurement(_candidate(), "203.78.152.1")
+
+    assert measurement_id == 900000002
+    assert captured["target_ip"] == "203.78.152.1"

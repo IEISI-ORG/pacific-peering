@@ -240,6 +240,7 @@ def _fire_measurement(candidate: CorridorCandidate, target_ip: str) -> int:
         target_cc=candidate.target_cc,
         probe_count=_PROBE_COUNT,
         source_cc=candidate.source_cc,
+        target_ip=target_ip,
     )
 
 

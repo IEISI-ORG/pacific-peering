@@ -95,6 +95,7 @@ def run_smoketest(
     target_cc: str = DEFAULT_TARGET_CC,
     probe_count: int = 3,
     source_cc: str | None = None,
+    target_ip: str | None = None,
 ) -> int:
     """Fire one outbound one-off traceroute toward `target_asn` and persist results.
 
@@ -107,13 +108,23 @@ def run_smoketest(
             whichever in-scope economy (other than `target_cc`) has the
             most connected Atlas probes — which will keep re-picking the
             same best-covered economy unless overridden here.
+        target_ip: Force a specific target address (e.g. one of
+            `atlas.targets.list_target_ips`'s alternates, to retry a
+            corridor against a different prefix after a dead end on the
+            first). If not given, auto-picks `target_asn`'s first cached
+            prefix via `pick_target_ip`, same as always. Caught
+            2026-09-21: this parameter used to exist on `_fire_measurement`
+            in `auto_classify.py` and get silently dropped here, so the
+            "retry against an alternate prefix on a dead end" mechanism
+            (added 2026-09-19) never actually fired against a different
+            address — every "retry" re-tested the identical first prefix.
 
     Returns:
         The created measurement's ID.
     """
     source_cc = source_cc or pick_best_covered_economy(exclude_cc=target_cc)
     source_name = ECONOMIES_BY_CC[source_cc].name
-    target_ip = pick_target_ip(target_asn)
+    target_ip = target_ip or pick_target_ip(target_asn)
     description = f"pacific-peering smoketest outbound {source_cc} to AS{target_asn} {target_ip}"
     logger.info("Selected source economy: %s (%s)", source_name, source_cc)
     return _fire_and_persist("country", source_cc, target_ip, description, probe_count)
