@@ -26,7 +26,7 @@ ZERO CONNECTED PROBES (6/20) -- cannot source or target a traceroute here at all
       Probes: 6 listed, 0 actually useful
         Not useful yet -- fix the data or get it back online: 14446 (Abandoned), 14448 (Never Connected), 21019 (Abandoned), 21159 (Abandoned), 23008 (Abandoned), 23105 (Abandoned)
 
-FRAGILE -- exactly 1 connected probe (8/20) -- a single point of failure, and there's no second probe to cross-check it against. ASNs listed are candidates for a second, independent probe:
+FRAGILE -- exactly 1 connected probe (9/20) -- a single point of failure, and there's no second probe to cross-check it against. ASNs listed are candidates for a second, independent probe:
   CK  Cook Islands [used in a confirmed/candidate finding]
       ASNs: 10131, 152093
       Probes: 7 listed, 1 actually useful
@@ -38,6 +38,11 @@ FRAGILE -- exactly 1 connected probe (8/20) -- a single point of failure, and th
         Useful (Connected): 60575
         Not useful yet -- fix the data or get it back online: 64 (Abandoned), 14450 (Abandoned), 18627 (Abandoned), 21005 (Never Connected), 21075 (Abandoned), 21077 (Abandoned), 21753 (Never Connected), 22804 (Abandoned), 22845 (Abandoned), 22850 (Abandoned), 23031 (Abandoned), 24807 (Abandoned), 24944 (Disconnected), 24966 (Written Off), 32810 (Abandoned), 32841 (Abandoned), 64611 (Abandoned), 65264 (Abandoned)
       Local IXP: Fiji-IXP (Suva) -- members: AS38442, AS45349, AS45355
+  KI  Kiribati [used in a confirmed/candidate finding]
+      ASNs: 4865, 132486, 134783, 154100, 154102
+      Probes: 3 listed, 1 actually useful
+        Useful (Connected): 1008229
+        Not useful yet -- fix the data or get it back online: 3630 (Abandoned), 1008228 (Disconnected)
   MP  Northern Mariana Islands [used in a confirmed/candidate finding]
       ASNs: 7131, 9839
       Probes: 1 listed, 1 actually useful
@@ -70,7 +75,7 @@ FRAGILE -- exactly 1 connected probe (8/20) -- a single point of failure, and th
       Probes: 1 listed, 1 actually useful
         Useful (Connected): 7588
 
-ADEQUATE -- 2+ connected probes (6/20):
+ADEQUATE -- 2+ connected probes (5/20):
   FM  Micronesia, Federated States of (3 connected)
       Probes: 8 listed, 3 actually useful
         Useful (Connected): 7448, 50897, 62046
@@ -83,10 +88,6 @@ ADEQUATE -- 2+ connected probes (6/20):
       Local IXP: GU-IX (Guam) -- members: AS3605
       Local IXP: Guam IX (Tamuning) -- members: AS152735
       Local IXP: MARIIX (Mangilao) -- members: AS3605, AS9246, AS23676, AS395400
-  KI  Kiribati (2 connected)
-      Probes: 3 listed, 2 actually useful
-        Useful (Connected): 1008228, 1008229
-        Not useful yet -- fix the data or get it back online: 3630 (Abandoned)
   NC  New Caledonia (5 connected)
       Probes: 23 listed, 5 actually useful
         Useful (Connected): 7018, 33674, 61210, 63050, 1008625
