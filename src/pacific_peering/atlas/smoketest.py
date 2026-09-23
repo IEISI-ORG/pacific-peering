@@ -199,6 +199,41 @@ def run_ixp_member_probe(
     return _fire_and_persist("country", source_cc, target_ip, description, probe_count)
 
 
+def run_probe_sourced_traceroute(
+    probe_ids: list[int],
+    target_asn: int,
+    target_ip: str | None = None,
+) -> int:
+    """Fire a traceroute from specific Atlas probe(s) toward `target_asn`.
+
+    Unlike every other function here, sources by explicit probe ID
+    (`source_type="probes"`) rather than "country" or "asn" — the only way
+    to pin a measurement to a *specific* probe rather than whichever probe
+    Atlas happens to pick for that economy. Built for probes hosted on an
+    `EXTERNAL_NON_CANDIDATE_ASNS`-excluded network (e.g. the Starlink/
+    AS14593 probes) that would never be selected by the normal
+    country-based candidacy path, so seeing their own outbound routing
+    requires naming them directly.
+
+    Args:
+        probe_ids: One or more specific Atlas probe IDs to source from.
+            Multiple IDs fire as a single measurement (Atlas returns one
+            traceroute result per probe), not one measurement per probe.
+        target_asn: In-scope ASN to trace toward.
+        target_ip: Force a specific target address; falls back to
+            `pick_target_ip(target_asn)` (the same trusted first-cached-
+            prefix address every other function here uses) when not given.
+
+    Returns:
+        The created measurement's ID.
+    """
+    target_ip = target_ip or pick_target_ip(target_asn)
+    probe_value = ",".join(str(p) for p in probe_ids)
+    description = f"pacific-peering starlink-backhaul probes={probe_value} to AS{target_asn} {target_ip}"
+    logger.info("Sourcing from explicit probe(s) %s toward AS%d (%s)", probe_value, target_asn, target_ip)
+    return _fire_and_persist("probes", probe_value, target_ip, description, len(probe_ids))
+
+
 def _log_measurement(measurement_id: int) -> None:
     parsed_path = DEFAULT_PARSED_DIR / f"{measurement_id}.json"
     parsed = json.loads(parsed_path.read_text())

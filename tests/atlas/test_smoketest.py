@@ -58,3 +58,43 @@ def test_run_smoketest_falls_back_to_pick_target_ip_when_none_given(monkeypatch)
     smoketest.run_smoketest(target_asn=7131, target_cc="MP", source_cc="GU")
 
     assert calls == ["103.202.149.1"]
+
+
+def test_run_probe_sourced_traceroute_sources_by_explicit_probe_ids(monkeypatch):
+    monkeypatch.setattr(smoketest, "pick_target_ip", lambda asn: "202.1.22.1")
+
+    calls = []
+
+    def _fire_and_persist(source_type, source_value, target_ip, description, probe_count):
+        calls.append((source_type, source_value, target_ip, probe_count))
+        return 99
+
+    monkeypatch.setattr(smoketest, "_fire_and_persist", _fire_and_persist)
+
+    measurement_id = smoketest.run_probe_sourced_traceroute(
+        probe_ids=[1008228, 1008229], target_asn=154100
+    )
+
+    assert measurement_id == 99
+    assert calls == [("probes", "1008228,1008229", "202.1.22.1", 2)]
+
+
+def test_run_probe_sourced_traceroute_uses_given_target_ip_without_repicking(monkeypatch):
+    def _pick_target_ip(asn):
+        raise AssertionError("must not re-derive the target when target_ip is given")
+
+    monkeypatch.setattr(smoketest, "pick_target_ip", _pick_target_ip)
+
+    calls = []
+
+    def _fire_and_persist(source_type, source_value, target_ip, description, probe_count):
+        calls.append((source_type, source_value, target_ip, probe_count))
+        return 100
+
+    monkeypatch.setattr(smoketest, "_fire_and_persist", _fire_and_persist)
+
+    smoketest.run_probe_sourced_traceroute(
+        probe_ids=[64237], target_asn=24439, target_ip="203.215.52.1"
+    )
+
+    assert calls == [("probes", "64237", "203.215.52.1", 1)]
