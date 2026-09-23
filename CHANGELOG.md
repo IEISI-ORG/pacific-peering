@@ -2186,3 +2186,10 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   lesson, not just this one probe: a probe's metadata changing (ASN,
   status, reconnection) is a reason to regression-test its next real
   path, never a reason to assume a previously-known issue is resolved.
+- `atlas/starlink_anchors.py` + `pacific-peering-starlink-anchors` CLI
+  (2026-09-24): traces every Connected AS14593 (Starlink) probe in the
+  probe listing to `1.1.1.1`/`8.8.8.8`, one measurement per anchor, and
+  summarizes each probe's result (reached the anchor, first public hop,
+  last responding hop). Only prints the plan unless `--fire` is given.
+  IPv4 only; IPv6 anchors wait on project-wide IPv6 testing. Implements
+  the 2026-09-23 DNS-anchor TODO. Not fired yet.
