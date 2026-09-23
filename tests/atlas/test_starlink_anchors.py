@@ -87,6 +87,28 @@ def test_run_fires_one_measurement_per_anchor_with_all_probes(monkeypatch):
     ]
 
 
+def test_run_skips_an_anchor_atlas_refuses_and_fires_the_rest(monkeypatch):
+    import requests
+
+    calls = []
+
+    def _fire_and_persist(source_type, source_value, target_ip, description, probe_count):
+        calls.append(target_ip)
+        if target_ip == "1.1.1.1":
+            response = requests.Response()
+            response.status_code = 400
+            response._content = b'{"detail": "We do not allow more than 25 concurrent measurements"}'
+            raise requests.HTTPError(response=response)
+        return 2001
+
+    monkeypatch.setattr(starlink_anchors, "_fire_and_persist", _fire_and_persist)
+
+    ids = starlink_anchors.run_starlink_anchor_traces([1008228])
+
+    assert calls == ["1.1.1.1", "8.8.8.8"]
+    assert ids == [2001]
+
+
 def test_main_without_fire_spends_nothing(monkeypatch):
     monkeypatch.setattr(
         starlink_anchors,

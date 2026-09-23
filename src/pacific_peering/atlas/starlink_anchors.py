@@ -30,6 +30,8 @@ import json
 import logging
 from dataclasses import dataclass
 
+import requests
+
 from pacific_peering.atlas.probes import load_probe_listing
 from pacific_peering.atlas.smoketest import DEFAULT_PARSED_DIR, _fire_and_persist
 
@@ -99,15 +101,25 @@ def summarize_anchor_trace(traceroute: dict) -> AnchorTraceSummary:
 def run_starlink_anchor_traces(
     probe_ids: list[int], anchors: tuple[str, ...] = PUBLIC_DNS_ANCHORS_V4
 ) -> list[int]:
-    """Fire one traceroute per anchor from all `probe_ids` together; return measurement IDs."""
+    """Fire one traceroute per anchor from all `probe_ids` together; return measurement IDs.
+
+    An anchor Atlas refuses (e.g. its "no more than 25 concurrent
+    measurements to the same target" limit, which popular anchors like
+    1.1.1.1 hit -- seen 2026-09-24) is logged and skipped, not fatal to the
+    remaining anchors. Nothing is created for a refused anchor.
+    """
     probe_value = ",".join(str(p) for p in probe_ids)
     measurement_ids = []
     for anchor in anchors:
         description = f"pacific-peering starlink-anchor probes={probe_value} to {anchor}"
         logger.info("Sourcing from Starlink probe(s) %s toward anchor %s", probe_value, anchor)
-        measurement_ids.append(
-            _fire_and_persist("probes", probe_value, anchor, description, len(probe_ids))
-        )
+        try:
+            measurement_ids.append(
+                _fire_and_persist("probes", probe_value, anchor, description, len(probe_ids))
+            )
+        except requests.HTTPError as e:
+            detail = e.response.text[:500] if e.response is not None else str(e)
+            logger.error("Atlas refused anchor %s, skipping: %s", anchor, detail)
     return measurement_ids
 
 
