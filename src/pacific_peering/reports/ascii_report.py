@@ -334,6 +334,16 @@ def render_ascii_report(data: ReportData) -> str:
     # deliberately deferred per the project owner until adoption advances
     # further. Revisit this once the ASN/probe counts above look
     # meaningfully higher.
+    #
+    # Starlink-specific note (project owner, 2026-09-23): AS14593 is
+    # IPv6-first internally -- the CGNAT hops seen on every IPv4 Starlink
+    # traceroute mined so far (100.64.0.0/10 dishy/router/gateway addresses;
+    # see task_plan.md's 2026-09-23 Guam backhaul-mining entry) are an
+    # IPv4-only NAT artifact, not Starlink's real internal path.
+    # `atlas/client.py::create_traceroute_measurement` is hardcoded to
+    # `"af": 4` -- once IPv6 corridor testing starts, Starlink corridors
+    # specifically need an `af=6` traceroute to see past the CGNAT layer
+    # and observe the actual native routing.
 
     lines.append(_section("IXPS (registered exchanges, this project's confirmed classification)"))
     lines.append(

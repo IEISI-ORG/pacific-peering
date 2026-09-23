@@ -1,6 +1,6 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-09-20T16:19:55.993785+00:00                  
+                 Generated: 2026-09-23T03:00:25.793743+00:00                  
 ==============================================================================
 
 SUMMARY
@@ -166,7 +166,7 @@ WS   Samoa                       10       3            1       2
 
 ASPA PROGRESS (RFC 9582 upstream-authorization adoption)
 ==============================================================================
-16 of 162 in-scope ASNs now publish an ASPA record (3160 total across the whole internet, per Cloudflare Radar). Adoption is still early -- absence means 'not published yet', not 'no real upstream'. Per-economy: how many of its own ASNs publish a record, and the distinct upstream ASNs those records declare, split by whether the declared provider is itself an in-scope Pacific ASN or an external carrier.
+16 of 162 in-scope ASNs now publish an ASPA record (3203 total across the whole internet, per Cloudflare Radar). Adoption is still early -- absence means 'not published yet', not 'no real upstream'. Per-economy: how many of its own ASNs publish a record, and the distinct upstream ASNs those records declare, split by whether the declared provider is itself an in-scope Pacific ASN or an external carrier.
 CC   Name                      ASNs  w/ ASPA  Upstr in-FB  Upstr ext
 ------------------------------------------------------------------------------
 CK   Cook Islands                 2        1            0          3
@@ -253,7 +253,7 @@ GU   Guam                             Micronesia      10      14       6        
 PF   French Polynesia                 Polynesia        6       9       6         1
 PG   Papua New Guinea                 Melanesia       38      10       1         1
 VU   Vanuatu                          Melanesia       12       5       2         1
-FM   Micronesia, Federated States of  Micronesia       6       6       2         0
+FM   Micronesia, Federated States of  Micronesia       6       6       3         0
 NC   New Caledonia                    Melanesia       18      20       5         0
 
 APPENDIX: LOW DATA QUALITY ISSUES (2 known, resolved)
