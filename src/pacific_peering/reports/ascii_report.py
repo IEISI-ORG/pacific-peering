@@ -344,6 +344,16 @@ def render_ascii_report(data: ReportData) -> str:
     # `"af": 4` -- once IPv6 corridor testing starts, Starlink corridors
     # specifically need an `af=6` traceroute to see past the CGNAT layer
     # and observe the actual native routing.
+    #
+    # Follow-up (owner, 2026-09-23): once af=6 support exists, trace every
+    # Starlink-hosted probe (atlas.smoketest.run_probe_sourced_traceroute)
+    # to well-known public DNS anchors -- 1.1.1.1/8.8.8.8 already queued for
+    # IPv4 now (see task_plan.md), 2606:4700:4700::1111/2001:4860:4860::8888
+    # for IPv6 then -- rather than only in-scope ASN targets. A guaranteed-
+    # responsive destination separates "this probe's traceroute doesn't
+    # work" from "this specific path is genuinely dark", which the KI dead
+    # end (both hosted probes silent inside Starlink's own CGNAT space
+    # toward AS154100) couldn't distinguish on its own.
 
     lines.append(_section("IXPS (registered exchanges, this project's confirmed classification)"))
     lines.append(
