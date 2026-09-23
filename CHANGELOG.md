@@ -2193,3 +2193,8 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   last responding hop). Only prints the plan unless `--fire` is given.
   IPv4 only; IPv6 anchors wait on project-wide IPv6 testing. Implements
   the 2026-09-23 DNS-anchor TODO. Not fired yet.
+- Starlink anchor traces (2026-09-24): primary→secondary anchor fallback
+  on Atlas's 25-concurrent-per-target cap; one refused anchor no longer
+  aborts the run; Atlas's hop-255 gap-limit reply is reported as
+  `gap_limited` instead of a real hop. Fired measurements 214951531 and
+  214953366: all 4 Starlink probes reached both anchors.

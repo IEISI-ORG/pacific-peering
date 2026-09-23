@@ -5,7 +5,7 @@ well-known public DNS anchors"): the KI probes' traceroutes toward AS154100
 died inside Starlink's private/CGNAT space, which can't distinguish "this
 probe's traceroute mechanism doesn't get out" from "this specific target/path
 is genuinely dark". A destination that's essentially guaranteed to respond
-(1.1.1.1, 8.8.8.8) separates the two.
+(1.1.1.1, 8.8.8.8, or their secondaries) separates the two.
 
 Starlink (AS14593) probes are in `EXTERNAL_NON_CANDIDATE_ASNS`, so normal
 country-based candidacy never selects them -- sources by explicit probe ID,
@@ -38,7 +38,16 @@ from pacific_peering.atlas.smoketest import DEFAULT_PARSED_DIR, _fire_and_persis
 logger = logging.getLogger(__name__)
 
 STARLINK_ASN = 14593
-PUBLIC_DNS_ANCHORS_V4: tuple[str, ...] = ("1.1.1.1", "8.8.8.8")
+# (primary, fallback) per service. Atlas caps any one target at 25
+# concurrent measurements and the primaries are routinely at that cap
+# (both refused 2026-09-24); the same service's secondary address is the
+# owner-approved fallback.
+PUBLIC_DNS_ANCHORS_V4: tuple[tuple[str, str], ...] = (
+    ("1.1.1.1", "1.0.0.1"),  # Cloudflare
+    ("8.8.8.8", "8.8.4.4"),  # Google
+)
+_CONCURRENCY_CAP_TEXT = "concurrent measurements to the same target"
+_ATLAS_GAP_LIMIT_HOP = 255
 
 
 @dataclass(frozen=True)
@@ -48,10 +57,16 @@ class AnchorTraceSummary:
     probe_id: int
     target: str
     reached_target: bool
-    first_public_hop: int | None  # None: never left private/CGNAT space
-    last_hop: int | None  # last hop with any responding address
+    first_public_hop: int | None  # None: no real hop showed a public address
+    last_hop: int | None  # last real hop with any responding address
     last_address: str | None
     last_rtt_ms: float | None
+    # Atlas stops after 5 consecutive silent hops and sends one final
+    # TTL-255 packet to the destination; that reply is reported as "hop
+    # 255". True means the path was invisible past `last_hop` but the
+    # destination still answered (seen: KI probe 1008228 to 1.1.1.1,
+    # measurement 214951531, 2026-09-24).
+    gap_limited: bool
 
 
 def find_starlink_probes(
@@ -80,7 +95,11 @@ def summarize_anchor_trace(traceroute: dict) -> AnchorTraceSummary:
     target = traceroute["target"]
     first_public_hop = None
     last_hop = last_address = last_rtt = None
+    gap_limited = False
     for hop in traceroute["hops"]:
+        if hop["hop"] == _ATLAS_GAP_LIMIT_HOP:
+            gap_limited = True
+            continue
         if not hop["addresses"]:
             continue
         last_hop, last_address, last_rtt = hop["hop"], hop["addresses"][-1], hop["min_rtt_ms"]
@@ -95,31 +114,45 @@ def summarize_anchor_trace(traceroute: dict) -> AnchorTraceSummary:
         last_hop=last_hop,
         last_address=last_address,
         last_rtt_ms=last_rtt,
+        gap_limited=gap_limited,
     )
 
 
-def run_starlink_anchor_traces(
-    probe_ids: list[int], anchors: tuple[str, ...] = PUBLIC_DNS_ANCHORS_V4
-) -> list[int]:
-    """Fire one traceroute per anchor from all `probe_ids` together; return measurement IDs.
+def _fire_anchor(probe_value: str, anchor: str, probe_count: int) -> int:
+    description = f"pacific-peering starlink-anchor probes={probe_value} to {anchor}"
+    logger.info("Sourcing from Starlink probe(s) %s toward anchor %s", probe_value, anchor)
+    return _fire_and_persist("probes", probe_value, anchor, description, probe_count)
 
-    An anchor Atlas refuses (e.g. its "no more than 25 concurrent
-    measurements to the same target" limit, which popular anchors like
-    1.1.1.1 hit -- seen 2026-09-24) is logged and skipped, not fatal to the
-    remaining anchors. Nothing is created for a refused anchor.
+
+def run_starlink_anchor_traces(
+    probe_ids: list[int],
+    anchors: tuple[tuple[str, str], ...] = PUBLIC_DNS_ANCHORS_V4,
+) -> list[int]:
+    """Fire one traceroute per anchor service from all `probe_ids` together.
+
+    Tries each service's primary address; if Atlas refuses it for its
+    per-target concurrency cap, fires at the fallback address instead. Any
+    other refusal (or a refused fallback) is logged and that service is
+    skipped, never fatal to the remaining services. Nothing is created for
+    a refused address.
+
+    Returns:
+        The created measurements' IDs.
     """
     probe_value = ",".join(str(p) for p in probe_ids)
     measurement_ids = []
-    for anchor in anchors:
-        description = f"pacific-peering starlink-anchor probes={probe_value} to {anchor}"
-        logger.info("Sourcing from Starlink probe(s) %s toward anchor %s", probe_value, anchor)
-        try:
-            measurement_ids.append(
-                _fire_and_persist("probes", probe_value, anchor, description, len(probe_ids))
-            )
-        except requests.HTTPError as e:
-            detail = e.response.text[:500] if e.response is not None else str(e)
-            logger.error("Atlas refused anchor %s, skipping: %s", anchor, detail)
+    for primary, fallback in anchors:
+        for anchor in (primary, fallback):
+            try:
+                measurement_ids.append(_fire_anchor(probe_value, anchor, len(probe_ids)))
+                break
+            except requests.HTTPError as e:
+                detail = e.response.text[:500] if e.response is not None else str(e)
+                if anchor == primary and _CONCURRENCY_CAP_TEXT in detail:
+                    logger.warning("Atlas concurrency cap on %s, falling back to %s", primary, fallback)
+                    continue
+                logger.error("Atlas refused anchor %s, skipping: %s", anchor, detail)
+                break
     return measurement_ids
 
 
@@ -131,9 +164,9 @@ def _log_summaries(measurement_id: int, probe_cc: dict[int, str]) -> None:
     for traceroute in parsed:
         s = summarize_anchor_trace(traceroute)
         logger.info(
-            "Measurement %d probe %d (%s) -> %s: reached=%s first_public_hop=%s last=hop %s %s (%s ms)",
+            "Measurement %d probe %d (%s) -> %s: reached=%s first_public_hop=%s last=hop %s %s (%s ms) gap_limited=%s",
             measurement_id, s.probe_id, probe_cc.get(s.probe_id, "?"), s.target, s.reached_target,
-            s.first_public_hop, s.last_hop, s.last_address, s.last_rtt_ms,
+            s.first_public_hop, s.last_hop, s.last_address, s.last_rtt_ms, s.gap_limited,
         )
 
 
@@ -150,7 +183,8 @@ def main() -> None:
         return
     logger.info(
         "Starlink probes: %s -> anchors %s (%d measurement(s), %d probe result(s) each)",
-        by_cc, ", ".join(PUBLIC_DNS_ANCHORS_V4), len(PUBLIC_DNS_ANCHORS_V4), len(probe_cc),
+        by_cc, ", ".join(f"{p} (fallback {f})" for p, f in PUBLIC_DNS_ANCHORS_V4),
+        len(PUBLIC_DNS_ANCHORS_V4), len(probe_cc),
     )
     if not args.fire:
         logger.info("Dry run -- pass --fire to create the measurements")
