@@ -27,6 +27,47 @@ def _section(title: str) -> str:
     return f"\n{title}\n{_rule('=')}"
 
 
+def _fmt_counts(counts: tuple[int, int, int] | None) -> str:
+    return "-" if counts is None else "{}/{}/{}".format(*counts)
+
+
+def _rov_section(data: ReportData) -> list[str]:
+    """ROV enforcement, from the weekly Cloudflare test (reports/rov_data.py)."""
+    lines = [_section("ROV ENFORCEMENT (Cloudflare RPKI-invalid test, weekly)")]
+    rov = data.rov
+    if rov is None:
+        return lines + ["(the weekly Cloudflare ROV test hasn't run yet)"]
+    lines.append(
+        f"Latest run {rov.date}. Every connected probe traces Cloudflare's RPKI-valid and "
+        "RPKI-invalid test prefixes; where the valid one answers but the invalid one dies, "
+        "something on that path drops invalid routes. Where ASPA above counts who has "
+        "*published* route-security data, this shows whose paths actually *enforce* origin "
+        "validation. A traceroute can't separate a network filtering from its upstream "
+        "filtering, and Cloudflare is anycast, so a short path only speaks for the probe's "
+        "own network. Counts are probes: filtered / not filtered / inconclusive."
+    )
+    lines.append(f"{'CC':<4} {'Name':<32} {'IPv4':>9} {'IPv6':>9}")
+    lines.append(_rule())
+    for e in rov.economies:
+        lines.append(f"{e.cc:<4} {e.name:<32.32} {_fmt_counts(e.v4):>9} {_fmt_counts(e.v6):>9}")
+    if rov.untested:
+        lines.append(f"Not testable (no connected probe): {', '.join(rov.untested)}")
+    lines.append("")
+    lines.append("Where invalid traces died (last network reached; it or its upstream dropped the route):")
+    for d in rov.drop_points:
+        where = f"AS{d.asn}" if d.asn is not None else "before the first public hop"
+        lines.append(f"  IPv{d.af[1]}  {where}: {d.probes} probe(s)")
+    if not rov.drop_points:
+        lines.append("  (no probe's path filtered the invalid prefix)")
+    if rov.splits:
+        lines.append("")
+        lines.append("Valid and invalid traces left via different upstreams (a sign one of them drops the invalid route):")
+        for s in rov.splits:
+            lines.append(f"  {s.cc} probe {s.probe_id} (IPv{s.af[1]}): valid via AS{s.valid_next}, invalid via AS{s.invalid_next}")
+    lines.append(f"Measurements: {rov.measurement_ids}. Detail: outputs/reports/rov_cloudflare.txt")
+    return lines
+
+
 def render_ascii_report(data: ReportData) -> str:
     """Render `data` as a plain-text report.
 
@@ -311,6 +352,8 @@ def render_ascii_report(data: ReportData) -> str:
     # sections above so an ASPA-backed confirmation is visually
     # distinguishable from a RIS-agreement-only one (see
     # store.mark_aspa_checked's aspa_confirmed field, already tracked).
+
+    lines += _rov_section(data)
 
     lines.append(_section("IPV6 COVERAGE (adoption signal only -- no IPv6 testing yet)"))
     lines.append(

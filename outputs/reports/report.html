@@ -69,7 +69,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
 <body>
 <div class="wrap">
     <h1>Pacific Peering — Regional Routing Report</h1>
-    <div class="meta">Generated 2026-09-24T09:56:12.065762+00:00</div>
+    <div class="meta">Generated 2026-09-24T10:38:08.012030+00:00</div>
 
     <div class="headline-banner">
         <span class="value">57%</span>
@@ -2447,6 +2447,27 @@ NU(AS55885) -&gt; AS150403: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS139609 -&
          sections above so an ASPA-backed confirmation is visually
          distinguishable from a RIS-agreement-only one (see
          store.mark_aspa_checked's aspa_confirmed field, already tracked). -->
+
+    <h2>ROV enforcement (Cloudflare RPKI-invalid test, weekly)</h2>
+    <p class="section-intro">
+        Latest run <strong>2026-09-24</strong>. Every connected probe traces
+        Cloudflare's RPKI-valid and RPKI-invalid test prefixes; where the valid one answers but
+        the invalid one dies, something on that path drops invalid routes. Where ASPA above counts
+        who has <em>published</em> route-security data, this shows whose paths actually
+        <em>enforce</em> origin validation. A traceroute can't separate a network filtering from
+        its upstream filtering, and Cloudflare is anycast, so a short path only speaks for the
+        probe's own network. Counts are probes: filtered / not filtered / inconclusive.
+    </p>
+    <table>
+        <thead><tr><th>CC</th><th>Name</th><th>IPv4</th><th>IPv6</th></tr></thead>
+        <tbody><tr><td>CK</td><td>Cook Islands</td><td>0/0/1</td><td>&ndash;</td></tr><tr><td>FJ</td><td>Fiji</td><td>0/0/1</td><td>&ndash;</td></tr><tr><td>FM</td><td>Micronesia, Federated States of</td><td>0/3/0</td><td>0/1/0</td></tr><tr><td>GU</td><td>Guam</td><td>1/8/0</td><td>1/0/0</td></tr><tr><td>KI</td><td>Kiribati</td><td>0/2/0</td><td>0/0/2</td></tr><tr><td>MH</td><td>Marshall Islands</td><td>0/0/1</td><td>&ndash;</td></tr><tr><td>MP</td><td>Northern Mariana Islands</td><td>0/1/0</td><td>&ndash;</td></tr><tr><td>NC</td><td>New Caledonia</td><td>5/0/0</td><td>3/0/1</td></tr><tr><td>NU</td><td>Niue</td><td>0/1/0</td><td>&ndash;</td></tr><tr><td>PF</td><td>French Polynesia</td><td>0/7/0</td><td>0/2/0</td></tr><tr><td>PG</td><td>Papua New Guinea</td><td>0/1/0</td><td>&ndash;</td></tr><tr><td>PW</td><td>Palau</td><td>0/1/0</td><td>0/1/0</td></tr><tr><td>TO</td><td>Tonga</td><td>1/0/0</td><td>&ndash;</td></tr><tr><td>TV</td><td>Tuvalu</td><td>0/1/0</td><td>&ndash;</td></tr><tr><td>VU</td><td>Vanuatu</td><td>0/2/0</td><td>&ndash;</td></tr></tbody>
+    </table>
+    <p>Not testable (no connected probe): AS, NR, SB, WF, WS</p>
+    <p>Where invalid traces died (last network reached; it or its upstream dropped the route):</p>
+    <ul><li>IPv4 &mdash; AS18200: 2 probe(s)</li><li>IPv6 &mdash; AS18200: 2 probe(s)</li><li>IPv4 &mdash; AS45345: 2 probe(s)</li><li>IPv4 &mdash; AS56089: 1 probe(s)</li><li>IPv6 &mdash; AS45345: 1 probe(s)</li><li>IPv4 &mdash; AS24390: 1 probe(s)</li><li>IPv6 &mdash; before the first public hop: 1 probe(s)</li><li>IPv4 &mdash; before the first public hop: 1 probe(s)</li></ul>
+    <p>Valid and invalid traces left via different upstreams (a sign one of them drops the invalid route):</p><ul><li>PG probe 50365 (IPv4): valid via AS4826, invalid via AS7474</li></ul>
+    <p class="section-intro">Measurements: {&#x27;v4&#x27;: [215197667, 215198886], &#x27;v6&#x27;: [215199848, 215200172]}.
+        Detail: <code>outputs/reports/rov_cloudflare.txt</code></p>
 
     <h2>IPv6 coverage</h2>
     <p class="section-intro">

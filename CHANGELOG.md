@@ -2229,3 +2229,6 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   economies' paths carry the invalid prefix. Classifier: an invalid trace
   reaching AS13335 counts as not filtered; per-probe valid/invalid path
   split recorded.
+- Reports: new "ROV enforcement" section right after ASPA (2026-09-24),
+  from the latest weekly Cloudflare ROV test. Wednesday nightly run now
+  regenerates the reports after its weekly checks.

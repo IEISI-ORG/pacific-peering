@@ -28,6 +28,7 @@ from pathlib import Path
 
 import requests
 
+from pacific_peering.reports.rov_data import RovSummary, load_rov_summary
 from pacific_peering.analysis import store as _store
 from pacific_peering.analysis.corridor_backlog import _tested_economy_pairs_from_findings
 from pacific_peering.analysis.data_quality_issues import DATA_QUALITY_ISSUES, DataQualityIssue
@@ -725,6 +726,9 @@ class ReportData:
     confirmed_detours: tuple[dict, ...]
     confirmed_local_transit: tuple[dict, ...]
     candidate_peering: tuple[dict, ...]
+    # Latest Cloudflare ROV test snapshot (reports/rov_data.py); None until
+    # the weekly test has run once.
+    rov: RovSummary | None = None
 
     def to_dict(self) -> dict:
         """Return a plain, JSON-serializable dict of this report data."""
@@ -1177,4 +1181,5 @@ def build_report_data(
         confirmed_detours=confirmed_detours,
         confirmed_local_transit=confirmed_local_transit,
         candidate_peering=candidate_peering,
+        rov=load_rov_summary(registry),
     )

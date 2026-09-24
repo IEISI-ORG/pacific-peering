@@ -85,6 +85,11 @@ if [ "$_dow" = "3" ]; then
     # and skips firing if they've changed. Same failure tolerance as above.
     echo "$(date +%A): weekly Cloudflare ROV test."
     "$UV" run pacific-peering-rov-cloudflare --fire || echo "Cloudflare ROV test failed (see above); continuing."
+    # report.txt/html carry an ROV section (after ASPA) read from the history
+    # file just written; the batch above only regenerates them on nights it
+    # tests something, so rebuild them here or the section lags a week.
+    { "$UV" run pacific-peering-report-ascii && "$UV" run pacific-peering-report-html; } \
+        || echo "Report regeneration failed (see above); continuing."
 fi
 
 # Everything this step can change that's git-tracked: findings_export.jsonl,

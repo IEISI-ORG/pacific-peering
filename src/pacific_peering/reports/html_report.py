@@ -132,6 +132,59 @@ def _bool_cell(value: bool | str) -> str:
     return f"<span>{html.escape(str(value))}</span>"
 
 
+def _rov_section_html(data: ReportData) -> str:
+    """ROV enforcement, from the weekly Cloudflare test (reports/rov_data.py)."""
+    rov = data.rov
+    if rov is None:
+        return "<h2>ROV enforcement</h2><p>(the weekly Cloudflare ROV test hasn't run yet)</p>"
+
+    def counts(c: tuple[int, int, int] | None) -> str:
+        return "&ndash;" if c is None else "{}/{}/{}".format(*c)
+
+    rows = "".join(
+        f"<tr><td>{html.escape(e.cc)}</td><td>{html.escape(e.name)}</td>"
+        f"<td>{counts(e.v4)}</td><td>{counts(e.v6)}</td></tr>"
+        for e in rov.economies
+    )
+    drops = "".join(
+        f"<li>IPv{d.af[1]} &mdash; {f'AS{d.asn}' if d.asn is not None else 'before the first public hop'}: "
+        f"{d.probes} probe(s)</li>"
+        for d in rov.drop_points
+    ) or "<li>(no probe's path filtered the invalid prefix)</li>"
+    splits = "".join(
+        f"<li>{html.escape(s.cc)} probe {html.escape(s.probe_id)} (IPv{s.af[1]}): valid via AS{s.valid_next}, "
+        f"invalid via AS{s.invalid_next}</li>"
+        for s in rov.splits
+    )
+    splits_html = (
+        "<p>Valid and invalid traces left via different upstreams (a sign one of them drops the "
+        f"invalid route):</p><ul>{splits}</ul>" if splits else ""
+    )
+    untested_html = (
+        f"<p>Not testable (no connected probe): {html.escape(', '.join(rov.untested))}</p>" if rov.untested else ""
+    )
+    return f"""<h2>ROV enforcement (Cloudflare RPKI-invalid test, weekly)</h2>
+    <p class="section-intro">
+        Latest run <strong>{html.escape(rov.date)}</strong>. Every connected probe traces
+        Cloudflare's RPKI-valid and RPKI-invalid test prefixes; where the valid one answers but
+        the invalid one dies, something on that path drops invalid routes. Where ASPA above counts
+        who has <em>published</em> route-security data, this shows whose paths actually
+        <em>enforce</em> origin validation. A traceroute can't separate a network filtering from
+        its upstream filtering, and Cloudflare is anycast, so a short path only speaks for the
+        probe's own network. Counts are probes: filtered / not filtered / inconclusive.
+    </p>
+    <table>
+        <thead><tr><th>CC</th><th>Name</th><th>IPv4</th><th>IPv6</th></tr></thead>
+        <tbody>{rows}</tbody>
+    </table>
+    {untested_html}
+    <p>Where invalid traces died (last network reached; it or its upstream dropped the route):</p>
+    <ul>{drops}</ul>
+    {splits_html}
+    <p class="section-intro">Measurements: {html.escape(str(rov.measurement_ids))}.
+        Detail: <code>outputs/reports/rov_cloudflare.txt</code></p>"""
+
+
 def render_html_report(data: ReportData, viz_dir: Path | None = Path("../viz")) -> str:
     """Render `data` as a single self-contained HTML page.
 
@@ -314,6 +367,8 @@ def render_html_report(data: ReportData, viz_dir: Path | None = Path("../viz")) 
         for e in data.aspa_economies
         if e.asns_with_aspa
     ) or "<p>(no in-scope ASN publishes an ASPA record yet)</p>"
+
+    rov_html = _rov_section_html(data)
 
     ipv6_economy_rows = "".join(
         f"""<tr>
@@ -533,6 +588,8 @@ def render_html_report(data: ReportData, viz_dir: Path | None = Path("../viz")) 
          sections above so an ASPA-backed confirmation is visually
          distinguishable from a RIS-agreement-only one (see
          store.mark_aspa_checked's aspa_confirmed field, already tracked). -->
+
+    {rov_html}
 
     <h2>IPv6 coverage</h2>
     <p class="section-intro">

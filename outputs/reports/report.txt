@@ -1,6 +1,6 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-09-24T09:56:10.969510+00:00                  
+                 Generated: 2026-09-24T10:38:06.866402+00:00                  
 ==============================================================================
 
 SUMMARY
@@ -177,6 +177,42 @@ PG   Papua New Guinea            38        4            1          1
 TO   Tonga                        5        3            3          4
 VU   Vanuatu                     12        1            1          0
 WS   Samoa                       10        1            0          1
+
+ROV ENFORCEMENT (Cloudflare RPKI-invalid test, weekly)
+==============================================================================
+Latest run 2026-09-24. Every connected probe traces Cloudflare's RPKI-valid and RPKI-invalid test prefixes; where the valid one answers but the invalid one dies, something on that path drops invalid routes. Where ASPA above counts who has *published* route-security data, this shows whose paths actually *enforce* origin validation. A traceroute can't separate a network filtering from its upstream filtering, and Cloudflare is anycast, so a short path only speaks for the probe's own network. Counts are probes: filtered / not filtered / inconclusive.
+CC   Name                                  IPv4      IPv6
+------------------------------------------------------------------------------
+CK   Cook Islands                         0/0/1         -
+FJ   Fiji                                 0/0/1         -
+FM   Micronesia, Federated States of      0/3/0     0/1/0
+GU   Guam                                 1/8/0     1/0/0
+KI   Kiribati                             0/2/0     0/0/2
+MH   Marshall Islands                     0/0/1         -
+MP   Northern Mariana Islands             0/1/0         -
+NC   New Caledonia                        5/0/0     3/0/1
+NU   Niue                                 0/1/0         -
+PF   French Polynesia                     0/7/0     0/2/0
+PG   Papua New Guinea                     0/1/0         -
+PW   Palau                                0/1/0     0/1/0
+TO   Tonga                                1/0/0         -
+TV   Tuvalu                               0/1/0         -
+VU   Vanuatu                              0/2/0         -
+Not testable (no connected probe): AS, NR, SB, WF, WS
+
+Where invalid traces died (last network reached; it or its upstream dropped the route):
+  IPv4  AS18200: 2 probe(s)
+  IPv6  AS18200: 2 probe(s)
+  IPv4  AS45345: 2 probe(s)
+  IPv4  AS56089: 1 probe(s)
+  IPv6  AS45345: 1 probe(s)
+  IPv4  AS24390: 1 probe(s)
+  IPv6  before the first public hop: 1 probe(s)
+  IPv4  before the first public hop: 1 probe(s)
+
+Valid and invalid traces left via different upstreams (a sign one of them drops the invalid route):
+  PG probe 50365 (IPv4): valid via AS4826, invalid via AS7474
+Measurements: {'v4': [215197667, 215198886], 'v6': [215199848, 215200172]}. Detail: outputs/reports/rov_cloudflare.txt
 
 IPV6 COVERAGE (adoption signal only -- no IPv6 testing yet)
 ==============================================================================
