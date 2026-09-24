@@ -3662,7 +3662,9 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
         ),
     ),
     ConfirmedDetour(
-        source_cc="NU", target_cc="SB", target_asn=136996,
+        # target_cc corrected SB -> VU 2026-09-24 (hand-transcription error;
+        # AS136996 Pacific Networks is Vanuatu-only). Mirrors findings.db row 155.
+        source_cc="NU", target_cc="VU", target_asn=136996,
         detour_ix_name="AS174 (Cogent Communications), then AS136557",
         detour_hub="Sydney", measurement_id=212158127, ris_observation_count=336,
         note=(

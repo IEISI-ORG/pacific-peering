@@ -34,9 +34,9 @@ DOCUMENTED_EXCEPTIONS = {
 
 # Registry disagreements awaiting the owner's confirmation before the finding
 # is changed. Remove an entry once it's resolved either way.
-PENDING_OWNER_CONFIRMATION = {
-    ("target", 136996, "SB"),  # APNIC: VU (Pacific Networks) -- asked 2026-09-24
-}
+PENDING_OWNER_CONFIRMATION: set[tuple[str, int, str]] = set()
+# Resolved 2026-09-24: ("target", 136996, "SB") -- owner confirmed Pacific
+# Networks is Vanuatu-only; finding corrected to VU.
 
 
 def _asn_economies() -> dict[int, set[str]]:
