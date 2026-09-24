@@ -1,6 +1,6 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-09-24T22:20:19.846241+00:00                  
+                 Generated: 2026-09-24T23:53:40.705250+00:00                  
 ==============================================================================
 
 SUMMARY
@@ -289,7 +289,7 @@ GU   Guam                             Micronesia      10      14       6        
 PF   French Polynesia                 Polynesia        6       9       6         1
 PG   Papua New Guinea                 Melanesia       38      10       1         1
 VU   Vanuatu                          Melanesia       10       5       2         1
-FM   Micronesia, Federated States of  Micronesia       6       5       2         0
+FM   Micronesia, Federated States of  Micronesia       6       5       3         0
 NC   New Caledonia                    Melanesia       18      20       5         0
 
 APPENDIX: LOW DATA QUALITY ISSUES (4 known, resolved)
@@ -314,7 +314,7 @@ Connected (or recently disconnected) in-scope Atlas probes whose network or loca
 CC      Probe ASN       Status        Why
 ------------------------------------------------------------------------------
 FJ      60575 AS141695  Connected     Pacific Community (AS141695): egresses via Zscaler (AS53813), so paths aren't Fiji's own; excluded as source and target
-FM      62046 AS14593   Connected     dual uplink: Atlas labels it Starlink from its control-plane address (14.1.90.35), but all 33 cached traceroutes (2026-09-16..24) leave via AS139759 FSM Telecom at <2ms -- in practice an FSM Telecom vantage point for measurements; could flip to Starlink if the site fails over
+FM      62046 AS14593   Connected     dual uplink: Atlas labels it Starlink from its control-plane address (14.1.90.35), but all 33 cached traceroutes (2026-09-16..24) leave via AS139759 FSM Telecom at <2ms -- in practice an FSM Telecom vantage point for measurements. Used as an AS139759 source since 2026-09-25 (asn_probes.PROBE_ASN_OVERRIDES), with corridor results dropped if their first hop is Starlink (a failover)
 GU      60689 AS7131    Connected     ASN registered Northern Mariana Islands but probe physically in Guam (geo-audit): counts as a GU vantage point, not MP
 GU      62689 AS7131    Connected     ASN registered Northern Mariana Islands but probe physically in Guam (geo-audit): counts as a GU vantage point, not MP
 GU      65337 AS14593   Connected     Starlink (AS14593): satellite egress via Starlink PoPs, not a local carrier; excluded from corridor candidacy

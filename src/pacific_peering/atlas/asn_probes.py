@@ -37,6 +37,21 @@ _DEFAULT_TIMEOUT = 30.0
 DEFAULT_REGISTRY_PATH = Path("data/atlas/asn_probe_registry.json")
 
 
+# Probes whose Atlas `asn_v4` doesn't describe their measurement path. Atlas
+# derives asn_v4 from the probe's control-plane (probe-to-Atlas) address; at a
+# dual-uplink site that can be one uplink while ICMP measurements leave by the
+# other. Owner's direction, 2026-09-25. Corridor classification still guards
+# every result by its *measured* first hop (auto_classify.NON_LOCAL_FIRST_HOP_ASNS),
+# so a failover to the other uplink can't slip through.
+PROBE_ASN_OVERRIDES: dict[int, tuple[int, str]] = {
+    62046: (
+        139759,
+        "Pacific Community, Pohnpei (FM): control-plane address 14.1.90.35 is Starlink (AS14593), but all "
+        "33 cached traceroutes 2026-09-16..24 leave via AS139759 FSM Telecom at <2ms",
+    ),
+}
+
+
 def build_asn_probe_registry(
     economies: tuple[Economy, ...] = ECONOMIES,
     output_path: Path = DEFAULT_REGISTRY_PATH,
@@ -65,6 +80,8 @@ def build_asn_probe_registry(
         response.raise_for_status()
         for probe in response.json()["results"]:
             asn = probe.get("asn_v4")
+            if probe["id"] in PROBE_ASN_OVERRIDES:
+                asn = PROBE_ASN_OVERRIDES[probe["id"]][0]
             if asn is not None:
                 registry.setdefault(asn, []).append(probe["id"])
 

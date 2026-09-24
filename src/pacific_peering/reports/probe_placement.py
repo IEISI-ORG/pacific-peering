@@ -45,7 +45,8 @@ PROBE_NOTES: dict[int, str] = {
     # Telecom at <2ms -- a dual-uplink site (Pacific Community, Pohnpei).
     62046: "dual uplink: Atlas labels it Starlink from its control-plane address (14.1.90.35), but all 33 cached "
            "traceroutes (2026-09-16..24) leave via AS139759 FSM Telecom at <2ms -- in practice an FSM Telecom vantage "
-           "point for measurements; could flip to Starlink if the site fails over",
+           "point for measurements. Used as an AS139759 source since 2026-09-25 (asn_probes.PROBE_ASN_OVERRIDES), with "
+           "corridor results dropped if their first hop is Starlink (a failover)",
 }
 
 

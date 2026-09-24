@@ -188,3 +188,33 @@ def test_fire_measurement_forwards_target_ip_to_run_smoketest(monkeypatch):
 
     assert measurement_id == 900000002
     assert captured["target_ip"] == "203.78.152.1"
+
+
+def _probe(probe_id, first_asn):
+    return {
+        "probe_id": probe_id,
+        "as_sequence": [{"asn": first_asn, "resolution_source": "bgp", "contiguous_with_previous": True}],
+        "ixp_crossings": [],
+        "traceroute_upstream_asn": first_asn,
+        "ris_agrees": False,
+        "contiguous": True,
+        "ris_observation_count": 0,
+    }
+
+
+def test_starlink_first_hop_probe_is_dropped_like_a_proxy(monkeypatch, tmp_path):
+    """FM 62046 failing over to its Starlink uplink (or GU 65337 via country
+    sourcing) must not be read as the source economy's own routing."""
+    triangulation = {"measurement_id": 900000001, "target_asn": 24439, "probes": [_probe(62046, 14593)]}
+    marked, written = _patch_common(monkeypatch, tmp_path, triangulation, [{"probe_id": 62046, "hops": []}])
+
+    result = auto_classify.classify_corridor(_candidate())
+
+    assert result.outcome == "escalated"
+    assert "probe 62046 via Starlink" in result.escalations[0].detail
+
+
+def test_starlink_is_not_a_proxy_for_the_rov_and_ipv6_checks():
+    assert 14593 in auto_classify.NON_LOCAL_FIRST_HOP_ASNS
+    assert 14593 not in auto_classify.KNOWN_PROXY_ASNS
+    assert set(auto_classify.KNOWN_PROXY_ASNS) <= set(auto_classify.NON_LOCAL_FIRST_HOP_ASNS)

@@ -25,7 +25,10 @@ Classification rules, in priority order, per probe:
    escalation with an empty `()` in its own detail string -- the tell that
    nothing had actually been checked. Deliberately does not mark the
    corridor tested, unlike every other rule here, so it retries on its own.
-0. **Proxy/VPN egress check** (`KNOWN_PROXY_ASNS`). If a probe's resolved
+0. **Proxy/VPN / non-local egress check** (`NON_LOCAL_FIRST_HOP_ASNS`:
+   `KNOWN_PROXY_ASNS` plus Starlink AS14593, added 2026-09-25 as the guard for
+   dual-uplink probe 62046 and Starlink-hosted probes picked by country
+   sourcing). If a probe's resolved
    AS-path *starts* with a known corporate proxy/VPN ASN (e.g. Zscaler),
    every hop after it reflects that proxy's own infrastructure, not the
    source network's real path -- discarded before any other check runs,
@@ -162,6 +165,17 @@ LOCAL_IXP_LATENCY_THRESHOLD_MS = 10.0
 # see discovery/excluded_asns.py. No probe sits behind it today; listed so a
 # probe host that routes through it is treated as proxy-tainted.
 KNOWN_PROXY_ASNS: dict[int, str] = {53813: "Zscaler", 23959: "Owl Limited (VPN)"}
+
+# Corridor classification only: a probe whose measured path *starts* in one of
+# these isn't showing its economy's local-carrier routing, so its result is
+# dropped like a proxy's. Added 2026-09-25 with FM probe 62046 (dual uplink:
+# Atlas labels it Starlink, it measures via FSM Telecom; see
+# asn_probes.PROBE_ASN_OVERRIDES) -- the guard catches a failover to its
+# Starlink uplink. It also covers country-sourced measurements that land on a
+# Starlink-hosted probe (e.g. GU 65337: 8 existing corroborations start at
+# AS14593). Not in KNOWN_PROXY_ASNS on purpose: the ROV and IPv6 checks
+# measure Starlink's own behaviour and want these probes.
+NON_LOCAL_FIRST_HOP_ASNS: dict[int, str] = {**KNOWN_PROXY_ASNS, 14593: "Starlink (satellite egress)"}
 
 
 @dataclass
@@ -391,7 +405,7 @@ def classify_corridor(
     for probe in triangulation["probes"]:
         as_sequence = probe.get("as_sequence", [])
         first_asn = as_sequence[0]["asn"] if as_sequence else None
-        proxy_name = KNOWN_PROXY_ASNS.get(first_asn)
+        proxy_name = NON_LOCAL_FIRST_HOP_ASNS.get(first_asn)
         if proxy_name is not None:
             proxy_corrupted[probe["probe_id"]] = proxy_name
         else:

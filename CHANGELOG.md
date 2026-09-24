@@ -2261,3 +2261,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - Reports: new appendix listing in-scope probes not placed optimally for
   regional testing and why (2026-09-25), generated from the candidacy
   exclusions, proxy list and probe geo-audit.
+- FM probe 62046 counted as an FSM Telecom (AS139759) source via
+  `PROBE_ASN_OVERRIDES` (2026-09-25): a dual-uplink site whose Atlas label is
+  Starlink but whose measurements leave via FSM. Corridor classification now
+  drops any probe whose measured path starts at Starlink (AS14593).
