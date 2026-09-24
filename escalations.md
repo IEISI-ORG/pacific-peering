@@ -49,3 +49,27 @@ Corridors `auto_classify.py`'s mechanical rules couldn't confidently resolve on 
 - detail: probe 60689: hop 8 crosses MARIIX (in-fishbowl) at 23.234ms, above the 10.0ms local-fiber threshold -- either this hop isn't genuinely local despite the registry, or there's an unexpected detour/backhaul before reaching it; needs a human look, not a guess
 - flagged: 2026-09-19T01:51:00.839704+00:00
 
+
+## AS10131 (CK) -- possible offshore-hosted address space
+- reason: offshore-hosting check (atlas/offshore_check.py)
+- detail: 202.65.33.1: probe 1004726 4.3ms < 50.4ms minimum (measurement 215224841)
+- action: owner review; if confirmed, add to discovery/excluded_asns.py (offshore_hosted)
+- flagged: 2026-09-24T11:49:55.550669+00:00
+
+## AS23959 (VU) -- possible offshore-hosted address space
+- reason: offshore-hosting check (atlas/offshore_check.py)
+- detail: 194.127.166.1: probe 1014094 11.19ms < 66.6ms minimum (measurement 215225380)
+- action: owner review; if confirmed, add to discovery/excluded_asns.py (offshore_hosted)
+- flagged: 2026-09-24T11:49:55.550669+00:00
+
+## AS58932 (PW) -- possible offshore-hosted address space
+- reason: offshore-hosting check (atlas/offshore_check.py)
+- detail: 103.30.248.1: probe 1000112 48.72ms < 110.9ms minimum (measurement 215228529)
+- action: owner review; if confirmed, add to discovery/excluded_asns.py (offshore_hosted)
+- flagged: 2026-09-24T11:49:55.550669+00:00
+
+## AS132468 (SB) -- possible offshore-hosted address space
+- reason: offshore-hosting check (atlas/offshore_check.py)
+- detail: 103.188.182.1: probe 1011722 11.1ms < 28.5ms minimum (measurement 215228678)
+- action: owner review; if confirmed, add to discovery/excluded_asns.py (offshore_hosted)
+- flagged: 2026-09-24T11:49:55.550669+00:00
