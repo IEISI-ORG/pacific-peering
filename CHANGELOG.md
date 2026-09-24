@@ -2250,3 +2250,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - Excluded AS23959 (Owl Limited, VU) as `offshore_hosted` and removed its
   two findings (2026-09-24): its space is served from Tokyo (sole upstream
   AS4785 xTom JP). In-scope ASNs 161 -> 160; findings 242 -> 240.
+- Offshore check: an address is flagged only when probes on 2+ different
+  networks beat physics; one network's evidence is reported as
+  `unconfirmed` and not escalated (2026-09-24). Today's run re-judged:
+  AS58932 (mislocated probe) is now unconfirmed.

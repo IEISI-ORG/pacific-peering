@@ -15,11 +15,47 @@ def test_physical_minimum_sydney_to_port_vila():
     assert 24 < oc.physical_min_rtt_ms(SYDNEY, "VU") < 26
 
 
-def test_sydney_hosted_address_beats_physics():
+TOKYO = (35.69, 139.69)
+LA = (34.05, -118.26)
+
+
+def test_one_probe_beating_physics_is_only_unconfirmed():
     # Real 2026-09-24 numbers: 103.101.192.1 answered a Sydney probe in 0.825ms.
-    judged = oc.judge_address([{"prb_id": 31347, "min": 0.825}], "VU", {31347: SYDNEY})
-    assert judged["verdict"] == "offshore"
+    judged = oc.judge_address([{"prb_id": 31347, "min": 0.825}], "VU", {31347: SYDNEY}, {31347: 137576})
+    assert judged["verdict"] == "unconfirmed"
     assert abs(judged["violations"][0]["rtt_ms"] - 0.825) < 0.01
+
+
+def test_two_networks_beating_physics_is_offshore():
+    # AS23959's 194.127.166.1: Tokyo probes on AS3258 and AS4713, 11.2/13.2ms vs ~67ms minimum.
+    judged = oc.judge_address(
+        [{"prb_id": 1014094, "min": 11.19}, {"prb_id": 1007464, "min": 13.16}],
+        "VU", {1014094: TOKYO, 1007464: TOKYO}, {1014094: 3258, 1007464: 4713},
+    )
+    assert judged["verdict"] == "offshore"
+
+
+def test_two_probes_on_the_same_network_stay_unconfirmed():
+    judged = oc.judge_address(
+        [{"prb_id": 1, "min": 1.0}, {"prb_id": 2, "min": 2.0}], "VU", {1: SYDNEY, 2: SYDNEY}, {1: 4764, 2: 4764}
+    )
+    assert judged["verdict"] == "unconfirmed"
+
+
+def test_mislocated_single_probe_case_is_unconfirmed():
+    # AS58932's flag: probe 1000112 registered in LA but on AS3258 xTom Japan, 48.7ms to Palau.
+    judged = oc.judge_address(
+        [{"prb_id": 1000112, "min": 48.72}, {"prb_id": 1016950, "min": 48.4}],
+        "PW", {1000112: LA, 1016950: TOKYO}, {1000112: 3258, 1016950: 401615},
+    )
+    assert judged["verdict"] == "unconfirmed"  # only the LA-registered probe beats physics
+
+
+def test_probes_with_unknown_asn_count_as_separate_networks():
+    judged = oc.judge_address(
+        [{"prb_id": 1, "min": 1.0}, {"prb_id": 2, "min": 2.0}], "VU", {1: SYDNEY, 2: SYDNEY}, {}
+    )
+    assert judged["verdict"] == "offshore"
 
 
 def test_genuinely_local_address_is_consistent():
@@ -40,6 +76,8 @@ def test_asn_verdict_precedence():
     assert oc.asn_verdict({"a": {"verdict": "consistent"}, "b": {"verdict": "offshore"}}) == "offshore"
     assert oc.asn_verdict({"a": {"verdict": "no_response"}, "b": {"verdict": "consistent"}}) == "consistent"
     assert oc.asn_verdict({"a": {"verdict": "not_measured"}}) == "not_measured"
+    assert oc.asn_verdict({"a": {"verdict": "unconfirmed"}, "b": {"verdict": "consistent"}}) == "unconfirmed"
+    assert oc.asn_verdict({"a": {"verdict": "unconfirmed"}, "b": {"verdict": "offshore"}}) == "offshore"
 
 
 REGISTRY = {1: "VU", 2: "FJ", 3: "WS"}

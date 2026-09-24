@@ -70,6 +70,7 @@ Corridors `auto_classify.py`'s mechanical rules couldn't confidently resolve on 
 - detail: 103.30.248.1: probe 1000112 48.72ms < 110.9ms minimum (measurement 215228529)
 - action: owner review; if confirmed, add to discovery/excluded_asns.py (offshore_hosted)
 - flagged: 2026-09-24T11:49:55.550669+00:00
+- resolved: 2026-09-24 -- downgraded to `unconfirmed` by the two-network rule: the only probe that beat physics, 1000112, is registered as an "LA VM" but sits on AS3258 xTom Japan and answered at Tokyo-like RTT (48.7ms vs a Tokyo probe's 48.4ms) -- a probe-location error, not offshore hosting.
 
 ## AS132468 (SB) -- possible offshore-hosted address space
 - reason: offshore-hosting check (atlas/offshore_check.py)

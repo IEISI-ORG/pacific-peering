@@ -67,7 +67,15 @@ CAP_RETRY_WAIT_S = 60
 _CONCURRENCY_CAP_TEXT = "concurrent measurements"
 _TERMINAL_STATUSES = {"Stopped", "Failed", "No suitable probes", "Denied", "Archived"}
 
+# A flag needs probes on at least this many different networks (probe asn_v4)
+# to beat physics. Owner's rule, 2026-09-24, after the first full run's AS58932
+# flag rested on one probe: 1000112, registered as an "LA VM" but on AS3258
+# xTom *Japan*, answering at Tokyo-like RTT -- a probe-location error, not
+# offshore hosting. One network's evidence is reported as `unconfirmed`.
+MIN_INDEPENDENT_NETWORKS = 2
+
 OFFSHORE = "offshore"
+UNCONFIRMED = "unconfirmed"  # beat physics, but only from probes on one network
 CONSISTENT = "consistent"
 NO_RESPONSE = "no_response"
 NOT_MEASURED = "not_measured"
@@ -83,8 +91,18 @@ def physical_min_rtt_ms(probe_latlon: tuple[float, float], cc: str) -> float:
     return great_circle_km(probe_latlon, ECONOMY_LATLON[cc]) / FIBRE_KM_PER_MS_RTT
 
 
-def judge_address(results: list[dict], cc: str, probe_latlon: dict[int, tuple[float, float]]) -> dict:
-    """Verdict for one address from its raw Atlas ping results."""
+def judge_address(
+    results: list[dict],
+    cc: str,
+    probe_latlon: dict[int, tuple[float, float]],
+    probe_asn: dict[int, int | None] | None = None,
+) -> dict:
+    """Verdict for one address from its raw Atlas ping results.
+
+    `offshore` needs violations from `MIN_INDEPENDENT_NETWORKS` distinct probe
+    ASNs; fewer is `unconfirmed`. A probe with no known ASN counts as its own
+    network (keyed by probe ID), so missing metadata can't merge two probes.
+    """
     answered, violations = 0, []
     for r in results:
         rtt = r.get("min")
@@ -96,15 +114,18 @@ def judge_address(results: list[dict], cc: str, probe_latlon: dict[int, tuple[fl
             continue
         needed = physical_min_rtt_ms(where, cc)
         if rtt < PHYSICS_MARGIN * needed:
-            violations.append({"probe": r["prb_id"], "rtt_ms": round(rtt, 2), "physical_min_ms": round(needed, 1)})
+            violations.append({"probe": r["prb_id"], "probe_asn": (probe_asn or {}).get(r["prb_id"]),
+                               "rtt_ms": round(rtt, 2), "physical_min_ms": round(needed, 1)})
     if violations:
-        return {"verdict": OFFSHORE, "answered": answered, "violations": sorted(violations, key=lambda v: v["rtt_ms"])}
+        networks = {v["probe_asn"] if v["probe_asn"] is not None else f"probe:{v['probe']}" for v in violations}
+        verdict = OFFSHORE if len(networks) >= MIN_INDEPENDENT_NETWORKS else UNCONFIRMED
+        return {"verdict": verdict, "answered": answered, "violations": sorted(violations, key=lambda v: v["rtt_ms"])}
     return {"verdict": CONSISTENT if answered else NO_RESPONSE, "answered": answered, "violations": []}
 
 
 def asn_verdict(addresses: dict[str, dict]) -> str:
     verdicts = {a["verdict"] for a in addresses.values()}
-    for v in (OFFSHORE, CONSISTENT, NO_RESPONSE):
+    for v in (OFFSHORE, UNCONFIRMED, CONSISTENT, NO_RESPONSE):
         if v in verdicts:
             return v
     return NOT_MEASURED
@@ -129,13 +150,15 @@ def plan_run(registry_asns: dict[int, str], history: list[dict], now: datetime) 
     return ("new", new) if new else ("skip", [])
 
 
-def _probe_locations(probe_ids: set[int]) -> dict[int, tuple[float, float]]:
+def _probe_info(probe_ids: set[int]) -> tuple[dict[int, tuple[float, float]], dict[int, int | None]]:
+    """({probe: (lat, lon)}, {probe: asn_v4}) from the Atlas probe API."""
     locations: dict[int, tuple[float, float]] = {}
+    asns: dict[int, int | None] = {}
     ids = sorted(probe_ids)
     for i in range(0, len(ids), 400):
         response = requests.get(
             "https://atlas.ripe.net/api/v2/probes/",
-            params={"id__in": ",".join(map(str, ids[i:i + 400])), "fields": "id,geometry", "page_size": 500},
+            params={"id__in": ",".join(map(str, ids[i:i + 400])), "fields": "id,geometry,asn_v4", "page_size": 500},
             timeout=30,
         )
         response.raise_for_status()
@@ -143,7 +166,8 @@ def _probe_locations(probe_ids: set[int]) -> dict[int, tuple[float, float]]:
             coords = (p.get("geometry") or {}).get("coordinates")
             if coords:
                 locations[p["id"]] = (coords[1], coords[0])
-    return locations
+            asns[p["id"]] = p.get("asn_v4")
+    return locations, asns
 
 
 def _create_with_retry(asn: int, cc: str, address: str) -> int | None:
@@ -229,10 +253,10 @@ def run_check(fire: bool, now: datetime | None = None, force_full: bool = False)
             logger.info("Dry run -- pass --fire to ping the addresses and record")
         return None
     ids, raw = _measure(targets)
-    locations = _probe_locations({r["prb_id"] for rs in raw.values() for r in rs})
+    locations, probe_asns = _probe_info({r["prb_id"] for rs in raw.values() for r in rs})
     per_asn: dict[str, dict] = {}
     for asn, cc, address in targets:
-        judged = judge_address(raw[address], cc, locations) if address in raw else {"verdict": NOT_MEASURED, "answered": 0, "violations": []}
+        judged = judge_address(raw[address], cc, locations, probe_asns) if address in raw else {"verdict": NOT_MEASURED, "answered": 0, "violations": []}
         entry = per_asn.setdefault(str(asn), {"cc": cc, "addresses": {}})
         entry["addresses"][address] = {**judged, "measurement_id": ids.get(address)}
     for entry in per_asn.values():
@@ -257,35 +281,47 @@ def _new_offshore(history: list[dict], per_asn: dict[str, dict]) -> list[str]:
     return sorted((a for a, e in per_asn.items() if e["verdict"] == OFFSHORE and a not in before), key=int)
 
 
-def render_report(snapshot: dict, new_flags: list[str]) -> str:
-    res = snapshot["results"]
-    counts = {v: sum(e["verdict"] == v for e in res.values()) for v in (OFFSHORE, CONSISTENT, NO_RESPONSE, NOT_MEASURED)}
-    lines = [
-        f"Offshore-hosting check -- {snapshot['run_at'][:10]} ({snapshot['mode']} run)",
-        "Auto-generated by `pacific-peering-offshore-check` (atlas/offshore_check.py): monthly, plus new ASNs.",
-        "Pings up to 3 addresses per in-scope ASN from AU/NZ/US/JP probes. `offshore` = some probe measured",
-        f"an RTT below {PHYSICS_MARGIN} x the fibre minimum from that probe to the economy's capital -- physically",
-        "impossible if the address were in its economy. Flags are for the owner to review; none is auto-excluded.",
-        "",
-        f"ASNs: {counts[OFFSHORE]} offshore, {counts[CONSISTENT]} consistent, {counts[NO_RESPONSE]} no response, "
-        f"{counts[NOT_MEASURED]} not measured, {len(snapshot['untestable'])} untestable (no originated prefix).",
-        f"New offshore flags this run: {', '.join('AS' + a for a in new_flags) or 'none'}",
-        "",
-        "Offshore candidates:",
-    ]
+def _section(res: dict, verdict: str) -> list[str]:
+    lines = []
     for asn, e in sorted(res.items(), key=lambda kv: int(kv[0])):
-        if e["verdict"] != OFFSHORE:
+        if e["verdict"] != verdict:
             continue
         lines.append(f"  AS{asn} ({e['cc']})")
         for address, a in e["addresses"].items():
-            if a["verdict"] == OFFSHORE:
+            if a["verdict"] in (OFFSHORE, UNCONFIRMED):
                 v = a["violations"][0]
-                lines.append(f"    {address}: probe {v['probe']} {v['rtt_ms']}ms < physical min {v['physical_min_ms']}ms "
-                             f"(measurement {a['measurement_id']}, {len(a['violations'])} probe(s) beat physics)")
+                nets = sorted({str(x.get("probe_asn")) for x in a["violations"]})
+                lines.append(f"    {address}: probe {v['probe']} (AS{v.get('probe_asn')}) {v['rtt_ms']}ms < physical min "
+                             f"{v['physical_min_ms']}ms (measurement {a['measurement_id']}, {len(a['violations'])} probe(s) "
+                             f"on network(s) {', '.join('AS' + n for n in nets)} beat physics)")
             else:
                 lines.append(f"    {address}: {a['verdict']}")
-    if not counts[OFFSHORE]:
-        lines.append("  (none)")
+    return lines or ["  (none)"]
+
+
+def render_report(snapshot: dict, new_flags: list[str]) -> str:
+    res = snapshot["results"]
+    counts = {v: sum(e["verdict"] == v for e in res.values())
+              for v in (OFFSHORE, UNCONFIRMED, CONSISTENT, NO_RESPONSE, NOT_MEASURED)}
+    lines = [
+        f"Offshore-hosting check -- {snapshot['run_at'][:10]} ({snapshot['mode']} run)",
+        "Auto-generated by `pacific-peering-offshore-check` (atlas/offshore_check.py): monthly, plus new ASNs.",
+        "Pings up to 3 addresses per in-scope ASN from AU/NZ/US/JP probes. `offshore` = probes on at least",
+        f"{MIN_INDEPENDENT_NETWORKS} different networks measured an RTT below {PHYSICS_MARGIN} x the fibre minimum from the probe to the",
+        "economy's capital -- physically impossible if the address were in its economy. `unconfirmed` = only one",
+        "network's probes did (e.g. a mislocated probe); listed, not escalated. Nothing is auto-excluded.",
+        "",
+        f"ASNs: {counts[OFFSHORE]} offshore, {counts[UNCONFIRMED]} unconfirmed, {counts[CONSISTENT]} consistent, "
+        f"{counts[NO_RESPONSE]} no response, {counts[NOT_MEASURED]} not measured, "
+        f"{len(snapshot['untestable'])} untestable (no originated prefix).",
+        f"New offshore flags this run: {', '.join('AS' + a for a in new_flags) or 'none'}",
+        "",
+        "Offshore candidates (escalated):",
+        *_section(res, OFFSHORE),
+        "",
+        "Unconfirmed (one network's probes only; not escalated):",
+        *_section(res, UNCONFIRMED),
+    ]
     return "\n".join(lines) + "\n"
 
 
