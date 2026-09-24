@@ -69,7 +69,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
 <body>
 <div class="wrap">
     <h1>Pacific Peering — Regional Routing Report</h1>
-    <div class="meta">Generated 2026-09-23T03:40:35.041823+00:00</div>
+    <div class="meta">Generated 2026-09-24T09:56:12.065762+00:00</div>
 
     <div class="headline-banner">
         <span class="value">57%</span>
@@ -272,12 +272,6 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <td>12</td>
             <td>no</td>
         </tr><tr>
-            <td>AS139609</td><td>SISCC (Solomon Islands Submarine Cable Company)</td>
-            <td>SB, WS</td>
-            <td>CK, FJ, FM, GU, MP, NC, NU, PF, PG, PW, TO, TV, VU</td>
-            <td>17</td>
-            <td>yes</td>
-        </tr><tr>
             <td>AS6453</td><td>Tata Communications</td>
             <td>MH, NR</td>
             <td>CK, FJ, FM, GU, MP, NC, NU, PF, PG, PW, TV, VU</td>
@@ -305,6 +299,12 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <td>AS17993</td><td>Vodafone Samoa Limited</td>
             <td>AS, WS</td>
             <td>FM, NC, NU, TO</td>
+            <td>5</td>
+            <td>yes</td>
+        </tr><tr>
+            <td>AS3605</td><td>Guam Cablevision</td>
+            <td>GU, PW</td>
+            <td>(none)</td>
             <td>5</td>
             <td>yes</td>
         </tr></tbody>
@@ -1590,12 +1590,12 @@ Twelfth confirmation of AS139609(SISCC)&lt;-&gt;AS45891. `AS55885 -&gt; AS9471 -
                 &middot; measurement 212143016</div>
             <details class="note"><summary>**First-ever confirmation**: AS17993(Vodafone Samoa)&lt;-&gt;AS150321 (Secretariat of the Pacific Regional Environment Programme)…</summary>**First-ever confirmation**: AS17993(Vodafone Samoa)&lt;-&gt;AS150321 (Secretariat of the Pacific Regional Environment Programme). `AS139759 -&gt; AS9246 -&gt; AS4637 -&gt; AS6461 (Zayo) -&gt; AS174 -&gt; AS17993 -&gt; AS150321`, RIS agrees exactly (330). `has_routing_loop` False.</details>
         </div><div class="detour-card">
-            <div class="headline">NU -&gt; WS
+            <div class="headline">NU -&gt; SB
                 (AS150349): detours via AS6939 (Hurricane Electric), then AS139609 (SISCC)
                 (Sydney)</div>
             <div>RIS observation count: 331
                 &middot; measurement 212158141</div>
-            <details class="note"><summary>**First-ever confirmation for this target** (the FM-sourced attempt dead-ended one hop short and was logged inconclusive; this one confirms it):…</summary>**First-ever confirmation for this target** (the FM-sourced attempt dead-ended one hop short and was logged inconclusive; this one confirms it): AS139609(SISCC)&lt;-&gt;AS150349 (Pacific Vaizeds Enterprise Ltd, Samoa) -- a real, if unusual, cross-region relationship (a Samoan ISP&#x27;s dominant RIS neighbor is a Solomon Islands submarine cable company). `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS139609`, RIS agrees exactly (331). `has_routing_loop` False.</details>
+            <details class="note"><summary>**First-ever confirmation for this target** (the FM-sourced attempt dead-ended one hop short and was logged inconclusive; this one confirms it):…</summary>**First-ever confirmation for this target** (the FM-sourced attempt dead-ended one hop short and was logged inconclusive; this one confirms it): AS139609(SISCC)&lt;-&gt;AS150349 (Pacific Vaizeds Enterprise Ltd, Solomon Islands) -- an ordinary domestic Solomon Islands relationship: the national submarine cable operator as upstream to a local network. [Corrected 2026-09-24: originally filed as target_cc=WS/&quot;Samoa&quot; by a hand-transcription error; APNIC registers AS150349 to SB (country: SB, MAINT-PVEL-SB, last-modified 2022-10-05) and its own aut-num export policy declares `to AS139609 announce AS150349`, independently corroborating this adjacency.] `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS139609`, RIS agrees exactly (331). `has_routing_loop` False.</details>
         </div><div class="detour-card">
             <div class="headline">TO -&gt; SB
                 (AS150349): detours via MegaIX Sydney
@@ -2389,8 +2389,8 @@ NU(AS55885) -&gt; AS150403: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS139609 -&
 
     <h2>ASPA progress (RFC 9582 upstream-authorization adoption)</h2>
     <p class="section-intro">
-        <strong>16 of 162</strong> in-scope ASNs
-        now publish an ASPA record (3203 total across the
+        <strong>18 of 162</strong> in-scope ASNs
+        now publish an ASPA record (3225 total across the
         whole internet, per Cloudflare Radar). Adoption is still early &mdash; absence
         means "not published yet," not "no real upstream." Per economy: how many of its
         own ASNs publish a record, and the distinct upstream ASNs those records declare,
@@ -2422,7 +2422,7 @@ NU(AS55885) -&gt; AS150403: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS139609 -&
             <td>3</td>
         </tr><tr>
             <td>PG</td><td>Papua New Guinea</td>
-            <td>38</td><td>2</td>
+            <td>38</td><td>4</td>
             <td>1</td>
             <td>1</td>
         </tr><tr>
@@ -2454,8 +2454,8 @@ NU(AS55885) -&gt; AS150403: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS139609 -&
         yet, queued until adoption has advanced further.
         <strong>47 of 162</strong> in-scope ASNs
         have at least one RIS-observed IPv6-originated prefix.
-        <strong>9 of 36</strong> connected
-        Atlas probes work over IPv6 (2 more are
+        <strong>8 of 36</strong> connected
+        Atlas probes work over IPv6 (3 more are
         IPv6-capable but tagged as not working).
     </p>
     <table>
@@ -2523,8 +2523,11 @@ NU(AS55885) -&gt; AS150403: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS139609 -&
          traceroute mined so far (100.64.0.0/10 dishy/router/gateway
          addresses; see task_plan.md's 2026-09-23 Guam backhaul-mining
          entry) are an IPv4-only NAT artifact, not Starlink's real internal
-         path. atlas/client.py::create_traceroute_measurement is hardcoded
-         to "af": 4 -- once IPv6 corridor testing starts, Starlink corridors
+         path. atlas/client.py::create_traceroute_measurement takes af
+         (default 4) since 2026-09-24, but corridor testing still fires
+         IPv4 only; the DNS-anchor follow-up below is done for both
+         families (atlas/starlink_anchors.py, --af 6). Once IPv6 corridor
+         testing starts, Starlink corridors
          specifically need an af=6 traceroute to see past the CGNAT layer
          and observe the actual native routing.
 
@@ -2808,7 +2811,7 @@ NU(AS55885) -&gt; AS150403: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS139609 -&
         </tr><tr>
             <td>FM</td><td>Micronesia, Federated States of</td>
             <td>Micronesia</td>
-            <td>6</td><td>6</td><td>3</td>
+            <td>6</td><td>5</td><td>3</td>
             <td>0</td>
         </tr><tr>
             <td>NC</td><td>New Caledonia</td>

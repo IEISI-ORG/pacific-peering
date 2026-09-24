@@ -2213,3 +2213,8 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - IPv6 fleet report: per-anchor (Cloudflare/Google) reach, RTT and dark
   hop per probe, with per-service week-over-week changes (2026-09-24).
   Baseline snapshot rebuilt from cached results to include it.
+- Fixed finding `NU -> WS (AS150349)` to `NU -> SB` (2026-09-24):
+  AS150349 is a Solomon Islands network (APNIC SB), mislabelled by hand
+  in a 2026-09-16 legacy entry. This was what made AS139609 (SISCC) show a
+  false Samoa dependent. New test checks every finding's economy labels
+  against the ASN registry.

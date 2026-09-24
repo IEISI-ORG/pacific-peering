@@ -3701,16 +3701,19 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
         ),
     ),
     ConfirmedDetour(
-        source_cc="NU", target_cc="WS", target_asn=150349,
+        # target_cc corrected WS -> SB 2026-09-24 (hand-transcription error;
+        # APNIC registers AS150349 to SB). Mirrors findings.db row 164.
+        source_cc="NU", target_cc="SB", target_asn=150349,
         detour_ix_name="AS6939 (Hurricane Electric), then AS139609 (SISCC)",
         detour_hub="Sydney", measurement_id=212158141, ris_observation_count=331,
         note=(
             "**First-ever confirmation for this target** (the FM-sourced "
             "attempt dead-ended one hop short and was logged inconclusive; "
             "this one confirms it): AS139609(SISCC)<->AS150349 (Pacific "
-            "Vaizeds Enterprise Ltd, Samoa) -- a real, if unusual, cross-"
-            "region relationship (a Samoan ISP's dominant RIS neighbor is "
-            "a Solomon Islands submarine cable company). `AS55885 -> "
+            "Vaizeds Enterprise Ltd, Solomon Islands) -- an ordinary "
+            "domestic Solomon Islands relationship: the national submarine "
+            "cable operator as upstream to a local network. Its own aut-num "
+            "export policy declares `to AS139609 announce AS150349`. `AS55885 -> "
             "AS9471 -> AS6939 -> AS139609`, RIS agrees exactly (331). "
             "`has_routing_loop` False."
         ),

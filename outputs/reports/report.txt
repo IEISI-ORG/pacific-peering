@@ -1,6 +1,6 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-09-23T03:40:33.915407+00:00                  
+                 Generated: 2026-09-24T09:56:10.969510+00:00                  
 ==============================================================================
 
 SUMMARY
@@ -57,9 +57,6 @@ AS6939    Hurricane Electric                       7        5      16       no
 AS174     Cogent Communications                    5        5      12       no
     Dependent: AS, FJ, PW, TO, WS
     Vantage-only: CK, FM, GU, NU, PF
-AS139609  SISCC (Solomon Islands Submarine         2       13      17      yes
-    Dependent: SB, WS
-    Vantage-only: CK, FJ, FM, GU, MP, NC, NU, PF, PG, PW, TO, TV, VU
 AS6453    Tata Communications                      2       12      17       no
     Dependent: MH, NR
     Vantage-only: CK, FJ, FM, GU, MP, NC, NU, PF, PG, PW, TV, VU
@@ -75,6 +72,9 @@ AS132528  Digicel Australia/Telstra-operat         2        5       5       no
 AS17993   Vodafone Samoa Limited                   2        4       5      yes
     Dependent: AS, WS
     Vantage-only: FM, NC, NU, TO
+AS3605    Guam Cablevision                         2        0       5      yes
+    Dependent: GU, PW
+    Vantage-only: (none)
 
 AS9241 (FINTEL, Fiji) doesn't crack the table above by dependent-economy count (just Tuvalu), but is the starkest single-point-of-failure finding this project has confirmed: it's Tuvalu's *only* RIS-observed neighbor of consequence, reconfirmed by 8 independent vantage points across the region. Every measured path into Tuvalu -- from every direction this project has tested -- passes through one single carrier.
 
@@ -166,21 +166,21 @@ WS   Samoa                       10       3            1       2
 
 ASPA PROGRESS (RFC 9582 upstream-authorization adoption)
 ==============================================================================
-16 of 162 in-scope ASNs now publish an ASPA record (3203 total across the whole internet, per Cloudflare Radar). Adoption is still early -- absence means 'not published yet', not 'no real upstream'. Per-economy: how many of its own ASNs publish a record, and the distinct upstream ASNs those records declare, split by whether the declared provider is itself an in-scope Pacific ASN or an external carrier.
+18 of 162 in-scope ASNs now publish an ASPA record (3225 total across the whole internet, per Cloudflare Radar). Adoption is still early -- absence means 'not published yet', not 'no real upstream'. Per-economy: how many of its own ASNs publish a record, and the distinct upstream ASNs those records declare, split by whether the declared provider is itself an in-scope Pacific ASN or an external carrier.
 CC   Name                      ASNs  w/ ASPA  Upstr in-FB  Upstr ext
 ------------------------------------------------------------------------------
 CK   Cook Islands                 2        1            0          3
 FJ   Fiji                        21        4            2          3
 GU   Guam                        10        1            1          0
 NR   Nauru                        5        3            3          3
-PG   Papua New Guinea            38        2            1          1
+PG   Papua New Guinea            38        4            1          1
 TO   Tonga                        5        3            3          4
 VU   Vanuatu                     12        1            1          0
 WS   Samoa                       10        1            0          1
 
 IPV6 COVERAGE (adoption signal only -- no IPv6 testing yet)
 ==============================================================================
-47 of 162 in-scope ASNs have >=1 RIS-observed IPv6-originated prefix. 9 of 36 connected Atlas probes work over IPv6 (2 more are IPv6-capable but tagged as not working). Adoption tracking only -- this project deliberately isn't testing IPv6 corridors yet; queued until adoption has advanced further (see TODO below).
+47 of 162 in-scope ASNs have >=1 RIS-observed IPv6-originated prefix. 8 of 36 connected Atlas probes work over IPv6 (3 more are IPv6-capable but tagged as not working). Adoption tracking only -- this project deliberately isn't testing IPv6 corridors yet; queued until adoption has advanced further (see TODO below).
 CC   Name                      ASNs  w/ IPv6
 ------------------------------------------------------------------------------
 AS   American Samoa               2        1
@@ -253,7 +253,7 @@ GU   Guam                             Micronesia      10      14       6        
 PF   French Polynesia                 Polynesia        6       9       6         1
 PG   Papua New Guinea                 Melanesia       38      10       1         1
 VU   Vanuatu                          Melanesia       12       5       2         1
-FM   Micronesia, Federated States of  Micronesia       6       6       3         0
+FM   Micronesia, Federated States of  Micronesia       6       5       3         0
 NC   New Caledonia                    Melanesia       18      20       5         0
 
 APPENDIX: LOW DATA QUALITY ISSUES (2 known, resolved)
@@ -752,9 +752,9 @@ TO -> SB (AS142279): detours via MegaIX Sydney (Sydney)
 FM -> WS (AS150321): detours via AS4637 (Telstra Global), then AS17993 (Vodafone Samoa) (Sydney)
     RIS observation count: 330  [measurement 212143016]
     **First-ever confirmation**: AS17993(Vodafone Samoa)<->AS150321 (Secretariat of the Pacific Regional Environment Programme). `AS139759 -> AS9246 -> AS4637 -> AS6461 (Zayo) -> AS174 -> AS17993 -> AS150321`, RIS agrees exactly (330). `has_routing_loop` False.
-NU -> WS (AS150349): detours via AS6939 (Hurricane Electric), then AS139609 (SISCC) (Sydney)
+NU -> SB (AS150349): detours via AS6939 (Hurricane Electric), then AS139609 (SISCC) (Sydney)
     RIS observation count: 331  [measurement 212158141]
-    **First-ever confirmation for this target** (the FM-sourced attempt dead-ended one hop short and was logged inconclusive; this one confirms it): AS139609(SISCC)<->AS150349 (Pacific Vaizeds Enterprise Ltd, Samoa) -- a real, if unusual, cross-region relationship (a Samoan ISP's dominant RIS neighbor is a Solomon Islands submarine cable company). `AS55885 -> AS9471 -> AS6939 -> AS139609`, RIS agrees exactly (331). `has_routing_loop` False.
+    **First-ever confirmation for this target** (the FM-sourced attempt dead-ended one hop short and was logged inconclusive; this one confirms it): AS139609(SISCC)<->AS150349 (Pacific Vaizeds Enterprise Ltd, Solomon Islands) -- an ordinary domestic Solomon Islands relationship: the national submarine cable operator as upstream to a local network. [Corrected 2026-09-24: originally filed as target_cc=WS/"Samoa" by a hand-transcription error; APNIC registers AS150349 to SB (country: SB, MAINT-PVEL-SB, last-modified 2022-10-05) and its own aut-num export policy declares `to AS139609 announce AS150349`, independently corroborating this adjacency.] `AS55885 -> AS9471 -> AS6939 -> AS139609`, RIS agrees exactly (331). `has_routing_loop` False.
 TO -> SB (AS150349): detours via MegaIX Sydney (Sydney)
     RIS observation count: 331  [measurement 213461701]
     measurement 213461701 (from TO); chain: AS24390 -> AS7575 -> AS139609; RIS count 331; RIS agrees.
