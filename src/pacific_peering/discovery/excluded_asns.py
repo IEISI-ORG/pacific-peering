@@ -138,7 +138,10 @@ EXCLUDED_ASNS: tuple[ExcludedAsn, ...] = (
         category="offshore_hosted",
         note=(
             "Registered to a Port Vila address (APNIC org ORG-OL19-AP, "
-            "country VU) but its announced space is served from Japan. First "
+            "country VU; its sponsoring LIR ORG-OL12-AP is also Owl Limited at "
+            "the same address, per the owner-supplied aut-num and APNIC RDAP "
+            "-- no foreign party in the registration) but its announced space "
+            "is served from Japan via its sole upstream AS4785 (xTom JP). First "
             "flagged by the monthly offshore-hosting check "
             "(atlas/offshore_check.py, 2026-09-24): `194.127.166.1` "
             "(194.127.166.0/24, RIPE-region space originated by AS23959) "
