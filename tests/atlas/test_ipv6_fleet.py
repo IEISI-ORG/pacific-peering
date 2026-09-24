@@ -131,3 +131,58 @@ def test_fire_traces_ipv6_probes_with_af6_and_appends_history(monkeypatch, tmp_p
         "7018": "reached", "63050": "no_result", "1008229": "no_result"
     }
     assert "IPv6 fleet check -- 2026-09-30" in (tmp_path / "ipv6_fleet.txt").read_text()
+
+
+def test_per_anchor_results_keys_by_service_and_keeps_the_dark_hop():
+    # Real 2026-09-24 PF shape: Cloudflare reached, Google dark at fc00:1::1.
+    cloudflare = {
+        "probe_id": 53098, "target": "2606:4700:4700::1111",
+        "hops": [{"hop": 1, "addresses": ["2402:8200::1"], "min_rtt_ms": 0.9},
+                 {"hop": 5, "addresses": ["2606:4700:4700::1111"], "min_rtt_ms": 1.544}],
+    }
+    google_fallback = {
+        "probe_id": 53098, "target": "2001:4860:4860::8844",  # a fallback week
+        "hops": [{"hop": 4, "addresses": ["fc00:1::1"], "min_rtt_ms": 3.956},
+                 {"hop": 255, "addresses": [], "min_rtt_ms": None}],
+    }
+
+    results = ipv6_fleet.per_anchor_results([cloudflare, google_fallback])[53098]
+
+    assert results["cloudflare"] == {
+        "target": "2606:4700:4700::1111", "reached": True, "rtt_ms": 1.544, "last_address": "2606:4700:4700::1111"
+    }
+    assert results["google"]["reached"] is False
+    assert results["google"]["last_address"] == "fc00:1::1"
+    assert results["google"]["rtt_ms"] is None
+
+
+def test_report_shows_per_anchor_cells():
+    anchors = {7018: {"cloudflare": {"target": "x", "reached": True, "rtt_ms": 0.55, "last_address": "x"},
+                      "google": {"target": "y", "reached": False, "rtt_ms": None, "last_address": "fc00:1::1"}}}
+    snapshot = ipv6_fleet.build_snapshot(LISTING, {7018: "reached"}, [1], NOW, anchors)
+
+    report = ipv6_fleet.render_report(snapshot, [])
+
+    line = next(line for line in report.splitlines() if "  7018  " in line)
+    assert "cloudflare ok 0.6ms" in line
+    assert "google dark@fc00:1::1" in line
+    no_result_line = next(line for line in report.splitlines() if "1008229" in line)
+    assert "cloudflare -" in no_result_line and "google -" in no_result_line
+
+
+def test_diff_reports_per_service_reach_change_and_tolerates_old_snapshots():
+    def _a(reached):
+        return {"target": "t", "reached": reached, "rtt_ms": None, "last_address": None}
+
+    previous = ipv6_fleet.build_snapshot(
+        LISTING, {7018: "reached"}, [1], NOW, {7018: {"cloudflare": _a(True), "google": _a(True)}}
+    )
+    current = ipv6_fleet.build_snapshot(
+        LISTING, {7018: "reached"}, [2], NOW, {7018: {"cloudflare": _a(True), "google": _a(False)}}
+    )
+    assert ipv6_fleet.diff_snapshots(previous, current) == ["probe 7018 (NC) no longer reaches the google anchor"]
+
+    old_style = json.loads(json.dumps(previous))
+    for p in old_style["probes"].values():
+        del p["anchors"]  # pre-per-anchor snapshot shape
+    assert ipv6_fleet.diff_snapshots(old_style, current) == []

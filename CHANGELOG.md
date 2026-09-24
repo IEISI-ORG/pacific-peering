@@ -2210,3 +2210,6 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   deployment to `outputs/reports/ipv6_fleet.txt` and
   `ipv6_fleet_history.jsonl`. Runs Wednesdays from
   `nightly_corridor_testing.sh`; failure doesn't abort the nightly commit.
+- IPv6 fleet report: per-anchor (Cloudflare/Google) reach, RTT and dark
+  hop per probe, with per-service week-over-week changes (2026-09-24).
+  Baseline snapshot rebuilt from cached results to include it.

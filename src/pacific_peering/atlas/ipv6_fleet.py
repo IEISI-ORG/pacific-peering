@@ -52,6 +52,17 @@ NO_REACH = "no_reach"  # returned results, reached no anchor
 NO_RESULT = "no_result"  # in the measurements, returned nothing
 NOT_MEASURED = "not_measured"  # dry run, or no measurement could be created
 
+# Per-anchor results are keyed by service, not address, so a week that fell
+# back to a secondary address still compares against one that used the
+# primary.
+ANCHOR_SERVICES = {
+    "2606:4700:4700::1111": "cloudflare",
+    "2606:4700:4700::1001": "cloudflare",
+    "2001:4860:4860::8888": "google",
+    "2001:4860:4860::8844": "google",
+}
+SERVICE_ORDER = ("cloudflare", "google")
+
 
 def ipv6_probes(listing: dict[str, list[dict]]) -> dict[int, dict]:
     """Connected probes with an IPv6 ASN: {probe_id: {cc, asn_v6, ipv6_tags}}."""
@@ -91,19 +102,51 @@ def measured_access(parsed_traces: list[dict], probe_ids: list[int]) -> dict[int
     return access
 
 
+def _target_rtt(trace: dict) -> float | None:
+    for hop in trace["hops"]:
+        if trace["target"] in hop["addresses"]:
+            return hop["min_rtt_ms"]
+    return None
+
+
+def per_anchor_results(parsed_traces: list[dict]) -> dict[int, dict[str, dict]]:
+    """{probe_id: {service: {target, reached, rtt_ms, last_address}}} from this week's traces.
+
+    Added 2026-09-24 after the baseline showed both PF (AS9471) probes
+    reaching Cloudflare IPv6 but dying at `fc00:1::1` toward Google -- a
+    split the any-anchor `access` value hides. `rtt_ms` is the RTT of the
+    hop where the anchor itself answered (None if it didn't);
+    `last_address` is the last real hop that answered.
+    """
+    results: dict[int, dict[str, dict]] = {}
+    for trace in parsed_traces:
+        service = ANCHOR_SERVICES.get(trace["target"], trace["target"])
+        summary = summarize_anchor_trace(trace)
+        results.setdefault(trace["probe_id"], {})[service] = {
+            "target": trace["target"],
+            "reached": summary.reached_target,
+            "rtt_ms": _target_rtt(trace) if summary.reached_target else None,
+            "last_address": summary.last_address,
+        }
+    return results
+
+
 def build_snapshot(
     listing: dict[str, list[dict]],
     access: dict[int, str],
     measurement_ids: list[int],
     now: datetime,
+    anchors: dict[int, dict[str, dict]] | None = None,
 ) -> dict:
     probes = ipv6_probes(listing)
+    anchors = anchors or {}
     return {
         "date": now.strftime("%Y-%m-%d"),
         "measurement_ids": measurement_ids,
         "economies": economy_counts(listing),
         "probes": {
-            str(pid): {**info, "access": access.get(pid, NOT_MEASURED)} for pid, info in sorted(probes.items())
+            str(pid): {**info, "access": access.get(pid, NOT_MEASURED), "anchors": anchors.get(pid, {})}
+            for pid, info in sorted(probes.items())
         },
     }
 
@@ -122,11 +165,27 @@ def diff_snapshots(previous: dict | None, current: dict) -> list[str]:
         before, after = prev_p[pid], cur_p[pid]
         if before["access"] != after["access"] and NOT_MEASURED not in (before["access"], after["access"]):
             changes.append(f"probe {pid} ({after['cc']}) measured access {before['access']} -> {after['access']}")
+        # Snapshots from before 2026-09-24's per-anchor change have no "anchors".
+        before_a, after_a = before.get("anchors", {}), after.get("anchors", {})
+        for service in sorted(set(before_a) & set(after_a)):
+            was, now_ = before_a[service]["reached"], after_a[service]["reached"]
+            if was != now_:
+                verb = "now reaches" if now_ else "no longer reaches"
+                changes.append(f"probe {pid} ({after['cc']}) {verb} the {service} anchor")
         for tag in ("system-ipv6-works", "system-ipv6-doesnt-work"):
             had, has = tag in before["ipv6_tags"], tag in after["ipv6_tags"]
             if had != has:
                 changes.append(f"probe {pid} ({after['cc']}) Atlas tag {tag} {'added' if has else 'removed'}")
     return changes
+
+
+def _anchor_cell(result: dict | None) -> str:
+    if result is None:
+        return "-"
+    if result["reached"]:
+        rtt = result["rtt_ms"]
+        return f"ok {rtt:.1f}ms" if rtt is not None else "ok"
+    return f"dark@{result['last_address'] or '*'}"
 
 
 def render_report(snapshot: dict, changes: list[str]) -> str:
@@ -142,10 +201,15 @@ def render_report(snapshot: dict, changes: list[str]) -> str:
     ]
     for cc, c in snapshot["economies"].items():
         lines.append(f"  {cc}  {c['connected']:>2} / {c['ipv6_asn']:>2} / {c['ipv6_works_tag']:>2}")
-    lines += ["", "IPv6 probes (measured access this week vs Atlas tags):"]
+    lines += [
+        "",
+        "IPv6 probes (measured access this week, per anchor, vs Atlas tags):",
+        "  per anchor: ok <RTT> = reached; dark@<addr> = last hop that answered; - = no result",
+    ]
     for pid, p in snapshot["probes"].items():
         tags = ", ".join(t.removeprefix("system-ipv6-") for t in p["ipv6_tags"]) or "none"
-        lines.append(f"  {p['cc']}  {pid:>8}  AS{p['asn_v6']:<7} {p['access']:<12} tags: {tags}")
+        cells = "  ".join(f"{svc} {_anchor_cell(p.get('anchors', {}).get(svc)):<18}" for svc in SERVICE_ORDER)
+        lines.append(f"  {p['cc']}  {pid:>8}  AS{p['asn_v6']:<7} {p['access']:<12} {cells}  tags: {tags}")
     return "\n".join(lines) + "\n"
 
 
@@ -174,13 +238,16 @@ def run_weekly_check(fire: bool, now: datetime | None = None) -> dict:
     probe_ids = sorted(ipv6_probes(listing))
     measurement_ids: list[int] = []
     access: dict[int, str] = {}
+    anchors: dict[int, dict[str, dict]] = {}
     if fire and probe_ids:
         measurement_ids = run_starlink_anchor_traces(
             probe_ids, anchors=PUBLIC_DNS_ANCHORS_V6, af=6, label=MEASUREMENT_LABEL
         )
         if measurement_ids:
-            access = measured_access(_refetch_parsed(measurement_ids), probe_ids)
-    snapshot = build_snapshot(listing, access, measurement_ids, now)
+            traces = _refetch_parsed(measurement_ids)
+            access = measured_access(traces, probe_ids)
+            anchors = per_anchor_results(traces)
+    snapshot = build_snapshot(listing, access, measurement_ids, now, anchors)
     report = render_report(snapshot, diff_snapshots(load_last_snapshot(), snapshot))
     logger.info("IPv6 fleet check (%d IPv6 probes):\n%s", len(probe_ids), report)
     if not fire:

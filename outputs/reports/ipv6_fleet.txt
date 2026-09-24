@@ -27,15 +27,16 @@ Per economy (connected probes / with IPv6 ASN / Atlas ipv6-works tag):
   WF   0 /  0 /  0
   WS   0 /  0 /  0
 
-IPv6 probes (measured access this week vs Atlas tags):
-  NC      7018  AS45345   reached      tags: capable, stable-1d, stable-30d, stable-90d, works
-  GU      7385  AS152735  reached      tags: capable, stable-1d, stable-30d, stable-90d, works
-  FM      7448  AS139759  reached      tags: capable, stable-1d, stable-30d, stable-90d, works
-  PW      7455  AS17893   reached      tags: capable, stable-1d, stable-30d, stable-90d, works
-  NC     33674  AS45345   reached      tags: capable, stable-1d, stable-30d, stable-90d, works
-  PF     53098  AS9471    reached      tags: capable, stable-1d, works
-  NC     63050  AS45345   no_reach     tags: capable, doesnt-work, stable-1d, stable-30d, stable-90d
-  PF   1001562  AS9471    reached      tags: capable, stable-1d, stable-30d, stable-90d, works
-  KI   1008228  AS14593   no_reach     tags: capable, doesnt-work
-  KI   1008229  AS14593   no_result    tags: capable
-  NC   1008625  AS45345   reached      tags: capable, stable-1d, stable-30d, stable-90d, works
+IPv6 probes (measured access this week, per anchor, vs Atlas tags):
+  per anchor: ok <RTT> = reached; dark@<addr> = last hop that answered; - = no result
+  NC      7018  AS45345   reached      cloudflare ok 0.6ms            google ok 22.6ms           tags: capable, stable-1d, stable-30d, stable-90d, works
+  GU      7385  AS152735  reached      cloudflare ok 127.0ms          google ok 48.0ms           tags: capable, stable-1d, stable-30d, stable-90d, works
+  FM      7448  AS139759  reached      cloudflare ok 49.5ms           google ok 129.2ms          tags: capable, stable-1d, stable-30d, stable-90d, works
+  PW      7455  AS17893   reached      cloudflare ok 47.9ms           google ok 47.9ms           tags: capable, stable-1d, stable-30d, stable-90d, works
+  NC     33674  AS45345   reached      cloudflare ok 0.7ms            google ok 44.4ms           tags: capable, stable-1d, stable-30d, stable-90d, works
+  PF     53098  AS9471    reached      cloudflare ok 1.5ms            google dark@fc00:1::1      tags: capable, stable-1d, works
+  NC     63050  AS45345   no_reach     cloudflare dark@2404:e400:bb00:6::  google dark@2404:e400:bb00:6::  tags: capable, doesnt-work, stable-1d, stable-30d, stable-90d
+  PF   1001562  AS9471    reached      cloudflare ok 1.6ms            google dark@fc00:1::1      tags: capable, stable-1d, stable-30d, stable-90d, works
+  KI   1008228  AS14593   no_reach     cloudflare dark@*              google dark@*              tags: capable, doesnt-work
+  KI   1008229  AS14593   no_result    cloudflare -                   google -                   tags: capable
+  NC   1008625  AS45345   reached      cloudflare ok 0.6ms            google ok 22.7ms           tags: capable, stable-1d, stable-30d, stable-90d, works
