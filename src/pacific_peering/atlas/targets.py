@@ -49,7 +49,35 @@ def pick_target_ip(asn: int, cache_dir: Path = DEFAULT_CACHE_DIR) -> str:
     return list_target_ips(asn, cache_dir)[0]
 
 
-def list_target_ips(asn: int, cache_dir: Path = DEFAULT_CACHE_DIR) -> list[str]:
+# Prefixes never used as traceroute targets, though their ASN stays in scope:
+# the ASN is genuinely local, but this block answers from outside its economy,
+# so a corridor "into" it would measure a path to the foreign host. Owner's
+# direction, 2026-09-24, from the first full offshore-hosting check
+# (atlas/offshore_check.py; probes on 2+ networks beat the fibre minimum). A
+# more-specific announcement inside a listed prefix is excluded too. The
+# offshore check itself still pings these (include_excluded=True) so a block
+# that moves back in-economy shows up in its monthly report.
+EXCLUDED_TARGET_PREFIXES: dict[str, str] = {
+    "202.65.33.0/24": (
+        "AS10131 Telecom Cook Islands: hosted in Sydney -- 4.3ms from a Sydney probe vs a ~50ms "
+        "Sydney-Rarotonga minimum, on 2 networks (measurement 215224841); AS10131's 202.65.32.0/24 is local"
+    ),
+    "103.188.182.0/23": (
+        "AS132468 SATSOL (satellite ISP): hosted in Sydney -- 11.1ms from Sydney vs a ~28.5ms "
+        "Sydney-Honiara minimum, on 2 networks (measurement 215228678); AS132468's 103.115.80.0/24 is local"
+    ),
+}
+
+
+def _is_excluded(prefix: str) -> bool:
+    net = ipaddress.ip_network(prefix, strict=False)
+    return any(
+        net.version == ex.version and net.subnet_of(ex)
+        for ex in (ipaddress.ip_network(p) for p in EXCLUDED_TARGET_PREFIXES)
+    )
+
+
+def list_target_ips(asn: int, cache_dir: Path = DEFAULT_CACHE_DIR, include_excluded: bool = False) -> list[str]:
     """Return one candidate IPv4 address per prefix `asn` originates, in a stable order.
 
     `pick_target_ip` only ever returns the first of these -- fine for a
@@ -64,10 +92,14 @@ def list_target_ips(asn: int, cache_dir: Path = DEFAULT_CACHE_DIR) -> list[str]:
     hits a fully-dark or looping result should retry against the next
     entry here rather than concluding the corridor itself is a dead end.
 
+    Prefixes in `EXCLUDED_TARGET_PREFIXES` (and more-specifics inside them)
+    are left out unless `include_excluded` is set.
+
     Raises:
         FileNotFoundError: If `asn` has no cached RIS data (run
             `pacific-peering-fishbowl` first).
-        ValueError: If the ASN has cached data but no observed prefixes.
+        ValueError: If the ASN has cached data but no observed prefixes, or
+            every one of them is excluded.
     """
     cache_path = cache_dir / f"{asn}.json"
     if not cache_path.exists():
@@ -79,10 +111,18 @@ def list_target_ips(asn: int, cache_dir: Path = DEFAULT_CACHE_DIR) -> list[str]:
     prefixes = sorted({record["target_prefix"] for record in records})
     if not prefixes:
         raise ValueError(f"AS{asn} has no cached originated prefixes")
-    return [
+    if not include_excluded:
+        prefixes = [p for p in prefixes if not _is_excluded(p)]
+        if not prefixes:
+            raise ValueError(f"AS{asn}'s every cached prefix is in EXCLUDED_TARGET_PREFIXES")
+    # dict.fromkeys de-duplicates in order: a covering prefix and a more-specific
+    # starting at the same address both yield the same ".1" (e.g. AS10131's
+    # 202.65.32.1 twice), which would make a "retry an alternate prefix" hit
+    # the identical address again.
+    return list(dict.fromkeys(
         str(ipaddress.ip_network(prefix, strict=False).network_address + 1)
         for prefix in prefixes
-    ]
+    ))
 
 
 def has_routing_loop(hops: list[dict], target: str | None = None) -> bool:

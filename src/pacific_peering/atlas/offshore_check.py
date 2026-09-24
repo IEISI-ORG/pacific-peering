@@ -240,7 +240,9 @@ def run_check(fire: bool, now: datetime | None = None, force_full: bool = False)
             # dict.fromkeys de-duplicates in order: an ASN announcing a covering
             # prefix and a /24 inside it yields the same ".1" twice (5 duplicate
             # pings in the 2026-09-24 run's first batch).
-            addresses = list(dict.fromkeys(list_target_ips(asn)))[:MAX_PREFIXES_PER_ASN]
+            # include_excluded: keep re-checking target-excluded prefixes so one
+            # that moves back in-economy shows up in the monthly report.
+            addresses = list(dict.fromkeys(list_target_ips(asn, include_excluded=True)))[:MAX_PREFIXES_PER_ASN]
         except (FileNotFoundError, ValueError):
             addresses = []
         if not addresses:

@@ -2254,3 +2254,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   networks beat physics; one network's evidence is reported as
   `unconfirmed` and not escalated (2026-09-24). Today's run re-judged:
   AS58932 (mislocated probe) is now unconfirmed.
+- Targeting (2026-09-25): `EXCLUDED_TARGET_PREFIXES` keeps two
+  Sydney-hosted blocks (AS10131 `202.65.33.0/24`, AS132468
+  `103.188.182.0/23`) out of traceroute targets while their ASNs stay in
+  scope; `list_target_ips` now also de-duplicates addresses.

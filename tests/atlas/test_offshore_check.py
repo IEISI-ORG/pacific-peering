@@ -192,7 +192,7 @@ def test_duplicate_addresses_within_an_asn_are_pinged_once(monkeypatch, tmp_path
     (tmp_path / "reg.json").write_text('{"VU": {"asns": [9249]}}')
     monkeypatch.setattr(oc, "load_history", lambda: [])
     # Covering /22 and a /24 inside it both give 202.80.34.1 (seen for AS9249).
-    monkeypatch.setattr(oc, "list_target_ips", lambda asn: ["202.80.34.1", "202.80.34.1", "202.80.35.1"])
+    monkeypatch.setattr(oc, "list_target_ips", lambda asn, include_excluded=False: ["202.80.34.1", "202.80.34.1", "202.80.35.1"])
     seen = {}
 
     def _measure(targets):
