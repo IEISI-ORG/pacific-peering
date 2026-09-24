@@ -105,4 +105,30 @@ EXCLUDED_ASNS: tuple[ExcludedAsn, ...] = (
             "AS137064 -- a clean exclusion, nothing else to unwind."
         ),
     ),
+    ExcludedAsn(
+        asn=136996,
+        country_cc="VU",
+        name="PACIFICNETWORKS-AS-AP (Pacific Networks)",
+        # Second category (owner, 2026-09-24): a genuine local company whose
+        # announced address space is hosted outside its economy, so any
+        # corridor "into" it measures a path to that foreign host instead --
+        # contaminating real data, per the owner.
+        category="offshore_hosted",
+        note=(
+            "A real Vanuatu company (APNIC org ORG-PN2-AP, LIR, country VU; "
+            "pacificnetworks.net: \"a 100% Vanuatu owned private company based "
+            "in Port Vila\", \"Vanuatu's First Starlink Authorized Reseller\") "
+            "whose announced space is hosted in Sydney. Measured 2026-09-24: "
+            "AU probe 31347 (northern Sydney) reaches `103.101.192.1` in 0.825ms "
+            "right behind its sole upstream AS136557 (Host Universal Pty Ltd, "
+            "AU) at 0.849ms, RTT rising with distance from Sydney "
+            "(measurement 215206130); from Vanuatu itself the path goes "
+            "AS9249 -> AS38442 (Vodafone Fiji) -> AS136557 at 173-240ms "
+            "(measurement 215206410). Its customers are presumably served over "
+            "Starlink, so its own ASN says nothing about paths into Vanuatu. "
+            "Excluded at the owner's direction as contaminating real data; its "
+            "one finding (NU -> VU, findings.db row 155, measurement "
+            "212158127) and that finding's corroboration were removed."
+        ),
+    ),
 )

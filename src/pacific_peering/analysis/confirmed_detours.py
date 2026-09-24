@@ -3661,21 +3661,9 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
             "agrees exactly (333). `has_routing_loop` False."
         ),
     ),
-    ConfirmedDetour(
-        # target_cc corrected SB -> VU 2026-09-24 (hand-transcription error;
-        # AS136996 Pacific Networks is Vanuatu-only). Mirrors findings.db row 155.
-        source_cc="NU", target_cc="VU", target_asn=136996,
-        detour_ix_name="AS174 (Cogent Communications), then AS136557",
-        detour_hub="Sydney", measurement_id=212158127, ris_observation_count=336,
-        note=(
-            "**First-ever confirmation for this target**: AS136557"
-            "<->AS136996, directly RIS-confirmed (336 of 336 observations "
-            "-- AS136557 is its only real neighbor, a genuinely new "
-            "intermediate carrier for this project). `AS55885 -> AS9471 "
-            "-> AS174 -> AS136557 -> AS136996`, RIS agrees exactly (336). "
-            "`has_routing_loop` False."
-        ),
-    ),
+    # NU -> AS136996 (Pacific Networks, measurement 212158127) removed
+    # 2026-09-24: AS136996 excluded as offshore-hosted (its space lives in
+    # Sydney) -- see discovery/excluded_asns.py. Was findings.db row 155.
     ConfirmedDetour(
         source_cc="NU", target_cc="SB", target_asn=139609,
         detour_ix_name="AS6939 (Hurricane Electric)",

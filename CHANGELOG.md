@@ -2234,3 +2234,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   regenerates the reports after its weekly checks.
 - Fixed finding `NU -> SB (AS136996)` to `NU -> VU` (2026-09-24): Pacific
   Networks is Vanuatu-only (owner-confirmed; APNIC VU).
+- Excluded AS136996 (Pacific Networks) as `offshore_hosted` and removed its
+  one finding (2026-09-24): a Vanuatu Starlink reseller whose announced
+  space is hosted in Sydney, so corridors toward it measured an Australian
+  host. In-scope ASNs 162 -> 161; findings 243 -> 242.
