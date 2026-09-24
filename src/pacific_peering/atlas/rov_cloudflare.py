@@ -8,8 +8,10 @@ trace gets through but the invalid one dies, something on that path is
 filtering, and the last ASN the invalid trace reached is where it died.
 
 Per probe and address family, one of three labels:
-- `not_filtered`: the invalid target answered -- no network on this path
-  enforces ROV (or one has a default route around it).
+- `not_filtered`: the invalid target answered, or the invalid trace reached
+  Cloudflare's own network (AS13335) -- every network before it carried the
+  invalid route. (Seen 2026-09-24: PG 50365's invalid trace reached AS13335
+  and died inside it; that is not filtering on the path.)
 - `filtered`: the valid target answered, the invalid one didn't.
   `drop_asn` is the last ASN the invalid trace reached: that network had no
   route to the invalid prefix, because it filters or its upstream does --
@@ -19,6 +21,12 @@ Per probe and address family, one of three labels:
   didn't answer (no baseline), or the path starts at a known proxy
   (`auto_classify.KNOWN_PROXY_ASNS`) -- that tests the proxy, not the
   probe's own network.
+
+`diverged` records where the valid and invalid AS paths first differ
+(e.g. PG 50365: valid via AS4826, invalid via AS7474). A network that
+drops the invalid route can push its customer's invalid traffic onto a
+different upstream, so a divergence is ROV evidence even when the invalid
+trace still gets through.
 
 Cloudflare is anycast: some paths never leave the probe's own network
 (e.g. NC's ~0.6ms Cloudflare IPv6), in which case the test only speaks for
@@ -69,6 +77,8 @@ ROV_TARGETS: dict[int, dict[str, tuple[str, str]]] = {
 }
 EXPECTED_RPKI = {"valid": {"valid"}, "invalid": {"invalid", "invalid_asn", "invalid_length"}}
 
+ORIGIN_ASN = 13335  # Cloudflare, origin of every target prefix
+
 FILTERED = "filtered"
 NOT_FILTERED = "not_filtered"
 INCONCLUSIVE = "inconclusive"
@@ -104,6 +114,14 @@ def as_path(trace: dict) -> list[int]:
     return [hop.asn for hop in extract_as_sequence(resolve_traceroute_hops(trace["hops"]))]
 
 
+def path_divergence(valid_path: list[int], invalid_path: list[int]) -> dict | None:
+    """Where the two AS paths first differ: {after, valid_next, invalid_next}, or None if they don't."""
+    for i, (v, inv) in enumerate(zip(valid_path, invalid_path)):
+        if v != inv:
+            return {"after": valid_path[i - 1] if i else None, "valid_next": v, "invalid_next": inv}
+    return None
+
+
 def classify_probe(
     valid: dict | None,
     invalid: dict | None,
@@ -111,18 +129,22 @@ def classify_probe(
     invalid_path: list[int],
 ) -> dict:
     """One probe's verdict for one family, from its valid and invalid traces and their AS paths."""
+    verdict = {"label": INCONCLUSIVE, "drop_asn": None, "reason": None, "diverged": None}
     if valid is None or invalid is None:
-        return {"label": INCONCLUSIVE, "drop_asn": None, "reason": "no result for one of the pair"}
+        return {**verdict, "reason": "no result for one of the pair"}
     first = (valid_path or invalid_path or [None])[0]
     if first in KNOWN_PROXY_ASNS:
-        return {"label": INCONCLUSIVE, "drop_asn": None, "reason": f"path starts at proxy AS{first} ({KNOWN_PROXY_ASNS[first]})"}
+        return {**verdict, "reason": f"path starts at proxy AS{first} ({KNOWN_PROXY_ASNS[first]})"}
+    verdict["diverged"] = path_divergence(valid_path, invalid_path)
     if summarize_anchor_trace(invalid).reached_target:
-        return {"label": NOT_FILTERED, "drop_asn": None, "reason": None}
+        return {**verdict, "label": NOT_FILTERED}
+    if invalid_path and invalid_path[-1] == ORIGIN_ASN:
+        return {**verdict, "label": NOT_FILTERED, "reason": "invalid trace reached Cloudflare's network; target silent"}
     if not summarize_anchor_trace(valid).reached_target:
-        return {"label": INCONCLUSIVE, "drop_asn": None, "reason": "valid target unreached (no baseline)"}
+        return {**verdict, "reason": "valid target unreached (no baseline)"}
     drop_asn = invalid_path[-1] if invalid_path else None
     reason = None if drop_asn else "died before first public hop"
-    return {"label": FILTERED, "drop_asn": drop_asn, "reason": reason}
+    return {**verdict, "label": FILTERED, "drop_asn": drop_asn, "reason": reason}
 
 
 def classify_measurements(
@@ -199,8 +221,13 @@ def _cell(verdict: dict | None) -> str:
     if verdict is None:
         return "-"
     if verdict["label"] == FILTERED:
-        return f"filtered@AS{verdict['drop_asn']}" if verdict["drop_asn"] else "filtered@local"
-    return verdict["label"]
+        cell = f"filtered@AS{verdict['drop_asn']}" if verdict["drop_asn"] else "filtered@local"
+    else:
+        cell = verdict["label"]
+    d = verdict.get("diverged")
+    if d:
+        cell += f" (split: valid AS{d['valid_next']} / invalid AS{d['invalid_next']})"
+    return cell
 
 
 def render_report(snapshot: dict, changes: list[str]) -> str:
@@ -211,6 +238,7 @@ def render_report(snapshot: dict, changes: list[str]) -> str:
         "filtered@ASx = valid reached, invalid died; ASx is the last network the invalid trace reached",
         "(it, or its upstream, dropped the invalid route). filtered@local = died before the first public hop.",
         "Cloudflare is anycast, so a short path only speaks for the probe's own network.",
+        "(split: ...) = valid and invalid traces left via different upstreams -- a sign one of them drops the invalid route.",
         f"Measurements: {snapshot['measurement_ids']}",
         "",
         "Changes since last snapshot:",
@@ -230,7 +258,7 @@ def render_report(snapshot: dict, changes: list[str]) -> str:
     lines += ["", "Per probe:"]
     for pid, p in snapshot["probes"].items():
         asn = f"AS{p.get('asn_v4') or p.get('asn_v6')}"
-        lines.append(f"  {p['cc']}  {pid:>8}  {asn:<9} v4 {_cell(p.get('v4')):<20} v6 {_cell(p.get('v6'))}")
+        lines.append(f"  {p['cc']}  {pid:>8}  {asn:<9} v4 {_cell(p.get('v4')):<24} v6 {_cell(p.get('v6'))}")
     return "\n".join(lines) + "\n"
 
 

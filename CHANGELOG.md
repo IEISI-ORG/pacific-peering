@@ -2224,3 +2224,8 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   invalid prefix is filtered and the last ASN the invalid trace reached.
   Checks the targets' RPKI state before firing. Runs Wednesdays from the
   nightly script. New `ris.ripestat.fetch_rpki_status`.
+- Cloudflare ROV baseline (2026-09-24): New Caledonia filters RPKI-invalid
+  routes on every conclusive probe (drop point AS18200/OPT-NC); most other
+  economies' paths carry the invalid prefix. Classifier: an invalid trace
+  reaching AS13335 counts as not filtered; per-probe valid/invalid path
+  split recorded.

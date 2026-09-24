@@ -20,7 +20,7 @@ def _trace(probe_id, target, reached):
 
 def test_not_filtered_when_invalid_answers():
     v = rov.classify_probe(_trace(1, V4_VALID, True), _trace(1, V4_INVALID, True), [9471, 13335], [9471, 13335])
-    assert v == {"label": "not_filtered", "drop_asn": None, "reason": None}
+    assert (v["label"], v["drop_asn"], v["diverged"]) == ("not_filtered", None, None)
 
 
 def test_filtered_names_the_last_asn_the_invalid_trace_reached():
@@ -32,7 +32,7 @@ def test_filtered_names_the_last_asn_the_invalid_trace_reached():
 
 def test_filtered_before_first_public_hop():
     v = rov.classify_probe(_trace(1, V4_VALID, True), _trace(1, V4_INVALID, False), [45345, 13335], [])
-    assert v == {"label": "filtered", "drop_asn": None, "reason": "died before first public hop"}
+    assert (v["label"], v["drop_asn"], v["reason"]) == ("filtered", None, "died before first public hop")
 
 
 def test_inconclusive_cases():
@@ -57,7 +57,7 @@ def test_classify_measurements_maps_fallback_addresses_to_roles():
         path_of=lambda t: paths[t["target"]],
     )
 
-    assert verdicts[7] == {"label": "filtered", "drop_asn": 17893, "reason": None}
+    assert (verdicts[7]["label"], verdicts[7]["drop_asn"]) == ("filtered", 17893)
     assert verdicts[8]["label"] == "inconclusive"  # no result at all
 
 
@@ -114,3 +114,20 @@ def test_wrong_target_rpki_state_stops_before_firing(monkeypatch, tmp_path):
 
     assert rov.run_weekly_test(fire=True, now=NOW) is None
     assert not (tmp_path / "h.jsonl").exists()
+
+
+def test_invalid_reaching_cloudflares_network_is_not_filtered_and_records_the_split():
+    # Real 2026-09-24 shape, PG 50365: valid via Vocus, invalid via Optus into
+    # AS13335 where it died -- the invalid route was carried end to end.
+    v = rov.classify_probe(
+        _trace(1, V4_VALID, True), _trace(1, V4_INVALID, False), [17828, 4826, 13335], [17828, 7474, 13335]
+    )
+    assert v["label"] == "not_filtered"
+    assert v["diverged"] == {"after": 17828, "valid_next": 4826, "invalid_next": 7474}
+    assert "split: valid AS4826 / invalid AS7474" in rov._cell(v)
+
+
+def test_path_divergence():
+    assert rov.path_divergence([1, 2, 3], [1, 2]) is None  # a prefix, not a split
+    assert rov.path_divergence([1, 2, 3], [1, 5]) == {"after": 1, "valid_next": 2, "invalid_next": 5}
+    assert rov.path_divergence([], [1]) is None

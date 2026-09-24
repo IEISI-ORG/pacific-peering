@@ -1,0 +1,77 @@
+Cloudflare ROV test -- 2026-09-24
+Auto-generated weekly (Wednesday) by `pacific-peering-rov-cloudflare` (atlas/rov_cloudflare.py).
+Traces to Cloudflare's RPKI-valid and RPKI-invalid test prefixes from every connected probe.
+filtered@ASx = valid reached, invalid died; ASx is the last network the invalid trace reached
+(it, or its upstream, dropped the invalid route). filtered@local = died before the first public hop.
+Cloudflare is anycast, so a short path only speaks for the probe's own network.
+(split: ...) = valid and invalid traces left via different upstreams -- a sign one of them drops the invalid route.
+Measurements: {'v4': [215197667, 215198886], 'v6': [215199848, 215200172]}
+
+Changes since last snapshot:
+  - First snapshot -- nothing to compare against.
+
+Where invalid traces died (filtered verdicts):
+  v4  AS18200: 2
+  v6  AS18200: 2
+  v4  AS45345: 2
+  v4  AS56089: 1
+  v6  AS45345: 1
+  v4  AS24390: 1
+  v6  local: 1
+  v4  local: 1
+
+Per economy (filtered / not_filtered / inconclusive):
+  CK  v4 0/0/1
+  FJ  v4 0/0/1
+  FM  v4 0/3/0   v6 0/1/0
+  GU  v4 1/8/0   v6 1/0/0
+  KI  v4 0/2/0   v6 0/0/2
+  MH  v4 0/0/1
+  MP  v4 0/1/0
+  NC  v4 5/0/0   v6 3/0/1
+  NU  v4 0/1/0
+  PF  v4 0/7/0   v6 0/2/0
+  PG  v4 0/1/0
+  PW  v4 0/1/0   v6 0/1/0
+  TO  v4 1/0/0
+  TV  v4 0/1/0
+  VU  v4 0/2/0
+
+Per probe:
+  GU       329  AS3605    v4 not_filtered             v6 -
+  NC      7018  AS45345   v4 filtered@AS18200         v6 filtered@AS18200
+  GU      7385  AS152735  v4 not_filtered             v6 filtered@local
+  FM      7448  AS139759  v4 not_filtered             v6 not_filtered
+  PW      7455  AS17893   v4 not_filtered             v6 not_filtered
+  TV      7588  AS23917   v4 not_filtered             v6 -
+  TO     11691  AS24390   v4 filtered@AS24390         v6 -
+  CK     22761  AS10131   v4 inconclusive             v6 -
+  PF     23002  AS2200    v4 not_filtered             v6 -
+  GU     23039  AS17456   v4 filtered@local           v6 -
+  PF     30712  AS9471    v4 not_filtered             v6 -
+  NC     33674  AS45345   v4 filtered@AS18200         v6 filtered@AS18200
+  PG     50365  AS17828   v4 not_filtered (split: valid AS4826 / invalid AS7474) v6 -
+  FM     50897  AS139759  v4 not_filtered             v6 -
+  PF     52614  AS9471    v4 not_filtered             v6 -
+  PF     53098  AS9471    v4 not_filtered             v6 not_filtered
+  PF     54473  AS9471    v4 not_filtered             v6 -
+  FJ     60575  AS141695  v4 inconclusive             v6 -
+  GU     60689  AS7131    v4 not_filtered             v6 -
+  GU     60703  AS152735  v4 not_filtered             v6 -
+  NC     61210  AS56089   v4 filtered@AS56089         v6 -
+  FM     62046  AS14593   v4 not_filtered             v6 -
+  GU     62689  AS7131    v4 not_filtered             v6 -
+  NC     63050  AS45345   v4 filtered@AS45345         v6 inconclusive
+  MH     64237  AS14593   v4 inconclusive             v6 -
+  NU     64391  AS55885   v4 not_filtered             v6 -
+  VU     64783  AS9249    v4 not_filtered             v6 -
+  GU     64953  AS3605    v4 not_filtered             v6 -
+  GU     65337  AS14593   v4 not_filtered             v6 -
+  MP     65653  AS7131    v4 not_filtered             v6 -
+  PF   1001562  AS9471    v4 not_filtered             v6 not_filtered
+  KI   1008228  AS14593   v4 not_filtered             v6 inconclusive
+  KI   1008229  AS14593   v4 not_filtered             v6 inconclusive
+  VU   1008536  AS9249    v4 not_filtered             v6 -
+  NC   1008625  AS45345   v4 filtered@AS45345         v6 filtered@AS45345
+  GU   1012513  AS152735  v4 not_filtered             v6 -
+  PF   1014350  AS9471    v4 not_filtered             v6 -
