@@ -202,3 +202,25 @@ def test_create_ping_measurement_shares_the_description_check(monkeypatch):
     else:
         raise AssertionError("'>' must be rejected")
     assert posted == []
+
+
+def test_stop_measurement_deletes_and_never_raises(monkeypatch):
+    calls = []
+
+    class _Ok:
+        def raise_for_status(self):
+            pass
+
+    def _delete(url, headers, timeout):
+        calls.append(url)
+        return _Ok()
+
+    monkeypatch.setattr(client.requests, "delete", _delete)
+    assert client.stop_measurement(215118287, api_key="k") is True
+    assert calls[0].endswith("/measurements/215118287/")
+
+    def _boom(url, headers, timeout):
+        raise client.requests.ConnectionError("down")
+
+    monkeypatch.setattr(client.requests, "delete", _boom)
+    assert client.stop_measurement(1, api_key="k") is False

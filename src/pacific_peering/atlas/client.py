@@ -188,6 +188,27 @@ def create_ping_measurement(
     return measurement_id
 
 
+def stop_measurement(measurement_id: int, api_key: str | None = None, timeout: float = _DEFAULT_TIMEOUT) -> bool:
+    """Stop a running measurement (Atlas keeps every result it already has).
+
+    Added 2026-09-24: one-off pings from several countries stay "Ongoing" for
+    20+ minutes while a few probes never report, and every one counts against
+    the account's 100-concurrent cap. Stopping once results are collected frees
+    the slot immediately. Returns False (logged) instead of raising.
+    """
+    try:
+        response = requests.delete(
+            f"{ATLAS_BASE_URL}/measurements/{measurement_id}/",
+            headers={"Authorization": f"Key {api_key or load_atlas_api_key()}"},
+            timeout=timeout,
+        )
+        response.raise_for_status()
+        return True
+    except requests.RequestException as e:
+        logger.warning("Couldn't stop measurement %d: %s", measurement_id, e)
+        return False
+
+
 def fetch_measurement_status(measurement_id: int, timeout: float = _DEFAULT_TIMEOUT) -> str:
     """Return a measurement's current status name (e.g. 'Ongoing', 'Stopped')."""
     response = requests.get(f"{ATLAS_BASE_URL}/measurements/{measurement_id}/", timeout=timeout)

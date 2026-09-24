@@ -120,13 +120,17 @@ def test_batches_do_not_overlap(monkeypatch, tmp_path):
     monkeypatch.setattr(oc, "BATCH_SIZE", 2)
     monkeypatch.setattr(oc, "DEFAULT_RAW_DIR", tmp_path)
     monkeypatch.setattr(oc, "_create_with_retry", lambda asn, cc, a: (events.append(("create", a)), next(counter))[1])
-    monkeypatch.setattr(oc, "_wait_until_done", lambda ids: events.append(("wait", tuple(ids))))
+    monkeypatch.setattr(oc, "_wait_until_done", lambda ids: events.append(("wait", tuple(ids))) or {ids[0]})
+    monkeypatch.setattr(oc, "stop_measurement", lambda mid: events.append(("stop", mid)) or True)
     monkeypatch.setattr(oc, "fetch_raw_results", lambda mid: [{"prb_id": 1, "min": 50.0}])
     monkeypatch.setattr(oc, "wait_for_headroom", lambda n: events.append(("preflight", n)) or True)
 
     ids, raw = oc._measure([(1, "VU", "a"), (2, "VU", "b"), (3, "VU", "c")])
 
-    assert [e[0] for e in events] == ["preflight", "create", "create", "wait", "preflight", "create", "wait"]
+    # Each batch: pre-flight, create, wait, then stop whatever is still running.
+    assert [e[0] for e in events] == ["preflight", "create", "create", "wait", "stop",
+                                      "preflight", "create", "wait", "stop"]
+    assert [e[1] for e in events if e[0] == "stop"] == [1000, 1002]
     assert [e[1] for e in events if e[0] == "preflight"] == [2, 1]  # asks for room for each batch
     assert set(raw) == {"a", "b", "c"}
 
