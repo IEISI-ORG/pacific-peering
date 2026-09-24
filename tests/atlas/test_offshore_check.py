@@ -147,3 +147,23 @@ def test_only_new_offshore_flags_escalate(tmp_path, monkeypatch):
     text = (tmp_path / "escalations.md").read_text()
     assert "## AS136996 (VU) -- possible offshore-hosted address space" in text
     assert "0.83ms < 24.7ms minimum (measurement 7)" in text
+
+
+def test_duplicate_addresses_within_an_asn_are_pinged_once(monkeypatch, tmp_path):
+    monkeypatch.setattr(oc, "REGISTRY_PATH", tmp_path / "reg.json")
+    (tmp_path / "reg.json").write_text('{"VU": {"asns": [9249]}}')
+    monkeypatch.setattr(oc, "load_history", lambda: [])
+    # Covering /22 and a /24 inside it both give 202.80.34.1 (seen for AS9249).
+    monkeypatch.setattr(oc, "list_target_ips", lambda asn: ["202.80.34.1", "202.80.34.1", "202.80.35.1"])
+    seen = {}
+
+    def _measure(targets):
+        seen["targets"] = targets
+        raise SystemExit  # stop after planning; nothing is fired
+
+    monkeypatch.setattr(oc, "_measure", _measure)
+    try:
+        oc.run_check(fire=True, now=NOW)
+    except SystemExit:
+        pass
+    assert [a for _, _, a in seen["targets"]] == ["202.80.34.1", "202.80.35.1"]
