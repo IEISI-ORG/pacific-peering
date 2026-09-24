@@ -41,6 +41,37 @@ DEFAULT_TARGET_CC = "PG"
 DEFAULT_EXTERNAL_SOURCE_CC = "US"  # outside the Pacific and outside AU/NZ
 
 
+def persist_results(measurement_id: int, raw_results: list[dict]) -> None:
+    """Write a measurement's raw and parsed results to the local cache, replacing any earlier copy.
+
+    Split out of `_fire_and_persist` (2026-09-24) so a caller can re-fetch
+    a measurement after `wait_for_results`' partial-results cutoff and
+    refresh the cache with probes that reported late.
+    """
+    DEFAULT_RAW_DIR.mkdir(parents=True, exist_ok=True)
+    (DEFAULT_RAW_DIR / f"{measurement_id}.json").write_text(
+        json.dumps(raw_results, indent=2) + "\n"
+    )
+
+    parsed = parse_traceroute_results(raw_results)
+    parsed_payload = [
+        {
+            "measurement_id": r.measurement_id,
+            "probe_id": r.probe_id,
+            "target": r.target,
+            "hops": [
+                {"hop": h.hop, "addresses": list(h.addresses), "min_rtt_ms": h.min_rtt_ms}
+                for h in r.hops
+            ],
+        }
+        for r in parsed
+    ]
+    DEFAULT_PARSED_DIR.mkdir(parents=True, exist_ok=True)
+    (DEFAULT_PARSED_DIR / f"{measurement_id}.json").write_text(
+        json.dumps(parsed_payload, indent=2) + "\n"
+    )
+
+
 def _fire_and_persist(
     source_type: str,
     source_value: int | str,
@@ -71,28 +102,7 @@ def _fire_and_persist(
             measurement_id, DEFAULT_RAW_DIR,
         )
 
-    DEFAULT_RAW_DIR.mkdir(parents=True, exist_ok=True)
-    (DEFAULT_RAW_DIR / f"{measurement_id}.json").write_text(
-        json.dumps(raw_results, indent=2) + "\n"
-    )
-
-    parsed = parse_traceroute_results(raw_results)
-    parsed_payload = [
-        {
-            "measurement_id": r.measurement_id,
-            "probe_id": r.probe_id,
-            "target": r.target,
-            "hops": [
-                {"hop": h.hop, "addresses": list(h.addresses), "min_rtt_ms": h.min_rtt_ms}
-                for h in r.hops
-            ],
-        }
-        for r in parsed
-    ]
-    DEFAULT_PARSED_DIR.mkdir(parents=True, exist_ok=True)
-    (DEFAULT_PARSED_DIR / f"{measurement_id}.json").write_text(
-        json.dumps(parsed_payload, indent=2) + "\n"
-    )
+    persist_results(measurement_id, raw_results)
     return measurement_id
 
 

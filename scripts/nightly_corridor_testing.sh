@@ -66,6 +66,20 @@ fi
 # than letting it drift stale between Sunday runs.
 "$UV" run pacific-peering-report-probe-gaps
 
+# Weekly IPv6 fleet check, Wednesday only -- per the project owner
+# (2026-09-24): IPv6 is monitored, not corridor-tested, for now. Traces the
+# public DNS IPv6 anchors from every connected probe with an IPv6 ASN
+# (2 measurements, real Atlas credits) and records each probe's measured
+# IPv6 access plus fleet-wide IPv6 deployment to outputs/reports/ipv6_fleet*
+# (committed below). Runs after the probe-gap report so it reads tonight's
+# freshly rebuilt probe listing. Allowed to fail without aborting the
+# script: under `set -e` an Atlas refusal here would otherwise also block
+# committing the corridor results above.
+if [ "$_dow" = "3" ]; then
+    echo "$(date +%A): weekly IPv6 fleet check."
+    "$UV" run pacific-peering-ipv6-fleet --fire || echo "IPv6 fleet check failed (see above); continuing."
+fi
+
 # Everything this step can change that's git-tracked: findings_export.jsonl,
 # corridor_backlog.md, the ASCII/HTML reports, outputs/reports/probe_gaps.txt,
 # the geographic map, and escalations.md if anything needed a human look

@@ -127,9 +127,9 @@ def summarize_anchor_trace(traceroute: dict) -> AnchorTraceSummary:
     )
 
 
-def _fire_anchor(probe_value: str, anchor: str, probe_count: int, af: int) -> int:
-    description = f"pacific-peering starlink-anchor v{af} probes={probe_value} to {anchor}"
-    logger.info("Sourcing from Starlink probe(s) %s toward anchor %s (IPv%d)", probe_value, anchor, af)
+def _fire_anchor(probe_value: str, anchor: str, probe_count: int, af: int, label: str) -> int:
+    description = f"pacific-peering {label} v{af} probes={probe_value} to {anchor}"
+    logger.info("Sourcing %s from probe(s) %s toward anchor %s (IPv%d)", label, probe_value, anchor, af)
     return _fire_and_persist("probes", probe_value, anchor, description, probe_count, af=af)
 
 
@@ -137,6 +137,7 @@ def run_starlink_anchor_traces(
     probe_ids: list[int],
     anchors: tuple[tuple[str, str], ...] | None = None,
     af: int = 4,
+    label: str = "starlink-anchor",
 ) -> list[int]:
     """Fire one traceroute per anchor service from all `probe_ids` together.
 
@@ -150,6 +151,8 @@ def run_starlink_anchor_traces(
         probe_ids: Atlas probe IDs to source from, all in each measurement.
         anchors: (primary, fallback) pairs; defaults to `ANCHORS_BY_AF[af]`.
         af: Address family, 4 or 6; must match the anchors' family.
+        label: Measurement-description tag (e.g. "ipv6-fleet-anchor" for
+            the weekly fleet check in `atlas.ipv6_fleet`).
 
     Returns:
         The created measurements' IDs.
@@ -160,7 +163,7 @@ def run_starlink_anchor_traces(
     for primary, fallback in anchors:
         for anchor in (primary, fallback):
             try:
-                measurement_ids.append(_fire_anchor(probe_value, anchor, len(probe_ids), af))
+                measurement_ids.append(_fire_anchor(probe_value, anchor, len(probe_ids), af, label))
                 break
             except requests.HTTPError as e:
                 detail = e.response.text[:500] if e.response is not None else str(e)

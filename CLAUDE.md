@@ -27,6 +27,11 @@ each session:
   credits, but only when a genuine untested/due-for-reverification corridor exists.
   Commits+pushes findings/reports/viz if anything changed; escalates anything it can't
   confidently resolve to `escalations.md` instead of guessing.
+  **Wednesdays only**, it also runs the weekly IPv6 fleet check (`pacific-peering-ipv6-fleet --fire`,
+  2 Atlas measurements): IPv6 DNS-anchor traces from every connected probe with an IPv6 ASN, with
+  each probe's measured IPv6 access and fleet-wide IPv6 deployment recorded to
+  `outputs/reports/ipv6_fleet.txt` + `ipv6_fleet_history.jsonl`. IPv6 is monitored, not
+  corridor-tested, for now.
 
 Both scripts log to `logs/cron.log` (gitignored). If you want to run either by hand mid-session
 rather than wait for its schedule, just invoke the script directly — same as cron does.

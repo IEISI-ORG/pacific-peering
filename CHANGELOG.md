@@ -2204,3 +2204,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   with secondary fallbacks) from Starlink probes that have IPv6; the probe
   listing now records `asn_v6` and Atlas's `system-ipv6-*` tags. Corridor
   testing is unchanged and still IPv4-only. Not fired yet.
+- Weekly IPv6 fleet check (2026-09-24): `pacific-peering-ipv6-fleet`
+  traces the IPv6 DNS anchors from every connected probe with an IPv6 ASN
+  and records per-probe measured IPv6 access plus per-economy IPv6
+  deployment to `outputs/reports/ipv6_fleet.txt` and
+  `ipv6_fleet_history.jsonl`. Runs Wednesdays from
+  `nightly_corridor_testing.sh`; failure doesn't abort the nightly commit.
