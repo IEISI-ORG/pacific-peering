@@ -264,3 +264,41 @@ def fetch_aspaths_for_asn(
     for prefix in prefixes:
         records.extend(fetch_bgp_state(prefix))
     return records
+
+
+@dataclass(frozen=True)
+class RpkiStatus:
+    """RPKI origin-validation state of the route covering one address."""
+
+    prefix: str | None
+    origin_asn: int | None
+    status: str  # RIPEstat's value: "valid", "invalid", "invalid_asn", "invalid_length", "unknown"; "unresolved" if no route
+
+
+def fetch_rpki_status(ip: str, timeout: float = _DEFAULT_TIMEOUT) -> RpkiStatus:
+    """Look up the covering route for `ip` and its RPKI validation state.
+
+    Two RIPEstat calls: `prefix-overview` for the announced prefix and its
+    origin, then `rpki-validation` for that (origin, prefix) pair. Added
+    2026-09-24 for `atlas.rov_cloudflare`, which checks Cloudflare's
+    deliberately valid/invalid test prefixes are still in the expected state
+    before spending credits on traceroutes toward them. Raises on network
+    errors -- unlike `resolve_ip_to_asns`, a caller gating a measurement on
+    this must not mistake "lookup failed" for an answer.
+    """
+    overview = requests.get(
+        f"{RIPESTAT_BASE_URL}/prefix-overview/data.json", params={"resource": ip}, timeout=timeout
+    )
+    overview.raise_for_status()
+    data = overview.json()["data"]
+    asns = [a["asn"] for a in data.get("asns", [])]
+    prefix = data.get("resource") if asns else None
+    if not asns or not prefix:
+        return RpkiStatus(prefix=None, origin_asn=None, status="unresolved")
+    validation = requests.get(
+        f"{RIPESTAT_BASE_URL}/rpki-validation/data.json",
+        params={"resource": asns[0], "prefix": prefix},
+        timeout=timeout,
+    )
+    validation.raise_for_status()
+    return RpkiStatus(prefix=prefix, origin_asn=int(asns[0]), status=validation.json()["data"]["status"])

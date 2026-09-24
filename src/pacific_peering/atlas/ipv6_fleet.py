@@ -31,9 +31,8 @@ import logging
 from datetime import datetime, timezone
 from pathlib import Path
 
-from pacific_peering.atlas.client import fetch_raw_results
 from pacific_peering.atlas.probes import load_probe_listing
-from pacific_peering.atlas.smoketest import DEFAULT_PARSED_DIR, persist_results
+from pacific_peering.atlas.smoketest import refetch_parsed
 from pacific_peering.atlas.starlink_anchors import (
     PUBLIC_DNS_ANCHORS_V6,
     run_starlink_anchor_traces,
@@ -220,17 +219,6 @@ def load_last_snapshot(path: Path = HISTORY_PATH) -> dict | None:
     return json.loads(lines[-1]) if lines else None
 
 
-def _refetch_parsed(measurement_ids: list[int]) -> list[dict]:
-    # wait_for_results returns partial results after 180s; by the time every
-    # anchor has fired, the earlier ones have had minutes more -- re-fetch so
-    # a late probe isn't recorded as no_result.
-    traces = []
-    for mid in measurement_ids:
-        persist_results(mid, fetch_raw_results(mid))
-        traces += json.loads((DEFAULT_PARSED_DIR / f"{mid}.json").read_text())
-    return traces
-
-
 def run_weekly_check(fire: bool, now: datetime | None = None) -> dict:
     """Snapshot fleet IPv6, optionally fire the anchor traces, and (when fired) record it."""
     now = now or datetime.now(timezone.utc)
@@ -244,7 +232,7 @@ def run_weekly_check(fire: bool, now: datetime | None = None) -> dict:
             probe_ids, anchors=PUBLIC_DNS_ANCHORS_V6, af=6, label=MEASUREMENT_LABEL
         )
         if measurement_ids:
-            traces = _refetch_parsed(measurement_ids)
+            traces = refetch_parsed(measurement_ids)
             access = measured_access(traces, probe_ids)
             anchors = per_anchor_results(traces)
     snapshot = build_snapshot(listing, access, measurement_ids, now, anchors)

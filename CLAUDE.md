@@ -32,6 +32,9 @@ each session:
   each probe's measured IPv6 access and fleet-wide IPv6 deployment recorded to
   `outputs/reports/ipv6_fleet.txt` + `ipv6_fleet_history.jsonl`. IPv6 is monitored, not
   corridor-tested, for now.
+  Also Wednesdays: the Cloudflare ROV test (`pacific-peering-rov-cloudflare --fire`, 4 measurements),
+  tracing Cloudflare's RPKI-valid/invalid test prefixes from every connected probe to see where
+  invalid traces die (`outputs/reports/rov_cloudflare.txt` + `rov_cloudflare_history.jsonl`).
 
 Both scripts log to `logs/cron.log` (gitignored). If you want to run either by hand mid-session
 rather than wait for its schedule, just invoke the script directly — same as cron does.

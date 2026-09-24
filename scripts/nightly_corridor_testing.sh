@@ -78,6 +78,13 @@ fi
 if [ "$_dow" = "3" ]; then
     echo "$(date +%A): weekly IPv6 fleet check."
     "$UV" run pacific-peering-ipv6-fleet --fire || echo "IPv6 fleet check failed (see above); continuing."
+    # Cloudflare ROV test (owner, 2026-09-24): traces Cloudflare's RPKI-valid
+    # and RPKI-invalid test prefixes from every connected probe (4
+    # measurements) and records where invalid traces die, to
+    # outputs/reports/rov_cloudflare*. Checks the targets' RPKI state first
+    # and skips firing if they've changed. Same failure tolerance as above.
+    echo "$(date +%A): weekly Cloudflare ROV test."
+    "$UV" run pacific-peering-rov-cloudflare --fire || echo "Cloudflare ROV test failed (see above); continuing."
 fi
 
 # Everything this step can change that's git-tracked: findings_export.jsonl,

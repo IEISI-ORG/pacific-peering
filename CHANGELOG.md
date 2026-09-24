@@ -2218,3 +2218,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   in a 2026-09-16 legacy entry. This was what made AS139609 (SISCC) show a
   false Samoa dependent. New test checks every finding's economy labels
   against the ASN registry.
+- Cloudflare ROV test (2026-09-24): `pacific-peering-rov-cloudflare`
+  traces Cloudflare's RPKI-valid and RPKI-invalid test prefixes (IPv4 and
+  IPv6) from every connected probe and reports, per probe, whether the
+  invalid prefix is filtered and the last ASN the invalid trace reached.
+  Checks the targets' RPKI state before firing. Runs Wednesdays from the
+  nightly script. New `ris.ripestat.fetch_rpki_status`.

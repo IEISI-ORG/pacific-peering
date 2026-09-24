@@ -115,7 +115,7 @@ def test_fire_traces_ipv6_probes_with_af6_and_appends_history(monkeypatch, tmp_p
 
     monkeypatch.setattr(ipv6_fleet, "run_starlink_anchor_traces", _run)
     monkeypatch.setattr(
-        ipv6_fleet, "_refetch_parsed",
+        ipv6_fleet, "refetch_parsed",
         lambda mids: [_trace(7018, "2606:4700:4700::1111", reached=True)],
     )
 

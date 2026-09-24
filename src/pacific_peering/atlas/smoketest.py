@@ -24,6 +24,7 @@ from pathlib import Path
 
 from pacific_peering.atlas.client import (
     create_traceroute_measurement,
+    fetch_raw_results,
     parse_traceroute_results,
     wait_for_results,
 )
@@ -70,6 +71,20 @@ def persist_results(measurement_id: int, raw_results: list[dict]) -> None:
     (DEFAULT_PARSED_DIR / f"{measurement_id}.json").write_text(
         json.dumps(parsed_payload, indent=2) + "\n"
     )
+
+
+def refetch_parsed(measurement_ids: list[int]) -> list[dict]:
+    """Re-fetch each measurement, refresh its cache, and return all parsed traces.
+
+    `wait_for_results` returns partial results after its timeout; callers
+    that fire several measurements back to back use this once the last has
+    fired, so a probe that reported late isn't recorded as missing.
+    """
+    traces: list[dict] = []
+    for measurement_id in measurement_ids:
+        persist_results(measurement_id, fetch_raw_results(measurement_id))
+        traces += json.loads((DEFAULT_PARSED_DIR / f"{measurement_id}.json").read_text())
+    return traces
 
 
 def _fire_and_persist(
