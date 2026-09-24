@@ -465,6 +465,21 @@ def render_ascii_report(data: ReportData) -> str:
         lines.append(f"{issue.title}  [{issue.category_label}]")
         lines.append(f"    {issue.description}")
 
+    lines.append(_section(
+        f"APPENDIX: PROBES NOT PLACED OPTIMALLY FOR REGIONAL TESTING ({len(data.misplaced_probes)})"
+    ))
+    lines.append(
+        "Connected (or recently disconnected) in-scope Atlas probes whose network or location makes "
+        "them a poor stand-in for local-carrier routing, and why. Built from what the pipeline already "
+        "acts on: the corridor-candidacy exclusions, the proxy list and the probe geo-audit."
+    )
+    lines.append(f"{'CC':<4} {'Probe':>8} {'ASN':<9} {'Status':<13} Why")
+    lines.append(_rule())
+    for m in data.misplaced_probes:
+        lines.append(f"{m.cc:<4} {m.probe_id:>8} AS{m.asn!s:<7} {m.status:<13} {m.reason}")
+    if not data.misplaced_probes:
+        lines.append("(none)")
+
     lines.append(
         _section(
             f"APPENDIX: FULL CORRIDOR DETAIL ({data.pathways_total} pathways -- "

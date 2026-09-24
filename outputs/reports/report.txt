@@ -1,6 +1,6 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-09-24T13:10:21.534487+00:00                  
+                 Generated: 2026-09-24T22:14:58.832131+00:00                  
 ==============================================================================
 
 SUMMARY
@@ -289,7 +289,7 @@ GU   Guam                             Micronesia      10      14       6        
 PF   French Polynesia                 Polynesia        6       9       6         1
 PG   Papua New Guinea                 Melanesia       38      10       1         1
 VU   Vanuatu                          Melanesia       10       5       2         1
-FM   Micronesia, Federated States of  Micronesia       6       5       3         0
+FM   Micronesia, Federated States of  Micronesia       6       5       2         0
 NC   New Caledonia                    Melanesia       18      20       5         0
 
 APPENDIX: LOW DATA QUALITY ISSUES (4 known, resolved)
@@ -307,6 +307,22 @@ AS136996 (PACIFICNETWORKS-AS-AP (Pacific Networks)) -- registered VU  [local com
 
 AS23959 (OWL-AS-AP (Owl Limited)) -- registered VU  [VPN/proxy egress space registered in the economy]
     Registered to a Port Vila address (APNIC org ORG-OL19-AP, country VU; its sponsoring LIR ORG-OL12-AP is also Owl Limited at the same address, per the owner-supplied aut-num and APNIC RDAP -- no foreign party in the registration) but its announced space is served from Japan via its sole upstream AS4785 (xTom JP). First flagged by the monthly offshore-hosting check (atlas/offshore_check.py, 2026-09-24): `194.127.166.1` (194.127.166.0/24, RIPE-region space originated by AS23959) answered two Tokyo probes in 11.2ms and 13.2ms (probes 1014094, 1007464; measurement 215225380), everything else >=113ms, against a ~67ms physical minimum from Tokyo to Port Vila. Its other address, `194.114.136.1`, didn't answer. Per the project owner (domain knowledge), Owl is a known VPN operator; its own site (owl.net) describes "Owl Limited, a private company from Vanuatu" selling "Private Domain Name Registration and Dedicated Servers", with no server locations given. Either way, privacy/VPN egress and hosting space registered in Vanuatu, which fits the Tokyo hosting and the xTom upstream. (Older project records called AS23959 "Wantok Network (Vanuatu)"; that label was wrong or stale.) Excluded at the owner's direction; its two candidate_peering findings (findings.db rows 9 and 205, measurements 212141116 and 213187876) and their corroborations were removed.
+
+APPENDIX: PROBES NOT PLACED OPTIMALLY FOR REGIONAL TESTING (10)
+==============================================================================
+Connected (or recently disconnected) in-scope Atlas probes whose network or location makes them a poor stand-in for local-carrier routing, and why. Built from what the pipeline already acts on: the corridor-candidacy exclusions, the proxy list and the probe geo-audit.
+CC      Probe ASN       Status        Why
+------------------------------------------------------------------------------
+FJ      60575 AS141695  Connected     Pacific Community (AS141695): egresses via Zscaler (AS53813), so paths aren't Fiji's own; excluded as source and target
+FM      62046 AS14593   Connected     Starlink (AS14593): satellite egress via Starlink PoPs, not a local carrier; excluded from corridor candidacy; anomaly: listed on AS14593 but its 2026-09-24 ROV traces start in AS139759 (FSM Telecom) -- stale metadata or a moved host, unverified
+GU      60689 AS7131    Connected     ASN registered Northern Mariana Islands but probe physically in Guam (geo-audit): counts as a GU vantage point, not MP
+GU      62689 AS7131    Connected     ASN registered Northern Mariana Islands but probe physically in Guam (geo-audit): counts as a GU vantage point, not MP
+GU      65337 AS14593   Connected     Starlink (AS14593): satellite egress via Starlink PoPs, not a local carrier; excluded from corridor candidacy
+KI    1008228 AS14593   Connected     Starlink (AS14593): satellite egress via Starlink PoPs, not a local carrier; excluded from corridor candidacy
+KI    1008229 AS14593   Connected     Starlink (AS14593): satellite egress via Starlink PoPs, not a local carrier; excluded from corridor candidacy
+MH      64237 AS14593   Disconnected  Starlink (AS14593): satellite egress via Starlink PoPs, not a local carrier; excluded from corridor candidacy
+PF      23002 AS2200    Connected     Renater (AS2200): backhauls straight to metropolitan France (~500ms), never touches Pacific transit
+TO      11691 AS24390   Connected     ASN registered Fiji but probe physically in Tonga (geo-audit): counts as a TO vantage point, not FJ; USP (AS24390, registered FJ): regional academic network via AARNet (Australia), not a local commercial carrier; valid source, path unverified
 
 APPENDIX: FULL CORRIDOR DETAIL (240 pathways -- see the PATHWAYS summary at the top of this report for the plain counts)
 ==============================================================================

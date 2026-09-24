@@ -369,6 +369,11 @@ def render_html_report(data: ReportData, viz_dir: Path | None = Path("../viz")) 
     ) or "<p>(no in-scope ASN publishes an ASPA record yet)</p>"
 
     rov_html = _rov_section_html(data)
+    misplaced_probe_rows = "".join(
+        f"<tr><td>{html.escape(m.cc)}</td><td>{m.probe_id}</td><td>AS{m.asn}</td>"
+        f"<td>{html.escape(m.status)}</td><td>{html.escape(m.reason)}</td></tr>"
+        for m in data.misplaced_probes
+    ) or '<tr><td colspan="5">(none)</td></tr>'
 
     ipv6_economy_rows = "".join(
         f"""<tr>
@@ -673,6 +678,17 @@ def render_html_report(data: ReportData, viz_dir: Path | None = Path("../viz")) 
         report can be trusted without re-deriving why they exclude what they
         exclude.</p>
     {data_quality_issue_blocks}
+
+    <h2>Appendix: Probes not placed optimally for regional testing
+        <span class="count">({len(data.misplaced_probes)})</span></h2>
+    <p class="section-intro">Connected (or recently disconnected) in-scope Atlas probes whose
+        network or location makes them a poor stand-in for local-carrier routing, and why. Built
+        from what the pipeline already acts on: the corridor-candidacy exclusions, the proxy list
+        and the probe geo-audit.</p>
+    <table>
+        <thead><tr><th>CC</th><th>Probe</th><th>ASN</th><th>Status</th><th>Why</th></tr></thead>
+        <tbody>{misplaced_probe_rows}</tbody>
+    </table>
 
     <footer class="about">
         <h2>About this project</h2>

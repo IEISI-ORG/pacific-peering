@@ -28,6 +28,7 @@ from pathlib import Path
 
 import requests
 
+from pacific_peering.reports.probe_placement import MisplacedProbe, load_misplaced_probes
 from pacific_peering.reports.rov_data import RovSummary, load_rov_summary
 from pacific_peering.analysis import store as _store
 from pacific_peering.analysis.corridor_backlog import _tested_economy_pairs_from_findings
@@ -729,6 +730,8 @@ class ReportData:
     # Latest Cloudflare ROV test snapshot (reports/rov_data.py); None until
     # the weekly test has run once.
     rov: RovSummary | None = None
+    # In-scope probes not placed well for regional testing (reports/probe_placement.py).
+    misplaced_probes: tuple[MisplacedProbe, ...] = ()
 
     def to_dict(self) -> dict:
         """Return a plain, JSON-serializable dict of this report data."""
@@ -1182,4 +1185,5 @@ def build_report_data(
         confirmed_local_transit=confirmed_local_transit,
         candidate_peering=candidate_peering,
         rov=load_rov_summary(registry),
+        misplaced_probes=load_misplaced_probes(registry),
     )
