@@ -38,7 +38,13 @@ ADVISORY_REASONS: dict[int, str] = {
 
 # Per-probe facts that change the reading of a row.
 PROBE_NOTES: dict[int, str] = {
-    62046: "anomaly: listed on AS14593 but its 2026-09-24 ROV traces start in AS139759 (FSM Telecom) -- stale metadata or a moved host, unverified",
+    # Checked 2026-09-25: Atlas's AS14593 label comes from the probe's public
+    # control-plane address 14.1.90.35 (Starlink, 14.1.64.0/19), but all 33
+    # cached traceroutes from it (2026-09-16..24) leave via AS139759 FSM
+    # Telecom at <2ms -- a dual-uplink site (Pacific Community, Pohnpei).
+    62046: "dual uplink: Atlas labels it Starlink from its control-plane address (14.1.90.35), but all 33 cached "
+           "traceroutes (2026-09-16..24) leave via AS139759 FSM Telecom at <2ms -- in practice an FSM Telecom vantage "
+           "point for measurements; could flip to Starlink if the site fails over",
 }
 
 
