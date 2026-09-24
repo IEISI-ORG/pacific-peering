@@ -168,3 +168,15 @@ def test_create_traceroute_rejects_unknown_af_before_posting(monkeypatch):
     else:
         raise AssertionError("af=5 must be rejected")
     assert posted == []
+
+
+def test_create_traceroute_rejects_overlong_description_before_posting(monkeypatch):
+    posted = _capture_post(monkeypatch)
+
+    try:
+        client.create_traceroute_measurement("probes", "1", "1.1.1.1", "x" * 255, 1, api_key="k")
+    except ValueError:
+        pass
+    else:
+        raise AssertionError("a 255-char description must be rejected")
+    assert posted == []

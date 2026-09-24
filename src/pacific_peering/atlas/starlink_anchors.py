@@ -56,6 +56,7 @@ PUBLIC_DNS_ANCHORS_V6: tuple[tuple[str, str], ...] = (
 ANCHORS_BY_AF = {4: PUBLIC_DNS_ANCHORS_V4, 6: PUBLIC_DNS_ANCHORS_V6}
 _CONCURRENCY_CAP_TEXT = "concurrent measurements to the same target"
 _ATLAS_GAP_LIMIT_HOP = 255
+_MAX_DESCRIPTION_LEN = 200  # Atlas's hard limit is <255; leave headroom
 
 
 @dataclass(frozen=True)
@@ -129,6 +130,10 @@ def summarize_anchor_trace(traceroute: dict) -> AnchorTraceSummary:
 
 def _fire_anchor(probe_value: str, anchor: str, probe_count: int, af: int, label: str) -> int:
     description = f"pacific-peering {label} v{af} probes={probe_value} to {anchor}"
+    if len(description) > _MAX_DESCRIPTION_LEN:
+        # Atlas caps descriptions under 255 chars; 37 probe IDs don't fit (hit
+        # 2026-09-24 by the ROV test). Atlas records the probe list itself.
+        description = f"pacific-peering {label} v{af} {probe_count} probes to {anchor}"
     logger.info("Sourcing %s from probe(s) %s toward anchor %s (IPv%d)", label, probe_value, anchor, af)
     return _fire_and_persist("probes", probe_value, anchor, description, probe_count, af=af)
 

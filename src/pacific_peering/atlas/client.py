@@ -89,9 +89,13 @@ def create_traceroute_measurement(
         The created measurement's ID.
 
     Raises:
-        ValueError: If `description` contains a disallowed character, or
-            `af` isn't 4 or 6.
+        ValueError: If `description` contains a disallowed character or is
+            255+ characters long, or `af` isn't 4 or 6.
     """
+    if len(description) >= 255:
+        raise ValueError(
+            f"Atlas rejects measurement descriptions of 255+ characters (got {len(description)})"
+        )
     if af not in (4, 6):
         raise ValueError(f"af must be 4 or 6, got {af!r}")
     if "<" in description or ">" in description:

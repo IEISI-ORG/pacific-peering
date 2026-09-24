@@ -226,3 +226,21 @@ def test_main_without_fire_spends_nothing(monkeypatch):
     monkeypatch.setattr("sys.argv", ["pacific-peering-starlink-anchors"])
 
     starlink_anchors.main()
+
+
+def test_long_probe_list_uses_a_count_in_the_description(monkeypatch):
+    # 2026-09-24: 37 probe IDs pushed the description past Atlas's 255-char limit.
+    descriptions = []
+
+    def _fire_and_persist(source_type, source_value, target_ip, description, probe_count, af=4):
+        descriptions.append((description, source_value))
+        return 1
+
+    monkeypatch.setattr(starlink_anchors, "_fire_and_persist", _fire_and_persist)
+    probes = list(range(1000000, 1000037))
+
+    starlink_anchors.run_starlink_anchor_traces(probes, anchors=(("104.17.230.6", "104.17.231.6"),), label="rov-cloudflare")
+
+    description, source_value = descriptions[0]
+    assert description == "pacific-peering rov-cloudflare v4 37 probes to 104.17.230.6"
+    assert source_value.count(",") == 36  # the probe list itself is still sent in full
