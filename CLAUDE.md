@@ -35,6 +35,9 @@ each session:
   Also Wednesdays: the Cloudflare ROV test (`pacific-peering-rov-cloudflare --fire`, 4 measurements),
   tracing Cloudflare's RPKI-valid/invalid test prefixes from every connected probe to see where
   invalid traces die (`outputs/reports/rov_cloudflare.txt` + `rov_cloudflare_history.jsonl`).
+  Every night it also runs the offshore-hosting check (`pacific-peering-offshore-check --fire`), which
+  schedules itself: a full ping sweep of all in-scope ASNs monthly, plus any newly added ASN, otherwise
+  nothing. Flags go to `outputs/reports/offshore_check.txt` and `escalations.md`, never auto-excluded.
 
 Both scripts log to `logs/cron.log` (gitignored). If you want to run either by hand mid-session
 rather than wait for its schedule, just invoke the script directly — same as cron does.

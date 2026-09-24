@@ -92,17 +92,7 @@ def create_traceroute_measurement(
         ValueError: If `description` contains a disallowed character or is
             255+ characters long, or `af` isn't 4 or 6.
     """
-    if len(description) >= 255:
-        raise ValueError(
-            f"Atlas rejects measurement descriptions of 255+ characters (got {len(description)})"
-        )
-    if af not in (4, 6):
-        raise ValueError(f"af must be 4 or 6, got {af!r}")
-    if "<" in description or ">" in description:
-        raise ValueError(
-            f"Atlas rejects '<'/'>' in measurement descriptions (got: {description!r}); "
-            'use "to" instead of "->", for example.'
-        )
+    _validate_definition(description, af)
     api_key = api_key or load_atlas_api_key()
     payload = {
         "definitions": [
@@ -133,6 +123,68 @@ def create_traceroute_measurement(
         target,
         probe_count,
     )
+    return measurement_id
+
+
+def _validate_definition(description: str, af: int) -> None:
+    """Checks Atlas would otherwise fail mid-run with a 400; raise before posting instead."""
+    if len(description) >= 255:
+        raise ValueError(
+            f"Atlas rejects measurement descriptions of 255+ characters (got {len(description)})"
+        )
+    if af not in (4, 6):
+        raise ValueError(f"af must be 4 or 6, got {af!r}")
+    if "<" in description or ">" in description:
+        raise ValueError(
+            f"Atlas rejects '<'/'>' in measurement descriptions (got: {description!r}); "
+            'use "to" instead of "->", for example.'
+        )
+
+
+def create_ping_measurement(
+    probe_specs: list[dict],
+    target: str,
+    description: str,
+    packets: int = 3,
+    api_key: str | None = None,
+    timeout: float = _DEFAULT_TIMEOUT,
+    af: int = 4,
+) -> int:
+    """Create a one-off ping measurement to `target` from one or more probe selections.
+
+    Added 2026-09-24 for `atlas.offshore_check`, which only needs minimum RTT
+    (ping costs a fraction of a traceroute's credits). Unlike the traceroute
+    creator, takes a list of Atlas probe specs, e.g.
+    `[{"type": "country", "value": "AU", "requested": 3}, ...]`, so one
+    measurement can draw probes from several countries.
+
+    Raises:
+        ValueError: Same pre-post checks as `create_traceroute_measurement`.
+    """
+    _validate_definition(description, af)
+    api_key = api_key or load_atlas_api_key()
+    payload = {
+        "definitions": [
+            {
+                "target": target,
+                "description": description,
+                "type": "ping",
+                "af": af,
+                "packets": packets,
+                "is_oneoff": True,
+            }
+        ],
+        "probes": probe_specs,
+    }
+    response = requests.post(
+        f"{ATLAS_BASE_URL}/measurements/",
+        json=payload,
+        headers={"Authorization": f"Key {api_key}"},
+        timeout=timeout,
+    )
+    response.raise_for_status()
+    measurement_id = response.json()["measurements"][0]
+    logger.info("Created Atlas ping measurement %d (to %s, %d probe spec(s))", measurement_id, target, len(probe_specs))
     return measurement_id
 
 

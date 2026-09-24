@@ -2238,3 +2238,8 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   one finding (2026-09-24): a Vanuatu Starlink reseller whose announced
   space is hosted in Sydney, so corridors toward it measured an Australian
   host. In-scope ASNs 162 -> 161; findings 243 -> 242.
+- Offshore-hosting check (2026-09-24): `pacific-peering-offshore-check`
+  pings in-scope ASNs' addresses from AU/NZ/US/JP probes and flags any
+  that answer faster than fibre allows from their economy. Runs nightly,
+  scheduling itself (full sweep monthly, new ASNs as they appear); new
+  flags go to `escalations.md`. New `create_ping_measurement` in the client.

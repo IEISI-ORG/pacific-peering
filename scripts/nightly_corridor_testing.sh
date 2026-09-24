@@ -66,6 +66,16 @@ fi
 # than letting it drift stale between Sunday runs.
 "$UV" run pacific-peering-report-probe-gaps
 
+# Offshore-hosting check (owner, 2026-09-24): monthly full run, plus any ASN
+# the registry gained since the last run -- the module decides which each
+# night, and usually fires nothing. Pings in-scope addresses from AU/NZ/US/JP
+# probes; an RTT faster than fibre allows from the economy flags the address
+# as hosted abroad (outputs/reports/offshore_check*, new flags appended to
+# escalations.md for the owner -- never auto-excluded). Runs after the
+# probe-gap report so the registry/listing are tonight's. Failure-tolerant,
+# same as the Wednesday steps below.
+"$UV" run pacific-peering-offshore-check --fire || echo "Offshore-hosting check failed (see above); continuing."
+
 # Weekly IPv6 fleet check, Wednesday only -- per the project owner
 # (2026-09-24): IPv6 is monitored, not corridor-tested, for now. Traces the
 # public DNS IPv6 anchors from every connected probe with an IPv6 ASN

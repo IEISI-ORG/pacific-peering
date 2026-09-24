@@ -180,3 +180,25 @@ def test_create_traceroute_rejects_overlong_description_before_posting(monkeypat
     else:
         raise AssertionError("a 255-char description must be rejected")
     assert posted == []
+
+
+def test_create_ping_measurement_payload(monkeypatch):
+    posted = _capture_post(monkeypatch)
+    specs = [{"type": "country", "value": "AU", "requested": 3}, {"type": "country", "value": "NZ", "requested": 2}]
+
+    client.create_ping_measurement(specs, "103.101.192.1", "d", api_key="k")
+
+    definition = posted[0]["definitions"][0]
+    assert (definition["type"], definition["packets"], definition["af"]) == ("ping", 3, 4)
+    assert posted[0]["probes"] == specs
+
+
+def test_create_ping_measurement_shares_the_description_check(monkeypatch):
+    posted = _capture_post(monkeypatch)
+    try:
+        client.create_ping_measurement([], "1.1.1.1", "a -> b", api_key="k")
+    except ValueError:
+        pass
+    else:
+        raise AssertionError("'>' must be rejected")
+    assert posted == []
