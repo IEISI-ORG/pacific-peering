@@ -2247,3 +2247,6 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   under the account's 100-concurrent-measurement cap before any traceroute
   (`_fire_and_persist`) or offshore-check ping batch fires. Fails open if
   Atlas can't be asked.
+- Excluded AS23959 (Owl Limited, VU) as `offshore_hosted` and removed its
+  two findings (2026-09-24): its space is served from Tokyo (sole upstream
+  AS4785 xTom JP). In-scope ASNs 161 -> 160; findings 242 -> 240.

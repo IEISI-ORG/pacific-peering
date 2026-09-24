@@ -131,4 +131,24 @@ EXCLUDED_ASNS: tuple[ExcludedAsn, ...] = (
             "212158127) and that finding's corroboration were removed."
         ),
     ),
+    ExcludedAsn(
+        asn=23959,
+        country_cc="VU",
+        name="OWL-AS-AP (Owl Limited)",
+        category="offshore_hosted",
+        note=(
+            "Registered to a Port Vila address (APNIC org ORG-OL19-AP, "
+            "country VU) but its announced space is served from Japan. First "
+            "flagged by the monthly offshore-hosting check "
+            "(atlas/offshore_check.py, 2026-09-24): `194.127.166.1` "
+            "(194.127.166.0/24, RIPE-region space originated by AS23959) "
+            "answered two Tokyo probes in 11.2ms and 13.2ms (probes 1014094, "
+            "1007464; measurement 215225380), everything else >=113ms, "
+            "against a ~67ms physical minimum from Tokyo to Port Vila. Its "
+            "other address, `194.114.136.1`, didn't answer. Excluded at the "
+            "owner's direction; its two candidate_peering findings "
+            "(findings.db rows 9 and 205, measurements 212141116 and "
+            "213187876) and their corroborations were removed."
+        ),
+    ),
 )

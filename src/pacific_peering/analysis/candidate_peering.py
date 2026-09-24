@@ -767,19 +767,9 @@ CANDIDATE_PEERING: tuple[CandidatePeering, ...] = (
             "relationship. `has_routing_loop` False."
         ),
     ),
-    CandidatePeering(
-        upstream_cc="US", upstream_asn=6939, upstream_name="Hurricane "
-        "Electric", target_cc="VU", target_asn=23959,
-        target_name="Wantok Network (Vanuatu)", measurement_id=212141116,
-        vantage_point_cc="NU", probe_agreement="1/1 probe",
-        note=(
-            "NU(AS55885) -> AS23959: `AS55885 -> AS9471 -> AS6939 -> "
-            "AS23959`, but `ris_agrees: false` -- checked AS23959's real "
-            "RIS neighbor list directly: AS4785 is dominant (662 of 662 "
-            "observations). Real signal, wrong immediate carrier. "
-            "`has_routing_loop` False."
-        ),
-    ),
+    # NU -> AS23959 (measurement 212141116) removed 2026-09-24: AS23959 excluded
+    # as offshore-hosted (space served from Japan, sole upstream AS4785 xTom
+    # JP) -- see discovery/excluded_asns.py. Was findings.db row 9.
     CandidatePeering(
         upstream_cc="PG", upstream_asn=38008, upstream_name="Telikom PNG "
         "Satellite Tier 1 AS", target_cc="SB", target_asn=132462,

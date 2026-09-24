@@ -6,12 +6,14 @@ Corridors `auto_classify.py`'s mechanical rules couldn't confidently resolve on 
 - reason: unrecognized routing loop
 - detail: probe 1008536: loop involving address 202.84.222.81, not in known_anomalies.py
 - flagged: 2026-09-19T00:45:51.475813+00:00
+- resolved: 2026-09-24 -- AS23959 excluded as offshore-hosted (space served from Tokyo, sole upstream AS4785 xTom JP); see discovery/excluded_asns.py. Its findings were removed.
 
 ## AS9249 (VU) -> AS23959 (VU)
 - measurement: 213187876
 - reason: unrecognized routing loop
 - detail: probe 64783: loop involving address 202.84.222.81, not in known_anomalies.py
 - flagged: 2026-09-19T00:45:51.475813+00:00
+- resolved: 2026-09-24 -- AS23959 excluded as offshore-hosted (space served from Tokyo, sole upstream AS4785 xTom JP); see discovery/excluded_asns.py. Its findings were removed.
 
 ## AS17828 (PG) -> AS55792 (PG)
 - measurement: 213188745
@@ -61,6 +63,7 @@ Corridors `auto_classify.py`'s mechanical rules couldn't confidently resolve on 
 - detail: 194.127.166.1: probe 1014094 11.19ms < 66.6ms minimum (measurement 215225380)
 - action: owner review; if confirmed, add to discovery/excluded_asns.py (offshore_hosted)
 - flagged: 2026-09-24T11:49:55.550669+00:00
+- resolved: 2026-09-24 -- AS23959 excluded as offshore-hosted (space served from Tokyo, sole upstream AS4785 xTom JP); see discovery/excluded_asns.py. Its findings were removed.
 
 ## AS58932 (PW) -- possible offshore-hosted address space
 - reason: offshore-hosting check (atlas/offshore_check.py)

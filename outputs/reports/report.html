@@ -69,7 +69,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
 <body>
 <div class="wrap">
     <h1>Pacific Peering — Regional Routing Report</h1>
-    <div class="meta">Generated 2026-09-24T10:55:17.000498+00:00</div>
+    <div class="meta">Generated 2026-09-24T13:03:44.873330+00:00</div>
 
     <div class="headline-banner">
         <span class="value">57%</span>
@@ -80,18 +80,18 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
     </div>
 
     <div class="stat-row">
-        <div class="stat-tile"><div class="value">242</div><div class="label">Pathways found (total)</div></div>
-        <div class="stat-tile"><div class="value">67</div><div class="label">Internal (never leave the fish bowl)</div></div>
+        <div class="stat-tile"><div class="value">240</div><div class="label">Pathways found (total)</div></div>
+        <div class="stat-tile"><div class="value">65</div><div class="label">Internal (never leave the fish bowl)</div></div>
         <div class="stat-tile red-box"><div class="value">175</div>
             <div class="label">External / Leaves the region</div></div>
     </div>
     <p class="section-intro">Full corridor-by-corridor detail for all
-        242 pathways above is further down this report
+        240 pathways above is further down this report
         (Confirmed sub-optimal routes / Confirmed local transit / Candidate
         peering), collapsed by default so it doesn't dominate the page &mdash;
         click any of those section headings to expand.</p>
 
-    <div class="stat-row"><div class="stat-tile"><div class="value">20</div><div class="label">Economies in scope</div></div><div class="stat-tile"><div class="value">161</div><div class="label">ASNs in scope</div></div><div class="stat-tile"><div class="value">123</div><div class="label">ASNs w/ RIS neighbor</div></div><div class="stat-tile"><div class="value">36</div><div class="label">ASNs w/ IXP membership</div></div><div class="stat-tile"><div class="value">21</div><div class="label">ASNs w/ facility presence</div></div><div class="stat-tile"><div class="value">10/13</div><div class="label">IXPs in/out of fishbowl</div></div></div>
+    <div class="stat-row"><div class="stat-tile"><div class="value">20</div><div class="label">Economies in scope</div></div><div class="stat-tile"><div class="value">160</div><div class="label">ASNs in scope</div></div><div class="stat-tile"><div class="value">122</div><div class="label">ASNs w/ RIS neighbor</div></div><div class="stat-tile"><div class="value">36</div><div class="label">ASNs w/ IXP membership</div></div><div class="stat-tile"><div class="value">21</div><div class="label">ASNs w/ facility presence</div></div><div class="stat-tile"><div class="value">10/13</div><div class="label">IXPs in/out of fishbowl</div></div></div>
 
     <h2>Economies</h2>
     <table>
@@ -221,7 +221,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
                 </span>VU</td>
             <td>Vanuatu</td>
             <td>Melanesia</td>
-            <td>11</td><td>9</td>
+            <td>10</td><td>8</td>
             <td>2</td><td>1</td>
         </tr><tr>
             <td><span class="subregion-dot" style="background:#eb6834">
@@ -1968,7 +1968,7 @@ Twelfth confirmation of AS139609(SISCC)&lt;-&gt;AS45891. `AS55885 -&gt; AS9471 -
 
     <details class="section-toggle">
         <summary>Candidate peering (strong traceroute signal, RIS disagrees &mdash; unconfirmed)
-            <span class="count">(35)</span></summary>
+            <span class="count">(33)</span></summary>
         <div class="candidate-card">
             <div class="headline">AS7131 (PTI Pacifica Inc.,
                 MP) -&gt; AS3605
@@ -2065,22 +2065,6 @@ Twelfth confirmation of AS139609(SISCC)&lt;-&gt;AS45891. `AS55885 -&gt; AS9471 -
                 &middot; measurement 212141106
                 &middot; vantage point NU</div>
             <details class="note"><summary>NU(AS55885) -&gt; AS23676 (University of Guam): `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS23676`, but `ris_agrees: false` -- checked AS23676&#x27;s real RIS neighbor list…</summary>NU(AS55885) -&gt; AS23676 (University of Guam): `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS23676`, but `ris_agrees: false` -- checked AS23676&#x27;s real RIS neighbor list directly: AS395400 (University of Guam&#x27;s *other* ASN, already established elsewhere in this project) is dominant (380 of 380 observations). Real signal, one hop off from the real relationship. `has_routing_loop` False.</details>
-        </div><div class="candidate-card">
-            <div class="headline">AS2497 (Internet Initiative Japan Inc.,
-                ??) -&gt; AS23959
-                (Owl Limited, VU)</div>
-            <div>Traceroute agreement: 2/2 probes
-                &middot; measurement 213187876
-                &middot; vantage point VU</div>
-            <details class="note"><summary>measurement 213187876 (from VU); chain: AS9249 -&gt; AS38442 -&gt; AS4637 -&gt; AS2497; RIS disagrees…</summary>measurement 213187876 (from VU); chain: AS9249 -&gt; AS38442 -&gt; AS4637 -&gt; AS2497; RIS disagrees. measurement 213187876 (from VU); chain: AS9249 -&gt; AS38442 -&gt; AS4637 -&gt; AS2497; RIS disagrees.</details>
-        </div><div class="candidate-card">
-            <div class="headline">AS6939 (Hurricane Electric,
-                US) -&gt; AS23959
-                (Wantok Network (Vanuatu), VU)</div>
-            <div>Traceroute agreement: 1/1 probe
-                &middot; measurement 212141116
-                &middot; vantage point NU</div>
-            <details class="note"><summary>NU(AS55885) -&gt; AS23959: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS23959`, but `ris_agrees: false` -- checked AS23959&#x27;s real RIS neighbor list directly: AS4785 is…</summary>NU(AS55885) -&gt; AS23959: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS23959`, but `ris_agrees: false` -- checked AS23959&#x27;s real RIS neighbor list directly: AS4785 is dominant (662 of 662 observations). Real signal, wrong immediate carrier. `has_routing_loop` False.</details>
         </div><div class="candidate-card">
             <div class="headline">AS7131 (PTI Pacifica Inc.,
                 MP) -&gt; AS38198
@@ -2296,7 +2280,7 @@ NU(AS55885) -&gt; AS150403: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS139609 -&
 
     <h2>PeeringDB data quality</h2>
     <p class="section-intro">
-        <strong>74 of 161</strong> in-scope ASNs have a
+        <strong>73 of 160</strong> in-scope ASNs have a
         PeeringDB <code>net</code> record at all. "Zero facilities"/"zero IXP memberships"
         elsewhere in this report can mean either of two very different things: this ASN was
         never on PeeringDB to begin with, or it <em>is</em> registered and simply declared
@@ -2364,7 +2348,7 @@ NU(AS55885) -&gt; AS150403: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS139609 -&
             <td>0</td><td>1</td>
         </tr><tr>
             <td>VU</td><td>Vanuatu</td>
-            <td>11</td><td>6</td>
+            <td>10</td><td>5</td>
             <td>1</td><td>2</td>
         </tr><tr>
             <td>WS</td><td>Samoa</td>
@@ -2382,7 +2366,7 @@ NU(AS55885) -&gt; AS150403: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS139609 -&
 
     <h2>ASPA progress (RFC 9582 upstream-authorization adoption)</h2>
     <p class="section-intro">
-        <strong>18 of 161</strong> in-scope ASNs
+        <strong>18 of 160</strong> in-scope ASNs
         now publish an ASPA record (3225 total across the
         whole internet, per Cloudflare Radar). Adoption is still early &mdash; absence
         means "not published yet," not "no real upstream." Per economy: how many of its
@@ -2425,7 +2409,7 @@ NU(AS55885) -&gt; AS150403: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS139609 -&
             <td>4</td>
         </tr><tr>
             <td>VU</td><td>Vanuatu</td>
-            <td>11</td><td>1</td>
+            <td>10</td><td>1</td>
             <td>1</td>
             <td>0</td>
         </tr><tr>
@@ -2466,7 +2450,7 @@ NU(AS55885) -&gt; AS150403: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS139609 -&
     <p class="section-intro">
         Adoption signal only &mdash; this project deliberately isn't testing IPv6 corridors
         yet, queued until adoption has advanced further.
-        <strong>46 of 161</strong> in-scope ASNs
+        <strong>45 of 160</strong> in-scope ASNs
         have at least one RIS-observed IPv6-originated prefix.
         <strong>8 of 36</strong> connected
         Atlas probes work over IPv6 (3 more are
@@ -2521,7 +2505,7 @@ NU(AS55885) -&gt; AS150403: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS139609 -&
             <td>3</td><td>1</td>
         </tr><tr>
             <td>VU</td><td>Vanuatu</td>
-            <td>11</td><td>2</td>
+            <td>10</td><td>1</td>
         </tr><tr>
             <td>WS</td><td>Samoa</td>
             <td>10</td><td>2</td>
@@ -2820,7 +2804,7 @@ NU(AS55885) -&gt; AS150403: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS139609 -&
         </tr><tr>
             <td>VU</td><td>Vanuatu</td>
             <td>Melanesia</td>
-            <td>11</td><td>5</td><td>2</td>
+            <td>10</td><td>5</td><td>2</td>
             <td>1</td>
         </tr><tr>
             <td>FM</td><td>Micronesia, Federated States of</td>
@@ -2836,7 +2820,7 @@ NU(AS55885) -&gt; AS150403: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS139609 -&
     </table>
 
     <h2>Appendix: Low data quality issues
-        <span class="count">(3 known, resolved)</span></h2>
+        <span class="count">(4 known, resolved)</span></h2>
     <p class="section-intro">Known problems in this project's underlying sources
         (APNIC delegation, PeeringDB, ASPA, etc.) that have already been found,
         verified, and corrected for elsewhere in the pipeline &mdash; kept visible
@@ -2855,6 +2839,10 @@ NU(AS55885) -&gt; AS150403: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS139609 -&
             <div class="headline">AS136996 (PACIFICNETWORKS-AS-AP (Pacific Networks)) -- registered VU
                 <span class="count">[offshore_hosted]</span></div>
             <details class="note"><summary>A real Vanuatu company (APNIC org ORG-PN2-AP, LIR, country VU; pacificnetworks.net: &quot;a 100% Vanuatu owned private company based in Port Vila&quot;, &quot;Vanuatu&#x27;s First…</summary>A real Vanuatu company (APNIC org ORG-PN2-AP, LIR, country VU; pacificnetworks.net: &quot;a 100% Vanuatu owned private company based in Port Vila&quot;, &quot;Vanuatu&#x27;s First Starlink Authorized Reseller&quot;) whose announced space is hosted in Sydney. Measured 2026-09-24: AU probe 31347 (northern Sydney) reaches `103.101.192.1` in 0.825ms right behind its sole upstream AS136557 (Host Universal Pty Ltd, AU) at 0.849ms, RTT rising with distance from Sydney (measurement 215206130); from Vanuatu itself the path goes AS9249 -&gt; AS38442 (Vodafone Fiji) -&gt; AS136557 at 173-240ms (measurement 215206410). Its customers are presumably served over Starlink, so its own ASN says nothing about paths into Vanuatu. Excluded at the owner&#x27;s direction as contaminating real data; its one finding (NU -&gt; VU, findings.db row 155, measurement 212158127) and that finding&#x27;s corroboration were removed.</details>
+        </div><div class="issue-card">
+            <div class="headline">AS23959 (OWL-AS-AP (Owl Limited)) -- registered VU
+                <span class="count">[offshore_hosted]</span></div>
+            <details class="note"><summary>Registered to a Port Vila address (APNIC org ORG-OL19-AP, country VU) but its announced space is served from Japan…</summary>Registered to a Port Vila address (APNIC org ORG-OL19-AP, country VU) but its announced space is served from Japan. First flagged by the monthly offshore-hosting check (atlas/offshore_check.py, 2026-09-24): `194.127.166.1` (194.127.166.0/24, RIPE-region space originated by AS23959) answered two Tokyo probes in 11.2ms and 13.2ms (probes 1014094, 1007464; measurement 215225380), everything else &gt;=113ms, against a ~67ms physical minimum from Tokyo to Port Vila. Its other address, `194.114.136.1`, didn&#x27;t answer. Excluded at the owner&#x27;s direction; its two candidate_peering findings (findings.db rows 9 and 205, measurements 212141116 and 213187876) and their corroborations were removed.</details>
         </div>
 
     <footer class="about">
