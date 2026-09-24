@@ -1,6 +1,6 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-09-24T13:03:43.548853+00:00                  
+                 Generated: 2026-09-24T13:08:58.424040+00:00                  
 ==============================================================================
 
 SUMMARY
@@ -306,7 +306,7 @@ AS136996 (PACIFICNETWORKS-AS-AP (Pacific Networks)) -- registered VU  [offshore_
     A real Vanuatu company (APNIC org ORG-PN2-AP, LIR, country VU; pacificnetworks.net: "a 100% Vanuatu owned private company based in Port Vila", "Vanuatu's First Starlink Authorized Reseller") whose announced space is hosted in Sydney. Measured 2026-09-24: AU probe 31347 (northern Sydney) reaches `103.101.192.1` in 0.825ms right behind its sole upstream AS136557 (Host Universal Pty Ltd, AU) at 0.849ms, RTT rising with distance from Sydney (measurement 215206130); from Vanuatu itself the path goes AS9249 -> AS38442 (Vodafone Fiji) -> AS136557 at 173-240ms (measurement 215206410). Its customers are presumably served over Starlink, so its own ASN says nothing about paths into Vanuatu. Excluded at the owner's direction as contaminating real data; its one finding (NU -> VU, findings.db row 155, measurement 212158127) and that finding's corroboration were removed.
 
 AS23959 (OWL-AS-AP (Owl Limited)) -- registered VU  [offshore_hosted]
-    Registered to a Port Vila address (APNIC org ORG-OL19-AP, country VU) but its announced space is served from Japan. First flagged by the monthly offshore-hosting check (atlas/offshore_check.py, 2026-09-24): `194.127.166.1` (194.127.166.0/24, RIPE-region space originated by AS23959) answered two Tokyo probes in 11.2ms and 13.2ms (probes 1014094, 1007464; measurement 215225380), everything else >=113ms, against a ~67ms physical minimum from Tokyo to Port Vila. Its other address, `194.114.136.1`, didn't answer. Excluded at the owner's direction; its two candidate_peering findings (findings.db rows 9 and 205, measurements 212141116 and 213187876) and their corroborations were removed.
+    Registered to a Port Vila address (APNIC org ORG-OL19-AP, country VU; its sponsoring LIR ORG-OL12-AP is also Owl Limited at the same address, per the owner-supplied aut-num and APNIC RDAP -- no foreign party in the registration) but its announced space is served from Japan via its sole upstream AS4785 (xTom JP). First flagged by the monthly offshore-hosting check (atlas/offshore_check.py, 2026-09-24): `194.127.166.1` (194.127.166.0/24, RIPE-region space originated by AS23959) answered two Tokyo probes in 11.2ms and 13.2ms (probes 1014094, 1007464; measurement 215225380), everything else >=113ms, against a ~67ms physical minimum from Tokyo to Port Vila. Its other address, `194.114.136.1`, didn't answer. Excluded at the owner's direction; its two candidate_peering findings (findings.db rows 9 and 205, measurements 212141116 and 213187876) and their corroborations were removed.
 
 APPENDIX: FULL CORRIDOR DETAIL (240 pathways -- see the PATHWAYS summary at the top of this report for the plain counts)
 ==============================================================================
