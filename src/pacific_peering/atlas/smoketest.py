@@ -29,6 +29,7 @@ from pacific_peering.atlas.client import (
     wait_for_results,
 )
 from pacific_peering.atlas.probes import pick_best_covered_economy
+from pacific_peering.atlas.rate_limit import wait_for_headroom
 from pacific_peering.atlas.targets import pick_ixp_member_target, pick_target_ip
 from pacific_peering.discovery.economies import ECONOMIES_BY_CC
 
@@ -96,6 +97,7 @@ def _fire_and_persist(
     af: int = 4,
 ) -> int:
     """Create a one-off traceroute, wait for results, and persist raw + parsed JSON."""
+    wait_for_headroom(1)  # account-level concurrency pre-flight (atlas/rate_limit.py)
     measurement_id = create_traceroute_measurement(
         source_type=source_type,
         source_value=source_value,

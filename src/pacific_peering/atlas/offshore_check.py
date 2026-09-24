@@ -34,6 +34,7 @@ from pathlib import Path
 import requests
 
 from pacific_peering.atlas.client import create_ping_measurement, fetch_measurement_status, fetch_raw_results
+from pacific_peering.atlas.rate_limit import wait_for_headroom
 from pacific_peering.atlas.smoketest import DEFAULT_RAW_DIR
 from pacific_peering.atlas.targets import list_target_ips
 from pacific_peering.discovery.economy_coordinates import ECONOMY_LATLON
@@ -181,6 +182,7 @@ def _measure(targets: list[tuple[int, str, str]]) -> tuple[dict[str, int | None]
     DEFAULT_RAW_DIR.mkdir(parents=True, exist_ok=True)
     for i in range(0, len(targets), BATCH_SIZE):
         batch = targets[i:i + BATCH_SIZE]
+        wait_for_headroom(len(batch))  # account-level pre-flight (atlas/rate_limit.py)
         for asn, cc, address in batch:
             ids[address] = _create_with_retry(asn, cc, address)
         created = [ids[a] for _, _, a in batch if ids[a] is not None]

@@ -2243,3 +2243,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   that answer faster than fibre allows from their economy. Runs nightly,
   scheduling itself (full sweep monthly, new ASNs as they appear); new
   flags go to `escalations.md`. New `create_ping_measurement` in the client.
+- Atlas pre-flight check (2026-09-24): `atlas/rate_limit.py` waits for room
+  under the account's 100-concurrent-measurement cap before any traceroute
+  (`_fire_and_persist`) or offshore-check ping batch fires. Fails open if
+  Atlas can't be asked.
