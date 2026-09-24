@@ -1,0 +1,41 @@
+IPv6 fleet check -- 2026-09-24
+Auto-generated weekly (Wednesday) by `pacific-peering-ipv6-fleet` (atlas/ipv6_fleet.py).
+Anchor measurements: 215118287, 215121164
+
+Changes since last snapshot:
+  - First snapshot -- nothing to compare against.
+
+Per economy (connected probes / with IPv6 ASN / Atlas ipv6-works tag):
+  AS   0 /  0 /  0
+  CK   1 /  0 /  0
+  FJ   1 /  0 /  0
+  FM   3 /  1 /  1
+  GU   9 /  1 /  1
+  KI   2 /  2 /  0
+  MH   1 /  0 /  0
+  MP   1 /  0 /  0
+  NC   5 /  4 /  3
+  NR   0 /  0 /  0
+  NU   1 /  0 /  0
+  PF   7 /  2 /  2
+  PG   1 /  0 /  0
+  PW   1 /  1 /  1
+  SB   0 /  0 /  0
+  TO   1 /  0 /  0
+  TV   1 /  0 /  0
+  VU   2 /  0 /  0
+  WF   0 /  0 /  0
+  WS   0 /  0 /  0
+
+IPv6 probes (measured access this week vs Atlas tags):
+  NC      7018  AS45345   reached      tags: capable, stable-1d, stable-30d, stable-90d, works
+  GU      7385  AS152735  reached      tags: capable, stable-1d, stable-30d, stable-90d, works
+  FM      7448  AS139759  reached      tags: capable, stable-1d, stable-30d, stable-90d, works
+  PW      7455  AS17893   reached      tags: capable, stable-1d, stable-30d, stable-90d, works
+  NC     33674  AS45345   reached      tags: capable, stable-1d, stable-30d, stable-90d, works
+  PF     53098  AS9471    reached      tags: capable, stable-1d, works
+  NC     63050  AS45345   no_reach     tags: capable, doesnt-work, stable-1d, stable-30d, stable-90d
+  PF   1001562  AS9471    reached      tags: capable, stable-1d, stable-30d, stable-90d, works
+  KI   1008228  AS14593   no_reach     tags: capable, doesnt-work
+  KI   1008229  AS14593   no_result    tags: capable
+  NC   1008625  AS45345   reached      tags: capable, stable-1d, stable-30d, stable-90d, works
