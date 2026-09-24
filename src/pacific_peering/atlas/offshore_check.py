@@ -33,12 +33,7 @@ from pathlib import Path
 
 import requests
 
-from pacific_peering.atlas.client import (
-    create_ping_measurement,
-    fetch_measurement_status,
-    fetch_raw_results,
-    stop_measurement,
-)
+from pacific_peering.atlas.client import create_ping_measurement, fetch_measurement_status, fetch_raw_results
 from pacific_peering.atlas.rate_limit import wait_for_headroom
 from pacific_peering.atlas.smoketest import DEFAULT_RAW_DIR
 from pacific_peering.atlas.targets import list_target_ips
@@ -169,16 +164,14 @@ def _create_with_retry(asn: int, cc: str, address: str) -> int | None:
     return None
 
 
-def _wait_until_done(measurement_ids: list[int], max_wait_s: float = BATCH_WAIT_S, poll_s: float = 20.0) -> set[int]:
-    """Poll until done or `max_wait_s`; returns the IDs still running."""
+def _wait_until_done(measurement_ids: list[int], max_wait_s: float = BATCH_WAIT_S, poll_s: float = 20.0) -> None:
     deadline = time.monotonic() + max_wait_s
     pending = set(measurement_ids)
     while pending and time.monotonic() < deadline:
         time.sleep(poll_s)
         pending = {m for m in pending if fetch_measurement_status(m) not in _TERMINAL_STATUSES}
     if pending:
-        logger.info("%d measurement(s) still running after %ds; using partial results", len(pending), max_wait_s)
-    return pending
+        logger.warning("%d measurement(s) still running after %ds; using partial results", len(pending), max_wait_s)
 
 
 def _measure(targets: list[tuple[int, str, str]]) -> tuple[dict[str, int | None], dict[str, list[dict]]]:
@@ -199,18 +192,13 @@ def _measure(targets: list[tuple[int, str, str]]) -> tuple[dict[str, int | None]
         for asn, cc, address in batch:
             ids[address] = _create_with_retry(asn, cc, address)
         created = [ids[a] for _, _, a in batch if ids[a] is not None]
-        still_running = _wait_until_done(created)
+        _wait_until_done(created)
         for _, _, address in batch:
             mid = ids[address]
             if mid is None:
                 continue
             raw[address] = fetch_raw_results(mid)
             (DEFAULT_RAW_DIR / f"{mid}.json").write_text(json.dumps(raw[address], indent=2) + "\n")
-        # Stragglers would otherwise hold their concurrency slots for 20+ min
-        # and make the next batch's pre-flight wait (seen 2026-09-24: 77/80
-        # still "Ongoing" after 4 min). Results already fetched are kept.
-        for mid in still_running:
-            stop_measurement(mid)
         logger.info("Offshore check: %d/%d addresses measured", min(i + BATCH_SIZE, len(targets)), len(targets))
     return ids, raw
 
