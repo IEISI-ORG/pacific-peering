@@ -25,6 +25,8 @@ from pacific_peering.discovery.excluded_asns import EXCLUDED_ASNS
 
 _CATEGORY_LABELS = {
     "dns_anycast": "DNS anycast infrastructure, opportunistically registered",
+    "offshore_hosted": "local company whose announced space is hosted abroad",
+    "vpn_proxy": "VPN/proxy egress space registered in the economy",
 }
 
 

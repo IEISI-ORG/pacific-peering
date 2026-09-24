@@ -135,7 +135,12 @@ EXCLUDED_ASNS: tuple[ExcludedAsn, ...] = (
         asn=23959,
         country_cc="VU",
         name="OWL-AS-AP (Owl Limited)",
-        category="offshore_hosted",
+        # Re-categorised 2026-09-24: the owner identifies Owl Limited as a
+        # known VPN operator -- VPN/proxy egress space registered under a
+        # small economy's country code (making exit IPs geolocate there),
+        # not a local operator hosting abroad. Also in
+        # auto_classify.KNOWN_PROXY_ASNS.
+        category="vpn_proxy",
         note=(
             "Registered to a Port Vila address (APNIC org ORG-OL19-AP, "
             "country VU; its sponsoring LIR ORG-OL12-AP is also Owl Limited at "
@@ -148,8 +153,15 @@ EXCLUDED_ASNS: tuple[ExcludedAsn, ...] = (
             "answered two Tokyo probes in 11.2ms and 13.2ms (probes 1014094, "
             "1007464; measurement 215225380), everything else >=113ms, "
             "against a ~67ms physical minimum from Tokyo to Port Vila. Its "
-            "other address, `194.114.136.1`, didn't answer. Excluded at the "
-            "owner's direction; its two candidate_peering findings "
+            "other address, `194.114.136.1`, didn't answer. Per the project "
+            "owner (domain knowledge), Owl is a known VPN operator; its own "
+            "site (owl.net) describes \"Owl Limited, a private company from "
+            "Vanuatu\" selling \"Private Domain Name Registration and "
+            "Dedicated Servers\", with no server locations given. Either way, "
+            "privacy/VPN egress and hosting space registered in Vanuatu, "
+            "which fits the Tokyo hosting and the xTom upstream. (Older project records called "
+            "AS23959 \"Wantok Network (Vanuatu)\"; that label was wrong or "
+            "stale.) Excluded at the owner's direction; its two candidate_peering findings "
             "(findings.db rows 9 and 205, measurements 212141116 and "
             "213187876) and their corroborations were removed."
         ),

@@ -157,7 +157,11 @@ LOCAL_IXP_LATENCY_THRESHOLD_MS = 10.0
 # network. A probe's metadata changing is a reason to regression-test
 # its next real path, not a reason to assume the underlying issue is
 # gone.
-KNOWN_PROXY_ASNS: dict[int, str] = {53813: "Zscaler"}
+# AS23959 (2026-09-24): Owl Limited, a VPN operator per the project owner,
+# with measured Tokyo-hosted egress space (sole upstream AS4785 xTom JP) --
+# see discovery/excluded_asns.py. No probe sits behind it today; listed so a
+# probe host that routes through it is treated as proxy-tainted.
+KNOWN_PROXY_ASNS: dict[int, str] = {53813: "Zscaler", 23959: "Owl Limited (VPN)"}
 
 
 @dataclass
