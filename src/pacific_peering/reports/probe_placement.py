@@ -36,7 +36,8 @@ ADVISORY_REASONS: dict[int, str] = {
     24390: "USP (AS24390, registered FJ): regional academic network via AARNet (Australia), not a local commercial carrier; valid source, path unverified",
 }
 
-# Per-probe facts that change the reading of a row.
+# Per-probe measured facts. These *replace* the ASN-level reason for that probe:
+# a probe's own verified path outranks a generic label for its ASN.
 PROBE_NOTES: dict[int, str] = {
     # Checked 2026-09-25: Atlas's AS14593 label comes from the probe's public
     # control-plane address 14.1.90.35 (Starlink, 14.1.64.0/19), but all 33
@@ -86,7 +87,7 @@ def load_misplaced_probes(
             if asn in ADVISORY_REASONS:
                 reasons.append(ADVISORY_REASONS[asn])
             if reasons and p["id"] in PROBE_NOTES:
-                reasons.append(PROBE_NOTES[p["id"]])
+                reasons = [PROBE_NOTES[p["id"]]]
             if reasons:
                 rows.append(MisplacedProbe(cc, p["id"], asn, p["status"], "; ".join(reasons)))
     return tuple(sorted(rows, key=lambda r: (r.cc, r.probe_id)))

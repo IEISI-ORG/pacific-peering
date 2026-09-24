@@ -46,3 +46,12 @@ def test_rows_from_exclusions_quarantine_and_advisories(tmp_path):
 
 def test_missing_listing_gives_no_rows(tmp_path):
     assert pp.load_misplaced_probes(REGISTRY, tmp_path / "none.json", tmp_path / "none2.json") == ()
+
+
+def test_probe_note_replaces_the_generic_asn_reason(tmp_path):
+    # FM 62046: Starlink by label, FSM Telecom by measured path.
+    listing = {"FM": [{"id": 62046, "status": "Connected", "asn_v4": 14593}]}
+    rows = pp.load_misplaced_probes(REGISTRY, *_write(tmp_path, listing, {}))
+    assert len(rows) == 1
+    assert rows[0].reason.startswith("dual uplink")
+    assert "not a local carrier" not in rows[0].reason
