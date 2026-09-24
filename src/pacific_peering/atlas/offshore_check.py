@@ -56,7 +56,12 @@ MAX_PREFIXES_PER_ASN = 3
 PHYSICS_MARGIN = 0.7  # headroom for capital-vs-island distance and coordinate slop
 FIBRE_KM_PER_MS_RTT = 100.0
 FULL_RECHECK_DAYS = 30
-BATCH_SIZE = 20
+# 80 + the nightly batch's 5 workers + rate_limit's 5 margin stays under
+# Atlas's 100 cap; wait_for_headroom enforces it either way. Batches of 20 took
+# ~10 min each (one-off pings sit "Ongoing" while a few probes never report),
+# over 2h for a full run -- 80 with a 4-minute cap is ~20-25 min.
+BATCH_SIZE = 80
+BATCH_WAIT_S = 240.0
 CAP_RETRIES = 5
 CAP_RETRY_WAIT_S = 60
 _CONCURRENCY_CAP_TEXT = "concurrent measurements"
@@ -159,7 +164,7 @@ def _create_with_retry(asn: int, cc: str, address: str) -> int | None:
     return None
 
 
-def _wait_until_done(measurement_ids: list[int], max_wait_s: float = 420.0, poll_s: float = 15.0) -> None:
+def _wait_until_done(measurement_ids: list[int], max_wait_s: float = BATCH_WAIT_S, poll_s: float = 20.0) -> None:
     deadline = time.monotonic() + max_wait_s
     pending = set(measurement_ids)
     while pending and time.monotonic() < deadline:
@@ -174,7 +179,8 @@ def _measure(targets: list[tuple[int, str, str]]) -> tuple[dict[str, int | None]
 
     Atlas caps an account at 100 concurrent measurements; the first version
     fired every batch back to back, hit the cap after ~100, and had the rest
-    refused (2026-09-24). Raw results are cached (not traceroute-parsed) so a
+    refused (2026-09-24). Each batch now waits for `wait_for_headroom` first
+    and is finished (or given `BATCH_WAIT_S`) before the next fires. Raw results are cached (not traceroute-parsed) so a
     run can be re-judged later at no cost.
     """
     ids: dict[str, int | None] = {}
