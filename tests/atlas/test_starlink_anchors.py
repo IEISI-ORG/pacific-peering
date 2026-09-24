@@ -99,12 +99,20 @@ def _refusal(detail):
 _CAP = '{"errors":[{"detail":"We do not allow more than 25 concurrent measurements to the same target: X."}]}'
 
 
+class _Calls(list):
+    def __init__(self):
+        super().__init__()
+        self.afs = []
+
+
 def _fake_fire(monkeypatch, refuse):
     """Patch _fire_and_persist; `refuse` maps target -> error body to raise."""
-    calls = []
+    calls = _Calls()
+    afs = calls.afs
 
-    def _fire_and_persist(source_type, source_value, target_ip, description, probe_count):
+    def _fire_and_persist(source_type, source_value, target_ip, description, probe_count, af=4):
         calls.append((source_type, source_value, target_ip, probe_count))
+        afs.append(af)
         if target_ip in refuse:
             raise _refusal(refuse[target_ip])
         return 1000 + len(calls)
@@ -151,6 +159,57 @@ def test_run_skips_a_service_whose_fallback_is_also_refused(monkeypatch):
 
     assert [c[2] for c in calls] == ["1.1.1.1", "1.0.0.1", "8.8.8.8"]
     assert ids == [1003]
+
+
+def test_find_starlink_probes_af6_uses_asn_v6():
+    listing = {
+        "KI": [{"id": 1008228, "status": "Connected", "asn_v4": 14593, "asn_v6": 14593}],
+        "MH": [{"id": 64237, "status": "Connected", "asn_v4": 14593, "asn_v6": None}],
+        "GU": [{"id": 65337, "status": "Connected", "asn_v4": 14593}],  # pre-2026-09-24 listing entry
+    }
+
+    assert starlink_anchors.find_starlink_probes(listing, af=6) == {"KI": [1008228]}
+    assert starlink_anchors.find_starlink_probes(listing, af=4) == {
+        "GU": [65337], "KI": [1008228], "MH": [64237]
+    }
+
+
+def test_run_af6_fires_ipv6_anchors_with_af6_and_falls_back(monkeypatch):
+    calls = _fake_fire(monkeypatch, refuse={"2606:4700:4700::1111": _CAP})
+
+    ids = starlink_anchors.run_starlink_anchor_traces([1008228, 1008229], af=6)
+
+    assert [c[2] for c in calls] == [
+        "2606:4700:4700::1111", "2606:4700:4700::1001", "2001:4860:4860::8888"
+    ]
+    assert set(calls.afs) == {6}
+    assert ids == [1002, 1003]
+
+
+def test_run_defaults_to_ipv4_af(monkeypatch):
+    calls = _fake_fire(monkeypatch, refuse={})
+
+    starlink_anchors.run_starlink_anchor_traces([1008228])
+
+    assert calls.afs == [4, 4]
+
+
+def test_summary_ipv6_link_local_and_ula_are_not_public():
+    traceroute = {
+        "probe_id": 1008229,
+        "target": "2606:4700:4700::1111",
+        "hops": [
+            _hop(1, ["fe80::1"], 0.5),
+            _hop(2, ["fd00:1::1"], 30.0),
+            _hop(3, ["2406:2d40:a800::1"], 45.0),  # Starlink's routed v6 prefix
+            _hop(4, ["2606:4700:4700::1111"], 60.0),
+        ],
+    }
+
+    s = starlink_anchors.summarize_anchor_trace(traceroute)
+
+    assert s.first_public_hop == 3
+    assert s.reached_target is True
 
 
 def test_main_without_fire_spends_nothing(monkeypatch):

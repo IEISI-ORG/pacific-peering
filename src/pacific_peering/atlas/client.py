@@ -59,6 +59,7 @@ def create_traceroute_measurement(
     probe_count: int = 3,
     api_key: str | None = None,
     timeout: float = _DEFAULT_TIMEOUT,
+    af: int = 4,
 ) -> int:
     """Create a one-off traceroute measurement to `target`.
 
@@ -70,7 +71,7 @@ def create_traceroute_measurement(
             in that economy regardless of which local ISP hosts it.
         source_value: The selector value (an ASN int for "asn", an ISO
             country code for "country").
-        target: Destination IPv4 address or hostname.
+        target: Destination address (IPv4 or IPv6, matching `af`) or hostname.
         description: Human-readable measurement description. Must not
             contain "<" or ">" — Atlas rejects these outright with a 400
             ("Text contains disallowed characters"), which previously
@@ -79,13 +80,20 @@ def create_traceroute_measurement(
         probe_count: Number of probes to request.
         api_key: RIPE Atlas API key; loaded from `secrets.yaml` if not given.
         timeout: Request timeout in seconds.
+        af: Address family, 4 or 6. Defaults to 4, which every measurement
+            before 2026-09-24 used (then hardcoded). IPv6 support started
+            with the Starlink DNS-anchor traces (`atlas.starlink_anchors`);
+            corridor testing itself is still IPv4-only.
 
     Returns:
         The created measurement's ID.
 
     Raises:
-        ValueError: If `description` contains a disallowed character.
+        ValueError: If `description` contains a disallowed character, or
+            `af` isn't 4 or 6.
     """
+    if af not in (4, 6):
+        raise ValueError(f"af must be 4 or 6, got {af!r}")
     if "<" in description or ">" in description:
         raise ValueError(
             f"Atlas rejects '<'/'>' in measurement descriptions (got: {description!r}); "
@@ -98,7 +106,7 @@ def create_traceroute_measurement(
                 "target": target,
                 "description": description,
                 "type": "traceroute",
-                "af": 4,
+                "af": af,
                 "protocol": "ICMP",
                 "is_oneoff": True,
             }

@@ -13,10 +13,13 @@ found from the nightly-refreshed any-status probe listing
 (`atlas.probes.load_probe_listing`) rather than a hardcoded ID list, so a
 Starlink probe that appears or reconnects is picked up automatically.
 
-IPv4 only for now: `atlas.client.create_traceroute_measurement` hardcodes
-`af=4`, and IPv6 corridor testing is deliberately deferred project-wide. The
-IPv6 anchors (2606:4700:4700::1111, 2001:4860:4860::8888) are the follow-up
-once that lands -- see the `af=4` TODO in `reports/ascii_report.py`.
+IPv4 by default; `--af 6` traces the IPv6 anchors instead (added 2026-09-24,
+the project's first IPv6 measurements). IPv6 source probes are those with an
+`asn_v6` of AS14593 in the listing -- only the two KI probes as of
+2026-09-24; MH/GU's Starlink probes have no IPv6 address at all. Probes
+Atlas tags `system-ipv6-doesnt-work` are still fired (cheap, and it checks
+the tag); their tags are logged next to their results. Corridor testing
+itself is still IPv4-only -- see the `af=4` TODO in `reports/ascii_report.py`.
 
 Spends real Atlas credits (one measurement per anchor, all probes in each),
 so `main()` only prints the plan unless `--fire` is given.
@@ -46,6 +49,11 @@ PUBLIC_DNS_ANCHORS_V4: tuple[tuple[str, str], ...] = (
     ("1.1.1.1", "1.0.0.1"),  # Cloudflare
     ("8.8.8.8", "8.8.4.4"),  # Google
 )
+PUBLIC_DNS_ANCHORS_V6: tuple[tuple[str, str], ...] = (
+    ("2606:4700:4700::1111", "2606:4700:4700::1001"),  # Cloudflare
+    ("2001:4860:4860::8888", "2001:4860:4860::8844"),  # Google
+)
+ANCHORS_BY_AF = {4: PUBLIC_DNS_ANCHORS_V4, 6: PUBLIC_DNS_ANCHORS_V6}
 _CONCURRENCY_CAP_TEXT = "concurrent measurements to the same target"
 _ATLAS_GAP_LIMIT_HOP = 255
 
@@ -70,12 +78,13 @@ class AnchorTraceSummary:
 
 
 def find_starlink_probes(
-    listing: dict[str, list[dict]], asn: int = STARLINK_ASN
+    listing: dict[str, list[dict]], asn: int = STARLINK_ASN, af: int = 4
 ) -> dict[str, list[int]]:
-    """Return Connected probe IDs on `asn`, grouped by economy code."""
+    """Return Connected probe IDs whose `asn_v{af}` is `asn`, grouped by economy code."""
+    key = f"asn_v{af}"
     result: dict[str, list[int]] = {}
     for cc, probes in listing.items():
-        ids = [p["id"] for p in probes if p.get("asn_v4") == asn and p["status"] == "Connected"]
+        ids = [p["id"] for p in probes if p.get(key) == asn and p["status"] == "Connected"]
         if ids:
             result[cc] = sorted(ids)
     return result
@@ -118,15 +127,16 @@ def summarize_anchor_trace(traceroute: dict) -> AnchorTraceSummary:
     )
 
 
-def _fire_anchor(probe_value: str, anchor: str, probe_count: int) -> int:
-    description = f"pacific-peering starlink-anchor probes={probe_value} to {anchor}"
-    logger.info("Sourcing from Starlink probe(s) %s toward anchor %s", probe_value, anchor)
-    return _fire_and_persist("probes", probe_value, anchor, description, probe_count)
+def _fire_anchor(probe_value: str, anchor: str, probe_count: int, af: int) -> int:
+    description = f"pacific-peering starlink-anchor v{af} probes={probe_value} to {anchor}"
+    logger.info("Sourcing from Starlink probe(s) %s toward anchor %s (IPv%d)", probe_value, anchor, af)
+    return _fire_and_persist("probes", probe_value, anchor, description, probe_count, af=af)
 
 
 def run_starlink_anchor_traces(
     probe_ids: list[int],
-    anchors: tuple[tuple[str, str], ...] = PUBLIC_DNS_ANCHORS_V4,
+    anchors: tuple[tuple[str, str], ...] | None = None,
+    af: int = 4,
 ) -> list[int]:
     """Fire one traceroute per anchor service from all `probe_ids` together.
 
@@ -136,15 +146,21 @@ def run_starlink_anchor_traces(
     skipped, never fatal to the remaining services. Nothing is created for
     a refused address.
 
+    Args:
+        probe_ids: Atlas probe IDs to source from, all in each measurement.
+        anchors: (primary, fallback) pairs; defaults to `ANCHORS_BY_AF[af]`.
+        af: Address family, 4 or 6; must match the anchors' family.
+
     Returns:
         The created measurements' IDs.
     """
+    anchors = anchors if anchors is not None else ANCHORS_BY_AF[af]
     probe_value = ",".join(str(p) for p in probe_ids)
     measurement_ids = []
     for primary, fallback in anchors:
         for anchor in (primary, fallback):
             try:
-                measurement_ids.append(_fire_anchor(probe_value, anchor, len(probe_ids)))
+                measurement_ids.append(_fire_anchor(probe_value, anchor, len(probe_ids), af))
                 break
             except requests.HTTPError as e:
                 detail = e.response.text[:500] if e.response is not None else str(e)
@@ -173,23 +189,33 @@ def _log_summaries(measurement_id: int, probe_cc: dict[int, str]) -> None:
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--fire", action="store_true", help="actually create measurements (spends Atlas credits)")
+    parser.add_argument("--af", type=int, choices=(4, 6), default=4, help="address family (default 4)")
     args = parser.parse_args()
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
 
-    by_cc = find_starlink_probes(load_probe_listing())
+    listing = load_probe_listing()
+    by_cc = find_starlink_probes(listing, af=args.af)
     probe_cc = {pid: cc for cc, ids in by_cc.items() for pid in ids}
     if not probe_cc:
-        logger.warning("No Connected AS%d probes in the current probe listing; nothing to fire", STARLINK_ASN)
+        logger.warning(
+            "No Connected probes with asn_v%d AS%d in the current probe listing; nothing to fire "
+            "(a listing built before 2026-09-24 has no asn_v6 -- rerun pacific-peering-report-probe-gaps)",
+            args.af, STARLINK_ASN,
+        )
         return
+    anchors = ANCHORS_BY_AF[args.af]
     logger.info(
-        "Starlink probes: %s -> anchors %s (%d measurement(s), %d probe result(s) each)",
-        by_cc, ", ".join(f"{p} (fallback {f})" for p, f in PUBLIC_DNS_ANCHORS_V4),
-        len(PUBLIC_DNS_ANCHORS_V4), len(probe_cc),
+        "Starlink probes (IPv%d): %s -> anchors %s (%d measurement(s), %d probe result(s) each)",
+        args.af, by_cc, ", ".join(f"{p} (fallback {f})" for p, f in anchors), len(anchors), len(probe_cc),
     )
+    if args.af == 6:
+        tags = {p["id"]: p.get("ipv6_tags", []) for probes in listing.values() for p in probes}
+        for probe_id in sorted(probe_cc):
+            logger.info("  probe %d Atlas IPv6 tags: %s", probe_id, tags.get(probe_id) or "none")
     if not args.fire:
         logger.info("Dry run -- pass --fire to create the measurements")
         return
-    for measurement_id in run_starlink_anchor_traces(sorted(probe_cc)):
+    for measurement_id in run_starlink_anchor_traces(sorted(probe_cc), af=args.af):
         _log_summaries(measurement_id, probe_cc)
 
 

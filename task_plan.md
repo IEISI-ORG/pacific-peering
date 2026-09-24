@@ -3070,3 +3070,15 @@ Two addresses stayed genuinely unresolved (`210.173.173.82`, `101.203.90.137`/`.
 - **Summarizer bug found and fixed:** 1008228's `1.1.1.1` trace saw only hop 1 (`172.16.0.1`), then 5 silent hops. Atlas then applies its gap limit and sends a final TTL-255 packet, which the destination answered ("hop 255", `destination_ip_responded: true`). The first version reported this as `first_public_hop=255`. It now reports `gap_limited=True` and excludes hop 255 from hop counts (new test).
 - **Anomaly for the owner, unresolved:** both KI probes' LAN source addresses changed between measurements 3 minutes apart and then changed back. 1008228: `192.168.1.231` (Sep 23) → `172.16.0.2` (21:23Z) → `192.168.1.231` (21:26Z). 1008229: `192.168.2.118` → `192.168.1.109` → `192.168.2.118`. The Starlink egress IPs stayed in `150.228.217.x`. 1008228 kept `.107`; 1008229 used `.21` on Sep 23 and `.42` for both of today's measurements. Not interpreted by this session.
 - MH 64237 and GU 65337 reached both anchors cleanly; first public hop 4 (MH) and 5 (GU).
+
+**IPv6 plumbing started, via the Starlink anchor traces; not fired yet (2026-09-24).** Owner's call: start the project's IPv6 code with IPv6 versions of the Starlink anchor tests. Three steps, no credits spent:
+1. `atlas.client.create_traceroute_measurement` takes `af` (4 or 6, default 4; anything else raises before posting). `smoketest._fire_and_persist` passes it through. Every existing caller is unchanged and still IPv4. Corridor testing stays IPv4-only.
+2. `atlas/starlink_anchors.py`: IPv6 anchor pairs `2606:4700:4700::1111`→`::1001` and `2001:4860:4860::8888`→`::8844`, same concurrency-cap fallback as IPv4. New `--af 6` flag; IPv6 source probes are those whose `asn_v6` is AS14593.
+3. `atlas.probes.fetch_probes_for_economy` now keeps `asn_v6` and Atlas's `system-ipv6-*` tags in `probe_listing.json`. Listing refreshed by hand today.
+
+**What the IPv6 probe data shows (live Atlas, 2026-09-24):**
+- Only the two KI probes have IPv6. MH 64237 and GU 65337 have no IPv6 address at all.
+- 1008228 is tagged `system-ipv6-capable` + `system-ipv6-doesnt-work`. 1008229 has `system-ipv6-capable` only: Atlas has no verdict either way.
+- **Both KI probes are in the same /64, `2406:2d40:a824:9110::/64`**, inside Starlink's `2406:2d40:a800::/40`. That's one LAN segment behind one Starlink terminal. Yet their IPv4 LANs differ (`192.168.1.x` vs `192.168.2.x`) and so do their public IPv4 egress IPs (`150.228.217.107` vs `.21`/`.42`). Relevant to the KI LAN-address-switching anomaly above; not interpreted, flagged for the owner.
+
+Dry run `--af 6`: 2 measurements, 2 probe results each. 1008228 is included despite its "doesn't work" tag, to test the tag. Report TODOs in `ascii_report.py`/`html_report.py` updated: the client is no longer hardcoded to `af=4`. Verified: 9 new tests (client `af` default/pass-through/reject, IPv6 probe selection and anchors, IPv6 link-local/ULA treated as non-public, probe-listing tags), 31 pass, touched files ruff-clean. The repo's 9 pre-existing ruff errors elsewhere are unchanged.

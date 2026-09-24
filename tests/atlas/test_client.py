@@ -118,3 +118,53 @@ def test_no_retry_needed_when_first_fetch_already_has_data(monkeypatch):
 
     assert result == [{"prb_id": 1}]
     assert call_count == 1
+
+
+class _FakeResponse:
+    def raise_for_status(self):
+        pass
+
+    def json(self):
+        return {"measurements": [214999999]}
+
+
+def _capture_post(monkeypatch):
+    posted = []
+
+    def _post(url, json, headers, timeout):
+        posted.append(json)
+        return _FakeResponse()
+
+    monkeypatch.setattr(client.requests, "post", _post)
+    return posted
+
+
+def test_create_traceroute_defaults_to_ipv4(monkeypatch):
+    posted = _capture_post(monkeypatch)
+
+    client.create_traceroute_measurement("probes", "1008228", "1.1.1.1", "d", 1, api_key="k")
+
+    assert posted[0]["definitions"][0]["af"] == 4
+
+
+def test_create_traceroute_passes_af_6_through(monkeypatch):
+    posted = _capture_post(monkeypatch)
+
+    client.create_traceroute_measurement(
+        "probes", "1008228", "2606:4700:4700::1111", "d", 1, api_key="k", af=6
+    )
+
+    assert posted[0]["definitions"][0]["af"] == 6
+    assert posted[0]["definitions"][0]["target"] == "2606:4700:4700::1111"
+
+
+def test_create_traceroute_rejects_unknown_af_before_posting(monkeypatch):
+    posted = _capture_post(monkeypatch)
+
+    try:
+        client.create_traceroute_measurement("probes", "1", "1.1.1.1", "d", 1, api_key="k", af=5)
+    except ValueError:
+        pass
+    else:
+        raise AssertionError("af=5 must be rejected")
+    assert posted == []

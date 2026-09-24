@@ -558,8 +558,11 @@ def render_html_report(data: ReportData, viz_dir: Path | None = Path("../viz")) 
          traceroute mined so far (100.64.0.0/10 dishy/router/gateway
          addresses; see task_plan.md's 2026-09-23 Guam backhaul-mining
          entry) are an IPv4-only NAT artifact, not Starlink's real internal
-         path. atlas/client.py::create_traceroute_measurement is hardcoded
-         to "af": 4 -- once IPv6 corridor testing starts, Starlink corridors
+         path. atlas/client.py::create_traceroute_measurement takes af
+         (default 4) since 2026-09-24, but corridor testing still fires
+         IPv4 only; the DNS-anchor follow-up below is done for both
+         families (atlas/starlink_anchors.py, --af 6). Once IPv6 corridor
+         testing starts, Starlink corridors
          specifically need an af=6 traceroute to see past the CGNAT layer
          and observe the actual native routing.
 

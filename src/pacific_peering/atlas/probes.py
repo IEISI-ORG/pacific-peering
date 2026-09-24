@@ -54,6 +54,15 @@ def fetch_probes_for_economy(country_code: str, timeout: float = _DEFAULT_TIMEOU
                 "status": status.get("name", "Unknown"),
                 "status_since": status.get("since"),
                 "asn_v4": p.get("asn_v4"),
+                # IPv6 (added 2026-09-24 for the Starlink IPv6 anchor
+                # traces): asn_v6 is None for a probe with no IPv6 address.
+                # Atlas's own system-ipv6-* tags (capable / works /
+                # doesnt-work) come from its built-in measurements, kept
+                # as-is so results can be read against them.
+                "asn_v6": p.get("asn_v6"),
+                "ipv6_tags": sorted(
+                    t["slug"] for t in p.get("tags") or [] if t.get("slug", "").startswith("system-ipv6")
+                ),
             }
         )
     return probes

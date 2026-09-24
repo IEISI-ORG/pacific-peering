@@ -2198,3 +2198,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   aborts the run; Atlas's hop-255 gap-limit reply is reported as
   `gap_limited` instead of a real hop. Fired measurements 214951531 and
   214953366: all 4 Starlink probes reached both anchors.
+- IPv6 support, first step (2026-09-24): `create_traceroute_measurement`
+  takes `af` (default 4); `pacific-peering-starlink-anchors --af 6`
+  traces IPv6 anchors (`2606:4700:4700::1111`/`2001:4860:4860::8888`,
+  with secondary fallbacks) from Starlink probes that have IPv6; the probe
+  listing now records `asn_v6` and Atlas's `system-ipv6-*` tags. Corridor
+  testing is unchanged and still IPv4-only. Not fired yet.

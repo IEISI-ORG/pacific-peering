@@ -42,7 +42,12 @@ DEFAULT_EXTERNAL_SOURCE_CC = "US"  # outside the Pacific and outside AU/NZ
 
 
 def _fire_and_persist(
-    source_type: str, source_value: int | str, target_ip: str, description: str, probe_count: int
+    source_type: str,
+    source_value: int | str,
+    target_ip: str,
+    description: str,
+    probe_count: int,
+    af: int = 4,
 ) -> int:
     """Create a one-off traceroute, wait for results, and persist raw + parsed JSON."""
     measurement_id = create_traceroute_measurement(
@@ -51,6 +56,7 @@ def _fire_and_persist(
         target=target_ip,
         description=description,
         probe_count=probe_count,
+        af=af,
     )
     raw_results = wait_for_results(measurement_id)
     if not raw_results:
