@@ -1,6 +1,6 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-09-24T10:42:18.197151+00:00                  
+                 Generated: 2026-09-24T10:44:06.363742+00:00                  
 ==============================================================================
 
 SUMMARY
@@ -748,7 +748,7 @@ NC -> KI (AS134783): detours via Equinix Sydney (Sydney)
     measurement 213022059 (from NC); chain: AS56089 -> AS18200 -> AS4826 -> AS14593 -> AS154100; RIS count 1392; RIS agrees; loop noted (loop at 45.127.172.74 (Equinix Sydney IXP fabric (ix_id 94 in ixp_lan_registry.json, independently conf...)). measurement 213022059 (from NC); chain: AS45345 -> AS18200 -> AS4826 -> AS14593 -> AS154100; RIS count 1392; RIS agrees; loop noted (loop at 45.127.172.74 (Equinix Sydney IXP fabric (ix_id 94 in ixp_lan_registry.json, independently conf...)). measurement 213022059 (from NC); chain: AS45345 -> AS18200 -> AS4826 -> AS14593 -> AS154100; RIS count 1392; RIS agrees; loop noted (loop at 45.127.172.74 (Equinix Sydney IXP fabric (ix_id 94 in ixp_lan_registry.json, independently conf...)).
 NU -> VU (AS136996): detours via AS174 (Cogent Communications), then AS136557 (Sydney)
     RIS observation count: 336  [measurement 212158127]
-    **First-ever confirmation for this target**: AS136557<->AS136996, directly RIS-confirmed (336 of 336 observations -- AS136557 is its only real neighbor, a genuinely new intermediate carrier for this project). `AS55885 -> AS9471 -> AS174 -> AS136557 -> AS136996`, RIS agrees exactly (336). `has_routing_loop` False. [Corrected 2026-09-24: originally filed as target_cc=SB by a hand-transcription error. AS136996 (Pacific Networks, PACIFICNETWORKS-AS-AP) is Vanuatu-only: APNIC country VU, and per the project owner and pacificnetworks.net/contact/ it is "a 100% Vanuatu owned private company based in Port Vila" with no presence elsewhere. Its sole RIS neighbor AS136557 is Host Universal Pty Ltd (AU).]
+    **First-ever confirmation for this target**: AS136557<->AS136996, directly RIS-confirmed (336 of 336 observations -- AS136557 is its only real neighbor, a genuinely new intermediate carrier for this project). `AS55885 -> AS9471 -> AS174 -> AS136557 -> AS136996`, RIS agrees exactly (336). `has_routing_loop` False. [Corrected 2026-09-24: originally filed as target_cc=SB by a hand-transcription error. AS136996 (Pacific Networks, PACIFICNETWORKS-AS-AP) is Vanuatu-only: APNIC country VU, and per the project owner and pacificnetworks.net/contact/ it is "a 100% Vanuatu owned private company based in Port Vila" with no presence elsewhere. Its sole RIS neighbor AS136557 is Host Universal Pty Ltd (AU). APNIC org record ORG-PN2-AP (owner-supplied): org-type LIR, country VU, address Bladinieres Estate, Airport Area, last-modified 2023-09-05.]
 TO -> SB (AS139277): detours via MegaIX Sydney (Sydney)
     RIS observation count: 0  [measurement 213460341]
     measurement 213460341 (from TO); chain: AS24390 -> AS7575 -> AS139609 -> AS139277; RIS disagrees.
