@@ -33,7 +33,7 @@ from pathlib import Path
 
 import requests
 
-from pacific_peering.atlas.client import create_ping_measurement, fetch_raw_results
+from pacific_peering.atlas.client import create_ping_measurement, fetch_measurement_status, fetch_raw_results
 from pacific_peering.atlas.smoketest import DEFAULT_RAW_DIR
 from pacific_peering.atlas.targets import list_target_ips
 from pacific_peering.discovery.economy_coordinates import ECONOMY_LATLON
@@ -56,6 +56,10 @@ PHYSICS_MARGIN = 0.7  # headroom for capital-vs-island distance and coordinate s
 FIBRE_KM_PER_MS_RTT = 100.0
 FULL_RECHECK_DAYS = 30
 BATCH_SIZE = 20
+CAP_RETRIES = 5
+CAP_RETRY_WAIT_S = 60
+_CONCURRENCY_CAP_TEXT = "concurrent measurements"
+_TERMINAL_STATUSES = {"Stopped", "Failed", "No suitable probes", "Denied", "Archived"}
 
 OFFSHORE = "offshore"
 CONSISTENT = "consistent"
@@ -108,10 +112,13 @@ def load_history(path: Path = HISTORY_PATH) -> list[dict]:
 
 def plan_run(registry_asns: dict[int, str], history: list[dict], now: datetime) -> tuple[str, list[int]]:
     """("full" | "new" | "skip", ASNs to check), per the monthly/new-ASN schedule."""
-    fulls = [h for h in history if h["mode"] == "full"]
+    # A full run only counts if nothing in it was left unmeasured (e.g. Atlas
+    # refusals) -- otherwise one bad night would block retries for a month.
+    fulls = [h for h in history if h["mode"] == "full" and h.get("complete", True)]
     if not fulls or (now - datetime.fromisoformat(fulls[-1]["run_at"])).days >= FULL_RECHECK_DAYS:
         return "full", sorted(registry_asns)
-    seen = {int(a) for h in history for a in h["asns"]}
+    seen = {int(a) for h in history for a in h.get("untestable", [])}
+    seen |= {int(a) for h in history for a, e in h.get("results", {}).items() if e["verdict"] != NOT_MEASURED}
     new = sorted(a for a in registry_asns if a not in seen)
     return ("new", new) if new else ("skip", [])
 
@@ -133,38 +140,59 @@ def _probe_locations(probe_ids: set[int]) -> dict[int, tuple[float, float]]:
     return locations
 
 
-def _fire_all(targets: list[tuple[int, str, str]]) -> dict[str, int | None]:
-    """Create ping measurements in batches; {address: measurement_id or None if refused}."""
-    ids: dict[str, int | None] = {}
-    for i in range(0, len(targets), BATCH_SIZE):
-        for asn, cc, address in targets[i:i + BATCH_SIZE]:
-            try:
-                ids[address] = create_ping_measurement(
-                    list(HUB_PROBE_SPECS), address, f"pacific-peering offshore-check AS{asn} {cc} to {address}"
-                )
-            except requests.HTTPError as e:
-                detail = e.response.text[:300] if e.response is not None else str(e)
-                logger.error("Atlas refused ping to %s (AS%d): %s", address, asn, detail)
-                ids[address] = None
-    return ids
+def _create_with_retry(asn: int, cc: str, address: str) -> int | None:
+    """Create one ping; on Atlas's 100-concurrent-measurements cap, wait and retry."""
+    for attempt in range(CAP_RETRIES + 1):
+        try:
+            return create_ping_measurement(
+                list(HUB_PROBE_SPECS), address, f"pacific-peering offshore-check AS{asn} {cc} to {address}"
+            )
+        except requests.HTTPError as e:
+            detail = e.response.text[:300] if e.response is not None else str(e)
+            if _CONCURRENCY_CAP_TEXT in detail and attempt < CAP_RETRIES:
+                logger.warning("Atlas concurrency cap hit for %s; retrying in %ds", address, CAP_RETRY_WAIT_S)
+                time.sleep(CAP_RETRY_WAIT_S)
+                continue
+            logger.error("Atlas refused ping to %s (AS%d): %s", address, asn, detail)
+            return None
+    return None
 
 
-def _collect(ids: dict[str, int | None], wait_s: float = 240.0) -> dict[str, list[dict]]:
-    """Wait once for every measurement, then fetch and cache each one's raw results.
+def _wait_until_done(measurement_ids: list[int], max_wait_s: float = 420.0, poll_s: float = 15.0) -> None:
+    deadline = time.monotonic() + max_wait_s
+    pending = set(measurement_ids)
+    while pending and time.monotonic() < deadline:
+        time.sleep(poll_s)
+        pending = {m for m in pending if fetch_measurement_status(m) not in _TERMINAL_STATUSES}
+    if pending:
+        logger.warning("%d measurement(s) still running after %ds; using partial results", len(pending), max_wait_s)
 
-    Raw only: ping results don't go through the traceroute parser. Cached so a
-    run can be re-judged later (e.g. with a different margin) at no cost.
+
+def _measure(targets: list[tuple[int, str, str]]) -> tuple[dict[str, int | None], dict[str, list[dict]]]:
+    """Fire in batches of BATCH_SIZE, finishing each batch before the next.
+
+    Atlas caps an account at 100 concurrent measurements; the first version
+    fired every batch back to back, hit the cap after ~100, and had the rest
+    refused (2026-09-24). Raw results are cached (not traceroute-parsed) so a
+    run can be re-judged later at no cost.
     """
-    time.sleep(wait_s)  # one-off pings finish in ~1-3 minutes; fetch once, after all have had time
-    results: dict[str, list[dict]] = {}
+    ids: dict[str, int | None] = {}
+    raw: dict[str, list[dict]] = {}
     DEFAULT_RAW_DIR.mkdir(parents=True, exist_ok=True)
-    for address, mid in ids.items():
-        if mid is None:
-            continue
-        raw = fetch_raw_results(mid)
-        (DEFAULT_RAW_DIR / f"{mid}.json").write_text(json.dumps(raw, indent=2) + "\n")
-        results[address] = raw
-    return results
+    for i in range(0, len(targets), BATCH_SIZE):
+        batch = targets[i:i + BATCH_SIZE]
+        for asn, cc, address in batch:
+            ids[address] = _create_with_retry(asn, cc, address)
+        created = [ids[a] for _, _, a in batch if ids[a] is not None]
+        _wait_until_done(created)
+        for _, _, address in batch:
+            mid = ids[address]
+            if mid is None:
+                continue
+            raw[address] = fetch_raw_results(mid)
+            (DEFAULT_RAW_DIR / f"{mid}.json").write_text(json.dumps(raw[address], indent=2) + "\n")
+        logger.info("Offshore check: %d/%d addresses measured", min(i + BATCH_SIZE, len(targets)), len(targets))
+    return ids, raw
 
 
 def run_check(fire: bool, now: datetime | None = None, force_full: bool = False) -> dict | None:
@@ -189,8 +217,7 @@ def run_check(fire: bool, now: datetime | None = None, force_full: bool = False)
         if not fire:
             logger.info("Dry run -- pass --fire to ping the addresses and record")
         return None
-    ids = _fire_all(targets)
-    raw = _collect(ids)
+    ids, raw = _measure(targets)
     locations = _probe_locations({r["prb_id"] for rs in raw.values() for r in rs})
     per_asn: dict[str, dict] = {}
     for asn, cc, address in targets:
@@ -202,6 +229,7 @@ def run_check(fire: bool, now: datetime | None = None, force_full: bool = False)
     snapshot = {
         "run_at": now.isoformat(), "mode": mode, "asns": sorted(per_asn, key=int) + [str(a) for a in untestable],
         "untestable": untestable, "results": per_asn,
+        "complete": not any(e["verdict"] == NOT_MEASURED for e in per_asn.values()),
     }
     new_flags = _new_offshore(history, per_asn)
     HISTORY_PATH.parent.mkdir(parents=True, exist_ok=True)
