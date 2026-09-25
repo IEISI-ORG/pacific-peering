@@ -2265,3 +2265,6 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   `PROBE_ASN_OVERRIDES` (2026-09-25): a dual-uplink site whose Atlas label is
   Starlink but whose measurements leave via FSM. Corridor classification now
   drops any probe whose measured path starts at Starlink (AS14593).
+- Removed 8 corroborations sourced from GU's Starlink probe 65337
+  (2026-09-25): Starlink paths recorded as Guam evidence. Every affected
+  finding keeps 2+ clean corroborations; no finding removed.
