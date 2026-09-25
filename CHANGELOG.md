@@ -2271,3 +2271,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - Website (2026-09-25): `reports/site.py` builds `site/dist/` (report as
   index.html, charts, text reports) for Cloudflare Pages' GitHub
   integration, which rebuilds on every push.
+- Website live at https://pacific-peering.ieisi.org (2026-09-25): served by a
+  Cloudflare Worker with static assets (`wrangler.jsonc`, custom domain only,
+  workers.dev and preview URLs off), not Pages. Build variables
+  `PYTHON_VERSION=3.13.3` and `SKIP_DEPENDENCY_INSTALL=1` cut builds from about
+  5 min to about 34 s. Cron commits republish the site whenever they carry a
+  regenerated report.
