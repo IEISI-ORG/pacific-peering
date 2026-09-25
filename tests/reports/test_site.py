@@ -26,6 +26,7 @@ def test_build_rewrites_chart_paths_and_copies_assets(tmp_path):
     assert '../viz/' not in html and 'src="viz/as_graph.svg"' in html
     assert (out / "viz" / "as_graph.svg").exists()
     assert (out / "reports" / "report.txt").exists()
+    assert "Not found" in (out / "404.html").read_text()
     assert not (out / "reports" / "probe_gaps.txt").exists()  # absent inputs are skipped
 
 

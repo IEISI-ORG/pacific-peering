@@ -1,0 +1,15 @@
+// Cloudflare Worker (static assets only) serving the public report site at
+// pacific-peering.ieisi.org. Workers Builds (GitHub integration) runs the build
+// command set in the dashboard -- `python3 src/pacific_peering/reports/site.py`,
+// which assembles site/dist/ -- then deploys with `npx wrangler deploy`.
+// No Worker script: `main` is omitted, Cloudflare serves the files directly.
+{
+  "$schema": "https://unpkg.com/wrangler/config-schema.json",
+  "name": "pacific-peering",
+  "compatibility_date": "2026-09-25",
+  "assets": {
+    "directory": "./site/dist",
+    // Unknown paths get site/dist/404.html with a real 404 status, not a 200.
+    "not_found_handling": "404-page"
+  }
+}
