@@ -39,6 +39,10 @@ each session:
   schedules itself: a full ping sweep of all in-scope ASNs monthly, plus any newly added ASN, otherwise
   nothing. Flags go to `outputs/reports/offshore_check.txt` and `escalations.md`, never auto-excluded.
 
+The public site https://pacific-peering.ieisi.org rebuilds on every push (Cloudflare Worker with static
+assets, `wrangler.jsonc`; build = `python3 src/pacific_peering/reports/site.py` → `site/dist/`), so the
+cron commits republish it with no deploy step here.
+
 Both scripts log to `logs/cron.log` (gitignored). If you want to run either by hand mid-session
 rather than wait for its schedule, just invoke the script directly — same as cron does.
 
