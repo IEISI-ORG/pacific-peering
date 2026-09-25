@@ -2268,3 +2268,6 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - Removed 8 corroborations sourced from GU's Starlink probe 65337
   (2026-09-25): Starlink paths recorded as Guam evidence. Every affected
   finding keeps 2+ clean corroborations; no finding removed.
+- Website (2026-09-25): `reports/site.py` builds `site/dist/` (report as
+  index.html, charts, text reports) for Cloudflare Pages' GitHub
+  integration, which rebuilds on every push.

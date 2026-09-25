@@ -35,3 +35,10 @@ logs/
 .DS_Store
 .vscode/
 .idea/
+
+# Website publishing (Cloudflare Pages)
+node_modules/
+site/dist/
+.wrangler/
+.env
+.env.*
