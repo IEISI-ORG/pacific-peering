@@ -1,6 +1,6 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-09-25T00:22:36.546893+00:00                  
+                 Generated: 2026-09-26T15:02:22.497412+00:00                  
 ==============================================================================
 
 SUMMARY
@@ -166,7 +166,7 @@ WS   Samoa                       10       3            1       2
 
 ASPA PROGRESS (RFC 9582 upstream-authorization adoption)
 ==============================================================================
-18 of 160 in-scope ASNs now publish an ASPA record (3225 total across the whole internet, per Cloudflare Radar). Adoption is still early -- absence means 'not published yet', not 'no real upstream'. Per-economy: how many of its own ASNs publish a record, and the distinct upstream ASNs those records declare, split by whether the declared provider is itself an in-scope Pacific ASN or an external carrier.
+18 of 160 in-scope ASNs now publish an ASPA record (3263 total across the whole internet, per Cloudflare Radar). Adoption is still early -- absence means 'not published yet', not 'no real upstream'. Per-economy: how many of its own ASNs publish a record, and the distinct upstream ASNs those records declare, split by whether the declared provider is itself an in-scope Pacific ASN or an external carrier.
 CC   Name                      ASNs  w/ ASPA  Upstr in-FB  Upstr ext
 ------------------------------------------------------------------------------
 CK   Cook Islands                 2        1            0          3
@@ -216,7 +216,7 @@ Measurements: {'v4': [215197667, 215198886], 'v6': [215199848, 215200172]}. Deta
 
 IPV6 COVERAGE (adoption signal only -- no IPv6 testing yet)
 ==============================================================================
-45 of 160 in-scope ASNs have >=1 RIS-observed IPv6-originated prefix. 8 of 36 connected Atlas probes work over IPv6 (3 more are IPv6-capable but tagged as not working). Adoption tracking only -- this project deliberately isn't testing IPv6 corridors yet; queued until adoption has advanced further (see TODO below).
+45 of 160 in-scope ASNs have >=1 RIS-observed IPv6-originated prefix. 8 of 37 connected Atlas probes work over IPv6 (3 more are IPv6-capable but tagged as not working). Adoption tracking only -- this project deliberately isn't testing IPv6 corridors yet; queued until adoption has advanced further (see TODO below).
 CC   Name                      ASNs  w/ IPv6
 ------------------------------------------------------------------------------
 AS   American Samoa               2        1
@@ -320,7 +320,7 @@ GU      62689 AS7131    Connected     ASN registered Northern Mariana Islands bu
 GU      65337 AS14593   Connected     Starlink (AS14593): satellite egress via Starlink PoPs, not a local carrier; excluded from corridor candidacy
 KI    1008228 AS14593   Connected     Starlink (AS14593): satellite egress via Starlink PoPs, not a local carrier; excluded from corridor candidacy
 KI    1008229 AS14593   Connected     Starlink (AS14593): satellite egress via Starlink PoPs, not a local carrier; excluded from corridor candidacy
-MH      64237 AS14593   Disconnected  Starlink (AS14593): satellite egress via Starlink PoPs, not a local carrier; excluded from corridor candidacy
+MH      64237 AS14593   Connected     Starlink (AS14593): satellite egress via Starlink PoPs, not a local carrier; excluded from corridor candidacy
 PF      23002 AS2200    Connected     Renater (AS2200): backhauls straight to metropolitan France (~500ms), never touches Pacific transit
 TO      11691 AS24390   Connected     ASN registered Fiji but probe physically in Tonga (geo-audit): counts as a TO vantage point, not FJ; USP (AS24390, registered FJ): regional academic network via AARNet (Australia), not a local commercial carrier; valid source, path unverified
 
