@@ -22,7 +22,7 @@ ZERO CONNECTED PROBES (5/20) -- cannot source or target a traceroute here at all
       Probes: 6 listed, 0 actually useful
         Not useful yet -- fix the data or get it back online: 14446 (Abandoned), 14448 (Never Connected), 21019 (Abandoned), 21159 (Abandoned), 23008 (Abandoned), 23105 (Abandoned)
 
-FRAGILE -- exactly 1 connected probe (9/20) -- a single point of failure, and there's no second probe to cross-check it against. ASNs listed are candidates for a second, independent probe:
+FRAGILE -- exactly 1 connected probe (10/20) -- a single point of failure, and there's no second probe to cross-check it against. ASNs listed are candidates for a second, independent probe:
   CK  Cook Islands [used in a confirmed/candidate finding]
       ASNs: 10131, 152093
       Probes: 7 listed, 1 actually useful
@@ -70,8 +70,14 @@ FRAGILE -- exactly 1 connected probe (9/20) -- a single point of failure, and th
       ASNs: 23917, 133117, 142573
       Probes: 1 listed, 1 actually useful
         Useful (Connected): 7588
+  VU  Vanuatu [used in a confirmed/candidate finding]
+      ASNs: 9249, 45495, 45935, 131166, 132228, 132254, 132429, 132797, 133383, 136949
+      Probes: 8 listed, 1 actually useful
+        Useful (Connected): 64783
+        Not useful yet -- fix the data or get it back online: 1069 (Abandoned), 3322 (Abandoned), 3324 (Abandoned), 14447 (Abandoned), 64531 (Abandoned), 65709 (Abandoned), 1008536 (Disconnected)
+      Local IXP: VIX.VU (Port Vila) -- members: AS132228, AS132797
 
-ADEQUATE -- 2+ connected probes (6/20):
+ADEQUATE -- 2+ connected probes (5/20):
   FM  Micronesia, Federated States of (3 connected)
       Probes: 8 listed, 3 actually useful
         Useful (Connected): 7448, 50897, 62046
@@ -97,11 +103,6 @@ ADEQUATE -- 2+ connected probes (6/20):
       Probes: 10 listed, 7 actually useful
         Useful (Connected): 23002, 30712, 52614, 53098, 54473, 1001562, 1014350
         Not useful yet -- fix the data or get it back online: 22737 (Abandoned), 52814 (Abandoned), 55400 (Abandoned)
-  VU  Vanuatu (2 connected)
-      Probes: 8 listed, 2 actually useful
-        Useful (Connected): 64783, 1008536
-        Not useful yet -- fix the data or get it back online: 1069 (Abandoned), 3322 (Abandoned), 3324 (Abandoned), 14447 (Abandoned), 64531 (Abandoned), 65709 (Abandoned)
-      Local IXP: VIX.VU (Port Vila) -- members: AS132228, AS132797
 
 ==============================================================================
 

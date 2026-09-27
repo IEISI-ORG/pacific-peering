@@ -77,3 +77,69 @@ Corridors `auto_classify.py`'s mechanical rules couldn't confidently resolve on 
 - detail: 103.188.182.1: probe 1011722 11.1ms < 28.5ms minimum (measurement 215228678)
 - action: owner review; if confirmed, add to discovery/excluded_asns.py (offshore_hosted)
 - flagged: 2026-09-24T11:49:55.550669+00:00
+## AS10131 (CK) -> AS9751 (AS)
+- measurement: 216153502
+- reason: no probe data returned
+- detail: Atlas returned zero probe results for this measurement -- most likely a transient results-fetch race (status went terminal moments before results were indexed) rather than a real network outcome; not marked tested so it retries on its own, not a signal about this corridor itself
+- flagged: 2026-09-27T15:06:36.944315+00:00
+
+## AS10131 (CK) -> AS17828 (PG)
+- measurement: 216153814
+- reason: no probe data returned
+- detail: Atlas returned zero probe results for this measurement -- most likely a transient results-fetch race (status went terminal moments before results were indexed) rather than a real network outcome; not marked tested so it retries on its own, not a signal about this corridor itself
+- flagged: 2026-09-27T15:09:58.132290+00:00
+
+## AS7131 (MP) -> AS24390 (FJ)
+- measurement: 216153943
+- reason: unrecognized routing loop
+- detail: probe 65653: loop involving address 103.112.0.226, not in known_anomalies.py
+- flagged: 2026-09-27T15:12:26.023585+00:00
+
+## AS10131 (CK) -> AS24390 (FJ)
+- measurement: 216153954
+- reason: no probe data returned
+- detail: Atlas returned zero probe results for this measurement -- most likely a transient results-fetch race (status went terminal moments before results were indexed) rather than a real network outcome; not marked tested so it retries on its own, not a signal about this corridor itself
+- flagged: 2026-09-27T15:13:20.097674+00:00
+
+## AS3605 (GU) -> AS38198 (TO)
+- measurement: 216154286
+- reason: unrecognized routing loop
+- detail: probe 60689: loop involving address 202.43.12.5, not in known_anomalies.py
+- flagged: 2026-09-27T15:15:44.219904+00:00
+
+## AS10131 (CK) -> AS24439 (MH)
+- measurement: 216154414
+- reason: no probe data returned
+- detail: Atlas returned zero probe results for this measurement -- most likely a transient results-fetch race (status went terminal moments before results were indexed) rather than a real network outcome; not marked tested so it retries on its own, not a signal about this corridor itself
+- flagged: 2026-09-27T15:16:43.235106+00:00
+
+## AS10131 (CK) -> AS45193 (FM)
+- measurement: 216154556
+- reason: no probe data returned
+- detail: Atlas returned zero probe results for this measurement -- most likely a transient results-fetch race (status went terminal moments before results were indexed) rather than a real network outcome; not marked tested so it retries on its own, not a signal about this corridor itself
+- flagged: 2026-09-27T15:20:12.803614+00:00
+
+## AS10131 (CK) -> AS45879 (WF)
+- measurement: 216154870
+- reason: no probe data returned
+- detail: Atlas returned zero probe results for this measurement -- most likely a transient results-fetch race (status went terminal moments before results were indexed) rather than a real network outcome; not marked tested so it retries on its own, not a signal about this corridor itself
+- flagged: 2026-09-27T15:23:34.901267+00:00
+
+## AS10131 (CK) -> AS140504 (NR)
+- measurement: 216155432
+- reason: no probe data returned
+- detail: Atlas returned zero probe results for this measurement -- most likely a transient results-fetch race (status went terminal moments before results were indexed) rather than a real network outcome; not marked tested so it retries on its own, not a signal about this corridor itself
+- flagged: 2026-09-27T15:26:56.500873+00:00
+
+## AS24390 (FJ) -> AS9751 (AS)
+- measurement: 216155552
+- reason: all probes proxy-corrupted
+- detail: every probe in this measurement resolved a known corporate proxy/VPN ASN as its first hop (probe 60575 via Zscaler) -- this source's own probe currently can't produce a real path; needs a human look (a different source, or wait for the proxy egress to genuinely change), not a target-IP retry
+- flagged: 2026-09-27T15:28:10.838773+00:00
+
+## AS24390 (FJ) -> AS24439 (MH)
+- measurement: 216155814
+- reason: all probes proxy-corrupted
+- detail: every probe in this measurement resolved a known corporate proxy/VPN ASN as its first hop (probe 60575 via Zscaler) -- this source's own probe currently can't produce a real path; needs a human look (a different source, or wait for the proxy egress to genuinely change), not a target-IP retry
+- flagged: 2026-09-27T15:33:10.817887+00:00
+
