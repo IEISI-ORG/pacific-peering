@@ -2277,3 +2277,10 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   `PYTHON_VERSION=3.13.3` and `SKIP_DEPENDENCY_INSTALL=1` cut builds from about
   5 min to about 34 s. Cron commits republish the site whenever they carry a
   regenerated report.
+- Zero-probe escalations now report the measurement's live Atlas status
+  (2026-09-28). `Scheduled`/`Failed`/`No suitable probes` means the source
+  probe never ran it; only an empty `Stopped` is still called a fetch race.
+  Prompted by 7 Cook Islands (probe 22761) reverifications that Atlas marked
+  Failed but were escalated as fetch races. The 180s result wait was checked
+  and left alone: all 60 measurements that night had the same result count at
+  the partial fetch as in Atlas's final results.

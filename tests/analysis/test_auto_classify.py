@@ -18,6 +18,9 @@ from __future__ import annotations
 
 import json
 
+import pytest
+import requests
+
 from pacific_peering.analysis import auto_classify
 from pacific_peering.analysis.corridor_backlog import CorridorCandidate
 
@@ -47,6 +50,7 @@ def _patch_common(monkeypatch, tmp_path, triangulation, parsed_hops):
     )
     monkeypatch.setattr(auto_classify, "DEFAULT_ATLAS_PARSED_DIR", tmp_path)
     (tmp_path / f"{measurement_id}.json").write_text(_json_dumps(parsed_hops))
+    monkeypatch.setattr(auto_classify, "fetch_measurement_status", lambda mid: "Stopped")
 
     marked: list[tuple[int, int]] = []
     monkeypatch.setattr(
@@ -77,6 +81,52 @@ def test_zero_probes_escalates_without_marking_tested(monkeypatch, tmp_path):
     assert result.escalations[0].reason == "no probe data returned"
     assert marked == [], "a zero-data result must not permanently mark the corridor tested"
     assert written == [result.escalations]
+
+
+@pytest.mark.parametrize("status", ["Scheduled", "Failed", "No suitable probes"])
+def test_zero_probes_names_a_source_probe_that_never_ran(monkeypatch, tmp_path, status):
+    """Zero data from a measurement Atlas never ran is a source-probe
+    failure, not a fetch race. Caught 2026-09-28: all 7 Cook Islands
+    (probe 22761) reverifications sat in "Scheduled" for the full wait and
+    Atlas later marked them "Failed", yet each escalation blamed a
+    transient results-fetch race."""
+    triangulation = {"measurement_id": 900000001, "target_asn": 24439, "probes": []}
+    marked, _ = _patch_common(monkeypatch, tmp_path, triangulation, parsed_hops=[])
+    monkeypatch.setattr(auto_classify, "fetch_measurement_status", lambda mid: status)
+
+    result = auto_classify.classify_corridor(_candidate())
+
+    detail = result.escalations[0].detail
+    assert result.escalations[0].reason == "no probe data returned"
+    assert f"status={status}" in detail
+    assert "source probe" in detail
+    assert "fetch race" not in detail
+    assert marked == []
+
+
+def test_zero_probes_after_stopped_is_still_a_fetch_race(monkeypatch, tmp_path):
+    triangulation = {"measurement_id": 900000001, "target_asn": 24439, "probes": []}
+    _patch_common(monkeypatch, tmp_path, triangulation, parsed_hops=[])
+
+    result = auto_classify.classify_corridor(_candidate())
+
+    assert "status=Stopped" in result.escalations[0].detail
+    assert "fetch race" in result.escalations[0].detail
+
+
+def test_zero_probes_status_lookup_failure_still_escalates(monkeypatch, tmp_path):
+    triangulation = {"measurement_id": 900000001, "target_asn": 24439, "probes": []}
+    _patch_common(monkeypatch, tmp_path, triangulation, parsed_hops=[])
+
+    def _boom(mid):
+        raise requests.ConnectionError("down")
+
+    monkeypatch.setattr(auto_classify, "fetch_measurement_status", _boom)
+
+    result = auto_classify.classify_corridor(_candidate())
+
+    assert result.escalations[0].reason == "no probe data returned"
+    assert "status=unknown" in result.escalations[0].detail
 
 
 def test_all_probes_proxy_corrupted_still_marks_tested(monkeypatch, tmp_path):
@@ -135,6 +185,7 @@ def test_zero_probes_does_not_retry_against_alternate_target_ip(monkeypatch, tmp
     )
     monkeypatch.setattr(auto_classify, "DEFAULT_ATLAS_PARSED_DIR", tmp_path)
     (tmp_path / f"{measurement_id}.json").write_text(_json_dumps([]))
+    monkeypatch.setattr(auto_classify, "fetch_measurement_status", lambda mid: "Stopped")
     monkeypatch.setattr(auto_classify, "mark_corridor_tested", lambda *a: None)
     monkeypatch.setattr(auto_classify, "_write_escalations", lambda escalations: None)
 

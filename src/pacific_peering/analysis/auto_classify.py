@@ -25,6 +25,10 @@ Classification rules, in priority order, per probe:
    escalation with an empty `()` in its own detail string -- the tell that
    nothing had actually been checked. Deliberately does not mark the
    corridor tested, unlike every other rule here, so it retries on its own.
+   The escalation detail reports the measurement's live Atlas status
+   (`_zero_probe_detail`): a measurement that never left "Scheduled" or
+   ended "Failed" means the source probe never ran it, not a fetch race
+   (caught 2026-09-28, Cook Islands probe 22761).
 0. **Proxy/VPN / non-local egress check** (`NON_LOCAL_FIRST_HOP_ASNS`:
    `KNOWN_PROXY_ASNS` plus Starlink AS14593, added 2026-09-25 as the guard for
    dual-uplink probe 62046 and Starlink-hosted probes picked by country
@@ -85,6 +89,8 @@ from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
 
+import requests
+
 from pacific_peering.analysis import known_anomalies
 from pacific_peering.analysis import store as _store
 from pacific_peering.analysis.corridor_backlog import (
@@ -105,6 +111,7 @@ from pacific_peering.atlas.asn_probes import (
     DEFAULT_REGISTRY_PATH as ASN_PROBE_REGISTRY_PATH,
     load_asn_probe_registry,
 )
+from pacific_peering.atlas.client import fetch_measurement_status
 from pacific_peering.atlas.smoketest import run_smoketest
 from pacific_peering.atlas.targets import has_routing_loop, list_target_ips
 from pacific_peering.discovery import cloudflare_radar
@@ -262,6 +269,50 @@ def _fire_measurement(candidate: CorridorCandidate, target_ip: str) -> int:
     )
 
 
+# Statuses meaning Atlas never ran the measurement on the source probe at
+# all (it sat unassigned, or Atlas gave up on it). Zero results after one of
+# these is a fact about the source probe, not a results-fetch race.
+_SOURCE_NEVER_RAN_STATUSES = ("Specified", "Scheduled", "Failed", "No suitable probes")
+
+
+def _zero_probe_detail(measurement_id: int) -> str:
+    """Explain a zero-probe measurement from its live Atlas status.
+
+    Caught 2026-09-28: all 7 Cook Islands (probe 22761) reverifications sat
+    in "Scheduled" for the full wait and Atlas later marked them "Failed",
+    yet every escalation blamed a transient results-fetch race -- the only
+    explanation this branch used to offer. A status lookup failure falls
+    back to "unknown" rather than failing the escalation itself.
+    """
+    try:
+        status = fetch_measurement_status(measurement_id)
+    except requests.RequestException as exc:
+        logger.warning("Measurement %d: status lookup failed (%s)", measurement_id, exc)
+        status = "unknown"
+    suffix = (
+        "; not marked tested so it retries on its own, not a signal about "
+        "this corridor itself"
+    )
+    if status in _SOURCE_NEVER_RAN_STATUSES:
+        return (
+            f"Atlas returned zero probe results (status={status}) -- the "
+            "source probe never ran this measurement, so check that probe "
+            "(it can read as Connected in the probe list while still not "
+            "taking measurements) before re-firing from it" + suffix
+        )
+    if status == "unknown":
+        return (
+            "Atlas returned zero probe results (status=unknown -- the status "
+            "lookup itself failed), so this can't be told apart from a "
+            "source-probe failure or a results-fetch race" + suffix
+        )
+    return (
+        f"Atlas returned zero probe results (status={status}) -- most likely "
+        "a transient results-fetch race (status went terminal moments before "
+        "results were indexed) rather than a real network outcome" + suffix
+    )
+
+
 def _escalate_and_return(
     escalations: list[_Escalation],
     candidate: CorridorCandidate,
@@ -383,13 +434,7 @@ def classify_corridor(
             candidate,
             measurement_id,
             reason="no probe data returned",
-            detail=(
-                "Atlas returned zero probe results for this measurement -- "
-                "most likely a transient results-fetch race (status went "
-                "terminal moments before results were indexed) rather than "
-                "a real network outcome; not marked tested so it retries "
-                "on its own, not a signal about this corridor itself"
-            ),
+            detail=_zero_probe_detail(measurement_id),
             lock=lock,
             also_mark_tested=False,
         )
