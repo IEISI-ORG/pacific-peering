@@ -149,6 +149,7 @@ def resolve_traceroute_hops(
     hops: list[dict],
     cache_path: Path = DEFAULT_CACHE_PATH,
     ixp_registry_path: Path = DEFAULT_REGISTRY_PATH,
+    persist: bool = True,
 ) -> list[HopResolution]:
     """Resolve every hop's responding address(es) to an ASN (or IXP context).
 
@@ -159,6 +160,10 @@ def resolve_traceroute_hops(
         ixp_registry_path: Where to load the IXP LAN subnet registry
             from (see `ixp_lan_registry`); an empty registry (e.g. if it
             hasn't been built yet) just means tier 3 never matches.
+        persist: save the cache afterwards. The feasibility check passes
+            False: it re-resolves a trace just analyzed (all cache hits),
+            and a batch worker saving a stale snapshot would drop entries
+            other workers just added.
     """
     cache = IpResolutionCache.load(cache_path)
     ixp_registry = load_ixp_lan_registry(ixp_registry_path) if ixp_registry_path.exists() else {}
@@ -178,7 +183,8 @@ def resolve_traceroute_hops(
                 ixp_context=ixp_context,
             )
         )
-    cache.save()
+    if persist:
+        cache.save()
     return resolved
 
 

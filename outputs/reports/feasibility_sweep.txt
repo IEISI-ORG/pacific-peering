@@ -1,0 +1,94 @@
+Validation Rule 2 feasibility sweep -- report only, no findings changed
+(analysis/feasibility_sweep.py). Floors: fibre at 2/3 c, capital-city coordinates.
+
+Confirmed detours: 175 -- impossible 2, mixed 1, ok 101, unchecked 71
+Per probe trace: hub: no_hop 193, ok 170; target_via_hub: impossible 9, no_hop 263, ok 91
+
+IMPOSSIBLE (every checkable claim probe breaks a floor) / MIXED (some do, some don't).
+Claim probes: those that crossed the hub IXP, or all probes if none did; Starlink/proxy
+first hops excluded. Only the offending probes are listed:
+  #226 GU -> GU AS3605 via Tokyo [impossible]
+    msm 213204606 probe 23039 (GU): target_via_hub hop 7 1.211ms vs floor 49.45ms (x0.02); direct floor 0.0ms
+    msm 213204606 probe 64953 (GU): target_via_hub hop 5 7.699ms vs floor 49.45ms (x0.16); direct floor 0.0ms
+  #54 GU -> PW AS17893 via Tokyo [mixed]
+    msm 212237085 probe 60703 (GU): target_via_hub hop 4 19.623ms vs floor 49.99ms (x0.39); direct floor 5.91ms
+  #115 NC -> FJ AS45355 via Sydney [impossible]
+    msm 210996533 probe 61210 (NC): target_via_hub hop 8 37.887ms vs floor 40.42ms (x0.94); direct floor 1.82ms
+    msm 210996533 probe 63050 (NC): target_via_hub hop 8 38.077ms vs floor 40.42ms (x0.94); direct floor 1.82ms
+    msm 210996533 probe 7018 (NC): target_via_hub hop 8 37.05ms vs floor 40.42ms (x0.92); direct floor 1.82ms
+    msm 212237062 probe 61210 (NC): target_via_hub hop 8 37.841ms vs floor 40.42ms (x0.94); direct floor 1.82ms
+    msm 212237062 probe 63050 (NC): target_via_hub hop 8 37.937ms vs floor 40.42ms (x0.94); direct floor 1.82ms
+    msm 212237062 probe 7018 (NC): target_via_hub hop 8 37.029ms vs floor 40.42ms (x0.92); direct floor 1.82ms
+
+Unchecked (no hub-IXP hop with an RTT, and no trace reached its target) / skipped:
+  #21 GU -> FJ via Tokyo: no checkable hop
+  #22 NU -> FJ via Sydney: no checkable hop
+  #228 GU -> GU via Tokyo: no checkable hop
+  #23 NU -> GU via Los Angeles: no checkable hop
+  #24 TV -> GU via Los Angeles: no checkable hop
+  #32 FM -> AS via San Jose: no checkable hop
+  #49 CK -> PG via Sydney: no checkable hop
+  #52 PF -> PG via Sydney: no checkable hop
+  #57 FM -> WS via Sydney: no checkable hop
+  #58 GU -> WS via Sydney: no checkable hop
+  #62 PW -> WS via Sydney: no checkable hop
+  #64 NU -> NC via Sydney: no checkable hop
+  #65 FM -> AS via Sydney: no checkable hop
+  #68 CK -> FJ via Los Angeles: no checkable hop
+  #69 MP -> FJ via Sydney: no checkable hop
+  #70 PF -> FJ via Los Angeles: no checkable hop
+  #71 PG -> FJ via Sydney: no checkable hop
+  #72 PW -> FJ via Sydney: no checkable hop
+  #73 CK -> MH via Los Angeles: no checkable hop
+  #74 FJ -> MH via Los Angeles: no checkable hop
+  #75 FM -> MH via Los Angeles: no checkable hop
+  #76 GU -> MH via Tokyo: no checkable hop
+  #77 MP -> MH via Sydney: no checkable hop
+  #78 NC -> MH via Los Angeles: no checkable hop
+  #79 NU -> MH via Los Angeles: no checkable hop
+  #80 PF -> MH via Los Angeles: no checkable hop
+  #81 PG -> MH via Los Angeles: no checkable hop
+  #82 PW -> MH via Tokyo: no checkable hop
+  #83 TV -> MH via Los Angeles: no checkable hop
+  #84 VU -> MH via Tokyo: no checkable hop
+  #85 NU -> PG via Sydney: no checkable hop
+  #86 PW -> PG via Sydney: no checkable hop
+  #90 FM -> TO via Sydney: no checkable hop
+  #91 GU -> TO via Sydney: no checkable hop
+  #96 PG -> TO via Sydney: no checkable hop
+  #97 PW -> TO via Sydney: no checkable hop
+  #100 FJ -> TO via Sydney: no checkable hop
+  #101 FM -> TO via Sydney: no checkable hop
+  #103 NU -> TO via Sydney: no checkable hop
+  #105 FM -> WS via Sydney: no checkable hop
+  #118 CK -> WF via Tokyo: no checkable hop
+  #119 FJ -> WF via Los Angeles: no checkable hop
+  #120 FM -> WF via Los Angeles: no checkable hop
+  #121 GU -> WF via Tokyo: no checkable hop
+  #122 MP -> WF via Tokyo: no checkable hop
+  #123 NC -> WF via Los Angeles: no checkable hop
+  #124 NU -> WF via Los Angeles: no checkable hop
+  #125 PF -> WF via Tokyo: no checkable hop
+  #126 PG -> WF via Los Angeles: no checkable hop
+  #127 PW -> WF via Los Angeles: no checkable hop
+  #128 TV -> WF via Los Angeles: no checkable hop
+  #129 VU -> WF via Tokyo: no checkable hop
+  #132 FM -> SB via Sydney: no checkable hop
+  #133 GU -> SB via Tokyo: no checkable hop
+  #138 PG -> SB via Sydney: no checkable hop
+  #139 PW -> SB via Sydney: no checkable hop
+  #144 GU -> PF via Los Angeles: no checkable hop
+  #145 MP -> PF via Los Angeles: no checkable hop
+  #146 TV -> PF via Los Angeles: no checkable hop
+  #147 VU -> PF via Los Angeles: no checkable hop
+  #151 FM -> SB via Sydney: no checkable hop
+  #153 FM -> TO via Sydney: no checkable hop
+  #156 FM -> SB via Sydney: no checkable hop
+  #158 FM -> WS via Sydney: no checkable hop
+  #159 CK -> NR via Los Angeles: no checkable hop
+  #160 PF -> NR via Los Angeles: no checkable hop
+  #163 FM -> WS via Sydney: no checkable hop
+  #167 NU -> CK via Sydney: no checkable hop
+  #170 FM -> NR via Los Angeles: no checkable hop
+  #175 FM -> WS via Sydney: no checkable hop
+  #176 NU -> KI via Sydney: no checkable hop

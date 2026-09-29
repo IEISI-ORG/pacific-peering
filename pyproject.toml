@@ -32,6 +32,7 @@ pacific-peering-triangulate = "pacific_peering.analysis.traceroute_topology:main
 pacific-peering-investigate-hop = "pacific_peering.analysis.hop_investigation:main"
 pacific-peering-corridor-backlog = "pacific_peering.analysis.corridor_backlog:main"
 pacific-peering-feasibility = "pacific_peering.analysis.feasibility:main"
+pacific-peering-feasibility-sweep = "pacific_peering.analysis.feasibility_sweep:main"
 pacific-peering-ixp-lan-registry = "pacific_peering.analysis.ixp_lan_registry:main"
 pacific-peering-irr-leads = "pacific_peering.analysis.irr_leads:main"
 pacific-peering-pipeline = "pacific_peering.pipeline:main"

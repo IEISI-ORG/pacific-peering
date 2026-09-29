@@ -99,6 +99,14 @@ from pacific_peering.analysis.corridor_backlog import (
     mark_corridor_tested,
     pick_next_corridor,
 )
+from pacific_peering.analysis.feasibility import (
+    VERDICT_IMPOSSIBLE,
+    VERDICT_MIXED,
+    check_detour_trace,
+    claim_probes,
+    claim_verdict,
+    probe_verdict,
+)
 from pacific_peering.analysis.ixp_lan_registry import (
     DEFAULT_REGISTRY_PATH as IXP_REGISTRY_PATH,
     load_ixp_lan_registry,
@@ -106,6 +114,7 @@ from pacific_peering.analysis.ixp_lan_registry import (
 from pacific_peering.analysis.traceroute_topology import (
     DEFAULT_ATLAS_PARSED_DIR,
     analyze_measurement,
+    resolve_traceroute_hops,
 )
 from pacific_peering.atlas.asn_probes import (
     DEFAULT_REGISTRY_PATH as ASN_PROBE_REGISTRY_PATH,
@@ -118,7 +127,7 @@ from pacific_peering.atlas.targets import has_routing_loop, list_target_ips
 from pacific_peering.discovery import cloudflare_radar
 from pacific_peering.discovery.bgp_tools import fetch_asn_names
 from pacific_peering.discovery.economies import ECONOMIES_BY_CC
-from pacific_peering.discovery.economy_coordinates import EXTERNAL_HUB_LATLON
+from pacific_peering.discovery.economy_coordinates import ECONOMY_LATLON, ECONOMY_SPREAD_KM, EXTERNAL_HUB_LATLON
 
 logger = logging.getLogger(__name__)
 
@@ -312,6 +321,64 @@ def _zero_probe_detail(measurement_id: int) -> str:
         "a transient results-fetch race (status went terminal moments before "
         "results were indexed) rather than a real network outcome" + suffix
     )
+
+
+def _detour_feasibility(
+    candidate: CorridorCandidate,
+    measurement_id: int,
+    clean_probe_ids: set[int],
+    hub_city: str,
+    ix_city: dict[int, str],
+) -> tuple[str, str] | None:
+    """Validation Rule 2 on a detour about to be filed: `(verdict, detail)` if
+    impossible or mixed, else None (consistent, or nothing checkable).
+
+    Owner, 2026-09-29, after a report-only sweep of the corpus
+    (`feasibility_sweep`, outputs/reports/feasibility_sweep.txt): an RTT below
+    the fibre floor for source->hub->target means the path can't have gone
+    via the hub. Seen: a target address that answers too fast to be in its
+    economy (offshore-hosted), and hubs inferred rather than measured. The
+    vantage is `candidate.source_cc`, which reverification already corrects
+    to where the probes really are.
+    """
+    if candidate.source_cc not in ECONOMY_LATLON or candidate.target_cc not in ECONOMY_LATLON:
+        return None
+    path = DEFAULT_ATLAS_PARSED_DIR / f"{measurement_id}.json"
+    try:
+        traces = [t for t in json.loads(path.read_text()) if t["probe_id"] in clean_probe_ids]
+    except (OSError, ValueError, KeyError, TypeError) as e:
+        logger.warning("Feasibility check skipped for measurement %d (%s)", measurement_id, e)
+        return None
+    try:
+        checks = claim_probes([
+            check_detour_trace(
+                t, resolve_traceroute_hops(t["hops"], persist=False), ECONOMY_LATLON[candidate.source_cc],
+                EXTERNAL_HUB_LATLON[hub_city], hub_city, ECONOMY_LATLON[candidate.target_cc], ix_city,
+                ECONOMY_SPREAD_KM.get(candidate.source_cc, 0.0), ECONOMY_SPREAD_KM.get(candidate.target_cc, 0.0),
+            )
+            for t in traces
+        ])
+    except (OSError, ValueError, KeyError, TypeError, requests.RequestException) as e:
+        # After credits are spent: skip the check and file as before, never lose the result.
+        logger.warning("Feasibility check skipped for measurement %d (%s)", measurement_id, e)
+        return None
+    verdict = claim_verdict(checks)
+    if verdict not in (VERDICT_IMPOSSIBLE, VERDICT_MIXED):
+        return None
+    parts = []
+    for c in checks:
+        if probe_verdict(c) != VERDICT_IMPOSSIBLE:
+            continue
+        for name in ("hub", "target_via_hub"):
+            r = c[name]
+            if r["verdict"] == VERDICT_IMPOSSIBLE:
+                parts.append(f"probe {c['probe_id']} {name} hop {r['hop']} {r['rtt_ms']}ms < {r['floor_ms']}ms floor")
+    detail = "; ".join(parts) + (
+        f" (direct floor {checks[0]['target_direct']['floor_ms']}ms). "
+        + ("Not filed as a detour -- " if verdict == VERDICT_IMPOSSIBLE else "Filed; some hub-crossing probes are fine -- ")
+        + "check whether the target address is offshore-hosted or the hub hop mislocated."
+    )
+    return verdict, detail
 
 
 def _escalate_and_return(
@@ -565,6 +632,22 @@ def classify_corridor(
                 ),
             )
         )
+
+    if detour_pick is not None:
+        feasibility = _detour_feasibility(
+            candidate, measurement_id, {p["probe_id"] for p in clean_probes}, detour_pick[2],
+            {ix_id: e.city for ix_id, e in ixp_registry.items()},
+        )
+        if feasibility is not None:
+            verdict, detail = feasibility
+            escalations.append(_Escalation(
+                candidate=candidate,
+                measurement_id=measurement_id,
+                reason=f"detour via {detour_pick[2]} physically {verdict} (Validation Rule 2)",
+                detail=detail,
+            ))
+            if verdict == VERDICT_IMPOSSIBLE:
+                detour_pick = None  # not filed: escalated for a human read instead
 
     def _finalize() -> ClassifyResult:
         conn = _store.connect()

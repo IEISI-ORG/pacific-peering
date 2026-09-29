@@ -118,6 +118,120 @@ def compare_direct_vs_relay(
     }
 
 
+VERDICT_OK = "ok"
+VERDICT_IMPOSSIBLE = "impossible"  # observed RTT below the physical floor
+VERDICT_NO_HOP = "no_hop"  # the path never showed the hop this check needs
+
+
+def _rtt_check(rtt_ms: float | None, hop: int | None, distance_km: float) -> dict:
+    floor = min_feasible_rtt_ms(distance_km)
+    if rtt_ms is None:
+        return {"verdict": VERDICT_NO_HOP, "hop": hop, "floor_ms": round(floor, 2)}
+    return {
+        "verdict": VERDICT_OK if rtt_ms >= floor else VERDICT_IMPOSSIBLE,
+        "hop": hop,
+        "rtt_ms": rtt_ms,
+        "floor_ms": round(floor, 2),
+        "ratio": round(rtt_ms / floor, 2) if floor > 0 else None,
+    }
+
+
+def check_detour_trace(
+    traceroute: dict,
+    resolved_hops: list,
+    source_latlon: tuple[float, float],
+    hub_latlon: tuple[float, float],
+    hub_city: str,
+    target_latlon: tuple[float, float],
+    ix_city: dict[int, str],
+    source_spread_km: float = 0.0,
+    target_spread_km: float = 0.0,
+) -> dict:
+    """Validation Rule 2 for one probe's trace of a claimed detour via `hub_city`.
+
+    Two floors, both hard physical lower bounds (fibre at ~2/3 c):
+
+    - hub: the first hop on an IXP LAN whose city is `hub_city` must show at
+      least the source->hub floor. Below it, that router can't be in the hub
+      city (wrong registry city, or a remote-peering/fabric extension), so
+      the detour claim rests on a mislocated hop.
+    - target: the hop where the trace *reached its target address* must show
+      at least the source->hub->target floor. Below it, the path can't have
+      gone via the hub. Only the destination itself counts: any other
+      target-ASN router may be that network's own PoP near the source or
+      the hub (e.g. a Fiji carrier's Sydney router), and hop 255 can come
+      from one (code review, 2026-09-29). A trace that didn't reach the
+      target, or has no recorded target, isn't checked. The direct
+      source->target floor is reported alongside.
+
+    Distances shrink by each end's `*_spread_km` (capital to farthest
+    inhabited island, `economy_coordinates.ECONOMY_SPREAD_KM`), since the
+    coordinates are capital-city level and the floor must stay a lower bound
+    wherever the probe or target really is. Hops with more than one address
+    (ECMP) never supply an RTT: `min_rtt_ms` is the minimum across all of
+    them, so it may not belong to the router being checked.
+
+    Cumulative RTTs only ever overstate a segment, so neither check can
+    false-flag a slow path; a high RTT is never evidence against the claim.
+    `resolved_hops` are `traceroute_topology.resolve_traceroute_hops` output
+    for this trace; `ix_city` maps IXP id to its registry city.
+    """
+    single = {h["hop"]: h.get("min_rtt_ms") for h in traceroute["hops"] if len(h.get("addresses", [])) == 1}
+    hub_hop = next(
+        (h.hop for h in resolved_hops
+         if h.ixp_context is not None and ix_city.get(h.ixp_context.get("ix_id")) == hub_city),
+        None,
+    )
+    target = traceroute.get("target")
+    target_hop = next(
+        (h["hop"] for h in traceroute["hops"] if target is not None and target in h.get("addresses", [])), None
+    )
+    src_hub_km = max(0.0, great_circle_km(*source_latlon, *hub_latlon) - source_spread_km)
+    hub_tgt_km = max(0.0, great_circle_km(*hub_latlon, *target_latlon) - target_spread_km)
+    direct_km = max(0.0, great_circle_km(*source_latlon, *target_latlon) - source_spread_km - target_spread_km)
+    return {
+        "probe_id": traceroute["probe_id"],
+        "hub": _rtt_check(single.get(hub_hop), hub_hop, src_hub_km),
+        "target_via_hub": _rtt_check(single.get(target_hop), target_hop, src_hub_km + hub_tgt_km),
+        "target_direct": _rtt_check(single.get(target_hop), target_hop, direct_km),
+    }
+
+
+VERDICT_MIXED = "mixed"  # some probes consistent with the claim, others not
+_CLAIM_CHECKS = ("hub", "target_via_hub")
+
+
+def probe_verdict(check: dict) -> str:
+    """One probe: impossible if it breaks either floor, ok if it passed one, else no_hop."""
+    verdicts = {check[c]["verdict"] for c in _CLAIM_CHECKS}
+    if VERDICT_IMPOSSIBLE in verdicts:
+        return VERDICT_IMPOSSIBLE
+    return VERDICT_OK if VERDICT_OK in verdicts else VERDICT_NO_HOP
+
+
+def claim_probes(checks: list[dict]) -> list[dict]:
+    """The probes a detour claim rests on, from one measurement's checks.
+
+    If any probe actually crossed the hub IXP, only those: country-sourced
+    measurements mix source ASNs, and a probe that went direct (e.g. GU
+    AS152735 via Guam IX while AS3605 detours via Tokyo) doesn't contradict
+    the probes that detoured. If none did (a hub inferred from carrier
+    chains, as on hand-filed findings), the claim covers every probe.
+    """
+    # By hop, not verdict: a hub hop with no usable RTT still shows the probe
+    # crossed it, and must not let direct-routing probes in (code review).
+    crossed = [c for c in checks if c["hub"]["hop"] is not None]
+    return crossed or checks
+
+
+def claim_verdict(checks: list[dict]) -> str:
+    """ok / impossible / mixed across claim probes; no_hop if none was checkable."""
+    verdicts = {probe_verdict(c) for c in checks} - {VERDICT_NO_HOP}
+    if not verdicts:
+        return VERDICT_NO_HOP
+    return verdicts.pop() if len(verdicts) == 1 else VERDICT_MIXED
+
+
 def analyze_measurement_feasibility(
     measurement_id: int,
     source_point: str,

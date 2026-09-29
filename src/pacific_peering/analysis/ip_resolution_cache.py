@@ -12,6 +12,8 @@ idempotent across runs, not just within one.
 from __future__ import annotations
 
 import json
+import os
+import threading
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -58,4 +60,7 @@ class IpResolutionCache:
     def save(self) -> None:
         """Write all cached entries back to this cache's file."""
         self.path.parent.mkdir(parents=True, exist_ok=True)
-        self.path.write_text(json.dumps(self.entries, indent=2) + "\n")
+        # Atomic: concurrent batch workers load this file while others save it.
+        tmp = self.path.with_name(f"{self.path.name}.{os.getpid()}.{threading.get_ident()}.tmp")
+        tmp.write_text(json.dumps(self.entries, indent=2) + "\n")
+        os.replace(tmp, self.path)

@@ -30,6 +30,35 @@ ECONOMY_LATLON: dict[str, tuple[float, float]] = {
     "MP": (15.1780, 145.7500),  # Saipan
 }
 
+# Approximate great-circle distance (km) from each capital above to the
+# economy's farthest inhabited island, rounded up. Validation Rule 2
+# (`analysis.feasibility`) subtracts it from any distance it turns into an
+# RTT floor, so the floor stays a real lower bound wherever in the economy a
+# probe or target sits (added 2026-09-29 after code review: Kiritimati is
+# ~3,300 km from Tarawa). Estimates, not survey data -- err high.
+ECONOMY_SPREAD_KM: dict[str, float] = {
+    "FJ": 700,  # Rotuma
+    "PG": 1100,  # Manus / Bougainville
+    "SB": 700,  # Temotu
+    "VU": 500,  # Torres Islands
+    "NC": 450,  # Belep / Loyalty Islands
+    "WS": 150,
+    "TO": 650,  # Niuafo'ou
+    "PF": 1700,  # Gambier / Marquesas
+    "CK": 1400,  # Penrhyn
+    "NU": 25,
+    "AS": 150,  # Manu'a / Swains
+    "WF": 250,  # Futuna
+    "TV": 450,  # Nanumea / Niulakita
+    "GU": 50,
+    "FM": 1500,  # Yap
+    "PW": 650,  # Hatohobei
+    "MH": 1000,  # Enewetak
+    "KI": 3400,  # Kiritimati (Line Islands)
+    "NR": 15,
+    "MP": 150,  # Rota / Tinian (northern islands barely inhabited)
+}
+
 # Reference points outside the 20 in-scope economies, needed to draw
 # confirmed out-of-fishbowl detour hubs on the same map.
 EXTERNAL_HUB_LATLON: dict[str, tuple[float, float]] = {

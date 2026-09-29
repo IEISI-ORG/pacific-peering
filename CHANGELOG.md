@@ -2301,3 +2301,18 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   Prompted by SPC planning to take probe 60575 off its Zscaler VPN link.
   The nightly probe-gap step moved ahead of the batch, and is now
   failure-tolerant.
+- Validation Rule 2 (latency feasibility) now runs on every automatically
+  filed detour. `feasibility.check_detour_trace` checks the RTT at the hub
+  IXP hop against the source->hub fibre floor, and the RTT where the trace
+  reached its target against the source->hub->target floor. Every distance
+  is shrunk by a per-economy spread (`ECONOMY_SPREAD_KM`), ECMP hops are
+  skipped, and only probes that crossed the hub are used. An impossible
+  detour is escalated, not filed; a mixed one is filed and escalated.
+  Previously the check existed only as a one-off CLI, used once on
+  2026-09-13.
+- `pacific-peering-feasibility-sweep`: a report-only Rule 2 pass over all
+  existing confirmed detours (`outputs/reports/feasibility_sweep.txt`). First
+  run: 101 ok, 71 unchecked, 2 impossible (#115, #226), 1 mixed (#54). No
+  findings changed.
+- `IpResolutionCache.save()` is atomic; `resolve_traceroute_hops(persist=False)`
+  re-resolves without writing the shared cache.

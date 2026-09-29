@@ -3248,3 +3248,28 @@ Both ASNs stay in scope. Their first targets are unchanged: `202.65.32.1` and `1
   - **Never un-excludes anything.**
 - **Nightly script:** the probe-gap step (which rebuilds the listing) moved ahead of the batch and is now failure-tolerant, and the probe watch runs right after it. Tomorrow's run (Wednesday) sets the baseline and traces 60575.
 - **Tests and checks:** 18 new tests (6 reverify, 12 probe-watch), 123 pass. `first_egress_asn` was checked on real traces: 216155552/60575 → AS53813 Zscaler, 212091988/11691 → AS24390.
+
+**Validation Rule 2 (latency feasibility) wired into nightly classification, after a report-only sweep (owner, 2026-09-29).** Asked "what happened to our latency checking code?". `feasibility.py` (built 2026-09-13) had only ever been run once, by hand, with 3 hard-coded reference points; nightly detours were confirmed on Rule 1 (RIS + Atlas) alone. The local-IXP >10ms flag (`fbb553d`) *is* live, but has had almost nothing to check: 1 local-IXP crossing in 110 corroborations since 09-20.
+- **Check** (`feasibility.check_detour_trace`, fibre at 2/3 c), hardened after code review:
+  - The RTT at the first hop on a hub-city IXP LAN must be at least the source→hub floor.
+  - The RTT at the hop where the trace **reached its target address** must be at least the source→hub→target floor. A trace that didn't reach its target, or has no recorded target (86 legacy traces), isn't target-checked: a target network's router near the hub, or a hop-255 reply from one, legitimately sits below that floor.
+  - Every distance is shrunk by each end's `economy_coordinates.ECONOMY_SPREAD_KM` (capital → farthest inhabited island, my estimates, rounded up; e.g. KI 3400 for Kiritimati, FM 1500 for Yap, PF 1700). That keeps capital-city coordinates a true lower bound. **Owner: sanity-check those spreads.**
+  - ECMP hops (more than one address; 84 of 18,856) never supply an RTT.
+  - `claim_probes` uses only probes whose trace shows the hub hop, with or without an RTT, if any do.
+  - Cumulative RTT can only overstate a segment, so a slow path is never flagged.
+- **Code review (code-reviewer agent) found 5 defects in the first version, all fixed:**
+  - using the first or last target-ASN hop instead of the destination
+  - capital-city coordinates for spread-out economies
+  - a hub hop with no RTT letting direct probes in
+  - IP-cache races: `resolve_traceroute_hops(persist=False)` for read-only re-resolution, and `IpResolutionCache.save()` is now atomic
+  - ECMP RTTs
+- **Sweep** (`pacific-peering-feasibility-sweep`, report only, `outputs/reports/feasibility_sweep.txt`, Starlink/proxy first hops excluded): of 175 confirmed detours, 101 ok, 71 unchecked, 2 impossible, 1 mixed.
+  - **#226 GU→GU AS3605 "via Tokyo" — impossible:** the JPNAP Tokyo crossing appears only in Starlink probe 65337's trace (its corroboration was removed 2026-09-25). Terrestrial probe 23039 reaches the target at 1.2ms.
+  - **#115 NC→FJ Digicel AS45355 via Sydney — impossible:** the Equinix Sydney crossing is real (23ms). The target 103.101.240.1 answers at 37ms, which is 0.92–0.94 of even the spread-reduced floor, so that address can't be anywhere in Fiji. This suggests offshore-hosted Digicel Fiji address space.
+  - **#54 GU→PW via Tokyo — mixed:** AS3605 probe 329 detours via IIJ Tokyo and Cogent (150ms). AS152735 probe 60703 goes via Guam IX (19ms).
+  - **Hand-read only, below what the automated check can prove:**
+    - **#228 GU→GU AS9246 "via BBIX Tokyo"** has the same Starlink-only pattern as #226, but no terrestrial trace reached the exact target IP.
+    - **#170 FM→NR "via Los Angeles"**: no LA crossing, and NR answers at 116ms, well under the via-LA floor. The detour looks real but the hub looks wrong. Its legacy traces have no recorded target.
+  - **Not changed; owner's call:** what to do with each of these.
+- **Nightly wiring:** `auto_classify._detour_feasibility` runs whenever a detour is about to be filed. An **impossible** detour is escalated ("detour via X physically impossible (Validation Rule 2)") and not filed. A **mixed** one is filed and also escalated. Any error inside the check skips it and files as before, so no result is lost after credits are spent. Replayed on real data: #115's measurement → impossible; TO→WS #235 → passes.
+- **Tests:** 6 new, 129 pass.
