@@ -3371,11 +3371,15 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
     ConfirmedDetour(
         source_cc="FM", target_cc="NR", target_asn=152706,
         detour_ix_name="AS4637 (Telstra Global), then AS6453 (Tata Communications)",
-        detour_hub="Los Angeles", measurement_id=212143020, ris_observation_count=292,
+        detour_hub="Tokyo", measurement_id=212143020, ris_observation_count=292,
         note=(
             "Third confirmation of AS6453(Tata)<->AS152706 (after GU, VU). "
             "`AS139759 -> AS9246 -> AS4637 -> AS6453 -> AS152706`, RIS agrees "
-            "exactly (292). `has_routing_loop` False."
+            "exactly (292). `has_routing_loop` False. Hub corrected Los Angeles "
+            "-> Tokyo (owner, 2026-09-29): Telstra hops geolocate to Tokyo (RIPE "
+            "IPmap), Tata 209.58.61.40 is `tcore1.tv2-tokyo.as6453.net`, then "
+            "180.87.180.33 `pv4-piti` (Guam) before NR at 116ms -- FM -> Guam -> "
+            "Tokyo -> Guam -> NR."
         ),
     ),
     ConfirmedDetour(

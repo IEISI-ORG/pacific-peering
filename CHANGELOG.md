@@ -2312,8 +2312,15 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   2026-09-13.
 - `pacific-peering-feasibility-sweep`: a report-only Rule 2 pass over all
   existing confirmed detours (`outputs/reports/feasibility_sweep.txt`). First
-  run: 101 ok, 71 unchecked, 2 impossible (#115, #226), 1 mixed (#54). No
-  findings changed.
+  run after the physics fix below: 102 ok, 70 unchecked, 1 mixed (#54),
+  0 impossible. No findings changed by the sweep itself.
+- Rule 2 target floor corrected: forward source->hub->target plus a direct
+  return, not twice the detour. A reply needn't retrace the detour; #115's
+  target is in Fiji (a Sydney probe pings it at 38.6ms).
+- #170 FM->NR hub relabelled Los Angeles -> Tokyo, from hop geolocation
+  (Tata `tv2-tokyo`, Telstra hops in Tokyo, back via Tata `pv4-piti` Guam).
+- Both reports carry a "found a bug? open a GitHub issue" notice near the
+  top (red box in HTML).
 - Retracted findings #226 and #228 (GU domestic "via Tokyo" detours whose
   only Tokyo crossing came from Starlink probe 65337); their corridors are
   un-marked for an honest retest.

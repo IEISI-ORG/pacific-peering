@@ -3280,3 +3280,17 @@ Both ASNs stay in scope. Their first targets are unchanged: `202.65.32.1` and `1
 - **Un-marked as tested:** (17456, 3605) and (17456, 9246), per the finding-25 precedent, so an honest retest can happen. The backlog now proposes AS17456→AS9246 again, so tonight's batch retests it from terrestrial probes with the Starlink guard and the Rule 2 check. AS17456→AS3605 isn't re-proposed by the backlog rules.
 - **Regenerated:** export, reports and map. Neither id is left in the export. 129 tests pass.
 - **Still the owner's call:** #115, #170 and #54.
+
+**#115 checked, Rule 2 physics corrected, #170 relabelled, #54 kept, feedback box added (owner, 2026-09-29).**
+- **#115 NC→FJ Digicel AS45355 via Sydney is NOT offshore, and my earlier "impossible" call was a physics error.**
+  - The 09-24 offshore check had already judged 103.101.240.1 "consistent". The raw pings (measurement 215228255) show why: Superloop's Sydney probe 1008123 sees 38.6ms, above the 32.2ms Sydney→Suva fibre floor. A Sydney-hosted address would answer in a few ms.
+  - The flaw was the Rule 2 target floor, which assumed the reply retraces the detour (2× the forward distance). An ICMP reply can return directly (Suva→Nouméa).
+  - **Fixed:** the target floor is now forward source→hub→target plus direct target→source. The hub-hop floor stays symmetric, since a hub's reply can't beat the direct hub→source distance. Under the corrected floor, #115 (37ms vs a floor of about 21ms) is consistent. The #226/#228 retractions still hold (floor 24.7ms vs 1.2/8.4ms observed), and they also rested on the Starlink-only Tokyo crossing.
+  - Corrected sweep: 102 ok, 70 unchecked, 1 mixed (#54), 0 impossible.
+- **#170 FM→NR AS152706:** hub relabelled Los Angeles → **Tokyo**, in the DB (evidence appended to `legacy_note`) and in the legacy `confirmed_detours.py` entry.
+  - Evidence: Telstra AS4637 hops 202.84.148.70 and 210.57.53.145 geolocate to Tokyo (RIPE IPmap). Tata 209.58.61.40 is `if-ae-51-2.tcore1.tv2-tokyo.as6453.net`, then 180.87.180.33 is `pv4-piti` (Piti, Guam), before NR at 116ms. The path is FM → Guam → Tokyo → Guam → NR.
+  - Under the corrected physics, RTT alone no longer rules out LA. This relabel rests on the hop geolocation.
+  - Backed up to the scratchpad first; export and reports regenerated.
+- **#54 GU→PW via Tokyo: kept as is** (owner). It's mixed: AS3605 detours via Tokyo, while AS152735 goes via Guam IX.
+- **Feedback box (owner):** both reports now carry a notice near the top saying bugs very likely remain in the code and data, with a link to open a GitHub issue (`reports/data.ISSUES_URL`). In HTML it's a red `.feedback-box` under the "Generated" line; in the text report it's a two-line notice under the title. Verified in the built `site/dist/index.html`, and the issues page returns 200.
+- **Tests:** 130 pass.

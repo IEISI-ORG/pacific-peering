@@ -123,8 +123,8 @@ VERDICT_IMPOSSIBLE = "impossible"  # observed RTT below the physical floor
 VERDICT_NO_HOP = "no_hop"  # the path never showed the hop this check needs
 
 
-def _rtt_check(rtt_ms: float | None, hop: int | None, distance_km: float) -> dict:
-    floor = min_feasible_rtt_ms(distance_km)
+def _rtt_check(rtt_ms: float | None, hop: int | None, round_trip_km: float) -> dict:
+    floor = min_feasible_rtt_ms(round_trip_km / 2)
     if rtt_ms is None:
         return {"verdict": VERDICT_NO_HOP, "hop": hop, "floor_ms": round(floor, 2)}
     return {
@@ -156,8 +156,12 @@ def check_detour_trace(
       city (wrong registry city, or a remote-peering/fabric extension), so
       the detour claim rests on a mislocated hop.
     - target: the hop where the trace *reached its target address* must show
-      at least the source->hub->target floor. Below it, the path can't have
-      gone via the hub. Only the destination itself counts: any other
+      at least source->hub->target *forward* plus target->source *direct*
+      back. The reply needn't retrace the detour (owner-approved correction,
+      2026-09-29: #115's NC->Sydney->Suva forward path answered at 37ms,
+      under a symmetric via-Sydney floor, while a Sydney probe pinged the
+      same address at 38.6ms -- it was in Fiji, and the reply came back
+      direct). Below this floor, the path can't have gone via the hub. Only the destination itself counts: any other
       target-ASN router may be that network's own PoP near the source or
       the hub (e.g. a Fiji carrier's Sydney router), and hop 255 can come
       from one (code review, 2026-09-29). A trace that didn't reach the
@@ -189,11 +193,13 @@ def check_detour_trace(
     src_hub_km = max(0.0, great_circle_km(*source_latlon, *hub_latlon) - source_spread_km)
     hub_tgt_km = max(0.0, great_circle_km(*hub_latlon, *target_latlon) - target_spread_km)
     direct_km = max(0.0, great_circle_km(*source_latlon, *target_latlon) - source_spread_km - target_spread_km)
+    # Round-trip distances. The hub's reply can't beat the direct hub->source
+    # distance, so its floor is symmetric; the target's reply may skip the hub.
     return {
         "probe_id": traceroute["probe_id"],
-        "hub": _rtt_check(single.get(hub_hop), hub_hop, src_hub_km),
-        "target_via_hub": _rtt_check(single.get(target_hop), target_hop, src_hub_km + hub_tgt_km),
-        "target_direct": _rtt_check(single.get(target_hop), target_hop, direct_km),
+        "hub": _rtt_check(single.get(hub_hop), hub_hop, 2 * src_hub_km),
+        "target_via_hub": _rtt_check(single.get(target_hop), target_hop, src_hub_km + hub_tgt_km + direct_km),
+        "target_direct": _rtt_check(single.get(target_hop), target_hop, 2 * direct_km),
     }
 
 

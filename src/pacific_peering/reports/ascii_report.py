@@ -10,7 +10,7 @@ from __future__ import annotations
 import logging
 from pathlib import Path
 
-from pacific_peering.reports.data import FISHBOWL_EXPLANATION, ReportData, build_report_data
+from pacific_peering.reports.data import FISHBOWL_EXPLANATION, ISSUES_URL, ReportData, build_report_data
 
 logger = logging.getLogger(__name__)
 
@@ -78,6 +78,9 @@ def render_ascii_report(data: ReportData) -> str:
     lines.append(_rule("="))
     lines.append("PACIFIC PEERING — REGIONAL ROUTING REPORT".center(_WIDTH))
     lines.append(f"Generated: {data.generated_at}".center(_WIDTH))
+    lines.append(_rule("="))
+    lines.append("FOUND A BUG? Bugs very likely remain in both the code and the data.")
+    lines.append(f"Please open an issue: {ISSUES_URL}")
     lines.append(_rule("="))
 
     lines.append(_section("SUMMARY"))

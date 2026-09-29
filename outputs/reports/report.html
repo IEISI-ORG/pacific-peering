@@ -58,6 +58,10 @@ tr:hover { background: #f5f4f0; }
 .section-intro { color: #898781; font-size: 0.88rem; margin: 0.4em 0 1em; max-width: 780px; }
 .callout { border-left: 4px solid #fab219; background: #fef8e8; padding: 10px 14px;
             border-radius: 4px; margin: 1em 0; font-size: 0.88rem; }
+.feedback-box { border: 2px solid #d03b3b; background: #fdecec; color: #0b0b0b;
+                 padding: 12px 16px; border-radius: 6px; margin: 1em 0 1.5em; font-size: 0.92rem; }
+.feedback-box strong { color: #d03b3b; }
+.feedback-box a { color: #d03b3b; font-weight: 600; }
 .viz-figure { margin: 1.5em 0; }
 .viz-figure img { max-width: 100%; border: 1px solid #e1e0d9; border-radius: 6px; }
 .viz-figure figcaption { color: #898781; font-size: 0.8rem; margin-top: 6px; }
@@ -69,7 +73,12 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
 <body>
 <div class="wrap">
     <h1>Pacific Peering — Regional Routing Report</h1>
-    <div class="meta">Generated 2026-09-29T07:49:01.044793+00:00</div>
+    <div class="meta">Generated 2026-09-29T07:55:18.908318+00:00</div>
+
+    <div class="feedback-box"><strong>Found a bug?</strong> This report is generated
+        automatically, and bugs very likely remain in both the code and the data. If
+        something looks wrong (a path, a label, a number), please
+        <a href="https://github.com/IEISI-ORG/pacific-peering/issues/new">open an issue on GitHub</a>.</div>
 
     <div class="headline-banner">
         <span class="value">57%</span>
@@ -387,15 +396,15 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <td>AS, CK, FJ, KI, MH, NC, NR, PG, PW, SB, TO, VU, WS</td>
         </tr><tr>
             <td>Los Angeles</td>
-            <td>36</td>
-            <td>21%</td>
+            <td>35</td>
+            <td>20%</td>
             <td>7</td>
             <td>Melanesia, Micronesia, Polynesia</td>
             <td>FJ, FM, GU, MH, NR, PF, WF</td>
         </tr><tr>
             <td>Tokyo</td>
-            <td>21</td>
-            <td>12%</td>
+            <td>22</td>
+            <td>13%</td>
             <td>8</td>
             <td>Melanesia, Micronesia, Polynesia</td>
             <td>AS, CK, FJ, MH, NC, NR, PW, SB, VU, WF</td>
@@ -1627,10 +1636,10 @@ Twelfth confirmation of AS139609(SISCC)&lt;-&gt;AS45891. `AS55885 -&gt; AS9471 -
         </div><div class="detour-card">
             <div class="headline">FM -&gt; NR
                 (AS152706): detours via AS4637 (Telstra Global), then AS6453 (Tata Communications)
-                (Los Angeles)</div>
+                (Tokyo)</div>
             <div>RIS observation count: 292
                 &middot; measurement 212143020</div>
-            <details class="note"><summary>Third confirmation of AS6453(Tata)&lt;-&gt;AS152706 (after GU, VU)…</summary>Third confirmation of AS6453(Tata)&lt;-&gt;AS152706 (after GU, VU). `AS139759 -&gt; AS9246 -&gt; AS4637 -&gt; AS6453 -&gt; AS152706`, RIS agrees exactly (292). `has_routing_loop` False.</details>
+            <details class="note"><summary>Third confirmation of AS6453(Tata)&lt;-&gt;AS152706 (after GU, VU)…</summary>Third confirmation of AS6453(Tata)&lt;-&gt;AS152706 (after GU, VU). `AS139759 -&gt; AS9246 -&gt; AS4637 -&gt; AS6453 -&gt; AS152706`, RIS agrees exactly (292). `has_routing_loop` False. | Hub corrected Los Angeles -&gt; Tokyo (owner, 2026-09-29): Telstra AS4637 hops geolocate to Tokyo (RIPE IPmap), Tata 209.58.61.40 rDNS tcore1.tv2-tokyo.as6453.net, then 180.87.180.33 pv4-piti (Guam) before NR at 116ms: FM -&gt; Guam -&gt; Tokyo -&gt; Guam -&gt; NR. Hop geolocation, not RTT, decides this.</details>
         </div><div class="detour-card">
             <div class="headline">GU -&gt; NR
                 (AS152706): detours via AS6453 (Tata Communications), via AS2497 (IIJ, Japan) -- international transit

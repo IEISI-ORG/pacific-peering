@@ -13,7 +13,7 @@ import html
 import logging
 from pathlib import Path
 
-from pacific_peering.reports.data import FISHBOWL_EXPLANATION, ReportData, build_report_data
+from pacific_peering.reports.data import FISHBOWL_EXPLANATION, ISSUES_URL, ReportData, build_report_data
 
 logger = logging.getLogger(__name__)
 
@@ -83,6 +83,10 @@ tr:hover {{ background: #f5f4f0; }}
 .section-intro {{ color: {_MUTED}; font-size: 0.88rem; margin: 0.4em 0 1em; max-width: 780px; }}
 .callout {{ border-left: 4px solid {_WARNING}; background: #fef8e8; padding: 10px 14px;
             border-radius: 4px; margin: 1em 0; font-size: 0.88rem; }}
+.feedback-box {{ border: 2px solid {_CRITICAL}; background: #fdecec; color: {_INK};
+                 padding: 12px 16px; border-radius: 6px; margin: 1em 0 1.5em; font-size: 0.92rem; }}
+.feedback-box strong {{ color: {_CRITICAL}; }}
+.feedback-box a {{ color: {_CRITICAL}; font-weight: 600; }}
 .viz-figure {{ margin: 1.5em 0; }}
 .viz-figure img {{ max-width: 100%; border: 1px solid #e1e0d9; border-radius: 6px; }}
 .viz-figure figcaption {{ color: {_MUTED}; font-size: 0.8rem; margin-top: 6px; }}
@@ -410,6 +414,11 @@ def render_html_report(data: ReportData, viz_dir: Path | None = Path("../viz")) 
 <div class="wrap">
     <h1>Pacific Peering — Regional Routing Report</h1>
     <div class="meta">Generated {html.escape(data.generated_at)}</div>
+
+    <div class="feedback-box"><strong>Found a bug?</strong> This report is generated
+        automatically, and bugs very likely remain in both the code and the data. If
+        something looks wrong (a path, a label, a number), please
+        <a href="{ISSUES_URL}">open an issue on GitHub</a>.</div>
 
     <div class="headline-banner">
         <span class="value">{data.ixp_registry_out_of_fishbowl_share:.0%}</span>

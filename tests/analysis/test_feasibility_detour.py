@@ -20,12 +20,20 @@ def _check(probe_id, hops, target=TARGET, spreads=(0.0, 0.0)):
     return fz.check_detour_trace(trace, resolved, NC, SYDNEY, "Sydney", SUVA, {EQUINIX_SYD: "Sydney"}, *spreads)
 
 
-def test_offshore_target_breaks_the_via_hub_floor():
-    # Real shape of #115 (msm 212237062): Sydney crossing fine, target answers too fast for Suva.
+def test_direct_return_path_is_allowed():
+    # Real shape of #115 (msm 212237062): forward via Sydney, target answers at 37ms.
+    # Symmetric via-Sydney floor is ~52ms, but the reply can come straight back
+    # (a Sydney probe pinged the same address at 38.6ms -- it is in Fiji).
     c = _check(7018, [(1, 0.4, ["a"], None), (4, 23.7, ["ix"], EQUINIX_SYD), (6, 37.3, ["b"], None),
                       (8, 37.0, [TARGET], None)])
     assert c["hub"]["verdict"] == fz.VERDICT_OK
-    assert c["target_via_hub"]["verdict"] == fz.VERDICT_IMPOSSIBLE and c["target_via_hub"]["hop"] == 8
+    assert c["target_via_hub"]["verdict"] == fz.VERDICT_OK and c["target_via_hub"]["hop"] == 8
+    assert c["target_via_hub"]["floor_ms"] < 2 * c["hub"]["floor_ms"] + 20
+
+
+def test_target_faster_than_forward_via_hub_plus_direct_return_is_impossible():
+    c = _check(1, [(4, 23.7, ["ix"], EQUINIX_SYD), (8, 15.0, [TARGET], None)])
+    assert c["target_via_hub"]["verdict"] == fz.VERDICT_IMPOSSIBLE
     assert fz.probe_verdict(c) == fz.VERDICT_IMPOSSIBLE
 
 
@@ -37,7 +45,7 @@ def test_trace_that_never_reached_the_target_is_not_target_checked():
 
 
 def test_spread_lowers_every_floor():
-    hops = [(4, 23.7, ["ix"], EQUINIX_SYD), (8, 45.0, [TARGET], None)]
+    hops = [(4, 23.7, ["ix"], EQUINIX_SYD), (8, 30.0, [TARGET], None)]
     tight, loose = _check(1, hops), _check(1, hops, spreads=(450, 700))
     assert loose["target_via_hub"]["floor_ms"] < tight["target_via_hub"]["floor_ms"]
     assert tight["target_via_hub"]["verdict"] == fz.VERDICT_IMPOSSIBLE

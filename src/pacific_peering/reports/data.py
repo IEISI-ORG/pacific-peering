@@ -54,6 +54,10 @@ _conn.close()
 # NCC, if this report is used to make the case for new Atlas probes in
 # the region) gets the same explanation of this project's central
 # methodological framing, not a different one per format.
+# Where readers report bugs (owner, 2026-09-29): both reports carry a notice
+# near the top pointing here.
+ISSUES_URL = "https://github.com/IEISI-ORG/pacific-peering/issues/new"
+
 FISHBOWL_EXPLANATION = (
     "What is \"the fish bowl\"? RIS (BGP route-collector) data and PeeringDB "
     "membership records are an outside-looking-in view: they show which "
