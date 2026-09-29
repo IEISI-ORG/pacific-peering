@@ -69,7 +69,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
 <body>
 <div class="wrap">
     <h1>Pacific Peering — Regional Routing Report</h1>
-    <div class="meta">Generated 2026-09-27T15:49:44.086305+00:00</div>
+    <div class="meta">Generated 2026-09-29T07:49:01.044793+00:00</div>
 
     <div class="headline-banner">
         <span class="value">57%</span>
@@ -80,13 +80,13 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
     </div>
 
     <div class="stat-row">
-        <div class="stat-tile"><div class="value">241</div><div class="label">Pathways found (total)</div></div>
+        <div class="stat-tile"><div class="value">239</div><div class="label">Pathways found (total)</div></div>
         <div class="stat-tile"><div class="value">66</div><div class="label">Internal (never leave the fish bowl)</div></div>
-        <div class="stat-tile red-box"><div class="value">175</div>
+        <div class="stat-tile red-box"><div class="value">173</div>
             <div class="label">External / Leaves the region</div></div>
     </div>
     <p class="section-intro">Full corridor-by-corridor detail for all
-        241 pathways above is further down this report
+        239 pathways above is further down this report
         (Confirmed sub-optimal routes / Confirmed local transit / Candidate
         peering), collapsed by default so it doesn't dominate the page &mdash;
         click any of those section headings to expand.</p>
@@ -394,11 +394,11 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <td>FJ, FM, GU, MH, NR, PF, WF</td>
         </tr><tr>
             <td>Tokyo</td>
-            <td>23</td>
-            <td>13%</td>
-            <td>9</td>
+            <td>21</td>
+            <td>12%</td>
+            <td>8</td>
             <td>Melanesia, Micronesia, Polynesia</td>
-            <td>AS, CK, FJ, GU, MH, NC, NR, PW, SB, VU, WF</td>
+            <td>AS, CK, FJ, MH, NC, NR, PW, SB, VU, WF</td>
         </tr><tr>
             <td>San Jose</td>
             <td>5</td>
@@ -471,15 +471,8 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
 
     <details class="section-toggle">
         <summary>Confirmed sub-optimal routes (RIS + Atlas both agree)
-            <span class="count">(175)</span></summary>
+            <span class="count">(173)</span></summary>
         <div class="detour-card">
-            <div class="headline">GU -&gt; GU
-                (AS3605): detours via JPNAP Tokyo
-                (Tokyo)</div>
-            <div>RIS observation count: 1333
-                &middot; measurement 213204606</div>
-            <details class="note"><summary>measurement 213204606 (from GU); chain: AS17456 -&gt; AS3605; RIS count 1333; RIS agrees…</summary>measurement 213204606 (from GU); chain: AS17456 -&gt; AS3605; RIS count 1333; RIS agrees. measurement 213204606 (from GU); chain: AS3605; RIS disagrees.</details>
-        </div><div class="detour-card">
             <div class="headline">NC -&gt; FJ
                 (AS4638): detours via MegaIX Sydney
                 (Sydney)</div>
@@ -500,13 +493,6 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <div>RIS observation count: 830
                 &middot; measurement 212141036</div>
             <details class="note"><summary>**First-ever confirmation with FINTEL (AS9241) itself as the target** (every prior appearance had it as an intermediate hop)…</summary>**First-ever confirmation with FINTEL (AS9241) itself as the target** (every prior appearance had it as an intermediate hop). `AS55885 -&gt; AS9471 (ONATI) -&gt; AS174 (Cogent) -&gt; AS9241`, RIS agrees exactly (830 -- checked fresh full list: `{174: 818, 4648: 550, 6939: 330}`, Cogent dominant). `has_routing_loop` correctly flagged `True` -- a textbook alternating loop (`202.170.33.17`/`202.170.33.11`) inside AS174&#x27;s own network after AS9241 was already confirmed via the resolved-ASN comparison; target itself never reached, but the finding stands on the pre-loop resolution.</details>
-        </div><div class="detour-card">
-            <div class="headline">GU -&gt; GU
-                (AS9246): detours via BBIX Tokyo
-                (Tokyo)</div>
-            <div>RIS observation count: 0
-                &middot; measurement 213205665</div>
-            <details class="note"><summary>measurement 213205665 (from GU); chain: AS7131 -&gt; AS9246; RIS disagrees…</summary>measurement 213205665 (from GU); chain: AS7131 -&gt; AS9246; RIS disagrees. measurement 213205665 (from GU); chain: AS3605 -&gt; AS9246; RIS disagrees.</details>
         </div><div class="detour-card">
             <div class="headline">NU -&gt; GU
                 (AS9246): detours via Any2West
@@ -2374,8 +2360,8 @@ NU(AS55885) -&gt; AS150403: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS139609 -&
 
     <h2>ASPA progress (RFC 9582 upstream-authorization adoption)</h2>
     <p class="section-intro">
-        <strong>18 of 160</strong> in-scope ASNs
-        now publish an ASPA record (3268 total across the
+        <strong>19 of 160</strong> in-scope ASNs
+        now publish an ASPA record (3295 total across the
         whole internet, per Cloudflare Radar). Adoption is still early &mdash; absence
         means "not published yet," not "no real upstream." Per economy: how many of its
         own ASNs publish a record, and the distinct upstream ASNs those records declare,
@@ -2403,7 +2389,7 @@ NU(AS55885) -&gt; AS150403: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS139609 -&
         </tr><tr>
             <td>NR</td><td>Nauru</td>
             <td>5</td><td>3</td>
-            <td>3</td>
+            <td>4</td>
             <td>3</td>
         </tr><tr>
             <td>PG</td><td>Papua New Guinea</td>
@@ -2422,9 +2408,9 @@ NU(AS55885) -&gt; AS150403: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS139609 -&
             <td>0</td>
         </tr><tr>
             <td>WS</td><td>Samoa</td>
-            <td>10</td><td>1</td>
-            <td>0</td>
+            <td>10</td><td>2</td>
             <td>1</td>
+            <td>2</td>
         </tr></tbody>
     </table>
     <!-- TODO: once enough ASPA-confirmed findings exist, add a "certified
@@ -2460,7 +2446,7 @@ NU(AS55885) -&gt; AS150403: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS139609 -&
         yet, queued until adoption has advanced further.
         <strong>45 of 160</strong> in-scope ASNs
         have at least one RIS-observed IPv6-originated prefix.
-        <strong>8 of 37</strong> connected
+        <strong>8 of 36</strong> connected
         Atlas probes work over IPv6 (2 more are
         IPv6-capable but tagged as not working).
     </p>
@@ -2581,7 +2567,7 @@ NU(AS55885) -&gt; AS150403: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS139609 -&
             <td>BBIX Tokyo</td><td>Tokyo</td>
             <td>JP</td><td><span class="bool-false">out-of-fishbowl</span></td>
             <td>4</td>
-            <td>7</td>
+            <td>6</td>
             <td>GU, MP, PW</td>
         </tr><tr>
             <td>CAN&#x27;L IX</td><td>NOUMEA</td>
@@ -2665,13 +2651,13 @@ NU(AS55885) -&gt; AS150403: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS139609 -&
             <td>JPNAP Tokyo</td><td>Tokyo</td>
             <td>JP</td><td><span class="bool-false">out-of-fishbowl</span></td>
             <td>1</td>
-            <td>1</td>
+            <td>0</td>
             <td>GU</td>
         </tr><tr>
             <td>MARIIX</td><td>Mangilao</td>
             <td>GU</td><td><span class="bool-true">in-fishbowl</span></td>
             <td>5</td>
-            <td>5</td>
+            <td>4</td>
             <td>GU, MP</td>
         </tr><tr>
             <td>MegaIX Sydney</td><td>Sydney</td>
@@ -2812,7 +2798,7 @@ NU(AS55885) -&gt; AS150403: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS139609 -&
         </tr><tr>
             <td>VU</td><td>Vanuatu</td>
             <td>Melanesia</td>
-            <td>10</td><td>5</td><td>2</td>
+            <td>10</td><td>5</td><td>1</td>
             <td>1</td>
         </tr><tr>
             <td>FM</td><td>Micronesia, Federated States of</td>

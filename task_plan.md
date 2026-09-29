@@ -3273,3 +3273,10 @@ Both ASNs stay in scope. Their first targets are unchanged: `202.65.32.1` and `1
   - **Not changed; owner's call:** what to do with each of these.
 - **Nightly wiring:** `auto_classify._detour_feasibility` runs whenever a detour is about to be filed. An **impossible** detour is escalated ("detour via X physically impossible (Validation Rule 2)") and not filed. A **mixed** one is filed and also escalated. Any error inside the check skips it and files as before, so no result is lost after credits are spent. Replayed on real data: #115's measurement → impossible; TO→WS #235 → passes.
 - **Tests:** 6 new, 129 pass.
+
+**#226 and #228 retracted; spreads approved (owner, 2026-09-29).** The owner approved the `ECONOMY_SPREAD_KM` values as they stand.
+- **Retracted:** #226 (GU→GU AS17456→AS3605 "via JPNAP Tokyo") and #228 (GU→GU AS17456→AS9246 "via BBIX Tokyo"). In both measurements (213204606, 213205665) the Tokyo crossing is only in Starlink probe 65337's trace, and the terrestrial GU probes reach the target in 1–14ms.
+- **How:** checked the rows matched first, then deleted both findings and their 4 corroborations (318, 319, 330, 331) in one transaction. The DB, export and `tested_pairs.json` were backed up to the session scratchpad first. 239 findings remain.
+- **Un-marked as tested:** (17456, 3605) and (17456, 9246), per the finding-25 precedent, so an honest retest can happen. The backlog now proposes AS17456→AS9246 again, so tonight's batch retests it from terrestrial probes with the Starlink guard and the Rule 2 check. AS17456→AS3605 isn't re-proposed by the backlog rules.
+- **Regenerated:** export, reports and map. Neither id is left in the export. 129 tests pass.
+- **Still the owner's call:** #115, #170 and #54.

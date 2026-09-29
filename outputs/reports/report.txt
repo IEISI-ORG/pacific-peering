@@ -1,6 +1,6 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-09-27T15:49:42.987987+00:00                  
+                 Generated: 2026-09-29T07:48:59.934214+00:00                  
 ==============================================================================
 
 SUMMARY
@@ -8,9 +8,9 @@ SUMMARY
 HEADLINE: 57% of the real peering points this region's own networks use sit OUTSIDE the fish bowl (13 of 23)
 
 PATHWAYS (every corridor with a filed finding, of any kind):
-  Total pathways found:                    241
+  Total pathways found:                    239
   Internal (never leave the fish bowl):    66
-  External / Leaves the region:            175
+  External / Leaves the region:            173
   (full corridor-by-corridor detail -- every confirmed detour, confirmed local transit, and candidate peering entry -- is in the appendix at the end of this report, not repeated here)
 
 Economies in scope:            20
@@ -107,8 +107,8 @@ Sydney             108    62%       25 Melanesia, Micronesia, Polynesia
     Dependent economies: AS, CK, FJ, KI, MH, NC, NR, PG, PW, SB, TO, VU, WS
 Los Angeles         36    21%        7 Melanesia, Micronesia, Polynesia
     Dependent economies: FJ, FM, GU, MH, NR, PF, WF
-Tokyo               23    13%        9 Melanesia, Micronesia, Polynesia
-    Dependent economies: AS, CK, FJ, GU, MH, NC, NR, PW, SB, VU, WF
+Tokyo               21    12%        8 Melanesia, Micronesia, Polynesia
+    Dependent economies: AS, CK, FJ, MH, NC, NR, PW, SB, VU, WF
 San Jose             5     3%        1 Polynesia
     Dependent economies: AS
 Portland             2     1%        1 Polynesia
@@ -166,17 +166,17 @@ WS   Samoa                       10       3            1       2
 
 ASPA PROGRESS (RFC 9582 upstream-authorization adoption)
 ==============================================================================
-18 of 160 in-scope ASNs now publish an ASPA record (3268 total across the whole internet, per Cloudflare Radar). Adoption is still early -- absence means 'not published yet', not 'no real upstream'. Per-economy: how many of its own ASNs publish a record, and the distinct upstream ASNs those records declare, split by whether the declared provider is itself an in-scope Pacific ASN or an external carrier.
+19 of 160 in-scope ASNs now publish an ASPA record (3295 total across the whole internet, per Cloudflare Radar). Adoption is still early -- absence means 'not published yet', not 'no real upstream'. Per-economy: how many of its own ASNs publish a record, and the distinct upstream ASNs those records declare, split by whether the declared provider is itself an in-scope Pacific ASN or an external carrier.
 CC   Name                      ASNs  w/ ASPA  Upstr in-FB  Upstr ext
 ------------------------------------------------------------------------------
 CK   Cook Islands                 2        1            0          3
 FJ   Fiji                        21        4            2          3
 GU   Guam                        10        1            1          0
-NR   Nauru                        5        3            3          3
+NR   Nauru                        5        3            4          3
 PG   Papua New Guinea            38        4            1          1
 TO   Tonga                        5        3            3          4
 VU   Vanuatu                     10        1            1          0
-WS   Samoa                       10        1            0          1
+WS   Samoa                       10        2            1          2
 
 ROV ENFORCEMENT (Cloudflare RPKI-invalid test, weekly)
 ==============================================================================
@@ -216,7 +216,7 @@ Measurements: {'v4': [215197667, 215198886], 'v6': [215199848, 215200172]}. Deta
 
 IPV6 COVERAGE (adoption signal only -- no IPv6 testing yet)
 ==============================================================================
-45 of 160 in-scope ASNs have >=1 RIS-observed IPv6-originated prefix. 8 of 37 connected Atlas probes work over IPv6 (2 more are IPv6-capable but tagged as not working). Adoption tracking only -- this project deliberately isn't testing IPv6 corridors yet; queued until adoption has advanced further (see TODO below).
+45 of 160 in-scope ASNs have >=1 RIS-observed IPv6-originated prefix. 8 of 36 connected Atlas probes work over IPv6 (2 more are IPv6-capable but tagged as not working). Adoption tracking only -- this project deliberately isn't testing IPv6 corridors yet; queued until adoption has advanced further (see TODO below).
 CC   Name                      ASNs  w/ IPv6
 ------------------------------------------------------------------------------
 AS   American Samoa               2        1
@@ -243,7 +243,7 @@ IXPS (registered exchanges, this project's confirmed classification)
 Name                         City             CC   In fishbowl  Members Verified  Economies
 ------------------------------------------------------------------------------
 Any2West                     Los Angeles and  US   False              4       11  GU, MP, PF
-BBIX Tokyo                   Tokyo            JP   False              4        7  GU, MP, PW
+BBIX Tokyo                   Tokyo            JP   False              4        6  GU, MP, PW
 CAN'L IX                     NOUMEA           NC   True               5        1  NC
 DRF IX                       Honolulu         US   False              2        0  AS, PF
 EdgeIX - Auckland            Auckland         NZ   False              1        0  WS
@@ -257,8 +257,8 @@ GU-IX                        Guam             GU   True               1        0
 Guam IX                      Tamuning         GU   True               5        2  FM, GU, MP, NR, PW
 IX Australia Sydney (NSW-IX) Sydney           AU   False              1        4  SB
 JPIX TOKYO                   Tokyo            JP   False              1        0  GU
-JPNAP Tokyo                  Tokyo            JP   False              1        1  GU
-MARIIX                       Mangilao         GU   True               5        5  GU, MP
+JPNAP Tokyo                  Tokyo            JP   False              1        0  GU
+MARIIX                       Mangilao         GU   True               5        4  GU, MP
 MegaIX Sydney                Sydney           AU   False              6       15  FJ, NC, PG, SB
 PNG Neutral IX Hagen         Mt Hagen         PG   True               1        0  PG
 PNG Neutral IX Lae           Lae              PG   True               2        0  PG
@@ -288,7 +288,7 @@ CK   Cook Islands                     Polynesia        2       6       1        
 GU   Guam                             Micronesia      10      14       6         1
 PF   French Polynesia                 Polynesia        6       9       6         1
 PG   Papua New Guinea                 Melanesia       38      10       1         1
-VU   Vanuatu                          Melanesia       10       5       2         1
+VU   Vanuatu                          Melanesia       10       5       1         1
 FM   Micronesia, Federated States of  Micronesia       6       5       3         0
 NC   New Caledonia                    Melanesia       18      20       5         0
 
@@ -324,14 +324,11 @@ MH      64237 AS14593   Connected     Starlink (AS14593): satellite egress via S
 PF      23002 AS2200    Connected     Renater (AS2200): backhauls straight to metropolitan France (~500ms), never touches Pacific transit
 TO      11691 AS24390   Connected     ASN registered Fiji but probe physically in Tonga (geo-audit): counts as a TO vantage point, not FJ; USP (AS24390, registered FJ): regional academic network via AARNet (Australia), not a local commercial carrier; valid source, path unverified
 
-APPENDIX: FULL CORRIDOR DETAIL (241 pathways -- see the PATHWAYS summary at the top of this report for the plain counts)
+APPENDIX: FULL CORRIDOR DETAIL (239 pathways -- see the PATHWAYS summary at the top of this report for the plain counts)
 ==============================================================================
 
 Confirmed sub-optimal routes (RIS + Atlas both agree)
 ==============================================================================
-GU -> GU (AS3605): detours via JPNAP Tokyo (Tokyo)
-    RIS observation count: 1333  [measurement 213204606]
-    measurement 213204606 (from GU); chain: AS17456 -> AS3605; RIS count 1333; RIS agrees. measurement 213204606 (from GU); chain: AS3605; RIS disagrees.
 NC -> FJ (AS4638): detours via MegaIX Sydney (Sydney)
     RIS observation count: 1669  [measurement 210919078]
     New Caledonia -> Telecom Fiji (AS4638); upstream AS45349 confirmed by RIS+Atlas. Also IRR-corroborated: AS45349's own PeeringDB-declared AS-SET (AS45349:AS-TFL-TRANSIT) names AS4638 directly -- a declared transit intention, independently sourced (APNIC), matching what the traceroute actually shows.
@@ -341,9 +338,6 @@ GU -> FJ (AS9241): detours via AS174 (Cogent Communications), via AS2497 (IIJ, J
 NU -> FJ (AS9241): detours via AS174 (Cogent Communications) (Sydney)
     RIS observation count: 830  [measurement 212141036]
     **First-ever confirmation with FINTEL (AS9241) itself as the target** (every prior appearance had it as an intermediate hop). `AS55885 -> AS9471 (ONATI) -> AS174 (Cogent) -> AS9241`, RIS agrees exactly (830 -- checked fresh full list: `{174: 818, 4648: 550, 6939: 330}`, Cogent dominant). `has_routing_loop` correctly flagged `True` -- a textbook alternating loop (`202.170.33.17`/`202.170.33.11`) inside AS174's own network after AS9241 was already confirmed via the resolved-ASN comparison; target itself never reached, but the finding stands on the pre-loop resolution.
-GU -> GU (AS9246): detours via BBIX Tokyo (Tokyo)
-    RIS observation count: 0  [measurement 213205665]
-    measurement 213205665 (from GU); chain: AS7131 -> AS9246; RIS disagrees. measurement 213205665 (from GU); chain: AS3605 -> AS9246; RIS disagrees.
 NU -> GU (AS9246): detours via Any2West (Los Angeles)
     RIS observation count: 71  [measurement 212141050]
     Second confirmation with AS9246 as the actual target (after TV). `AS55885 -> AS9471 -> AS6939 -> AS9246`, RIS agrees exactly (71). `has_routing_loop` False.

@@ -2314,5 +2314,8 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   existing confirmed detours (`outputs/reports/feasibility_sweep.txt`). First
   run: 101 ok, 71 unchecked, 2 impossible (#115, #226), 1 mixed (#54). No
   findings changed.
+- Retracted findings #226 and #228 (GU domestic "via Tokyo" detours whose
+  only Tokyo crossing came from Starlink probe 65337); their corridors are
+  un-marked for an honest retest.
 - `IpResolutionCache.save()` is atomic; `resolve_traceroute_hops(persist=False)`
   re-resolves without writing the shared cache.
