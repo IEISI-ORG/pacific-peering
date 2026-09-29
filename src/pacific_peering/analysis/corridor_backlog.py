@@ -216,6 +216,10 @@ class CorridorCandidate:
     rationale: str
     is_new_probe: bool = False
     is_new_ris_relationship: bool = False
+    # Set on a scheduled reverification: the finding being re-tested, so its
+    # result attaches there even if the source economy was corrected
+    # (auto_classify._original_vantage) and no longer matches the finding's.
+    reverify_finding_id: int | None = None
 
 
 def _load_tested_pairs(path: Path = DEFAULT_TESTED_PAIRS_PATH) -> set[tuple[int, int]]:

@@ -57,14 +57,28 @@ if [ "$_dow" = "2" ] || [ "$_dow" = "5" ]; then
     "$UV" run pacific-peering-atlas-asn-probes
 fi
 
-"$UV" run pacific-peering-auto-classify-batch --hours 2 --max-concurrent 5
-
 # Probe-gap report, regenerated daily rather than only on the weekly
 # refresh -- per the project owner, cheap (40 unauthenticated Atlas calls,
 # no credits -- one pass for connected-only coverage, one for the full
 # any-status probe listing) and worth keeping current every night rather
-# than letting it drift stale between Sunday runs.
-"$UV" run pacific-peering-report-probe-gaps
+# than letting it drift stale between Sunday runs. Runs before the batch
+# (moved 2026-09-29) so the probe watch below sees tonight's listing first.
+"$UV" run pacific-peering-report-probe-gaps || echo "Probe-gap report failed (see above); continuing with the previous listing."
+
+# Probe watch (owner, 2026-09-29: SPC are due to take probe 60575 off its
+# Zscaler VPN link). Diffs every probe's economy/ASN/status against last
+# night's snapshot for free; any probe whose economy or ASN changed gets a
+# one-measurement egress traceroute before the batch can use it, and on
+# Wednesdays so does every probe on a proxy-flagged network (the fix may
+# never show in Atlas's metadata). Escalates, never un-excludes. Writes
+# outputs/reports/probe_watch*. Failure-tolerant.
+if [ "$_dow" = "3" ]; then
+    "$UV" run pacific-peering-probe-watch --fire --weekly || echo "Probe watch failed (see above); continuing."
+else
+    "$UV" run pacific-peering-probe-watch --fire || echo "Probe watch failed (see above); continuing."
+fi
+
+"$UV" run pacific-peering-auto-classify-batch --hours 2 --max-concurrent 5
 
 # Offshore-hosting check (owner, 2026-09-24): monthly full run, plus any ASN
 # the registry gained since the last run -- the module decides which each

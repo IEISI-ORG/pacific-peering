@@ -2284,3 +2284,20 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   Failed but were escalated as fetch races. The 180s result wait was checked
   and left alone: all 60 measurements that night had the same result count at
   the partial fetch as in Atlas's final results.
+- Reverification now re-fires from where the original measurement's probes
+  actually are (`auto_classify._original_vantage`), not the stored
+  `vantage_point_cc` label. Seven legacy FJ-labelled findings (#31, 74, 89,
+  100, 109, 119, 131) were fired from probe 11691 (USP Tonga Campus), and
+  re-firing `country=FJ` hit the Zscaler-bound SPC probe 60575, escalating
+  every time. They now reverify from TO. MP findings measured only from
+  Guam-sited AS7131 probes (#12, 27, 34, 69, 181) now reverify from GU. The
+  stored label is kept whenever any original probe is still in it.
+- `pacific-peering-probe-watch` (`atlas/probe_watch.py`), nightly before the
+  batch: diffs every probe's economy, ASN and status against a git-tracked
+  snapshot. It fires a one-measurement egress traceroute (1.1.1.1) from any
+  probe whose economy or ASN changed, and on Wednesdays from every probe on
+  a proxy-flagged network (SPC AS141695, Zscaler, Owl VPN). It escalates
+  metadata changes and first-hop changes, and never un-excludes anything.
+  Prompted by SPC planning to take probe 60575 off its Zscaler VPN link.
+  The nightly probe-gap step moved ahead of the batch, and is now
+  failure-tolerant.

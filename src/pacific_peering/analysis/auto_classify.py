@@ -112,6 +112,7 @@ from pacific_peering.atlas.asn_probes import (
     load_asn_probe_registry,
 )
 from pacific_peering.atlas.client import fetch_measurement_status
+from pacific_peering.atlas.probes import load_probe_listing
 from pacific_peering.atlas.smoketest import run_smoketest
 from pacific_peering.atlas.targets import has_routing_loop, list_target_ips
 from pacific_peering.discovery import cloudflare_radar
@@ -570,7 +571,9 @@ def classify_corridor(
         try:
             if detour_pick is not None:
                 _, ix_name, hub_city = detour_pick
-                finding = _store.find_existing_detour(conn, candidate.source_cc, candidate.target_asn)
+                finding = _reverified_detour(conn, candidate) or _store.find_existing_detour(
+                    conn, candidate.source_cc, candidate.target_asn
+                )
                 if finding is None:
                     finding_id = _store.create_finding(
                         conn,
@@ -905,6 +908,62 @@ def _any_probe_asn_for_cc(cc: str) -> int | None:
     return candidates[0] if candidates else None
 
 
+def _reverified_detour(conn: sqlite3.Connection, candidate: CorridorCandidate) -> _store.Finding | None:
+    """The detour finding a reverification is re-testing, if it still is one for this target.
+
+    Needed because `find_existing_detour` keys on source economy, and
+    `_original_vantage` may have corrected that economy: without this a
+    corrected re-test would file a new finding and leave the original
+    un-refreshed, so it would be re-queued every rotation.
+    """
+    if candidate.reverify_finding_id is None:
+        return None
+    finding = next((f for f in _store.all_findings(conn) if f.id == candidate.reverify_finding_id), None)
+    if finding is None or finding.kind != _store.KIND_CONFIRMED_DETOUR or finding.target_asn != candidate.target_asn:
+        return None
+    return finding
+
+
+def _original_vantage(
+    measurement_id: int,
+    stored_cc: str,
+    parsed_dir: Path | None = None,
+    listing: dict[str, list[dict]] | None = None,
+) -> tuple[str, int | None]:
+    """Where the probes behind `measurement_id` actually are, per the live listing.
+
+    A corroboration's `vantage_point_cc` is a label, and firing is by
+    country, so a wrong label re-fires from the wrong place. Caught
+    2026-09-29: 7 legacy findings labelled FJ were all fired from probe
+    11691 (USP Tonga Campus, live cc TO); re-firing `country=FJ` landed on
+    the Zscaler-egressing SPC probe 60575 and escalated every time.
+
+    Keeps `stored_cc` if any original probe is still in it (e.g. an MP
+    measurement that included a real MP probe alongside Guam-sited AS7131
+    probes), or if the probes can't be placed. Otherwise returns the one
+    economy all the placeable probes are in now, plus their ASN if they
+    share one (for in-flight bookkeeping only).
+    """
+    path = (parsed_dir or DEFAULT_ATLAS_PARSED_DIR) / f"{measurement_id}.json"
+    if not path.exists():
+        return stored_cc, None
+    try:
+        probe_ids = {t["probe_id"] for t in json.loads(path.read_text())}
+        listing = listing if listing is not None else load_probe_listing()
+        placed = {
+            p["id"]: (cc, p.get("asn_v4")) for cc, probes in listing.items() for p in probes if p["id"] in probe_ids
+        }
+    except (OSError, ValueError, KeyError, TypeError, AttributeError) as e:
+        # Runs under run_batch's write lock: a malformed file must not kill every worker.
+        logger.warning("Can't place measurement %d's probes (%s); keeping %s", measurement_id, e, stored_cc)
+        return stored_cc, None
+    ccs = {cc for cc, _ in placed.values()}
+    if not ccs or stored_cc in ccs or len(ccs) > 1:
+        return stored_cc, None
+    asns = {asn for _, asn in placed.values()}
+    return ccs.pop(), (asns.pop() if len(asns) == 1 else None)
+
+
 def _candidate_from_finding(conn: sqlite3.Connection, finding_id: int) -> CorridorCandidate | None:
     """Rebuild a firable `CorridorCandidate` from an existing finding, using
     its most recent corroboration's vantage point as the source -- this
@@ -919,8 +978,16 @@ def _candidate_from_finding(conn: sqlite3.Connection, finding_id: int) -> Corrid
     if not corrobs:
         return None
     latest = max(corrobs, key=lambda c: c.created_at)
-    source_cc = latest.vantage_point_cc
-    source_asn = latest.vantage_point_asn or _any_probe_asn_for_cc(source_cc)
+    source_cc, probe_asn = _original_vantage(latest.measurement_id, latest.vantage_point_cc)
+    if source_cc != latest.vantage_point_cc:
+        logger.debug(
+            "Finding #%d: stored vantage %s, but measurement %d came from probes now in %s; "
+            "reverifying from %s",
+            finding_id, latest.vantage_point_cc, latest.measurement_id, source_cc, source_cc,
+        )
+        source_asn = probe_asn or _any_probe_asn_for_cc(source_cc)
+    else:
+        source_asn = latest.vantage_point_asn or _any_probe_asn_for_cc(source_cc)
     if source_asn is None:
         return None
     source_economy = ECONOMIES_BY_CC.get(source_cc)
@@ -932,6 +999,7 @@ def _candidate_from_finding(conn: sqlite3.Connection, finding_id: int) -> Corrid
         target_asn=finding.target_asn,
         target_cc=finding.target_cc,
         target_name=target_economy.name if target_economy else finding.target_cc,
+        reverify_finding_id=finding.id,
         rationale=(
             f"scheduled reverification of finding #{finding.id} "
             f"(kind={finding.kind}, last verified {latest.created_at})"
