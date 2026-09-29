@@ -3234,7 +3234,7 @@ Both ASNs stay in scope. Their first targets are unchanged: `202.65.32.1` and `1
 - **Code review (code-reviewer agent) caught a real bug:** `_finalize` finds detours by `source_cc`. A corrected re-test would have filed a duplicate TO finding and left #31 stale, so it was re-queued every rotation. Fixed: `CorridorCandidate.reverify_finding_id` carries the finding, and `_reverified_detour()` attaches the result there. Checked live: #31 → TO, attaches to #31. The review's other points were also fixed:
   - the relabel log line moved to DEBUG, since it runs under the write lock on every poll
   - malformed parsed or listing data can no longer kill the batch workers
-- **Not a data mutation:** stored findings keep their labels; only new corroborations record the corrected vantage. **For the owner:** confirm the MP→GU reverification is wanted, since those findings' labels still say MP.
+- **Not a data mutation:** stored findings keep their labels; only new corroborations record the corrected vantage. **Owner confirmed (2026-09-29): MP→GU reverification is fine.**
 - **Probe watch** (`atlas/probe_watch.py`, `pacific-peering-probe-watch`), because SPC are due to take 60575 off the Zscaler VPN:
   - **Nightly, free:** diffs each Connected/Disconnected probe's economy, ASNs and status against `outputs/reports/probe_watch_snapshot.json`.
   - **Egress trace:** one measurement to 1.1.1.1 (fallback 1.0.0.1), recording the first resolved public ASN.
