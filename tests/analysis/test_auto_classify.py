@@ -234,6 +234,8 @@ def test_fire_measurement_forwards_target_ip_to_run_smoketest(monkeypatch):
         return 900000002
 
     monkeypatch.setattr(auto_classify, "run_smoketest", _run_smoketest)
+    # No source-ASN probe listed, so this exercises the country fallback.
+    monkeypatch.setattr(auto_classify, "load_probe_listing", lambda: {})
 
     measurement_id = auto_classify._fire_measurement(_candidate(), "203.78.152.1")
 

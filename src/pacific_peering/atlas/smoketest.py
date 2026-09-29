@@ -236,6 +236,7 @@ def run_probe_sourced_traceroute(
     probe_ids: list[int],
     target_asn: int,
     target_ip: str | None = None,
+    purpose: str = "starlink-backhaul",
 ) -> int:
     """Fire a traceroute from specific Atlas probe(s) toward `target_asn`.
 
@@ -256,13 +257,16 @@ def run_probe_sourced_traceroute(
         target_ip: Force a specific target address; falls back to
             `pick_target_ip(target_asn)` (the same trusted first-cached-
             prefix address every other function here uses) when not given.
+        purpose: Label for the Atlas measurement description. Corridor
+            tests pinned to their source ASN's own probes (see
+            `analysis.auto_classify._fire_measurement`) pass "corridor".
 
     Returns:
         The created measurement's ID.
     """
     target_ip = target_ip or pick_target_ip(target_asn)
     probe_value = ",".join(str(p) for p in probe_ids)
-    description = f"pacific-peering starlink-backhaul probes={probe_value} to AS{target_asn} {target_ip}"
+    description = f"pacific-peering {purpose} probes={probe_value} to AS{target_asn} {target_ip}"
     logger.info("Sourcing from explicit probe(s) %s toward AS%d (%s)", probe_value, target_asn, target_ip)
     return _fire_and_persist("probes", probe_value, target_ip, description, len(probe_ids))
 

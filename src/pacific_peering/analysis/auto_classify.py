@@ -118,11 +118,12 @@ from pacific_peering.analysis.traceroute_topology import (
 )
 from pacific_peering.atlas.asn_probes import (
     DEFAULT_REGISTRY_PATH as ASN_PROBE_REGISTRY_PATH,
+    PROBE_ASN_OVERRIDES,
     load_asn_probe_registry,
 )
 from pacific_peering.atlas.client import fetch_measurement_status
 from pacific_peering.atlas.probes import load_probe_listing
-from pacific_peering.atlas.smoketest import run_smoketest
+from pacific_peering.atlas.smoketest import run_probe_sourced_traceroute, run_smoketest
 from pacific_peering.atlas.targets import has_routing_loop, list_target_ips
 from pacific_peering.discovery import cloudflare_radar
 from pacific_peering.discovery.bgp_tools import fetch_asn_names
@@ -269,7 +270,50 @@ def _local_ixp_crossing_name(probe: dict) -> str | None:
     return None
 
 
+def _probe_asn(probe: dict) -> int | None:
+    """A listed probe's ASN, with `PROBE_ASN_OVERRIDES` applied."""
+    override = PROBE_ASN_OVERRIDES.get(probe["id"])
+    return override[0] if override else probe.get("asn_v4")
+
+
+def _load_listing_or_empty() -> dict[str, list[dict]]:
+    try:
+        return load_probe_listing()
+    except (OSError, ValueError) as e:
+        logger.warning("Probe listing unavailable (%s); falling back to country sourcing", e)
+        return {}
+
+
+def _source_probe_ids(
+    candidate: CorridorCandidate, listing: dict[str, list[dict]] | None = None
+) -> list[int]:
+    """Connected probes on the candidate's own source ASN, in its source economy.
+
+    Caught 2026-09-30 (measurement 216991839): the corridor AS17456 (GU) ->
+    AS9246 was fired as `country=GU`, and Atlas picked probes on AS7131,
+    AS3605 and Starlink -- none on AS17456, though its probe 23039 was
+    Connected. Restricted to the source economy because some ASNs (AS7131)
+    have probes in more than one, and the corridor is an economy-level claim.
+    """
+    listing = listing if listing is not None else _load_listing_or_empty()
+    return [
+        p["id"]
+        for p in listing.get(candidate.source_cc, [])
+        if p.get("status") == "Connected" and _probe_asn(p) == candidate.source_asn
+    ][:_PROBE_COUNT]
+
+
 def _fire_measurement(candidate: CorridorCandidate, target_ip: str) -> int:
+    """Fire from the source ASN's own probes; `country=` only when it has none."""
+    probe_ids = _source_probe_ids(candidate)
+    if probe_ids:
+        return run_probe_sourced_traceroute(
+            probe_ids, candidate.target_asn, target_ip=target_ip, purpose="corridor"
+        )
+    logger.info(
+        "AS%d has no connected probe in %s; sourcing by country instead",
+        candidate.source_asn, candidate.source_cc,
+    )
     return run_smoketest(
         target_asn=candidate.target_asn,
         target_cc=candidate.target_cc,
@@ -649,6 +693,35 @@ def classify_corridor(
             if verdict == VERDICT_IMPOSSIBLE:
                 detour_pick = None  # not filed: escalated for a human read instead
 
+    probe_asns = {
+        p["id"]: _probe_asn(p) for probes in _load_listing_or_empty().values() for p in probes
+    }
+
+    def _corroborate(conn: sqlite3.Connection, finding_id: int, probes: list[dict]) -> None:
+        """Record each probe's own ASN as its vantage, not the candidate's label
+        (the country-sourcing fallback can land on any ASN in the economy)."""
+        for probe in probes:
+            as_sequence = probe.get("as_sequence", [])
+            chain = " -> ".join(f"AS{e['asn']}" for e in as_sequence)
+            vantage_asn = (
+                probe_asns.get(probe["probe_id"])
+                or (as_sequence[0]["asn"] if as_sequence else None)
+                or candidate.source_asn
+            )
+            _store.add_corroboration(
+                conn,
+                finding_id=finding_id,
+                measurement_id=measurement_id,
+                vantage_point_cc=candidate.source_cc,
+                vantage_point_asn=vantage_asn,
+                chain=chain or None,
+                ris_observation_count=probe.get("ris_observation_count"),
+                ris_agrees=probe.get("ris_agrees"),
+                has_loop=probe["probe_id"] in loop_notes,
+                loop_note=loop_notes.get(probe["probe_id"]),
+                crosses_ixp=_local_ixp_crossing_name(probe),
+            )
+
     def _finalize() -> ClassifyResult:
         conn = _store.connect()
         try:
@@ -672,21 +745,7 @@ def classify_corridor(
                     )
                 else:
                     finding_id = finding.id
-                for probe in clean_probes:
-                    chain = " -> ".join(f"AS{e['asn']}" for e in probe.get("as_sequence", []))
-                    _store.add_corroboration(
-                        conn,
-                        finding_id=finding_id,
-                        measurement_id=measurement_id,
-                        vantage_point_cc=candidate.source_cc,
-                        vantage_point_asn=candidate.source_asn,
-                        chain=chain or None,
-                        ris_observation_count=probe.get("ris_observation_count"),
-                        ris_agrees=probe.get("ris_agrees"),
-                        has_loop=probe["probe_id"] in loop_notes,
-                        loop_note=loop_notes.get(probe["probe_id"]),
-                        crosses_ixp=_local_ixp_crossing_name(probe),
-                    )
+                _corroborate(conn, finding_id, clean_probes)
                 mark_corridor_tested(candidate.source_asn, candidate.target_asn)
                 if regenerate:
                     _regenerate_artifacts()
@@ -712,21 +771,11 @@ def classify_corridor(
                     )
                 else:
                     finding_id = finding.id
-                for probe in clean_probes:
-                    chain = " -> ".join(f"AS{e['asn']}" for e in probe.get("as_sequence", []))
-                    _store.add_corroboration(
-                        conn,
-                        finding_id=finding_id,
-                        measurement_id=measurement_id,
-                        vantage_point_cc=candidate.source_cc,
-                        vantage_point_asn=candidate.source_asn,
-                        chain=chain or None,
-                        ris_observation_count=probe.get("ris_observation_count"),
-                        ris_agrees=probe.get("ris_agrees"),
-                        has_loop=probe["probe_id"] in loop_notes,
-                        loop_note=loop_notes.get(probe["probe_id"]),
-                        crosses_ixp=_local_ixp_crossing_name(probe),
-                    )
+                _corroborate(
+                    conn,
+                    finding_id,
+                    [p for p in clean_probes if p.get("traceroute_upstream_asn") == upstream_asn],
+                )
                 mark_corridor_tested(candidate.source_asn, candidate.target_asn)
                 if regenerate:
                     _regenerate_artifacts()
@@ -735,42 +784,35 @@ def classify_corridor(
                 return ClassifyResult(candidate, "confirmed_local_transit", finding_id, escalations)
 
             if candidate_picks:
-                upstream_asn = candidate_picks[0]["traceroute_upstream_asn"]
-                agree_count = sum(
-                    1 for p in candidate_picks if p["traceroute_upstream_asn"] == upstream_asn
-                )
-                finding = _store.find_existing(
-                    conn, _store.KIND_CANDIDATE_PEERING, upstream_asn, candidate.target_asn
-                )
-                if finding is None:
-                    finding_id = _store.create_finding(
-                        conn,
-                        kind=_store.KIND_CANDIDATE_PEERING,
-                        source_cc=asn_to_cc.get(upstream_asn, "??"),
-                        source_asn=upstream_asn,
-                        source_name=_asn_holder_name(upstream_asn, name_cache),
-                        target_cc=candidate.target_cc,
-                        target_asn=candidate.target_asn,
-                        target_name=_asn_holder_name(candidate.target_asn, name_cache),
-                        probe_agreement=f"{agree_count}/{len(clean_probes)} probes",
+                # One finding per upstream, each holding only its own probes --
+                # caught 2026-09-30 (measurement 216991839): every probe used
+                # to land on the first pick's finding, so probe 64953's
+                # AS3605 -> MARIIX -> AS9246 chain was filed as evidence for
+                # AS7131 -> AS9246. The majority upstream is the one reported.
+                by_upstream: dict[int, list[dict]] = {}
+                for pick in candidate_picks:
+                    by_upstream.setdefault(pick["traceroute_upstream_asn"], []).append(pick)
+                finding_id = None
+                for upstream_asn, picks in sorted(by_upstream.items(), key=lambda kv: -len(kv[1])):
+                    finding = _store.find_existing(
+                        conn, _store.KIND_CANDIDATE_PEERING, upstream_asn, candidate.target_asn
                     )
-                else:
-                    finding_id = finding.id
-                for probe in clean_probes:
-                    chain = " -> ".join(f"AS{e['asn']}" for e in probe.get("as_sequence", []))
-                    _store.add_corroboration(
-                        conn,
-                        finding_id=finding_id,
-                        measurement_id=measurement_id,
-                        vantage_point_cc=candidate.source_cc,
-                        vantage_point_asn=candidate.source_asn,
-                        chain=chain or None,
-                        ris_observation_count=probe.get("ris_observation_count"),
-                        ris_agrees=probe.get("ris_agrees"),
-                        has_loop=probe["probe_id"] in loop_notes,
-                        loop_note=loop_notes.get(probe["probe_id"]),
-                        crosses_ixp=_local_ixp_crossing_name(probe),
-                    )
+                    if finding is None:
+                        group_finding_id = _store.create_finding(
+                            conn,
+                            kind=_store.KIND_CANDIDATE_PEERING,
+                            source_cc=asn_to_cc.get(upstream_asn, "??"),
+                            source_asn=upstream_asn,
+                            source_name=_asn_holder_name(upstream_asn, name_cache),
+                            target_cc=candidate.target_cc,
+                            target_asn=candidate.target_asn,
+                            target_name=_asn_holder_name(candidate.target_asn, name_cache),
+                            probe_agreement=f"{len(picks)}/{len(clean_probes)} probes",
+                        )
+                    else:
+                        group_finding_id = finding.id
+                    _corroborate(conn, group_finding_id, picks)
+                    finding_id = finding_id or group_finding_id
                 mark_corridor_tested(candidate.source_asn, candidate.target_asn)
                 if regenerate:
                     _regenerate_artifacts()
