@@ -2326,3 +2326,12 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   un-marked for an honest retest.
 - `IpResolutionCache.save()` is atomic; `resolve_traceroute_hops(persist=False)`
   re-resolves without writing the shared cache.
+- Corridor tests fire from the source ASN's own connected probes in the
+  source economy (`country=` only as a fallback); corroborations record
+  each probe's ASN; candidate_peering files one finding per upstream.
+  Measurement 216991839 (AS17456->AS9246) had run from AS7131/AS3605/
+  Starlink probes only. Retested from probe 23039: direct AS17456->AS9246
+  at 0.6ms, no IXP, filed as candidate #256.
+- `docs/relabel_draft_2026-09-30.md`: proposed repairs to existing
+  corroborations (10 moves, 7 new-finding proposals, 6 drops, 77 vantage
+  relabels). Draft only, nothing applied.

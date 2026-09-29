@@ -1,6 +1,6 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-09-29T15:26:14.879557+00:00                  
+                 Generated: 2026-09-29T23:42:27.074678+00:00                  
 ==============================================================================
 FOUND A BUG? Bugs very likely remain in both the code and the data.
 Please open an issue: https://github.com/IEISI-ORG/pacific-peering/issues/new
@@ -11,8 +11,8 @@ SUMMARY
 HEADLINE: 57% of the real peering points this region's own networks use sit OUTSIDE the fish bowl (13 of 23)
 
 PATHWAYS (every corridor with a filed finding, of any kind):
-  Total pathways found:                    240
-  Internal (never leave the fish bowl):    67
+  Total pathways found:                    241
+  Internal (never leave the fish bowl):    68
   External / Leaves the region:            173
   (full corridor-by-corridor detail -- every confirmed detour, confirmed local transit, and candidate peering entry -- is in the appendix at the end of this report, not repeated here)
 
@@ -326,7 +326,7 @@ MH      64237 AS14593   Connected     Starlink (AS14593): satellite egress via S
 PF      23002 AS2200    Connected     Renater (AS2200): backhauls straight to metropolitan France (~500ms), never touches Pacific transit
 TO      11691 AS24390   Connected     ASN registered Fiji but probe physically in Tonga (geo-audit): counts as a TO vantage point, not FJ; USP (AS24390, registered FJ): regional academic network via AARNet (Australia), not a local commercial carrier; valid source, path unverified
 
-APPENDIX: FULL CORRIDOR DETAIL (240 pathways -- see the PATHWAYS summary at the top of this report for the plain counts)
+APPENDIX: FULL CORRIDOR DETAIL (241 pathways -- see the PATHWAYS summary at the top of this report for the plain counts)
 ==============================================================================
 
 Confirmed sub-optimal routes (RIS + Atlas both agree)
@@ -968,6 +968,9 @@ AS7474 (SingTel Optus Pty Ltd, AU) -> AS4638 (Telecom Fiji Limited, FJ)
 AS3605 (Guam Cablevision, GU) -> AS9246 (Teleguam Holdings, GU)
     Traceroute agreement: 2/3 probes  [measurement 213204603, vantage: GU]
     measurement 213204603 (from GU); chain: AS3605 -> AS9246; RIS disagrees. measurement 213204603 (from GU); chain: AS7131 -> AS9246; RIS disagrees. measurement 213204603 (from GU); chain: AS3605 -> AS9246; RIS disagrees. measurement 213205466 (from GU); chain: AS3605 -> AS9246; RIS disagrees. measurement 213205466 (from GU); chain: AS7131 -> AS9246; RIS disagrees. measurement 213205466 (from GU); chain: AS3605 -> AS9246; RIS disagrees. measurement 213205473 (from GU); chain: AS3605 -> AS9246; RIS disagrees. measurement 213205473 (from GU); chain: AS7131 -> AS9246; RIS disagrees. measurement 213205473 (from GU); chain: AS152735 -> AS7131 -> AS9246; RIS disagrees.
+AS17456 (Pacific Data Systems, GU) -> AS9246 (Teleguam Holdings, GU)
+    Traceroute agreement: 1/1 probes  [measurement 217179093, vantage: GU]
+    measurement 217179093 (from GU); chain: AS17456 -> AS9246; RIS disagrees.
 AS7131 (PTI Pacifica Inc., MP) -> AS9246 (Teleguam Holdings, GU)
     Traceroute agreement: 1/2 probes  [measurement 216991839, vantage: GU]
     measurement 216991839 (from GU); chain: AS7131 -> AS9246; RIS disagrees. measurement 216991839 (from GU); chain: AS3605 -> AS9246; RIS disagrees.
