@@ -1,9 +1,10 @@
-IPv6 fleet check -- 2026-09-24
+IPv6 fleet check -- 2026-09-29
 Auto-generated weekly (Wednesday) by `pacific-peering-ipv6-fleet` (atlas/ipv6_fleet.py).
-Anchor measurements: 215118287, 215121164
+Anchor measurements: 216992955, 216993707
 
 Changes since last snapshot:
-  - First snapshot -- nothing to compare against.
+  - probe 1008228 (KI) measured access no_reach -> no_result
+  - probe 1008228 (KI) Atlas tag system-ipv6-doesnt-work removed
 
 Per economy (connected probes / with IPv6 ASN / Atlas ipv6-works tag):
   AS   0 /  0 /  0
@@ -23,20 +24,20 @@ Per economy (connected probes / with IPv6 ASN / Atlas ipv6-works tag):
   SB   0 /  0 /  0
   TO   1 /  0 /  0
   TV   1 /  0 /  0
-  VU   2 /  0 /  0
+  VU   1 /  0 /  0
   WF   0 /  0 /  0
   WS   0 /  0 /  0
 
 IPv6 probes (measured access this week, per anchor, vs Atlas tags):
   per anchor: ok <RTT> = reached; dark@<addr> = last hop that answered; - = no result
   NC      7018  AS45345   reached      cloudflare ok 0.6ms            google ok 22.6ms           tags: capable, stable-1d, stable-30d, stable-90d, works
-  GU      7385  AS152735  reached      cloudflare ok 127.0ms          google ok 48.0ms           tags: capable, stable-1d, stable-30d, stable-90d, works
-  FM      7448  AS139759  reached      cloudflare ok 49.5ms           google ok 129.2ms          tags: capable, stable-1d, stable-30d, stable-90d, works
-  PW      7455  AS17893   reached      cloudflare ok 47.9ms           google ok 47.9ms           tags: capable, stable-1d, stable-30d, stable-90d, works
-  NC     33674  AS45345   reached      cloudflare ok 0.7ms            google ok 44.4ms           tags: capable, stable-1d, stable-30d, stable-90d, works
-  PF     53098  AS9471    reached      cloudflare ok 1.5ms            google dark@fc00:1::1      tags: capable, stable-1d, works
+  GU      7385  AS152735  reached      cloudflare ok 119.4ms          google ok 48.0ms           tags: capable, stable-1d, stable-30d, stable-90d, works
+  FM      7448  AS139759  reached      cloudflare ok 49.4ms           google ok 129.2ms          tags: capable, stable-1d, stable-30d, stable-90d, works
+  PW      7455  AS17893   reached      cloudflare ok 47.8ms           google ok 47.7ms           tags: capable, stable-1d, stable-30d, stable-90d, works
+  NC     33674  AS45345   reached      cloudflare ok 0.7ms            google ok 44.3ms           tags: capable, stable-1d, stable-30d, stable-90d, works
+  PF     53098  AS9471    reached      cloudflare ok 1.9ms            google dark@fc00:1::1      tags: capable, stable-1d, works
   NC     63050  AS45345   no_reach     cloudflare dark@2404:e400:bb00:6::  google dark@2404:e400:bb00:6::  tags: capable, doesnt-work, stable-1d, stable-30d, stable-90d
-  PF   1001562  AS9471    reached      cloudflare ok 1.6ms            google dark@fc00:1::1      tags: capable, stable-1d, stable-30d, stable-90d, works
-  KI   1008228  AS14593   no_reach     cloudflare dark@*              google dark@*              tags: capable, doesnt-work
+  PF   1001562  AS9471    reached      cloudflare ok 1.8ms            google dark@fc00:1::1      tags: capable, stable-1d, stable-30d, stable-90d, works
+  KI   1008228  AS14593   no_result    cloudflare -                   google -                   tags: capable
   KI   1008229  AS14593   no_result    cloudflare -                   google -                   tags: capable
-  NC   1008625  AS45345   reached      cloudflare ok 0.6ms            google ok 22.7ms           tags: capable, stable-1d, stable-30d, stable-90d, works
+  NC   1008625  AS45345   reached      cloudflare ok 0.7ms            google ok 22.7ms           tags: capable, stable-1d, stable-30d, stable-90d, works

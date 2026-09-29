@@ -1,6 +1,6 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-09-29T07:55:17.511308+00:00                  
+                 Generated: 2026-09-29T15:26:14.879557+00:00                  
 ==============================================================================
 FOUND A BUG? Bugs very likely remain in both the code and the data.
 Please open an issue: https://github.com/IEISI-ORG/pacific-peering/issues/new
@@ -11,8 +11,8 @@ SUMMARY
 HEADLINE: 57% of the real peering points this region's own networks use sit OUTSIDE the fish bowl (13 of 23)
 
 PATHWAYS (every corridor with a filed finding, of any kind):
-  Total pathways found:                    239
-  Internal (never leave the fish bowl):    66
+  Total pathways found:                    240
+  Internal (never leave the fish bowl):    67
   External / Leaves the region:            173
   (full corridor-by-corridor detail -- every confirmed detour, confirmed local transit, and candidate peering entry -- is in the appendix at the end of this report, not repeated here)
 
@@ -183,7 +183,7 @@ WS   Samoa                       10        2            1          2
 
 ROV ENFORCEMENT (Cloudflare RPKI-invalid test, weekly)
 ==============================================================================
-Latest run 2026-09-24. Every connected probe traces Cloudflare's RPKI-valid and RPKI-invalid test prefixes; where the valid one answers but the invalid one dies, something on that path drops invalid routes. Where ASPA above counts who has *published* route-security data, this shows whose paths actually *enforce* origin validation. A traceroute can't separate a network filtering from its upstream filtering, and Cloudflare is anycast, so a short path only speaks for the probe's own network. Counts are probes: filtered / not filtered / inconclusive.
+Latest run 2026-09-29. Every connected probe traces Cloudflare's RPKI-valid and RPKI-invalid test prefixes; where the valid one answers but the invalid one dies, something on that path drops invalid routes. Where ASPA above counts who has *published* route-security data, this shows whose paths actually *enforce* origin validation. A traceroute can't separate a network filtering from its upstream filtering, and Cloudflare is anycast, so a short path only speaks for the probe's own network. Counts are probes: filtered / not filtered / inconclusive.
 CC   Name                                  IPv4      IPv6
 ------------------------------------------------------------------------------
 CK   Cook Islands                         0/0/1         -
@@ -191,31 +191,30 @@ FJ   Fiji                                 0/0/1         -
 FM   Micronesia, Federated States of      0/3/0     0/1/0
 GU   Guam                                 1/8/0     1/0/0
 KI   Kiribati                             0/2/0     0/0/2
-MH   Marshall Islands                     0/0/1         -
+MH   Marshall Islands                     0/1/0         -
 MP   Northern Mariana Islands             0/1/0         -
 NC   New Caledonia                        5/0/0     3/0/1
 NU   Niue                                 0/1/0         -
 PF   French Polynesia                     0/7/0     0/2/0
 PG   Papua New Guinea                     0/1/0         -
-PW   Palau                                0/1/0     0/1/0
+PW   Palau                                0/0/1     0/1/0
 TO   Tonga                                1/0/0         -
 TV   Tuvalu                               0/1/0         -
-VU   Vanuatu                              0/2/0         -
+VU   Vanuatu                              0/1/0         -
 Not testable (no connected probe): AS, NR, SB, WF, WS
 
 Where invalid traces died (last network reached; it or its upstream dropped the route):
-  IPv4  AS18200: 2 probe(s)
-  IPv6  AS18200: 2 probe(s)
-  IPv4  AS45345: 2 probe(s)
+  IPv4  AS18200: 3 probe(s)
+  IPv6  AS45345: 3 probe(s)
+  IPv4  AS45345: 1 probe(s)
   IPv4  AS56089: 1 probe(s)
-  IPv6  AS45345: 1 probe(s)
   IPv4  AS24390: 1 probe(s)
   IPv6  before the first public hop: 1 probe(s)
   IPv4  before the first public hop: 1 probe(s)
 
 Valid and invalid traces left via different upstreams (a sign one of them drops the invalid route):
   PG probe 50365 (IPv4): valid via AS4826, invalid via AS7474
-Measurements: {'v4': [215197667, 215198886], 'v6': [215199848, 215200172]}. Detail: outputs/reports/rov_cloudflare.txt
+Measurements: {'v4': [216995468, 216995782], 'v6': [216998611, 216999009]}. Detail: outputs/reports/rov_cloudflare.txt
 
 IPV6 COVERAGE (adoption signal only -- no IPv6 testing yet)
 ==============================================================================
@@ -261,7 +260,7 @@ Guam IX                      Tamuning         GU   True               5        2
 IX Australia Sydney (NSW-IX) Sydney           AU   False              1        4  SB
 JPIX TOKYO                   Tokyo            JP   False              1        0  GU
 JPNAP Tokyo                  Tokyo            JP   False              1        0  GU
-MARIIX                       Mangilao         GU   True               5        4  GU, MP
+MARIIX                       Mangilao         GU   True               5        5  GU, MP
 MegaIX Sydney                Sydney           AU   False              6       15  FJ, NC, PG, SB
 PNG Neutral IX Hagen         Mt Hagen         PG   True               1        0  PG
 PNG Neutral IX Lae           Lae              PG   True               2        0  PG
@@ -327,7 +326,7 @@ MH      64237 AS14593   Connected     Starlink (AS14593): satellite egress via S
 PF      23002 AS2200    Connected     Renater (AS2200): backhauls straight to metropolitan France (~500ms), never touches Pacific transit
 TO      11691 AS24390   Connected     ASN registered Fiji but probe physically in Tonga (geo-audit): counts as a TO vantage point, not FJ; USP (AS24390, registered FJ): regional academic network via AARNet (Australia), not a local commercial carrier; valid source, path unverified
 
-APPENDIX: FULL CORRIDOR DETAIL (239 pathways -- see the PATHWAYS summary at the top of this report for the plain counts)
+APPENDIX: FULL CORRIDOR DETAIL (240 pathways -- see the PATHWAYS summary at the top of this report for the plain counts)
 ==============================================================================
 
 Confirmed sub-optimal routes (RIS + Atlas both agree)
@@ -969,6 +968,9 @@ AS7474 (SingTel Optus Pty Ltd, AU) -> AS4638 (Telecom Fiji Limited, FJ)
 AS3605 (Guam Cablevision, GU) -> AS9246 (Teleguam Holdings, GU)
     Traceroute agreement: 2/3 probes  [measurement 213204603, vantage: GU]
     measurement 213204603 (from GU); chain: AS3605 -> AS9246; RIS disagrees. measurement 213204603 (from GU); chain: AS7131 -> AS9246; RIS disagrees. measurement 213204603 (from GU); chain: AS3605 -> AS9246; RIS disagrees. measurement 213205466 (from GU); chain: AS3605 -> AS9246; RIS disagrees. measurement 213205466 (from GU); chain: AS7131 -> AS9246; RIS disagrees. measurement 213205466 (from GU); chain: AS3605 -> AS9246; RIS disagrees. measurement 213205473 (from GU); chain: AS3605 -> AS9246; RIS disagrees. measurement 213205473 (from GU); chain: AS7131 -> AS9246; RIS disagrees. measurement 213205473 (from GU); chain: AS152735 -> AS7131 -> AS9246; RIS disagrees.
+AS7131 (PTI Pacifica Inc., MP) -> AS9246 (Teleguam Holdings, GU)
+    Traceroute agreement: 1/2 probes  [measurement 216991839, vantage: GU]
+    measurement 216991839 (from GU); chain: AS7131 -> AS9246; RIS disagrees. measurement 216991839 (from GU); chain: AS3605 -> AS9246; RIS disagrees.
 AS4637 (Telstra International Limited, ??) -> AS9249 (Telecom Vanuatu Limited, VU)
     Traceroute agreement: 1/1 probes  [measurement 216152918, vantage: MP]
     measurement 216152918 (from MP); chain: AS7131 -> AS6939 -> AS4637; RIS disagrees.

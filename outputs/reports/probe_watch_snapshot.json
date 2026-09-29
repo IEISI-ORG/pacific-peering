@@ -1,0 +1,240 @@
+{
+ "at": "2026-09-29T15:00:41.234202+00:00",
+ "pending_trace": [],
+ "probes": {
+  "1001562": {
+   "asn_v4": 9471,
+   "asn_v6": 9471,
+   "cc": "PF",
+   "status": "Connected"
+  },
+  "1008228": {
+   "asn_v4": 14593,
+   "asn_v6": 14593,
+   "cc": "KI",
+   "status": "Connected"
+  },
+  "1008229": {
+   "asn_v4": 14593,
+   "asn_v6": 14593,
+   "cc": "KI",
+   "status": "Connected"
+  },
+  "1008536": {
+   "asn_v4": 9249,
+   "asn_v6": null,
+   "cc": "VU",
+   "status": "Disconnected"
+  },
+  "1008625": {
+   "asn_v4": 45345,
+   "asn_v6": 45345,
+   "cc": "NC",
+   "status": "Connected"
+  },
+  "1012513": {
+   "asn_v4": 152735,
+   "asn_v6": null,
+   "cc": "GU",
+   "status": "Connected"
+  },
+  "1014350": {
+   "asn_v4": 9471,
+   "asn_v6": null,
+   "cc": "PF",
+   "status": "Connected"
+  },
+  "11691": {
+   "asn_v4": 24390,
+   "asn_v6": null,
+   "cc": "TO",
+   "status": "Connected"
+  },
+  "22667": {
+   "asn_v4": 7131,
+   "asn_v6": null,
+   "cc": "GU",
+   "status": "Disconnected"
+  },
+  "22761": {
+   "asn_v4": 10131,
+   "asn_v6": null,
+   "cc": "CK",
+   "status": "Connected"
+  },
+  "23002": {
+   "asn_v4": 2200,
+   "asn_v6": null,
+   "cc": "PF",
+   "status": "Connected"
+  },
+  "23039": {
+   "asn_v4": 17456,
+   "asn_v6": null,
+   "cc": "GU",
+   "status": "Connected"
+  },
+  "24944": {
+   "asn_v4": 45355,
+   "asn_v6": null,
+   "cc": "FJ",
+   "status": "Disconnected"
+  },
+  "30712": {
+   "asn_v4": 9471,
+   "asn_v6": null,
+   "cc": "PF",
+   "status": "Connected"
+  },
+  "329": {
+   "asn_v4": 3605,
+   "asn_v6": null,
+   "cc": "GU",
+   "status": "Connected"
+  },
+  "33674": {
+   "asn_v4": 45345,
+   "asn_v6": 45345,
+   "cc": "NC",
+   "status": "Connected"
+  },
+  "50365": {
+   "asn_v4": 17828,
+   "asn_v6": null,
+   "cc": "PG",
+   "status": "Connected"
+  },
+  "50897": {
+   "asn_v4": 139759,
+   "asn_v6": null,
+   "cc": "FM",
+   "status": "Connected"
+  },
+  "52614": {
+   "asn_v4": 9471,
+   "asn_v6": null,
+   "cc": "PF",
+   "status": "Connected"
+  },
+  "53098": {
+   "asn_v4": 9471,
+   "asn_v6": 9471,
+   "cc": "PF",
+   "status": "Connected"
+  },
+  "54473": {
+   "asn_v4": 9471,
+   "asn_v6": null,
+   "cc": "PF",
+   "status": "Connected"
+  },
+  "60575": {
+   "asn_v4": 141695,
+   "asn_v6": null,
+   "cc": "FJ",
+   "status": "Connected"
+  },
+  "60689": {
+   "asn_v4": 7131,
+   "asn_v6": null,
+   "cc": "GU",
+   "status": "Connected"
+  },
+  "60703": {
+   "asn_v4": 152735,
+   "asn_v6": null,
+   "cc": "GU",
+   "status": "Connected"
+  },
+  "61210": {
+   "asn_v4": 56089,
+   "asn_v6": null,
+   "cc": "NC",
+   "status": "Connected"
+  },
+  "62046": {
+   "asn_v4": 14593,
+   "asn_v6": null,
+   "cc": "FM",
+   "status": "Connected"
+  },
+  "62689": {
+   "asn_v4": 7131,
+   "asn_v6": null,
+   "cc": "GU",
+   "status": "Connected"
+  },
+  "63050": {
+   "asn_v4": 45345,
+   "asn_v6": 45345,
+   "cc": "NC",
+   "status": "Connected"
+  },
+  "64237": {
+   "asn_v4": 14593,
+   "asn_v6": null,
+   "cc": "MH",
+   "status": "Connected"
+  },
+  "64391": {
+   "asn_v4": 55885,
+   "asn_v6": null,
+   "cc": "NU",
+   "status": "Connected"
+  },
+  "64783": {
+   "asn_v4": 9249,
+   "asn_v6": null,
+   "cc": "VU",
+   "status": "Connected"
+  },
+  "64953": {
+   "asn_v4": 3605,
+   "asn_v6": null,
+   "cc": "GU",
+   "status": "Connected"
+  },
+  "65337": {
+   "asn_v4": 14593,
+   "asn_v6": null,
+   "cc": "GU",
+   "status": "Connected"
+  },
+  "65653": {
+   "asn_v4": 7131,
+   "asn_v6": null,
+   "cc": "MP",
+   "status": "Connected"
+  },
+  "7018": {
+   "asn_v4": 45345,
+   "asn_v6": 45345,
+   "cc": "NC",
+   "status": "Connected"
+  },
+  "7385": {
+   "asn_v4": 152735,
+   "asn_v6": 152735,
+   "cc": "GU",
+   "status": "Connected"
+  },
+  "7448": {
+   "asn_v4": 139759,
+   "asn_v6": 139759,
+   "cc": "FM",
+   "status": "Connected"
+  },
+  "7455": {
+   "asn_v4": 17893,
+   "asn_v6": 17893,
+   "cc": "PW",
+   "status": "Connected"
+  },
+  "7588": {
+   "asn_v4": 23917,
+   "asn_v6": null,
+   "cc": "TV",
+   "status": "Connected"
+  }
+ }
+}

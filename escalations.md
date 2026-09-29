@@ -143,3 +143,9 @@ Corridors `auto_classify.py`'s mechanical rules couldn't confidently resolve on 
 - detail: every probe in this measurement resolved a known corporate proxy/VPN ASN as its first hop (probe 60575 via Zscaler) -- this source's own probe currently can't produce a real path; needs a human look (a different source, or wait for the proxy egress to genuinely change), not a target-IP retry
 - flagged: 2026-09-27T15:33:10.817887+00:00
 
+## AS17456 (GU) -> AS9246 (GU)
+- measurement: 216991839
+- reason: local IXP crossing with implausibly high latency
+- detail: probe 64953: hop 6 crosses MARIIX (in-fishbowl) at 10.636ms, above the 10.0ms local-fiber threshold -- either this hop isn't genuinely local despite the registry, or there's an unexpected detour/backhaul before reaching it; needs a human look, not a guess
+- flagged: 2026-09-29T15:06:59.886272+00:00
+

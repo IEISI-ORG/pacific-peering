@@ -73,7 +73,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
 <body>
 <div class="wrap">
     <h1>Pacific Peering — Regional Routing Report</h1>
-    <div class="meta">Generated 2026-09-29T12:58:17.746315+00:00</div>
+    <div class="meta">Generated 2026-09-29T15:26:16.107863+00:00</div>
 
     <div class="feedback-box"><strong>Found a bug?</strong> This report is generated
         automatically, and bugs very likely remain in both the code and the data. If
@@ -89,13 +89,13 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
     </div>
 
     <div class="stat-row">
-        <div class="stat-tile"><div class="value">239</div><div class="label">Pathways found (total)</div></div>
-        <div class="stat-tile"><div class="value">66</div><div class="label">Internal (never leave the fish bowl)</div></div>
+        <div class="stat-tile"><div class="value">240</div><div class="label">Pathways found (total)</div></div>
+        <div class="stat-tile"><div class="value">67</div><div class="label">Internal (never leave the fish bowl)</div></div>
         <div class="stat-tile red-box"><div class="value">173</div>
             <div class="label">External / Leaves the region</div></div>
     </div>
     <p class="section-intro">Full corridor-by-corridor detail for all
-        239 pathways above is further down this report
+        240 pathways above is further down this report
         (Confirmed sub-optimal routes / Confirmed local transit / Candidate
         peering), collapsed by default so it doesn't dominate the page &mdash;
         click any of those section headings to expand.</p>
@@ -1963,7 +1963,7 @@ Twelfth confirmation of AS139609(SISCC)&lt;-&gt;AS45891. `AS55885 -&gt; AS9471 -
 
     <details class="section-toggle">
         <summary>Candidate peering (strong traceroute signal, RIS disagrees &mdash; unconfirmed)
-            <span class="count">(34)</span></summary>
+            <span class="count">(35)</span></summary>
         <div class="candidate-card">
             <div class="headline">AS7131 (PTI Pacifica Inc.,
                 MP) -&gt; AS3605
@@ -1996,6 +1996,14 @@ Twelfth confirmation of AS139609(SISCC)&lt;-&gt;AS45891. `AS55885 -&gt; AS9471 -
                 &middot; measurement 213204603
                 &middot; vantage point GU</div>
             <details class="note"><summary>measurement 213204603 (from GU); chain: AS3605 -&gt; AS9246; RIS disagrees…</summary>measurement 213204603 (from GU); chain: AS3605 -&gt; AS9246; RIS disagrees. measurement 213204603 (from GU); chain: AS7131 -&gt; AS9246; RIS disagrees. measurement 213204603 (from GU); chain: AS3605 -&gt; AS9246; RIS disagrees. measurement 213205466 (from GU); chain: AS3605 -&gt; AS9246; RIS disagrees. measurement 213205466 (from GU); chain: AS7131 -&gt; AS9246; RIS disagrees. measurement 213205466 (from GU); chain: AS3605 -&gt; AS9246; RIS disagrees. measurement 213205473 (from GU); chain: AS3605 -&gt; AS9246; RIS disagrees. measurement 213205473 (from GU); chain: AS7131 -&gt; AS9246; RIS disagrees. measurement 213205473 (from GU); chain: AS152735 -&gt; AS7131 -&gt; AS9246; RIS disagrees.</details>
+        </div><div class="candidate-card">
+            <div class="headline">AS7131 (PTI Pacifica Inc.,
+                MP) -&gt; AS9246
+                (Teleguam Holdings, GU)</div>
+            <div>Traceroute agreement: 1/2 probes
+                &middot; measurement 216991839
+                &middot; vantage point GU</div>
+            <details class="note"><summary>measurement 216991839 (from GU); chain: AS7131 -&gt; AS9246; RIS disagrees…</summary>measurement 216991839 (from GU); chain: AS7131 -&gt; AS9246; RIS disagrees. measurement 216991839 (from GU); chain: AS3605 -&gt; AS9246; RIS disagrees.</details>
         </div><div class="candidate-card">
             <div class="headline">AS4637 (Telstra International Limited,
                 ??) -&gt; AS9249
@@ -2430,7 +2438,7 @@ NU(AS55885) -&gt; AS150403: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS139609 -&
 
     <h2>ROV enforcement (Cloudflare RPKI-invalid test, weekly)</h2>
     <p class="section-intro">
-        Latest run <strong>2026-09-24</strong>. Every connected probe traces
+        Latest run <strong>2026-09-29</strong>. Every connected probe traces
         Cloudflare's RPKI-valid and RPKI-invalid test prefixes; where the valid one answers but
         the invalid one dies, something on that path drops invalid routes. Where ASPA above counts
         who has <em>published</em> route-security data, this shows whose paths actually
@@ -2440,13 +2448,13 @@ NU(AS55885) -&gt; AS150403: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS139609 -&
     </p>
     <table>
         <thead><tr><th>CC</th><th>Name</th><th>IPv4</th><th>IPv6</th></tr></thead>
-        <tbody><tr><td>CK</td><td>Cook Islands</td><td>0/0/1</td><td>&ndash;</td></tr><tr><td>FJ</td><td>Fiji</td><td>0/0/1</td><td>&ndash;</td></tr><tr><td>FM</td><td>Micronesia, Federated States of</td><td>0/3/0</td><td>0/1/0</td></tr><tr><td>GU</td><td>Guam</td><td>1/8/0</td><td>1/0/0</td></tr><tr><td>KI</td><td>Kiribati</td><td>0/2/0</td><td>0/0/2</td></tr><tr><td>MH</td><td>Marshall Islands</td><td>0/0/1</td><td>&ndash;</td></tr><tr><td>MP</td><td>Northern Mariana Islands</td><td>0/1/0</td><td>&ndash;</td></tr><tr><td>NC</td><td>New Caledonia</td><td>5/0/0</td><td>3/0/1</td></tr><tr><td>NU</td><td>Niue</td><td>0/1/0</td><td>&ndash;</td></tr><tr><td>PF</td><td>French Polynesia</td><td>0/7/0</td><td>0/2/0</td></tr><tr><td>PG</td><td>Papua New Guinea</td><td>0/1/0</td><td>&ndash;</td></tr><tr><td>PW</td><td>Palau</td><td>0/1/0</td><td>0/1/0</td></tr><tr><td>TO</td><td>Tonga</td><td>1/0/0</td><td>&ndash;</td></tr><tr><td>TV</td><td>Tuvalu</td><td>0/1/0</td><td>&ndash;</td></tr><tr><td>VU</td><td>Vanuatu</td><td>0/2/0</td><td>&ndash;</td></tr></tbody>
+        <tbody><tr><td>CK</td><td>Cook Islands</td><td>0/0/1</td><td>&ndash;</td></tr><tr><td>FJ</td><td>Fiji</td><td>0/0/1</td><td>&ndash;</td></tr><tr><td>FM</td><td>Micronesia, Federated States of</td><td>0/3/0</td><td>0/1/0</td></tr><tr><td>GU</td><td>Guam</td><td>1/8/0</td><td>1/0/0</td></tr><tr><td>KI</td><td>Kiribati</td><td>0/2/0</td><td>0/0/2</td></tr><tr><td>MH</td><td>Marshall Islands</td><td>0/1/0</td><td>&ndash;</td></tr><tr><td>MP</td><td>Northern Mariana Islands</td><td>0/1/0</td><td>&ndash;</td></tr><tr><td>NC</td><td>New Caledonia</td><td>5/0/0</td><td>3/0/1</td></tr><tr><td>NU</td><td>Niue</td><td>0/1/0</td><td>&ndash;</td></tr><tr><td>PF</td><td>French Polynesia</td><td>0/7/0</td><td>0/2/0</td></tr><tr><td>PG</td><td>Papua New Guinea</td><td>0/1/0</td><td>&ndash;</td></tr><tr><td>PW</td><td>Palau</td><td>0/0/1</td><td>0/1/0</td></tr><tr><td>TO</td><td>Tonga</td><td>1/0/0</td><td>&ndash;</td></tr><tr><td>TV</td><td>Tuvalu</td><td>0/1/0</td><td>&ndash;</td></tr><tr><td>VU</td><td>Vanuatu</td><td>0/1/0</td><td>&ndash;</td></tr></tbody>
     </table>
     <p>Not testable (no connected probe): AS, NR, SB, WF, WS</p>
     <p>Where invalid traces died (last network reached; it or its upstream dropped the route):</p>
-    <ul><li>IPv4 &mdash; AS18200: 2 probe(s)</li><li>IPv6 &mdash; AS18200: 2 probe(s)</li><li>IPv4 &mdash; AS45345: 2 probe(s)</li><li>IPv4 &mdash; AS56089: 1 probe(s)</li><li>IPv6 &mdash; AS45345: 1 probe(s)</li><li>IPv4 &mdash; AS24390: 1 probe(s)</li><li>IPv6 &mdash; before the first public hop: 1 probe(s)</li><li>IPv4 &mdash; before the first public hop: 1 probe(s)</li></ul>
+    <ul><li>IPv4 &mdash; AS18200: 3 probe(s)</li><li>IPv6 &mdash; AS45345: 3 probe(s)</li><li>IPv4 &mdash; AS45345: 1 probe(s)</li><li>IPv4 &mdash; AS56089: 1 probe(s)</li><li>IPv4 &mdash; AS24390: 1 probe(s)</li><li>IPv6 &mdash; before the first public hop: 1 probe(s)</li><li>IPv4 &mdash; before the first public hop: 1 probe(s)</li></ul>
     <p>Valid and invalid traces left via different upstreams (a sign one of them drops the invalid route):</p><ul><li>PG probe 50365 (IPv4): valid via AS4826, invalid via AS7474</li></ul>
-    <p class="section-intro">Measurements: {&#x27;v4&#x27;: [215197667, 215198886], &#x27;v6&#x27;: [215199848, 215200172]}.
+    <p class="section-intro">Measurements: {&#x27;v4&#x27;: [216995468, 216995782], &#x27;v6&#x27;: [216998611, 216999009]}.
         Detail: <code>outputs/reports/rov_cloudflare.txt</code></p>
 
     <h2>IPv6 coverage</h2>
@@ -2666,7 +2674,7 @@ NU(AS55885) -&gt; AS150403: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS139609 -&
             <td>MARIIX</td><td>Mangilao</td>
             <td>GU</td><td><span class="bool-true">in-fishbowl</span></td>
             <td>5</td>
-            <td>4</td>
+            <td>5</td>
             <td>GU, MP</td>
         </tr><tr>
             <td>MegaIX Sydney</td><td>Sydney</td>
