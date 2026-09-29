@@ -3292,5 +3292,5 @@ Both ASNs stay in scope. Their first targets are unchanged: `202.65.32.1` and `1
   - Under the corrected physics, RTT alone no longer rules out LA. This relabel rests on the hop geolocation.
   - Backed up to the scratchpad first; export and reports regenerated.
 - **#54 GU→PW via Tokyo: kept as is** (owner). It's mixed: AS3605 detours via Tokyo, while AS152735 goes via Guam IX.
-- **Feedback box (owner):** both reports now carry a notice near the top saying bugs very likely remain in the code and data, with a link to open a GitHub issue (`reports/data.ISSUES_URL`). In HTML it's a red `.feedback-box` under the "Generated" line; in the text report it's a two-line notice under the title. Verified in the built `site/dist/index.html`, and the issues page returns 200.
+- **Feedback box (owner):** both reports now carry a notice near the top saying bugs very likely remain in the code and data, with a link to open a GitHub issue (`reports/data.ISSUES_URL`). In HTML it's a purple `.feedback-box` (owner changed it from red, same day) under the "Generated" line; in the text report it's a two-line notice under the title. Verified in the built `site/dist/index.html`, and the issues page returns 200.
 - **Tests:** 130 pass.

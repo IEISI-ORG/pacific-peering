@@ -2320,7 +2320,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - #170 FM->NR hub relabelled Los Angeles -> Tokyo, from hop geolocation
   (Tata `tv2-tokyo`, Telstra hops in Tokyo, back via Tata `pv4-piti` Guam).
 - Both reports carry a "found a bug? open a GitHub issue" notice near the
-  top (red box in HTML).
+  top (purple box in HTML).
 - Retracted findings #226 and #228 (GU domestic "via Tokyo" detours whose
   only Tokyo crossing came from Starlink probe 65337); their corridors are
   un-marked for an honest retest.

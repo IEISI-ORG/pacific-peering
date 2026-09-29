@@ -25,6 +25,7 @@ _MUTED = "#898781"
 _SURFACE = "#fcfcfb"
 _GOOD = "#0ca30c"
 _CRITICAL = "#d03b3b"
+_FEEDBACK = "#6b3fa0"  # purple: the bug-report notice, distinct from red detour cards
 _WARNING = "#fab219"
 _SUBREGION_COLOR = {"Melanesia": "#2a78d6", "Polynesia": "#eb6834", "Micronesia": "#1baf7a"}
 
@@ -83,10 +84,10 @@ tr:hover {{ background: #f5f4f0; }}
 .section-intro {{ color: {_MUTED}; font-size: 0.88rem; margin: 0.4em 0 1em; max-width: 780px; }}
 .callout {{ border-left: 4px solid {_WARNING}; background: #fef8e8; padding: 10px 14px;
             border-radius: 4px; margin: 1em 0; font-size: 0.88rem; }}
-.feedback-box {{ border: 2px solid {_CRITICAL}; background: #fdecec; color: {_INK};
+.feedback-box {{ border: 2px solid {_FEEDBACK}; background: #f3edfa; color: {_INK};
                  padding: 12px 16px; border-radius: 6px; margin: 1em 0 1.5em; font-size: 0.92rem; }}
-.feedback-box strong {{ color: {_CRITICAL}; }}
-.feedback-box a {{ color: {_CRITICAL}; font-weight: 600; }}
+.feedback-box strong {{ color: {_FEEDBACK}; }}
+.feedback-box a {{ color: {_FEEDBACK}; font-weight: 600; }}
 .viz-figure {{ margin: 1.5em 0; }}
 .viz-figure img {{ max-width: 100%; border: 1px solid #e1e0d9; border-radius: 6px; }}
 .viz-figure figcaption {{ color: {_MUTED}; font-size: 0.8rem; margin-top: 6px; }}
