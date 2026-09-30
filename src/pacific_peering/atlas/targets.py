@@ -155,30 +155,59 @@ def has_routing_loop(hops: list[dict], target: str | None = None) -> bool:
     against a short rolling window of the last few resolved addresses
     (covers 2- and 3-node cycles), not just the one directly before it.
 
+    Third gap, found on the 2026-09-30 nightly batch (measurements
+    217486796-217488987, NC -> NC/KI): "target never reached" doesn't
+    mean "stuck" when the target simply doesn't answer ICMP, which is
+    the norm on Pacific corridors. Every NC trace showed one Equinix
+    Sydney fabric address answering two consecutive hops, then carried
+    on through several *new* routers (Superloop Sydney -> Brisbane ->
+    AS9280) before going dark -- flagged as loops, yet the packets were
+    plainly still making forward progress. Same shape in 213187876
+    (202.84.222.81 twice, then 8 more hops into Japan). A real loop
+    never reaches a new address once it starts cycling, so a repeat
+    now only counts if it occurs *after* the last never-before-seen
+    address -- i.e. the trace's tail is stuck, not just one noisy hop
+    earlier on. Re-checked against every loop-flagged and loop-escalated
+    measurement on record: the genuine cycles (202.95.200.35/.36
+    alternating, 202.170.33.11/.17, 103.142.98.131 recurring at the
+    tail) all still return True.
+
     Args:
         hops: the `hops` list from one parsed Atlas traceroute record.
         target: the traceroute's actual destination IP, if known -- when
             given, a repeat is only treated as a real loop if this
             address is never seen in `hops` at all.
     """
-    saw_repeat = False
-    saw_target = False
+    return looping_address(hops, target) is not None
+
+
+def looping_address(hops: list[dict], target: str | None = None) -> str | None:
+    """The address a stuck trace is cycling on, or None if it isn't stuck.
+
+    Shared by `has_routing_loop` and `auto_classify`'s loop labelling so
+    the address named in a finding's loop note is the one actually
+    looping at the tail, not an earlier harmless repeat.
+    """
+    seen: set[str] = set()
     recent: list[str] = []
     window = 3
+    tail_repeat: str | None = None
     for hop in hops:
         addresses = hop.get("addresses") or []
-        current = addresses[0] if len(addresses) == 1 else None
-        if current is not None:
-            if current in recent:
-                saw_repeat = True
-            recent.append(current)
-            if len(recent) > window:
-                recent.pop(0)
         if target is not None and target in addresses:
-            saw_target = True
-    if not saw_repeat:
-        return False
-    return not saw_target if target is not None else True
+            return None
+        current = addresses[0] if len(addresses) == 1 else None
+        if current is None:
+            continue
+        if current not in seen:
+            seen.add(current)
+            tail_repeat = None  # forward progress: any earlier repeat was noise
+        elif current in recent and tail_repeat is None:
+            tail_repeat = current
+        recent.append(current)
+        if len(recent) > window:
+            recent.pop(0)
+    return tail_repeat
 
 
 def pick_ixp_member_target(

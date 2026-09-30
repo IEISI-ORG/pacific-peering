@@ -124,7 +124,7 @@ from pacific_peering.atlas.asn_probes import (
 from pacific_peering.atlas.client import fetch_measurement_status
 from pacific_peering.atlas.probes import load_probe_listing
 from pacific_peering.atlas.smoketest import run_probe_sourced_traceroute, run_smoketest
-from pacific_peering.atlas.targets import has_routing_loop, list_target_ips
+from pacific_peering.atlas.targets import list_target_ips, looping_address
 from pacific_peering.discovery import cloudflare_radar
 from pacific_peering.discovery.bgp_tools import fetch_asn_names
 from pacific_peering.discovery.economies import ECONOMIES_BY_CC
@@ -225,25 +225,6 @@ def _asn_holder_name(asn: int, cache: dict[int, str]) -> str:
 def _load_asn_to_cc(path: Path = DEFAULT_ASN_REGISTRY_PATH) -> dict[int, str]:
     registry = json.loads(path.read_text())
     return {asn: cc for cc, entry in registry.items() for asn in entry["asns"]}
-
-
-def _first_looping_address(hops: list[dict]) -> str | None:
-    """The first address that recurs across hops -- good enough to identify
-    *which* known (or unknown) location a loop sits in; `has_routing_loop`
-    already did the real work of deciding whether it's a genuine loop."""
-    seen: list[str] = []
-    window = 3
-    for hop in hops:
-        addresses = hop.get("addresses") or []
-        if len(addresses) != 1:
-            continue
-        addr = addresses[0]
-        if addr in seen:
-            return addr
-        seen.append(addr)
-        if len(seen) > window:
-            seen.pop(0)
-    return None
 
 
 def _local_ixp_crossing_name(probe: dict) -> str | None:
@@ -599,10 +580,10 @@ def classify_corridor(
     loop_notes: dict[int, str] = {}
     for probe in clean_probes:
         hops = hops_by_probe.get(probe["probe_id"], [])
-        if not has_routing_loop(hops, target=target_ip):
+        looping_addr = looping_address(hops, target=target_ip)
+        if looping_addr is None:
             continue
-        looping_addr = _first_looping_address(hops)
-        known = known_anomalies.classify_loop_address(looping_addr) if looping_addr else None
+        known = known_anomalies.classify_loop_address(looping_addr)
         if known is not None:
             loop_notes[probe["probe_id"]] = f"loop at {looping_addr} ({known.description[:80]}...)"
         else:
