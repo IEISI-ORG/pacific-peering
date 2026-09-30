@@ -2335,3 +2335,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - `docs/relabel_draft_2026-09-30.md`: proposed repairs to existing
   corroborations (10 moves, 7 new-finding proposals, 6 drops, 77 vantage
   relabels). Draft only, nothing applied.
+- Applied the relabel draft: 10 corroborations moved to their correct
+  finding, 6 new findings (#257-#262), 7 no-evidence rows dropped, 67
+  vantage ASNs corrected, 4 probe_agreement values recomputed. Discarded
+  #195, #196 (labelled AS141695, measured from AS45345/AS56089), #218 and
+  #245; un-marked 7 NC corridors (AS45345/AS56089 to AS134783, AS154100,
+  AS131995; AS56089 to AS136402) so they're retested over time.

@@ -1,6 +1,6 @@
 # Findings relabel draft (2026-09-30)
 
-**Status: draft, nothing applied.** Needs Terry's approval, per group or per item, before any DB write.
+**Status: APPLIED 2026-09-30** (A–D as recommended; E per owner: #195, #196, #218, #245 discarded, their NC corridors un-marked for retest). New findings #257–#262.
 
 Context: `auto_classify` sourced new-corridor tests by `country=`, stored the corridor's *label* ASN as every corroboration's vantage, and hung every probe's corroboration on the first upstream's finding. Fixed going forward in `fec96da`. This draft repairs the existing record.
 
