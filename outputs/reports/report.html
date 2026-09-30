@@ -73,7 +73,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
 <body>
 <div class="wrap">
     <h1>Pacific Peering — Regional Routing Report</h1>
-    <div class="meta">Generated 2026-09-30T01:01:15.992203+00:00</div>
+    <div class="meta">Generated 2026-09-30T15:13:00.532006+00:00</div>
 
     <div class="feedback-box"><strong>Found a bug?</strong> This report is generated
         automatically, and bugs very likely remain in both the code and the data. If
@@ -89,13 +89,13 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
     </div>
 
     <div class="stat-row">
-        <div class="stat-tile"><div class="value">243</div><div class="label">Pathways found (total)</div></div>
-        <div class="stat-tile"><div class="value">73</div><div class="label">Internal (never leave the fish bowl)</div></div>
-        <div class="stat-tile red-box"><div class="value">170</div>
+        <div class="stat-tile"><div class="value">247</div><div class="label">Pathways found (total)</div></div>
+        <div class="stat-tile"><div class="value">74</div><div class="label">Internal (never leave the fish bowl)</div></div>
+        <div class="stat-tile red-box"><div class="value">173</div>
             <div class="label">External / Leaves the region</div></div>
     </div>
     <p class="section-intro">Full corridor-by-corridor detail for all
-        243 pathways above is further down this report
+        247 pathways above is further down this report
         (Confirmed sub-optimal routes / Confirmed local transit / Candidate
         peering), collapsed by default so it doesn't dominate the page &mdash;
         click any of those section headings to expand.</p>
@@ -389,15 +389,15 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <th>Dependent economies</th></tr></thead>
         <tbody><tr>
             <td>Sydney</td>
-            <td>105</td>
+            <td>108</td>
             <td>62%</td>
-            <td>24</td>
+            <td>25</td>
             <td>Melanesia, Micronesia, Polynesia</td>
             <td>AS, CK, FJ, KI, MH, NC, NR, PG, PW, SB, TO, VU, WS</td>
         </tr><tr>
             <td>Los Angeles</td>
             <td>35</td>
-            <td>21%</td>
+            <td>20%</td>
             <td>7</td>
             <td>Melanesia, Micronesia, Polynesia</td>
             <td>FJ, FM, GU, MH, NR, PF, WF</td>
@@ -454,7 +454,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <td>Micronesia, Polynesia</td>
             <td>KI, TV</td>
             <td>KI, TV</td>
-            <td>FM, GU, NU, TV</td>
+            <td>FM, GU, NC, NU, TV</td>
         </tr><tr>
             <td>AS12684</td><td>SES ASTRA S.A.</td>
             <td>Melanesia, Micronesia, Polynesia</td>
@@ -475,12 +475,12 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
         reachability was confirmed to depend on this operator;
         &ldquo;vantage points&rdquo; just means a traceroute was fired
         from there, which is a measure of testing breadth, not reach:
-        <ul><li>AS14593 (SpaceX Starlink) is traceroute-confirmed reaching Kiribati (KI), Tuvalu (TV), tested from 4 distinct vantage points (Micronesia, Federated States of (FM), Guam (GU), Niue (NU), Tuvalu (TV)).</li><li>AS12684 (SES ASTRA S.A.) is traceroute-confirmed reaching Nauru (NR), tested from 4 distinct vantage points (Cook Islands (CK), Fiji (FJ), French Polynesia (PF), Tuvalu (TV)). Still untested: Cook Islands (CK), Kiribati (KI), Papua New Guinea (PG) -- a real RIS-observed relationship this project has never traceroute-confirmed.</li><li>AS135409 (Kacific Broadband Satellites) is traceroute-confirmed reaching Tonga (TO), tested from 4 distinct vantage points (Fiji (FJ), Micronesia, Federated States of (FM), New Caledonia (NC), Niue (NU)). Still untested: Papua New Guinea (PG) -- a real RIS-observed relationship this project has never traceroute-confirmed.</li></ul>
+        <ul><li>AS14593 (SpaceX Starlink) is traceroute-confirmed reaching Kiribati (KI), Tuvalu (TV), tested from 5 distinct vantage points (Micronesia, Federated States of (FM), Guam (GU), New Caledonia (NC), Niue (NU), Tuvalu (TV)).</li><li>AS12684 (SES ASTRA S.A.) is traceroute-confirmed reaching Nauru (NR), tested from 4 distinct vantage points (Cook Islands (CK), Fiji (FJ), French Polynesia (PF), Tuvalu (TV)). Still untested: Cook Islands (CK), Kiribati (KI), Papua New Guinea (PG) -- a real RIS-observed relationship this project has never traceroute-confirmed.</li><li>AS135409 (Kacific Broadband Satellites) is traceroute-confirmed reaching Tonga (TO), tested from 4 distinct vantage points (Fiji (FJ), Micronesia, Federated States of (FM), New Caledonia (NC), Niue (NU)). Still untested: Papua New Guinea (PG) -- a real RIS-observed relationship this project has never traceroute-confirmed.</li></ul>
     </div>
 
     <details class="section-toggle">
         <summary>Confirmed sub-optimal routes (RIS + Atlas both agree)
-            <span class="count">(170)</span></summary>
+            <span class="count">(173)</span></summary>
         <div class="detour-card">
             <div class="headline">NC -&gt; FJ
                 (AS4638): detours via MegaIX Sydney
@@ -1403,6 +1403,13 @@ Twelfth confirmation of AS139609(SISCC)&lt;-&gt;AS45891. `AS55885 -&gt; AS9471 -
                 &middot; measurement 211640827</div>
             <details class="note"><summary>Telecom Vanuatu (AS9249) -&gt; ONATI&#x27;s other ASN (AS55943, French Polynesia) -- a fresh VU&lt;-&gt;PF pair, a third independent confirmation of the…</summary>Telecom Vanuatu (AS9249) -&gt; ONATI&#x27;s other ASN (AS55943, French Polynesia) -- a fresh VU&lt;-&gt;PF pair, a third independent confirmation of the AS3257(GTT)&lt;-&gt;AS55943 adjacency (after the GU entry and the MP entry via Cogent). Both probes: AS9249 -&gt; AS38442 (Vodafone Fiji) -&gt; AS4637 (Telstra Global) -&gt; AS3257 -- the literal target never resolved (ordinary ICMP filtering near the destination), so RIS is checked against the last reached ASN. RIS agrees with the identical *exact* match (1,657). No IXP crossing this time (`ixp_crossings` empty for both probes). **Hub corrected to Los Angeles**: the original &quot;Tokyo&quot; here was a carrier-facility guess (GTT&#x27;s real PeeringDB presence list, not this entry&#x27;s own hops) -- exactly the same mislabeling pattern already caught and fixed for Cogent/Tata elsewhere this session. Real GTT hop evidence on the TV-sourced entry for this identical adjacency (`cr10-lax2.ip4.gtt.net`) shows the true touchpoint is Los Angeles.</details>
         </div><div class="detour-card">
+            <div class="headline">NC -&gt; NC
+                (AS131995): detours via Equinix Sydney
+                (Sydney)</div>
+            <div>RIS observation count: 0
+                &middot; measurement 217486797</div>
+            <details class="note"><summary>measurement 217486797 (from NC); chain: AS45345 -&gt; AS18200 -&gt; AS38195; RIS disagrees; loop noted (loop at 45.127.172.89 (Equinix Sydney IXP fabric (ix_id 94 in…</summary>measurement 217486797 (from NC); chain: AS45345 -&gt; AS18200 -&gt; AS38195; RIS disagrees; loop noted (loop at 45.127.172.89 (Equinix Sydney IXP fabric (ix_id 94 in ixp_lan_registry.json, independently conf...)). measurement 217486797 (from NC); chain: AS45345 -&gt; AS18200 -&gt; AS38195; RIS disagrees; loop noted (loop at 45.127.172.89 (Equinix Sydney IXP fabric (ix_id 94 in ixp_lan_registry.json, independently conf...)). measurement 217486797 (from NC); chain: AS45345 -&gt; AS18200 -&gt; AS38195; RIS disagrees; loop noted (loop at 45.127.172.89 (Equinix Sydney IXP fabric (ix_id 94 in ixp_lan_registry.json, independently conf...)). measurement 217486796 (from NC); chain: AS56089 -&gt; AS18200 -&gt; AS38195; RIS disagrees; loop noted (loop at 45.127.172.89 (Equinix Sydney IXP fabric (ix_id 94 in ixp_lan_registry.json, independently conf...)).</details>
+        </div><div class="detour-card">
             <div class="headline">NU -&gt; VU
                 (AS132228): detours via Equinix Sydney
                 (Sydney)</div>
@@ -1472,6 +1479,13 @@ Twelfth confirmation of AS139609(SISCC)&lt;-&gt;AS45891. `AS55885 -&gt; AS9471 -
             <div>RIS observation count: 663
                 &middot; measurement 213459992</div>
             <details class="note"><summary>measurement 213459992 (from TO); chain: AS24390 -&gt; AS7575 -&gt; AS139609 -&gt; AS45891; RIS count 663; RIS agrees.</summary>measurement 213459992 (from TO); chain: AS24390 -&gt; AS7575 -&gt; AS139609 -&gt; AS45891; RIS count 663; RIS agrees.</details>
+        </div><div class="detour-card">
+            <div class="headline">NC -&gt; KI
+                (AS134783): detours via Equinix Sydney
+                (Sydney)</div>
+            <div>RIS observation count: 1392
+                &middot; measurement 217487589</div>
+            <details class="note"><summary>measurement 217487589 (from NC); chain: AS56089 -&gt; AS18200 -&gt; AS4826 -&gt; AS14593 -&gt; AS154100; RIS count 1392; RIS agrees; loop noted (loop at 45.127.172.74…</summary>measurement 217487589 (from NC); chain: AS56089 -&gt; AS18200 -&gt; AS4826 -&gt; AS14593 -&gt; AS154100; RIS count 1392; RIS agrees; loop noted (loop at 45.127.172.74 (Equinix Sydney IXP fabric (ix_id 94 in ixp_lan_registry.json, independently conf...)). measurement 217487588 (from NC); chain: AS45345 -&gt; AS18200 -&gt; AS4826 -&gt; AS14593 -&gt; AS154100; RIS count 1392; RIS agrees; loop noted (loop at 45.127.172.74 (Equinix Sydney IXP fabric (ix_id 94 in ixp_lan_registry.json, independently conf...)). measurement 217487588 (from NC); chain: AS45345 -&gt; AS18200 -&gt; AS4826 -&gt; AS14593 -&gt; AS154100; RIS count 1392; RIS agrees; loop noted (loop at 45.127.172.74 (Equinix Sydney IXP fabric (ix_id 94 in ixp_lan_registry.json, independently conf...)). measurement 217487588 (from NC); chain: AS45345 -&gt; AS18200 -&gt; AS4826 -&gt; AS14593 -&gt; AS154100; RIS count 1392; RIS agrees; loop noted (loop at 45.127.172.74 (Equinix Sydney IXP fabric (ix_id 94 in ixp_lan_registry.json, independently conf...)).</details>
         </div><div class="detour-card">
             <div class="headline">TO -&gt; SB
                 (AS139277): detours via MegaIX Sydney
@@ -1669,6 +1683,13 @@ Twelfth confirmation of AS139609(SISCC)&lt;-&gt;AS45891. `AS55885 -&gt; AS9471 -
                 &middot; measurement 213462332</div>
             <details class="note"><summary>measurement 213462332 (from TO); chain: AS24390 -&gt; AS7575 -&gt; AS56030 -&gt; AS18400 -&gt; AS153053; RIS count 382; RIS agrees.</summary>measurement 213462332 (from TO); chain: AS24390 -&gt; AS7575 -&gt; AS56030 -&gt; AS18400 -&gt; AS153053; RIS count 382; RIS agrees.</details>
         </div><div class="detour-card">
+            <div class="headline">NC -&gt; KI
+                (AS154100): detours via Equinix Sydney
+                (Sydney)</div>
+            <div>RIS observation count: 361
+                &middot; measurement 217488637</div>
+            <details class="note"><summary>measurement 217488637 (from NC); chain: AS45345 -&gt; AS18200 -&gt; AS55850 -&gt; AS14593; RIS count 361; RIS agrees; loop noted (loop at 45.127.172.162 (Equinix Sydney…</summary>measurement 217488637 (from NC); chain: AS45345 -&gt; AS18200 -&gt; AS55850 -&gt; AS14593; RIS count 361; RIS agrees; loop noted (loop at 45.127.172.162 (Equinix Sydney IXP fabric (ix_id 94 in ixp_lan_registry.json, independently conf...)). measurement 217488637 (from NC); chain: AS45345 -&gt; AS18200 -&gt; AS55850 -&gt; AS14593; RIS count 361; RIS agrees; loop noted (loop at 45.127.172.162 (Equinix Sydney IXP fabric (ix_id 94 in ixp_lan_registry.json, independently conf...)). measurement 217488637 (from NC); chain: AS45345 -&gt; AS18200 -&gt; AS55850 -&gt; AS14593; RIS count 361; RIS agrees; loop noted (loop at 45.127.172.162 (Equinix Sydney IXP fabric (ix_id 94 in ixp_lan_registry.json, independently conf...)). measurement 217488987 (from NC); chain: AS56089 -&gt; AS18200 -&gt; AS55850 -&gt; AS14593; RIS count 361; RIS agrees; loop noted (loop at 45.127.172.162 (Equinix Sydney IXP fabric (ix_id 94 in ixp_lan_registry.json, independently conf...)).</details>
+        </div><div class="detour-card">
             <div class="headline">NU -&gt; KI
                 (AS154100): detours via AS6939 (Hurricane Electric)
                 (Sydney)</div>
@@ -1680,7 +1701,7 @@ Twelfth confirmation of AS139609(SISCC)&lt;-&gt;AS45891. `AS55885 -&gt; AS9471 -
 
     <details class="section-toggle">
         <summary>Confirmed local transit (RIS + Atlas both agree, stays in-fishbowl)
-            <span class="count">(33)</span></summary>
+            <span class="count">(34)</span></summary>
         <div class="transit-card">
             <div class="headline">AS38442 (Vodafone Fiji,
                 FJ) -&gt; AS9249
@@ -1873,6 +1894,14 @@ Twelfth confirmation of AS139609(SISCC)&lt;-&gt;AS45891. `AS55885 -&gt; AS9471 -
                 &middot; measurement 211506747
                 &middot; vantage point GU</div>
             <details class="note"><summary>Pulled from the corridor backlog: AS3605 (Guam Cablevision) -&gt; AS134783 (ATHKL&#x27;s other ASN, sibling of AS4865) -- a fresh GU&lt;-&gt;KI pair, distinct from the…</summary>Pulled from the corridor backlog: AS3605 (Guam Cablevision) -&gt; AS134783 (ATHKL&#x27;s other ASN, sibling of AS4865) -- a fresh GU&lt;-&gt;KI pair, distinct from the AS132486 target tested last firing. **A third instance of the identical Australia/Starlink satellite chain**: AS3605 -&gt; AS7578/AS137409 (GSL Networks, Australia) -&gt; AS14593 (SpaceX Starlink) -&gt; AS154100 (BNL Tarawa) -&gt; target never resolved. This time, though, it&#x27;s a **genuinely new confirmed adjacency**, not a repeat corroboration of the AS132486 pair: checked AS134783&#x27;s own RIS neighbor list directly -- AS154100 is its dominant relationship (1,392 of roughly 1,806 total observations), an *exact* match to what this traceroute found. BNL Tarawa is evidently a real, general-purpose intra-Kiribati transit provider, not narrowly tied to one specific downstream customer -- this is the *second* distinct Kiribati ASN now confirmed reachable through it, both via the identical Australia-then-Starlink satellite ingress path. **Second independent corroboration** (measurement 211594373, MP/AS7131 -&gt; KI/AS134783, pulled from the corridor backlog as a fresh MP&lt;-&gt;KI economy pair): both probes show the identical chain -- AS7131 -&gt; AS7578/AS137409 (GSL Networks, Australia) -&gt; AS14593 (SpaceX Starlink) -&gt; AS154100 (BNL Tarawa) -&gt; target never resolved, identical RIS match (1,392). A second geographically distinct source (CNMI, after Guam) confirming this specific adjacency, not just the general Starlink-chain ingress pattern. **Third independent corroboration, via genuinely new carriers** (measurement 211648499, VU/AS9249 -&gt; KI/AS134783, a fresh VU&lt;-&gt;KI pair): both probes: AS9249 -&gt; AS38442 (Vodafone Fiji) -&gt; AS4637 (Telstra Global) -&gt; **AS1221 (Telstra domestic)** -&gt; **AS4826 (Vocus Connect)** -&gt; AS14593 (Starlink) -&gt; AS154100 -&gt; target never resolved, identical RIS match (1,392). Neither Telstra&#x27;s domestic ASN nor Vocus Connect had appeared for this specific adjacency before (Vocus Connect is already established elsewhere in this project as PNG DataCo&#x27;s own upstream). A third distinct source economy (Vanuatu, after Guam and CNMI). **Fourth independent corroboration, via a genuinely new named exchange** (measurement 211702255, PF/AS9471 -&gt; KI/AS134783, a fresh PF&lt;-&gt;KI pair): all 3 probes: AS9471 -&gt; AS6939 (Hurricane Electric) -&gt; AS14593 (Starlink) -&gt; AS154100 -&gt; target never resolved, identical RIS match (1,392). One of 3 probes crosses **EdgeIX Auckland** directly (`ixp_crossings` confirms it, member AS14593) -- the same exchange just confirmed minutes earlier for the AS132486 sibling chain, now seen for this adjacency too. A fourth distinct source economy (French Polynesia, after Guam, CNMI, and Vanuatu). **Fifth independent corroboration** (measurement 211761618, CK/AS10131 -&gt; KI/AS134783, a fresh CK&lt;-&gt;KI pair): only 1 of 3 requested probes returned; checked `participant_count` directly (1, not 3) -- the same genuine single-probe pattern as every other AS10131-sourced measurement this session. `AS10131 -&gt; AS9471 (ONATI) -&gt; AS6939 (Hurricane Electric) -&gt; AS14593 (Starlink) -&gt; AS154100`, target never resolved, identical RIS match (1,392). No IXP crossing this time (`ixp_crossings` empty). A fifth distinct source economy (Cook Islands, after Guam, CNMI, Vanuatu, and French Polynesia). **Sixth independent corroboration** (measurement 211991435, PG/AS17828 -&gt; KI/AS134783, a fresh PG&lt;-&gt;KI pair): `AS17828 -&gt; AS4826 (Vocus Connect) -&gt; AS14593 (Starlink) -&gt; AS154100`, target never resolved, identical RIS match (1,392). No IXP crossing this time. A sixth distinct source economy (Papua New Guinea, after Guam, CNMI, Vanuatu, French Polynesia, and Cook Islands). **Seventh independent corroboration, and another reproduction of the known Starlink routing loop** (measurement 212043876, PW/AS17893 -&gt; KI/AS134783, a fresh PW&lt;-&gt;KI pair): `AS17893 -&gt; AS7578/AS137409 (GSL Networks, Australia) -&gt; AS14593 (Starlink) -&gt; AS154100`, target never resolved, identical RIS match (1,392). `has_routing_loop` correctly returned `True` -- two consecutive identical addresses (`206.224.66.25`, a different address than the `.23` one already on record, but the same known looping location inside AS14593&#x27;s own network); not separately escalated since it&#x27;s an already-known anomaly. A seventh distinct source economy (Palau, after Guam, CNMI, Vanuatu, French Polynesia, Cook Islands, and Papua New Guinea). **Eighth independent corroboration** (measurement 212085592, TV/AS23917 -&gt; KI/AS134783, a fresh TV&lt;-&gt;KI pair): `AS23917 -&gt; AS9241 (FINTEL) -&gt; AS6939 (Hurricane Electric) -&gt; AS14593 (Starlink) -&gt; AS154100`, target never resolved, identical RIS match (1,392). Crosses Equinix Sydney directly (`ixp_crossings` confirms it, member AS6939). `has_routing_loop` correctly returned `False` this time -- the last reached address (`202.1.22.25`) is not the known looping location. An eighth distinct source economy (Tuvalu, after Guam, CNMI, Vanuatu, French Polynesia, Cook Islands, Papua New Guinea, and Palau). **Ninth independent corroboration** (measurement 212104394, FJ/AS24390 -&gt; KI/AS134783, a fresh FJ&lt;-&gt;KI pair): `AS24390 -&gt; AS7575 (AARNet) -&gt; AS14593 (Starlink) -&gt; AS154100`, target never resolved, identical RIS match (1,392). No IXP crossing this time (`ixp_crossings` empty). `has_routing_loop` correctly returned `False` -- the last reached address (`202.1.22.29`) is not the known looping location. A ninth distinct source economy (Fiji, after Guam, CNMI, Vanuatu, French Polynesia, Cook Islands, Papua New Guinea, Palau, and Tuvalu). **Tenth independent corroboration** (measurement 212143025, part of the bulk NU/FM/GU/NC clear-out, GU/AS152735 -&gt; KI/AS134783, a second, genuinely different Guam network, Guam Exchange/CPDCL): `AS152735 -&gt; AS7131 (PTI Pacifica) -&gt; AS6939 -&gt; AS14593 (Starlink) -&gt; AS154100`, RIS agrees exactly (1,392). `has_routing_loop` False. **Eleventh and twelfth corroborations** (measurements 212143029 and 212143038, NC/AS45345 and NC/AS56089, part of the bulk clear-out): both `AS18200 (OPT-NC) -&gt; AS4826 (Vocus Connect) -&gt; AS14593 -&gt; AS154100`, RIS agrees exactly (1,392). `has_routing_loop` False on both. **Thirteenth corroboration** (measurement 212158126, NU/AS55885, closing out the bulk clear-out): `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS14593 -&gt; AS154100`, RIS agrees exactly (1,392). `has_routing_loop` False.</details>
+        </div><div class="transit-card">
+            <div class="headline">AS18200 (Office des Postes et Telecommunications New-Caledonia,
+                NC) -&gt; AS136402
+                (Nautile SARL, NC)</div>
+            <div>RIS observation count: 993
+                &middot; measurement 217488636
+                &middot; vantage point NC</div>
+            <details class="note"><summary>measurement 217488636 (from NC); chain: AS56089 -&gt; AS18200 -&gt; AS136402; RIS count 993; RIS agrees.</summary>measurement 217488636 (from NC); chain: AS56089 -&gt; AS18200 -&gt; AS136402; RIS count 993; RIS agrees.</details>
         </div><div class="transit-card">
             <div class="headline">AS18200 (Office des Postes et Telecommunications New-Caledonia,
                 NC) -&gt; AS137243
@@ -2405,7 +2434,7 @@ NU(AS55885) -&gt; AS150403: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS139609 -&
     <h2>ASPA progress (RFC 9582 upstream-authorization adoption)</h2>
     <p class="section-intro">
         <strong>19 of 160</strong> in-scope ASNs
-        now publish an ASPA record (3295 total across the
+        now publish an ASPA record (3335 total across the
         whole internet, per Cloudflare Radar). Adoption is still early &mdash; absence
         means "not published yet," not "no real upstream." Per economy: how many of its
         own ASNs publish a record, and the distinct upstream ASNs those records declare,
@@ -2490,8 +2519,8 @@ NU(AS55885) -&gt; AS150403: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS139609 -&
         yet, queued until adoption has advanced further.
         <strong>45 of 160</strong> in-scope ASNs
         have at least one RIS-observed IPv6-originated prefix.
-        <strong>7 of 36</strong> connected
-        Atlas probes work over IPv6 (2 more are
+        <strong>8 of 36</strong> connected
+        Atlas probes work over IPv6 (3 more are
         IPv6-capable but tagged as not working).
     </p>
     <table>
@@ -2653,7 +2682,7 @@ NU(AS55885) -&gt; AS150403: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS139609 -&
             <td>Equinix Sydney</td><td>Sydney</td>
             <td>AU</td><td><span class="bool-false">out-of-fishbowl</span></td>
             <td>9</td>
-            <td>30</td>
+            <td>33</td>
             <td>CK, FJ, NC, PF, PG, TO, WS</td>
         </tr><tr>
             <td>Fiji-IXP</td><td>Suva</td>
@@ -2758,7 +2787,7 @@ NU(AS55885) -&gt; AS150403: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS139609 -&
             <td>KI</td><td>Kiribati</td>
             <td>Micronesia</td>
             <td>5</td><td>0</td><td>0</td>
-            <td>17</td>
+            <td>16</td>
         </tr><tr>
             <td>NR</td><td>Nauru</td>
             <td>Micronesia</td>
@@ -2830,11 +2859,6 @@ NU(AS55885) -&gt; AS150403: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS139609 -&
             <td>10</td><td>14</td><td>6</td>
             <td>1</td>
         </tr><tr>
-            <td>NC</td><td>New Caledonia</td>
-            <td>Melanesia</td>
-            <td>18</td><td>20</td><td>5</td>
-            <td>1</td>
-        </tr><tr>
             <td>PF</td><td>French Polynesia</td>
             <td>Polynesia</td>
             <td>6</td><td>9</td><td>6</td>
@@ -2853,6 +2877,11 @@ NU(AS55885) -&gt; AS150403: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS139609 -&
             <td>FM</td><td>Micronesia, Federated States of</td>
             <td>Micronesia</td>
             <td>6</td><td>5</td><td>3</td>
+            <td>0</td>
+        </tr><tr>
+            <td>NC</td><td>New Caledonia</td>
+            <td>Melanesia</td>
+            <td>18</td><td>20</td><td>5</td>
             <td>0</td>
         </tr></tbody>
     </table>

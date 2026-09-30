@@ -1,9 +1,8 @@
 Probe watch (atlas/probe_watch.py) -- nightly metadata diff; egress traced on change and weekly for proxy-flagged networks.
-Generated 2026-09-29T15:00:41+00:00; 39 Connected/Disconnected probes tracked.
+Generated 2026-09-30T15:00:37+00:00; 39 Connected/Disconnected probes tracked.
 
 Changes since the previous snapshot: none
 
-Egress checks tonight: 1 (measurement(s) [216990133])
-  probe 60575 (FJ, AS141695): first hop AS53813 (Zscaler) -- non-local egress
+Egress checks tonight: none (measurement(s) -)
 
 Regression traces still pending: none
