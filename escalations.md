@@ -57,6 +57,7 @@ Corridors `auto_classify.py`'s mechanical rules couldn't confidently resolve on 
 - detail: 202.65.33.1: probe 1004726 4.3ms < 50.4ms minimum (measurement 215224841)
 - action: owner review; if confirmed, add to discovery/excluded_asns.py (offshore_hosted)
 - flagged: 2026-09-24T11:49:55.550669+00:00
+- resolved: 2026-09-25 -- prefix-level, not ASN-level: 202.65.33.0/24 is Sydney-hosted and is excluded as a traceroute target (atlas/targets.py EXCLUDED_TARGET_PREFIXES); AS10131's 202.65.32.0/24 tests local, so the ASN stays in scope. The monthly offshore check keeps pinging the block.
 
 ## AS23959 (VU) -- possible offshore-hosted address space
 - reason: offshore-hosting check (atlas/offshore_check.py)
@@ -77,6 +78,8 @@ Corridors `auto_classify.py`'s mechanical rules couldn't confidently resolve on 
 - detail: 103.188.182.1: probe 1011722 11.1ms < 28.5ms minimum (measurement 215228678)
 - action: owner review; if confirmed, add to discovery/excluded_asns.py (offshore_hosted)
 - flagged: 2026-09-24T11:49:55.550669+00:00
+- resolved: 2026-09-25 -- prefix-level, not ASN-level: 103.188.182.0/23 (registered to XconX Pty Ltd, AU) is Sydney-hosted and is excluded as a traceroute target (atlas/targets.py EXCLUDED_TARGET_PREFIXES); AS132468's 103.115.80.0/24 tests local, so the ASN stays in scope.
+
 ## AS10131 (CK) -> AS9751 (AS)
 - measurement: 216153502
 - reason: no probe data returned

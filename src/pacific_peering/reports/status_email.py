@@ -144,8 +144,8 @@ def render_html(s: dict) -> str:
 {_section("Escalated this run", _escalated(s.get("escalated", [])))}
 {_section("Checks", _checks(s.get("checks", [])))}
 <tr><td style="padding:22px 28px 26px;{FONT}font-size:12px;color:{MUTED};border-top:1px solid {RULE};">
-  {links}<br><br>Sent by the unattended daily check because no interactive
-  session ran in the last day. It reads and reports only: no Atlas credits, no changes to findings.
+  {links}<br><br>Sent by the unattended daily check, the fallback for days without an interactive
+  session. It reads and reports only: no Atlas credits, no changes to findings.
 </td></tr>
 </table></td></tr></table></body></html>
 """
