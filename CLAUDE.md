@@ -15,7 +15,8 @@ each session:
   no LLM. Regenerates the corridor backlog against fresh data, stages this week's
   reverification ration (`pacific-peering-reverify-enqueue` — the oldest-verified 1/4 of
   all findings, by their most recent corroboration; full rotation roughly every 4 weeks),
-  and commits+pushes `corridor_backlog.md`/`outputs/runs/*` if anything changed. Per the
+  runs the monthly WHOIS leasing-marker check (`pacific-peering-leasing-check`, self-scheduling; new
+  flags to `escalations.md`), and commits+pushes `corridor_backlog.md`/`outputs/runs/*`/`escalations.md` if anything changed. Per the
   project owner: not expected to need to run more often than this.
 - **Nightly corridor testing** — `scripts/nightly_corridor_testing.sh`, Mon–Sat 1am
   (`0 1 * * 1-6`, deliberately skips Sunday so it never races the discovery refresh).

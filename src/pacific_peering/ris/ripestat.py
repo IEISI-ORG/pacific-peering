@@ -9,6 +9,7 @@ Phase 1a's full analysis fans this out across every in-scope ASN.
 from __future__ import annotations
 
 import logging
+import time
 from dataclasses import dataclass
 
 import requests
@@ -302,3 +303,36 @@ def fetch_rpki_status(ip: str, timeout: float = _DEFAULT_TIMEOUT) -> RpkiStatus:
     )
     validation.raise_for_status()
     return RpkiStatus(prefix=prefix, origin_asn=int(asns[0]), status=validation.json()["data"]["status"])
+
+
+def fetch_whois(prefix: str, timeout: float = _DEFAULT_TIMEOUT, max_retries: int = 2) -> dict:
+    """WHOIS for `prefix` via RIPEstat's `whois` call: the authoritative RIR's
+    records (whichever RIR holds the block), IRR route objects, and which
+    RIR(s) answered. Used by `discovery.leasing_check`.
+
+    Returns:
+        {"records": [[{"key", "value"}, ...], ...], "irr_records": [...], "authorities": ["apnic", ...]}
+
+    Raises:
+        requests.exceptions.RequestException: If every attempt fails.
+    """
+    for attempt in range(max_retries + 1):
+        try:
+            response = requests.get(
+                f"{RIPESTAT_BASE_URL}/whois/data.json",
+                params={"resource": prefix, "sourceapp": "pacific-peering"},
+                timeout=timeout,
+            )
+            response.raise_for_status()
+            data = response.json()["data"]
+            return {
+                "records": data.get("records", []),
+                "irr_records": data.get("irr_records", []),
+                "authorities": data.get("authorities", []),
+            }
+        except requests.exceptions.RequestException:
+            if attempt == max_retries:
+                raise
+            logger.warning("WHOIS fetch for %s failed, retrying (attempt %d/%d)", prefix, attempt + 1, max_retries)
+            time.sleep(2 + 3 * attempt)
+    raise AssertionError("unreachable")

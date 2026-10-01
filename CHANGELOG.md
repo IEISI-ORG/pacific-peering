@@ -2365,3 +2365,11 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   upstream AS31732 Parsun (AU); every trace loops on Parsun's
   188.209.155.250 in Australia and no host in 103.98.52.0/24 answers. No
   findings held.
+- Leasing-marker check (2026-10-01): `pacific-peering-leasing-check`
+  (`discovery/leasing_check.py`) pulls RIPEstat WHOIS for every IPv4 prefix
+  in-scope ASNs originate and flags leasing brokers (IPXO, Larus, Cloud
+  Innovation, Interlir, Heficed), RIR registrations outside the economy, and
+  RIPE/AFRINIC/LACNIC-held space. Monthly plus new ASNs, from the weekly
+  discovery refresh; free; new flags to `escalations.md`; reviewed blocks in
+  `ACKNOWLEDGED`. Report `outputs/reports/leasing_check.txt`. New
+  `ris.ripestat.fetch_whois`. First run: 365 prefixes, 0 new flags.
