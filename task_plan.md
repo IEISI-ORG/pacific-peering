@@ -80,6 +80,12 @@ Set by the project owner after Phase 1b's first live result. These rules govern 
 ## Secrets
 - `secrets.yaml` (repo root) holds the RIPE Atlas API key. Added to `.gitignore` (`secrets.yaml` + `*.secret.yaml`), confirmed untracked. Never commit it or echo its contents. Loaded via `atlas/secrets.py` (`yaml.safe_load`). Live-verified balance: **95,635,574 credits** (see Key Questions #2 for the account-mismatch history — the figure quoted here was wrong once already, so treat this line, not memory, as current).
 
+## Maybe list (parked by the owner; not queued, not scheduled)
+
+Ideas the owner wants kept but not worked on. Move one back into the log as a TODO only on the owner's say-so.
+
+- **GB traceroutes: Atlantic or Middle East?** (parked 2026-10-01) The offshore check's GB pings give London RTTs per economy, but only traceroutes show the path. Fire traces from a few GB probes to one target per economy and classify each by where it crosses: transatlantic via the US west coast, or via the Middle East / South Asia and Singapore. Hop rDNS and the IXP LAN registry should identify the crossings. A few Atlas credits as a one-off.
+
 ## Status
 **Quick orientation (read this first; full log below):** P0 and Phase 1a/1b are done and committed. Active work is Phase 1d's validation build-out (see Validation Rules + Phase 1d's "Engineering follow-through" bullet) — triangulated RIS+Atlas adjacency maps, feasibility checks, inbound traceroutes, hidden-peering discovery, PeeringDB cross-checks, and a supplementary unlisted-IXP list. Phase 1c (scheduling/automation) is queued behind that, not urgent yet. This file is being worked via a self-paced `/loop` (small tranches per iteration) — re-read this orientation line and the last 1-2 Status entries before starting each tranche, rather than assuming context carries over.
 
@@ -3350,4 +3356,4 @@ The headless session runs in `dontAsk` mode with a tool allowlist (no Atlas comm
 
 **Offshore check silent-ASN blind spot closed (owner, 2026-10-01).** Built options 1 and 2 plus wider probe coverage (option 3, owner's choice of SG/HK/GB): see CHANGELOG. Pings now draw 16 probes instead of 10, and silent ASNs get a second batch for up to three alternate addresses, so the monthly full run costs somewhat more in Atlas credits. The nmap sweep runs from the cron host only for silent ASNs' prefixes (capped at a /22 each). Not yet exercised against Atlas -- the next monthly full run (due ~2026-10-24) is the first; expect escalations for AS151398 (Cloudflare-fronted, PG) and AS56017 (VITI, sole RIS upstream Hawaiian Telcom).
 
-**TODO, queued (owner, 2026-10-01): GB traceroutes -- Atlantic or Middle East?** The offshore pings from GB give London RTTs per economy, but only traceroutes show the path. Fire traces from a few GB probes to one target per economy and classify each path by where it crosses: transatlantic via the US west coast, versus via the Middle East / South Asia and Singapore. Hop rDNS (and the IXP LAN registry) should identify the crossings. A few Atlas credits; one-off, then maybe monthly.
+**GB traceroutes (Atlantic or Middle East?) -- parked on the Maybe list by the owner, 2026-10-01; see the section near the top.**
