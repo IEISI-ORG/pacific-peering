@@ -125,6 +125,34 @@ def _compute_leasing(history_path=leasing_check.HISTORY_PATH) -> LeasingSummary:
 # near the top pointing here.
 ISSUES_URL = "https://github.com/IEISI-ORG/pacific-peering/issues/new"
 
+# Closing legal notice (owner, 2026-10-01): shared by every report format and,
+# through report.html, the public site. Paragraphs in order; ISSUES_URL is
+# rendered as a link in HTML.
+LEGAL_NOTICE: tuple[tuple[str, str], ...] = (
+    ("Public data, public sources",
+     "Everything in this report is derived from publicly available data: public RIPE Atlas "
+     "measurement results, RIPE RIS routing data (via RIPEstat), APNIC delegation statistics, "
+     "WHOIS records from the regional Internet registries, PeeringDB, Internet Routing Registry "
+     "route objects, bgp.tools and Cloudflare Radar. No private or confidential information is used."),
+    ("Observations, not judgements",
+     "Findings describe network paths as measured at a point in time, from the probes that were "
+     "available. They are observations about routing, not statements about any operator's conduct, "
+     "intent or compliance, and routing can change at any time."),
+    ("No warranty",
+     "This report is provided as is, without warranty of any kind, including as to accuracy, "
+     "completeness or fitness for any purpose. The author accepts no liability for any loss "
+     "arising from its use or from reliance on it."),
+    ("Corrections and disputes",
+     "The only process for correcting or disputing anything in this report is to open an issue on "
+     f"GitHub: {ISSUES_URL}. Please name the finding or section, include the measurement ID where "
+     "there is one, and give your evidence. Issues are reviewed, and where the evidence supports "
+     "a correction the report is updated in its next build."),
+    ("Licence",
+     "This report and its data are licensed under Creative Commons Attribution-NonCommercial-"
+     "ShareAlike 4.0 International (CC BY-NC-SA 4.0). Commercial use requires a separate licence "
+     "from the author; see the LICENSE file in the repository."),
+)
+
 FISHBOWL_EXPLANATION = (
     "What is \"the fish bowl\"? RIS (BGP route-collector) data and PeeringDB "
     "membership records are an outside-looking-in view: they show which "

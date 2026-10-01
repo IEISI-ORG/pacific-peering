@@ -10,10 +10,11 @@ show those; this is where the fuller picture belongs).
 from __future__ import annotations
 
 import html
+import re
 import logging
 from pathlib import Path
 
-from pacific_peering.reports.data import FISHBOWL_EXPLANATION, ISSUES_URL, ReportData, build_report_data
+from pacific_peering.reports.data import FISHBOWL_EXPLANATION, ISSUES_URL, LEGAL_NOTICE, ReportData, build_report_data
 
 logger = logging.getLogger(__name__)
 
@@ -57,6 +58,12 @@ details.section-toggle > summary .count {{ font-weight: 400; color: {_MUTED}; }}
 table {{ border-collapse: collapse; width: 100%; font-size: 0.85rem; }}
 th, td {{ text-align: left; padding: 5px 8px; border-bottom: 1px solid #e1e0d9; }}
 th {{ color: {_MUTED}; font-weight: 600; font-size: 0.78rem; text-transform: uppercase; }}
+table.leasing {{ table-layout: fixed; }}
+table.leasing td {{ vertical-align: top; }}
+table.leasing td.nowrap {{ white-space: nowrap; }}
+table.leasing .marker {{ display: block; margin-bottom: 4px; }}
+table.leasing .marker-kind {{ font-weight: 600; font-size: 0.72rem; text-transform: uppercase;
+    letter-spacing: .3px; color: {_MUTED}; margin-right: 6px; }}
 tr:hover {{ background: #f5f4f0; }}
 .subregion-dot {{ display: inline-block; width: 9px; height: 9px; border-radius: 50%;
                    margin-right: 6px; }}
@@ -374,12 +381,33 @@ def render_html_report(data: ReportData, viz_dir: Path | None = Path("../viz")) 
         for q in data.quarantined
     ) or "<p>(none)</p>"
 
+    issues_link = f'<a href="{html.escape(ISSUES_URL)}">{html.escape(ISSUES_URL)}</a>'
+    legal_notice = "".join(
+        f"<p><strong>{html.escape(heading)}.</strong> "
+        f"{html.escape(text).replace(html.escape(ISSUES_URL), issues_link)}</p>"
+        for heading, text in LEGAL_NOTICE
+    )
+
     lease = data.leasing
+    marker_kinds = {"broker": "Leasing broker", "registered_abroad": "Registered abroad",
+                    "foreign_registry": "Foreign registry"}
+
+    def _keep_together(text: str) -> str:
+        # Non-breaking hyphens inside dates and maintainer handles (2026-10-01,
+        # CIL1-MNT) so the narrow columns never split them across lines.
+        return re.sub(r"(?<=\w)-(?=\w)", "\u2011", html.escape(text))
+
+    def _marker(m: str) -> str:
+        kind, _, detail = m.partition(": ")
+        return (f'<span class="marker"><span class="marker-kind">{html.escape(marker_kinds.get(kind, kind))}</span>'
+                f'{_keep_together(detail)}</span>')
+
     leasing_rows = "".join(
         f"""<tr>
-            <td>AS{e.asn}</td><td>{html.escape(e.cc)}</td><td><code>{html.escape(e.prefix)}</code></td>
-            <td>{"<br>".join(html.escape(m) for m in e.markers)}</td>
-            <td>{html.escape(e.verdict) if e.verdict else "<strong>Not yet reviewed</strong>"}</td>
+            <td class="nowrap">AS{e.asn}</td><td class="nowrap">{html.escape(e.cc)}</td>
+            <td class="nowrap"><code>{html.escape(e.prefix)}</code></td>
+            <td>{"".join(_marker(m) for m in e.markers)}</td>
+            <td>{_keep_together(e.verdict) if e.verdict else "<strong>Not yet reviewed</strong>"}</td>
         </tr>"""
         for e in lease.entries
     )
@@ -389,7 +417,9 @@ def render_html_report(data: ReportData, viz_dir: Path | None = Path("../viz")) 
         leasing_block = (
             f"<p>Latest full run {html.escape(lease.run_at[:10])}: {lease.prefixes_checked} prefixes checked; "
             f"{lease.geofeed_prefixes} publish a geofeed.</p>"
-            + (f"<table><thead><tr><th>ASN</th><th>CC</th><th>Prefix</th><th>Markers</th><th>Verdict</th></tr></thead>"
+            + (f"<table class=\"leasing\"><colgroup><col style=\"width:9%\"><col style=\"width:4%\">"
+               f"<col style=\"width:16%\"><col style=\"width:35%\"><col style=\"width:36%\"></colgroup>"
+               f"<thead><tr><th>ASN</th><th>CC</th><th>Prefix</th><th>Markers</th><th>Verdict</th></tr></thead>"
                f"<tbody>{leasing_rows}</tbody></table>" if leasing_rows else "<p>(none flagged)</p>")
         )
 
@@ -751,6 +781,8 @@ def render_html_report(data: ReportData, viz_dir: Path | None = Path("../viz")) 
     <footer class="about">
         <h2>About this project</h2>
         <p>{html.escape(FISHBOWL_EXPLANATION)}</p>
+        <h2>Legal notice</h2>
+        {legal_notice}
     </footer>
 </div>
 </body>

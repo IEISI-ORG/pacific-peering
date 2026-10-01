@@ -31,6 +31,12 @@ details.section-toggle > summary .count { font-weight: 400; color: #898781; }
 table { border-collapse: collapse; width: 100%; font-size: 0.85rem; }
 th, td { text-align: left; padding: 5px 8px; border-bottom: 1px solid #e1e0d9; }
 th { color: #898781; font-weight: 600; font-size: 0.78rem; text-transform: uppercase; }
+table.leasing { table-layout: fixed; }
+table.leasing td { vertical-align: top; }
+table.leasing td.nowrap { white-space: nowrap; }
+table.leasing .marker { display: block; margin-bottom: 4px; }
+table.leasing .marker-kind { font-weight: 600; font-size: 0.72rem; text-transform: uppercase;
+    letter-spacing: .3px; color: #898781; margin-right: 6px; }
 tr:hover { background: #f5f4f0; }
 .subregion-dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%;
                    margin-right: 6px; }
@@ -73,7 +79,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
 <body>
 <div class="wrap">
     <h1>Pacific Peering — Regional Routing Report</h1>
-    <div class="meta">Generated 2026-10-01T10:24:38.659770+00:00</div>
+    <div class="meta">Generated 2026-10-01T10:38:16.865024+00:00</div>
 
     <div class="feedback-box"><strong>Found a bug?</strong> This report is generated
         automatically, and bugs very likely remain in both the code and the data. If
@@ -2895,34 +2901,41 @@ NU(AS55885) -&gt; AS150403: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS139609 -&
         for US-associated economies). Leased space is used wherever the lessee is, so each is a lead for
         offshore hosting; reviewed ones carry the latency verdict. From the monthly leasing-marker
         check (<code>discovery/leasing_check.py</code>).</p>
-    <p>Latest full run 2026-10-01: 365 prefixes checked; 24 publish a geofeed.</p><table><thead><tr><th>ASN</th><th>CC</th><th>Prefix</th><th>Markers</th><th>Verdict</th></tr></thead><tbody><tr>
-            <td>AS9246</td><td>GU</td><td><code>120.29.200.0/21</code></td>
-            <td>registered_abroad: RIR record country IN, not GU</td>
-            <td>Tata Communications provider-assigned space (registered IN) (2026-10-01)</td>
+    <p>Latest full run 2026-10-01: 365 prefixes checked; 24 publish a geofeed.</p><table class="leasing"><colgroup><col style="width:9%"><col style="width:4%"><col style="width:16%"><col style="width:35%"><col style="width:36%"></colgroup><thead><tr><th>ASN</th><th>CC</th><th>Prefix</th><th>Markers</th><th>Verdict</th></tr></thead><tbody><tr>
+            <td class="nowrap">AS9246</td><td class="nowrap">GU</td>
+            <td class="nowrap"><code>120.29.200.0/21</code></td>
+            <td><span class="marker"><span class="marker-kind">Registered abroad</span>RIR record country IN, not GU</span></td>
+            <td>Tata Communications provider‑assigned space (registered IN) (2026‑10‑01)</td>
         </tr><tr>
-            <td>AS45935</td><td>VU</td><td><code>103.36.147.0/24</code></td>
-            <td>registered_abroad: RIR record country AU, not VU</td>
-            <td>WanTok&#x27;s own block registered AU; 54-59ms from AU and VU, rDNS clients.wantok.vu, measurement 217771311 -- in Vanuatu (2026-10-01)</td>
+            <td class="nowrap">AS45935</td><td class="nowrap">VU</td>
+            <td class="nowrap"><code>103.36.147.0/24</code></td>
+            <td><span class="marker"><span class="marker-kind">Registered abroad</span>RIR record country AU, not VU</span></td>
+            <td>WanTok&#x27;s own block registered AU; 54‑59ms from AU and VU, rDNS clients.wantok.vu, measurement 217771311 -- in Vanuatu (2026‑10‑01)</td>
         </tr><tr>
-            <td>AS56017</td><td>PF</td><td><code>38.51.136.0/24</code></td>
-            <td>registered_abroad: RIR record country US, not PF<br>foreign_registry: held by ARIN</td>
-            <td>Cogent provider-assigned ARIN space; VITI asks for its own PF geofeed (2026-10-01)</td>
+            <td class="nowrap">AS56017</td><td class="nowrap">PF</td>
+            <td class="nowrap"><code>38.51.136.0/24</code></td>
+            <td><span class="marker"><span class="marker-kind">Registered abroad</span>RIR record country US, not PF</span><span class="marker"><span class="marker-kind">Foreign registry</span>held by ARIN</span></td>
+            <td>Cogent provider‑assigned ARIN space; VITI asks for its own PF geofeed (2026‑10‑01)</td>
         </tr><tr>
-            <td>AS56017</td><td>PF</td><td><code>38.51.139.0/24</code></td>
-            <td>registered_abroad: RIR record country US, not PF<br>foreign_registry: held by ARIN</td>
-            <td>Cogent provider-assigned ARIN space; VITI asks for its own PF geofeed (2026-10-01)</td>
+            <td class="nowrap">AS56017</td><td class="nowrap">PF</td>
+            <td class="nowrap"><code>38.51.139.0/24</code></td>
+            <td><span class="marker"><span class="marker-kind">Registered abroad</span>RIR record country US, not PF</span><span class="marker"><span class="marker-kind">Foreign registry</span>held by ARIN</span></td>
+            <td>Cogent provider‑assigned ARIN space; VITI asks for its own PF geofeed (2026‑10‑01)</td>
         </tr><tr>
-            <td>AS58460</td><td>PG</td><td><code>154.197.42.0/24</code></td>
-            <td>broker: Cloud Innovation (mnt-by: CIL1-MNT)<br>broker: Larus (mnt-by: MAINT-LARUS)<br>foreign_registry: held by AFRINIC</td>
-            <td>Larus/Cloud Innovation-leased AFRINIC space for Digicel PNG; nearest from PG (102ms), measurement 217769793 -- used in PNG (2026-10-01)</td>
+            <td class="nowrap">AS58460</td><td class="nowrap">PG</td>
+            <td class="nowrap"><code>154.197.42.0/24</code></td>
+            <td><span class="marker"><span class="marker-kind">Leasing broker</span>Cloud Innovation (mnt‑by: CIL1‑MNT)</span><span class="marker"><span class="marker-kind">Leasing broker</span>Larus (mnt‑by: MAINT‑LARUS)</span><span class="marker"><span class="marker-kind">Foreign registry</span>held by AFRINIC</span></td>
+            <td>Larus/Cloud Innovation‑leased AFRINIC space for Digicel PNG; nearest from PG (102ms), measurement 217769793 -- used in PNG (2026‑10‑01)</td>
         </tr><tr>
-            <td>AS58460</td><td>PG</td><td><code>154.81.51.0/24</code></td>
-            <td>broker: Cloud Innovation (mnt-by: CIL1-MNT)<br>broker: Larus (mnt-by: MAINT-LARUS)<br>foreign_registry: held by AFRINIC</td>
-            <td>Larus/Cloud Innovation-leased AFRINIC space for Digicel PNG; 50ms from AU, 76ms from PG, measurement 217770948 -- used in PNG (2026-10-01)</td>
+            <td class="nowrap">AS58460</td><td class="nowrap">PG</td>
+            <td class="nowrap"><code>154.81.51.0/24</code></td>
+            <td><span class="marker"><span class="marker-kind">Leasing broker</span>Cloud Innovation (mnt‑by: CIL1‑MNT)</span><span class="marker"><span class="marker-kind">Leasing broker</span>Larus (mnt‑by: MAINT‑LARUS)</span><span class="marker"><span class="marker-kind">Foreign registry</span>held by AFRINIC</span></td>
+            <td>Larus/Cloud Innovation‑leased AFRINIC space for Digicel PNG; 50ms from AU, 76ms from PG, measurement 217770948 -- used in PNG (2026‑10‑01)</td>
         </tr><tr>
-            <td>AS132468</td><td>SB</td><td><code>103.188.182.0/23</code></td>
-            <td>registered_abroad: RIR record country AU, not SB</td>
-            <td>XconX Pty Ltd (AU); already Sydney-hosted in atlas.targets.EXCLUDED_TARGET_PREFIXES (2026-09-25)</td>
+            <td class="nowrap">AS132468</td><td class="nowrap">SB</td>
+            <td class="nowrap"><code>103.188.182.0/23</code></td>
+            <td><span class="marker"><span class="marker-kind">Registered abroad</span>RIR record country AU, not SB</span></td>
+            <td>XconX Pty Ltd (AU); already Sydney‑hosted in atlas.targets.EXCLUDED_TARGET_PREFIXES (2026‑09‑25)</td>
         </tr></tbody></table>
 
     <h2>Appendix: Probes not placed optimally for regional testing
@@ -2939,6 +2952,8 @@ NU(AS55885) -&gt; AS150403: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS139609 -&
     <footer class="about">
         <h2>About this project</h2>
         <p>What is &quot;the fish bowl&quot;? RIS (BGP route-collector) data and PeeringDB membership records are an outside-looking-in view: they show which routes get announced and which exchanges/facilities a network claims to join, but not how traffic actually moves once it&#x27;s inside a network -- we can see the bowl from outside, not get in it. Active RIPE Atlas traceroutes are the only way this project can partially see inside: a real packet, actually forwarded hop by hop. This project&#x27;s rule follows from that limit: no topology claim is accepted on one source alone -- a finding only counts once RIS and an Atlas traceroute independently agree (an IRR AS-SET declaration or a PeeringDB IXP membership can support a finding, but never substitute for that agreement). &quot;In-fishbowl&quot; / &quot;out-of-fishbowl&quot; describes whether an exchange or ASN sits inside this project&#x27;s study region (Melanesia, Polynesia, Micronesia, and Guam) or outside it (e.g. Sydney, Los Angeles, Tokyo) -- an out-of-fishbowl hop on a path between two in-region economies is this project&#x27;s definition of a sub-optimal route.</p>
+        <h2>Legal notice</h2>
+        <p><strong>Public data, public sources.</strong> Everything in this report is derived from publicly available data: public RIPE Atlas measurement results, RIPE RIS routing data (via RIPEstat), APNIC delegation statistics, WHOIS records from the regional Internet registries, PeeringDB, Internet Routing Registry route objects, bgp.tools and Cloudflare Radar. No private or confidential information is used.</p><p><strong>Observations, not judgements.</strong> Findings describe network paths as measured at a point in time, from the probes that were available. They are observations about routing, not statements about any operator&#x27;s conduct, intent or compliance, and routing can change at any time.</p><p><strong>No warranty.</strong> This report is provided as is, without warranty of any kind, including as to accuracy, completeness or fitness for any purpose. The author accepts no liability for any loss arising from its use or from reliance on it.</p><p><strong>Corrections and disputes.</strong> The only process for correcting or disputing anything in this report is to open an issue on GitHub: <a href="https://github.com/IEISI-ORG/pacific-peering/issues/new">https://github.com/IEISI-ORG/pacific-peering/issues/new</a>. Please name the finding or section, include the measurement ID where there is one, and give your evidence. Issues are reviewed, and where the evidence supports a correction the report is updated in its next build.</p><p><strong>Licence.</strong> This report and its data are licensed under Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0). Commercial use requires a separate licence from the author; see the LICENSE file in the repository.</p>
     </footer>
 </div>
 </body>

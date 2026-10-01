@@ -1,6 +1,6 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-10-01T10:24:37.537600+00:00                  
+                 Generated: 2026-10-01T10:38:15.660585+00:00                  
 ==============================================================================
 FOUND A BUG? Bugs very likely remain in both the code and the data.
 Please open an issue: https://github.com/IEISI-ORG/pacific-peering/issues/new
@@ -1165,5 +1165,18 @@ AS7131 (PTI Pacifica Inc., MP) -> AS395400 (University of Guam, GU)
 ABOUT THIS PROJECT
 ==============================================================================
 What is "the fish bowl"? RIS (BGP route-collector) data and PeeringDB membership records are an outside-looking-in view: they show which routes get announced and which exchanges/facilities a network claims to join, but not how traffic actually moves once it's inside a network -- we can see the bowl from outside, not get in it. Active RIPE Atlas traceroutes are the only way this project can partially see inside: a real packet, actually forwarded hop by hop. This project's rule follows from that limit: no topology claim is accepted on one source alone -- a finding only counts once RIS and an Atlas traceroute independently agree (an IRR AS-SET declaration or a PeeringDB IXP membership can support a finding, but never substitute for that agreement). "In-fishbowl" / "out-of-fishbowl" describes whether an exchange or ASN sits inside this project's study region (Melanesia, Polynesia, Micronesia, and Guam) or outside it (e.g. Sydney, Los Angeles, Tokyo) -- an out-of-fishbowl hop on a path between two in-region economies is this project's definition of a sub-optimal route.
+
+LEGAL NOTICE
+==============================================================================
+
+Public data, public sources. Everything in this report is derived from publicly available data: public RIPE Atlas measurement results, RIPE RIS routing data (via RIPEstat), APNIC delegation statistics, WHOIS records from the regional Internet registries, PeeringDB, Internet Routing Registry route objects, bgp.tools and Cloudflare Radar. No private or confidential information is used.
+
+Observations, not judgements. Findings describe network paths as measured at a point in time, from the probes that were available. They are observations about routing, not statements about any operator's conduct, intent or compliance, and routing can change at any time.
+
+No warranty. This report is provided as is, without warranty of any kind, including as to accuracy, completeness or fitness for any purpose. The author accepts no liability for any loss arising from its use or from reliance on it.
+
+Corrections and disputes. The only process for correcting or disputing anything in this report is to open an issue on GitHub: https://github.com/IEISI-ORG/pacific-peering/issues/new. Please name the finding or section, include the measurement ID where there is one, and give your evidence. Issues are reviewed, and where the evidence supports a correction the report is updated in its next build.
+
+Licence. This report and its data are licensed under Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0). Commercial use requires a separate licence from the author; see the LICENSE file in the repository.
 
 ==============================================================================

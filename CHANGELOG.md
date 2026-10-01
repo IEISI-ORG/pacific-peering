@@ -2383,3 +2383,8 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   appendix in both formats, read from the leasing-marker check's latest
   complete full run (`leasing_check.latest_flagged`), with each reviewed
   prefix's verdict from `ACKNOWLEDGED`; unreviewed ones are marked.
+- Reports (2026-10-01): closing legal notice in both formats (and so the
+  public site): public data and sources, observations not judgements, no
+  warranty, corrections and disputes only via a GitHub issue, CC BY-NC-SA 4.0.
+  Shared text in `reports/data.py` (`LEGAL_NOTICE`). The leasing appendix
+  table now has fixed, balanced column widths and labelled markers.
