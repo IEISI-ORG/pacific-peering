@@ -2373,3 +2373,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   discovery refresh; free; new flags to `escalations.md`; reviewed blocks in
   `ACKNOWLEDGED`. Report `outputs/reports/leasing_check.txt`. New
   `ris.ripestat.fetch_whois`. First run: 365 prefixes, 0 new flags.
+- Unattended daily check support (2026-10-01): `pacific-peering-daily-facts`
+  collects the day's facts read-only (cron runs and their problems, git state,
+  new corroborations, escalations, scheduled-check reports, live site) as JSON;
+  `pacific-peering-status-email` renders a status JSON as an email-safe HTML
+  summary plus a text alternative. The wrapper and prompt that drive them are
+  kept outside the repo.
