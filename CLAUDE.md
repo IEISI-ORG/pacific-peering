@@ -38,7 +38,9 @@ each session:
   invalid traces die (`outputs/reports/rov_cloudflare.txt` + `rov_cloudflare_history.jsonl`).
   Every night it also runs the offshore-hosting check (`pacific-peering-offshore-check --fire`), which
   schedules itself: a full ping sweep of all in-scope ASNs monthly, plus any newly added ASN, otherwise
-  nothing. Flags go to `outputs/reports/offshore_check.txt` and `escalations.md`, never auto-excluded.
+  nothing. Probes come from AU/NZ/US/JP/SG/HK/GB; ASNs whose addresses don't answer get a second chance
+  (cached-traceroute or nmap-sweep addresses, with rDNS) and then a RIS upstream screen. Flags go to
+  `outputs/reports/offshore_check.txt` and `escalations.md`, never auto-excluded.
 
 The public site https://pacific-peering.ieisi.org rebuilds on every push (Cloudflare Worker with static
 assets, `wrangler.jsonc`; build = `python3 src/pacific_peering/reports/site.py` → `site/dist/`), so the

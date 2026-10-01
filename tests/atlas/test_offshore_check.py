@@ -63,7 +63,8 @@ def test_genuinely_local_address_is_consistent():
     judged = oc.judge_address(
         [{"prb_id": 1, "min": 45.0}, {"prb_id": 2, "min": 95.0}], "VU", {1: SYDNEY, 2: PERTH}
     )
-    assert judged == {"verdict": "consistent", "answered": 2, "violations": []}
+    assert judged == {"verdict": "consistent", "answered": 2, "violations": [],
+                      "nearest": {"probe": 1, "cc": None, "rtt_ms": 45.0}}
 
 
 def test_no_reply_and_unknown_probe_location():
@@ -205,3 +206,20 @@ def test_duplicate_addresses_within_an_asn_are_pinged_once(monkeypatch, tmp_path
     except SystemExit:
         pass
     assert [a for _, _, a in seen["targets"]] == ["202.80.34.1", "202.80.35.1"]
+
+
+def test_nearest_vantage_records_fastest_probe_country():
+    judged = oc.judge_address(
+        [{"prb_id": 1, "min": 45.0}, {"prb_id": 7, "min": 12.5}], "VU", {1: SYDNEY, 7: SYDNEY},
+        {1: 100, 7: 200}, {1: "AU", 7: "SG"},
+    )
+    assert judged["nearest"] == {"probe": 7, "cc": "SG", "rtt_ms": 12.5}
+
+
+def test_new_screen_flags_skip_seen_and_acknowledged():
+    history = [{"screen_flags": ["151398"]}]
+    assert oc._new_screen_flags(history, ["151398", "45495", "56017"]) == ["56017"]
+
+
+def test_hub_probes_include_sg_hk_gb():
+    assert {s["value"] for s in oc.HUB_PROBE_SPECS} >= {"AU", "NZ", "US", "JP", "SG", "HK", "GB"}

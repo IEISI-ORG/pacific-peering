@@ -2388,3 +2388,12 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   warranty, corrections and disputes only via a GitHub issue, CC BY-NC-SA 4.0.
   Shared text in `reports/data.py` (`LEGAL_NOTICE`). The leasing appendix
   table now has fixed, balanced column widths and labelled markers.
+- Offshore check (2026-10-01): closes the silent-ASN blind spot. ASNs whose
+  addresses don't answer are retried with addresses known to answer (cached
+  traceroute hops in their prefixes, else an nmap ping sweep from the host,
+  recording reverse DNS), then put through a RIS upstream screen (all
+  upstreams foreign and none Tier 1 / regional transit / satellite /
+  research) whose new leads are escalated once. Probes now also come from
+  SG, HK and GB, and every answering address records its nearest vantage.
+  New `atlas/offshore_alternates.py`. Against the 2026-09-24 silent set the
+  screen flags 4: AS45495 and AS142269 (reviewed), AS151398 and AS56017 (new).
