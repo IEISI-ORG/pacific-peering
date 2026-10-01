@@ -1,6 +1,6 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-10-01T07:18:29.794224+00:00                  
+                 Generated: 2026-10-01T07:20:33.141474+00:00                  
 ==============================================================================
 FOUND A BUG? Bugs very likely remain in both the code and the data.
 Please open an issue: https://github.com/IEISI-ORG/pacific-peering/issues/new
@@ -315,7 +315,7 @@ AS131995 (XLPROG-AS-AP (XL Programmation Micro SARL)) -- registered NC  [local c
 AS154410 (MTL-AS-AP (Marshall Telecom Ltd)) -- registered MH  [local company whose announced space is hosted abroad]
     Registered in the Marshall Islands (APNIC registrant ORG-MTL14-AP, Marshall Telecom LTD) but every originated prefix is served from Paris. Sole RIS upstream AS137409 (GSL Networks). 2026-10-01 traceroutes (measurements 217755229, 217755231, 217755234, 217755242, 217757573, 217757574) from AU probes and MH probe 64237 to 103.112.144.1, 151.247.194.1 and 82.24.175.1 end at core01.par2.dyjix.eu / 185.171.202.195.rev.dyjix.eu (AS212815 Dyjix SAS, Paris) at ~300ms. The earlier candidate_peering finding (row 253, measurement 213462780) already showed the path ending at AS212815. Per the project owner, 151.247.194.0 and 82.24.175.0 are IPXO-leased (IPXO geofeed, IPXO-MNT markers), and rDNS in 82.24.175.0 shows consumer NAS endpoints (Synology QuickConnect, WD remotewd): leased space used wherever the lessee is. Excluded at the owner's direction (2026-10-01); finding row 253 and corroboration 464 were removed.
 
-APPENDIX: QUARANTINED ASNs (1 -- no proof of routing yet)
+APPENDIX: QUARANTINED ASNs (2 -- no proof of routing yet)
 ==============================================================================
 In-scope ASNs whose routing hasn't been proven either way: every test so far goes dark before reaching their space. They stay in scope but aren't tested, and their findings are held out of every count and map in this report until the evidence settles it.
 
@@ -323,6 +323,11 @@ AS152093 (VakaNet Limited) -- registered CK  [quarantined 2026-10-01]
     Sole RIS upstream is AS9507 (NextHop, AU). 2026-10-01 traceroutes to 116.199.200.1 from AU probes (measurement 217757577) go dark right after NextHop's Sydney and Brisbane PEs (et11-90.pe04.syd01.nexthop.net.au at 8.7ms, po1.nxtpe01.bne01.nexthop.net.au at 2.8ms); the CK-sourced measurement (217757575) returned no results; an nmap ping sweep of all of 116.199.200.0/23 from Brisbane found no responsive host. That leaves Sydney hosting and a tunnel back to Rarotonga equally possible. Its 5 legacy confirmed_detour findings (#165-169, from GU/MP via Tokyo and NU/TV/VU via Sydney) rest on chains that end at AS9507 and never reach VakaNet, so they're held here. Quarantined at the owner's direction: no proof of routing.
     Release when: a host in 116.199.200.0/23 answers and its latency places it, or a trace from a Cook Islands probe reaches VakaNet's own space
     Findings held (5): #165 confirmed_detour: GU to CK AS152093 via Tokyo; #166 confirmed_detour: MP to CK AS152093 via Tokyo; #167 confirmed_detour: NU to CK AS152093 via Sydney; #168 confirmed_detour: TV to CK AS152093 via Sydney; #169 confirmed_detour: VU to CK AS152093 via Sydney
+
+AS151647 (Rural Tech Development) -- registered PG  [quarantined 2026-10-01]
+    Registered in PNG (APNIC registrant ORG-RTD1-AP). Sole RIS upstream is AS31732 (Parsun Network Solutions, AU). 2026-10-01 traceroutes to 103.98.52.1 from AU probes 1011163 and 19917 (measurement 217755233) and PG probe 50365 (217755235) all end in a genuine routing loop on 188.209.155.250, in Parsun's own 188.209.155.0/24: 4.9ms from an AU probe, 38ms from PG, so the loop sits in Australia and nothing beyond it is reachable. An nmap ping sweep of 103.98.52.0/24 from Brisbane found no responsive host. Whether the space is used in PNG, hosted in Australia, or not in use at all can't be told from this. No findings held. Quarantined at the owner's direction: no proof of routing.
+    Release when: a host in 103.98.52.0/24 answers and its latency places it, or a trace reaches Rural Tech's own space instead of looping at Parsun
+    Findings held (0): none
 
 APPENDIX: PROBES NOT PLACED OPTIMALLY FOR REGIONAL TESTING (10)
 ==============================================================================

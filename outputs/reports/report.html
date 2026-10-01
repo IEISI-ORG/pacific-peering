@@ -73,7 +73,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
 <body>
 <div class="wrap">
     <h1>Pacific Peering — Regional Routing Report</h1>
-    <div class="meta">Generated 2026-10-01T07:18:31.128212+00:00</div>
+    <div class="meta">Generated 2026-10-01T07:20:34.284164+00:00</div>
 
     <div class="feedback-box"><strong>Found a bug?</strong> This report is generated
         automatically, and bugs very likely remain in both the code and the data. If
@@ -2867,7 +2867,7 @@ NU(AS55885) -&gt; AS150403: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS139609 -&
         </div>
 
     <h2>Appendix: Quarantined ASNs
-        <span class="count">(1 &mdash; no proof of routing yet)</span></h2>
+        <span class="count">(2 &mdash; no proof of routing yet)</span></h2>
     <p class="section-intro">In-scope ASNs whose routing hasn't been proven either way: every
         test so far goes dark before reaching their space. They stay in scope but aren't tested,
         and their findings are held out of every count and map in this report until the evidence
@@ -2879,6 +2879,13 @@ NU(AS55885) -&gt; AS150403: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS139609 -&
             <p><strong>Release when:</strong> a host in 116.199.200.0/23 answers and its latency places it, or a trace from a Cook Islands probe reaches VakaNet&#x27;s own space</p>
             <p><strong>Findings held (5):</strong>
                 #165 confirmed_detour: GU to CK AS152093 via Tokyo; #166 confirmed_detour: MP to CK AS152093 via Tokyo; #167 confirmed_detour: NU to CK AS152093 via Sydney; #168 confirmed_detour: TV to CK AS152093 via Sydney; #169 confirmed_detour: VU to CK AS152093 via Sydney</p>
+        </div><div class="issue-card">
+            <div class="headline">AS151647 (Rural Tech Development) -- registered PG
+                <span class="count">[quarantined 2026-10-01]</span></div>
+            <details class="note"><summary>Registered in PNG (APNIC registrant ORG-RTD1-AP)…</summary>Registered in PNG (APNIC registrant ORG-RTD1-AP). Sole RIS upstream is AS31732 (Parsun Network Solutions, AU). 2026-10-01 traceroutes to 103.98.52.1 from AU probes 1011163 and 19917 (measurement 217755233) and PG probe 50365 (217755235) all end in a genuine routing loop on 188.209.155.250, in Parsun&#x27;s own 188.209.155.0/24: 4.9ms from an AU probe, 38ms from PG, so the loop sits in Australia and nothing beyond it is reachable. An nmap ping sweep of 103.98.52.0/24 from Brisbane found no responsive host. Whether the space is used in PNG, hosted in Australia, or not in use at all can&#x27;t be told from this. No findings held. Quarantined at the owner&#x27;s direction: no proof of routing.</details>
+            <p><strong>Release when:</strong> a host in 103.98.52.0/24 answers and its latency places it, or a trace reaches Rural Tech&#x27;s own space instead of looping at Parsun</p>
+            <p><strong>Findings held (0):</strong>
+                none</p>
         </div>
 
     <h2>Appendix: Probes not placed optimally for regional testing

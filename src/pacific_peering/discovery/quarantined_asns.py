@@ -66,6 +66,29 @@ QUARANTINED_ASNS: tuple[QuarantinedAsn, ...] = (
             "Quarantined at the owner's direction: no proof of routing."
         ),
     ),
+    QuarantinedAsn(
+        asn=151647,
+        country_cc="PG",
+        name="Rural Tech Development",
+        since="2026-10-01",
+        release_when=(
+            "a host in 103.98.52.0/24 answers and its latency places it, or a "
+            "trace reaches Rural Tech's own space instead of looping at Parsun"
+        ),
+        note=(
+            "Registered in PNG (APNIC registrant ORG-RTD1-AP). Sole RIS upstream "
+            "is AS31732 (Parsun Network Solutions, AU). 2026-10-01 traceroutes "
+            "to 103.98.52.1 from AU probes 1011163 and 19917 (measurement "
+            "217755233) and PG probe 50365 (217755235) all end in a genuine "
+            "routing loop on 188.209.155.250, in Parsun's own 188.209.155.0/24: "
+            "4.9ms from an AU probe, 38ms from PG, so the loop sits in "
+            "Australia and nothing beyond it is reachable. An nmap ping sweep "
+            "of 103.98.52.0/24 from Brisbane found no responsive host. Whether "
+            "the space is used in PNG, hosted in Australia, or not in use at "
+            "all can't be told from this. No findings held. Quarantined at "
+            "the owner's direction: no proof of routing."
+        ),
+    ),
 )
 
 QUARANTINED_ASN_SET: frozenset[int] = frozenset(q.asn for q in QUARANTINED_ASNS)

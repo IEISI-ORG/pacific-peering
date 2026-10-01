@@ -2361,3 +2361,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   held out of report tallies and the map (`store.load_*(include_quarantined=
   False)`) and listed in a new report appendix. First entry: AS152093
   VakaNet (CK), holding findings #165-169. Report pathways 245 -> 240.
+- Quarantined AS151647 Rural Tech Development (PG) (2026-10-01): sole
+  upstream AS31732 Parsun (AU); every trace loops on Parsun's
+  188.209.155.250 in Australia and no host in 103.98.52.0/24 answers. No
+  findings held.
