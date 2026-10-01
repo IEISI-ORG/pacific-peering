@@ -29,14 +29,6 @@ import logging
 from pathlib import Path
 
 from pacific_peering.analysis import store as _store
-
-# Loaded from the SQLite store, not the legacy dataclass modules directly --
-# see reports/data.py's module docstring for why.
-_conn = _store.connect()
-CONFIRMED_DETOURS = _store.load_confirmed_detours(_conn)
-CONFIRMED_LOCAL_TRANSIT = _store.load_confirmed_local_transit(_conn)
-CANDIDATE_PEERING = _store.load_candidate_peering(_conn)
-_conn.close()
 from pacific_peering.analysis.fishbowl import DEFAULT_PEERINGDB_CACHE_PATH
 from pacific_peering.atlas.asn_probes import load_asn_probe_registry
 from pacific_peering.atlas.probes import (
@@ -48,6 +40,14 @@ from pacific_peering.discovery.economies import ECONOMIES_BY_CC
 from pacific_peering.discovery.registry import DEFAULT_OUTPUT_PATH as _ASN_REGISTRY_PATH
 from pacific_peering.reports.data import FISHBOWL_EXPLANATION, PathwayCoverageSummary
 from pacific_peering.reports.data import _compute_pathway_coverage
+
+# Loaded from the SQLite store, not the legacy dataclass modules directly --
+# see reports/data.py's module docstring for why.
+_conn = _store.connect()
+CONFIRMED_DETOURS = _store.load_confirmed_detours(_conn, include_quarantined=False)
+CONFIRMED_LOCAL_TRANSIT = _store.load_confirmed_local_transit(_conn, include_quarantined=False)
+CANDIDATE_PEERING = _store.load_candidate_peering(_conn, include_quarantined=False)
+_conn.close()
 
 logger = logging.getLogger(__name__)
 
@@ -89,6 +89,7 @@ HOST_LEADS: dict[str, str] = {
 def _compute_local_ixps(
     asn_registry: dict, peeringdb_cache: dict
 ) -> dict[str, list[tuple[str, str, list[int]]]]:
+
     """Per-economy, same-country IXPs this project's own tracked ASNs actually belong to.
 
     A "local" IXP here means: physically located in the same economy as the

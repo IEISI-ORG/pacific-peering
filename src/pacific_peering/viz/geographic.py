@@ -22,6 +22,8 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 
 from pacific_peering.analysis import store as _store
+from pacific_peering.discovery.economies import ECONOMIES_BY_CC
+from pacific_peering.discovery.economy_coordinates import ECONOMY_LATLON, EXTERNAL_HUB_LATLON
 
 # Loaded from the SQLite store, not the legacy dataclass modules directly --
 # see reports/data.py's module docstring for why.
@@ -30,8 +32,6 @@ CONFIRMED_DETOURS = _store.load_confirmed_detours(_conn, include_quarantined=Fal
 CONFIRMED_LOCAL_TRANSIT = _store.load_confirmed_local_transit(_conn, include_quarantined=False)
 CANDIDATE_PEERING = _store.load_candidate_peering(_conn, include_quarantined=False)
 _conn.close()
-from pacific_peering.discovery.economies import ECONOMIES_BY_CC
-from pacific_peering.discovery.economy_coordinates import ECONOMY_LATLON, EXTERNAL_HUB_LATLON
 
 DEFAULT_OUTPUT_PATH = Path("outputs/viz/geographic_detours.svg")
 
