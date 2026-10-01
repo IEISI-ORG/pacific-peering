@@ -170,3 +170,4 @@ Corridors `auto_classify.py`'s mechanical rules couldn't confidently resolve on 
 - detail: asn_v4 56089 -> 141197; egress trace: AS141197 (measurement 217919756)
 - action: owner review -- check the path before trusting this probe's next results, or changing any exclusion
 - flagged: 2026-10-01T15:00:56.787975+00:00
+- resolved: 2026-10-02 -- host-confirmed: SPC (Usaia Tawakevou, PacNOG thread, 2026-10-01) re-homed the Noumea probe onto SPC's own ASN. The path is native, not tunnelled: the 2026-10-01 nightly traces (e.g. measurements 217920678, 217925248) go 202.0.159.1 (AS141197) -> OPT AS18200 / CANL AS17480 within ~1-2ms. The probe stays in use as an NC vantage. Note: SPC's Fiji probe 60575 (AS141695) still egresses via Zscaler (measurement 218054280, 2026-10-02: 147.161.214.89 AS53813 at 37.7ms, handing to Cloudflare at Equinix Sydney), so AS141695 stays excluded.
