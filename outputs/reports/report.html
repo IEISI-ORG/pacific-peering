@@ -73,7 +73,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
 <body>
 <div class="wrap">
     <h1>Pacific Peering — Regional Routing Report</h1>
-    <div class="meta">Generated 2026-10-01T07:08:46.650342+00:00</div>
+    <div class="meta">Generated 2026-10-01T07:18:31.128212+00:00</div>
 
     <div class="feedback-box"><strong>Found a bug?</strong> This report is generated
         automatically, and bugs very likely remain in both the code and the data. If
@@ -89,13 +89,13 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
     </div>
 
     <div class="stat-row">
-        <div class="stat-tile"><div class="value">245</div><div class="label">Pathways found (total)</div></div>
+        <div class="stat-tile"><div class="value">240</div><div class="label">Pathways found (total)</div></div>
         <div class="stat-tile"><div class="value">73</div><div class="label">Internal (never leave the fish bowl)</div></div>
-        <div class="stat-tile red-box"><div class="value">172</div>
+        <div class="stat-tile red-box"><div class="value">167</div>
             <div class="label">External / Leaves the region</div></div>
     </div>
     <p class="section-intro">Full corridor-by-corridor detail for all
-        245 pathways above is further down this report
+        240 pathways above is further down this report
         (Confirmed sub-optimal routes / Confirmed local transit / Candidate
         peering), collapsed by default so it doesn't dominate the page &mdash;
         click any of those section headings to expand.</p>
@@ -389,25 +389,25 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <th>Dependent economies</th></tr></thead>
         <tbody><tr>
             <td>Sydney</td>
-            <td>107</td>
+            <td>104</td>
             <td>62%</td>
-            <td>25</td>
+            <td>24</td>
             <td>Melanesia, Micronesia, Polynesia</td>
-            <td>AS, CK, FJ, KI, MH, NC, NR, PG, PW, SB, TO, VU, WS</td>
+            <td>AS, FJ, KI, MH, NC, NR, PG, PW, SB, TO, VU, WS</td>
         </tr><tr>
             <td>Los Angeles</td>
             <td>35</td>
-            <td>20%</td>
+            <td>21%</td>
             <td>7</td>
             <td>Melanesia, Micronesia, Polynesia</td>
             <td>FJ, FM, GU, MH, NR, PF, WF</td>
         </tr><tr>
             <td>Tokyo</td>
-            <td>22</td>
-            <td>13%</td>
-            <td>8</td>
+            <td>20</td>
+            <td>12%</td>
+            <td>7</td>
             <td>Melanesia, Micronesia, Polynesia</td>
-            <td>AS, CK, FJ, MH, NC, NR, PW, SB, VU, WF</td>
+            <td>AS, FJ, MH, NC, NR, PW, SB, VU, WF</td>
         </tr><tr>
             <td>San Jose</td>
             <td>5</td>
@@ -480,7 +480,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
 
     <details class="section-toggle">
         <summary>Confirmed sub-optimal routes (RIS + Atlas both agree)
-            <span class="count">(172)</span></summary>
+            <span class="count">(167)</span></summary>
         <div class="detour-card">
             <div class="headline">NC -&gt; FJ
                 (AS4638): detours via MegaIX Sydney
@@ -1591,41 +1591,6 @@ Twelfth confirmation of AS139609(SISCC)&lt;-&gt;AS45891. `AS55885 -&gt; AS9471 -
             <div>RIS observation count: 331
                 &middot; measurement 213461948</div>
             <details class="note"><summary>measurement 213461948 (from TO); chain: AS24390 -&gt; AS7575 -&gt; AS139609 -&gt; AS45891 -&gt; AS150403; RIS count 331; RIS agrees.</summary>measurement 213461948 (from TO); chain: AS24390 -&gt; AS7575 -&gt; AS139609 -&gt; AS45891 -&gt; AS150403; RIS count 331; RIS agrees.</details>
-        </div><div class="detour-card">
-            <div class="headline">GU -&gt; CK
-                (AS152093): detours via BBIX Tokyo
-                (Tokyo)</div>
-            <div>RIS observation count: 335
-                &middot; measurement 211516729</div>
-            <details class="note"><summary>Guam Cablevision (AS3605) -&gt; VakaNet Limited (AS152093, Cook Islands) -- a second, distinct Cook Islands ASN tested from Guam this session (after AS10131,…</summary>Guam Cablevision (AS3605) -&gt; VakaNet Limited (AS152093, Cook Islands) -- a second, distinct Cook Islands ASN tested from Guam this session (after AS10131, reached via the in-fishbowl ONATI transit corroboration). Both probes fully contiguous to AS9507 (NextHop Pty Ltd, Australia), resolved via PeeringDB netixlan, crossing **BBIX Tokyo** (out-of-fishbowl) -- a genuine named-exchange crossing this time, not just global transit. RIS agrees with an *exact* match (335) -- checked against AS152093&#x27;s full neighbor list: AS9507 is its *only* RIS-observed neighbor at all. Notable contrast with the AS10131 corridor tested from the same source: that one reaches Cook Islands via an in-fishbowl Pacific carrier (ONATI); this one reaches a different Cook Islands operator via a conventional Australia/Tokyo exchange crossing -- two real, differently-shaped Cook Islands corridors, not a uniform national pattern.</details>
-        </div><div class="detour-card">
-            <div class="headline">MP -&gt; CK
-                (AS152093): detours via BBIX Tokyo
-                (Tokyo)</div>
-            <div>RIS observation count: 335
-                &middot; measurement 211596810</div>
-            <details class="note"><summary>PTI Pacifica (AS7131, CNMI) -&gt; VakaNet Limited (AS152093, Cook Islands) -- a fresh MP&lt;-&gt;CK pair, landing on the existing GU(AS3605)-&gt;CK adjacency…</summary>PTI Pacifica (AS7131, CNMI) -&gt; VakaNet Limited (AS152093, Cook Islands) -- a fresh MP&lt;-&gt;CK pair, landing on the existing GU(AS3605)-&gt;CK adjacency (AS9507/NextHop&lt;-&gt;AS152093), a second independent confirmation from a different source economy. All 3 probes: AS7131 -&gt; AS9507 (NextHop Pty Ltd, Australia, resolved via PeeringDB netixlan) -- the literal target itself never resolved (ordinary ICMP filtering near the destination), so RIS is checked against the last reached ASN. RIS agrees with an *exact* match (335), identical to the original finding -- AS9507 remains AS152093&#x27;s *only* RIS-observed neighbor at all. **All 3 probes** cross **BBIX Tokyo** directly this time (`ixp_crossings` confirms it for every probe), an even stronger direct confirmation than the original&#x27;s crossing. `has_routing_loop` flagged probe 60689 `True` -- checked directly: a single consecutive repeat with modest, stable RTT, the now-familiar ordinary-noise shape, not a real loop.</details>
-        </div><div class="detour-card">
-            <div class="headline">NU -&gt; CK
-                (AS152093): detours via AS7474 (SingTel Optus), then AS9507 (NextHop)
-                (Sydney)</div>
-            <div>RIS observation count: 335
-                &middot; measurement 212158146</div>
-            <details class="note"><summary>Fifth confirmation of AS9507(NextHop)&lt;-&gt;AS152093 (after GU, MP, VU, TV)…</summary>Fifth confirmation of AS9507(NextHop)&lt;-&gt;AS152093 (after GU, MP, VU, TV). `AS55885 -&gt; AS9471 -&gt; AS3257 (GTT) -&gt; AS7474 (SingTel Optus) -&gt; AS9507`, RIS agrees exactly (335). Optus is a genuinely new intermediate carrier for this adjacency. `has_routing_loop` False.</details>
-        </div><div class="detour-card">
-            <div class="headline">TV -&gt; CK
-                (AS152093): detours via Equinix Sydney
-                (Sydney)</div>
-            <div>RIS observation count: 335
-                &middot; measurement 212091981</div>
-            <details class="note"><summary>Tuvalu (AS23917) -&gt; VakaNet Limited (AS152093, Cook Islands) -- a fresh TV&lt;-&gt;CK pair, a fourth independent confirmation of the AS9507(NextHop)&lt;-&gt;AS152093…</summary>Tuvalu (AS23917) -&gt; VakaNet Limited (AS152093, Cook Islands) -- a fresh TV&lt;-&gt;CK pair, a fourth independent confirmation of the AS9507(NextHop)&lt;-&gt;AS152093 adjacency (after GU, MP, VU). `AS23917 -&gt; AS9241 (FINTEL) -&gt; AS9507`, upstream of the target directly, RIS-agreeing with the identical exact match (335). Crosses Equinix Sydney directly (`ixp_crossings` confirms it, member AS9507). `has_routing_loop` correctly returned `False`. A fourth distinct source economy (Tuvalu, after Guam, CNMI, and Vanuatu).</details>
-        </div><div class="detour-card">
-            <div class="headline">VU -&gt; CK
-                (AS152093): detours via Equinix Sydney
-                (Sydney)</div>
-            <div>RIS observation count: 335
-                &middot; measurement 211654723</div>
-            <details class="note"><summary>Telecom Vanuatu (AS9249) -&gt; VakaNet Limited (AS152093, Cook Islands) -- a fresh VU&lt;-&gt;CK pair, a third independent confirmation of the…</summary>Telecom Vanuatu (AS9249) -&gt; VakaNet Limited (AS152093, Cook Islands) -- a fresh VU&lt;-&gt;CK pair, a third independent confirmation of the AS9507(NextHop)&lt;-&gt;AS152093 adjacency (after the GU entry and the MP entry). The shortest path yet for this adjacency: `AS9249 -&gt; AS38442 (Vodafone Fiji) -&gt; AS9507`, upstream of the target directly, RIS-agreeing with the identical *exact* match (335). Crosses **Equinix Sydney** directly (`ixp_crossings` confirms it for both probes).</details>
         </div><div class="detour-card">
             <div class="headline">FM -&gt; NR
                 (AS152706): detours via AS4637 (Telstra Global), then AS6453 (Tata Communications)
@@ -2899,6 +2864,21 @@ NU(AS55885) -&gt; AS150403: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS139609 -&
             <div class="headline">AS154410 (MTL-AS-AP (Marshall Telecom Ltd)) -- registered MH
                 <span class="count">[local company whose announced space is hosted abroad]</span></div>
             <details class="note"><summary>Registered in the Marshall Islands (APNIC registrant ORG-MTL14-AP, Marshall Telecom LTD) but every originated prefix is served from Paris…</summary>Registered in the Marshall Islands (APNIC registrant ORG-MTL14-AP, Marshall Telecom LTD) but every originated prefix is served from Paris. Sole RIS upstream AS137409 (GSL Networks). 2026-10-01 traceroutes (measurements 217755229, 217755231, 217755234, 217755242, 217757573, 217757574) from AU probes and MH probe 64237 to 103.112.144.1, 151.247.194.1 and 82.24.175.1 end at core01.par2.dyjix.eu / 185.171.202.195.rev.dyjix.eu (AS212815 Dyjix SAS, Paris) at ~300ms. The earlier candidate_peering finding (row 253, measurement 213462780) already showed the path ending at AS212815. Per the project owner, 151.247.194.0 and 82.24.175.0 are IPXO-leased (IPXO geofeed, IPXO-MNT markers), and rDNS in 82.24.175.0 shows consumer NAS endpoints (Synology QuickConnect, WD remotewd): leased space used wherever the lessee is. Excluded at the owner&#x27;s direction (2026-10-01); finding row 253 and corroboration 464 were removed.</details>
+        </div>
+
+    <h2>Appendix: Quarantined ASNs
+        <span class="count">(1 &mdash; no proof of routing yet)</span></h2>
+    <p class="section-intro">In-scope ASNs whose routing hasn't been proven either way: every
+        test so far goes dark before reaching their space. They stay in scope but aren't tested,
+        and their findings are held out of every count and map in this report until the evidence
+        settles it.</p>
+    <div class="issue-card">
+            <div class="headline">AS152093 (VakaNet Limited) -- registered CK
+                <span class="count">[quarantined 2026-10-01]</span></div>
+            <details class="note"><summary>Sole RIS upstream is AS9507 (NextHop, AU)…</summary>Sole RIS upstream is AS9507 (NextHop, AU). 2026-10-01 traceroutes to 116.199.200.1 from AU probes (measurement 217757577) go dark right after NextHop&#x27;s Sydney and Brisbane PEs (et11-90.pe04.syd01.nexthop.net.au at 8.7ms, po1.nxtpe01.bne01.nexthop.net.au at 2.8ms); the CK-sourced measurement (217757575) returned no results; an nmap ping sweep of all of 116.199.200.0/23 from Brisbane found no responsive host. That leaves Sydney hosting and a tunnel back to Rarotonga equally possible. Its 5 legacy confirmed_detour findings (#165-169, from GU/MP via Tokyo and NU/TV/VU via Sydney) rest on chains that end at AS9507 and never reach VakaNet, so they&#x27;re held here. Quarantined at the owner&#x27;s direction: no proof of routing.</details>
+            <p><strong>Release when:</strong> a host in 116.199.200.0/23 answers and its latency places it, or a trace from a Cook Islands probe reaches VakaNet&#x27;s own space</p>
+            <p><strong>Findings held (5):</strong>
+                #165 confirmed_detour: GU to CK AS152093 via Tokyo; #166 confirmed_detour: MP to CK AS152093 via Tokyo; #167 confirmed_detour: NU to CK AS152093 via Sydney; #168 confirmed_detour: TV to CK AS152093 via Sydney; #169 confirmed_detour: VU to CK AS152093 via Sydney</p>
         </div>
 
     <h2>Appendix: Probes not placed optimally for regional testing

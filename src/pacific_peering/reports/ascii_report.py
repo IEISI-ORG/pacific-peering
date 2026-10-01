@@ -468,6 +468,21 @@ def render_ascii_report(data: ReportData) -> str:
         lines.append(f"{issue.title}  [{issue.category_label}]")
         lines.append(f"    {issue.description}")
 
+    lines.append(_section(f"APPENDIX: QUARANTINED ASNs ({len(data.quarantined)} -- no proof of routing yet)"))
+    lines.append(
+        "In-scope ASNs whose routing hasn't been proven either way: every test so far goes dark "
+        "before reaching their space. They stay in scope but aren't tested, and their findings are "
+        "held out of every count and map in this report until the evidence settles it."
+    )
+    if not data.quarantined:
+        lines.append("(none)")
+    for q in data.quarantined:
+        lines.append("")
+        lines.append(f"{q.title}  [quarantined {q.since}]")
+        lines.append(f"    {q.note}")
+        lines.append(f"    Release when: {q.release_when}")
+        lines.append(f"    Findings held ({len(q.held_findings)}): " + ("; ".join(q.held_findings) or "none"))
+
     lines.append(_section(
         f"APPENDIX: PROBES NOT PLACED OPTIMALLY FOR REGIONAL TESTING ({len(data.misplaced_probes)})"
     ))

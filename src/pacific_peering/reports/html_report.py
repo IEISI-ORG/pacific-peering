@@ -362,6 +362,18 @@ def render_html_report(data: ReportData, viz_dir: Path | None = Path("../viz")) 
         for issue in data.data_quality_issues
     ) or "<p>(none recorded yet)</p>"
 
+    quarantine_blocks = "".join(
+        f"""<div class="issue-card">
+            <div class="headline">{html.escape(q.title)}
+                <span class="count">[quarantined {html.escape(q.since)}]</span></div>
+            {_note_block(q.note)}
+            <p><strong>Release when:</strong> {html.escape(q.release_when)}</p>
+            <p><strong>Findings held ({len(q.held_findings)}):</strong>
+                {html.escape("; ".join(q.held_findings) or "none")}</p>
+        </div>"""
+        for q in data.quarantined
+    ) or "<p>(none)</p>"
+
     aspa_economy_rows = "".join(
         f"""<tr>
             <td>{html.escape(e.cc)}</td><td>{html.escape(e.name)}</td>
@@ -688,6 +700,14 @@ def render_html_report(data: ReportData, viz_dir: Path | None = Path("../viz")) 
         report can be trusted without re-deriving why they exclude what they
         exclude.</p>
     {data_quality_issue_blocks}
+
+    <h2>Appendix: Quarantined ASNs
+        <span class="count">({len(data.quarantined)} &mdash; no proof of routing yet)</span></h2>
+    <p class="section-intro">In-scope ASNs whose routing hasn't been proven either way: every
+        test so far goes dark before reaching their space. They stay in scope but aren't tested,
+        and their findings are held out of every count and map in this report until the evidence
+        settles it.</p>
+    {quarantine_blocks}
 
     <h2>Appendix: Probes not placed optimally for regional testing
         <span class="count">({len(data.misplaced_probes)})</span></h2>

@@ -39,15 +39,47 @@ from pacific_peering.analysis.traceroute_topology import DEFAULT_TRIANGULATION_D
 from pacific_peering.atlas.asn_probes import load_asn_probe_registry
 from pacific_peering.atlas.probes import asn_listed_registry, load_probe_listing
 from pacific_peering.discovery import cloudflare_radar
+from pacific_peering.discovery.quarantined_asns import QUARANTINED_ASNS
 from pacific_peering.discovery.registry import DEFAULT_OUTPUT_PATH
 
 logger = logging.getLogger(__name__)
 
 _conn = _store.connect()
-CONFIRMED_DETOURS = _store.load_confirmed_detours(_conn)
-CONFIRMED_LOCAL_TRANSIT = _store.load_confirmed_local_transit(_conn)
-CANDIDATE_PEERING = _store.load_candidate_peering(_conn)
+CONFIRMED_DETOURS = _store.load_confirmed_detours(_conn, include_quarantined=False)
+CONFIRMED_LOCAL_TRANSIT = _store.load_confirmed_local_transit(_conn, include_quarantined=False)
+CANDIDATE_PEERING = _store.load_candidate_peering(_conn, include_quarantined=False)
+_HELD_FINDINGS = tuple(f for f in _store.all_findings(_conn) if _store.is_quarantined(f))
 _conn.close()
+
+
+@dataclass(frozen=True)
+class QuarantineSummary:
+    """One quarantined ASN (`discovery.quarantined_asns`) and the findings it holds
+    back from this report's tallies."""
+
+    title: str
+    since: str
+    release_when: str
+    note: str
+    held_findings: tuple[str, ...]
+
+
+def _compute_quarantine() -> tuple[QuarantineSummary, ...]:
+    out = []
+    for q in QUARANTINED_ASNS:
+        held = tuple(
+            f"#{f.id} {f.kind}: {f.source_cc}"
+            + (f" AS{f.source_asn}" if f.source_asn else "")
+            + f" to {f.target_cc} AS{f.target_asn}"
+            + (f" via {f.detour_hub}" if f.detour_hub else "")
+            for f in _HELD_FINDINGS
+            if q.asn in (f.source_asn, f.target_asn)
+        )
+        out.append(QuarantineSummary(
+            title=f"AS{q.asn} ({q.name}) -- registered {q.country_cc}",
+            since=q.since, release_when=q.release_when, note=q.note, held_findings=held,
+        ))
+    return tuple(out)
 
 # Shared across every report format so a reader who lands on any one of
 # them (this project's own audience, or an external one — e.g. RIPE
@@ -713,6 +745,7 @@ class ReportData:
     ixps: tuple[IxpSummary, ...]
     pathway_coverage: tuple[PathwayCoverageSummary, ...]
     data_quality_issues: tuple[DataQualityIssue, ...]
+    quarantined: tuple[QuarantineSummary, ...]
     peeringdb_economies: tuple[PeeringDbEconomySummary, ...]
     peeringdb_asns_on_pdb: int
     aspa_economies: tuple[AspaEconomySummary, ...]
@@ -1170,6 +1203,7 @@ def build_report_data(
         ixps=ixps,
         pathway_coverage=pathway_coverage,
         data_quality_issues=DATA_QUALITY_ISSUES,
+        quarantined=_compute_quarantine(),
         peeringdb_economies=peeringdb_economies,
         peeringdb_asns_on_pdb=peeringdb_asns_on_pdb,
         aspa_economies=aspa_progress.economies,

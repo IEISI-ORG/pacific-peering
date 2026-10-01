@@ -26,6 +26,7 @@ from .peeringdb import (
 from .registry import build_registry
 from .secrets import load_peeringdb_api_key
 from .excluded_asns import EXCLUDED_ASNS, ExcludedAsn
+from .quarantined_asns import QUARANTINED_ASN_SET, QUARANTINED_ASNS, QuarantinedAsn
 from .supplementary_asns import SUPPLEMENTARY_ASNS, SupplementaryAsn
 from .supplementary_ixps import SUPPLEMENTARY_IXPS, SupplementaryIxp
 
@@ -58,6 +59,9 @@ __all__ = [
     "load_peeringdb_api_key",
     "EXCLUDED_ASNS",
     "ExcludedAsn",
+    "QUARANTINED_ASNS",
+    "QUARANTINED_ASN_SET",
+    "QuarantinedAsn",
     "SUPPLEMENTARY_ASNS",
     "SupplementaryAsn",
     "SUPPLEMENTARY_IXPS",

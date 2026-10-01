@@ -551,7 +551,15 @@ def _note_for(finding: Finding, corrobs: list[Corroboration]) -> str:
     return " ".join(lines)
 
 
-def load_confirmed_detours(conn: sqlite3.Connection):
+def is_quarantined(finding: Finding) -> bool:
+    """True if either end of `finding` is an ASN in `discovery.quarantined_asns`
+    -- held in the DB and export, but out of the report's tallies and the map."""
+    from pacific_peering.discovery.quarantined_asns import QUARANTINED_ASN_SET
+
+    return finding.target_asn in QUARANTINED_ASN_SET or finding.source_asn in QUARANTINED_ASN_SET
+
+
+def load_confirmed_detours(conn: sqlite3.Connection, include_quarantined: bool = True):
     """Reconstruct `ConfirmedDetour` instances from the database -- same
     type, same field shape, `reports/data.py` and every other consumer of
     the legacy module-level tuple keeps working unchanged."""
@@ -559,7 +567,7 @@ def load_confirmed_detours(conn: sqlite3.Connection):
 
     out = []
     for f in all_findings(conn):
-        if f.kind != KIND_CONFIRMED_DETOUR:
+        if f.kind != KIND_CONFIRMED_DETOUR or (not include_quarantined and is_quarantined(f)):
             continue
         corrobs = get_corroborations(conn, f.id)
         first = corrobs[0] if corrobs else None
@@ -578,12 +586,12 @@ def load_confirmed_detours(conn: sqlite3.Connection):
     return tuple(out)
 
 
-def load_confirmed_local_transit(conn: sqlite3.Connection):
+def load_confirmed_local_transit(conn: sqlite3.Connection, include_quarantined: bool = True):
     from pacific_peering.analysis.confirmed_local_transit import ConfirmedLocalTransit
 
     out = []
     for f in all_findings(conn):
-        if f.kind != KIND_CONFIRMED_LOCAL_TRANSIT:
+        if f.kind != KIND_CONFIRMED_LOCAL_TRANSIT or (not include_quarantined and is_quarantined(f)):
             continue
         corrobs = get_corroborations(conn, f.id)
         first = corrobs[0] if corrobs else None
@@ -604,12 +612,12 @@ def load_confirmed_local_transit(conn: sqlite3.Connection):
     return tuple(out)
 
 
-def load_candidate_peering(conn: sqlite3.Connection):
+def load_candidate_peering(conn: sqlite3.Connection, include_quarantined: bool = True):
     from pacific_peering.analysis.candidate_peering import CandidatePeering
 
     out = []
     for f in all_findings(conn):
-        if f.kind != KIND_CANDIDATE_PEERING:
+        if f.kind != KIND_CANDIDATE_PEERING or (not include_quarantined and is_quarantined(f)):
             continue
         corrobs = get_corroborations(conn, f.id)
         first = corrobs[0] if corrobs else None

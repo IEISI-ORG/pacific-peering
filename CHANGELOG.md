@@ -2354,3 +2354,10 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   removed finding #253 (2026-10-01): every prefix ends in Paris at Dyjix
   (AS212815), two of them IPXO-leased. In-scope ASNs 159 -> 158 (MH 2 -> 1);
   findings 246 -> 245.
+- ASN quarantine (2026-10-01): new `discovery/quarantined_asns.py` for
+  in-scope ASNs with no proof of routing. Quarantined ASNs stay in the
+  registry and fishbowl but are skipped as corridor sources/targets and in
+  reverification; their findings stay in findings.db and the export but are
+  held out of report tallies and the map (`store.load_*(include_quarantined=
+  False)`) and listed in a new report appendix. First entry: AS152093
+  VakaNet (CK), holding findings #165-169. Report pathways 245 -> 240.

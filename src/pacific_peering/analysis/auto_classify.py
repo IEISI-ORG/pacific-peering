@@ -899,7 +899,9 @@ def select_reverification_batch(fraction: float = _REVERIFY_FRACTION) -> list[in
     already checked in on recently."""
     conn = _store.connect()
     try:
-        findings = _store.all_findings(conn)
+        # Quarantined ASNs' findings sit out: re-firing the same dark traces
+        # spends credits without adding proof (discovery/quarantined_asns.py).
+        findings = [f for f in _store.all_findings(conn) if not _store.is_quarantined(f)]
         ranked = sorted(findings, key=lambda f: _last_verified(conn, f))
     finally:
         conn.close()

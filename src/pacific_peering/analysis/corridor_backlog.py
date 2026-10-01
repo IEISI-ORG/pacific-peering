@@ -45,6 +45,7 @@ from pacific_peering.analysis.fishbowl import DEFAULT_SUMMARY_PATH
 from pacific_peering.atlas.asn_probes import DEFAULT_REGISTRY_PATH, load_asn_probe_registry
 from pacific_peering.atlas.probes import DEFAULT_LISTING_PATH, load_probe_listing
 from pacific_peering.discovery.economies import ECONOMIES_BY_CC
+from pacific_peering.discovery.quarantined_asns import QUARANTINED_ASN_SET
 
 # Loaded from the SQLite store (analysis/store.py), not the legacy
 # confirmed_detours.py/confirmed_local_transit.py/candidate_peering.py
@@ -377,13 +378,15 @@ def enumerate_candidate_corridors(
     source_pairs = sorted(
         (asn, cc)
         for asn, ccs in probe_live_cc.items()
-        if asn not in EXTERNAL_NON_CANDIDATE_ASNS
+        if asn not in EXTERNAL_NON_CANDIDATE_ASNS and asn not in QUARANTINED_ASN_SET
         for cc in ccs
     )
     target_asns = sorted(
         a
         for a, entry in ((int(k), v) for k, v in fishbowl.items())
-        if a not in EXTERNAL_NON_CANDIDATE_ASNS and entry.get("num_distinct_prefixes", 0) > 0
+        if a not in EXTERNAL_NON_CANDIDATE_ASNS
+        and a not in QUARANTINED_ASN_SET
+        and entry.get("num_distinct_prefixes", 0) > 0
     )
     target_name: dict[int, str] = {
         int(k): v.get("economy", {}).get("name", "??") for k, v in fishbowl.items()
