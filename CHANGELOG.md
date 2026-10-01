@@ -2350,3 +2350,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   and removed finding #263 (2026-10-01): its only prefix is served from
   Brisbane (sole upstream AS9280 Servers Australia). In-scope ASNs
   160 -> 159; findings 247 -> 246.
+- Excluded AS154410 (Marshall Telecom Ltd, MH) as `offshore_hosted` and
+  removed finding #253 (2026-10-01): every prefix ends in Paris at Dyjix
+  (AS212815), two of them IPXO-leased. In-scope ASNs 159 -> 158 (MH 2 -> 1);
+  findings 246 -> 245.

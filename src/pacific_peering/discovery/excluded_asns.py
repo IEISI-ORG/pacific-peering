@@ -189,4 +189,28 @@ EXCLUDED_ASNS: tuple[ExcludedAsn, ...] = (
             "(findings.db row 263) and corroborations 491-494 were removed."
         ),
     ),
+    ExcludedAsn(
+        asn=154410,
+        country_cc="MH",
+        name="MTL-AS-AP (Marshall Telecom Ltd)",
+        category="offshore_hosted",
+        note=(
+            "Registered in the Marshall Islands (APNIC registrant "
+            "ORG-MTL14-AP, Marshall Telecom LTD) but every originated prefix "
+            "is served from Paris. Sole RIS upstream AS137409 (GSL Networks). "
+            "2026-10-01 traceroutes (measurements 217755229, 217755231, "
+            "217755234, 217755242, 217757573, 217757574) from AU probes and "
+            "MH probe 64237 to 103.112.144.1, 151.247.194.1 and 82.24.175.1 "
+            "end at core01.par2.dyjix.eu / 185.171.202.195.rev.dyjix.eu "
+            "(AS212815 Dyjix SAS, Paris) at ~300ms. The earlier "
+            "candidate_peering finding (row 253, measurement 213462780) "
+            "already showed the path ending at AS212815. Per the project "
+            "owner, 151.247.194.0 and 82.24.175.0 are IPXO-leased (IPXO "
+            "geofeed, IPXO-MNT markers), and rDNS in 82.24.175.0 shows "
+            "consumer NAS endpoints (Synology QuickConnect, WD remotewd): "
+            "leased space used wherever the lessee is. Excluded at the "
+            "owner's direction (2026-10-01); finding row 253 and corroboration "
+            "464 were removed."
+        ),
+    ),
 )

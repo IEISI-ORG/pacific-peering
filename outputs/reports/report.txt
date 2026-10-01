@@ -1,6 +1,6 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-10-01T06:01:13.346870+00:00                  
+                 Generated: 2026-10-01T07:08:45.407955+00:00                  
 ==============================================================================
 FOUND A BUG? Bugs very likely remain in both the code and the data.
 Please open an issue: https://github.com/IEISI-ORG/pacific-peering/issues/new
@@ -11,16 +11,16 @@ SUMMARY
 HEADLINE: 57% of the real peering points this region's own networks use sit OUTSIDE the fish bowl (13 of 23)
 
 PATHWAYS (every corridor with a filed finding, of any kind):
-  Total pathways found:                    246
-  Internal (never leave the fish bowl):    74
+  Total pathways found:                    245
+  Internal (never leave the fish bowl):    73
   External / Leaves the region:            172
   (full corridor-by-corridor detail -- every confirmed detour, confirmed local transit, and candidate peering entry -- is in the appendix at the end of this report, not repeated here)
 
 Economies in scope:            20
-ASNs in scope:                  159
-ASNs with >=1 RIS neighbor:     121
+ASNs in scope:                  158
+ASNs with >=1 RIS neighbor:     120
 ASNs with >=1 IXP membership:   36
-ASNs with >=1 facility presence:21
+ASNs with >=1 facility presence:20
 IXP LAN registry: 10 in-fishbowl, 13 out-of-fishbowl, 0 unconfirmed
 
 ECONOMIES
@@ -33,7 +33,7 @@ FJ   Fiji                             Melanesia       21    15     3     1
 FM   Micronesia, Federated States of  Micronesia       6     5     1     1
 GU   Guam                             Micronesia      10     7     5     5
 KI   Kiribati                         Micronesia       5     3     0     0
-MH   Marshall Islands                 Micronesia       2     2     0     1
+MH   Marshall Islands                 Micronesia       1     1     0     0
 MP   Northern Mariana Islands         Micronesia       2     1     1     1
 NC   New Caledonia                    Melanesia       17    13     6     4
 NR   Nauru                            Micronesia       5     4     1     1
@@ -147,7 +147,7 @@ Per-operator evidence summary, computed fresh from the current finding dataclass
 
 PEERINGDB DATA QUALITY
 ==============================================================================
-73 of 159 in-scope ASNs have a PeeringDB net record at all. 'Zero facilities'/'zero IXP memberships' elsewhere in this report can mean either of two very different things: this ASN was never on PeeringDB to begin with, or it IS registered and simply declared nothing. The two columns below are counted against ASNs that ARE on PeeringDB, not against every in-scope ASN, so they show the real gap, not a re-blend of the two. Known concrete cases: AS12684 (SES Astra) and AS3549 (the former Global Crossing backbone ASN) are both real, traceroute-confirmed carriers with zero PeeringDB facilities -- this is PeeringDB's own coverage gap, not a measurement gap in this project's findings.
+72 of 158 in-scope ASNs have a PeeringDB net record at all. 'Zero facilities'/'zero IXP memberships' elsewhere in this report can mean either of two very different things: this ASN was never on PeeringDB to begin with, or it IS registered and simply declared nothing. The two columns below are counted against ASNs that ARE on PeeringDB, not against every in-scope ASN, so they show the real gap, not a re-blend of the two. Known concrete cases: AS12684 (SES Astra) and AS3549 (the former Global Crossing backbone ASN) are both real, traceroute-confirmed carriers with zero PeeringDB facilities -- this is PeeringDB's own coverage gap, not a measurement gap in this project's findings.
 CC   Name                      ASNs  On PDB  w/ Facility  w/ IXP
 ------------------------------------------------------------------------------
 AS   American Samoa               2       1            0       1
@@ -155,7 +155,6 @@ CK   Cook Islands                 2       1            0       1
 FJ   Fiji                        21      15            1       3
 FM   Micronesia, Federated St     6       6            1       1
 GU   Guam                        10       6            5       5
-MH   Marshall Islands             2       1            1       0
 MP   Northern Mariana Islands     2       1            1       1
 NC   New Caledonia               17      11            4       6
 NR   Nauru                        5       3            1       1
@@ -169,7 +168,7 @@ WS   Samoa                       10       3            1       2
 
 ASPA PROGRESS (RFC 9582 upstream-authorization adoption)
 ==============================================================================
-19 of 159 in-scope ASNs now publish an ASPA record (3335 total across the whole internet, per Cloudflare Radar). Adoption is still early -- absence means 'not published yet', not 'no real upstream'. Per-economy: how many of its own ASNs publish a record, and the distinct upstream ASNs those records declare, split by whether the declared provider is itself an in-scope Pacific ASN or an external carrier.
+19 of 158 in-scope ASNs now publish an ASPA record (3335 total across the whole internet, per Cloudflare Radar). Adoption is still early -- absence means 'not published yet', not 'no real upstream'. Per-economy: how many of its own ASNs publish a record, and the distinct upstream ASNs those records declare, split by whether the declared provider is itself an in-scope Pacific ASN or an external carrier.
 CC   Name                      ASNs  w/ ASPA  Upstr in-FB  Upstr ext
 ------------------------------------------------------------------------------
 CK   Cook Islands                 2        1            0          3
@@ -218,7 +217,7 @@ Measurements: {'v4': [216995468, 216995782], 'v6': [216998611, 216999009]}. Deta
 
 IPV6 COVERAGE (adoption signal only -- no IPv6 testing yet)
 ==============================================================================
-45 of 159 in-scope ASNs have >=1 RIS-observed IPv6-originated prefix. 8 of 36 connected Atlas probes work over IPv6 (2 more are IPv6-capable but tagged as not working). Adoption tracking only -- this project deliberately isn't testing IPv6 corridors yet; queued until adoption has advanced further (see TODO below).
+45 of 158 in-scope ASNs have >=1 RIS-observed IPv6-originated prefix. 8 of 36 connected Atlas probes work over IPv6 (2 more are IPv6-capable but tagged as not working). Adoption tracking only -- this project deliberately isn't testing IPv6 corridors yet; queued until adoption has advanced further (see TODO below).
 CC   Name                      ASNs  w/ IPv6
 ------------------------------------------------------------------------------
 AS   American Samoa               2        1
@@ -226,7 +225,7 @@ CK   Cook Islands                 2        1
 FJ   Fiji                        21        4
 FM   Micronesia, Federated St     6        3
 GU   Guam                        10        5
-MH   Marshall Islands             2        1
+MH   Marshall Islands             1        1
 MP   Northern Mariana Islands     2        1
 NC   New Caledonia               17       12
 NR   Nauru                        5        2
@@ -275,7 +274,7 @@ CC   Name                             Subregion     ASNs  Listed  Active  Untest
 ------------------------------------------------------------------------------
 KI   Kiribati                         Micronesia       5       0       0        16
 NR   Nauru                            Micronesia       5       0       0         8
-MH   Marshall Islands                 Micronesia       2       4       0         7
+MH   Marshall Islands                 Micronesia       1       4       0         7
 WF   Wallis and Futuna                Polynesia        1       0       0         7
 AS   American Samoa                   Polynesia        2       2       0         6
 SB   Solomon Islands                  Melanesia       10       0       0         6
@@ -294,7 +293,7 @@ VU   Vanuatu                          Melanesia       10       5       1        
 FM   Micronesia, Federated States of  Micronesia       6       5       3         0
 NC   New Caledonia                    Melanesia       17      19       5         0
 
-APPENDIX: LOW DATA QUALITY ISSUES (5 known, resolved)
+APPENDIX: LOW DATA QUALITY ISSUES (6 known, resolved)
 ==============================================================================
 Known problems in this project's underlying sources (APNIC delegation, PeeringDB, ASPA, etc.) that have already been found, verified, and corrected for elsewhere in the pipeline -- kept visible here rather than left implicit, so the counts and tables earlier in this report can be trusted without re-deriving why they exclude what they exclude.
 
@@ -313,6 +312,9 @@ AS23959 (OWL-AS-AP (Owl Limited)) -- registered VU  [VPN/proxy egress space regi
 AS131995 (XLPROG-AS-AP (XL Programmation Micro SARL)) -- registered NC  [local company whose announced space is hosted abroad]
     Registered in New Caledonia (APNIC registrant ORG-XPMS1-AP, XL PROGRAMMATION MICRO SARL) but its only announced prefix, 103.29.155.0/24, is served from Australia. Sole RIS neighbour is AS9280 (Servers Australia, AU; 350 observations locally, 273 live on RIPEstat); every collector path ends `... 38195|58511 9280 131995`. Traced from all 4 connected NC probes on the 2026-09-30 nightly batch (measurements 217486796, 217486797): Noumea -> Equinix Sydney (~23ms) -> Superloop AS38195 Sydney, then Brisbane (bdr03-ipt-20wharfs-bne) -> 202.60.93.189 eth49-1.core01.br1.as9280.net.au (~38ms), then no replies; 103.29.155.1 has rDNS unknown-host.xlnet.au. Domestic NC traffic to it leaves for Brisbane because that is where the space lives, not because of a local peering gap. Excluded at the owner's direction (2026-10-01); its one confirmed_detour finding (findings.db row 263) and corroborations 491-494 were removed.
 
+AS154410 (MTL-AS-AP (Marshall Telecom Ltd)) -- registered MH  [local company whose announced space is hosted abroad]
+    Registered in the Marshall Islands (APNIC registrant ORG-MTL14-AP, Marshall Telecom LTD) but every originated prefix is served from Paris. Sole RIS upstream AS137409 (GSL Networks). 2026-10-01 traceroutes (measurements 217755229, 217755231, 217755234, 217755242, 217757573, 217757574) from AU probes and MH probe 64237 to 103.112.144.1, 151.247.194.1 and 82.24.175.1 end at core01.par2.dyjix.eu / 185.171.202.195.rev.dyjix.eu (AS212815 Dyjix SAS, Paris) at ~300ms. The earlier candidate_peering finding (row 253, measurement 213462780) already showed the path ending at AS212815. Per the project owner, 151.247.194.0 and 82.24.175.0 are IPXO-leased (IPXO geofeed, IPXO-MNT markers), and rDNS in 82.24.175.0 shows consumer NAS endpoints (Synology QuickConnect, WD remotewd): leased space used wherever the lessee is. Excluded at the owner's direction (2026-10-01); finding row 253 and corroboration 464 were removed.
+
 APPENDIX: PROBES NOT PLACED OPTIMALLY FOR REGIONAL TESTING (10)
 ==============================================================================
 Connected (or recently disconnected) in-scope Atlas probes whose network or location makes them a poor stand-in for local-carrier routing, and why. Built from what the pipeline already acts on: the corridor-candidacy exclusions, the proxy list and the probe geo-audit.
@@ -329,7 +331,7 @@ MH      64237 AS14593   Connected     Starlink (AS14593): satellite egress via S
 PF      23002 AS2200    Connected     Renater (AS2200): backhauls straight to metropolitan France (~500ms), never touches Pacific transit
 TO      11691 AS24390   Connected     ASN registered Fiji but probe physically in Tonga (geo-audit): counts as a TO vantage point, not FJ; USP (AS24390, registered FJ): regional academic network via AARNet (Australia), not a local commercial carrier; valid source, path unverified
 
-APPENDIX: FULL CORRIDOR DETAIL (246 pathways -- see the PATHWAYS summary at the top of this report for the plain counts)
+APPENDIX: FULL CORRIDOR DETAIL (245 pathways -- see the PATHWAYS summary at the top of this report for the plain counts)
 ==============================================================================
 
 Confirmed sub-optimal routes (RIS + Atlas both agree)
@@ -1118,9 +1120,6 @@ AS38008 (Aperture Science Limited, ??) -> AS152706 (Neotel, NR)
 AS17456 (Pacific Data Systems, GU) -> AS152735 (Guam Exchange, GU)
     Traceroute agreement: 1/3 probes  [measurement 213209042, vantage: GU]
     measurement 213209042 (from GU); chain: AS17456 -> AS152735; RIS disagrees.
-AS212815 (Dyjix SAS, ??) -> AS154410 (Marshall Telecom Ltd, MH)
-    Traceroute agreement: 1/1 probes  [measurement 213462780, vantage: TO]
-    measurement 213462780 (from TO); chain: AS24390 -> AS7575 -> AS2914 -> AS6453 -> AS49434 -> AS212815; RIS disagrees.
 AS7131 (PTI Pacifica Inc., MP) -> AS395400 (University of Guam, GU)
     Traceroute agreement: 2/3 probes  [measurement 213209267, vantage: GU]
     measurement 213209267 (from GU); chain: AS7131 -> AS395400; RIS disagrees. measurement 213209267 (from GU); chain: AS7131 -> AS395400; RIS disagrees. measurement 213209268 (from GU); chain: AS7131 -> AS395400; RIS disagrees. measurement 213209280 (from GU); chain: AS7131 -> AS395400; RIS disagrees. measurement 213209280 (from GU); chain: AS7131 -> AS395400; RIS disagrees.
