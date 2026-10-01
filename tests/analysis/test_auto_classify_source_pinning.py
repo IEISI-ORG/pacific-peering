@@ -175,3 +175,34 @@ def test_probe_agreement_counts_each_upstream_against_all_clean_probes(monkeypat
     finally:
         conn.close()
     assert agreement == {7131: "2/3 probes", 3605: "1/3 probes"}
+
+
+# Caught 2026-10-02 (findings #270, #271; measurements 217929784, 217930561):
+# NC probe 61210's traces died at hop 5 inside its own AS141197, never
+# reaching the target ASN, and RIS "disagreeing" with AS141197 as the target's
+# neighbour got them filed as candidate peering. No hop in the target means no
+# observed adjacency to call peering (module docstring rule 4 vs rule 5).
+def _dead_end_probe(probe_id: int, own_asn: int) -> dict:
+    return {
+        "probe_id": probe_id,
+        "as_sequence": [{"asn": own_asn, "resolution_source": "bgp", "contiguous_with_previous": True}],
+        "ixp_crossings": [],
+        "traceroute_upstream_asn": own_asn,
+        "ris_agrees": False,
+        "contiguous": True,
+        "ris_observation_count": None,
+    }
+
+
+def test_dead_end_trace_is_inconclusive_not_candidate_peering(monkeypatch, tmp_path):
+    result = _run(monkeypatch, tmp_path, [_dead_end_probe(61210, 141197)])
+
+    assert result.outcome == "inconclusive"
+    assert _corroborations(tmp_path) == {}
+
+
+def test_dead_end_probe_is_left_off_a_real_candidate_peering_finding(monkeypatch, tmp_path):
+    result = _run(monkeypatch, tmp_path, [_probe(60689, 7131), _dead_end_probe(61210, 141197)])
+
+    assert result.outcome == "candidate_peering"
+    assert set(_corroborations(tmp_path)) == {(7131, 9246)}

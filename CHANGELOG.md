@@ -2397,3 +2397,11 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   SG, HK and GB, and every answering address records its nearest vantage.
   New `atlas/offshore_alternates.py`. Against the 2026-09-24 silent set the
   screen flags 4: AS45495 and AS142269 (reviewed), AS151398 and AS56017 (new).
+- Dead-end traces no longer file candidate peering
+  (`analysis/auto_classify.py`): a probe counts toward `candidate_peering`
+  only if its path actually reaches the target ASN. A trace that went dark
+  short of the target, with RIS not listing the last-reached ASN as a
+  neighbour, now falls through to inconclusive (rule 5). Caught 2026-10-02 on
+  findings #270/#271 (NC probe 61210, dead at hop 5 inside its own AS141197).
+  Existing findings are untouched: #10, #13, #194, #208, #216, #232, #234 and
+  #254 have the same dead-end shape and await owner review.

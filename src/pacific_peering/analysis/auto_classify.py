@@ -627,7 +627,12 @@ def classify_corridor(
         if probe.get("ris_agrees") and probe.get("contiguous", True):
             if upstream_asn in asn_to_cc:
                 local_transit_pick = local_transit_pick or probe
-        elif not probe.get("ris_agrees"):
+        elif not probe.get("ris_agrees") and candidate.target_asn in {
+            e["asn"] for e in probe.get("as_sequence", [])
+        }:
+            # Only a trace that reached the target shows an adjacency to call
+            # peering; a dead end (findings #270/#271, 2026-10-02: died inside
+            # the probe's own AS) is rule 5's "nothing real reached".
             candidate_picks.append(probe)
 
     if tba_ixp_hit and detour_pick is None:
