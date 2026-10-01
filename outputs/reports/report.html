@@ -73,7 +73,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
 <body>
 <div class="wrap">
     <h1>Pacific Peering — Regional Routing Report</h1>
-    <div class="meta">Generated 2026-10-01T01:05:49.480747+00:00</div>
+    <div class="meta">Generated 2026-10-01T06:01:14.468971+00:00</div>
 
     <div class="feedback-box"><strong>Found a bug?</strong> This report is generated
         automatically, and bugs very likely remain in both the code and the data. If
@@ -89,18 +89,18 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
     </div>
 
     <div class="stat-row">
-        <div class="stat-tile"><div class="value">247</div><div class="label">Pathways found (total)</div></div>
+        <div class="stat-tile"><div class="value">246</div><div class="label">Pathways found (total)</div></div>
         <div class="stat-tile"><div class="value">74</div><div class="label">Internal (never leave the fish bowl)</div></div>
-        <div class="stat-tile red-box"><div class="value">173</div>
+        <div class="stat-tile red-box"><div class="value">172</div>
             <div class="label">External / Leaves the region</div></div>
     </div>
     <p class="section-intro">Full corridor-by-corridor detail for all
-        247 pathways above is further down this report
+        246 pathways above is further down this report
         (Confirmed sub-optimal routes / Confirmed local transit / Candidate
         peering), collapsed by default so it doesn't dominate the page &mdash;
         click any of those section headings to expand.</p>
 
-    <div class="stat-row"><div class="stat-tile"><div class="value">20</div><div class="label">Economies in scope</div></div><div class="stat-tile"><div class="value">160</div><div class="label">ASNs in scope</div></div><div class="stat-tile"><div class="value">122</div><div class="label">ASNs w/ RIS neighbor</div></div><div class="stat-tile"><div class="value">36</div><div class="label">ASNs w/ IXP membership</div></div><div class="stat-tile"><div class="value">21</div><div class="label">ASNs w/ facility presence</div></div><div class="stat-tile"><div class="value">10/13</div><div class="label">IXPs in/out of fishbowl</div></div></div>
+    <div class="stat-row"><div class="stat-tile"><div class="value">20</div><div class="label">Economies in scope</div></div><div class="stat-tile"><div class="value">159</div><div class="label">ASNs in scope</div></div><div class="stat-tile"><div class="value">121</div><div class="label">ASNs w/ RIS neighbor</div></div><div class="stat-tile"><div class="value">36</div><div class="label">ASNs w/ IXP membership</div></div><div class="stat-tile"><div class="value">21</div><div class="label">ASNs w/ facility presence</div></div><div class="stat-tile"><div class="value">10/13</div><div class="label">IXPs in/out of fishbowl</div></div></div>
 
     <h2>Economies</h2>
     <table>
@@ -167,7 +167,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
                 </span>NC</td>
             <td>New Caledonia</td>
             <td>Melanesia</td>
-            <td>18</td><td>14</td>
+            <td>17</td><td>13</td>
             <td>6</td><td>4</td>
         </tr><tr>
             <td><span class="subregion-dot" style="background:#1baf7a">
@@ -389,7 +389,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <th>Dependent economies</th></tr></thead>
         <tbody><tr>
             <td>Sydney</td>
-            <td>108</td>
+            <td>107</td>
             <td>62%</td>
             <td>25</td>
             <td>Melanesia, Micronesia, Polynesia</td>
@@ -480,7 +480,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
 
     <details class="section-toggle">
         <summary>Confirmed sub-optimal routes (RIS + Atlas both agree)
-            <span class="count">(173)</span></summary>
+            <span class="count">(172)</span></summary>
         <div class="detour-card">
             <div class="headline">NC -&gt; FJ
                 (AS4638): detours via MegaIX Sydney
@@ -1402,13 +1402,6 @@ Twelfth confirmation of AS139609(SISCC)&lt;-&gt;AS45891. `AS55885 -&gt; AS9471 -
             <div>RIS observation count: 1657
                 &middot; measurement 211640827</div>
             <details class="note"><summary>Telecom Vanuatu (AS9249) -&gt; ONATI&#x27;s other ASN (AS55943, French Polynesia) -- a fresh VU&lt;-&gt;PF pair, a third independent confirmation of the…</summary>Telecom Vanuatu (AS9249) -&gt; ONATI&#x27;s other ASN (AS55943, French Polynesia) -- a fresh VU&lt;-&gt;PF pair, a third independent confirmation of the AS3257(GTT)&lt;-&gt;AS55943 adjacency (after the GU entry and the MP entry via Cogent). Both probes: AS9249 -&gt; AS38442 (Vodafone Fiji) -&gt; AS4637 (Telstra Global) -&gt; AS3257 -- the literal target never resolved (ordinary ICMP filtering near the destination), so RIS is checked against the last reached ASN. RIS agrees with the identical *exact* match (1,657). No IXP crossing this time (`ixp_crossings` empty for both probes). **Hub corrected to Los Angeles**: the original &quot;Tokyo&quot; here was a carrier-facility guess (GTT&#x27;s real PeeringDB presence list, not this entry&#x27;s own hops) -- exactly the same mislabeling pattern already caught and fixed for Cogent/Tata elsewhere this session. Real GTT hop evidence on the TV-sourced entry for this identical adjacency (`cr10-lax2.ip4.gtt.net`) shows the true touchpoint is Los Angeles.</details>
-        </div><div class="detour-card">
-            <div class="headline">NC -&gt; NC
-                (AS131995): detours via Equinix Sydney
-                (Sydney)</div>
-            <div>RIS observation count: 0
-                &middot; measurement 217486797</div>
-            <details class="note"><summary>measurement 217486797 (from NC); chain: AS45345 -&gt; AS18200 -&gt; AS38195; RIS disagrees…</summary>measurement 217486797 (from NC); chain: AS45345 -&gt; AS18200 -&gt; AS38195; RIS disagrees. measurement 217486797 (from NC); chain: AS45345 -&gt; AS18200 -&gt; AS38195; RIS disagrees. measurement 217486797 (from NC); chain: AS45345 -&gt; AS18200 -&gt; AS38195; RIS disagrees. measurement 217486796 (from NC); chain: AS56089 -&gt; AS18200 -&gt; AS38195; RIS disagrees.</details>
         </div><div class="detour-card">
             <div class="headline">NU -&gt; VU
                 (AS132228): detours via Equinix Sydney
@@ -2347,7 +2340,7 @@ NU(AS55885) -&gt; AS150403: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS139609 -&
 
     <h2>PeeringDB data quality</h2>
     <p class="section-intro">
-        <strong>73 of 160</strong> in-scope ASNs have a
+        <strong>73 of 159</strong> in-scope ASNs have a
         PeeringDB <code>net</code> record at all. "Zero facilities"/"zero IXP memberships"
         elsewhere in this report can mean either of two very different things: this ASN was
         never on PeeringDB to begin with, or it <em>is</em> registered and simply declared
@@ -2387,7 +2380,7 @@ NU(AS55885) -&gt; AS150403: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS139609 -&
             <td>1</td><td>1</td>
         </tr><tr>
             <td>NC</td><td>New Caledonia</td>
-            <td>18</td><td>11</td>
+            <td>17</td><td>11</td>
             <td>4</td><td>6</td>
         </tr><tr>
             <td>NR</td><td>Nauru</td>
@@ -2433,7 +2426,7 @@ NU(AS55885) -&gt; AS150403: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS139609 -&
 
     <h2>ASPA progress (RFC 9582 upstream-authorization adoption)</h2>
     <p class="section-intro">
-        <strong>19 of 160</strong> in-scope ASNs
+        <strong>19 of 159</strong> in-scope ASNs
         now publish an ASPA record (3335 total across the
         whole internet, per Cloudflare Radar). Adoption is still early &mdash; absence
         means "not published yet," not "no real upstream." Per economy: how many of its
@@ -2517,10 +2510,10 @@ NU(AS55885) -&gt; AS150403: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS139609 -&
     <p class="section-intro">
         Adoption signal only &mdash; this project deliberately isn't testing IPv6 corridors
         yet, queued until adoption has advanced further.
-        <strong>45 of 160</strong> in-scope ASNs
+        <strong>45 of 159</strong> in-scope ASNs
         have at least one RIS-observed IPv6-originated prefix.
         <strong>8 of 36</strong> connected
-        Atlas probes work over IPv6 (3 more are
+        Atlas probes work over IPv6 (2 more are
         IPv6-capable but tagged as not working).
     </p>
     <table>
@@ -2548,7 +2541,7 @@ NU(AS55885) -&gt; AS150403: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS139609 -&
             <td>2</td><td>1</td>
         </tr><tr>
             <td>NC</td><td>New Caledonia</td>
-            <td>18</td><td>12</td>
+            <td>17</td><td>12</td>
         </tr><tr>
             <td>NR</td><td>Nauru</td>
             <td>5</td><td>2</td>
@@ -2682,7 +2675,7 @@ NU(AS55885) -&gt; AS150403: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS139609 -&
             <td>Equinix Sydney</td><td>Sydney</td>
             <td>AU</td><td><span class="bool-false">out-of-fishbowl</span></td>
             <td>9</td>
-            <td>33</td>
+            <td>32</td>
             <td>CK, FJ, NC, PF, PG, TO, WS</td>
         </tr><tr>
             <td>Fiji-IXP</td><td>Suva</td>
@@ -2881,13 +2874,13 @@ NU(AS55885) -&gt; AS150403: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS139609 -&
         </tr><tr>
             <td>NC</td><td>New Caledonia</td>
             <td>Melanesia</td>
-            <td>18</td><td>20</td><td>5</td>
+            <td>17</td><td>19</td><td>5</td>
             <td>0</td>
         </tr></tbody>
     </table>
 
     <h2>Appendix: Low data quality issues
-        <span class="count">(4 known, resolved)</span></h2>
+        <span class="count">(5 known, resolved)</span></h2>
     <p class="section-intro">Known problems in this project's underlying sources
         (APNIC delegation, PeeringDB, ASPA, etc.) that have already been found,
         verified, and corrected for elsewhere in the pipeline &mdash; kept visible
@@ -2910,6 +2903,10 @@ NU(AS55885) -&gt; AS150403: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS139609 -&
             <div class="headline">AS23959 (OWL-AS-AP (Owl Limited)) -- registered VU
                 <span class="count">[VPN/proxy egress space registered in the economy]</span></div>
             <details class="note"><summary>Registered to a Port Vila address (APNIC org ORG-OL19-AP, country VU; its sponsoring LIR ORG-OL12-AP is also Owl Limited at the same address, per the…</summary>Registered to a Port Vila address (APNIC org ORG-OL19-AP, country VU; its sponsoring LIR ORG-OL12-AP is also Owl Limited at the same address, per the owner-supplied aut-num and APNIC RDAP -- no foreign party in the registration) but its announced space is served from Japan via its sole upstream AS4785 (xTom JP). First flagged by the monthly offshore-hosting check (atlas/offshore_check.py, 2026-09-24): `194.127.166.1` (194.127.166.0/24, RIPE-region space originated by AS23959) answered two Tokyo probes in 11.2ms and 13.2ms (probes 1014094, 1007464; measurement 215225380), everything else &gt;=113ms, against a ~67ms physical minimum from Tokyo to Port Vila. Its other address, `194.114.136.1`, didn&#x27;t answer. Per the project owner (domain knowledge), Owl is a known VPN operator; its own site (owl.net) describes &quot;Owl Limited, a private company from Vanuatu&quot; selling &quot;Private Domain Name Registration and Dedicated Servers&quot;, with no server locations given. Either way, privacy/VPN egress and hosting space registered in Vanuatu, which fits the Tokyo hosting and the xTom upstream. (Older project records called AS23959 &quot;Wantok Network (Vanuatu)&quot;; that label was wrong or stale.) Excluded at the owner&#x27;s direction; its two candidate_peering findings (findings.db rows 9 and 205, measurements 212141116 and 213187876) and their corroborations were removed.</details>
+        </div><div class="issue-card">
+            <div class="headline">AS131995 (XLPROG-AS-AP (XL Programmation Micro SARL)) -- registered NC
+                <span class="count">[local company whose announced space is hosted abroad]</span></div>
+            <details class="note"><summary>Registered in New Caledonia (APNIC registrant ORG-XPMS1-AP, XL PROGRAMMATION MICRO SARL) but its only announced prefix, 103.29.155.0/24, is served from…</summary>Registered in New Caledonia (APNIC registrant ORG-XPMS1-AP, XL PROGRAMMATION MICRO SARL) but its only announced prefix, 103.29.155.0/24, is served from Australia. Sole RIS neighbour is AS9280 (Servers Australia, AU; 350 observations locally, 273 live on RIPEstat); every collector path ends `... 38195|58511 9280 131995`. Traced from all 4 connected NC probes on the 2026-09-30 nightly batch (measurements 217486796, 217486797): Noumea -&gt; Equinix Sydney (~23ms) -&gt; Superloop AS38195 Sydney, then Brisbane (bdr03-ipt-20wharfs-bne) -&gt; 202.60.93.189 eth49-1.core01.br1.as9280.net.au (~38ms), then no replies; 103.29.155.1 has rDNS unknown-host.xlnet.au. Domestic NC traffic to it leaves for Brisbane because that is where the space lives, not because of a local peering gap. Excluded at the owner&#x27;s direction (2026-10-01); its one confirmed_detour finding (findings.db row 263) and corroborations 491-494 were removed.</details>
         </div>
 
     <h2>Appendix: Probes not placed optimally for regional testing

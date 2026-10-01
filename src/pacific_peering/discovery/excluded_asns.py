@@ -166,4 +166,27 @@ EXCLUDED_ASNS: tuple[ExcludedAsn, ...] = (
             "213187876) and their corroborations were removed."
         ),
     ),
+    ExcludedAsn(
+        asn=131995,
+        country_cc="NC",
+        name="XLPROG-AS-AP (XL Programmation Micro SARL)",
+        category="offshore_hosted",
+        note=(
+            "Registered in New Caledonia (APNIC registrant ORG-XPMS1-AP, XL "
+            "PROGRAMMATION MICRO SARL) but its only announced prefix, "
+            "103.29.155.0/24, is served from Australia. Sole RIS neighbour is "
+            "AS9280 (Servers Australia, AU; 350 observations locally, 273 live "
+            "on RIPEstat); every collector path ends `... 38195|58511 9280 "
+            "131995`. Traced from all 4 connected NC probes on the 2026-09-30 "
+            "nightly batch (measurements 217486796, 217486797): Noumea -> "
+            "Equinix Sydney (~23ms) -> Superloop AS38195 Sydney, then Brisbane "
+            "(bdr03-ipt-20wharfs-bne) -> 202.60.93.189 "
+            "eth49-1.core01.br1.as9280.net.au (~38ms), then no replies; "
+            "103.29.155.1 has rDNS unknown-host.xlnet.au. Domestic NC traffic "
+            "to it leaves for Brisbane because that is where the space lives, "
+            "not because of a local peering gap. Excluded at the owner's "
+            "direction (2026-10-01); its one confirmed_detour finding "
+            "(findings.db row 263) and corroborations 491-494 were removed."
+        ),
+    ),
 )

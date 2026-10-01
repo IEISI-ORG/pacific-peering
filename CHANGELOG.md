@@ -2341,3 +2341,12 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   #195, #196 (labelled AS141695, measured from AS45345/AS56089), #218 and
   #245; un-marked 7 NC corridors (AS45345/AS56089 to AS134783, AS154100,
   AS131995; AS56089 to AS136402) so they're retested over time.
+- Loop check (2026-10-01): `has_routing_loop` only flags a repeat that
+  comes after the trace's last new address. A hop answering twice and the
+  trace then reaching new routers is no longer a loop. 13 stored
+  corroborations had their loop flag cleared (findings #177, #263, #264,
+  #266); verdicts unchanged.
+- Excluded AS131995 (XL Programmation Micro SARL, NC) as `offshore_hosted`
+  and removed finding #263 (2026-10-01): its only prefix is served from
+  Brisbane (sole upstream AS9280 Servers Australia). In-scope ASNs
+  160 -> 159; findings 247 -> 246.
