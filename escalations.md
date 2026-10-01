@@ -158,3 +158,15 @@ Corridors `auto_classify.py`'s mechanical rules couldn't confidently resolve on 
 - detail: AS131995 (XLPM, registered NC) originates one prefix, 103.29.155.0/24 (tested 103.29.155.1, rDNS unknown-host.xlnet.au). All 4 NC probes go Noumea -> Equinix Sydney (~23ms) -> Superloop AS38195 Sydney, then Brisbane (bdr03-ipt-20wharfs-bne) -> 202.60.93.189 eth49-1.core01.br1.as9280.net.au (~38ms), then no replies. RIS: sole neighbour is AS9280 Servers Australia (AU, 350 obs locally, 273 live); every collector path ends "... 38195|58511 9280 131995". The filed confirmed_detour (finding #263, NC -> NC via Sydney) is most likely an Australia-hosted prefix, not a domestic peering failure -- same shape as AS23959 (resolved 2026-09-24). RIS disagreement ("0") is the last *resolved* ASN (AS38195) vs the target: AS9280's link address is unannounced so the chain stops one AS short.
 - flagged: 2026-10-01
 - resolved: 2026-10-01 -- AS131995 excluded as offshore-hosted (sole upstream AS9280 Servers Australia, space served from Brisbane); see discovery/excluded_asns.py. Finding #263 removed.
+
+## Probe 23039 (GU, AS9246) -- metadata changed
+- reason: probe watch (atlas/probe_watch.py)
+- detail: asn_v4 17456 -> 9246; egress trace: AS17456 (measurement 217919756)
+- action: owner review -- check the path before trusting this probe's next results, or changing any exclusion
+- flagged: 2026-10-01T15:00:56.787975+00:00
+
+## Probe 61210 (NC, AS141197) -- metadata changed
+- reason: probe watch (atlas/probe_watch.py)
+- detail: asn_v4 56089 -> 141197; egress trace: AS141197 (measurement 217919756)
+- action: owner review -- check the path before trusting this probe's next results, or changing any exclusion
+- flagged: 2026-10-01T15:00:56.787975+00:00
