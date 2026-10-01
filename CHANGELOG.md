@@ -2379,3 +2379,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   `pacific-peering-status-email` renders a status JSON as an email-safe HTML
   summary plus a text alternative. The wrapper and prompt that drive them are
   kept outside the repo.
+- Reports (2026-10-01): new "Leased and foreign-registered address space"
+  appendix in both formats, read from the leasing-marker check's latest
+  complete full run (`leasing_check.latest_flagged`), with each reviewed
+  prefix's verdict from `ACKNOWLEDGED`; unreviewed ones are marked.

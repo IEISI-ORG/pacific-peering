@@ -483,6 +483,31 @@ def render_ascii_report(data: ReportData) -> str:
         lines.append(f"    Release when: {q.release_when}")
         lines.append(f"    Findings held ({len(q.held_findings)}): " + ("; ".join(q.held_findings) or "none"))
 
+    lease = data.leasing
+    lines.append(_section(f"APPENDIX: LEASED AND FOREIGN-REGISTERED ADDRESS SPACE ({len(lease.entries)} prefixes)"))
+    lines.append(
+        "Prefixes announced by in-scope ASNs whose WHOIS shows an IPv4 leasing broker, a registration "
+        "country outside the economy, or a non-APNIC registry (ARIN is expected for US-associated "
+        "economies). Leased space is used wherever the lessee is, so each is a lead for offshore hosting; "
+        "reviewed ones carry the latency verdict. From the monthly leasing-marker check "
+        "(discovery/leasing_check.py)."
+    )
+    if lease.run_at is None:
+        lines.append("(the leasing-marker check hasn't completed a full run yet)")
+    else:
+        lines.append(f"Latest full run {lease.run_at[:10]}: {lease.prefixes_checked} prefixes checked; "
+                     f"{lease.geofeed_prefixes} publish a geofeed.")
+        for entry in lease.entries:
+            lines.append("")
+            lines.append(f"AS{entry.asn} ({entry.cc}) {entry.prefix}  "
+                         f"[{'reviewed' if entry.verdict else 'NOT YET REVIEWED'}]")
+            for marker in entry.markers:
+                lines.append(f"    {marker}")
+            if entry.verdict:
+                lines.append(f"    Verdict: {entry.verdict}")
+        if not lease.entries:
+            lines.append("(none flagged)")
+
     lines.append(_section(
         f"APPENDIX: PROBES NOT PLACED OPTIMALLY FOR REGIONAL TESTING ({len(data.misplaced_probes)})"
     ))

@@ -374,6 +374,25 @@ def render_html_report(data: ReportData, viz_dir: Path | None = Path("../viz")) 
         for q in data.quarantined
     ) or "<p>(none)</p>"
 
+    lease = data.leasing
+    leasing_rows = "".join(
+        f"""<tr>
+            <td>AS{e.asn}</td><td>{html.escape(e.cc)}</td><td><code>{html.escape(e.prefix)}</code></td>
+            <td>{"<br>".join(html.escape(m) for m in e.markers)}</td>
+            <td>{html.escape(e.verdict) if e.verdict else "<strong>Not yet reviewed</strong>"}</td>
+        </tr>"""
+        for e in lease.entries
+    )
+    if lease.run_at is None:
+        leasing_block = "<p>(the leasing-marker check hasn't completed a full run yet)</p>"
+    else:
+        leasing_block = (
+            f"<p>Latest full run {html.escape(lease.run_at[:10])}: {lease.prefixes_checked} prefixes checked; "
+            f"{lease.geofeed_prefixes} publish a geofeed.</p>"
+            + (f"<table><thead><tr><th>ASN</th><th>CC</th><th>Prefix</th><th>Markers</th><th>Verdict</th></tr></thead>"
+               f"<tbody>{leasing_rows}</tbody></table>" if leasing_rows else "<p>(none flagged)</p>")
+        )
+
     aspa_economy_rows = "".join(
         f"""<tr>
             <td>{html.escape(e.cc)}</td><td>{html.escape(e.name)}</td>
@@ -708,6 +727,15 @@ def render_html_report(data: ReportData, viz_dir: Path | None = Path("../viz")) 
         and their findings are held out of every count and map in this report until the evidence
         settles it.</p>
     {quarantine_blocks}
+
+    <h2>Appendix: Leased and foreign-registered address space
+        <span class="count">({len(lease.entries)} prefixes)</span></h2>
+    <p class="section-intro">Prefixes announced by in-scope ASNs whose WHOIS shows an IPv4 leasing
+        broker, a registration country outside the economy, or a non-APNIC registry (ARIN is expected
+        for US-associated economies). Leased space is used wherever the lessee is, so each is a lead for
+        offshore hosting; reviewed ones carry the latency verdict. From the monthly leasing-marker
+        check (<code>discovery/leasing_check.py</code>).</p>
+    {leasing_block}
 
     <h2>Appendix: Probes not placed optimally for regional testing
         <span class="count">({len(data.misplaced_probes)})</span></h2>

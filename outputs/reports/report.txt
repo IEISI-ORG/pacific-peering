@@ -1,6 +1,6 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-10-01T07:20:33.141474+00:00                  
+                 Generated: 2026-10-01T10:24:37.537600+00:00                  
 ==============================================================================
 FOUND A BUG? Bugs very likely remain in both the code and the data.
 Please open an issue: https://github.com/IEISI-ORG/pacific-peering/issues/new
@@ -328,6 +328,45 @@ AS151647 (Rural Tech Development) -- registered PG  [quarantined 2026-10-01]
     Registered in PNG (APNIC registrant ORG-RTD1-AP). Sole RIS upstream is AS31732 (Parsun Network Solutions, AU). 2026-10-01 traceroutes to 103.98.52.1 from AU probes 1011163 and 19917 (measurement 217755233) and PG probe 50365 (217755235) all end in a genuine routing loop on 188.209.155.250, in Parsun's own 188.209.155.0/24: 4.9ms from an AU probe, 38ms from PG, so the loop sits in Australia and nothing beyond it is reachable. An nmap ping sweep of 103.98.52.0/24 from Brisbane found no responsive host. Whether the space is used in PNG, hosted in Australia, or not in use at all can't be told from this. No findings held. Quarantined at the owner's direction: no proof of routing.
     Release when: a host in 103.98.52.0/24 answers and its latency places it, or a trace reaches Rural Tech's own space instead of looping at Parsun
     Findings held (0): none
+
+APPENDIX: LEASED AND FOREIGN-REGISTERED ADDRESS SPACE (7 prefixes)
+==============================================================================
+Prefixes announced by in-scope ASNs whose WHOIS shows an IPv4 leasing broker, a registration country outside the economy, or a non-APNIC registry (ARIN is expected for US-associated economies). Leased space is used wherever the lessee is, so each is a lead for offshore hosting; reviewed ones carry the latency verdict. From the monthly leasing-marker check (discovery/leasing_check.py).
+Latest full run 2026-10-01: 365 prefixes checked; 24 publish a geofeed.
+
+AS9246 (GU) 120.29.200.0/21  [reviewed]
+    registered_abroad: RIR record country IN, not GU
+    Verdict: Tata Communications provider-assigned space (registered IN) (2026-10-01)
+
+AS45935 (VU) 103.36.147.0/24  [reviewed]
+    registered_abroad: RIR record country AU, not VU
+    Verdict: WanTok's own block registered AU; 54-59ms from AU and VU, rDNS clients.wantok.vu, measurement 217771311 -- in Vanuatu (2026-10-01)
+
+AS56017 (PF) 38.51.136.0/24  [reviewed]
+    registered_abroad: RIR record country US, not PF
+    foreign_registry: held by ARIN
+    Verdict: Cogent provider-assigned ARIN space; VITI asks for its own PF geofeed (2026-10-01)
+
+AS56017 (PF) 38.51.139.0/24  [reviewed]
+    registered_abroad: RIR record country US, not PF
+    foreign_registry: held by ARIN
+    Verdict: Cogent provider-assigned ARIN space; VITI asks for its own PF geofeed (2026-10-01)
+
+AS58460 (PG) 154.197.42.0/24  [reviewed]
+    broker: Cloud Innovation (mnt-by: CIL1-MNT)
+    broker: Larus (mnt-by: MAINT-LARUS)
+    foreign_registry: held by AFRINIC
+    Verdict: Larus/Cloud Innovation-leased AFRINIC space for Digicel PNG; nearest from PG (102ms), measurement 217769793 -- used in PNG (2026-10-01)
+
+AS58460 (PG) 154.81.51.0/24  [reviewed]
+    broker: Cloud Innovation (mnt-by: CIL1-MNT)
+    broker: Larus (mnt-by: MAINT-LARUS)
+    foreign_registry: held by AFRINIC
+    Verdict: Larus/Cloud Innovation-leased AFRINIC space for Digicel PNG; 50ms from AU, 76ms from PG, measurement 217770948 -- used in PNG (2026-10-01)
+
+AS132468 (SB) 103.188.182.0/23  [reviewed]
+    registered_abroad: RIR record country AU, not SB
+    Verdict: XconX Pty Ltd (AU); already Sydney-hosted in atlas.targets.EXCLUDED_TARGET_PREFIXES (2026-09-25)
 
 APPENDIX: PROBES NOT PLACED OPTIMALLY FOR REGIONAL TESTING (10)
 ==============================================================================

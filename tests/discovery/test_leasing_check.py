@@ -79,3 +79,22 @@ def test_schedule_monthly_then_new_asns_then_skip():
     assert lc.plan_run(registry, recent, NOW) == ("skip", [])
     stale = [{**recent[0], "run_at": (NOW - timedelta(days=31)).isoformat()}]
     assert lc.plan_run(registry, stale, NOW)[0] == "full"
+
+
+def test_latest_flagged_summarises_last_complete_full_run():
+    results = {
+        "154.197.42.0/24": {"asn": 58460, "cc": "PG", "markers": [{"kind": "broker", "detail": "Larus (mnt-by: MAINT-LARUS)"}]},
+        "198.51.100.0/24": {"asn": 64500, "cc": "VU", "markers": [{"kind": "registered_abroad", "detail": "AU"},
+                                                                  {"kind": "geofeed", "detail": "https://x/g.csv"}]},
+        "203.0.113.0/24": {"asn": 64501, "cc": "FJ", "markers": []},
+    }
+    history = [
+        {"mode": "full", "complete": True, "run_at": "2026-09-01T00:00:00+00:00", "results": {}},
+        {"mode": "full", "complete": False, "run_at": "2026-10-02T00:00:00+00:00", "results": {}},
+        {"mode": "full", "complete": True, "run_at": "2026-10-01T00:00:00+00:00", "results": results},
+    ]
+    summary = lc.latest_flagged(history)
+    assert summary["run_at"].startswith("2026-10-01") and summary["prefixes_checked"] == 3
+    assert summary["geofeed_prefixes"] == 1
+    assert [(e["asn"], e["verdict"] is not None) for e in summary["entries"]] == [(58460, True), (64500, False)]
+    assert lc.latest_flagged([]) is None

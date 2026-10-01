@@ -73,7 +73,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
 <body>
 <div class="wrap">
     <h1>Pacific Peering — Regional Routing Report</h1>
-    <div class="meta">Generated 2026-10-01T07:20:34.284164+00:00</div>
+    <div class="meta">Generated 2026-10-01T10:24:38.659770+00:00</div>
 
     <div class="feedback-box"><strong>Found a bug?</strong> This report is generated
         automatically, and bugs very likely remain in both the code and the data. If
@@ -2887,6 +2887,43 @@ NU(AS55885) -&gt; AS150403: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS139609 -&
             <p><strong>Findings held (0):</strong>
                 none</p>
         </div>
+
+    <h2>Appendix: Leased and foreign-registered address space
+        <span class="count">(7 prefixes)</span></h2>
+    <p class="section-intro">Prefixes announced by in-scope ASNs whose WHOIS shows an IPv4 leasing
+        broker, a registration country outside the economy, or a non-APNIC registry (ARIN is expected
+        for US-associated economies). Leased space is used wherever the lessee is, so each is a lead for
+        offshore hosting; reviewed ones carry the latency verdict. From the monthly leasing-marker
+        check (<code>discovery/leasing_check.py</code>).</p>
+    <p>Latest full run 2026-10-01: 365 prefixes checked; 24 publish a geofeed.</p><table><thead><tr><th>ASN</th><th>CC</th><th>Prefix</th><th>Markers</th><th>Verdict</th></tr></thead><tbody><tr>
+            <td>AS9246</td><td>GU</td><td><code>120.29.200.0/21</code></td>
+            <td>registered_abroad: RIR record country IN, not GU</td>
+            <td>Tata Communications provider-assigned space (registered IN) (2026-10-01)</td>
+        </tr><tr>
+            <td>AS45935</td><td>VU</td><td><code>103.36.147.0/24</code></td>
+            <td>registered_abroad: RIR record country AU, not VU</td>
+            <td>WanTok&#x27;s own block registered AU; 54-59ms from AU and VU, rDNS clients.wantok.vu, measurement 217771311 -- in Vanuatu (2026-10-01)</td>
+        </tr><tr>
+            <td>AS56017</td><td>PF</td><td><code>38.51.136.0/24</code></td>
+            <td>registered_abroad: RIR record country US, not PF<br>foreign_registry: held by ARIN</td>
+            <td>Cogent provider-assigned ARIN space; VITI asks for its own PF geofeed (2026-10-01)</td>
+        </tr><tr>
+            <td>AS56017</td><td>PF</td><td><code>38.51.139.0/24</code></td>
+            <td>registered_abroad: RIR record country US, not PF<br>foreign_registry: held by ARIN</td>
+            <td>Cogent provider-assigned ARIN space; VITI asks for its own PF geofeed (2026-10-01)</td>
+        </tr><tr>
+            <td>AS58460</td><td>PG</td><td><code>154.197.42.0/24</code></td>
+            <td>broker: Cloud Innovation (mnt-by: CIL1-MNT)<br>broker: Larus (mnt-by: MAINT-LARUS)<br>foreign_registry: held by AFRINIC</td>
+            <td>Larus/Cloud Innovation-leased AFRINIC space for Digicel PNG; nearest from PG (102ms), measurement 217769793 -- used in PNG (2026-10-01)</td>
+        </tr><tr>
+            <td>AS58460</td><td>PG</td><td><code>154.81.51.0/24</code></td>
+            <td>broker: Cloud Innovation (mnt-by: CIL1-MNT)<br>broker: Larus (mnt-by: MAINT-LARUS)<br>foreign_registry: held by AFRINIC</td>
+            <td>Larus/Cloud Innovation-leased AFRINIC space for Digicel PNG; 50ms from AU, 76ms from PG, measurement 217770948 -- used in PNG (2026-10-01)</td>
+        </tr><tr>
+            <td>AS132468</td><td>SB</td><td><code>103.188.182.0/23</code></td>
+            <td>registered_abroad: RIR record country AU, not SB</td>
+            <td>XconX Pty Ltd (AU); already Sydney-hosted in atlas.targets.EXCLUDED_TARGET_PREFIXES (2026-09-25)</td>
+        </tr></tbody></table>
 
     <h2>Appendix: Probes not placed optimally for regional testing
         <span class="count">(10)</span></h2>

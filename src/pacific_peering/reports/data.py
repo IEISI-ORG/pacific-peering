@@ -39,6 +39,7 @@ from pacific_peering.analysis.traceroute_topology import DEFAULT_TRIANGULATION_D
 from pacific_peering.atlas.asn_probes import load_asn_probe_registry
 from pacific_peering.atlas.probes import asn_listed_registry, load_probe_listing
 from pacific_peering.discovery import cloudflare_radar
+from pacific_peering.discovery import leasing_check
 from pacific_peering.discovery.quarantined_asns import QUARANTINED_ASNS
 from pacific_peering.discovery.registry import DEFAULT_OUTPUT_PATH
 
@@ -80,6 +81,40 @@ def _compute_quarantine() -> tuple[QuarantineSummary, ...]:
             since=q.since, release_when=q.release_when, note=q.note, held_findings=held,
         ))
     return tuple(out)
+
+
+@dataclass(frozen=True)
+class LeasingEntry:
+    """One prefix the leasing-marker check (`discovery.leasing_check`) flagged as
+    leased or foreign-registered, with the owner's verdict if it has been reviewed."""
+
+    asn: int
+    cc: str
+    prefix: str
+    markers: tuple[str, ...]
+    verdict: str | None  # ACKNOWLEDGED note; None = not yet reviewed
+
+
+@dataclass(frozen=True)
+class LeasingSummary:
+    run_at: str | None  # latest complete full run; None if the check has never run
+    prefixes_checked: int
+    geofeed_prefixes: int
+    entries: tuple[LeasingEntry, ...]
+
+
+def _compute_leasing(history_path=leasing_check.HISTORY_PATH) -> LeasingSummary:
+    """Read the leasing check's own history (its latest complete full run)
+    rather than keeping a second copy of what it found."""
+    latest = leasing_check.latest_flagged(leasing_check.load_history(history_path))
+    if latest is None:
+        return LeasingSummary(run_at=None, prefixes_checked=0, geofeed_prefixes=0, entries=())
+    return LeasingSummary(
+        run_at=latest["run_at"], prefixes_checked=latest["prefixes_checked"],
+        geofeed_prefixes=latest["geofeed_prefixes"],
+        entries=tuple(LeasingEntry(asn=e["asn"], cc=e["cc"], prefix=e["prefix"],
+                                   markers=tuple(e["markers"]), verdict=e["verdict"]) for e in latest["entries"]),
+    )
 
 # Shared across every report format so a reader who lands on any one of
 # them (this project's own audience, or an external one — e.g. RIPE
@@ -746,6 +781,7 @@ class ReportData:
     pathway_coverage: tuple[PathwayCoverageSummary, ...]
     data_quality_issues: tuple[DataQualityIssue, ...]
     quarantined: tuple[QuarantineSummary, ...]
+    leasing: LeasingSummary
     peeringdb_economies: tuple[PeeringDbEconomySummary, ...]
     peeringdb_asns_on_pdb: int
     aspa_economies: tuple[AspaEconomySummary, ...]
@@ -1204,6 +1240,7 @@ def build_report_data(
         pathway_coverage=pathway_coverage,
         data_quality_issues=DATA_QUALITY_ISSUES,
         quarantined=_compute_quarantine(),
+        leasing=_compute_leasing(),
         peeringdb_economies=peeringdb_economies,
         peeringdb_asns_on_pdb=peeringdb_asns_on_pdb,
         aspa_economies=aspa_progress.economies,

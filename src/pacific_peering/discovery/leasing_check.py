@@ -175,6 +175,27 @@ def _flag_keys(results: dict[str, dict]) -> set[tuple[int, str, str]]:
     }
 
 
+def latest_flagged(history: list[dict]) -> dict | None:
+    """The latest complete full run, summarised for the report appendix:
+    {"run_at", "prefixes_checked", "geofeed_prefixes", "entries": [{"asn", "cc",
+    "prefix", "markers": [str], "verdict": ACKNOWLEDGED note or None}]}; None if
+    no complete full run exists yet."""
+    fulls = [h for h in history if h["mode"] == "full" and h.get("complete")]
+    if not fulls:
+        return None
+    run = fulls[-1]
+    entries = []
+    for prefix, r in sorted(run["results"].items(), key=lambda kv: (kv[1]["asn"], kv[0])):
+        flagged = [m for m in r.get("markers", []) if m["kind"] in ESCALATED_KINDS]
+        if flagged:
+            entries.append({"asn": r["asn"], "cc": r["cc"], "prefix": prefix,
+                            "markers": [f"{m['kind']}: {m['detail']}" for m in flagged],
+                            "verdict": ACKNOWLEDGED.get((r["asn"], prefix))})
+    geofeeds = sum(any(m["kind"] == "geofeed" for m in r.get("markers", [])) for r in run["results"].values())
+    return {"run_at": run["run_at"], "prefixes_checked": len(run["results"]),
+            "geofeed_prefixes": geofeeds, "entries": entries}
+
+
 def new_flags(history: list[dict], results: dict[str, dict]) -> list[tuple[int, str, str]]:
     """Escalatable, unacknowledged markers no earlier run has already reported."""
     before = {(f[0], f[1], f[2]) for h in history for f in h.get("flags", [])}
