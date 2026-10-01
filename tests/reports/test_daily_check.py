@@ -60,3 +60,15 @@ def test_text_alternative_lists_attention_and_empty_escalations():
     out = status_email.render_text(STATUS)
     assert "[medium] AS1 -> AS2" in out and "Suggested: retest" in out
     assert "ESCALATED THIS RUN\n- nothing" in out
+
+
+def test_colours_survive_gmail_stripping_css_backgrounds():
+    # The Gmail connector drops every CSS background declaration; colour has
+    # to come from bgcolor attributes. Simulate the sanitizer and check the
+    # header, the status pill, the check pills and the dry-run banner keep theirs.
+    import re
+
+    stripped = re.sub(r"background(-color|-image)?:[^;\"]*;?", "", status_email.render_html(STATUS))
+    for colour in (status_email.OCEAN, status_email.OVERALL["attention"][0], status_email.CHECK["ok"][0], "#fff4e5"):
+        assert f'bgcolor="{colour}"' in stripped
+    assert "background" not in stripped

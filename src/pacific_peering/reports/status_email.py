@@ -3,7 +3,14 @@
 Deterministic on purpose: the unattended agent writes the judgement into
 `status.json`; this module owns the look, so every email reads the same way.
 Email-client safe: table layout and inline styles only (Gmail drops <style>
-blocks and ignores flex/grid), every value HTML-escaped.
+blocks and ignores flex/grid), every value HTML-escaped. Every coloured
+surface is a table cell carrying the legacy `bgcolor` attribute as well as
+the CSS background: the Gmail connector's sanitizer strips *all* CSS
+background declarations (checked 2026-10-01 by round-tripping a draft --
+`background`, `background-color` and `background-image` vanished, `bgcolor`,
+`color`, `border` and `border-radius` survived), which left the first
+dry-run draft as white text on white. Small inline chips can't take
+`bgcolor`, so they're outlined instead of filled.
 
 status.json shape:
     {
@@ -50,8 +57,10 @@ e = html.escape
 
 
 def _pill(colour: str, text: str) -> str:
-    return (f'<span style="display:inline-block;padding:3px 10px;border-radius:999px;background:{colour};{FONT}'
-            f'color:#fff;font-size:12px;font-weight:600;letter-spacing:.3px;">{e(text)}</span>')
+    return (f'<table cellpadding="0" cellspacing="0" style="display:inline-table;"><tr>'
+            f'<td bgcolor="{colour}" style="background:{colour};padding:3px 10px;border-radius:999px;{FONT}'
+            f'color:#ffffff;font-size:12px;font-weight:600;letter-spacing:.3px;white-space:nowrap;">{e(text)}</td>'
+            f'</tr></table>')
 
 
 def _section(title: str, body: str) -> str:
@@ -65,7 +74,7 @@ def _stats(stats: list[dict]) -> str:
         return ""
     cells = "".join(
         f'<td width="{100 // len(stats)}%" valign="top" style="padding:6px;vertical-align:top;"><table role="presentation" width="100%" '
-        f'cellpadding="0" cellspacing="0" style="background:{PAGE};border-radius:8px;"><tr><td style="padding:12px 14px;height:46px;vertical-align:top;{FONT}">'
+        f'cellpadding="0" cellspacing="0" style="border-radius:8px;"><tr><td bgcolor="{PAGE}" style="background:{PAGE};border-radius:8px;padding:12px 14px;height:46px;vertical-align:top;{FONT}">'
         f'<div style="font-size:22px;font-weight:700;color:{OCEAN};">{e(str(s["value"]))}</div>'
         f'<div style="font-size:12px;color:{MUTED};margin-top:2px;">{e(s["label"])}</div></td></tr></table></td>'
         for s in stats
@@ -80,16 +89,16 @@ def _attention(items: list[dict]) -> str:
     for it in items:
         colour = SEVERITY.get(it.get("severity", "low"), SEVERITY["low"])
         refs = "".join(
-            f'<span style="display:inline-block;margin:6px 6px 0 0;padding:2px 8px;border-radius:4px;'
-            f'background:{PAGE};color:{MUTED};font-size:12px;font-family:Menlo,Consolas,monospace;">{e(r)}</span>'
+            f'<span style="display:inline-block;margin:6px 6px 0 0;padding:1px 7px;border-radius:4px;'
+            f'border:1px solid {RULE};color:{MUTED};font-size:12px;font-family:Menlo,Consolas,monospace;">{e(r)}</span>'
             for r in it.get("refs", [])
         )
         action = (f'<div style="margin-top:8px;font-size:13px;color:{INK};"><b>Suggested:</b> {e(it["suggested_action"])}</div>'
                   if it.get("suggested_action") else "")
         cards.append(
             f'<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:8px 0;'
-            f'border:1px solid {RULE};border-left:4px solid {colour};border-radius:6px;background:{CARD};">'
-            f'<tr><td style="padding:12px 14px;{FONT}">'
+            f'border:1px solid {RULE};border-left:4px solid {colour};border-radius:6px;">'
+            f'<tr><td bgcolor="{CARD}" style="background:{CARD};padding:12px 14px;{FONT}">'
             f'<div style="font-size:11px;font-weight:700;color:{colour};text-transform:uppercase;letter-spacing:.8px;">'
             f'{e(it.get("severity", "low"))}</div>'
             f'<div style="font-size:15px;font-weight:600;color:{INK};margin-top:2px;">{e(it["title"])}</div>'
@@ -123,16 +132,16 @@ def _checks(items: list[dict]) -> str:
 def render_html(s: dict) -> str:
     colour, label = OVERALL.get(s.get("overall", "attention"), OVERALL["attention"])
     dry = s.get("mode") == "dry-run"
-    banner = (f'<tr><td style="background:#fff4e5;padding:8px 28px;{FONT}font-size:13px;color:#8a5a00;">'
+    banner = (f'<tr><td bgcolor="#fff4e5" style="background:#fff4e5;padding:8px 28px;{FONT}font-size:13px;color:#8a5a00;">'
               f'Dry run: drafted, not sent. Nothing was committed or escalated.</td></tr>' if dry else "")
     links = " &nbsp;&middot;&nbsp; ".join(
         f'<a href="{e(link["url"])}" style="color:{LAGOON};text-decoration:none;">{e(link["label"])}</a>'
         for link in s.get("links", [])
     )
     return f"""<!doctype html><html><body style="margin:0;padding:0;background:{PAGE};">
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:{PAGE};"><tr><td align="center" style="padding:24px 12px;">
-<table role="presentation" width="640" cellpadding="0" cellspacing="0" style="max-width:640px;width:100%;background:{CARD};border-radius:12px;overflow:hidden;">
-<tr><td style="background:{OCEAN};background-image:linear-gradient(135deg,{OCEAN},{LAGOON});padding:26px 28px;{FONT}">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" bgcolor="{PAGE}" style="background:{PAGE};"><tr><td bgcolor="{PAGE}" align="center" style="background:{PAGE};padding:24px 12px;">
+<table role="presentation" width="640" cellpadding="0" cellspacing="0" bgcolor="{CARD}" style="max-width:640px;width:100%;background:{CARD};border-radius:12px;overflow:hidden;">
+<tr><td bgcolor="{OCEAN}" style="background:{OCEAN};background-image:linear-gradient(135deg,{OCEAN},{LAGOON});padding:26px 28px;{FONT}">
   <div style="font-size:12px;color:#bfe3ea;letter-spacing:1.5px;text-transform:uppercase;">Pacific Peering &middot; daily check</div>
   <div style="font-size:22px;font-weight:700;color:#fff;margin-top:6px;">{e(s.get("run_at", "")[:10])}</div>
   <div style="margin-top:12px;">{_pill(colour, label)}</div>
