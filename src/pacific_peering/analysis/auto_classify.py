@@ -257,6 +257,25 @@ def _probe_asn(probe: dict) -> int | None:
     return override[0] if override else probe.get("asn_v4")
 
 
+def _is_decisive(probe: dict, target_asn: int) -> bool:
+    """Whether a probe's result stands without retrying another target IP.
+
+    Decisive: proxy/satellite egress (another address can't fix the source),
+    the target reached, RIS corroborating the last-reached ASN, or an
+    out-of-fishbowl IXP crossing. Anything else is a dead end -- including one
+    inside the probe's own AS (findings #270/#271, 2026-10-02), which the old
+    "any resolved upstream" test treated as signal and never retried.
+    """
+    as_sequence = probe.get("as_sequence", [])
+    if as_sequence and as_sequence[0]["asn"] in NON_LOCAL_FIRST_HOP_ASNS:
+        return True
+    if target_asn in {e["asn"] for e in as_sequence}:
+        return True
+    if probe.get("traceroute_upstream_asn") is not None and probe.get("ris_agrees"):
+        return True
+    return any(c.get("in_fishbowl") is False for c in probe.get("ixp_crossings", []))
+
+
 def _load_listing_or_empty() -> dict[str, list[dict]]:
     try:
         return load_probe_listing()
@@ -491,9 +510,7 @@ def classify_corridor(
             # information-free measurement ID ended up in the escalation).
             break
 
-        any_signal = any(
-            p.get("traceroute_upstream_asn") is not None for p in triangulation["probes"]
-        )
+        any_signal = any(_is_decisive(p, candidate.target_asn) for p in triangulation["probes"])
         if any_signal or attempt == len(target_ips[:_MAX_TARGET_IP_ATTEMPTS]) - 1:
             break
         logger.info(

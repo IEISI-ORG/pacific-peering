@@ -2405,3 +2405,10 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   findings #270/#271 (NC probe 61210, dead at hop 5 inside its own AS141197).
   Existing findings are untouched: #10, #13, #194, #208, #216, #232, #234 and
   #254 have the same dead-end shape and await owner review.
+- Dead ends now get the alternate-IP retry (`analysis/auto_classify.py`,
+  `_is_decisive`): the retry used to fire only when no probe resolved any
+  ASN, so a trace dying inside its own AS never tried the target's next
+  cached prefix. A result is now decisive (no retry) only for proxy/satellite
+  egress, the target reached, RIS corroborating the last-reached ASN, or an
+  out-of-fishbowl IXP crossing; any other dead end retries once (at most one
+  extra Atlas measurement per such corridor).

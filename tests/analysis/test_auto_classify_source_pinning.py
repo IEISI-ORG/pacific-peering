@@ -206,3 +206,80 @@ def test_dead_end_probe_is_left_off_a_real_candidate_peering_finding(monkeypatch
 
     assert result.outcome == "candidate_peering"
     assert set(_corroborations(tmp_path)) == {(7131, 9246)}
+
+
+# The alternate-IP retry used to fire only when no probe resolved any ASN at
+# all, so a dead end inside the probe's own AS (findings #270/#271) never got
+# its second address -- against the retry-on-dead-end rule. These pin which
+# results are decisive (no retry) and which are dead ends (retry once).
+def _run_two_ips(monkeypatch, tmp_path, probes_by_ip: dict[str, list[dict]]):
+    ips = list(probes_by_ip)
+    ids = {ip: 900000020 + i for i, ip in enumerate(ips)}
+    fired: list[str] = []
+
+    def _fire(candidate, ip):
+        fired.append(ip)
+        return ids[ip]
+
+    by_id = {ids[ip]: probes for ip, probes in probes_by_ip.items()}
+    db_path = tmp_path / "findings.db"
+    monkeypatch.setattr(_store, "connect", lambda: _open(db_path))
+    monkeypatch.setattr(auto_classify, "_load_asn_to_cc", lambda path=None: {7131: "MP", 3605: "GU"})
+    monkeypatch.setattr(auto_classify, "load_ixp_lan_registry", lambda path: {})
+    monkeypatch.setattr(auto_classify, "list_target_ips", lambda asn: ips)
+    monkeypatch.setattr(auto_classify, "_fire_measurement", _fire)
+    monkeypatch.setattr(
+        auto_classify,
+        "analyze_measurement",
+        lambda mid, target_asn: {"measurement_id": mid, "target_asn": target_asn, "probes": by_id[mid]},
+    )
+    monkeypatch.setattr(auto_classify, "DEFAULT_ATLAS_PARSED_DIR", tmp_path)
+    for mid, probes in by_id.items():
+        (tmp_path / f"{mid}.json").write_text(json.dumps([{"probe_id": p["probe_id"], "hops": []} for p in probes]))
+    monkeypatch.setattr(auto_classify, "load_probe_listing", lambda: _LISTING)
+    monkeypatch.setattr(auto_classify, "fetch_asn_names", lambda asns: {})
+    monkeypatch.setattr(auto_classify, "mark_corridor_tested", lambda *a: None)
+    monkeypatch.setattr(auto_classify, "_write_escalations", lambda escalations: None)
+    return auto_classify.classify_corridor(_candidate(), regenerate=False), fired
+
+
+def test_dead_end_retries_the_alternate_ip_and_classifies_that_result(monkeypatch, tmp_path):
+    result, fired = _run_two_ips(
+        monkeypatch, tmp_path,
+        {"203.0.113.1": [_dead_end_probe(61210, 141197)], "203.0.113.2": [_probe(60689, 7131)]},
+    )
+
+    assert fired == ["203.0.113.1", "203.0.113.2"]
+    assert result.outcome == "candidate_peering"
+    assert set(_corroborations(tmp_path)) == {(7131, 9246)}
+
+
+def test_dead_end_on_both_ips_is_inconclusive(monkeypatch, tmp_path):
+    result, fired = _run_two_ips(
+        monkeypatch, tmp_path,
+        {"203.0.113.1": [_dead_end_probe(61210, 141197)], "203.0.113.2": [_dead_end_probe(61210, 141197)]},
+    )
+
+    assert fired == ["203.0.113.1", "203.0.113.2"]
+    assert result.outcome == "inconclusive"
+
+
+def test_ris_corroborated_short_trace_is_decisive_and_not_retried(monkeypatch, tmp_path):
+    local_transit = {**_dead_end_probe(60689, 7131), "ris_agrees": True, "ris_observation_count": 50}
+    result, fired = _run_two_ips(
+        monkeypatch, tmp_path, {"203.0.113.1": [local_transit], "203.0.113.2": [_probe(60689, 7131)]}
+    )
+
+    assert fired == ["203.0.113.1"]
+    assert result.outcome == "confirmed_local_transit"
+
+
+def test_proxy_egress_is_not_retried_against_another_ip(monkeypatch, tmp_path):
+    """A second target address can't fix a source probe stuck behind Zscaler."""
+    result, fired = _run_two_ips(
+        monkeypatch, tmp_path,
+        {"203.0.113.1": [_dead_end_probe(60575, 53813)], "203.0.113.2": [_probe(60689, 7131)]},
+    )
+
+    assert fired == ["203.0.113.1"]
+    assert result.escalations[0].reason == "all probes proxy-corrupted"
