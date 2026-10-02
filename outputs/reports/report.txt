@@ -1,6 +1,6 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-10-02T21:53:22.115853+00:00                  
+                 Generated: 2026-10-02T22:28:53.948284+00:00                  
 ==============================================================================
 FOUND A BUG? Bugs very likely remain in both the code and the data.
 Please open an issue: https://github.com/IEISI-ORG/pacific-peering/issues/new
@@ -11,9 +11,9 @@ SUMMARY
 HEADLINE: 57% of the real peering points this region's own networks use sit OUTSIDE the fish bowl (13 of 23)
 
 PATHWAYS (every corridor with a filed finding, of any kind):
-  Total pathways found:                    237
+  Total pathways found:                    238
   Internal (never leave the fish bowl):    70
-  External / Leaves the region:            167
+  External / Leaves the region:            168
   (full corridor-by-corridor detail -- every confirmed detour, confirmed local transit, and candidate peering entry -- is in the appendix at the end of this report, not repeated here)
 
 Economies in scope:            20
@@ -110,8 +110,8 @@ Sydney             104    62%       24 Melanesia, Micronesia, Polynesia
     Dependent economies: AS, FJ, KI, MH, NC, NR, PG, PW, SB, TO, VU, WS
 Los Angeles         35    21%        7 Melanesia, Micronesia, Polynesia
     Dependent economies: FJ, FM, GU, MH, NR, PF, WF
-Tokyo               20    12%        7 Melanesia, Micronesia, Polynesia
-    Dependent economies: AS, FJ, MH, NC, NR, PW, SB, VU, WF
+Tokyo               21    12%        8 Melanesia, Micronesia, Polynesia
+    Dependent economies: AS, FJ, GU, MH, NC, NR, PW, SB, VU, WF
 San Jose             5     3%        1 Polynesia
     Dependent economies: AS
 Portland             2     1%        1 Polynesia
@@ -244,7 +244,7 @@ IXPS (registered exchanges, this project's confirmed classification)
 Name                         City             CC   In fishbowl  Members Verified  Economies
 ------------------------------------------------------------------------------
 Any2West                     Los Angeles and  US   False              4       11  GU, MP, PF
-BBIX Tokyo                   Tokyo            JP   False              4        6  GU, MP, PW
+BBIX Tokyo                   Tokyo            JP   False              4        7  GU, MP, PW
 CAN'L IX                     NOUMEA           NC   True               5        1  NC
 DRF IX                       Honolulu         US   False              2        0  AS, PF
 EdgeIX - Auckland            Auckland         NZ   False              1        0  WS
@@ -383,7 +383,7 @@ MH      64237 AS14593   Connected     Starlink (AS14593): satellite egress via S
 PF      23002 AS2200    Connected     Renater (AS2200): backhauls straight to metropolitan France (~500ms), never touches Pacific transit
 TO      11691 AS24390   Connected     ASN registered Fiji but probe physically in Tonga (geo-audit): counts as a TO vantage point, not FJ; USP (AS24390, registered FJ): regional academic network via AARNet (Australia), not a local commercial carrier; valid source, path unverified
 
-APPENDIX: FULL CORRIDOR DETAIL (237 pathways -- see the PATHWAYS summary at the top of this report for the plain counts)
+APPENDIX: FULL CORRIDOR DETAIL (238 pathways -- see the PATHWAYS summary at the top of this report for the plain counts)
 ==============================================================================
 
 Confirmed sub-optimal routes (RIS + Atlas both agree)
@@ -845,6 +845,9 @@ PF -> NR (AS140504): detours via AS12684 (SES ASTRA S.A.) -- satellite operator,
 TV -> NR (AS140504): detours via AS12684 (SES ASTRA S.A.) -- satellite operator, international transit (Los Angeles)
     RIS observation count: 1347  [measurement 212088551]
     Tuvalu (AS23917) -> AS140504 -- a fresh TV<->NR pair, a third independent confirmation of the AS140504<->AS12684 (SES Astra) relationship (after PF, CK). First address (103.20.124.1) dead-ended the same way as every prior first attempt: resolved only as far as AS36149 (Hawaiian Telcom), `ris_agrees: False`. Applied the standing retry policy against a different cached prefix (103.49.173.1, from `list_target_ips`). **The retry reached the target address directly** -- the first time this project has actually landed on AS140504's own address rather than dead-ending near it: `AS23917 -> AS9241 (FINTEL) -> AS6939 (Hurricane Electric) -> AS36149 (Hawaiian Telcom) -> [one-hop silent gap, the satellite leg] -> 103.49.173.1 (target)`. `analyze_measurement`'s automated check reads `ris_agrees: False` because it compares the last *resolved* ASN (AS36149, not a registered neighbor of AS140504) rather than the satellite hop sitting silently in the gap -- checked RIS directly instead: AS140504's real neighbor list is `{12684: 1347, 132528: 521}` (1,868 total observations, counts naturally shifted from the PF/CK entries' snapshot since RIS data is always current-state, not a fixed historical record) -- AS12684 remains dominant, an exact match for the gap this traceroute shows. Kept `detour_hub` as Los Angeles, matching the PF/CK entries' verified attribution.
+GU -> GU (AS140627): detours via BBIX Tokyo (Tokyo)
+    RIS observation count: 0  [measurement 218411496]
+    Owner-directed filing, 2026-10-03. GTA (AS9246) -> OneQode's Guam facility via BBIX Tokyo: probe 23039 (GU DoE, on AS9246) leaves GTA at 114-142-196-28.core.static.teleguam.net (29.5ms), crosses OneQode's BBIX Tokyo port 101.203.89.130 (PeeringDB netixlan, AS140627) at 29.7ms, and returns over jp-cc1-rt2-----Vlan750.gu-gnc-rt1.oneqode.net to the OneQode anchor gu-pit-as140627 (103.151.64.31) at 58.3ms. Rule 2: GU-Tokyo ~2,510km, floor ~25.1ms; consistent. Mixed corridor like #54: PTI (AS7131) probes 60689, 65653 and Guam Exchange 7385 reach the same anchor locally (0.66-9.7ms, RIS agrees, 28 obs). APIDT 7662 (Piti) hairpins the same way via WIDE Otemachi and BBIX (58.3ms), not filed: AS141682 is not a registry ASN. The target is OneQode's confirmed Guam facility, an external carrier inside the fishbowl -- see analysis/regional_carrier_facilities.py. Same exchange as retracted #228, now seen from a terrestrial probe.
 PG -> NR (AS141368): detours via IX Australia Sydney (NSW-IX) (Sydney)
     RIS observation count: 382  [measurement 212645252]
     measurement 212645252 (from PG); chain: AS17828 -> AS4826 -> AS140627 -> AS7131 -> AS55722; RIS count 382; RIS agrees.

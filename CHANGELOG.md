@@ -2452,3 +2452,8 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   live 2025-06-29 to 2026-06-16) and 32841 (v3, live 2017-18), AS4638. Fiji has
   no native vantage while SPC's 60575 egresses via Zscaler; owner follow-up at
   PITA 2026-10.
+- Filed finding #272 (owner, 2026-10-03): confirmed_detour GU -> GU, GTA
+  (AS9246) -> OneQode's Guam facility (AS140627) via BBIX Tokyo, measurement
+  218411496 (probe 23039, 58.3ms; Rule 2 floor ~25.1ms, consistent). Mixed
+  corridor: PTI and Guam Exchange reach the same anchor locally. Findings
+  242 -> 243, report pathways 237 -> 238.
