@@ -94,6 +94,10 @@ Set by the project owner after Phase 1b's first live result. These rules govern 
   - **First entries:** OneQode Guam (AS140627, 103.151.64.0/24 + `gu-gnc-rt1`/`gu-pit` hostnames, probe 6923); Arena-PAC Piti (AS141682, probe 7662, verify first); then migrate the existing lists' entries one by one, keeping tests green.
   - **Approach:** design note first, then test-first migration, one list at a time. Behaviour must not change for existing findings except where the owner decides.
 - **Pinned hub references for the offshore check** (2026-10-03). Replace country-random probe selection with verified per-hub references (AARNet 19103 Sydney / 17003 Perth, Leaptel's state-capital probes, `aws`-tagged region probes, anchors per hub). Each needs an RTT sanity check first (1000112 "LA VM" is really in Tokyo). Honolulu has no trusted reference; look for one. Before the next monthly full run (~2026-10-24) if possible.
+- **Guam follow-ups (owner, 2026-10-03; report back after the trip):**
+  - *Decide:* file Guam Exchange (AS152735) -> Arena-PAC Guam facility (AS141682, anchor 7662) as a GU -> GU detour via Tokyo, like #272? Evidence so far is anchoring pings only (67.7ms; Guam -> Tokyo ~39ms + Arena-PAC's Tokyo-Guam link ~29ms); a traceroute from 7385 to 103.161.244.86 would confirm the Tokyo crossing before filing.
+  - *Re-fire* the reverse trace OneQode anchor 6923 -> 23039 (114.142.217.210); 218411503 Failed without running. One measurement.
+  - Both stay out of the findings until the owner decides.
 - **Owner decisions pending:** the five MARIIX high-latency escalations; finding #231 (151ms step into 154.18.76.1); backup in-prefix addresses for single-prefix targets; re-check zero-result measurements once more before escalating (the #10 late-result case).
 
 ## Maybe list (parked by the owner; not queued, not scheduled)
