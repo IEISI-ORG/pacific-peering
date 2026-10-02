@@ -177,9 +177,12 @@ Corridors `auto_classify.py`'s mechanical rules couldn't confidently resolve on 
 - detail: asn_v4 14593 -> 139759; egress trace: AS139759 (measurement 218274746, 218276868)
 - action: owner review -- check the path before trusting this probe's next results, or changing any exclusion
 - flagged: 2026-10-02T15:00:39.173272+00:00
+- resolved: 2026-10-03 -- the expected fix: Atlas now reports the ASN the probe actually measures through (Starlink AS14593 -> AS139759), and the egress trace shows AS139759 first (measurements 218274746/218276868). auto_classify's hard-coded ASN override for 62046 is now redundant but harmless.
+
 ## AS7131 (MP) -> AS38198 (TO)
 - measurement: 218277100
 - reason: no probe data returned
 - detail: Atlas returned zero probe results (status=Scheduled) -- the source probe never ran this measurement, so check that probe (it can read as Connected in the probe list while still not taking measurements) before re-firing from it; not marked tested so it retries on its own, not a signal about this corridor itself
 - flagged: 2026-10-02T15:10:28.250480+00:00
+- resolved: 2026-10-03 -- not a dead probe: 65653 ran at ~15:07Z and its result arrived after the 180s wait (measurement now Stopped, 1 participant). Path Saipan -> PTI (8.3.127.1, 103.57.234.1) -> HE Tokyo (core2.tyo1.he.net, 37.8ms), dark after. Re-test of finding #10; the corridor isn't marked tested, so it retries on its own.
 
