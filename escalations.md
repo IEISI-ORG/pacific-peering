@@ -85,24 +85,28 @@ Corridors `auto_classify.py`'s mechanical rules couldn't confidently resolve on 
 - reason: no probe data returned
 - detail: Atlas returned zero probe results for this measurement -- most likely a transient results-fetch race (status went terminal moments before results were indexed) rather than a real network outcome; not marked tested so it retries on its own, not a signal about this corridor itself
 - flagged: 2026-09-27T15:06:36.944315+00:00
+- resolved: 2026-10-03 -- not a fetch race (the detail above is wrong): all seven 2026-09-27 CK measurements (216153502, 216153814, 216153954, 216154414, 216154556, 216154870, 216155432) are Failed with zero results -- the source probe, 22761 (Telecom Aitutaki, AS10131, CK's only working probe), was assigned and didn't run. It has been Disconnected since 2026-10-01T08:27Z, so CK has no live vantage; tracked as one probe issue, not per corridor.
 
 ## AS10131 (CK) -> AS17828 (PG)
 - measurement: 216153814
 - reason: no probe data returned
 - detail: Atlas returned zero probe results for this measurement -- most likely a transient results-fetch race (status went terminal moments before results were indexed) rather than a real network outcome; not marked tested so it retries on its own, not a signal about this corridor itself
 - flagged: 2026-09-27T15:09:58.132290+00:00
+- resolved: 2026-10-03 -- not a fetch race (the detail above is wrong): all seven 2026-09-27 CK measurements (216153502, 216153814, 216153954, 216154414, 216154556, 216154870, 216155432) are Failed with zero results -- the source probe, 22761 (Telecom Aitutaki, AS10131, CK's only working probe), was assigned and didn't run. It has been Disconnected since 2026-10-01T08:27Z, so CK has no live vantage; tracked as one probe issue, not per corridor.
 
 ## AS7131 (MP) -> AS24390 (FJ)
 - measurement: 216153943
 - reason: unrecognized routing loop
 - detail: probe 65653: loop involving address 103.112.0.226, not in known_anomalies.py
 - flagged: 2026-09-27T15:12:26.023585+00:00
+- resolved: 2026-10-03 -- false loop: the 2026-10-01 re-check after the loop-test fix (commit 21480aa) found this measurement is repeat-then-progress (the trace reached new routers after the repeated address), which no longer flags.
 
 ## AS10131 (CK) -> AS24390 (FJ)
 - measurement: 216153954
 - reason: no probe data returned
 - detail: Atlas returned zero probe results for this measurement -- most likely a transient results-fetch race (status went terminal moments before results were indexed) rather than a real network outcome; not marked tested so it retries on its own, not a signal about this corridor itself
 - flagged: 2026-09-27T15:13:20.097674+00:00
+- resolved: 2026-10-03 -- not a fetch race (the detail above is wrong): all seven 2026-09-27 CK measurements (216153502, 216153814, 216153954, 216154414, 216154556, 216154870, 216155432) are Failed with zero results -- the source probe, 22761 (Telecom Aitutaki, AS10131, CK's only working probe), was assigned and didn't run. It has been Disconnected since 2026-10-01T08:27Z, so CK has no live vantage; tracked as one probe issue, not per corridor.
 
 ## AS3605 (GU) -> AS38198 (TO)
 - measurement: 216154286
@@ -115,24 +119,28 @@ Corridors `auto_classify.py`'s mechanical rules couldn't confidently resolve on 
 - reason: no probe data returned
 - detail: Atlas returned zero probe results for this measurement -- most likely a transient results-fetch race (status went terminal moments before results were indexed) rather than a real network outcome; not marked tested so it retries on its own, not a signal about this corridor itself
 - flagged: 2026-09-27T15:16:43.235106+00:00
+- resolved: 2026-10-03 -- not a fetch race (the detail above is wrong): all seven 2026-09-27 CK measurements (216153502, 216153814, 216153954, 216154414, 216154556, 216154870, 216155432) are Failed with zero results -- the source probe, 22761 (Telecom Aitutaki, AS10131, CK's only working probe), was assigned and didn't run. It has been Disconnected since 2026-10-01T08:27Z, so CK has no live vantage; tracked as one probe issue, not per corridor.
 
 ## AS10131 (CK) -> AS45193 (FM)
 - measurement: 216154556
 - reason: no probe data returned
 - detail: Atlas returned zero probe results for this measurement -- most likely a transient results-fetch race (status went terminal moments before results were indexed) rather than a real network outcome; not marked tested so it retries on its own, not a signal about this corridor itself
 - flagged: 2026-09-27T15:20:12.803614+00:00
+- resolved: 2026-10-03 -- not a fetch race (the detail above is wrong): all seven 2026-09-27 CK measurements (216153502, 216153814, 216153954, 216154414, 216154556, 216154870, 216155432) are Failed with zero results -- the source probe, 22761 (Telecom Aitutaki, AS10131, CK's only working probe), was assigned and didn't run. It has been Disconnected since 2026-10-01T08:27Z, so CK has no live vantage; tracked as one probe issue, not per corridor.
 
 ## AS10131 (CK) -> AS45879 (WF)
 - measurement: 216154870
 - reason: no probe data returned
 - detail: Atlas returned zero probe results for this measurement -- most likely a transient results-fetch race (status went terminal moments before results were indexed) rather than a real network outcome; not marked tested so it retries on its own, not a signal about this corridor itself
 - flagged: 2026-09-27T15:23:34.901267+00:00
+- resolved: 2026-10-03 -- not a fetch race (the detail above is wrong): all seven 2026-09-27 CK measurements (216153502, 216153814, 216153954, 216154414, 216154556, 216154870, 216155432) are Failed with zero results -- the source probe, 22761 (Telecom Aitutaki, AS10131, CK's only working probe), was assigned and didn't run. It has been Disconnected since 2026-10-01T08:27Z, so CK has no live vantage; tracked as one probe issue, not per corridor.
 
 ## AS10131 (CK) -> AS140504 (NR)
 - measurement: 216155432
 - reason: no probe data returned
 - detail: Atlas returned zero probe results for this measurement -- most likely a transient results-fetch race (status went terminal moments before results were indexed) rather than a real network outcome; not marked tested so it retries on its own, not a signal about this corridor itself
 - flagged: 2026-09-27T15:26:56.500873+00:00
+- resolved: 2026-10-03 -- not a fetch race (the detail above is wrong): all seven 2026-09-27 CK measurements (216153502, 216153814, 216153954, 216154414, 216154556, 216154870, 216155432) are Failed with zero results -- the source probe, 22761 (Telecom Aitutaki, AS10131, CK's only working probe), was assigned and didn't run. It has been Disconnected since 2026-10-01T08:27Z, so CK has no live vantage; tracked as one probe issue, not per corridor.
 
 ## AS24390 (FJ) -> AS9751 (AS)
 - measurement: 216155552
