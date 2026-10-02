@@ -20,7 +20,8 @@ Every night, from `scripts/nightly_corridor_testing.sh`, before the batch:
 3. Escalate economy/ASN changes, every changed probe's egress result, and any
    watched probe whose first-hop ASN differs from its last egress check.
    Nothing is ever un-excluded automatically; that stays the owner's call
-   after reading the path.
+   after reading the path. A `BOLO_PROBES` probe returning to the listing is
+   always escalated, with its egress trace once it can be fired.
 
 Writes `outputs/reports/probe_watch_snapshot.json` (git-tracked, so the
 baseline survives a fresh checkout), appends egress checks to
@@ -57,6 +58,12 @@ MEASUREMENT_LABEL = "probe-watch-egress"
 EGRESS_WATCH_ASNS: dict[int, str] = {
     141695: "Pacific Community (SPC) -- egresses via Zscaler since 2026-09-19",
     **KNOWN_PROXY_ASNS,
+}
+# Be-on-the-lookout: Abandoned probes we want back. Any return to the listing
+# is escalated whatever its egress, since a local path is the good news here.
+BOLO_PROBES: dict[int, str] = {
+    51448: "TCC (AS38201, Tonga) hardware probe, live 2019-09-18..25 only -- possibly still cabled but unpowered (PacNOG, 2026-10-02)",
+    21626: "TCC (AS38201, Tonga) hardware probe, live 2019-12-11..12 only -- possibly still cabled but unpowered (PacNOG, 2026-10-02)",
 }
 _TRACKED_STATUSES = ("Connected", "Disconnected")
 _METADATA_FIELDS = ("cc", "asn_v4", "asn_v6")
@@ -173,9 +180,17 @@ def escalation_blocks(
         blocks.append(_block(str(pid), current.get(str(pid), {}), "metadata changed", "probe watch",
                              f"{moved}; egress trace: {result}", _REVIEW_PATH, now))
     new = newly_tracked_probes(changes)
+    for pid in sorted(new & set(BOLO_PROBES)):
+        s = current.get(str(pid), {})
+        asn = egress.get(str(pid))
+        result = (f"{describe_egress(asn)} (measurement {msm})" if asn is not None
+                  else "not traced yet (not Connected, or no resolvable result) -- retried nightly until it resolves")
+        blocks.append(_block(str(pid), s, "BOLO probe back online", "probe watch BOLO",
+                             f"{BOLO_PROBES[pid]}; status {s.get('status')}; egress trace: {result}",
+                             "owner review -- thank the host, check the path, then let discovery pick it up", now))
     for pid, asn in sorted(egress.items(), key=lambda kv: int(kv[0])):
         s = current.get(pid, {})
-        if asn is None or int(pid) in changed:
+        if asn is None or int(pid) in changed or int(pid) in BOLO_PROBES and int(pid) in new:
             continue
         if int(pid) in deferred:
             blocks.append(_block(pid, s, "deferred regression trace", "probe watch",

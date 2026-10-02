@@ -2412,3 +2412,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   egress, the target reached, RIS corroborating the last-reached ASN, or an
   out-of-fishbowl IXP crossing; any other dead end retries once (at most one
   extra Atlas measurement per such corridor).
+- Probe watch BOLO list (`atlas/probe_watch.py`, `BOLO_PROBES`): TCC's two
+  2019 hardware probes in Tonga (51448, 21626; AS38201), possibly still
+  cabled but unpowered per PacNOG 2026-10-02. If either returns to the
+  nightly listing it is escalated straight away (and egress-traced once
+  Connected), even on a clean local path -- before, a returning probe was
+  only escalated if it egressed non-locally.

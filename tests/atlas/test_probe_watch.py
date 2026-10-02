@@ -149,3 +149,33 @@ def test_trace_failure_keeps_changes_pending(monkeypatch, tmp_path):
 
     monkeypatch.setattr(pw, "trace_egress", _boom)
     assert pw.run_watch(fire=True, now=NOW)["pending"] == [60575]
+
+
+# BOLO (owner, 2026-10-02): TCC's two 2019 hardware probes (AS38201, Tonga)
+# may still be cabled but unpowered. A revived probe that egresses locally
+# used to be traced and then said nothing -- these must always raise a flag.
+def _tcc_listing(status_51448="Abandoned"):
+    listing = _listing()
+    listing["TO"].append({"id": 51448, "asn_v4": 38201, "asn_v6": None, "status": status_51448})
+    return listing
+
+
+def test_bolo_probe_back_online_is_escalated_even_with_local_egress(monkeypatch, tmp_path):
+    _setup(monkeypatch, tmp_path, _tcc_listing(), {})
+    pw.run_watch(fire=True, now=NOW)
+    fired = _setup(monkeypatch, tmp_path, _tcc_listing("Connected"), {51448: 38201})
+    pw.run_watch(fire=True, now=NOW)
+    text = pw.ESCALATIONS_PATH.read_text()
+    assert fired == [[51448]]
+    assert "## Probe 51448 (TO, AS38201) -- BOLO probe back online" in text
+    assert "AS38201" in text.split("BOLO probe back online")[1]
+
+
+def test_bolo_probe_back_but_disconnected_is_escalated_before_any_trace(monkeypatch, tmp_path):
+    _setup(monkeypatch, tmp_path, _tcc_listing(), {})
+    pw.run_watch(fire=True, now=NOW)
+    fired = _setup(monkeypatch, tmp_path, _tcc_listing("Disconnected"), {})
+    pw.run_watch(fire=True, now=NOW)
+    text = pw.ESCALATIONS_PATH.read_text()
+    assert fired == []
+    assert "BOLO probe back online" in text and "not traced yet" in text
