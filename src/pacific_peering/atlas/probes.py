@@ -72,7 +72,7 @@ def _listing_entry(p: dict) -> dict:
 # hand, never inferred from self-reported coordinates (Guam and Saipan are only
 # ~220km apart). Found 2026-10-03: both Piti, Guam anchors, Atlas country US.
 #   6923  gu-pit-as140627 (OneQode AS140627); Guam Exchange's 7385 pings it at 0.54ms.
-#   7662  gu-pit-as141682-client (APIDT AS141682), same site per its anchor record.
+#   7662  gu-pit-as141682-client (Arena-PAC AS141682, registered as APIDT), same site per its anchor record.
 PROBE_ECONOMY_OVERRIDES: dict[int, str] = {6923: "GU", 7662: "GU"}
 
 
