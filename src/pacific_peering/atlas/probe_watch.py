@@ -65,6 +65,9 @@ EGRESS_WATCH_ASNS: dict[int, str] = {
 BOLO_PROBES: dict[int, str] = {
     51448: "TCC (AS38201, Tonga) hardware probe, live 2019-09-18..25 only -- possibly still cabled but unpowered (PacNOG, 2026-10-02)",
     21626: "TCC (AS38201, Tonga) hardware probe, live 2019-12-11..12 only -- possibly still cabled but unpowered (PacNOG, 2026-10-02)",
+    # Telecom Fiji (AS4638, Suva): Fiji has no native vantage (SPC 60575 egresses via Zscaler).
+    64611: "TFL (AS4638, Suva) v5 GPON probe, live 2025-06-29..2026-06-16, then Abandoned (owner follow-up, 2026-10-03)",
+    32841: "TFL (AS4638, Suva) v3 probe, live 2017-10..2018-01 (owner follow-up, 2026-10-03)",
 }
 _TRACKED_STATUSES = ("Connected", "Disconnected")
 _METADATA_FIELDS = ("cc", "asn_v4", "asn_v6")

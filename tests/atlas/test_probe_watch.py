@@ -197,3 +197,17 @@ def test_trace_egress_fires_protocol_overridden_probes_separately(monkeypatch):
 
     assert sorted(calls) == [[11691, 60575], [1018023]]
     assert measurement_ids == [1, 2]
+
+
+def test_tfl_fiji_probes_are_on_the_bolo_list(monkeypatch, tmp_path):
+    """Owner follow-up, 2026-10-03: TFL's abandoned Suva probes, Fiji having no native vantage."""
+    listing = _listing()
+    listing["FJ"].append({"id": 64611, "asn_v4": 4638, "asn_v6": None, "status": "Abandoned"})
+    _setup(monkeypatch, tmp_path, listing, {})
+    pw.run_watch(fire=True, now=NOW)
+    listing["FJ"][-1]["status"] = "Connected"
+    fired = _setup(monkeypatch, tmp_path, listing, {64611: 4638})
+    pw.run_watch(fire=True, now=NOW)
+    assert fired == [[64611]]
+    assert "## Probe 64611 (FJ, AS4638) -- BOLO probe back online" in pw.ESCALATIONS_PATH.read_text()
+    assert 32841 in pw.BOLO_PROBES

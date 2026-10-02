@@ -2448,3 +2448,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   physical economy with `atlas_country` recorded, and never duplicated once
   Atlas files them correctly. Hand-verified entries only, never inferred from
   self-reported coordinates.
+- Probe watch BOLO: added Telecom Fiji's abandoned Suva probes 64611 (v5 GPON,
+  live 2025-06-29 to 2026-06-16) and 32841 (v3, live 2017-18), AS4638. Fiji has
+  no native vantage while SPC's 60575 egresses via Zscaler; owner follow-up at
+  PITA 2026-10.
