@@ -171,3 +171,15 @@ Corridors `auto_classify.py`'s mechanical rules couldn't confidently resolve on 
 - action: owner review -- check the path before trusting this probe's next results, or changing any exclusion
 - flagged: 2026-10-01T15:00:56.787975+00:00
 - resolved: 2026-10-02 -- host-confirmed: SPC (Usaia Tawakevou, PacNOG thread, 2026-10-01) re-homed the Noumea probe onto SPC's own ASN. The path is native, not tunnelled: the 2026-10-01 nightly traces (e.g. measurements 217920678, 217925248) go 202.0.159.1 (AS141197) -> OPT AS18200 / CANL AS17480 within ~1-2ms. The probe stays in use as an NC vantage. Note: SPC's Fiji probe 60575 (AS141695) still egresses via Zscaler (measurement 218054280, 2026-10-02: 147.161.214.89 AS53813 at 37.7ms, handing to Cloudflare at Equinix Sydney), so AS141695 stays excluded.
+
+## Probe 62046 (FM, AS139759) -- metadata changed
+- reason: probe watch (atlas/probe_watch.py)
+- detail: asn_v4 14593 -> 139759; egress trace: AS139759 (measurement 218274746, 218276868)
+- action: owner review -- check the path before trusting this probe's next results, or changing any exclusion
+- flagged: 2026-10-02T15:00:39.173272+00:00
+## AS7131 (MP) -> AS38198 (TO)
+- measurement: 218277100
+- reason: no probe data returned
+- detail: Atlas returned zero probe results (status=Scheduled) -- the source probe never ran this measurement, so check that probe (it can read as Connected in the probe list while still not taking measurements) before re-firing from it; not marked tested so it retries on its own, not a signal about this corridor itself
+- flagged: 2026-10-02T15:10:28.250480+00:00
+

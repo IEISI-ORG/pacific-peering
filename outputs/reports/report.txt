@@ -1,6 +1,6 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-10-01T15:32:17.110117+00:00                  
+                 Generated: 2026-10-02T15:19:51.458873+00:00                  
 ==============================================================================
 FOUND A BUG? Bugs very likely remain in both the code and the data.
 Please open an issue: https://github.com/IEISI-ORG/pacific-peering/issues/new
@@ -217,7 +217,7 @@ Measurements: {'v4': [216995468, 216995782], 'v6': [216998611, 216999009]}. Deta
 
 IPV6 COVERAGE (adoption signal only -- no IPv6 testing yet)
 ==============================================================================
-45 of 158 in-scope ASNs have >=1 RIS-observed IPv6-originated prefix. 8 of 36 connected Atlas probes work over IPv6 (2 more are IPv6-capable but tagged as not working). Adoption tracking only -- this project deliberately isn't testing IPv6 corridors yet; queued until adoption has advanced further (see TODO below).
+45 of 158 in-scope ASNs have >=1 RIS-observed IPv6-originated prefix. 8 of 36 connected Atlas probes work over IPv6 (3 more are IPv6-capable but tagged as not working). Adoption tracking only -- this project deliberately isn't testing IPv6 corridors yet; queued until adoption has advanced further (see TODO below).
 CC   Name                      ASNs  w/ IPv6
 ------------------------------------------------------------------------------
 AS   American Samoa               2        1
@@ -265,7 +265,7 @@ PNG Neutral IX Hagen         Mt Hagen         PG   True               1        0
 PNG Neutral IX Lae           Lae              PG   True               2        0  PG
 PNG Neutral IX POM           Port Moresby     PG   True               9        0  PG
 SIX Seattle                  Seattle          US   False              1        0  GU
-VIX.VU                       Port Vila        VU   True               2        2  VU
+VIX.VU                       Port Vila        VU   True               2        3  VU
 
 PATHWAY COVERAGE (per economy)
 ==============================================================================
@@ -279,7 +279,7 @@ WF   Wallis and Futuna                Polynesia        1       0       0        
 AS   American Samoa                   Polynesia        2       2       0         6
 SB   Solomon Islands                  Melanesia       10       0       0         6
 WS   Samoa                            Polynesia       10       3       0         6
-TO   Tonga                            Polynesia        5       2       0         4
+TO   Tonga                            Polynesia        5       3       0         4
 TV   Tuvalu                           Polynesia        3       1       1         4
 MP   Northern Mariana Islands         Micronesia       2       6       3         3
 NU   Niue                             Polynesia        1       1       1         3
@@ -290,7 +290,7 @@ GU   Guam                             Micronesia      10      14       6        
 PF   French Polynesia                 Polynesia        6       9       6         1
 PG   Papua New Guinea                 Melanesia       38      10       1         1
 VU   Vanuatu                          Melanesia       10       5       2         1
-FM   Micronesia, Federated States of  Micronesia       6       5       3         0
+FM   Micronesia, Federated States of  Micronesia       6       6       3         0
 NC   New Caledonia                    Melanesia       17      19       5         0
 
 APPENDIX: LOW DATA QUALITY ISSUES (6 known, resolved)
@@ -368,13 +368,12 @@ AS132468 (SB) 103.188.182.0/23  [reviewed]
     registered_abroad: RIR record country AU, not SB
     Verdict: XconX Pty Ltd (AU); already Sydney-hosted in atlas.targets.EXCLUDED_TARGET_PREFIXES (2026-09-25)
 
-APPENDIX: PROBES NOT PLACED OPTIMALLY FOR REGIONAL TESTING (10)
+APPENDIX: PROBES NOT PLACED OPTIMALLY FOR REGIONAL TESTING (9)
 ==============================================================================
 Connected (or recently disconnected) in-scope Atlas probes whose network or location makes them a poor stand-in for local-carrier routing, and why. Built from what the pipeline already acts on: the corridor-candidacy exclusions, the proxy list and the probe geo-audit.
 CC      Probe ASN       Status        Why
 ------------------------------------------------------------------------------
 FJ      60575 AS141695  Connected     Pacific Community (AS141695): egresses via Zscaler (AS53813), so paths aren't Fiji's own; excluded as source and target
-FM      62046 AS14593   Connected     dual uplink: Atlas labels it Starlink from its control-plane address (14.1.90.35), but all 33 cached traceroutes (2026-09-16..24) leave via AS139759 FSM Telecom at <2ms -- in practice an FSM Telecom vantage point for measurements. Used as an AS139759 source since 2026-09-25 (asn_probes.PROBE_ASN_OVERRIDES), with corridor results dropped if their first hop is Starlink (a failover)
 GU      60689 AS7131    Connected     ASN registered Northern Mariana Islands but probe physically in Guam (geo-audit): counts as a GU vantage point, not MP
 GU      62689 AS7131    Connected     ASN registered Northern Mariana Islands but probe physically in Guam (geo-audit): counts as a GU vantage point, not MP
 GU      65337 AS14593   Connected     Starlink (AS14593): satellite egress via Starlink PoPs, not a local carrier; excluded from corridor candidacy
@@ -1116,7 +1115,7 @@ AS9249 (Telecom Vanuatu Limited, VU) -> AS132228 (Vanuatu Government, VU)
     measurement 213192774 (from VU); chain: AS9249 -> AS132228; RIS disagrees. measurement 213192774 (from VU); chain: AS9249 -> AS132228; RIS disagrees.
 AS9249 (Telecom Vanuatu Limited, VU) -> AS132429 (Digicel Vanuatu LTD, VU)
     Traceroute agreement: 2/2 probes  [measurement 213196017, vantage: VU]
-    measurement 213196017 (from VU); chain: AS9249; RIS disagrees. measurement 213196017 (from VU); chain: AS9249; RIS disagrees.
+    measurement 213196017 (from VU); chain: AS9249; RIS disagrees. measurement 213196017 (from VU); chain: AS9249; RIS disagrees. measurement 218279327 (from VU); chain: AS9249 -> AS132429; RIS disagrees.
 AS38008 (Telikom PNG Satellite Tier 1 AS, PG) -> AS132462 (Bemobile Solomon Islands Ltd, SB)
     Traceroute agreement: 3/3 probes  [measurement 212143004, vantage: FM]
     FM(AS139759) -> AS132462: `AS139759 -> AS9246 -> AS4637 -> AS38008 -> AS132462`, contiguous, but `ris_agrees: false` -- checked AS132462's real RIS neighbor list directly: `{140889: 333, 139609: 4}`, AS38008 doesn't appear at all. Real signal, not RIS-confirmed on the strict pair. Kept as a candidate. `has_routing_loop` False.
