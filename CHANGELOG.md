@@ -2432,3 +2432,10 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   chunked deflate, unbounded chunk-size line), relevant because the cron jobs
   fetch from external APIs unattended; the HTTPS-proxy TLS one doesn't apply
   (no proxy in use). pip-audit clean afterwards.
+- Retired 8 dead-end `candidate_peering` findings after the 2026-10-03
+  re-tests (owner): #13 and #232 superseded by detour evidence (corroborated
+  #134 via Sydney, #160 via Los Angeles); #234 and #254 inconclusive after
+  two target addresses; #194, #208, #270, #271 inconclusive on single-prefix
+  targets. 17 corroborations removed; findings 250 -> 242, report pathways
+  245 -> 237. Kept #216 (re-test reached the target) and #10 (corridor
+  retries on its own). DB, export and tested_pairs backed up first.
