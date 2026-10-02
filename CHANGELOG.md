@@ -2426,3 +2426,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   measurement: mixed probe lists and country sourcing stay ICMP (logged),
   and the probe watch's egress trace fires overridden probes in their own
   measurement. Remove the entry once the host passes outbound ICMP.
+- urllib3 2.7.0 -> 2.8.0 (`uv.lock` only; transitive via requests 2.34.2):
+  fixes PYSEC-2026-4175/4176/4177 (CVE-2026-97687/97688/97689). The two
+  that apply here are client-side DoS on streamed responses (infinite loop on
+  chunked deflate, unbounded chunk-size line), relevant because the cron jobs
+  fetch from external APIs unattended; the HTTPS-proxy TLS one doesn't apply
+  (no proxy in use). pip-audit clean afterwards.
