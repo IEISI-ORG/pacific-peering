@@ -2439,3 +2439,12 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   targets. 17 corroborations removed; findings 250 -> 242, report pathways
   245 -> 237. Kept #216 (re-test reached the target) and #10 (corridor
   retries on its own). DB, export and tested_pairs backed up first.
+- Probe listing economy overrides (`atlas/probes.py`, `PROBE_ECONOMY_OVERRIDES`):
+  the listing was built only from Atlas `country_code` queries, so probes
+  physically in an in-scope economy but registered under another country were
+  never listed. Found 2026-10-03: the two Piti, Guam anchors 6923
+  (gu-pit-as140627, OneQode AS140627) and 7662 (gu-pit-as141682-client, APIDT
+  AS141682) are Atlas country US. Overrides are fetched by id, added to their
+  physical economy with `atlas_country` recorded, and never duplicated once
+  Atlas files them correctly. Hand-verified entries only, never inferred from
+  self-reported coordinates.

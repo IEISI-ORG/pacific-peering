@@ -45,27 +45,46 @@ def fetch_probes_for_economy(country_code: str, timeout: float = _DEFAULT_TIMEOU
         timeout=timeout,
     )
     response.raise_for_status()
-    probes = []
-    for p in response.json()["results"]:
-        status = p.get("status") or {}
-        probes.append(
-            {
-                "id": p["id"],
-                "status": status.get("name", "Unknown"),
-                "status_since": status.get("since"),
-                "asn_v4": p.get("asn_v4"),
-                # IPv6 (added 2026-09-24 for the Starlink IPv6 anchor
-                # traces): asn_v6 is None for a probe with no IPv6 address.
-                # Atlas's own system-ipv6-* tags (capable / works /
-                # doesnt-work) come from its built-in measurements, kept
-                # as-is so results can be read against them.
-                "asn_v6": p.get("asn_v6"),
-                "ipv6_tags": sorted(
-                    t["slug"] for t in p.get("tags") or [] if t.get("slug", "").startswith("system-ipv6")
-                ),
-            }
-        )
-    return probes
+    return [_listing_entry(p) for p in response.json()["results"]]
+
+
+def _listing_entry(p: dict) -> dict:
+    status = p.get("status") or {}
+    return {
+        "id": p["id"],
+        "status": status.get("name", "Unknown"),
+        "status_since": status.get("since"),
+        "asn_v4": p.get("asn_v4"),
+        # IPv6 (added 2026-09-24 for the Starlink IPv6 anchor
+        # traces): asn_v6 is None for a probe with no IPv6 address.
+        # Atlas's own system-ipv6-* tags (capable / works /
+        # doesnt-work) come from its built-in measurements, kept
+        # as-is so results can be read against them.
+        "asn_v6": p.get("asn_v6"),
+        "ipv6_tags": sorted(
+            t["slug"] for t in p.get("tags") or [] if t.get("slug", "").startswith("system-ipv6")
+        ),
+    }
+
+
+# Probes physically in an in-scope economy that Atlas registers under another
+# country, so a country_code query never returns them. Each one verified by
+# hand, never inferred from self-reported coordinates (Guam and Saipan are only
+# ~220km apart). Found 2026-10-03: both Piti, Guam anchors, Atlas country US.
+#   6923  gu-pit-as140627 (OneQode AS140627); Guam Exchange's 7385 pings it at 0.54ms.
+#   7662  gu-pit-as141682-client (APIDT AS141682), same site per its anchor record.
+PROBE_ECONOMY_OVERRIDES: dict[int, str] = {6923: "GU", 7662: "GU"}
+
+
+def fetch_probes_by_id(probe_ids: list[int], timeout: float = _DEFAULT_TIMEOUT) -> list[dict]:
+    """Raw Atlas probe records for specific IDs, any status."""
+    response = requests.get(
+        f"{ATLAS_BASE_URL}/probes/",
+        params={"id__in": ",".join(str(i) for i in probe_ids)},
+        timeout=timeout,
+    )
+    response.raise_for_status()
+    return response.json()["results"]
 
 
 def build_probe_listing(
@@ -74,6 +93,12 @@ def build_probe_listing(
 ) -> dict[str, list[dict]]:
     """Persist every listed (any-status) probe per in-scope economy."""
     listing = {economy.cc: fetch_probes_for_economy(economy.cc) for economy in economies}
+    overrides = [pid for pid, cc in PROBE_ECONOMY_OVERRIDES.items() if cc in listing]
+    if overrides:
+        for p in fetch_probes_by_id(overrides):
+            cc = PROBE_ECONOMY_OVERRIDES[p["id"]]
+            if all(existing["id"] != p["id"] for existing in listing[cc]):
+                listing[cc].append({**_listing_entry(p), "atlas_country": p.get("country_code")})
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(json.dumps(listing, indent=2) + "\n")
     listed_total = sum(len(v) for v in listing.values())
