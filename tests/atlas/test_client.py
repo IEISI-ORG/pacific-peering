@@ -202,3 +202,25 @@ def test_create_ping_measurement_shares_the_description_check(monkeypatch):
     else:
         raise AssertionError("'>' must be rejected")
     assert posted == []
+
+
+# Probe 1018023 (SPC Tonga, AS38198) drops ICMP traceroute past hop 1 but
+# passes UDP (measurements 218132808 vs 218166491, 2026-10-02). Atlas sets
+# protocol per measurement, so only an all-overridden probe list switches.
+def test_create_traceroute_uses_udp_for_an_overridden_probe(monkeypatch):
+    posted = _capture_post(monkeypatch)
+    monkeypatch.setattr(client, "PROBE_PROTOCOL_OVERRIDES", {1018023: "UDP"})
+
+    client.create_traceroute_measurement("probes", "1018023", "1.1.1.1", "d", 1, api_key="k")
+
+    assert posted[0]["definitions"][0]["protocol"] == "UDP"
+
+
+def test_create_traceroute_keeps_icmp_when_probes_are_mixed(monkeypatch):
+    posted = _capture_post(monkeypatch)
+    monkeypatch.setattr(client, "PROBE_PROTOCOL_OVERRIDES", {1018023: "UDP"})
+
+    client.create_traceroute_measurement("probes", "1018023,11691", "1.1.1.1", "d", 2, api_key="k")
+    client.create_traceroute_measurement("country", "TO", "1.1.1.1", "d", 2, api_key="k")
+
+    assert [p["definitions"][0]["protocol"] for p in posted] == ["ICMP", "ICMP"]

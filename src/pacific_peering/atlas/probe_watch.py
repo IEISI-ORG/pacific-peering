@@ -41,6 +41,7 @@ import requests
 
 from pacific_peering.analysis.auto_classify import KNOWN_PROXY_ASNS, NON_LOCAL_FIRST_HOP_ASNS
 from pacific_peering.analysis.traceroute_topology import extract_as_sequence, resolve_traceroute_hops
+from pacific_peering.atlas.client import PROBE_PROTOCOL_OVERRIDES
 from pacific_peering.atlas.probes import load_probe_listing
 from pacific_peering.atlas.smoketest import refetch_parsed
 from pacific_peering.atlas.starlink_anchors import PUBLIC_DNS_ANCHORS_V4, run_starlink_anchor_traces
@@ -135,9 +136,16 @@ def last_egress(path: Path | None = None) -> dict[str, int]:
 
 
 def trace_egress(probe_ids: list[int]) -> tuple[list[int], dict[str, int | None]]:
-    measurement_ids = run_starlink_anchor_traces(
-        probe_ids, anchors=PUBLIC_DNS_ANCHORS_V4[:1], af=4, label=MEASUREMENT_LABEL
-    )
+    # One measurement per traceroute protocol: a mixed probe list falls back to
+    # ICMP (atlas.client._protocol_for), which a protocol-overridden probe can't use.
+    by_protocol: dict[str, list[int]] = {}
+    for pid in probe_ids:
+        by_protocol.setdefault(PROBE_PROTOCOL_OVERRIDES.get(pid, "ICMP"), []).append(pid)
+    measurement_ids: list[int] = []
+    for group in by_protocol.values():
+        measurement_ids += run_starlink_anchor_traces(
+            group, anchors=PUBLIC_DNS_ANCHORS_V4[:1], af=4, label=MEASUREMENT_LABEL
+        )
     egress: dict[str, int | None] = {}
     if measurement_ids:
         for trace in refetch_parsed(measurement_ids):

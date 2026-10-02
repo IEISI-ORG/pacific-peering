@@ -51,6 +51,25 @@ class TracerouteResult:
     hops: tuple[TracerouteHop, ...]
 
 
+# Probes whose site filters ICMP traceroute but passes another protocol.
+# 1018023 (SPC Tonga, AS38198, software probe): ICMP dark past hop 1
+# (measurement 218132808), UDP reaches 1.1.1.1 via Digicel Tonga (218166491),
+# 2026-10-02. Remove once the host lets outbound ICMP through.
+PROBE_PROTOCOL_OVERRIDES: dict[int, str] = {1018023: "UDP"}
+
+
+def _protocol_for(source_type: str, source_value: int | str) -> str:
+    """Atlas sets protocol per measurement, so only an explicit probe list whose
+    every probe shares one override switches; anything else stays ICMP."""
+    if source_type != "probes":
+        return "ICMP"
+    protocols = {PROBE_PROTOCOL_OVERRIDES.get(int(p), "ICMP") for p in str(source_value).split(",")}
+    if len(protocols) > 1:
+        logger.warning("Probes %s mix traceroute protocols %s; using ICMP", source_value, sorted(protocols))
+        return "ICMP"
+    return protocols.pop()
+
+
 def create_traceroute_measurement(
     source_type: str,
     source_value: int | str,
@@ -101,7 +120,7 @@ def create_traceroute_measurement(
                 "description": description,
                 "type": "traceroute",
                 "af": af,
-                "protocol": "ICMP",
+                "protocol": _protocol_for(source_type, source_value),
                 "is_oneoff": True,
             }
         ],

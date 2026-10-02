@@ -2418,3 +2418,11 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   nightly listing it is escalated straight away (and egress-traced once
   Connected), even on a clean local path -- before, a returning probe was
   only escalated if it egressed non-locally.
+- Per-probe traceroute protocol override (`atlas/client.py`,
+  `PROBE_PROTOCOL_OVERRIDES`): probe 1018023 (SPC Tonga, AS38198, software
+  probe, online 2026-10-02) drops ICMP traceroute past hop 1 (measurement
+  218132808) but reaches 1.1.1.1 over UDP via Digicel Tonga (218166491), so
+  measurements sourced only from it now use UDP. Atlas sets protocol per
+  measurement: mixed probe lists and country sourcing stay ICMP (logged),
+  and the probe watch's egress trace fires overridden probes in their own
+  measurement. Remove the entry once the host passes outbound ICMP.

@@ -179,3 +179,21 @@ def test_bolo_probe_back_but_disconnected_is_escalated_before_any_trace(monkeypa
     text = pw.ESCALATIONS_PATH.read_text()
     assert fired == []
     assert "BOLO probe back online" in text and "not traced yet" in text
+
+
+def test_trace_egress_fires_protocol_overridden_probes_separately(monkeypatch):
+    """One mixed measurement would force ICMP on probe 1018023, which is dark over ICMP."""
+    monkeypatch.setattr(pw, "PROBE_PROTOCOL_OVERRIDES", {1018023: "UDP"})
+    calls: list[list[int]] = []
+
+    def _anchor_traces(probe_ids, anchors, af, label):
+        calls.append(probe_ids)
+        return [len(calls)]
+
+    monkeypatch.setattr(pw, "run_starlink_anchor_traces", _anchor_traces)
+    monkeypatch.setattr(pw, "refetch_parsed", lambda mids: [])
+
+    measurement_ids, _ = pw.trace_egress([11691, 1018023, 60575])
+
+    assert sorted(calls) == [[11691, 60575], [1018023]]
+    assert measurement_ids == [1, 2]
