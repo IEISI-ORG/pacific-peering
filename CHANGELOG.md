@@ -2457,3 +2457,11 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   218411496 (probe 23039, 58.3ms; Rule 2 floor ~25.1ms, consistent). Mixed
   corridor: PTI and Guam Exchange reach the same anchor locally. Findings
   242 -> 243, report pathways 237 -> 238.
+- Status email fixes (`reports/status_email.py`), from the first forced dry run
+  of the unattended check (2026-10-03): the heading now shows the run's date on
+  the host's clock instead of the UTC date (`run_at[:10]` showed the previous
+  day for a 07:30 Brisbane run), and an empty "needs your attention" list
+  prints `- nothing` in the text version instead of `- [] Nothing.`. New
+  `tests/reports/test_status_email.py`. Also: the wrapper under
+  ~/.config/pacific-peering/unattended was not executable, so the cron line
+  would have failed daily; fixed with chmod u+x (outside the repo).

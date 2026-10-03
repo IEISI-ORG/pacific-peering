@@ -33,6 +33,7 @@ from __future__ import annotations
 import argparse
 import html
 import json
+from datetime import datetime
 from pathlib import Path
 
 # Pacific palette: deep-ocean header, reef accents. Status colours chosen to
@@ -54,6 +55,15 @@ CHECK = {"ok": ("#1f6fb2", "OK"), "warn": ("#b7791f", "WARN"), "fail": ("#b42318
 FONT = "font-family:-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;"
 
 e = html.escape
+
+
+def _local_date(run_at: str) -> str:
+    """The run's date on the host's clock: the agent writes run_at in UTC, which
+    is still the previous day at the 07:30 Brisbane cron time."""
+    try:
+        return datetime.fromisoformat(run_at).astimezone().date().isoformat()
+    except ValueError:
+        return run_at[:10]
 
 
 def _pill(colour: str, text: str) -> str:
@@ -143,7 +153,7 @@ def render_html(s: dict) -> str:
 <table role="presentation" width="640" cellpadding="0" cellspacing="0" bgcolor="{CARD}" style="max-width:640px;width:100%;background:{CARD};border-radius:12px;overflow:hidden;">
 <tr><td bgcolor="{OCEAN}" style="background:{OCEAN};background-image:linear-gradient(135deg,{OCEAN},{LAGOON});padding:26px 28px;{FONT}">
   <div style="font-size:12px;color:#bfe3ea;letter-spacing:1.5px;text-transform:uppercase;">Pacific Peering &middot; daily check</div>
-  <div style="font-size:22px;font-weight:700;color:#fff;margin-top:6px;">{e(s.get("run_at", "")[:10])}</div>
+  <div style="font-size:22px;font-weight:700;color:#fff;margin-top:6px;">{e(_local_date(s.get("run_at", "")))}</div>
   <div style="margin-top:12px;">{_pill(colour, label)}</div>
   <div style="font-size:15px;color:#e6f4f7;margin-top:12px;line-height:1.5;">{e(s.get("headline", ""))}</div>
 </td></tr>
@@ -161,12 +171,14 @@ def render_html(s: dict) -> str:
 
 
 def render_text(s: dict) -> str:
-    out = [f"Pacific Peering daily check {s.get('run_at', '')[:10]} -- {OVERALL.get(s.get('overall'), OVERALL['attention'])[1]}",
+    out = [f"Pacific Peering daily check {_local_date(s.get('run_at', ''))} -- {OVERALL.get(s.get('overall'), OVERALL['attention'])[1]}",
            s.get("headline", ""), ""]
     if s.get("mode") == "dry-run":
         out += ["(Dry run: drafted, not sent.)", ""]
     out += [f"{x['label']}: {x['value']}" for x in s.get("stats", [])] + ["", "NEEDS YOUR ATTENTION"]
-    for it in s.get("needs_attention", []) or [{"title": "Nothing.", "severity": ""}]:
+    if not s.get("needs_attention"):
+        out.append("- nothing")
+    for it in s.get("needs_attention", []):
         out.append(f"- [{it.get('severity', '')}] {it['title']}")
         if it.get("detail"):
             out.append(f"  {it['detail']}")
