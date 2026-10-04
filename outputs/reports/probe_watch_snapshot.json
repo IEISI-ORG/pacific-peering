@@ -1,6 +1,8 @@
 {
- "at": "2026-10-02T15:00:39.173272+00:00",
- "pending_trace": [],
+ "at": "2026-10-04T15:00:39.992414+00:00",
+ "pending_trace": [
+  6923
+ ],
  "probes": {
   "1001562": {
    "asn_v4": 9471,
@@ -24,7 +26,7 @@
    "asn_v4": 9249,
    "asn_v6": null,
    "cc": "VU",
-   "status": "Disconnected"
+   "status": "Connected"
   },
   "1008625": {
    "asn_v4": 45345,
@@ -206,6 +208,12 @@
    "cc": "MP",
    "status": "Connected"
   },
+  "6923": {
+   "asn_v4": 140627,
+   "asn_v6": 140627,
+   "cc": "GU",
+   "status": "Disconnected"
+  },
   "7018": {
    "asn_v4": 45345,
    "asn_v6": 45345,
@@ -228,12 +236,18 @@
    "asn_v4": 17893,
    "asn_v6": 17893,
    "cc": "PW",
-   "status": "Disconnected"
+   "status": "Connected"
   },
   "7588": {
    "asn_v4": 23917,
    "asn_v6": null,
    "cc": "TV",
+   "status": "Connected"
+  },
+  "7662": {
+   "asn_v4": 141682,
+   "asn_v6": 141682,
+   "cc": "GU",
    "status": "Connected"
   }
  }

@@ -1,14 +1,13 @@
 Probe watch (atlas/probe_watch.py) -- nightly metadata diff; egress traced on change and weekly for proxy-flagged networks.
-Generated 2026-10-02T15:00:39+00:00; 39 Connected/Disconnected probes tracked.
+Generated 2026-10-04T15:00:39+00:00; 41 Connected/Disconnected probes tracked.
 
 Changes since the previous snapshot: 4
-  probe 7455: status Connected -> Disconnected
-  probe 62046: asn_v4 14593 -> 139759
-  probe 1008536: status Connected -> Disconnected
-  probe 1018023: tracked False -> True
+  probe 6923: tracked False -> True
+  probe 7455: status Disconnected -> Connected
+  probe 7662: tracked False -> True
+  probe 1008536: status Disconnected -> Connected
 
-Egress checks tonight: 2 (measurement(s) [218274746, 218276868])
-  probe 62046 (FM, AS139759): first hop AS139759
-  probe 1018023 (TO, AS38198): first hop AS38198
+Egress checks tonight: 1 (measurement(s) [218706331])
+  probe 7662 (GU, AS141682): first hop AS141682
 
-Regression traces still pending: none
+Regression traces still pending: [6923]

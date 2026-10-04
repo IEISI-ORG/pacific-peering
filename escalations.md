@@ -194,3 +194,9 @@ Corridors `auto_classify.py`'s mechanical rules couldn't confidently resolve on 
 - flagged: 2026-10-02T15:10:28.250480+00:00
 - resolved: 2026-10-03 -- not a dead probe: 65653 ran at ~15:07Z and its result arrived after the 180s wait (measurement now Stopped, 1 participant). Path Saipan -> PTI (8.3.127.1, 103.57.234.1) -> HE Tokyo (core2.tyo1.he.net, 37.8ms), dark after. Re-test of finding #10; the corridor isn't marked tested, so it retries on its own.
 
+## AS7131 (MP) -> AS24439 (MH)
+- measurement: 218708330
+- reason: no probe data returned
+- detail: Atlas returned zero probe results (status=Scheduled) -- the source probe never ran this measurement, so check that probe (it can read as Connected in the probe list while still not taking measurements) before re-firing from it; not marked tested so it retries on its own, not a signal about this corridor itself
+- flagged: 2026-10-04T15:19:47.907068+00:00
+
