@@ -200,3 +200,10 @@ Corridors `auto_classify.py`'s mechanical rules couldn't confidently resolve on 
 - detail: Atlas returned zero probe results (status=Scheduled) -- the source probe never ran this measurement, so check that probe (it can read as Connected in the probe list while still not taking measurements) before re-firing from it; not marked tested so it retries on its own, not a signal about this corridor itself
 - flagged: 2026-10-04T15:19:47.907068+00:00
 
+## AS38198 (TO) -> AS140504 (NR)
+- measurement: 218712900
+- reason: unattended daily check -- candidate_peering finding #273 (direct AS38198 -> AS140504) rests on hidden hops, not a visible adjacency
+- detail: probe 1018023 (Digicel Tonga) reaches 202.43.14.173 (AS38198) at hop 4, 9.8ms, reply TTL 252, then the target 103.49.173.1 answers at hop 5 at 339.7ms (+330ms in one hop). Reply TTL 238, and Atlas reports ittl=240 on all three target replies: the probe sent that packet with TTL 5, so something past hop 4 reset the forward TTL (tunnel ingress or similar), leaving about 15 routers out of view each way. RIS (RIPEstat asn-neighbours, 2026-10-04) shows one neighbour for AS140504: AS3605 (Guam), power 418, 1646 v4 peers. Last night's TV -> NR trace (218707166, finding #161) goes the same way: HE -> JPIX Tokyo -> 202.128.5.115 (AS3605, 321.7ms), then dark. Confidence: high that the trace doesn't show a direct adjacency; moderate on what's hidden (probably Digicel/Telstra backbone to AS3605 Guam, then the Nauru link).
+- proposed correction: don't treat #273 as a TO<->NR peering; reclassify it as a detour through AS3605 Guam, or drop it until a trace shows the middle. Consider whether candidate_peering should be held back when the target's ittl shows the TTL was reset.
+- flagged: 2026-10-04T21:45:00+00:00
+
