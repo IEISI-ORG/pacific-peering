@@ -147,12 +147,14 @@ Corridors `auto_classify.py`'s mechanical rules couldn't confidently resolve on 
 - reason: all probes proxy-corrupted
 - detail: every probe in this measurement resolved a known corporate proxy/VPN ASN as its first hop (probe 60575 via Zscaler) -- this source's own probe currently can't produce a real path; needs a human look (a different source, or wait for the proxy egress to genuinely change), not a target-IP retry
 - flagged: 2026-09-27T15:28:10.838773+00:00
+- resolved: 2026-10-05 -- stale: fired from 60575 while it egressed via Zscaler. Two later changes stop it recurring: corridor tests now pin to the source ASN's own probes (fec96da, so AS24390 fires from 11691), and 60575 now egresses natively via Telecom Fiji (218747738, ee94576).
 
 ## AS24390 (FJ) -> AS24439 (MH)
 - measurement: 216155814
 - reason: all probes proxy-corrupted
 - detail: every probe in this measurement resolved a known corporate proxy/VPN ASN as its first hop (probe 60575 via Zscaler) -- this source's own probe currently can't produce a real path; needs a human look (a different source, or wait for the proxy egress to genuinely change), not a target-IP retry
 - flagged: 2026-09-27T15:33:10.817887+00:00
+- resolved: 2026-10-05 -- stale: fired from 60575 while it egressed via Zscaler. Two later changes stop it recurring: corridor tests now pin to the source ASN's own probes (fec96da, so AS24390 fires from 11691), and 60575 now egresses natively via Telecom Fiji (218747738, ee94576).
 
 ## AS17456 (GU) -> AS9246 (GU)
 - measurement: 216991839
@@ -199,6 +201,7 @@ Corridors `auto_classify.py`'s mechanical rules couldn't confidently resolve on 
 - reason: no probe data returned
 - detail: Atlas returned zero probe results (status=Scheduled) -- the source probe never ran this measurement, so check that probe (it can read as Connected in the probe list while still not taking measurements) before re-firing from it; not marked tested so it retries on its own, not a signal about this corridor itself
 - flagged: 2026-10-04T15:19:47.907068+00:00
+- resolved: 2026-10-05 -- not a dead probe, same as the 10-03 case: 65653's result arrived after the 180s wait (measurement now Stopped, 1 participant, checked against Atlas in an interactive session). Path Saipan -> PTI (8.3.127.1) -> HE (184.104.208.73, 46.9ms; 184.105.65.96, 156.9ms) -> 207.45.208.18 (159.3ms) -> 64.86.252.141 / 180.87.60.178 (~249ms), dark after. The corridor is already in tested_pairs from an earlier run.
 
 ## AS38198 (TO) -> AS140504 (NR)
 - measurement: 218712900
