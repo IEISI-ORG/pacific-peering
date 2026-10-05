@@ -40,7 +40,7 @@ from pacific_peering.atlas.asn_probes import load_asn_probe_registry
 from pacific_peering.atlas.probes import asn_listed_registry, load_probe_listing
 from pacific_peering.discovery import cloudflare_radar
 from pacific_peering.discovery import leasing_check
-from pacific_peering.discovery.quarantined_asns import QUARANTINED_ASNS
+from pacific_peering.discovery.quarantined_asns import HELD_FINDINGS, QUARANTINED_ASNS
 from pacific_peering.discovery.registry import DEFAULT_OUTPUT_PATH
 
 logger = logging.getLogger(__name__)
@@ -79,6 +79,13 @@ def _compute_quarantine() -> tuple[QuarantineSummary, ...]:
         out.append(QuarantineSummary(
             title=f"AS{q.asn} ({q.name}) -- registered {q.country_cc}",
             since=q.since, release_when=q.release_when, note=q.note, held_findings=held,
+        ))
+    for h in HELD_FINDINGS:
+        match = [f for f in _HELD_FINDINGS if (f.kind, f.source_asn, f.target_asn) == (h.kind, h.source_asn, h.target_asn)]
+        held = tuple(f"#{f.id} {f.kind}: {f.source_cc} AS{f.source_asn} to {f.target_cc} AS{f.target_asn}" for f in match)
+        out.append(QuarantineSummary(
+            title=f"AS{h.source_asn} to AS{h.target_asn} -- one finding held; both ASNs stay in scope",
+            since=h.since, release_when=h.release_when, note=h.note, held_findings=held,
         ))
     return tuple(out)
 

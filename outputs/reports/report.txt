@@ -1,6 +1,6 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-10-04T16:13:02.691696+00:00                  
+                 Generated: 2026-10-05T02:51:41.745704+00:00                  
 ==============================================================================
 FOUND A BUG? Bugs very likely remain in both the code and the data.
 Please open an issue: https://github.com/IEISI-ORG/pacific-peering/issues/new
@@ -11,8 +11,8 @@ SUMMARY
 HEADLINE: 57% of the real peering points this region's own networks use sit OUTSIDE the fish bowl (13 of 23)
 
 PATHWAYS (every corridor with a filed finding, of any kind):
-  Total pathways found:                    239
-  Internal (never leave the fish bowl):    71
+  Total pathways found:                    238
+  Internal (never leave the fish bowl):    70
   External / Leaves the region:            168
   (full corridor-by-corridor detail -- every confirmed detour, confirmed local transit, and candidate peering entry -- is in the appendix at the end of this report, not repeated here)
 
@@ -315,9 +315,9 @@ AS131995 (XLPROG-AS-AP (XL Programmation Micro SARL)) -- registered NC  [local c
 AS154410 (MTL-AS-AP (Marshall Telecom Ltd)) -- registered MH  [local company whose announced space is hosted abroad]
     Registered in the Marshall Islands (APNIC registrant ORG-MTL14-AP, Marshall Telecom LTD) but every originated prefix is served from Paris. Sole RIS upstream AS137409 (GSL Networks). 2026-10-01 traceroutes (measurements 217755229, 217755231, 217755234, 217755242, 217757573, 217757574) from AU probes and MH probe 64237 to 103.112.144.1, 151.247.194.1 and 82.24.175.1 end at core01.par2.dyjix.eu / 185.171.202.195.rev.dyjix.eu (AS212815 Dyjix SAS, Paris) at ~300ms. The earlier candidate_peering finding (row 253, measurement 213462780) already showed the path ending at AS212815. Per the project owner, 151.247.194.0 and 82.24.175.0 are IPXO-leased (IPXO geofeed, IPXO-MNT markers), and rDNS in 82.24.175.0 shows consumer NAS endpoints (Synology QuickConnect, WD remotewd): leased space used wherever the lessee is. Excluded at the owner's direction (2026-10-01); finding row 253 and corroboration 464 were removed.
 
-APPENDIX: QUARANTINED ASNs (2 -- no proof of routing yet)
+APPENDIX: QUARANTINED ASNs AND FINDINGS (3 -- no proof of routing yet)
 ==============================================================================
-In-scope ASNs whose routing hasn't been proven either way: every test so far goes dark before reaching their space. They stay in scope but aren't tested, and their findings are held out of every count and map in this report until the evidence settles it.
+In-scope ASNs whose routing hasn't been proven either way: every test so far goes dark before reaching their space. They stay in scope but aren't tested, and their findings are held out of every count and map in this report until the evidence settles it. Single findings whose evidence doesn't support the recorded path are held the same way, without touching their ASNs' other findings.
 
 AS152093 (VakaNet Limited) -- registered CK  [quarantined 2026-10-01]
     Sole RIS upstream is AS9507 (NextHop, AU). 2026-10-01 traceroutes to 116.199.200.1 from AU probes (measurement 217757577) go dark right after NextHop's Sydney and Brisbane PEs (et11-90.pe04.syd01.nexthop.net.au at 8.7ms, po1.nxtpe01.bne01.nexthop.net.au at 2.8ms); the CK-sourced measurement (217757575) returned no results; an nmap ping sweep of all of 116.199.200.0/23 from Brisbane found no responsive host. That leaves Sydney hosting and a tunnel back to Rarotonga equally possible. Its 5 legacy confirmed_detour findings (#165-169, from GU/MP via Tokyo and NU/TV/VU via Sydney) rest on chains that end at AS9507 and never reach VakaNet, so they're held here. Quarantined at the owner's direction: no proof of routing.
@@ -328,6 +328,11 @@ AS151647 (Rural Tech Development) -- registered PG  [quarantined 2026-10-01]
     Registered in PNG (APNIC registrant ORG-RTD1-AP). Sole RIS upstream is AS31732 (Parsun Network Solutions, AU). 2026-10-01 traceroutes to 103.98.52.1 from AU probes 1011163 and 19917 (measurement 217755233) and PG probe 50365 (217755235) all end in a genuine routing loop on 188.209.155.250, in Parsun's own 188.209.155.0/24: 4.9ms from an AU probe, 38ms from PG, so the loop sits in Australia and nothing beyond it is reachable. An nmap ping sweep of 103.98.52.0/24 from Brisbane found no responsive host. Whether the space is used in PNG, hosted in Australia, or not in use at all can't be told from this. No findings held. Quarantined at the owner's direction: no proof of routing.
     Release when: a host in 103.98.52.0/24 answers and its latency places it, or a trace reaches Rural Tech's own space instead of looping at Parsun
     Findings held (0): none
+
+AS38198 to AS140504 -- one finding held; both ASNs stay in scope  [quarantined 2026-10-05]
+    Finding #273, measurement 218712900 from probe 1018023. Digicel's 202.43.14.173 at hop 4 (9.8ms), then the target 103.49.173.1 at hop 5 (339.7ms, +330ms in one hop). The target's replies carry ittl=240 for a TTL-5 probe packet, so the forward TTL was reset past hop 4 and about 15 routers are out of view each way. RIS (2026-10-04) lists AS3605 (Guam) as AS140504's only neighbour, and the TV-NR trace 218707166 (#161) crosses JPIX Tokyo then AS3605. The recorded direct adjacency isn't shown by the trace.
+    Release when: latency and other evidence support a direct TO-NR adjacency, or a trace shows the hidden middle (owner, 2026-10-05)
+    Findings held (1): #273 candidate_peering: TO AS38198 to NR AS140504
 
 APPENDIX: LEASED AND FOREIGN-REGISTERED ADDRESS SPACE (7 prefixes)
 ==============================================================================
@@ -368,12 +373,11 @@ AS132468 (SB) 103.188.182.0/23  [reviewed]
     registered_abroad: RIR record country AU, not SB
     Verdict: XconX Pty Ltd (AU); already Sydney-hosted in atlas.targets.EXCLUDED_TARGET_PREFIXES (2026-09-25)
 
-APPENDIX: PROBES NOT PLACED OPTIMALLY FOR REGIONAL TESTING (9)
+APPENDIX: PROBES NOT PLACED OPTIMALLY FOR REGIONAL TESTING (8)
 ==============================================================================
 Connected (or recently disconnected) in-scope Atlas probes whose network or location makes them a poor stand-in for local-carrier routing, and why. Built from what the pipeline already acts on: the corridor-candidacy exclusions, the proxy list and the probe geo-audit.
 CC      Probe ASN       Status        Why
 ------------------------------------------------------------------------------
-FJ      60575 AS141695  Connected     Pacific Community (AS141695): egresses via Zscaler (AS53813), so paths aren't Fiji's own; excluded as source and target
 GU      60689 AS7131    Connected     ASN registered Northern Mariana Islands but probe physically in Guam (geo-audit): counts as a GU vantage point, not MP
 GU      62689 AS7131    Connected     ASN registered Northern Mariana Islands but probe physically in Guam (geo-audit): counts as a GU vantage point, not MP
 GU      65337 AS14593   Connected     Starlink (AS14593): satellite egress via Starlink PoPs, not a local carrier; excluded from corridor candidacy
@@ -383,7 +387,7 @@ MH      64237 AS14593   Connected     Starlink (AS14593): satellite egress via S
 PF      23002 AS2200    Connected     Renater (AS2200): backhauls straight to metropolitan France (~500ms), never touches Pacific transit
 TO      11691 AS24390   Connected     ASN registered Fiji but probe physically in Tonga (geo-audit): counts as a TO vantage point, not FJ; USP (AS24390, registered FJ): regional academic network via AARNet (Australia), not a local commercial carrier; valid source, path unverified
 
-APPENDIX: FULL CORRIDOR DETAIL (239 pathways -- see the PATHWAYS summary at the top of this report for the plain counts)
+APPENDIX: FULL CORRIDOR DETAIL (238 pathways -- see the PATHWAYS summary at the top of this report for the plain counts)
 ==============================================================================
 
 Confirmed sub-optimal routes (RIS + Atlas both agree)
@@ -1141,9 +1145,6 @@ AS1221 (Telstra Corporation Ltd (domestic ASN), AU) -> AS140504 (Digicel Nauru C
 **Merged 2026-09-17, UNIQUE-constraint migration**: this finding was originally filed as two separate candidate_peering rows (this one, sourced via AS24390/Fiji, plus a second sourced via AS17828/PNG) because the pre-migration schema keyed identity by source economy, not source ASN -- both traceroutes land on the same real upstream, AS1221 (Telstra), so they are the same adjacency. The second row's own investigation, preserved verbatim below, incorrectly recorded this finding's source_cc as PG (the vantage point's economy) rather than AU (Telstra's actual registration country) -- an artifact of the same source_cc/source_asn conflation this migration fixes going forward.
 
 Sourced from AS17828 (PNG DataCo) toward AS140504 (Digicel Nauru) -- a fresh PG<->NR pair. Clean, direct traceroute, fully contiguous: `AS17828 -> AS4826 (Vocus Connect) -> AS1221 (Telstra Limited, domestic ASN) -> AS140504`, the literal target resolving directly -- the first time this project has reached AS140504 via anything other than its two already-confirmed relationships (AS132528/Digicel Australia and AS12684/SES Astra). But `ris_agrees: false`: checked AS140504's full RIS neighbor list directly -- `{132528: 1032, 12684: 616}` -- AS1221 doesn't appear at all (checked AS1221's own fishbowl entry too: empty neighbor list, no RIS visibility into it from any direction). Not a fishbowl-scope artifact (both ends are genuinely in-fishbowl Pacific/Nauru ASNs -- Telstra itself isn't in-fishbowl, but the shape matches Validation Rule 4 regardless). Notable: AS1221 and AS132528 (AS140504's real dominant neighbor) are both Telstra-operated -- a genuinely different ASN of the same corporate family reaching the same target directly, rather than the already-confirmed backbone ASN specifically. Kept as a candidate, not promoted, per the standing principle.
-AS38198 (Digicel Tonga Ltd, TO) -> AS140504 (Digicel Nauru Corporation, NR)
-    Traceroute agreement: 1/1 probes  [measurement 218712900, vantage: TO]
-    measurement 218712900 (from TO); chain: AS38198 -> AS140504; RIS disagrees.
 AS139609 (SISCC, SB) -> AS150403 (Solomon Islands National Provident Fund Board, SB)
     Traceroute agreement: 3/3 probes  [measurement 212143018, vantage: FM]
     FM(AS139759) -> AS150403: `AS139759 -> AS9246 -> AS4637 -> AS139609 (SISCC) -> AS150403`, target resolves directly, but `ris_agrees: false` on the strict SISCC pair -- checked AS150403's real RIS neighbor list directly: `{45891: 331}`, Solomon Telekom's *other* ASN, not SISCC. A real, exact-count match (331) for AS45891<->AS150403 exists, just one hop off from what this traceroute literally shows. Kept as a candidate on the SISCC pair as tested; the real AS45891 relationship is a separate, presumably-confirmable lead. `has_routing_loop` False.

@@ -552,11 +552,16 @@ def _note_for(finding: Finding, corrobs: list[Corroboration]) -> str:
 
 
 def is_quarantined(finding: Finding) -> bool:
-    """True if either end of `finding` is an ASN in `discovery.quarantined_asns`
-    -- held in the DB and export, but out of the report's tallies and the map."""
-    from pacific_peering.discovery.quarantined_asns import QUARANTINED_ASN_SET
+    """True if either end of `finding` is an ASN in `discovery.quarantined_asns`,
+    or the finding itself is in its `HELD_FINDINGS` -- held in the DB and
+    export, but out of the report's tallies and the map."""
+    from pacific_peering.discovery.quarantined_asns import HELD_FINDING_KEYS, QUARANTINED_ASN_SET
 
-    return finding.target_asn in QUARANTINED_ASN_SET or finding.source_asn in QUARANTINED_ASN_SET
+    return (
+        finding.target_asn in QUARANTINED_ASN_SET
+        or finding.source_asn in QUARANTINED_ASN_SET
+        or (finding.kind, finding.source_asn, finding.target_asn) in HELD_FINDING_KEYS
+    )
 
 
 def load_confirmed_detours(conn: sqlite3.Connection, include_quarantined: bool = True):

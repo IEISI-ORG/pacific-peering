@@ -92,3 +92,45 @@ QUARANTINED_ASNS: tuple[QuarantinedAsn, ...] = (
 )
 
 QUARANTINED_ASN_SET: frozenset[int] = frozenset(q.asn for q in QUARANTINED_ASNS)
+
+
+@dataclass(frozen=True)
+class HeldFinding:
+    """One finding held out of tallies, the map and reverification, without
+    quarantining either of its ASNs (whose other findings stand). Keyed by the
+    finding's identity, not its row id, which an import_jsonl rebuild may change."""
+
+    kind: str
+    source_asn: int
+    target_asn: int
+    since: str  # ISO date held
+    release_when: str
+    note: str
+
+
+HELD_FINDINGS: tuple[HeldFinding, ...] = (
+    HeldFinding(
+        kind="candidate_peering",
+        source_asn=38198,  # Digicel Tonga
+        target_asn=140504,  # Digicel Nauru
+        since="2026-10-05",
+        release_when=(
+            "latency and other evidence support a direct TO-NR adjacency, or a "
+            "trace shows the hidden middle (owner, 2026-10-05)"
+        ),
+        note=(
+            "Finding #273, measurement 218712900 from probe 1018023. Digicel's "
+            "202.43.14.173 at hop 4 (9.8ms), then the target 103.49.173.1 at "
+            "hop 5 (339.7ms, +330ms in one hop). The target's replies carry "
+            "ittl=240 for a TTL-5 probe packet, so the forward TTL was reset "
+            "past hop 4 and about 15 routers are out of view each way. RIS "
+            "(2026-10-04) lists AS3605 (Guam) as AS140504's only neighbour, and "
+            "the TV-NR trace 218707166 (#161) crosses JPIX Tokyo then AS3605. "
+            "The recorded direct adjacency isn't shown by the trace."
+        ),
+    ),
+)
+
+HELD_FINDING_KEYS: frozenset[tuple[str, int, int]] = frozenset(
+    (h.kind, h.source_asn, h.target_asn) for h in HELD_FINDINGS
+)

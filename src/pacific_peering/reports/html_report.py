@@ -750,12 +750,13 @@ def render_html_report(data: ReportData, viz_dir: Path | None = Path("../viz")) 
         exclude.</p>
     {data_quality_issue_blocks}
 
-    <h2>Appendix: Quarantined ASNs
+    <h2>Appendix: Quarantined ASNs and findings
         <span class="count">({len(data.quarantined)} &mdash; no proof of routing yet)</span></h2>
     <p class="section-intro">In-scope ASNs whose routing hasn't been proven either way: every
         test so far goes dark before reaching their space. They stay in scope but aren't tested,
         and their findings are held out of every count and map in this report until the evidence
-        settles it.</p>
+        settles it. Single findings whose evidence doesn't support the recorded path are held the
+        same way, without touching their ASNs' other findings.</p>
     {quarantine_blocks}
 
     <h2>Appendix: Leased and foreign-registered address space

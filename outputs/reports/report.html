@@ -79,7 +79,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
 <body>
 <div class="wrap">
     <h1>Pacific Peering — Regional Routing Report</h1>
-    <div class="meta">Generated 2026-10-04T16:13:03.791095+00:00</div>
+    <div class="meta">Generated 2026-10-05T02:51:42.876415+00:00</div>
 
     <div class="feedback-box"><strong>Found a bug?</strong> This report is generated
         automatically, and bugs very likely remain in both the code and the data. If
@@ -95,13 +95,13 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
     </div>
 
     <div class="stat-row">
-        <div class="stat-tile"><div class="value">239</div><div class="label">Pathways found (total)</div></div>
-        <div class="stat-tile"><div class="value">71</div><div class="label">Internal (never leave the fish bowl)</div></div>
+        <div class="stat-tile"><div class="value">238</div><div class="label">Pathways found (total)</div></div>
+        <div class="stat-tile"><div class="value">70</div><div class="label">Internal (never leave the fish bowl)</div></div>
         <div class="stat-tile red-box"><div class="value">168</div>
             <div class="label">External / Leaves the region</div></div>
     </div>
     <p class="section-intro">Full corridor-by-corridor detail for all
-        239 pathways above is further down this report
+        238 pathways above is further down this report
         (Confirmed sub-optimal routes / Confirmed local transit / Candidate
         peering), collapsed by default so it doesn't dominate the page &mdash;
         click any of those section headings to expand.</p>
@@ -1950,7 +1950,7 @@ Twelfth confirmation of AS139609(SISCC)&lt;-&gt;AS45891. `AS55885 -&gt; AS9471 -
 
     <details class="section-toggle">
         <summary>Candidate peering (strong traceroute signal, RIS disagrees &mdash; unconfirmed)
-            <span class="count">(37)</span></summary>
+            <span class="count">(36)</span></summary>
         <div class="candidate-card">
             <div class="headline">AS7131 (PTI Pacifica Inc.,
                 MP) -&gt; AS3605
@@ -2253,14 +2253,6 @@ NU(AS55885) -&gt; AS132462: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS38008 -&g
 **Merged 2026-09-17, UNIQUE-constraint migration**: this finding was originally filed as two separate candidate_peering rows (this one, sourced via AS24390/Fiji, plus a second sourced via AS17828/PNG) because the pre-migration schema keyed identity by source economy, not source ASN -- both traceroutes land on the same real upstream, AS1221 (Telstra), so they are the same adjacency. The second row&#x27;s own investigation, preserved verbatim below, incorrectly recorded this finding&#x27;s source_cc as PG (the vantage point&#x27;s economy) rather than AU (Telstra&#x27;s actual registration country) -- an artifact of the same source_cc/source_asn conflation this migration fixes going forward.
 
 Sourced from AS17828 (PNG DataCo) toward AS140504 (Digicel Nauru) -- a fresh PG&lt;-&gt;NR pair. Clean, direct traceroute, fully contiguous: `AS17828 -&gt; AS4826 (Vocus Connect) -&gt; AS1221 (Telstra Limited, domestic ASN) -&gt; AS140504`, the literal target resolving directly -- the first time this project has reached AS140504 via anything other than its two already-confirmed relationships (AS132528/Digicel Australia and AS12684/SES Astra). But `ris_agrees: false`: checked AS140504&#x27;s full RIS neighbor list directly -- `{132528: 1032, 12684: 616}` -- AS1221 doesn&#x27;t appear at all (checked AS1221&#x27;s own fishbowl entry too: empty neighbor list, no RIS visibility into it from any direction). Not a fishbowl-scope artifact (both ends are genuinely in-fishbowl Pacific/Nauru ASNs -- Telstra itself isn&#x27;t in-fishbowl, but the shape matches Validation Rule 4 regardless). Notable: AS1221 and AS132528 (AS140504&#x27;s real dominant neighbor) are both Telstra-operated -- a genuinely different ASN of the same corporate family reaching the same target directly, rather than the already-confirmed backbone ASN specifically. Kept as a candidate, not promoted, per the standing principle.</details>
-        </div><div class="candidate-card">
-            <div class="headline">AS38198 (Digicel Tonga Ltd,
-                TO) -&gt; AS140504
-                (Digicel Nauru Corporation, NR)</div>
-            <div>Traceroute agreement: 1/1 probes
-                &middot; measurement 218712900
-                &middot; vantage point TO</div>
-            <details class="note"><summary>measurement 218712900 (from TO); chain: AS38198 -&gt; AS140504; RIS disagrees.</summary>measurement 218712900 (from TO); chain: AS38198 -&gt; AS140504; RIS disagrees.</details>
         </div><div class="candidate-card">
             <div class="headline">AS139609 (SISCC,
                 SB) -&gt; AS150403
@@ -2863,12 +2855,13 @@ NU(AS55885) -&gt; AS150403: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS139609 -&
             <details class="note"><summary>Registered in the Marshall Islands (APNIC registrant ORG-MTL14-AP, Marshall Telecom LTD) but every originated prefix is served from Paris…</summary>Registered in the Marshall Islands (APNIC registrant ORG-MTL14-AP, Marshall Telecom LTD) but every originated prefix is served from Paris. Sole RIS upstream AS137409 (GSL Networks). 2026-10-01 traceroutes (measurements 217755229, 217755231, 217755234, 217755242, 217757573, 217757574) from AU probes and MH probe 64237 to 103.112.144.1, 151.247.194.1 and 82.24.175.1 end at core01.par2.dyjix.eu / 185.171.202.195.rev.dyjix.eu (AS212815 Dyjix SAS, Paris) at ~300ms. The earlier candidate_peering finding (row 253, measurement 213462780) already showed the path ending at AS212815. Per the project owner, 151.247.194.0 and 82.24.175.0 are IPXO-leased (IPXO geofeed, IPXO-MNT markers), and rDNS in 82.24.175.0 shows consumer NAS endpoints (Synology QuickConnect, WD remotewd): leased space used wherever the lessee is. Excluded at the owner&#x27;s direction (2026-10-01); finding row 253 and corroboration 464 were removed.</details>
         </div>
 
-    <h2>Appendix: Quarantined ASNs
-        <span class="count">(2 &mdash; no proof of routing yet)</span></h2>
+    <h2>Appendix: Quarantined ASNs and findings
+        <span class="count">(3 &mdash; no proof of routing yet)</span></h2>
     <p class="section-intro">In-scope ASNs whose routing hasn't been proven either way: every
         test so far goes dark before reaching their space. They stay in scope but aren't tested,
         and their findings are held out of every count and map in this report until the evidence
-        settles it.</p>
+        settles it. Single findings whose evidence doesn't support the recorded path are held the
+        same way, without touching their ASNs' other findings.</p>
     <div class="issue-card">
             <div class="headline">AS152093 (VakaNet Limited) -- registered CK
                 <span class="count">[quarantined 2026-10-01]</span></div>
@@ -2883,6 +2876,13 @@ NU(AS55885) -&gt; AS150403: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS139609 -&
             <p><strong>Release when:</strong> a host in 103.98.52.0/24 answers and its latency places it, or a trace reaches Rural Tech&#x27;s own space instead of looping at Parsun</p>
             <p><strong>Findings held (0):</strong>
                 none</p>
+        </div><div class="issue-card">
+            <div class="headline">AS38198 to AS140504 -- one finding held; both ASNs stay in scope
+                <span class="count">[quarantined 2026-10-05]</span></div>
+            <details class="note"><summary>Finding #273, measurement 218712900 from probe 1018023…</summary>Finding #273, measurement 218712900 from probe 1018023. Digicel&#x27;s 202.43.14.173 at hop 4 (9.8ms), then the target 103.49.173.1 at hop 5 (339.7ms, +330ms in one hop). The target&#x27;s replies carry ittl=240 for a TTL-5 probe packet, so the forward TTL was reset past hop 4 and about 15 routers are out of view each way. RIS (2026-10-04) lists AS3605 (Guam) as AS140504&#x27;s only neighbour, and the TV-NR trace 218707166 (#161) crosses JPIX Tokyo then AS3605. The recorded direct adjacency isn&#x27;t shown by the trace.</details>
+            <p><strong>Release when:</strong> latency and other evidence support a direct TO-NR adjacency, or a trace shows the hidden middle (owner, 2026-10-05)</p>
+            <p><strong>Findings held (1):</strong>
+                #273 candidate_peering: TO AS38198 to NR AS140504</p>
         </div>
 
     <h2>Appendix: Leased and foreign-registered address space
@@ -2930,14 +2930,14 @@ NU(AS55885) -&gt; AS150403: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS139609 -&
         </tr></tbody></table>
 
     <h2>Appendix: Probes not placed optimally for regional testing
-        <span class="count">(9)</span></h2>
+        <span class="count">(8)</span></h2>
     <p class="section-intro">Connected (or recently disconnected) in-scope Atlas probes whose
         network or location makes them a poor stand-in for local-carrier routing, and why. Built
         from what the pipeline already acts on: the corridor-candidacy exclusions, the proxy list
         and the probe geo-audit.</p>
     <table>
         <thead><tr><th>CC</th><th>Probe</th><th>ASN</th><th>Status</th><th>Why</th></tr></thead>
-        <tbody><tr><td>FJ</td><td>60575</td><td>AS141695</td><td>Connected</td><td>Pacific Community (AS141695): egresses via Zscaler (AS53813), so paths aren&#x27;t Fiji&#x27;s own; excluded as source and target</td></tr><tr><td>GU</td><td>60689</td><td>AS7131</td><td>Connected</td><td>ASN registered Northern Mariana Islands but probe physically in Guam (geo-audit): counts as a GU vantage point, not MP</td></tr><tr><td>GU</td><td>62689</td><td>AS7131</td><td>Connected</td><td>ASN registered Northern Mariana Islands but probe physically in Guam (geo-audit): counts as a GU vantage point, not MP</td></tr><tr><td>GU</td><td>65337</td><td>AS14593</td><td>Connected</td><td>Starlink (AS14593): satellite egress via Starlink PoPs, not a local carrier; excluded from corridor candidacy</td></tr><tr><td>KI</td><td>1008228</td><td>AS14593</td><td>Connected</td><td>Starlink (AS14593): satellite egress via Starlink PoPs, not a local carrier; excluded from corridor candidacy</td></tr><tr><td>KI</td><td>1008229</td><td>AS14593</td><td>Connected</td><td>Starlink (AS14593): satellite egress via Starlink PoPs, not a local carrier; excluded from corridor candidacy</td></tr><tr><td>MH</td><td>64237</td><td>AS14593</td><td>Connected</td><td>Starlink (AS14593): satellite egress via Starlink PoPs, not a local carrier; excluded from corridor candidacy</td></tr><tr><td>PF</td><td>23002</td><td>AS2200</td><td>Connected</td><td>Renater (AS2200): backhauls straight to metropolitan France (~500ms), never touches Pacific transit</td></tr><tr><td>TO</td><td>11691</td><td>AS24390</td><td>Connected</td><td>ASN registered Fiji but probe physically in Tonga (geo-audit): counts as a TO vantage point, not FJ; USP (AS24390, registered FJ): regional academic network via AARNet (Australia), not a local commercial carrier; valid source, path unverified</td></tr></tbody>
+        <tbody><tr><td>GU</td><td>60689</td><td>AS7131</td><td>Connected</td><td>ASN registered Northern Mariana Islands but probe physically in Guam (geo-audit): counts as a GU vantage point, not MP</td></tr><tr><td>GU</td><td>62689</td><td>AS7131</td><td>Connected</td><td>ASN registered Northern Mariana Islands but probe physically in Guam (geo-audit): counts as a GU vantage point, not MP</td></tr><tr><td>GU</td><td>65337</td><td>AS14593</td><td>Connected</td><td>Starlink (AS14593): satellite egress via Starlink PoPs, not a local carrier; excluded from corridor candidacy</td></tr><tr><td>KI</td><td>1008228</td><td>AS14593</td><td>Connected</td><td>Starlink (AS14593): satellite egress via Starlink PoPs, not a local carrier; excluded from corridor candidacy</td></tr><tr><td>KI</td><td>1008229</td><td>AS14593</td><td>Connected</td><td>Starlink (AS14593): satellite egress via Starlink PoPs, not a local carrier; excluded from corridor candidacy</td></tr><tr><td>MH</td><td>64237</td><td>AS14593</td><td>Connected</td><td>Starlink (AS14593): satellite egress via Starlink PoPs, not a local carrier; excluded from corridor candidacy</td></tr><tr><td>PF</td><td>23002</td><td>AS2200</td><td>Connected</td><td>Renater (AS2200): backhauls straight to metropolitan France (~500ms), never touches Pacific transit</td></tr><tr><td>TO</td><td>11691</td><td>AS24390</td><td>Connected</td><td>ASN registered Fiji but probe physically in Tonga (geo-audit): counts as a TO vantage point, not FJ; USP (AS24390, registered FJ): regional academic network via AARNet (Australia), not a local commercial carrier; valid source, path unverified</td></tr></tbody>
     </table>
 
     <footer class="about">

@@ -2480,3 +2480,16 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
     is now empty.
   - Both traces recorded in `probe_watch_history.jsonl` so Wednesday's
     weekly egress check compares against the new baseline, not Zscaler.
+- Per-finding holds (`discovery/quarantined_asns.py`, `HELD_FINDINGS`): hold
+  one finding out of the report tallies, the map and reverification without
+  quarantining its ASNs, keyed by (kind, source_asn, target_asn) rather than
+  row id. `store.is_quarantined` covers both; the report's quarantine appendix
+  lists held findings too. First entry, by owner direction 2026-10-05:
+  #273 candidate_peering TO AS38198 -> NR AS140504 (measurement 218712900),
+  held until latency and other evidence support it. The target answered one
+  hop after Digicel's last visible router with +330ms and ittl=240 (forward
+  TTL reset, ~15 routers hidden); RIS lists AS3605 (Guam) as AS140504's only
+  neighbour. Report pathways 239 -> 238.
+- Escalations resolved 2026-10-05: AS7131 -> AS24439 (218708330, late
+  result, confirmed against Atlas); AS24390 -> AS9751 / AS24439 (09-27,
+  fired via Zscaler, stale); #273 (held, above).
