@@ -220,3 +220,9 @@ Corridors `auto_classify.py`'s mechanical rules couldn't confidently resolve on 
 - flagged: 2026-10-04T21:45:00+00:00
 - resolved: 2026-10-05 -- held, not reclassified (owner): #273 stays a candidate_peering row in findings.db and the export, but `discovery/quarantined_asns.HELD_FINDINGS` keeps it out of the report tallies, the map and reverification until latency and other evidence support it. A Guam detour wasn't recorded: the Guam leg is inferred, not seen, and Guam is in scope, not an external hub. AS38198 and AS140504 stay in scope; their other findings are unaffected.
 
+
+## Probe 6923 (GU, AS140627) -- deferred regression trace
+- reason: probe watch (atlas/probe_watch.py)
+- detail: egress trace after an earlier metadata change: AS140627 (measurement 219060211)
+- action: owner review -- check the path before trusting this probe's next results, or changing any exclusion
+- flagged: 2026-10-05T15:00:58.678262+00:00

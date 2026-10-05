@@ -1,8 +1,6 @@
 {
- "at": "2026-10-04T15:00:39.992414+00:00",
- "pending_trace": [
-  6923
- ],
+ "at": "2026-10-05T15:00:58.678262+00:00",
+ "pending_trace": [],
  "probes": {
   "1001562": {
    "asn_v4": 9471,
@@ -176,7 +174,7 @@
    "asn_v4": 14593,
    "asn_v6": null,
    "cc": "MH",
-   "status": "Connected"
+   "status": "Disconnected"
   },
   "64391": {
    "asn_v4": 55885,
@@ -212,7 +210,7 @@
    "asn_v4": 140627,
    "asn_v6": 140627,
    "cc": "GU",
-   "status": "Disconnected"
+   "status": "Connected"
   },
   "7018": {
    "asn_v4": 45345,
