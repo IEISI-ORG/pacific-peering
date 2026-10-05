@@ -2493,3 +2493,19 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - Escalations resolved 2026-10-05: AS7131 -> AS24439 (218708330, late
   result, confirmed against Atlas); AS24390 -> AS9751 / AS24439 (09-27,
   fired via Zscaler, stale); #273 (held, above).
+- Escalation review (owner, 2026-10-05): all nine remaining escalations
+  resolved from cached traces plus one retry (218785315); none open.
+  - Five MARIIX high-latency flags: ordinary. The hop after MARIIX answered
+    faster every time (ICMP generation on the exchange router).
+  - Two loop flags were not loops: 154.18.76.1 (AS7131) returned ICMP
+    host-unreachable (213209039); 202.43.12.5 (AS38198) repeated once at the
+    tail (216154286).
+  - PG 213188745: a real loop, but inside the target AS55792 at 103.3.168.1;
+    an alternate-prefix retry (218785315) goes dark at AS17828 with no loop.
+    The AS17828 -> AS55792 finding stands.
+  - Probe 23039 is dual-homed (GTA AS9246 + PDS AS17456) and egresses by
+    destination. Three corroborations (217920667, 217921610, 217929821)
+    relabelled vantage 9246 -> 17456 to match their own chains; DB and
+    export backed up first. #272 checked and correctly labelled.
+  - Classifier fixes for all three false-positive patterns queued in
+    task_plan.md (after the trip).

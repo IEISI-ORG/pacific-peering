@@ -20,36 +20,42 @@ Corridors `auto_classify.py`'s mechanical rules couldn't confidently resolve on 
 - reason: unrecognized routing loop
 - detail: probe 50365: loop involving address 202.95.200.36, not in known_anomalies.py
 - flagged: 2026-09-19T00:47:28.039833+00:00
+- resolved: 2026-10-05 -- target-side loop (owner): both looping addresses, 202.95.200.36/.35, are inside AS55792 (the target), alternating for 29 hops at +20ms per cycle after a clean AS17828 -> AS55792 handoff at hop 3->4; the confirmed_local_transit finding stands on that handoff. Alternate-prefix retry from the same probe (218785315, to 202.95.195.1) goes dark after AS17828's 202.165.194.4 with no loop, so the loop is specific to 103.3.168.1, most likely an unassigned address. Not seen in any other trace.
 
 ## AS3605 (GU) -> AS9246 (GU)
 - measurement: 213204603
 - reason: local IXP crossing with implausibly high latency
 - detail: probe 64953: hop 6 crosses MARIIX (in-fishbowl) at 15.741ms, above the 10.0ms local-fiber threshold -- either this hop isn't genuinely local despite the registry, or there's an unexpected detour/backhaul before reaching it; needs a human look, not a guess
 - flagged: 2026-09-19T01:35:21.666521+00:00
+- resolved: 2026-10-05 -- ordinary (owner): the hop after MARIIX answers faster than the MARIIX hop itself (15.7ms vs 9.8ms at 114.142.196.90), so the extra time is the exchange router generating its ICMP reply, not path. Probe 64953 already sits 9-13ms out before any IXP (202.128.2.86 / 202.128.28.32). The 10ms check uses absolute RTT; queued to compare against the later hops' minimum.
 
 ## AS152735 (GU) -> AS9246 (GU)
 - measurement: 213205466
 - reason: local IXP crossing with implausibly high latency
 - detail: probe 64953: hop 6 crosses MARIIX (in-fishbowl) at 11.111ms, above the 10.0ms local-fiber threshold -- either this hop isn't genuinely local despite the registry, or there's an unexpected detour/backhaul before reaching it; needs a human look, not a guess
 - flagged: 2026-09-19T01:38:25.504223+00:00
+- resolved: 2026-10-05 -- ordinary (owner): the hop after MARIIX answers faster than the MARIIX hop itself (11.1ms vs 10.2ms at 114.142.196.90), so the extra time is the exchange router generating its ICMP reply, not path. Probe 64953 already sits 9-13ms out before any IXP (202.128.2.86 / 202.128.28.32). The 10ms check uses absolute RTT; queued to compare against the later hops' minimum.
 
 ## AS7131 (GU) -> AS56200 (GU)
 - measurement: 213209039
 - reason: unrecognized routing loop
 - detail: probe 60689: loop involving address 154.18.76.1, not in known_anomalies.py
 - flagged: 2026-09-19T01:47:43.630954+00:00
+- resolved: 2026-10-05 -- not a loop (owner): 154.18.76.1 (AS7131) answers at hop 8 with TTL-exceeded, then at hop 11 with ICMP host-unreachable (err H) for 203.215.52.1 -- the router reporting the target unreachable. Ordinary AS7131 space, consistent with finding #231's note. Queued: the loop check should ignore repeats that carry an ICMP error.
 
 ## AS152735 (GU) -> AS395400 (GU)
 - measurement: 213209268
 - reason: local IXP crossing with implausibly high latency
 - detail: probe 62689: hop 5 crosses MARIIX (in-fishbowl) at 24.484ms, above the 10.0ms local-fiber threshold -- either this hop isn't genuinely local despite the registry, or there's an unexpected detour/backhaul before reaching it; needs a human look, not a guess
 - flagged: 2026-09-19T01:50:51.628050+00:00
+- resolved: 2026-10-05 -- ordinary (owner): the hop after MARIIX answers faster than the MARIIX hop itself (24.5ms vs 3.0ms at 168.123.136.7), so the extra time is the exchange router generating its ICMP reply, not path. The 10ms check uses absolute RTT; queued to compare against the later hops' minimum.
 
 ## AS17456 (GU) -> AS395400 (GU)
 - measurement: 213209280
 - reason: local IXP crossing with implausibly high latency
 - detail: probe 60689: hop 8 crosses MARIIX (in-fishbowl) at 23.234ms, above the 10.0ms local-fiber threshold -- either this hop isn't genuinely local despite the registry, or there's an unexpected detour/backhaul before reaching it; needs a human look, not a guess
 - flagged: 2026-09-19T01:51:00.839704+00:00
+- resolved: 2026-10-05 -- ordinary (owner): the hop after MARIIX answers faster than the MARIIX hop itself (23.2ms vs 9.4ms at 168.123.136.7), so the extra time is the exchange router generating its ICMP reply, not path. The 10ms check uses absolute RTT; queued to compare against the later hops' minimum.
 
 
 ## AS10131 (CK) -- possible offshore-hosted address space
@@ -113,6 +119,7 @@ Corridors `auto_classify.py`'s mechanical rules couldn't confidently resolve on 
 - reason: unrecognized routing loop
 - detail: probe 60689: loop involving address 202.43.12.5, not in known_anomalies.py
 - flagged: 2026-09-27T15:15:44.219904+00:00
+- resolved: 2026-10-05 -- not a loop (owner): 202.43.12.5 (AS38198 border, seen on ten prior detours) answers at hop 19, then once more at hop 20 with the same reply TTL (238); no router appears after it. A duplicate last-hop reply. Queued: the loop check should ignore a repeat at the tail with nothing new after it.
 
 ## AS10131 (CK) -> AS24439 (MH)
 - measurement: 216154414
@@ -161,6 +168,7 @@ Corridors `auto_classify.py`'s mechanical rules couldn't confidently resolve on 
 - reason: local IXP crossing with implausibly high latency
 - detail: probe 64953: hop 6 crosses MARIIX (in-fishbowl) at 10.636ms, above the 10.0ms local-fiber threshold -- either this hop isn't genuinely local despite the registry, or there's an unexpected detour/backhaul before reaching it; needs a human look, not a guess
 - flagged: 2026-09-29T15:06:59.886272+00:00
+- resolved: 2026-10-05 -- ordinary (owner): the hop after MARIIX answers faster than the MARIIX hop itself (10.6ms vs 10.3ms at 114.142.196.90), so the extra time is the exchange router generating its ICMP reply, not path. Probe 64953 already sits 9-13ms out before any IXP (202.128.2.86 / 202.128.28.32). The 10ms check uses absolute RTT; queued to compare against the later hops' minimum.
 
 ## AS45345/AS56089 (NC) -> AS131995 (NC)
 - measurement: 217486797, 217486796
@@ -174,6 +182,7 @@ Corridors `auto_classify.py`'s mechanical rules couldn't confidently resolve on 
 - detail: asn_v4 17456 -> 9246; egress trace: AS17456 (measurement 217919756)
 - action: owner review -- check the path before trusting this probe's next results, or changing any exclusion
 - flagged: 2026-10-01T15:00:56.787975+00:00
+- resolved: 2026-10-05 -- dual-homed, both local (owner): 23039 NATs to 114.142.217.210 (GTA) but egresses by destination -- 1.1.1.1 via AS17456 PDS -> AS3605 -> JPNAP Tokyo (217919756); OneQode via GTA throughout (218411496, #272, correctly labelled). No proxy. Three corroborations since 10-01 whose chains start at AS17456 were relabelled vantage 9246 -> 17456 (217920667, 217921610, 217929821; DB backed up first). Queued: take the vantage ASN from each trace's first public hop.
 
 ## Probe 61210 (NC, AS141197) -- metadata changed
 - reason: probe watch (atlas/probe_watch.py)
