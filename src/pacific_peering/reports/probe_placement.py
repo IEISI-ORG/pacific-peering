@@ -28,7 +28,6 @@ PLACEMENT_REASONS: dict[int, str] = {
     14593: "Starlink (AS14593): satellite egress via Starlink PoPs, not a local carrier; excluded from corridor candidacy",
     53813: "Zscaler (AS53813) proxy egress: paths describe the proxy's network, not the host's",
     23959: "Owl Limited (AS23959) VPN egress, served from Tokyo; excluded from scope",
-    141695: "Pacific Community (AS141695): egresses via Zscaler (AS53813), so paths aren't Fiji's own; excluded as source and target",
     2200: "Renater (AS2200): backhauls straight to metropolitan France (~500ms), never touches Pacific transit",
 }
 # Not excluded, but worth stating: a regional academic network, not a commercial carrier.

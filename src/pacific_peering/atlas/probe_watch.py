@@ -57,7 +57,8 @@ MEASUREMENT_LABEL = "probe-watch-egress"
 # Networks whose probes are known to egress via a proxy/VPN: traced weekly so
 # a fix shows up even if Atlas's metadata never changes.
 EGRESS_WATCH_ASNS: dict[int, str] = {
-    141695: "Pacific Community (SPC) -- egresses via Zscaler since 2026-09-19",
+    141695: "Pacific Community (SPC) -- via Zscaler 2026-09-19 to 2026-10-05, now native via "
+            "Telecom Fiji (218747738); SPC called that routing 'for now'",
     **KNOWN_PROXY_ASNS,
 }
 # Be-on-the-lookout: Abandoned probes we want back. Any return to the listing

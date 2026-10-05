@@ -52,10 +52,10 @@ class TracerouteResult:
 
 
 # Probes whose site filters ICMP traceroute but passes another protocol.
-# 1018023 (SPC Tonga, AS38198, software probe): ICMP dark past hop 1
-# (measurement 218132808), UDP reaches 1.1.1.1 via Digicel Tonga (218166491),
-# 2026-10-02. Remove once the host lets outbound ICMP through.
-PROBE_PROTOCOL_OVERRIDES: dict[int, str] = {1018023: "UDP"}
+# Empty since 2026-10-05: 1018023 (SPC Tonga, AS38198) was UDP-only from
+# 2026-10-02 (ICMP dark past hop 1, 218132808) until SPC opened ICMP; its
+# ICMP trace now matches UDP hop for hop (218747743 vs 218747746).
+PROBE_PROTOCOL_OVERRIDES: dict[int, str] = {}
 
 
 def _protocol_for(source_type: str, source_value: int | str) -> str:

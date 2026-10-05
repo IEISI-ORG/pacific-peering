@@ -2465,3 +2465,18 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   `tests/reports/test_status_email.py`. Also: the wrapper under
   ~/.config/pacific-peering/unattended was not executable, so the cron line
   would have failed daily; fixed with chmod u+x (outside the repo).
+- SPC probe fixes confirmed by trace (owner, 2026-10-05), after SPC's host
+  changes on 2026-10-04:
+  - Fiji probe 60575 (AS141695) now egresses natively via Telecom Fiji:
+    141695 -> 4638 -> 7474 (Optus, Sydney ~39ms) -> 13335, no Zscaler hop
+    (measurement 218747738). SPC removed a load-balancing gateway across
+    Telecom Fiji and Digicel Fiji and routes the probe via TFL only, "for
+    now". AS141695 removed from `corridor_backlog.EXTERNAL_NON_CANDIDATE_ASNS`
+    and `probe_placement.PLACEMENT_REASONS`; kept in
+    `probe_watch.EGRESS_WATCH_ASNS` so a reversion is escalated. Backlog
+    0 -> 18 candidates (FJ domestic and FJ -> NR from AS141695).
+  - Tonga probe 1018023 now passes ICMP: the ICMP trace matches UDP hop for
+    hop via Digicel Tonga (218747743 vs 218747746). `PROBE_PROTOCOL_OVERRIDES`
+    is now empty.
+  - Both traces recorded in `probe_watch_history.jsonl` so Wednesday's
+    weekly egress check compares against the new baseline, not Zscaler.

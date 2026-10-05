@@ -85,17 +85,11 @@ EXTERNAL_NON_CANDIDATE_ASNS = frozenset(
         # transit at all.
         14593,  # SpaceX Starlink
         53813,  # Zscaler (proxy artifact)
-        141695,  # Pacific Community -- real Fiji presence, but its only connected
-        # probe (60575) still egresses through Zscaler (AS53813 as the first
-        # resolved hop on every 2026-09-19 measurement fired from it) despite
-        # its LAN-level ASN metadata correctly reading Fiji -- the ASN/geo
-        # reclassification (reclassified_asns.py) fixed the economy label, not
-        # the underlying path corruption. Confirmed on 6 separate FJ-domestic
-        # measurements (findings 197-202, retracted) all showing AS53813 as
-        # the first hop, and on the original finding 25 (also retracted).
-        # Excluded here as a source *and* target until a probe on one of
-        # Fiji's actual commercial ISPs (Vodafone/AS38442, Telecom Fiji/
-        # AS4638 or AS45349, Digicel/AS45355, FINTEL/AS9241) comes online.
+        # AS141695 (Pacific Community, Fiji probe 60575) was excluded here
+        # 2026-09-19 to 2026-10-05 while it egressed via Zscaler. Lifted by the
+        # owner after SPC routed the probe via Telecom Fiji: 141695 -> 4638 ->
+        # 7474 -> 13335, no Zscaler hop (measurement 218747738). Still traced
+        # weekly via probe_watch.EGRESS_WATCH_ASNS in case that reverts.
     }
 )
 
