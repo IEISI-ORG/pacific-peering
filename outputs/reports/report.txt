@@ -1,6 +1,6 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-10-06T08:31:15.384332+00:00                  
+                 Generated: 2026-10-06T09:54:52.456818+00:00                  
 ==============================================================================
 FOUND A BUG? Bugs very likely remain in both the code and the data.
 Please open an issue: https://github.com/IEISI-ORG/pacific-peering/issues/new
@@ -824,7 +824,7 @@ NC -> KI (AS134783): detours via Equinix Sydney (Sydney)
     measurement 217487589 (from NC); chain: AS56089 -> AS18200 -> AS4826 -> AS14593 -> AS154100; RIS count 1392; RIS agrees. measurement 217487588 (from NC); chain: AS45345 -> AS18200 -> AS4826 -> AS14593 -> AS154100; RIS count 1392; RIS agrees. measurement 217487588 (from NC); chain: AS45345 -> AS18200 -> AS4826 -> AS14593 -> AS154100; RIS count 1392; RIS agrees. measurement 217487588 (from NC); chain: AS45345 -> AS18200 -> AS4826 -> AS14593 -> AS154100; RIS count 1392; RIS agrees.
 FJ -> FJ (AS136921): detours via Equinix Sydney (Sydney)
     RIS observation count: 336  [measurement 219076037]
-    measurement 219076037 (from FJ); chain: AS141695 -> AS4638 -> AS7575; RIS count 336; RIS agrees. measurement 219349677 (from FJ); chain: AS141695 -> AS45355 -> AS136921; RIS disagrees.
+    measurement 219076037 (from FJ); chain: AS141695 -> AS4638 -> AS7575; RIS count 336; RIS agrees. measurement 219349677 (from FJ); chain: AS141695 -> AS45355 -> AS136921; RIS disagrees. measurement 219455952 (from FJ); chain: AS141695 -> AS4638 -> AS7575 -> AS136921; RIS count 336; RIS agrees.
 TO -> SB (AS139277): detours via MegaIX Sydney (Sydney)
     RIS observation count: 0  [measurement 213460341]
     measurement 213460341 (from TO); chain: AS24390 -> AS7575 -> AS139609 -> AS139277; RIS disagrees.
