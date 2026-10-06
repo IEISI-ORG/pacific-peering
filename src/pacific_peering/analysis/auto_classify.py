@@ -91,7 +91,7 @@ from pathlib import Path
 
 import requests
 
-from pacific_peering.analysis import known_anomalies
+from pacific_peering.analysis import known_anomalies, pending_measurements
 from pacific_peering.analysis import store as _store
 from pacific_peering.analysis.corridor_backlog import (
     CorridorCandidate,
@@ -121,7 +121,7 @@ from pacific_peering.atlas.asn_probes import (
     PROBE_ASN_OVERRIDES,
     load_asn_probe_registry,
 )
-from pacific_peering.atlas.client import fetch_measurement_status
+from pacific_peering.atlas.client import MeasurementPending, fetch_measurement_status
 from pacific_peering.atlas.probes import load_probe_listing
 from pacific_peering.atlas.smoketest import run_probe_sourced_traceroute, run_smoketest
 from pacific_peering.atlas.targets import list_target_ips, looping_address
@@ -210,7 +210,9 @@ class _Escalation:
 @dataclass
 class ClassifyResult:
     candidate: CorridorCandidate
-    outcome: str  # "confirmed_detour" | "confirmed_local_transit" | "candidate_peering" | "inconclusive" | "escalated"
+    # "confirmed_detour" | "confirmed_local_transit" | "candidate_peering" | "inconclusive" | "escalated"
+    # | "pending" (measurement parked for a later run -- see pending_measurements.py)
+    outcome: str
     finding_id: int | None = None
     escalations: list[_Escalation] = field(default_factory=list)
 
@@ -308,7 +310,8 @@ def _fire_measurement(candidate: CorridorCandidate, target_ip: str) -> int:
     probe_ids = _source_probe_ids(candidate)
     if probe_ids:
         return run_probe_sourced_traceroute(
-            probe_ids, candidate.target_asn, target_ip=target_ip, purpose="corridor"
+            probe_ids, candidate.target_asn, target_ip=target_ip, purpose="corridor",
+            defer_if_unfinished=True,
         )
     logger.info(
         "AS%d has no connected probe in %s; sourcing by country instead",
@@ -320,6 +323,7 @@ def _fire_measurement(candidate: CorridorCandidate, target_ip: str) -> int:
         probe_count=_PROBE_COUNT,
         source_cc=candidate.source_cc,
         target_ip=target_ip,
+        defer_if_unfinished=True,
     )
 
 
@@ -456,6 +460,7 @@ def classify_corridor(
     candidate: CorridorCandidate,
     lock: threading.Lock | None = None,
     regenerate: bool = True,
+    measurement_id: int | None = None,
 ) -> ClassifyResult:
     """Fire, triangulate, and classify one corridor. Files a finding (or an
     escalation) and marks the corridor tested for every real outcome --
@@ -478,19 +483,31 @@ def classify_corridor(
             once at the end instead -- doing it after every corridor in a
             tight time-boxed batch would spend most of the budget on
             subprocess overhead rather than actual testing.
+        measurement_id: classify this already-collected measurement
+            instead of firing one (a parked measurement picked up later --
+            see `pending_measurements`). No alternate-IP retry.
     """
     asn_to_cc = _load_asn_to_cc()
     ixp_registry = load_ixp_lan_registry(IXP_REGISTRY_PATH)
     name_cache: dict[int, str] = {}
     escalations: list[_Escalation] = []
 
-    target_ips = list_target_ips(candidate.target_asn)
-    measurement_id: int | None = None
+    target_ips = [] if measurement_id is not None else list_target_ips(candidate.target_asn)
     triangulation: dict | None = None
     parsed: list[dict] = []
+    if measurement_id is not None:
+        triangulation = analyze_measurement(measurement_id, candidate.target_asn)
+        parsed = json.loads((DEFAULT_ATLAS_PARSED_DIR / f"{measurement_id}.json").read_text())
 
     for attempt, target_ip in enumerate(target_ips[:_MAX_TARGET_IP_ATTEMPTS]):
-        measurement_id = _fire_measurement(candidate, target_ip)
+        try:
+            measurement_id = _fire_measurement(candidate, target_ip)
+        except MeasurementPending as exc:
+            # Still running and already paid for: park it for a later run
+            # rather than fail the corridor or fire it again. Not marked tested.
+            with lock if lock is not None else contextlib.nullcontext():
+                pending_measurements.add_pending(candidate, exc.measurement_id, exc.reason)
+            return ClassifyResult(candidate, "pending")
         triangulation = analyze_measurement(measurement_id, candidate.target_asn)
         parsed_path = DEFAULT_ATLAS_PARSED_DIR / f"{measurement_id}.json"
         parsed = json.loads(parsed_path.read_text())
@@ -1206,6 +1223,28 @@ def _pick_next_for_batch(
     return None
 
 
+def _classify_collected(lock: threading.Lock) -> list[ClassifyResult]:
+    """Classify every parked measurement whose results have now arrived.
+
+    Runs only while no batch worker is in flight (start and end of
+    `run_batch`). Costs no Atlas credits: the measurements already ran.
+    """
+    results: list[ClassifyResult] = []
+    for candidate, measurement_id in pending_measurements.collect_ready():
+        try:
+            result = classify_corridor(candidate, lock=lock, regenerate=False, measurement_id=measurement_id)
+        except Exception:  # noqa: BLE001 - one corridor's failure must not sink the batch
+            logger.exception(
+                "AS%d -> AS%d: classifying parked measurement %d failed, leaving untested",
+                candidate.source_asn, candidate.target_asn, measurement_id,
+            )
+            continue
+        logger.info("AS%d -> AS%d: %s (parked measurement %d)",
+                    candidate.source_asn, candidate.target_asn, result.outcome, measurement_id)
+        results.append(result)
+    return results
+
+
 def run_batch(time_budget_seconds: float, max_concurrent: int = 5) -> list[ClassifyResult]:
     """Fit as many corridor tests as possible into `time_budget_seconds`,
     running concurrently across different source-economy probes.
@@ -1223,8 +1262,10 @@ def run_batch(time_budget_seconds: float, max_concurrent: int = 5) -> list[Class
 
     Stops pulling *new* work once the deadline passes; corridors already in
     flight are allowed to finish (a fired Atlas measurement can't be
-    un-fired). Regenerates every derived artifact once at the end, not per
-    corridor -- spending a time-boxed budget on repeated subprocess
+    un-fired). Parked measurements (`pending_measurements`) are collected
+    before the workers start and again after they finish. Regenerates
+    every derived artifact once at the end, not per corridor -- spending
+    a time-boxed budget on repeated subprocess
     overhead instead of actual testing would defeat the point.
     """
     deadline = time.monotonic() + time_budget_seconds
@@ -1237,7 +1278,7 @@ def run_batch(time_budget_seconds: float, max_concurrent: int = 5) -> list[Class
     # the exact same still-untested pair gets re-picked and re-fired for
     # the rest of the time budget instead of moving on to other corridors.
     skip_this_run: set[tuple[int, int]] = set()
-    results: list[ClassifyResult] = []
+    results: list[ClassifyResult] = _classify_collected(write_lock)
     results_lock = threading.Lock()
 
     def worker() -> None:
@@ -1251,7 +1292,9 @@ def run_batch(time_budget_seconds: float, max_concurrent: int = 5) -> list[Class
                 # skip_this_run only needs to guard _pick_next_for_batch.)
                 candidate = _pop_reverify_candidate(in_flight)
                 if candidate is None:
-                    candidate = _pick_next_for_batch(in_flight, frozenset(skip_this_run))
+                    candidate = _pick_next_for_batch(
+                        in_flight, frozenset(skip_this_run | pending_measurements.pending_pairs())
+                    )
                 if candidate is not None:
                     in_flight.add(candidate.source_asn)
                 elif not in_flight:
@@ -1295,6 +1338,7 @@ def run_batch(time_budget_seconds: float, max_concurrent: int = 5) -> list[Class
         t.start()
     for t in threads:
         t.join()
+    results += _classify_collected(write_lock)
 
     if results:
         _regenerate_artifacts()

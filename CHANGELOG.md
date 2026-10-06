@@ -2509,3 +2509,17 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
     export backed up first. #272 checked and correctly labelled.
   - Classifier fixes for all three false-positive patterns queued in
     task_plan.md (after the trip).
+- Reports: the ROV enforcement table gains ASNs and Probes columns between
+  Name and IPv4 (2026-10-06): the probes tested per economy and the distinct
+  networks hosting them, so e.g. NC's 5/0/0 reads as 5 probes in 2 networks.
+- Nightly batch: slow corridor measurements are parked, not lost
+  (2026-10-06, `analysis/pending_measurements.py`). When a status check
+  errors, or the probe hasn't reported by the 180s cutoff, the corridor test
+  parks the measurement in `data/analysis/pending_measurements.json` instead
+  of failing (two measurements, 219075862 and 219075970, were lost this way
+  on 2026-10-05). Each batch collects parked measurements at its start and
+  end; anything still empty after 24h is dropped and the corridor is fired
+  fresh later. Parked pairs are kept out of picks meanwhile. Opt-in
+  (`wait_for_results(defer_if_unfinished=True)`), so the ROV, IPv6 and
+  offshore checks are unchanged. The two lost measurements were parked by
+  hand for the 2026-10-06 batch.

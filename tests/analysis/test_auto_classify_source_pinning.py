@@ -61,7 +61,7 @@ def test_fire_measurement_sources_from_pinned_probes(monkeypatch):
     calls = {}
     monkeypatch.setattr(auto_classify, "load_probe_listing", lambda: _LISTING)
 
-    def _probe_sourced(probe_ids, target_asn, target_ip, purpose):
+    def _probe_sourced(probe_ids, target_asn, target_ip, purpose, defer_if_unfinished=False):
         calls["probes"] = (probe_ids, target_asn, target_ip, purpose)
         return 900000010
 
@@ -79,7 +79,7 @@ def test_fire_measurement_falls_back_to_country_without_a_source_probe(monkeypat
     calls = {}
     monkeypatch.setattr(auto_classify, "load_probe_listing", lambda: _LISTING)
 
-    def _run_smoketest(target_asn, target_cc, probe_count, source_cc, target_ip):
+    def _run_smoketest(target_asn, target_cc, probe_count, source_cc, target_ip, defer_if_unfinished=False):
         calls["country"] = source_cc
         return 900000011
 

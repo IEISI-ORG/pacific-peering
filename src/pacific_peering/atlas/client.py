@@ -32,6 +32,20 @@ _TERMINAL_STATUSES = (
 _NO_RETRY_STATUSES = ("No suitable probes",)
 
 
+class MeasurementPending(Exception):
+    """Atlas accepted the measurement, but no results could be read yet.
+
+    Raised by `wait_for_results(defer_if_unfinished=True)` so the caller can
+    park the measurement and collect it on a later run instead of throwing
+    away a measurement already paid for (analysis/pending_measurements.py).
+    """
+
+    def __init__(self, measurement_id: int, reason: str) -> None:
+        super().__init__(f"measurement {measurement_id}: {reason}")
+        self.measurement_id = measurement_id
+        self.reason = reason
+
+
 @dataclass(frozen=True)
 class TracerouteHop:
     """One hop of a traceroute, as reported by one probe."""
@@ -229,6 +243,7 @@ def wait_for_results(
     max_wait: float = 180.0,
     empty_result_retries: int = 3,
     empty_result_retry_delay: float = 5.0,
+    defer_if_unfinished: bool = False,
 ) -> list[dict]:
     """Poll until a one-off measurement finishes, then return its raw results.
 
@@ -243,13 +258,34 @@ def wait_for_results(
             wall clock can exceed `max_wait` by up to
             `empty_result_retries * empty_result_retry_delay` seconds.
         empty_result_retry_delay: Seconds to wait between those retries.
+        defer_if_unfinished: Raise `MeasurementPending` instead of failing
+            or returning `[]` when a status check errors, or when the
+            deadline passes with the measurement unfinished and no results
+            yet. An unfinished measurement *with* results still returns
+            them: one-off measurements read "Ongoing" long after their
+            probes have reported (19 of 21 in the 2026-10-05 batch).
     """
     deadline = time.monotonic() + max_wait
-    status = fetch_measurement_status(measurement_id)
-    while status not in _TERMINAL_STATUSES and time.monotonic() < deadline:
-        logger.info("Measurement %d status=%s, waiting...", measurement_id, status)
-        time.sleep(poll_interval)
+    try:
         status = fetch_measurement_status(measurement_id)
+        while status not in _TERMINAL_STATUSES and time.monotonic() < deadline:
+            logger.info("Measurement %d status=%s, waiting...", measurement_id, status)
+            time.sleep(poll_interval)
+            status = fetch_measurement_status(measurement_id)
+    except requests.RequestException as exc:
+        # Caught 2026-10-05 (219075862, 219075970): one 30s read timeout on a
+        # status poll crashed two corridor tests whose measurements had run.
+        if not defer_if_unfinished:
+            raise
+        raise MeasurementPending(measurement_id, f"status check failed ({exc})") from exc
+    if status not in _TERMINAL_STATUSES and defer_if_unfinished:
+        try:
+            results = fetch_raw_results(measurement_id)
+        except requests.RequestException as exc:
+            raise MeasurementPending(measurement_id, f"results fetch failed ({exc})") from exc
+        if not results:
+            raise MeasurementPending(measurement_id, f"still {status} after {max_wait:.0f}s with no results")
+        return results
     if status not in _TERMINAL_STATUSES:
         logger.warning(
             "Measurement %d still %s after %.0fs; returning partial results",

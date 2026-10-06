@@ -26,7 +26,7 @@ def test_run_smoketest_uses_the_given_target_ip_without_repicking(monkeypatch):
 
     calls = []
 
-    def _fire_and_persist(source_type, source_value, target_ip, description, probe_count):
+    def _fire_and_persist(source_type, source_value, target_ip, description, probe_count, defer_if_unfinished=False):
         calls.append(target_ip)
         return 42
 
@@ -49,7 +49,7 @@ def test_run_smoketest_falls_back_to_pick_target_ip_when_none_given(monkeypatch)
 
     calls = []
 
-    def _fire_and_persist(source_type, source_value, target_ip, description, probe_count):
+    def _fire_and_persist(source_type, source_value, target_ip, description, probe_count, defer_if_unfinished=False):
         calls.append(target_ip)
         return 43
 
@@ -65,7 +65,7 @@ def test_run_probe_sourced_traceroute_sources_by_explicit_probe_ids(monkeypatch)
 
     calls = []
 
-    def _fire_and_persist(source_type, source_value, target_ip, description, probe_count):
+    def _fire_and_persist(source_type, source_value, target_ip, description, probe_count, defer_if_unfinished=False):
         calls.append((source_type, source_value, target_ip, probe_count))
         return 99
 
@@ -87,7 +87,7 @@ def test_run_probe_sourced_traceroute_uses_given_target_ip_without_repicking(mon
 
     calls = []
 
-    def _fire_and_persist(source_type, source_value, target_ip, description, probe_count):
+    def _fire_and_persist(source_type, source_value, target_ip, description, probe_count, defer_if_unfinished=False):
         calls.append((source_type, source_value, target_ip, probe_count))
         return 100
 

@@ -229,7 +229,7 @@ def test_fire_measurement_forwards_target_ip_to_run_smoketest(monkeypatch):
     address (see tests/atlas/test_smoketest.py for the other end of this)."""
     captured = {}
 
-    def _run_smoketest(target_asn, target_cc, probe_count, source_cc, target_ip):
+    def _run_smoketest(target_asn, target_cc, probe_count, source_cc, target_ip, defer_if_unfinished=False):
         captured["target_ip"] = target_ip
         return 900000002
 

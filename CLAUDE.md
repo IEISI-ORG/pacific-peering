@@ -24,8 +24,10 @@ each session:
   corridor tests as possible into a 2-hour budget, firing concurrently across different
   source-economy probes (see `auto_classify.run_batch()`'s docstring for why concurrency,
   not just a longer queue, is the actual throughput lever). Each worker drains the
-  reverification queue first, then falls back to genuinely new corridors. Spends real Atlas
-  credits, but only when a genuine untested/due-for-reverification corridor exists.
+  reverification queue first, then falls back to genuinely new corridors. A measurement whose
+  results aren't in by the cutoff is parked (`data/analysis/pending_measurements.json`) and
+  collected at the start or end of a later batch, up to 24h, instead of being lost or
+  re-fired. Spends real Atlas credits, but only when a genuine untested/due-for-reverification corridor exists.
   Commits+pushes findings/reports/viz if anything changed; escalates anything it can't
   confidently resolve to `escalations.md` instead of guessing.
   **Wednesdays only**, it also runs the weekly IPv6 fleet check (`pacific-peering-ipv6-fleet --fire`,

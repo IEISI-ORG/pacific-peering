@@ -95,8 +95,13 @@ def _fire_and_persist(
     description: str,
     probe_count: int,
     af: int = 4,
+    defer_if_unfinished: bool = False,
 ) -> int:
-    """Create a one-off traceroute, wait for results, and persist raw + parsed JSON."""
+    """Create a one-off traceroute, wait for results, and persist raw + parsed JSON.
+
+    With `defer_if_unfinished`, a measurement whose results aren't readable
+    yet raises `client.MeasurementPending` and nothing is persisted.
+    """
     wait_for_headroom(1)  # account-level concurrency pre-flight (atlas/rate_limit.py)
     measurement_id = create_traceroute_measurement(
         source_type=source_type,
@@ -106,7 +111,7 @@ def _fire_and_persist(
         probe_count=probe_count,
         af=af,
     )
-    raw_results = wait_for_results(measurement_id)
+    raw_results = wait_for_results(measurement_id, defer_if_unfinished=defer_if_unfinished)
     if not raw_results:
         # wait_for_results already retries a genuinely empty fetch, so by
         # the time it's still empty here that's either a durable "No
@@ -129,6 +134,7 @@ def run_smoketest(
     probe_count: int = 3,
     source_cc: str | None = None,
     target_ip: str | None = None,
+    defer_if_unfinished: bool = False,
 ) -> int:
     """Fire one outbound one-off traceroute toward `target_asn` and persist results.
 
@@ -160,7 +166,9 @@ def run_smoketest(
     target_ip = target_ip or pick_target_ip(target_asn)
     description = f"pacific-peering smoketest outbound {source_cc} to AS{target_asn} {target_ip}"
     logger.info("Selected source economy: %s (%s)", source_name, source_cc)
-    return _fire_and_persist("country", source_cc, target_ip, description, probe_count)
+    return _fire_and_persist(
+        "country", source_cc, target_ip, description, probe_count, defer_if_unfinished=defer_if_unfinished
+    )
 
 
 def run_inbound_smoketest(
@@ -237,6 +245,7 @@ def run_probe_sourced_traceroute(
     target_asn: int,
     target_ip: str | None = None,
     purpose: str = "starlink-backhaul",
+    defer_if_unfinished: bool = False,
 ) -> int:
     """Fire a traceroute from specific Atlas probe(s) toward `target_asn`.
 
@@ -268,7 +277,9 @@ def run_probe_sourced_traceroute(
     probe_value = ",".join(str(p) for p in probe_ids)
     description = f"pacific-peering {purpose} probes={probe_value} to AS{target_asn} {target_ip}"
     logger.info("Sourcing from explicit probe(s) %s toward AS%d (%s)", probe_value, target_asn, target_ip)
-    return _fire_and_persist("probes", probe_value, target_ip, description, len(probe_ids))
+    return _fire_and_persist(
+        "probes", probe_value, target_ip, description, len(probe_ids), defer_if_unfinished=defer_if_unfinished
+    )
 
 
 def _log_measurement(measurement_id: int) -> None:
