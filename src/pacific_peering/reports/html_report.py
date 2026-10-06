@@ -155,7 +155,7 @@ def _rov_section_html(data: ReportData) -> str:
 
     rows = "".join(
         f"<tr><td>{html.escape(e.cc)}</td><td>{html.escape(e.name)}</td>"
-        f"<td>{counts(e.v4)}</td><td>{counts(e.v6)}</td></tr>"
+        f"<td>{e.asns}</td><td>{e.probes}</td><td>{counts(e.v4)}</td><td>{counts(e.v6)}</td></tr>"
         for e in rov.economies
     )
     drops = "".join(
@@ -183,10 +183,11 @@ def _rov_section_html(data: ReportData) -> str:
         who has <em>published</em> route-security data, this shows whose paths actually
         <em>enforce</em> origin validation. A traceroute can't separate a network filtering from
         its upstream filtering, and Cloudflare is anycast, so a short path only speaks for the
-        probe's own network. Counts are probes: filtered / not filtered / inconclusive.
+        probe's own network. ASNs and Probes are the networks and probes tested in each economy;
+        the IPv4/IPv6 counts are probes: filtered / not filtered / inconclusive.
     </p>
     <table>
-        <thead><tr><th>CC</th><th>Name</th><th>IPv4</th><th>IPv6</th></tr></thead>
+        <thead><tr><th>CC</th><th>Name</th><th>ASNs</th><th>Probes</th><th>IPv4</th><th>IPv6</th></tr></thead>
         <tbody>{rows}</tbody>
     </table>
     {untested_html}

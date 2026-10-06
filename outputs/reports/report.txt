@@ -1,6 +1,6 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-10-05T16:02:43.461698+00:00                  
+                 Generated: 2026-10-06T02:59:50.437410+00:00                  
 ==============================================================================
 FOUND A BUG? Bugs very likely remain in both the code and the data.
 Please open an issue: https://github.com/IEISI-ORG/pacific-peering/issues/new
@@ -168,7 +168,7 @@ WS   Samoa                       10       3            1       2
 
 ASPA PROGRESS (RFC 9582 upstream-authorization adoption)
 ==============================================================================
-19 of 158 in-scope ASNs now publish an ASPA record (3388 total across the whole internet, per Cloudflare Radar). Adoption is still early -- absence means 'not published yet', not 'no real upstream'. Per-economy: how many of its own ASNs publish a record, and the distinct upstream ASNs those records declare, split by whether the declared provider is itself an in-scope Pacific ASN or an external carrier.
+19 of 158 in-scope ASNs now publish an ASPA record (3405 total across the whole internet, per Cloudflare Radar). Adoption is still early -- absence means 'not published yet', not 'no real upstream'. Per-economy: how many of its own ASNs publish a record, and the distinct upstream ASNs those records declare, split by whether the declared provider is itself an in-scope Pacific ASN or an external carrier.
 CC   Name                      ASNs  w/ ASPA  Upstr in-FB  Upstr ext
 ------------------------------------------------------------------------------
 CK   Cook Islands                 2        1            0          3
@@ -182,24 +182,24 @@ WS   Samoa                       10        2            1          2
 
 ROV ENFORCEMENT (Cloudflare RPKI-invalid test, weekly)
 ==============================================================================
-Latest run 2026-09-29. Every connected probe traces Cloudflare's RPKI-valid and RPKI-invalid test prefixes; where the valid one answers but the invalid one dies, something on that path drops invalid routes. Where ASPA above counts who has *published* route-security data, this shows whose paths actually *enforce* origin validation. A traceroute can't separate a network filtering from its upstream filtering, and Cloudflare is anycast, so a short path only speaks for the probe's own network. Counts are probes: filtered / not filtered / inconclusive.
-CC   Name                                  IPv4      IPv6
+Latest run 2026-09-29. Every connected probe traces Cloudflare's RPKI-valid and RPKI-invalid test prefixes; where the valid one answers but the invalid one dies, something on that path drops invalid routes. Where ASPA above counts who has *published* route-security data, this shows whose paths actually *enforce* origin validation. A traceroute can't separate a network filtering from its upstream filtering, and Cloudflare is anycast, so a short path only speaks for the probe's own network. ASNs and Probes are the networks and probes tested in each economy; the IPv4/IPv6 counts are probes: filtered / not filtered / inconclusive.
+CC   Name                             ASNs Probes      IPv4      IPv6
 ------------------------------------------------------------------------------
-CK   Cook Islands                         0/0/1         -
-FJ   Fiji                                 0/0/1         -
-FM   Micronesia, Federated States of      0/3/0     0/1/0
-GU   Guam                                 1/8/0     1/0/0
-KI   Kiribati                             0/2/0     0/0/2
-MH   Marshall Islands                     0/1/0         -
-MP   Northern Mariana Islands             0/1/0         -
-NC   New Caledonia                        5/0/0     3/0/1
-NU   Niue                                 0/1/0         -
-PF   French Polynesia                     0/7/0     0/2/0
-PG   Papua New Guinea                     0/1/0         -
-PW   Palau                                0/0/1     0/1/0
-TO   Tonga                                1/0/0         -
-TV   Tuvalu                               0/1/0         -
-VU   Vanuatu                              0/1/0         -
+CK   Cook Islands                        1      1     0/0/1         -
+FJ   Fiji                                1      1     0/0/1         -
+FM   Micronesia, Federated States of     2      3     0/3/0     0/1/0
+GU   Guam                                5      9     1/8/0     1/0/0
+KI   Kiribati                            1      2     0/2/0     0/0/2
+MH   Marshall Islands                    1      1     0/1/0         -
+MP   Northern Mariana Islands            1      1     0/1/0         -
+NC   New Caledonia                       2      5     5/0/0     3/0/1
+NU   Niue                                1      1     0/1/0         -
+PF   French Polynesia                    2      7     0/7/0     0/2/0
+PG   Papua New Guinea                    1      1     0/1/0         -
+PW   Palau                               1      1     0/0/1     0/1/0
+TO   Tonga                               1      1     1/0/0         -
+TV   Tuvalu                              1      1     0/1/0         -
+VU   Vanuatu                             1      1     0/1/0         -
 Not testable (no connected probe): AS, NR, SB, WF, WS
 
 Where invalid traces died (last network reached; it or its upstream dropped the route):
@@ -217,7 +217,7 @@ Measurements: {'v4': [216995468, 216995782], 'v6': [216998611, 216999009]}. Deta
 
 IPV6 COVERAGE (adoption signal only -- no IPv6 testing yet)
 ==============================================================================
-45 of 158 in-scope ASNs have >=1 RIS-observed IPv6-originated prefix. 8 of 36 connected Atlas probes work over IPv6 (3 more are IPv6-capable but tagged as not working). Adoption tracking only -- this project deliberately isn't testing IPv6 corridors yet; queued until adoption has advanced further (see TODO below).
+45 of 158 in-scope ASNs have >=1 RIS-observed IPv6-originated prefix. 9 of 36 connected Atlas probes work over IPv6 (3 more are IPv6-capable but tagged as not working). Adoption tracking only -- this project deliberately isn't testing IPv6 corridors yet; queued until adoption has advanced further (see TODO below).
 CC   Name                      ASNs  w/ IPv6
 ------------------------------------------------------------------------------
 AS   American Samoa               2        1

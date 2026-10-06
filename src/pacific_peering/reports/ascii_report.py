@@ -44,12 +44,13 @@ def _rov_section(data: ReportData) -> list[str]:
         "*published* route-security data, this shows whose paths actually *enforce* origin "
         "validation. A traceroute can't separate a network filtering from its upstream "
         "filtering, and Cloudflare is anycast, so a short path only speaks for the probe's "
-        "own network. Counts are probes: filtered / not filtered / inconclusive."
+        "own network. ASNs and Probes are the networks and probes tested in each economy; "
+        "the IPv4/IPv6 counts are probes: filtered / not filtered / inconclusive."
     )
-    lines.append(f"{'CC':<4} {'Name':<32} {'IPv4':>9} {'IPv6':>9}")
+    lines.append(f"{'CC':<4} {'Name':<32} {'ASNs':>4} {'Probes':>6} {'IPv4':>9} {'IPv6':>9}")
     lines.append(_rule())
     for e in rov.economies:
-        lines.append(f"{e.cc:<4} {e.name:<32.32} {_fmt_counts(e.v4):>9} {_fmt_counts(e.v6):>9}")
+        lines.append(f"{e.cc:<4} {e.name:<32.32} {e.asns:>4} {e.probes:>6} {_fmt_counts(e.v4):>9} {_fmt_counts(e.v6):>9}")
     if rov.untested:
         lines.append(f"Not testable (no connected probe): {', '.join(rov.untested)}")
     lines.append("")

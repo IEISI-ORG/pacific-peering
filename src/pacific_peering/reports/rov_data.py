@@ -23,6 +23,8 @@ class RovEconomyRow:
     name: str
     v4: tuple[int, int, int]  # (filtered, not_filtered, inconclusive)
     v6: tuple[int, int, int] | None  # None: no IPv6 probe in this economy
+    probes: int = 0  # probes from this economy in the run
+    asns: int = 0  # distinct networks (IPv4 or IPv6 ASN) hosting those probes
 
 
 @dataclass(frozen=True)
@@ -65,12 +67,19 @@ def load_rov_summary(registry: dict, path: Path = DEFAULT_ROV_HISTORY_PATH) -> R
     if not lines:
         return None
     snapshot = json.loads(lines[-1])
+    probe_counts: dict[str, int] = {}
+    asns: dict[str, set[int]] = {}
+    for p in snapshot["probes"].values():
+        probe_counts[p["cc"]] = probe_counts.get(p["cc"], 0) + 1
+        asns.setdefault(p["cc"], set()).update(p[k] for k in ("asn_v4", "asn_v6") if p.get(k) is not None)
     economies = tuple(
         RovEconomyRow(
             cc=cc,
             name=registry.get(cc, {}).get("name", cc),
             v4=_counts(fams.get("v4")) or (0, 0, 0),
             v6=_counts(fams.get("v6")),
+            probes=probe_counts.get(cc, 0),
+            asns=len(asns.get(cc, ())),
         )
         for cc, fams in snapshot["economies"].items()
     )

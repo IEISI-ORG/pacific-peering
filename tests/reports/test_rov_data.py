@@ -43,6 +43,21 @@ def test_loads_latest_snapshot(tmp_path):
     assert rov.untested == ("WS",)
 
 
+def test_counts_probes_and_distinct_asns_per_economy(tmp_path):
+    snapshot = {**SNAPSHOT, "probes": {
+        **SNAPSHOT["probes"],
+        "7018": {"cc": "NC", "asn_v4": 45345, "asn_v6": 45345, "v4": {"label": "filtered"}},
+        "7019": {"cc": "NC", "asn_v4": 45345, "v4": {"label": "filtered"}},
+        "7020": {"cc": "NC", "asn_v4": 56089, "v4": {"label": "filtered"}},
+    }}
+    rov = load_rov_summary(REGISTRY, _write(tmp_path, snapshot))
+
+    nc = next(e for e in rov.economies if e.cc == "NC")
+    assert (nc.probes, nc.asns) == (3, 2)
+    pg = next(e for e in rov.economies if e.cc == "PG")  # no asn_v4 recorded
+    assert (pg.probes, pg.asns) == (1, 0)
+
+
 def test_missing_history_means_none(tmp_path):
     assert load_rov_summary(REGISTRY, tmp_path / "absent.jsonl") is None
 
