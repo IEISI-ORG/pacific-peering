@@ -133,3 +133,33 @@ def test_classify_corridor_parks_a_slow_measurement(store, monkeypatch):
     assert result.outcome == "pending"
     assert marked == []
     assert [p.measurement_id for p in pending_measurements.load_pending()] == [219075862]
+
+
+def test_classify_collected_measurement_loop_checks_the_recorded_target(store, monkeypatch, tmp_path):
+    # Regression, 2026-10-07: a parked measurement skips the firing loop, which
+    # left target_ip unbound and crashed the loop check (UnboundLocalError).
+    class _Stop(Exception):
+        pass
+
+    seen: list[str | None] = []
+
+    def _looping(hops, target=None):
+        seen.append(target)
+        raise _Stop
+
+    (tmp_path / "219075862.json").write_text(
+        '[{"measurement_id": 219075862, "probe_id": 60575, "target": "103.71.204.1", "hops": []}]'
+    )
+    monkeypatch.setattr(auto_classify, "_load_asn_to_cc", lambda path=None: {})
+    monkeypatch.setattr(auto_classify, "load_ixp_lan_registry", lambda path: {})
+    monkeypatch.setattr(auto_classify, "DEFAULT_ATLAS_PARSED_DIR", tmp_path)
+    monkeypatch.setattr(
+        auto_classify, "analyze_measurement",
+        lambda mid, asn: {"probes": [{"probe_id": 60575, "as_sequence": [{"asn": 141695}]}]},
+    )
+    monkeypatch.setattr(auto_classify, "looping_address", _looping)
+
+    with pytest.raises(_Stop):
+        auto_classify.classify_corridor(_candidate(), regenerate=False, measurement_id=219075862)
+
+    assert seen == ["103.71.204.1"]

@@ -542,6 +542,9 @@ def classify_corridor(
             "list_target_ips returned no target IPs at all"
         )
     hops_by_probe = {p["probe_id"]: p["hops"] for p in parsed}
+    # The measurement's own recorded dst_addr, not the firing loop's
+    # target_ip -- a collected parked measurement never enters that loop.
+    target_by_probe = {p["probe_id"]: p.get("target") for p in parsed}
 
     # Zero probes at all is a different failure mode from "every probe is
     # proxy-corrupted" below, and must not be conflated with it -- caught
@@ -614,7 +617,7 @@ def classify_corridor(
     loop_notes: dict[int, str] = {}
     for probe in clean_probes:
         hops = hops_by_probe.get(probe["probe_id"], [])
-        looping_addr = looping_address(hops, target=target_ip)
+        looping_addr = looping_address(hops, target=target_by_probe.get(probe["probe_id"]))
         if looping_addr is None:
             continue
         known = known_anomalies.classify_loop_address(looping_addr)

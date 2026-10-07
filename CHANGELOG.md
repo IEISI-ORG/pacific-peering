@@ -2523,3 +2523,12 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   (`wait_for_results(defer_if_unfinished=True)`), so the ROV, IPv6 and
   offshore checks are unchanged. The two lost measurements were parked by
   hand for the 2026-10-06 batch.
+- Fix: classifying a collected parked measurement crashed
+  (2026-10-07, `analysis/auto_classify.py`). The 2026-10-06 batch collected
+  219075862 and 219075970, then hit `UnboundLocalError: target_ip` in the
+  loop check: a parked measurement skips the firing loop, the only place
+  `target_ip` was set. Both corridors were left untested and re-fired in the
+  same batch (both `confirmed_local_transit`, so two duplicate measurements,
+  no lost findings). The loop check now uses each probe's own recorded
+  `target` from the parsed measurement, which is right for both paths.
+  Regression test in `tests/analysis/test_pending_measurements.py`.
