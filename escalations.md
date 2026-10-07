@@ -226,6 +226,7 @@ Corridors `auto_classify.py`'s mechanical rules couldn't confidently resolve on 
 - detail: egress trace after an earlier metadata change: AS140627 (measurement 219060211)
 - action: owner review -- check the path before trusting this probe's next results, or changing any exclusion
 - flagged: 2026-10-05T15:00:58.678262+00:00
+- resolved: 2026-10-07 -- first trace of a newly tracked probe, not a change at the site (owner asked to resolve). The "earlier metadata change" was `tracked False -> True` on 2026-10-05 (6923 added by PROBE_ECONOMY_OVERRIDES, d2706e6) while the anchor was Disconnected, so the trace waited for it to reconnect. 219060211 (source 103.151.64.31, AS140627): gateway 103.151.64.30 0.3ms -> 103.151.64.7 `gu-gnc-rt1-----Vlan780.au-gssyd-rt1.oneqode.net` 70.4ms -> EdgeIX Sydney 202.77.88.76 71.1ms -> Cloudflare 1.1.1.1 70.9ms. Native OneQode path, no proxy; the anchor is physically in Guam (Guam Exchange probe 7385 reached it at 0.66ms, 218411496). The ROV valid trace 219592602 (2026-10-07) repeats the same Sydney exit. OneQode carries this traffic Guam -> Sydney on its own backbone; that's ordinary for an AU-registered carrier and not a corridor result. The probe stays a GU vantage for AS140627.
 
 ## Probe 23039 (GU, AS17456) -- metadata changed
 - reason: probe watch (atlas/probe_watch.py)
