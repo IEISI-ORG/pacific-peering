@@ -1,6 +1,6 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-10-08T16:59:25.877607+00:00                  
+                 Generated: 2026-10-09T00:18:55.662642+00:00                  
 ==============================================================================
 FOUND A BUG? Bugs very likely remain in both the code and the data.
 Please open an issue: https://github.com/IEISI-ORG/pacific-peering/issues/new
@@ -11,8 +11,8 @@ SUMMARY
 HEADLINE: 57% of the real peering points this region's own networks use sit OUTSIDE the fish bowl (13 of 23)
 
 PATHWAYS (every corridor with a filed finding, of any kind):
-  Total pathways found:                    259
-  Internal (never leave the fish bowl):    90
+  Total pathways found:                    255
+  Internal (never leave the fish bowl):    86
   External / Leaves the region:            169
   (full corridor-by-corridor detail -- every confirmed detour, confirmed local transit, and candidate peering entry -- is in the appendix at the end of this report, not repeated here)
 
@@ -320,7 +320,7 @@ AS131995 (XLPROG-AS-AP (XL Programmation Micro SARL)) -- registered NC  [local c
 AS154410 (MTL-AS-AP (Marshall Telecom Ltd)) -- registered MH  [local company whose announced space is hosted abroad]
     Registered in the Marshall Islands (APNIC registrant ORG-MTL14-AP, Marshall Telecom LTD) but every originated prefix is served from Paris. Sole RIS upstream AS137409 (GSL Networks). 2026-10-01 traceroutes (measurements 217755229, 217755231, 217755234, 217755242, 217757573, 217757574) from AU probes and MH probe 64237 to 103.112.144.1, 151.247.194.1 and 82.24.175.1 end at core01.par2.dyjix.eu / 185.171.202.195.rev.dyjix.eu (AS212815 Dyjix SAS, Paris) at ~300ms. The earlier candidate_peering finding (row 253, measurement 213462780) already showed the path ending at AS212815. Per the project owner, 151.247.194.0 and 82.24.175.0 are IPXO-leased (IPXO geofeed, IPXO-MNT markers), and rDNS in 82.24.175.0 shows consumer NAS endpoints (Synology QuickConnect, WD remotewd): leased space used wherever the lessee is. Excluded at the owner's direction (2026-10-01); finding row 253 and corroboration 464 were removed.
 
-APPENDIX: QUARANTINED ASNs AND FINDINGS (3 -- no proof of routing yet)
+APPENDIX: QUARANTINED ASNs AND FINDINGS (7 -- no proof of routing yet)
 ==============================================================================
 In-scope ASNs whose routing hasn't been proven either way: every test so far goes dark before reaching their space. They stay in scope but aren't tested, and their findings are held out of every count and map in this report until the evidence settles it. Single findings whose evidence doesn't support the recorded path are held the same way, without touching their ASNs' other findings.
 
@@ -338,6 +338,26 @@ AS38198 to AS140504 -- one finding held; both ASNs stay in scope  [quarantined 2
     Finding #273, measurement 218712900 from probe 1018023. Digicel's 202.43.14.173 at hop 4 (9.8ms), then the target 103.49.173.1 at hop 5 (339.7ms, +330ms in one hop). The target's replies carry ittl=240 for a TTL-5 probe packet, so the forward TTL was reset past hop 4 and about 15 routers are out of view each way. RIS (2026-10-04) lists AS3605 (Guam) as AS140504's only neighbour, and the TV-NR trace 218707166 (#161) crosses JPIX Tokyo then AS3605. The recorded direct adjacency isn't shown by the trace.
     Release when: latency and other evidence support a direct TO-NR adjacency, or a trace shows the hidden middle (owner, 2026-10-05)
     Findings held (1): #273 candidate_peering: TO AS38198 to NR AS140504
+
+AS140627 to AS9241 -- one finding held; both ASNs stay in scope  [quarantined 2026-10-09]
+    Finding #286, measurement 220501321 from NR probe 1018134 (CenpacNet AS55722). Path is Nauru -> AS7131 (~36ms) -> OneQode's Sydney router 103.151.64.7 (~106ms) -> dark hops -> target at 236-254ms; 220522848's target reply TTL (244 vs 60) puts ~6 routers out of view. RIPEstat (2026-10-08) lists no AS140627 neighbour for any of the four targets. The trace doesn't show a direct adjacency.
+    Release when: a trace shows OneQode adjacent to the target with no dark hops or TTL jump in between, or RIS lists the adjacency (owner, 2026-10-09)
+    Findings held (1): #286 candidate_peering: ?? AS140627 to FJ AS9241
+
+AS140627 to AS45349 -- one finding held; both ASNs stay in scope  [quarantined 2026-10-09]
+    Finding #288, measurement 220508737 from NR probe 1018134 (CenpacNet AS55722). Path is Nauru -> AS7131 (~36ms) -> OneQode's Sydney router 103.151.64.7 (~106ms) -> dark hops -> target at 236-254ms; 220522848's target reply TTL (244 vs 60) puts ~6 routers out of view. RIPEstat (2026-10-08) lists no AS140627 neighbour for any of the four targets. The trace doesn't show a direct adjacency.
+    Release when: a trace shows OneQode adjacent to the target with no dark hops or TTL jump in between, or RIS lists the adjacency (owner, 2026-10-09)
+    Findings held (1): #288 candidate_peering: ?? AS140627 to FJ AS45349
+
+AS140627 to AS139609 -- one finding held; both ASNs stay in scope  [quarantined 2026-10-09]
+    Finding #291, measurement 220522848 from NR probe 1018134 (CenpacNet AS55722). Path is Nauru -> AS7131 (~36ms) -> OneQode's Sydney router 103.151.64.7 (~106ms) -> dark hops -> target at 236-254ms; 220522848's target reply TTL (244 vs 60) puts ~6 routers out of view. RIPEstat (2026-10-08) lists no AS140627 neighbour for any of the four targets. The trace doesn't show a direct adjacency.
+    Release when: a trace shows OneQode adjacent to the target with no dark hops or TTL jump in between, or RIS lists the adjacency (owner, 2026-10-09)
+    Findings held (1): #291 candidate_peering: ?? AS140627 to SB AS139609
+
+AS140627 to AS142279 -- one finding held; both ASNs stay in scope  [quarantined 2026-10-09]
+    Finding #294, measurement 220526456 from NR probe 1018134 (CenpacNet AS55722). Path is Nauru -> AS7131 (~36ms) -> OneQode's Sydney router 103.151.64.7 (~106ms) -> dark hops -> target at 236-254ms; 220522848's target reply TTL (244 vs 60) puts ~6 routers out of view. RIPEstat (2026-10-08) lists no AS140627 neighbour for any of the four targets. The trace doesn't show a direct adjacency.
+    Release when: a trace shows OneQode adjacent to the target with no dark hops or TTL jump in between, or RIS lists the adjacency (owner, 2026-10-09)
+    Findings held (1): #294 candidate_peering: ?? AS140627 to SB AS142279
 
 APPENDIX: LEASED AND FOREIGN-REGISTERED ADDRESS SPACE (7 prefixes)
 ==============================================================================
@@ -392,7 +412,7 @@ MH      64237 AS14593   Connected     Starlink (AS14593): satellite egress via S
 PF      23002 AS2200    Connected     Renater (AS2200): backhauls straight to metropolitan France (~500ms), never touches Pacific transit
 TO      11691 AS24390   Connected     ASN registered Fiji but probe physically in Tonga (geo-audit): counts as a TO vantage point, not FJ; USP (AS24390, registered FJ): regional academic network via AARNet (Australia), not a local commercial carrier; valid source, path unverified
 
-APPENDIX: FULL CORRIDOR DETAIL (259 pathways -- see the PATHWAYS summary at the top of this report for the plain counts)
+APPENDIX: FULL CORRIDOR DETAIL (255 pathways -- see the PATHWAYS summary at the top of this report for the plain counts)
 ==============================================================================
 
 Confirmed sub-optimal routes (RIS + Atlas both agree)
@@ -1058,12 +1078,9 @@ AS17893 (Palau National Communications Corp, PW) -> AS3605 (Guam Cablevision, LL
 AS7474 (SingTel Optus Pty Ltd, AU) -> AS4638 (Telecom Fiji Limited, FJ)
     Traceroute agreement: 1/1 probe  [measurement 212141026, vantage: NU]
     NU(AS55885) -> AS4638: `AS55885 -> AS9471 -> AS3257 (GTT) -> AS7474 -> AS4638`, but `ris_agrees: false` -- checked AS4638's real RIS neighbor list directly: dominated by AS45349 (32,318 of 32,318 observations, its effectively only neighbor), the same relationship already confirmed elsewhere in this project (NC->FJ/AS4638, upstream AS45349). AS7474 doesn't appear at all. Real signal, wrong immediate carrier. `has_routing_loop` False.
-AS140627 (OneQode, ??) -> AS9241 (Fiji International Telecomunications Ltd, FJ)
-    Traceroute agreement: 1/1 probes  [measurement 220501321, vantage: NR]
-    measurement 220501321 (from NR); chain: AS55722 -> AS7131 -> AS140627 -> AS9241; RIS disagrees; loop noted (loop at 202.170.33.17 (A genuine 2-node alternating loop inside AS174's (Cogent) own network, discovere...)).
 AS4638 (Telecom Fiji Limited, FJ) -> AS9241 (Fiji International Telecomunications Ltd, FJ)
     Traceroute agreement: 1/1 probes  [measurement 219062598, vantage: FJ]
-    measurement 219062598 (from FJ); chain: AS141695 -> AS4638 -> AS9241; RIS disagrees; loop noted (loop at 202.170.33.17 (A genuine 2-node alternating loop inside AS174's (Cogent) own network, discovere...)).
+    measurement 219062598 (from FJ); chain: AS141695 -> AS4638 -> AS9241; RIS disagrees; loop noted (loop at 202.170.33.17 (A genuine 2-node alternating loop at FINTEL's (AS9241) own edge -- two addresses...)).
 AS3605 (Guam Cablevision, GU) -> AS9246 (Teleguam Holdings, GU)
     Traceroute agreement: 2/3 probes  [measurement 213204603, vantage: GU]
     measurement 213204603 (from GU); chain: AS3605 -> AS9246; RIS disagrees. measurement 213204603 (from GU); chain: AS3605 -> AS9246; RIS disagrees. measurement 213205466 (from GU); chain: AS3605 -> AS9246; RIS disagrees. measurement 213205466 (from GU); chain: AS3605 -> AS9246; RIS disagrees. measurement 213205473 (from GU); chain: AS3605 -> AS9246; RIS disagrees. measurement 216991839 (from GU); chain: AS3605 -> AS9246; RIS disagrees.
@@ -1143,9 +1160,6 @@ NU(AS55885) -> AS38875: `AS55885 -> AS9471 -> AS6939 -> AS9246 -> AS139759`, sam
 AS7131 (PTI Pacifica Inc., MP) -> AS38875 (FSM Telecommunications Corporation, FM)
     Traceroute agreement: 2/2 probes  [measurement 211572946, vantage: MP]
     A fresh MP<->FM pair, pulled from the corridor backlog. Unusually fast for this source (9-21ms RTT, a genuinely regional path, not a Tokyo/Sydney detour). Both probes cross **Guam IX** directly -- `ixp_crossings` confirms it, and unlike every other IXP crossing this project has recorded, this one is **in-fishbowl** (`in_fishbowl: true`): the member ASN is AS10130, itself one of FSM Telecommunications Corporation's own sibling ASNs (alongside AS38875 and AS139759, all sharing the same real operator, established earlier this session). The literal target (AS38875) never resolved; the traceroute lands on sibling AS139759 instead -- the same substitution already seen for this operator's other corridors. Applying the sibling-identity correction and checking both siblings' own RIS neighbor lists directly: AS38875's only neighbor is AS10130 (1,014 observations) and AS139759's only neighbor is also AS10130 (1,009) -- so RIS *does* confirm the internal FSM sibling relationship crossed here. But that's not the same as confirming *this* adjacency: AS10130 itself has zero RIS-observed neighbors on record, and AS7131's own neighbor list doesn't include AS10130 either -- so the actual traceroute-observed leg (AS7131 -> AS10130) remains unconfirmed by RIS from either side, exactly the same shape as the earlier GU(AS3605)->FM(AS38875) MARIIX entry above, just at a different in-fishbowl exchange. Kept as a candidate, not promoted, per Validation Rule 1 -- a real in-fishbowl crossing and a real sibling-confirmed downstream relationship still don't add up to RIS confirming the specific source-to-target leg itself.
-AS140627 (OneQode, ??) -> AS45349 (Telecom Fiji Ltd, FJ)
-    Traceroute agreement: 1/1 probes  [measurement 220508737, vantage: NR]
-    measurement 220508737 (from NR); chain: AS55722 -> AS7131 -> AS140627 -> AS45349; RIS disagrees.
 AS4638 (Telecom Fiji Limited, FJ) -> AS45355 (Digicel Fiji Limited, FJ)
     Traceroute agreement: 1/1 probes  [measurement 219073379, vantage: FJ]
     measurement 219073379 (from FJ); chain: AS141695 -> AS4638 -> AS45355; RIS disagrees.
@@ -1195,9 +1209,6 @@ AS4638 (Telecom Fiji Limited, FJ) -> AS137890 (Walesi Ltd, FJ)
 AS139609 (SISCC, SB) -> AS139277 (Solomon Islands Government ICT Support Department, SB)
     Traceroute agreement: 1/1 probe  [measurement 212158129, vantage: NU]
     NU(AS55885) -> AS139277: `AS55885 -> AS9471 -> AS6939 -> AS139609 -> AS139277`, same mismatch already found via FM -- real neighbor is AS132468 (662 of 662 observations, itself confirmed this batch as a real SISCC customer), not SISCC directly. Second candidate entry for this target. `has_routing_loop` False.
-AS140627 (OneQode, ??) -> AS139609 (Solomon Islands Submarine Cable Company, SB)
-    Traceroute agreement: 1/1 probes  [measurement 220522848, vantage: NR]
-    measurement 220522848 (from NR); chain: AS55722 -> AS7131 -> AS140627 -> AS139609; RIS disagrees.
 AS1221 (Telstra Corporation Ltd (domestic ASN), AU) -> AS140504 (Digicel Nauru Corporation, NR)
     Traceroute agreement: 2 corroborations (1/1 probe each: FJ, PG)  [measurement 212106578, vantage: FJ]
     Sourced from AS24390 (University of the South Pacific, Fiji) toward AS140504 (Digicel Nauru) -- a fresh FJ<->NR pair, the retry address for a target that's already had its real relationship confirmed three times via a genuinely different carrier (AS12684, SES Astra, see `confirmed_detours.py`). First address (103.20.124.1) dead-ended one hop short of the usual AS36149 (Hawaiian Telcom) landing spot, stopping at AS1221 (Telstra domestic) instead. Applied the standing retry policy against a different cached prefix (103.49.173.1, the same address the TV-sourced retry reached directly for the SES Astra confirmation). **This time the traceroute reached the target's own address again, fully contiguous** -- but via a completely different path: `AS24390 -> AS7575 (AARNet) -> AS1221 (Telstra domestic) -> AS140504` directly, no gap. Verified the address itself is genuinely AS140504's own (RIPEstat prefix-overview confirms `103.49.173.0/24` announced solely by AS140504). Checked AS140504's real RIS neighbor list fresh, directly: `{12684 (SES Astra): 1341, 132528: 527}` -- AS1221 does not appear anywhere in it, unlike the sibling-ASN substitutions seen elsewhere in this project, this isn't a documented alternate-ASN pattern; it's a real, named global carrier (Telstra) with no RIS trace of ever connecting to this target at all. **Flagged to and reviewed with the project owner before filing** given how unlike every other candidate-vs-confirmed disagreement in this project it is -- filed as a candidate per that direction: a real, repeatable, target-reaching signal, but not RIS-confirmed, and structurally distinct enough from this project's usual sibling-ASN candidates to be worth a dedicated note rather than a generic one. `has_routing_loop` correctly returned `False`.
@@ -1210,9 +1221,6 @@ Sourced from AS17828 (PNG DataCo) toward AS140504 (Digicel Nauru) -- a fresh PG<
 AS3605 (Guam Cablevision, GU) -> AS140504 (Digicel Nauru Corporation, NR)
     Traceroute agreement: 1/1 probes  [measurement 219078947, vantage: FJ]
     measurement 219078947 (from FJ); chain: AS141695 -> AS4638 -> AS4637 -> AS3356 -> AS3605 -> AS140504; RIS disagrees.
-AS140627 (OneQode, ??) -> AS142279 (Solitech Ltd, SB)
-    Traceroute agreement: 1/1 probes  [measurement 220526456, vantage: NR]
-    measurement 220526456 (from NR); chain: AS55722 -> AS7131 -> AS140627 -> AS142279; RIS disagrees.
 AS139609 (SISCC, SB) -> AS150403 (Solomon Islands National Provident Fund Board, SB)
     Traceroute agreement: 3/3 probes  [measurement 212143018, vantage: FM]
     FM(AS139759) -> AS150403: `AS139759 -> AS9246 -> AS4637 -> AS139609 (SISCC) -> AS150403`, target resolves directly, but `ris_agrees: false` on the strict SISCC pair -- checked AS150403's real RIS neighbor list directly: `{45891: 331}`, Solomon Telekom's *other* ASN, not SISCC. A real, exact-count match (331) for AS45891<->AS150403 exists, just one hop off from what this traceroute literally shows. Kept as a candidate on the SISCC pair as tested; the real AS45891 relationship is a separate, presumably-confirmable lead. `has_routing_loop` False.

@@ -75,12 +75,12 @@ KNOWN_LOOP_LOCATIONS: tuple[KnownLoopLocation, ...] = (
     ),
     KnownLoopLocation(
         "202.170.33.0/24",
-        "A genuine 2-node alternating loop inside AS174's (Cogent) own "
-        "network, discovered while confirming FINTEL (AS9241) as a "
-        "traceroute target itself -- two addresses (.11, .17) interleave, "
-        "the target never reached, but the pre-loop resolution (AS174 "
-        "itself) still stands.",
-        asn=174,
+        "A genuine 2-node alternating loop at FINTEL's (AS9241) own edge "
+        "-- two addresses (.11, .17) in 202.170.32.0/20, originated by "
+        "AS9241, interleave and the target is never reached. Reproduced "
+        "from many vantage points and upstreams (Cogent, Telstra, OneQode "
+        "paths alike), so it isn't any one transit provider's loop.",
+        asn=9241,
     ),
     KnownLoopLocation(
         "202.1.22.0/24",

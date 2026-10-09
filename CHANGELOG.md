@@ -2532,3 +2532,14 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   no lost findings). The loop check now uses each probe's own recorded
   `target` from the parsed measurement, which is right for both paths.
   Regression test in `tests/analysis/test_pending_measurements.py`.
+- Held four OneQode candidate_peering findings (2026-10-09, owner):
+  #286/#288/#291/#294, AS140627 -> AS9241, AS45349 (FJ), AS139609, AS142279
+  (SB), all from new NR probe 1018134 on 2026-10-08. Each trace reaches
+  OneQode's Sydney router 103.151.64.7 at ~106ms, then dark hops, then the
+  target at 236-254ms; 220522848's target reply TTL puts ~6 routers out of
+  view, and RIPEstat lists no AS140627 neighbour for any target. Added to
+  `HELD_FINDINGS` like #273. Report pathways 259 -> 255.
+- Fix: the 202.170.33.0/24 known-loop entry credited the loop to Cogent
+  (AS174); RIPEstat shows 202.170.32.0/20 originated by FINTEL (AS9241), as
+  this log already recorded. Entry now asn=9241 with corrected text, and
+  the four stored loop notes (findings #21, #275, #286) rewritten to match.

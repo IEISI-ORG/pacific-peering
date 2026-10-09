@@ -129,6 +129,34 @@ HELD_FINDINGS: tuple[HeldFinding, ...] = (
             "The recorded direct adjacency isn't shown by the trace."
         ),
     ),
+    *(
+        HeldFinding(
+            kind="candidate_peering",
+            source_asn=140627,  # OneQode (AU-registered, no in-scope economy)
+            target_asn=target_asn,
+            since="2026-10-09",
+            release_when=(
+                "a trace shows OneQode adjacent to the target with no dark hops "
+                "or TTL jump in between, or RIS lists the adjacency (owner, "
+                "2026-10-09)"
+            ),
+            note=(
+                f"Finding #{finding_id}, measurement {msm} from NR probe 1018134 "
+                "(CenpacNet AS55722). Path is Nauru -> AS7131 (~36ms) -> "
+                "OneQode's Sydney router 103.151.64.7 (~106ms) -> dark hops -> "
+                "target at 236-254ms; 220522848's target reply TTL (244 vs 60) "
+                "puts ~6 routers out of view. RIPEstat (2026-10-08) lists no "
+                "AS140627 neighbour for any of the four targets. The trace "
+                "doesn't show a direct adjacency."
+            ),
+        )
+        for finding_id, target_asn, msm in (
+            (286, 9241, 220501321),  # FINTEL (FJ)
+            (288, 45349, 220508737),  # Telecom Fiji (FJ)
+            (291, 139609, 220522848),  # SISCC (SB)
+            (294, 142279, 220526456),  # Solitech (SB)
+        )
+    ),
 )
 
 HELD_FINDING_KEYS: frozenset[tuple[str, int, int]] = frozenset(
