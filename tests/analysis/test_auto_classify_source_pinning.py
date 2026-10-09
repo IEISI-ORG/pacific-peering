@@ -283,3 +283,48 @@ def test_proxy_egress_is_not_retried_against_another_ip(monkeypatch, tmp_path):
 
     assert fired == ["203.0.113.1"]
     assert result.escalations[0].reason == "all probes proxy-corrupted"
+
+
+# Per the project owner (2026-10-09): a lack of real hop data is just
+# inconclusive every time. Findings #286/#288/#291/#294 (NR probe 1018134,
+# 2026-10-08) were filed as candidate peering for OneQode -> FJ/SB targets
+# though dark hops or a return-TTL jump sat between OneQode's Sydney router
+# and the target.
+def test_dark_hops_before_the_target_are_inconclusive_not_candidate_peering(monkeypatch, tmp_path):
+    probe = _probe(1018134, 140627)
+    probe["as_sequence"][1]["contiguous_with_previous"] = False
+    probe["contiguous"] = False
+
+    result = _run(monkeypatch, tmp_path, [probe])
+
+    assert result.outcome == "inconclusive"
+    assert _corroborations(tmp_path) == {}
+
+
+def test_return_ttl_jump_before_the_target_is_inconclusive(monkeypatch, tmp_path):
+    from pacific_peering.analysis.traceroute_topology import HopResolution
+
+    raw = [{
+        "prb_id": 1018134,
+        "dst_addr": "114.142.192.1",
+        "result": [
+            {"hop": 5, "result": [{"from": "103.151.64.7", "ttl": 60, "rtt": 106.4}]},
+            {"hop": 6, "result": [{"from": "114.142.192.1", "ttl": 244, "rtt": 235.9}]},
+        ],
+    }]
+    (tmp_path / "raw").mkdir()
+    (tmp_path / "raw" / "900000012.json").write_text(json.dumps(raw))
+    monkeypatch.setattr(auto_classify, "DEFAULT_ATLAS_RAW_DIR", tmp_path / "raw")
+    monkeypatch.setattr(
+        auto_classify,
+        "resolve_traceroute_hops",
+        lambda hops, persist=True: [
+            HopResolution(hop=5, addresses=("103.151.64.7",), asns=(140627,), resolution_source="bgp"),
+            HopResolution(hop=6, addresses=("114.142.192.1",), asns=(9246,), resolution_source="bgp"),
+        ],
+    )
+
+    result = _run(monkeypatch, tmp_path, [_probe(1018134, 140627)])
+
+    assert result.outcome == "inconclusive"
+    assert _corroborations(tmp_path) == {}

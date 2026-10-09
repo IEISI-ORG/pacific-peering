@@ -2545,3 +2545,19 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   (AS174); RIPEstat shows 202.170.32.0/20 originated by FINTEL (AS9241), as
   this log already recorded (and Cogent has no Pacific presence). Entry now asn=9241 with corrected text, and
   the four stored loop notes (findings #21, #275, #286) rewritten to match.
+- Candidate peering now needs real hop data into the target (2026-10-09,
+  owner: "a lack of real hop data is just inconclusive every time").
+  `auto_classify` leaves a probe out of candidate_peering when unresolved or
+  dark hops sit between the upstream and the target (`contiguous` was
+  already required for local transit, never for peering), or when
+  `analysis/hidden_hops.py` finds routers out of view on an all-answering
+  step: an `ittl` on the target reply (forward TTL reset, #273), or a
+  return-TTL jump of 5+ hops beyond the forward step (#291). The threshold
+  is calibrated on 610 real final segments: 568 sit at -1..+1, and every
+  segment at 5+ also jumps 40ms+ in one hop. If no probe is left, the
+  corridor is inconclusive, with no escalation. Tests include 35 real-trace
+  scenarios in `tests/analysis/fixtures/hidden_hops_scenarios.json`.
+  Existing findings are untouched. Run against them, the rule flags all five
+  held findings and nine others (#2, #210, #216, #221, #229, #255, #275,
+  #277, #279), five of which (#210, #221, #275, #277, #279) rest only on
+  failing corroborations.

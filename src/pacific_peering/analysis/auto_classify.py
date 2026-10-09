@@ -92,6 +92,7 @@ from pathlib import Path
 import requests
 
 from pacific_peering.analysis import known_anomalies, pending_measurements
+from pacific_peering.analysis.hidden_hops import hidden_hops_reason
 from pacific_peering.analysis import store as _store
 from pacific_peering.analysis.corridor_backlog import (
     CorridorCandidate,
@@ -123,6 +124,7 @@ from pacific_peering.atlas.asn_probes import (
 )
 from pacific_peering.atlas.client import MeasurementPending, fetch_measurement_status
 from pacific_peering.atlas.probes import load_probe_listing
+from pacific_peering.atlas.smoketest import DEFAULT_RAW_DIR as DEFAULT_ATLAS_RAW_DIR
 from pacific_peering.atlas.smoketest import run_probe_sourced_traceroute, run_smoketest
 from pacific_peering.atlas.targets import list_target_ips, looping_address
 from pacific_peering.discovery import cloudflare_radar
@@ -636,6 +638,27 @@ def classify_corridor(
                 )
             )
 
+    raw_path = DEFAULT_ATLAS_RAW_DIR / f"{measurement_id}.json"
+    raw_by_probe = (
+        {r.get("prb_id"): r for r in json.loads(raw_path.read_text())} if raw_path.exists() else {}
+    )
+
+    def _hidden_before_target(probe: dict, target_asn: int) -> str | None:
+        """Why this probe's step into the target isn't real hop data, or None.
+
+        Per the project owner (2026-10-09): a lack of real hop data is just
+        inconclusive every time. Findings #286/#288/#291/#294 were filed as
+        OneQode -> FJ/SB peering across dark hops or a return-TTL jump.
+        """
+        if not probe.get("contiguous", True):
+            return "unresolved or dark hops sit between the upstream and the target"
+        raw = raw_by_probe.get(probe["probe_id"])
+        if raw is None:
+            return None
+        resolved = resolve_traceroute_hops(hops_by_probe.get(probe["probe_id"], []), persist=False)
+        target_hop = next((h.hop for h in resolved if h.asns == (target_asn,)), None)
+        return None if target_hop is None else hidden_hops_reason(raw, target_hop)
+
     detour_pick: tuple[dict, str, str] | None = None  # (crossing, ix_name, hub_city)
     local_transit_pick: dict | None = None
     candidate_picks: list[dict] = []
@@ -670,7 +693,14 @@ def classify_corridor(
             # Only a trace that reached the target shows an adjacency to call
             # peering; a dead end (findings #270/#271, 2026-10-02: died inside
             # the probe's own AS) is rule 5's "nothing real reached".
-            candidate_picks.append(probe)
+            hidden = _hidden_before_target(probe, candidate.target_asn)
+            if hidden is None:
+                candidate_picks.append(probe)
+            else:
+                logger.info(
+                    "AS%d -> AS%d: probe %d left out of candidate peering, %s",
+                    candidate.source_asn, candidate.target_asn, probe["probe_id"], hidden,
+                )
 
     if tba_ixp_hit and detour_pick is None:
         escalations.append(
