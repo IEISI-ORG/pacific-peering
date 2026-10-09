@@ -2538,8 +2538,10 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   OneQode's Sydney router 103.151.64.7 at ~106ms, then dark hops, then the
   target at 236-254ms; 220522848's target reply TTL puts ~6 routers out of
   view, and RIPEstat lists no AS140627 neighbour for any target. Added to
-  `HELD_FINDINGS` like #273. Report pathways 259 -> 255.
+  `HELD_FINDINGS` like #273. Report pathways 259 -> 255. Owner's read: the
+  +130-147ms past Sydney is an around-the-world or scenic Pacific-rim leg
+  hidden in the dark hops, not a OneQode handoff.
 - Fix: the 202.170.33.0/24 known-loop entry credited the loop to Cogent
   (AS174); RIPEstat shows 202.170.32.0/20 originated by FINTEL (AS9241), as
-  this log already recorded. Entry now asn=9241 with corrected text, and
+  this log already recorded (and Cogent has no Pacific presence). Entry now asn=9241 with corrected text, and
   the four stored loop notes (findings #21, #275, #286) rewritten to match.

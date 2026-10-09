@@ -1,6 +1,6 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-10-09T00:18:55.662642+00:00                  
+                 Generated: 2026-10-09T00:20:27.299159+00:00                  
 ==============================================================================
 FOUND A BUG? Bugs very likely remain in both the code and the data.
 Please open an issue: https://github.com/IEISI-ORG/pacific-peering/issues/new
@@ -340,22 +340,22 @@ AS38198 to AS140504 -- one finding held; both ASNs stay in scope  [quarantined 2
     Findings held (1): #273 candidate_peering: TO AS38198 to NR AS140504
 
 AS140627 to AS9241 -- one finding held; both ASNs stay in scope  [quarantined 2026-10-09]
-    Finding #286, measurement 220501321 from NR probe 1018134 (CenpacNet AS55722). Path is Nauru -> AS7131 (~36ms) -> OneQode's Sydney router 103.151.64.7 (~106ms) -> dark hops -> target at 236-254ms; 220522848's target reply TTL (244 vs 60) puts ~6 routers out of view. RIPEstat (2026-10-08) lists no AS140627 neighbour for any of the four targets. The trace doesn't show a direct adjacency.
+    Finding #286, measurement 220501321 from NR probe 1018134 (CenpacNet AS55722). Path is Nauru -> AS7131 (~36ms) -> OneQode's Sydney router 103.151.64.7 (~106ms) -> dark hops -> target at 236-254ms; 220522848's target reply TTL (244 vs 60) puts ~6 routers out of view. RIPEstat (2026-10-08) lists no AS140627 neighbour for any of the four targets. The trace doesn't show a direct adjacency. Owner's read (2026-10-09): +130-147ms past Sydney is too much for Sydney -> Suva/Honiara on cable, so the hidden middle is an around-the-world or scenic Pacific-rim leg, not a OneQode handoff.
     Release when: a trace shows OneQode adjacent to the target with no dark hops or TTL jump in between, or RIS lists the adjacency (owner, 2026-10-09)
     Findings held (1): #286 candidate_peering: ?? AS140627 to FJ AS9241
 
 AS140627 to AS45349 -- one finding held; both ASNs stay in scope  [quarantined 2026-10-09]
-    Finding #288, measurement 220508737 from NR probe 1018134 (CenpacNet AS55722). Path is Nauru -> AS7131 (~36ms) -> OneQode's Sydney router 103.151.64.7 (~106ms) -> dark hops -> target at 236-254ms; 220522848's target reply TTL (244 vs 60) puts ~6 routers out of view. RIPEstat (2026-10-08) lists no AS140627 neighbour for any of the four targets. The trace doesn't show a direct adjacency.
+    Finding #288, measurement 220508737 from NR probe 1018134 (CenpacNet AS55722). Path is Nauru -> AS7131 (~36ms) -> OneQode's Sydney router 103.151.64.7 (~106ms) -> dark hops -> target at 236-254ms; 220522848's target reply TTL (244 vs 60) puts ~6 routers out of view. RIPEstat (2026-10-08) lists no AS140627 neighbour for any of the four targets. The trace doesn't show a direct adjacency. Owner's read (2026-10-09): +130-147ms past Sydney is too much for Sydney -> Suva/Honiara on cable, so the hidden middle is an around-the-world or scenic Pacific-rim leg, not a OneQode handoff.
     Release when: a trace shows OneQode adjacent to the target with no dark hops or TTL jump in between, or RIS lists the adjacency (owner, 2026-10-09)
     Findings held (1): #288 candidate_peering: ?? AS140627 to FJ AS45349
 
 AS140627 to AS139609 -- one finding held; both ASNs stay in scope  [quarantined 2026-10-09]
-    Finding #291, measurement 220522848 from NR probe 1018134 (CenpacNet AS55722). Path is Nauru -> AS7131 (~36ms) -> OneQode's Sydney router 103.151.64.7 (~106ms) -> dark hops -> target at 236-254ms; 220522848's target reply TTL (244 vs 60) puts ~6 routers out of view. RIPEstat (2026-10-08) lists no AS140627 neighbour for any of the four targets. The trace doesn't show a direct adjacency.
+    Finding #291, measurement 220522848 from NR probe 1018134 (CenpacNet AS55722). Path is Nauru -> AS7131 (~36ms) -> OneQode's Sydney router 103.151.64.7 (~106ms) -> dark hops -> target at 236-254ms; 220522848's target reply TTL (244 vs 60) puts ~6 routers out of view. RIPEstat (2026-10-08) lists no AS140627 neighbour for any of the four targets. The trace doesn't show a direct adjacency. Owner's read (2026-10-09): +130-147ms past Sydney is too much for Sydney -> Suva/Honiara on cable, so the hidden middle is an around-the-world or scenic Pacific-rim leg, not a OneQode handoff.
     Release when: a trace shows OneQode adjacent to the target with no dark hops or TTL jump in between, or RIS lists the adjacency (owner, 2026-10-09)
     Findings held (1): #291 candidate_peering: ?? AS140627 to SB AS139609
 
 AS140627 to AS142279 -- one finding held; both ASNs stay in scope  [quarantined 2026-10-09]
-    Finding #294, measurement 220526456 from NR probe 1018134 (CenpacNet AS55722). Path is Nauru -> AS7131 (~36ms) -> OneQode's Sydney router 103.151.64.7 (~106ms) -> dark hops -> target at 236-254ms; 220522848's target reply TTL (244 vs 60) puts ~6 routers out of view. RIPEstat (2026-10-08) lists no AS140627 neighbour for any of the four targets. The trace doesn't show a direct adjacency.
+    Finding #294, measurement 220526456 from NR probe 1018134 (CenpacNet AS55722). Path is Nauru -> AS7131 (~36ms) -> OneQode's Sydney router 103.151.64.7 (~106ms) -> dark hops -> target at 236-254ms; 220522848's target reply TTL (244 vs 60) puts ~6 routers out of view. RIPEstat (2026-10-08) lists no AS140627 neighbour for any of the four targets. The trace doesn't show a direct adjacency. Owner's read (2026-10-09): +130-147ms past Sydney is too much for Sydney -> Suva/Honiara on cable, so the hidden middle is an around-the-world or scenic Pacific-rim leg, not a OneQode handoff.
     Release when: a trace shows OneQode adjacent to the target with no dark hops or TTL jump in between, or RIS lists the adjacency (owner, 2026-10-09)
     Findings held (1): #294 candidate_peering: ?? AS140627 to SB AS142279
 

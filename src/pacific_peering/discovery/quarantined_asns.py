@@ -147,7 +147,10 @@ HELD_FINDINGS: tuple[HeldFinding, ...] = (
                 "target at 236-254ms; 220522848's target reply TTL (244 vs 60) "
                 "puts ~6 routers out of view. RIPEstat (2026-10-08) lists no "
                 "AS140627 neighbour for any of the four targets. The trace "
-                "doesn't show a direct adjacency."
+                "doesn't show a direct adjacency. Owner's read (2026-10-09): "
+                "+130-147ms past Sydney is too much for Sydney -> Suva/Honiara "
+                "on cable, so the hidden middle is an around-the-world or "
+                "scenic Pacific-rim leg, not a OneQode handoff."
             ),
         )
         for finding_id, target_asn, msm in (
