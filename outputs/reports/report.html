@@ -79,7 +79,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
 <body>
 <div class="wrap">
     <h1>Pacific Peering — Regional Routing Report</h1>
-    <div class="meta">Generated 2026-10-09T00:20:28.425417+00:00</div>
+    <div class="meta">Generated 2026-10-10T15:02:21.739301+00:00</div>
 
     <div class="feedback-box"><strong>Found a bug?</strong> This report is generated
         automatically, and bugs very likely remain in both the code and the data. If
@@ -293,6 +293,12 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <td>13</td>
             <td>yes</td>
         </tr><tr>
+            <td>AS3605</td><td>Guam Cablevision</td>
+            <td>GU, NR, PW</td>
+            <td>(none)</td>
+            <td>5</td>
+            <td>yes</td>
+        </tr><tr>
             <td>AS6453</td><td>Tata Communications</td>
             <td>MH, NR</td>
             <td>CK, FJ, FM, GU, MP, NC, NU, PF, PG, PW, TV, VU</td>
@@ -315,12 +321,6 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <td>AS, WS</td>
             <td>FM, NC, NU, TO</td>
             <td>5</td>
-            <td>yes</td>
-        </tr><tr>
-            <td>AS38442</td><td>Vodafone Fiji</td>
-            <td>FJ, VU</td>
-            <td>GU, MP, NC, PG</td>
-            <td>4</td>
             <td>yes</td>
         </tr></tbody>
     </table>
@@ -363,19 +363,19 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <td>PTI Pacifica Inc.</td>
             <td>GU, NR</td>
         </tr><tr>
+            <td>Guam (GU)</td>
+            <td>2</td>
+            <td>11</td>
+            <td>Micronesia</td>
+            <td>Guam Cablevision, Guam Cablevision, LLC</td>
+            <td>NR, PW</td>
+        </tr><tr>
             <td>Fiji (FJ)</td>
             <td>2</td>
             <td>9</td>
             <td>Melanesia, Polynesia</td>
             <td>FINTEL (Fiji International Telecommunications Ltd), Vodafone Fiji</td>
             <td>TV, VU</td>
-        </tr><tr>
-            <td>Guam (GU)</td>
-            <td>1</td>
-            <td>10</td>
-            <td>Micronesia</td>
-            <td>Guam Cablevision, LLC</td>
-            <td>PW</td>
         </tr><tr>
             <td>Samoa (WS)</td>
             <td>1</td>
@@ -1686,7 +1686,7 @@ Twelfth confirmation of AS139609(SISCC)&lt;-&gt;AS45891. `AS55885 -&gt; AS9471 -
 
     <details class="section-toggle">
         <summary>Confirmed local transit (RIS + Atlas both agree, stays in-fishbowl)
-            <span class="count">(45)</span></summary>
+            <span class="count">(46)</span></summary>
         <div class="transit-card">
             <div class="headline">AS141695 (Pacific Community,
                 FJ) -&gt; AS4638
@@ -1952,6 +1952,22 @@ Twelfth confirmation of AS139609(SISCC)&lt;-&gt;AS45891. `AS55885 -&gt; AS9471 -
                 &middot; vantage point NR</div>
             <details class="note"><summary>measurement 220523576 (from NR); chain: AS55722 -&gt; AS7131 -&gt; AS140627 -&gt; AS1221 -&gt; AS132528 -&gt; AS38800 -&gt; AS38227; RIS count 329; RIS agrees.</summary>measurement 220523576 (from NR); chain: AS55722 -&gt; AS7131 -&gt; AS140627 -&gt; AS1221 -&gt; AS132528 -&gt; AS38800 -&gt; AS38227; RIS count 329; RIS agrees.</details>
         </div><div class="transit-card">
+            <div class="headline">AS3605 (Guam Cablevision,
+                GU) -&gt; AS140504
+                (Digicel Nauru Corporation, NR)</div>
+            <div>RIS observation count: 0
+                &middot; measurement 219078947
+                &middot; vantage point FJ</div>
+            <details class="note"><summary>
+
+---
+
+**ASPA-confirmed 2026-10-10T15:02:18.497818+00:00**: AS140504&#x27;s own published ASPA record (RFC 9582, via Cloudflare Radar) lists AS3605 among its…</summary>
+
+---
+
+**ASPA-confirmed 2026-10-10T15:02:18.497818+00:00**: AS140504&#x27;s own published ASPA record (RFC 9582, via Cloudflare Radar) lists AS3605 among its authorized providers [3605, 12684, 45355, 132528] -- a cryptographically-signed statement from the target itself, promoted from candidate_peering on that basis rather than RIS agreement.</details>
+        </div><div class="transit-card">
             <div class="headline">AS18200 (Office des Postes et Telecommunications New-Caledonia,
                 NC) -&gt; AS140718
                 (ENGIE PACIFIQUE INFORMATIQUE, NC)</div>
@@ -2052,7 +2068,7 @@ Twelfth confirmation of AS139609(SISCC)&lt;-&gt;AS45891. `AS55885 -&gt; AS9471 -
 
     <details class="section-toggle">
         <summary>Candidate peering (strong traceroute signal, RIS disagrees &mdash; unconfirmed)
-            <span class="count">(41)</span></summary>
+            <span class="count">(40)</span></summary>
         <div class="candidate-card">
             <div class="headline">AS7131 (PTI Pacifica Inc.,
                 MP) -&gt; AS3605
@@ -2388,14 +2404,6 @@ NU(AS55885) -&gt; AS132462: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS38008 -&g
 
 Sourced from AS17828 (PNG DataCo) toward AS140504 (Digicel Nauru) -- a fresh PG&lt;-&gt;NR pair. Clean, direct traceroute, fully contiguous: `AS17828 -&gt; AS4826 (Vocus Connect) -&gt; AS1221 (Telstra Limited, domestic ASN) -&gt; AS140504`, the literal target resolving directly -- the first time this project has reached AS140504 via anything other than its two already-confirmed relationships (AS132528/Digicel Australia and AS12684/SES Astra). But `ris_agrees: false`: checked AS140504&#x27;s full RIS neighbor list directly -- `{132528: 1032, 12684: 616}` -- AS1221 doesn&#x27;t appear at all (checked AS1221&#x27;s own fishbowl entry too: empty neighbor list, no RIS visibility into it from any direction). Not a fishbowl-scope artifact (both ends are genuinely in-fishbowl Pacific/Nauru ASNs -- Telstra itself isn&#x27;t in-fishbowl, but the shape matches Validation Rule 4 regardless). Notable: AS1221 and AS132528 (AS140504&#x27;s real dominant neighbor) are both Telstra-operated -- a genuinely different ASN of the same corporate family reaching the same target directly, rather than the already-confirmed backbone ASN specifically. Kept as a candidate, not promoted, per the standing principle.</details>
         </div><div class="candidate-card">
-            <div class="headline">AS3605 (Guam Cablevision,
-                GU) -&gt; AS140504
-                (Digicel Nauru Corporation, NR)</div>
-            <div>Traceroute agreement: 1/1 probes
-                &middot; measurement 219078947
-                &middot; vantage point FJ</div>
-            <details class="note"><summary>measurement 219078947 (from FJ); chain: AS141695 -&gt; AS4638 -&gt; AS4637 -&gt; AS3356 -&gt; AS3605 -&gt; AS140504; RIS disagrees.</summary>measurement 219078947 (from FJ); chain: AS141695 -&gt; AS4638 -&gt; AS4637 -&gt; AS3356 -&gt; AS3605 -&gt; AS140504; RIS disagrees.</details>
-        </div><div class="candidate-card">
             <div class="headline">AS139609 (SISCC,
                 SB) -&gt; AS150403
                 (Solomon Islands National Provident Fund Board, SB)</div>
@@ -2511,7 +2519,7 @@ NU(AS55885) -&gt; AS150403: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS139609 -&
     <h2>ASPA progress (RFC 9582 upstream-authorization adoption)</h2>
     <p class="section-intro">
         <strong>20 of 158</strong> in-scope ASNs
-        now publish an ASPA record (3443 total across the
+        now publish an ASPA record (3462 total across the
         whole internet, per Cloudflare Radar). Adoption is still early &mdash; absence
         means "not published yet," not "no real upstream." Per economy: how many of its
         own ASNs publish a record, and the distinct upstream ASNs those records declare,
@@ -2929,7 +2937,7 @@ NU(AS55885) -&gt; AS150403: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS139609 -&
         </tr><tr>
             <td>CK</td><td>Cook Islands</td>
             <td>Polynesia</td>
-            <td>2</td><td>6</td><td>0</td>
+            <td>2</td><td>6</td><td>1</td>
             <td>1</td>
         </tr><tr>
             <td>GU</td><td>Guam</td>

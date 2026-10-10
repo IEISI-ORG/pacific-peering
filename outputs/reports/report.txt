@@ -1,6 +1,6 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-10-09T00:20:27.299159+00:00                  
+                 Generated: 2026-10-10T15:02:20.597622+00:00                  
 ==============================================================================
 FOUND A BUG? Bugs very likely remain in both the code and the data.
 Please open an issue: https://github.com/IEISI-ORG/pacific-peering/issues/new
@@ -63,6 +63,9 @@ AS174     Cogent Communications                    5        5      12       no
 AS45355   Digicel Fiji Limited                     3       10      13      yes
     Dependent: FJ, TO, VU
     Vantage-only: CK, FM, GU, MP, NC, NU, PF, PG, PW, TV
+AS3605    Guam Cablevision                         3        0       5      yes
+    Dependent: GU, NR, PW
+    Vantage-only: (none)
 AS6453    Tata Communications                      2       12      17       no
     Dependent: MH, NR
     Vantage-only: CK, FJ, FM, GU, MP, NC, NU, PF, PG, PW, TV, VU
@@ -75,9 +78,6 @@ AS132528  Digicel Australia/Telstra-operat         2        5       5       no
 AS17993   Vodafone Samoa Limited                   2        4       5      yes
     Dependent: AS, WS
     Vantage-only: FM, NC, NU, TO
-AS38442   Vodafone Fiji                            2        4       4      yes
-    Dependent: FJ, VU
-    Vantage-only: GU, MP, NC, PG
 
 AS9241 (FINTEL, Fiji) doesn't crack the table above by dependent-economy count (just Tuvalu), but is the starkest single-point-of-failure finding this project has confirmed: it's Tuvalu's *only* RIS-observed neighbor of consequence, reconfirmed by 8 independent vantage points across the region. Every measured path into Tuvalu -- from every direction this project has tested -- passes through one single carrier.
 
@@ -93,12 +93,12 @@ French Polynesia (PF)                  2      14 Polynesia
 Northern Mariana Islands (MP)          2      12 Micronesia                  
     Serves: GU, NR
     Carriers: PTI Pacifica Inc.
+Guam (GU)                              2      11 Micronesia                  
+    Serves: NR, PW
+    Carriers: Guam Cablevision, Guam Cablevision, LLC
 Fiji (FJ)                              2       9 Melanesia, Polynesia        
     Serves: TV, VU
     Carriers: FINTEL (Fiji International Telecommunications Ltd), Vodafone Fiji
-Guam (GU)                              1      10 Micronesia                  
-    Serves: PW
-    Carriers: Guam Cablevision, LLC
 Samoa (WS)                             1       1 Polynesia                   
     Serves: AS
     Carriers: Vodafone Samoa Limited
@@ -171,7 +171,7 @@ WS   Samoa                       10       3            1       2
 
 ASPA PROGRESS (RFC 9582 upstream-authorization adoption)
 ==============================================================================
-20 of 158 in-scope ASNs now publish an ASPA record (3443 total across the whole internet, per Cloudflare Radar). Adoption is still early -- absence means 'not published yet', not 'no real upstream'. Per-economy: how many of its own ASNs publish a record, and the distinct upstream ASNs those records declare, split by whether the declared provider is itself an in-scope Pacific ASN or an external carrier.
+20 of 158 in-scope ASNs now publish an ASPA record (3462 total across the whole internet, per Cloudflare Radar). Adoption is still early -- absence means 'not published yet', not 'no real upstream'. Per-economy: how many of its own ASNs publish a record, and the distinct upstream ASNs those records declare, split by whether the declared provider is itself an in-scope Pacific ASN or an external carrier.
 CC   Name                      ASNs  w/ ASPA  Upstr in-FB  Upstr ext
 ------------------------------------------------------------------------------
 CK   Cook Islands                 2        1            0          3
@@ -290,7 +290,7 @@ NU   Niue                             Polynesia        1       1       1        
 PW   Palau                            Micronesia       3       3       1         3
 TO   Tonga                            Polynesia        5       3       1         3
 FJ   Fiji                             Melanesia       21      20       2         2
-CK   Cook Islands                     Polynesia        2       6       0         1
+CK   Cook Islands                     Polynesia        2       6       1         1
 GU   Guam                             Micronesia      10      14       6         1
 PF   French Polynesia                 Polynesia        6       9       6         1
 PG   Papua New Guinea                 Melanesia       38      10       1         1
@@ -1030,6 +1030,13 @@ AS38442 (Vodafone Fiji Limited, FJ) -> AS137890 (Walesi Ltd, FJ)
 AS38227 (Computer Services Limited (CSL), WS) -> AS139679 (Office of the Electoral Commission, WS)
     RIS observation count: 329  [measurement 220523576, vantage: NR]
     measurement 220523576 (from NR); chain: AS55722 -> AS7131 -> AS140627 -> AS1221 -> AS132528 -> AS38800 -> AS38227; RIS count 329; RIS agrees.
+AS3605 (Guam Cablevision, GU) -> AS140504 (Digicel Nauru Corporation, NR)
+    RIS observation count: 0  [measurement 219078947, vantage: FJ]
+    
+
+---
+
+**ASPA-confirmed 2026-10-10T15:02:18.497818+00:00**: AS140504's own published ASPA record (RFC 9582, via Cloudflare Radar) lists AS3605 among its authorized providers [3605, 12684, 45355, 132528] -- a cryptographically-signed statement from the target itself, promoted from candidate_peering on that basis rather than RIS agreement.
 AS18200 (Office des Postes et Telecommunications New-Caledonia, NC) -> AS140718 (ENGIE PACIFIQUE INFORMATIQUE, NC)
     RIS observation count: 331  [measurement 213200718, vantage: NC]
     measurement 213200718 (from NC); chain: AS56089 -> AS18200; RIS count 331; RIS agrees. measurement 213200718 (from NC); chain: AS45345 -> AS18200; RIS count 331; RIS agrees. measurement 213200718 (from NC); chain: AS45345 -> AS18200; RIS count 331; RIS agrees. measurement 213460824 (from NC); chain: AS56089 -> AS18200; RIS count 331; RIS agrees. measurement 213460824 (from NC); chain: AS45345 -> AS18200; RIS count 331; RIS agrees. measurement 213460824 (from NC); chain: AS45345 -> AS18200; RIS count 331; RIS agrees.
@@ -1218,9 +1225,6 @@ AS1221 (Telstra Corporation Ltd (domestic ASN), AU) -> AS140504 (Digicel Nauru C
 **Merged 2026-09-17, UNIQUE-constraint migration**: this finding was originally filed as two separate candidate_peering rows (this one, sourced via AS24390/Fiji, plus a second sourced via AS17828/PNG) because the pre-migration schema keyed identity by source economy, not source ASN -- both traceroutes land on the same real upstream, AS1221 (Telstra), so they are the same adjacency. The second row's own investigation, preserved verbatim below, incorrectly recorded this finding's source_cc as PG (the vantage point's economy) rather than AU (Telstra's actual registration country) -- an artifact of the same source_cc/source_asn conflation this migration fixes going forward.
 
 Sourced from AS17828 (PNG DataCo) toward AS140504 (Digicel Nauru) -- a fresh PG<->NR pair. Clean, direct traceroute, fully contiguous: `AS17828 -> AS4826 (Vocus Connect) -> AS1221 (Telstra Limited, domestic ASN) -> AS140504`, the literal target resolving directly -- the first time this project has reached AS140504 via anything other than its two already-confirmed relationships (AS132528/Digicel Australia and AS12684/SES Astra). But `ris_agrees: false`: checked AS140504's full RIS neighbor list directly -- `{132528: 1032, 12684: 616}` -- AS1221 doesn't appear at all (checked AS1221's own fishbowl entry too: empty neighbor list, no RIS visibility into it from any direction). Not a fishbowl-scope artifact (both ends are genuinely in-fishbowl Pacific/Nauru ASNs -- Telstra itself isn't in-fishbowl, but the shape matches Validation Rule 4 regardless). Notable: AS1221 and AS132528 (AS140504's real dominant neighbor) are both Telstra-operated -- a genuinely different ASN of the same corporate family reaching the same target directly, rather than the already-confirmed backbone ASN specifically. Kept as a candidate, not promoted, per the standing principle.
-AS3605 (Guam Cablevision, GU) -> AS140504 (Digicel Nauru Corporation, NR)
-    Traceroute agreement: 1/1 probes  [measurement 219078947, vantage: FJ]
-    measurement 219078947 (from FJ); chain: AS141695 -> AS4638 -> AS4637 -> AS3356 -> AS3605 -> AS140504; RIS disagrees.
 AS139609 (SISCC, SB) -> AS150403 (Solomon Islands National Provident Fund Board, SB)
     Traceroute agreement: 3/3 probes  [measurement 212143018, vantage: FM]
     FM(AS139759) -> AS150403: `AS139759 -> AS9246 -> AS4637 -> AS139609 (SISCC) -> AS150403`, target resolves directly, but `ris_agrees: false` on the strict SISCC pair -- checked AS150403's real RIS neighbor list directly: `{45891: 331}`, Solomon Telekom's *other* ASN, not SISCC. A real, exact-count match (331) for AS45891<->AS150403 exists, just one hop off from what this traceroute literally shows. Kept as a candidate on the SISCC pair as tested; the real AS45891 relationship is a separate, presumably-confirmable lead. `has_routing_loop` False.
