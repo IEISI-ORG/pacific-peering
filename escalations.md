@@ -257,21 +257,26 @@ Corridors `auto_classify.py`'s mechanical rules couldn't confidently resolve on 
 - detail: probe_watch (2026-10-09T15:00Z nightly) logged "probe 22761: status Disconnected -> Connected" but traced no egress (status-only change); that night's batch tested 0 corridors. Atlas probe API (2026-10-10T21:3xZ): status Connected since 2026-10-08T21:26:09Z, last_connected ~2026-10-10T21:31Z, asn_v4 10131, prefix 202.65.48.0/20, geometry 159.79W 18.87S (Aitutaki, so the CK label is right), tags IPv4 Works / IPv4 RFC1918. The weekly refresh (2026-10-10T15:02Z) regenerated the backlog at 0 candidates ("0 new-probe" -- 22761 isn't new), so the 2026-09-27 corridors CK -> AS9751 (AS), AS17828 (PG), AS24390 (FJ), AS24439 (MH), AS45193 (FM), AS45879 (WF), AS140504 (NR) aren't queued. probe_gaps.txt now lists CK as FRAGILE (1 connected) instead of zero. task_plan.md (~3263-3265, 2026-09-28/29) notes 22761 "still reads Connected while failing to start measurements", so Connected alone doesn't show it works. Tonight's reverify ration (64 finding IDs, enqueued 2026-10-10T15:02Z) may include some of the 14 CK-vantage corroborations; not checked, since the export carries no finding IDs and this check doesn't query findings.db.
 - proposed correction: none to the data. Owner's call whether to fire a single regression trace from 22761 first (per the regression-test-on-probe-change rule) and, if it runs, re-queue the seven CK corridors; and whether probe_watch should trace egress on a Disconnected -> Connected change for a sole-probe economy.
 - flagged: 2026-10-10T21:40:00Z
+- resolved: 2026-10-12 -- probe 22761 runs measurements again (owner asked to resolve). The 2026-10-11T15:00Z nightly batch's reverify ration re-ran all seven CK corridors from 22761: AS45193 (FM) confirmed_local_transit (221440229) and AS140504 (NR) confirmed_detour (221440864) came back with real hop data; AS9751, AS17828, AS24390, AS24439 and AS45879 were inconclusive with no real signal after 1-2 attempts (221439245, 221439382, 221439545, 221439948, 221440468). No separate regression trace needed, since two real results show the probe isn't stuck in the Connected-but-failing state. probe_watch egress-tracing on reconnect for sole-probe economies not added.
+
 ## AS9471 (PF) -> AS45879 (WF)
 - measurement: 221440472
 - reason: unrecognized routing loop
 - detail: probe 30712: loop involving address 117.20.32.11, not in known_anomalies.py
 - flagged: 2026-10-11T15:22:26.215108+00:00
+- resolved: 2026-10-12 -- added 117.20.32.0/24 (AS45879, Orange Wallis & Futuna) to known_anomalies.py (owner). Raw hops: all three probes (30712, 52614, 53098) cross Opentransit (AS5511), then .11 answers every other hop to TTL 32, constant reply TTL, target 117.20.34.1 never reached -- a loop at the destination's own edge, same pattern as FINTEL.
 
 ## AS9471 (PF) -> AS45879 (WF)
 - measurement: 221440472
 - reason: unrecognized routing loop
 - detail: probe 53098: loop involving address 117.20.32.11, not in known_anomalies.py
 - flagged: 2026-10-11T15:22:26.215108+00:00
+- resolved: 2026-10-12 -- added 117.20.32.0/24 (AS45879, Orange Wallis & Futuna) to known_anomalies.py (owner). Raw hops: all three probes (30712, 52614, 53098) cross Opentransit (AS5511), then .11 answers every other hop to TTL 32, constant reply TTL, target 117.20.34.1 never reached -- a loop at the destination's own edge, same pattern as FINTEL.
 
 ## AS7131 (MP) -> AS38198 (TO)
 - measurement: 221439393
 - reason: unrecognized routing loop
 - detail: probe 65653: loop involving address 202.43.12.5, not in known_anomalies.py
 - flagged: 2026-10-11T15:50:27.312831+00:00
+- resolved: 2026-10-12 -- added 202.43.12.0/23 (AS38198, Digicel Tonga) to known_anomalies.py (owner). Raw hops: Telstra Global (AS4637) -> Digicel Fiji (AS45355) -> .5 answers at hops 18-19 then dark to the end, target 202.43.12.1 never reached -- a double-answer inside the destination's own network.
 

@@ -165,6 +165,31 @@ KNOWN_LOOP_LOCATIONS: tuple[KnownLoopLocation, ...] = (
         "AS7131 precedent rather than a new third-party anomaly.",
         asn=7131,
     ),
+    KnownLoopLocation(
+        "117.20.32.0/24",
+        "Orange Wallis & Futuna's (AS45879) own address space -- "
+        "confirmed via RIPEstat network-info. On the PF(AS9471)->WF "
+        "corridor (measurement 221440472), all three ONATI probes "
+        "(30712, 52614, 53098) reach it via Opentransit (AS5511, "
+        "Orange's own backbone), then 117.20.32.11 answers every other "
+        "hop to TTL 32 with a silent hop between and a constant reply "
+        "TTL; the target 117.20.34.1 is never reached. A genuine "
+        "2-node loop at the destination's own edge, the same pattern "
+        "as FINTEL (202.170.33.0/24) above.",
+        asn=45879,
+    ),
+    KnownLoopLocation(
+        "202.43.12.0/23",
+        "Digicel Tonga's (AS38198) own address space -- confirmed via "
+        "RIPEstat network-info. On the MP(AS7131)->TO corridor "
+        "(measurement 221439393, probe 65653) the path runs Telstra "
+        "Global (AS4637) -> Digicel Fiji (AS45355, 202.129.231.109/.110) "
+        "-> 202.43.12.5, which answers at two consecutive TTLs and then "
+        "the trace goes dark before the target 202.43.12.1. A "
+        "double-answer inside the destination's own network, the same "
+        "pattern as Datec-PNG (202.95.200.0/24) above.",
+        asn=38198,
+    ),
 )
 
 
