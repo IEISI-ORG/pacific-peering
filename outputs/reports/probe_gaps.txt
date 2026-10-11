@@ -139,7 +139,7 @@ PATHWAY COVERAGE (20 economies) -- same table as the main report's Pathway Cover
   PW  Palau (Micronesia) -- 3 ASN(s), 3 listed / 1 active probe(s) on a tracked ASN, 3 untested pathway(s)
   TO  Tonga (Polynesia) -- 5 ASN(s), 3 listed / 1 active probe(s) on a tracked ASN, 3 untested pathway(s)
   FJ  Fiji (Melanesia) -- 21 ASN(s), 20 listed / 2 active probe(s) on a tracked ASN, 2 untested pathway(s)
-  CK  Cook Islands (Polynesia) -- 2 ASN(s), 6 listed / 0 active probe(s) on a tracked ASN, 1 untested pathway(s)
+  CK  Cook Islands (Polynesia) -- 2 ASN(s), 6 listed / 1 active probe(s) on a tracked ASN, 1 untested pathway(s)
   GU  Guam (Micronesia) -- 10 ASN(s), 14 listed / 6 active probe(s) on a tracked ASN, 1 untested pathway(s)
   PF  French Polynesia (Polynesia) -- 6 ASN(s), 9 listed / 6 active probe(s) on a tracked ASN, 1 untested pathway(s)
   PG  Papua New Guinea (Melanesia) -- 38 ASN(s), 10 listed / 1 active probe(s) on a tracked ASN, 1 untested pathway(s)
