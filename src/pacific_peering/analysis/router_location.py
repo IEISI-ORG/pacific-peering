@@ -27,6 +27,7 @@ import functools
 import ipaddress
 import logging
 import socket
+import threading
 from collections.abc import Callable
 from dataclasses import dataclass
 
@@ -41,6 +42,11 @@ HUB_TOO_FAST = "too_fast"  # answered faster than fibre allows from the source t
 HUB_UNMAPPED = "unmapped"  # city has no EXTERNAL_HUB_LATLON entry, so no floor
 
 PtrResolver = Callable[[str], "str | None"]
+
+PTR_TIMEOUT_S = 2.0
+"""Longest one PTR lookup may take before it counts as no PTR (2026-10-12: an
+uncapped serial sweep of ~800 hops took ~13 minutes, mostly addresses with no
+reverse zone running out the resolver's retries)."""
 
 
 @dataclass(frozen=True)
@@ -66,11 +72,26 @@ class RouterHub:
 
 @functools.lru_cache(maxsize=4096)
 def reverse_dns(address: str) -> str | None:
-    """PTR lookup; None on any failure. Cached: a nightly batch meets the same backbone routers again and again."""
-    try:
-        return socket.gethostbyaddr(address)[0]
-    except OSError:
-        return None
+    """PTR lookup capped at `PTR_TIMEOUT_S`; None on failure or timeout.
+
+    Cached: a nightly batch meets the same backbone routers again and again.
+    `gethostbyaddr` has no timeout of its own, so it runs on a daemon thread
+    that is abandoned (never joined again) once the cap passes; a daemon
+    thread can't hold the batch open at exit, and a pool would queue new
+    lookups behind hung ones.
+    """
+    found: list[str] = []
+
+    def _lookup() -> None:
+        try:
+            found.append(socket.gethostbyaddr(address)[0])
+        except OSError:
+            pass
+
+    worker = threading.Thread(target=_lookup, name=f"ptr-{address}", daemon=True)
+    worker.start()
+    worker.join(PTR_TIMEOUT_S)
+    return found[0] if found else None
 
 
 def _is_global(address: str) -> bool:
