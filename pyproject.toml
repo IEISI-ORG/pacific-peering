@@ -37,6 +37,7 @@ pacific-peering-investigate-hop = "pacific_peering.analysis.hop_investigation:ma
 pacific-peering-corridor-backlog = "pacific_peering.analysis.corridor_backlog:main"
 pacific-peering-feasibility = "pacific_peering.analysis.feasibility:main"
 pacific-peering-feasibility-sweep = "pacific_peering.analysis.feasibility_sweep:main"
+pacific-peering-router-detour-sweep = "pacific_peering.analysis.router_detour_sweep:main"
 pacific-peering-ixp-lan-registry = "pacific_peering.analysis.ixp_lan_registry:main"
 pacific-peering-irr-leads = "pacific_peering.analysis.irr_leads:main"
 pacific-peering-pipeline = "pacific_peering.pipeline:main"
