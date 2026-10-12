@@ -641,6 +641,111 @@ Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
 git push
 ```
 
+
+#### Task 3, part B: cap each reverse-DNS lookup at 2 seconds (owner, 2026-10-12 checkpoint)
+
+Added at the post-Task-2 checkpoint. `socket.gethostbyaddr` has no timeout, and
+an address with no reverse zone holds it for the resolver's whole retry cycle:
+the Task 2 sweep spent about 13 minutes on ~800 serial lookups (0.26 s with a
+cache). Task 4 puts these lookups inside the nightly 2-hour batch, so the cap
+lands first. A lookup that doesn't answer within the cap counts as no PTR.
+
+**Files:**
+- Modify: `src/pacific_peering/analysis/router_location.py` (`reverse_dns`, imports, one constant)
+- Test: `tests/analysis/test_router_location.py` (append)
+
+**Interfaces:**
+- Produces: `PTR_TIMEOUT_S: float = 2.0` (module constant, read at call time); `reverse_dns(address) -> str | None` keeps its signature and `lru_cache`.
+
+- [ ] **Step B1: Write the failing tests (append to `tests/analysis/test_router_location.py`; add `import threading` and `import time` to its imports)**
+
+```python
+def test_reverse_dns_returns_the_ptr_name(monkeypatch):
+    rl.reverse_dns.cache_clear()
+    monkeypatch.setattr(rl.socket, "gethostbyaddr", lambda address: (TATA_LA, [], [address]))
+    try:
+        assert rl.reverse_dns("64.86.252.73") == TATA_LA
+    finally:
+        rl.reverse_dns.cache_clear()
+
+
+def test_reverse_dns_gives_up_after_the_cap(monkeypatch):
+    release = threading.Event()
+
+    def _hang(address):
+        release.wait(5)
+        return ("late.example.net", [], [address])
+
+    rl.reverse_dns.cache_clear()
+    monkeypatch.setattr(rl, "PTR_TIMEOUT_S", 0.05)
+    monkeypatch.setattr(rl.socket, "gethostbyaddr", _hang)
+    start = time.monotonic()
+    try:
+        assert rl.reverse_dns("192.0.2.2") is None
+        assert time.monotonic() - start < 1.0
+    finally:
+        release.set()
+        rl.reverse_dns.cache_clear()
+```
+
+- [ ] **Step B2: Run to verify the cap test fails**
+
+Run: `uv run pytest tests/analysis/test_router_location.py -q`
+Expected: `test_reverse_dns_gives_up_after_the_cap` FAILS (`AttributeError: ... has no attribute 'PTR_TIMEOUT_S'`); the other tests pass.
+
+- [ ] **Step B3: Implement**
+
+Add `import threading` to `router_location.py`'s standard-library imports. Add this constant after the `PtrResolver` alias:
+
+```python
+PTR_TIMEOUT_S = 2.0
+"""Longest one PTR lookup may take before it counts as no PTR (2026-10-12: an
+uncapped serial sweep of ~800 hops took ~13 minutes, mostly addresses with no
+reverse zone running out the resolver's retries)."""
+```
+
+Replace `reverse_dns` with:
+
+```python
+@functools.lru_cache(maxsize=4096)
+def reverse_dns(address: str) -> str | None:
+    """PTR lookup capped at `PTR_TIMEOUT_S`; None on failure or timeout.
+
+    Cached: a nightly batch meets the same backbone routers again and again.
+    `gethostbyaddr` has no timeout of its own, so it runs on a daemon thread
+    that is abandoned (never joined again) once the cap passes; a daemon
+    thread can't hold the batch open at exit, and a pool would queue new
+    lookups behind hung ones.
+    """
+    found: list[str] = []
+
+    def _lookup() -> None:
+        try:
+            found.append(socket.gethostbyaddr(address)[0])
+        except OSError:
+            pass
+
+    worker = threading.Thread(target=_lookup, name=f"ptr-{address}", daemon=True)
+    worker.start()
+    worker.join(PTR_TIMEOUT_S)
+    return found[0] if found else None
+```
+
+- [ ] **Step B4: Run tests**
+
+Run: `uv run pytest tests/analysis/test_router_location.py -q && uv run ruff check src/pacific_peering/analysis/router_location.py tests/analysis/test_router_location.py`
+Expected: `11 passed`; `All checks passed!`
+
+- [ ] **Step B5: Commit**
+
+```bash
+uv run pytest -q
+git add src/pacific_peering/analysis/router_location.py tests/analysis/test_router_location.py
+git commit -m "fix(analysis): cap each reverse-DNS lookup at 2 seconds
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
+```
+
 ---
 
 ### Task 4: Wire the router hub into `classify_corridor`
@@ -670,6 +775,7 @@ transit, Digicel Fiji -> Digicel Tonga) and left #92 uncorroborated.
 from __future__ import annotations
 
 import json
+import sqlite3
 
 import pytest
 
@@ -729,11 +835,20 @@ def env(monkeypatch, tmp_path):
         return state["ptr"].get(address)
 
     monkeypatch.setattr(auto_classify, "reverse_dns", _ptr)
-    real_connect = store.connect
     db = tmp_path / "findings.db"
-    monkeypatch.setattr(auto_classify._store, "connect", lambda db_path=None: real_connect(db))
-    state["db"] = lambda: real_connect(db)
+    monkeypatch.setattr(auto_classify._store, "connect", lambda db_path=None: _open(db))
+    state["db"] = lambda: _open(db)
     return state
+
+
+def _open(db):
+    # tests/conftest.py replaces store.connect with a blocker before this module's fixtures
+    # run, so open the tmp DB the way store.connect does instead of capturing it.
+    conn = sqlite3.connect(db)
+    conn.row_factory = sqlite3.Row
+    conn.execute("PRAGMA foreign_keys = ON")
+    conn.executescript(store._SCHEMA)
+    return conn
 
 
 def _rows(env, sql):
@@ -880,7 +995,7 @@ from pacific_peering.analysis.router_location import HUB_OK, HUB_TOO_FAST, Route
 - [ ] **Step 4: Run tests**
 
 Run: `uv run pytest tests/analysis/test_router_detour.py -q && uv run pytest -q && uv run ruff check src tests`
-Expected: `6 passed`; the full suite passes (250 before this plan, plus 9 + 2 + 3 + 6 = 270); `All checks passed!`
+Expected: `6 passed`; the full suite passes (259 after Task 1, plus 2 + 3 + 2 + 6 = 272); `All checks passed!`
 
 - [ ] **Step 5: Docs**
 
