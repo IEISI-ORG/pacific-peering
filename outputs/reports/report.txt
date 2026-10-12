@@ -1,6 +1,6 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-10-11T15:50:29.369184+00:00                  
+                 Generated: 2026-10-12T04:28:30.690760+00:00                  
 ==============================================================================
 FOUND A BUG? Bugs very likely remain in both the code and the data.
 Please open an issue: https://github.com/IEISI-ORG/pacific-peering/issues/new
@@ -11,8 +11,8 @@ SUMMARY
 HEADLINE: 57% of the real peering points this region's own networks use sit OUTSIDE the fish bowl (13 of 23)
 
 PATHWAYS (every corridor with a filed finding, of any kind):
-  Total pathways found:                    256
-  Internal (never leave the fish bowl):    87
+  Total pathways found:                    255
+  Internal (never leave the fish bowl):    86
   External / Leaves the region:            169
   (full corridor-by-corridor detail -- every confirmed detour, confirmed local transit, and candidate peering entry -- is in the appendix at the end of this report, not repeated here)
 
@@ -222,7 +222,7 @@ Measurements: {'v4': [219592602, 219592884], 'v6': [219595412, 219596017]}. Deta
 
 IPV6 COVERAGE (adoption signal only -- no IPv6 testing yet)
 ==============================================================================
-45 of 158 in-scope ASNs have >=1 RIS-observed IPv6-originated prefix. 9 of 37 connected Atlas probes work over IPv6 (3 more are IPv6-capable but tagged as not working). Adoption tracking only -- this project deliberately isn't testing IPv6 corridors yet; queued until adoption has advanced further (see TODO below).
+45 of 158 in-scope ASNs have >=1 RIS-observed IPv6-originated prefix. 10 of 37 connected Atlas probes work over IPv6 (3 more are IPv6-capable but tagged as not working). Adoption tracking only -- this project deliberately isn't testing IPv6 corridors yet; queued until adoption has advanced further (see TODO below).
 CC   Name                      ASNs  w/ IPv6
 ------------------------------------------------------------------------------
 AS   American Samoa               2        1
@@ -412,7 +412,7 @@ MH      64237 AS14593   Connected     Starlink (AS14593): satellite egress via S
 PF      23002 AS2200    Connected     Renater (AS2200): backhauls straight to metropolitan France (~500ms), never touches Pacific transit
 TO      11691 AS24390   Connected     ASN registered Fiji but probe physically in Tonga (geo-audit): counts as a TO vantage point, not FJ; USP (AS24390, registered FJ): regional academic network via AARNet (Australia), not a local commercial carrier; valid source, path unverified
 
-APPENDIX: FULL CORRIDOR DETAIL (256 pathways -- see the PATHWAYS summary at the top of this report for the plain counts)
+APPENDIX: FULL CORRIDOR DETAIL (255 pathways -- see the PATHWAYS summary at the top of this report for the plain counts)
 ==============================================================================
 
 Confirmed sub-optimal routes (RIS + Atlas both agree)
@@ -639,6 +639,10 @@ GU -> TO (AS38198): detours via AS3356 (Level 3/Lumen) + AS4637 (Telstra Global)
 MP -> TO (AS38198): detours via AS6939 (Hurricane Electric) + AS132528 (Digicel Australia/Telstra-operated backbone) -- international transit (Sydney)
     RIS observation count: 1321  [measurement 211570035]
     PTI Pacifica (AS7131, CNMI) -> Digicel Tonga (AS38198) -- a fresh MP<->TO pair, landing on the existing GU(AS3605)->TO adjacency (AS45355<->AS38198), a second independent confirmation from a different source economy. Upstream of the target is AS45355 (Digicel Fiji), RIS-agreeing with an *exact* match (1,321), identical to the original finding. Genuinely new detail this time: probe 62689 resolves an intermediate hop to **AS132528** -- the same Telstra-operated Digicel-Australia backbone ASN already independently confirmed at Equinix Sydney in the NC->FJ/AS45355 entry above -- `ixp_crossings` confirms it directly at that same fabric again here, a second, unrelated measurement finding the identical real infrastructure. `has_routing_loop` flagged probe 60689 `True` -- checked directly per the now-standard process: a near-destination repeat (`202.43.12.5`, not the literal target `202.43.12.1`) with stable RTT, the same known ordinary-noise shape, not a real loop. All 3 probes eventually reach the same real, BGP-confirmed AS38198 address (`202.43.12.5`) already established in the original entry as this corridor's routine final-hop pattern.
+
+---
+
+**2026-10-12 reverification (measurement 221439393, probe 65653, Saipan): the route has moved off Sydney to Los Angeles.** AS7131 -> AS6453 (Tata) 64.86.252.73 `tcore2.lvw-losangeles.as6453.net` ~121ms -> AS4637 (Telstra Global) 202.84.143.25 `tlot-core02.telstraglobal.net` ~167ms -> AS45355 (Digicel Fiji) 202.129.231.109/.110 ~207ms -> AS38198 202.43.12.5 ~213ms (double-answer, then dark; 202.43.12.1 never answered). Still an off-region detour, but over private interconnects with no IXP crossing, so the classifier filed the AS45355 -> AS38198 edge as confirmed_local_transit (#295) and did not corroborate this finding. detour_hub stays Sydney: 211570035 is still the only corroborating measurement.
 NC -> TO (AS38198): detours via AS132528 (Digicel Australia/Telstra-operated backbone) -- crosses Equinix Sydney (Sydney)
     RIS observation count: 1321  [measurement 212128887]
     New Caledonia (AS45345) -> Digicel Tonga (AS38198) -- a fresh NC<->TO pair, a tenth independent confirmation of the AS45355(Digicel Fiji)<->AS38198 adjacency (after GU, MP, VU, PF, CK, PG, PW, TV, FJ). `AS45345 -> AS18200 (OPT-NC) -> AS132528 (Digicel Australia) -> AS45355`, target technically reached (the same real, BGP-confirmed AS38198 address `202.43.12.5` seen on every prior entry), RIS-agreeing with the identical exact match (1,321) on all 3 probes. Crosses Equinix Sydney directly. `has_routing_loop` correctly flagged `True` on all 3 probes -- hops 4 and 5 both resolve to `45.127.173.29`, inside this project's already-registered Equinix Sydney LAN prefix (`45.127.172.0/22`, ix_id 94), the same ordinary IXP-fabric pattern already established last tranche; not escalated.
@@ -1130,9 +1134,6 @@ AS7131 (PTI Pacifica Inc., MP) -> AS23676 (Mariana Islands Internet Exchange, GU
 AS6939 (Hurricane Electric, US) -> AS23676 (University of Guam, GU)
     Traceroute agreement: 1/1 probe  [measurement 212141106, vantage: NU]
     NU(AS55885) -> AS23676 (University of Guam): `AS55885 -> AS9471 -> AS6939 -> AS23676`, but `ris_agrees: false` -- checked AS23676's real RIS neighbor list directly: AS395400 (University of Guam's *other* ASN, already established elsewhere in this project) is dominant (380 of 380 observations). Real signal, one hop off from the real relationship. `has_routing_loop` False.
-AS7131 (PTI Pacifica Inc., MP) -> AS38198 (Digicel Tonga Ltd, TO)
-    Traceroute agreement: 1/1 probes  [measurement 212244674, vantage: MP]
-    measurement 212244674 (from MP); chain: AS7131; RIS disagrees. measurement 216154532 (from MP); chain: AS7131; RIS disagrees.
 AS45355 (Digicel Fiji Limited, FJ) -> AS38442 (Vodafone Fiji Limited, FJ)
     Traceroute agreement: 1/1 probes  [measurement 219066887, vantage: FJ]
     measurement 219066887 (from FJ); chain: AS141695 -> AS4638 -> AS45355 -> AS38442; RIS disagrees.

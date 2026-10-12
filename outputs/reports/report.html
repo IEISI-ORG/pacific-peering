@@ -79,7 +79,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
 <body>
 <div class="wrap">
     <h1>Pacific Peering — Regional Routing Report</h1>
-    <div class="meta">Generated 2026-10-11T15:50:30.530937+00:00</div>
+    <div class="meta">Generated 2026-10-12T04:28:31.840142+00:00</div>
 
     <div class="feedback-box"><strong>Found a bug?</strong> This report is generated
         automatically, and bugs very likely remain in both the code and the data. If
@@ -95,13 +95,13 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
     </div>
 
     <div class="stat-row">
-        <div class="stat-tile"><div class="value">256</div><div class="label">Pathways found (total)</div></div>
-        <div class="stat-tile"><div class="value">87</div><div class="label">Internal (never leave the fish bowl)</div></div>
+        <div class="stat-tile"><div class="value">255</div><div class="label">Pathways found (total)</div></div>
+        <div class="stat-tile"><div class="value">86</div><div class="label">Internal (never leave the fish bowl)</div></div>
         <div class="stat-tile red-box"><div class="value">169</div>
             <div class="label">External / Leaves the region</div></div>
     </div>
     <p class="section-intro">Full corridor-by-corridor detail for all
-        256 pathways above is further down this report
+        255 pathways above is further down this report
         (Confirmed sub-optimal routes / Confirmed local transit / Candidate
         peering), collapsed by default so it doesn't dominate the page &mdash;
         click any of those section headings to expand.</p>
@@ -1011,7 +1011,11 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
                 (Sydney)</div>
             <div>RIS observation count: 1321
                 &middot; measurement 211570035</div>
-            <details class="note"><summary>PTI Pacifica (AS7131, CNMI) -&gt; Digicel Tonga (AS38198) -- a fresh MP&lt;-&gt;TO pair, landing on the existing GU(AS3605)-&gt;TO adjacency (AS45355&lt;-&gt;AS38198), a second…</summary>PTI Pacifica (AS7131, CNMI) -&gt; Digicel Tonga (AS38198) -- a fresh MP&lt;-&gt;TO pair, landing on the existing GU(AS3605)-&gt;TO adjacency (AS45355&lt;-&gt;AS38198), a second independent confirmation from a different source economy. Upstream of the target is AS45355 (Digicel Fiji), RIS-agreeing with an *exact* match (1,321), identical to the original finding. Genuinely new detail this time: probe 62689 resolves an intermediate hop to **AS132528** -- the same Telstra-operated Digicel-Australia backbone ASN already independently confirmed at Equinix Sydney in the NC-&gt;FJ/AS45355 entry above -- `ixp_crossings` confirms it directly at that same fabric again here, a second, unrelated measurement finding the identical real infrastructure. `has_routing_loop` flagged probe 60689 `True` -- checked directly per the now-standard process: a near-destination repeat (`202.43.12.5`, not the literal target `202.43.12.1`) with stable RTT, the same known ordinary-noise shape, not a real loop. All 3 probes eventually reach the same real, BGP-confirmed AS38198 address (`202.43.12.5`) already established in the original entry as this corridor&#x27;s routine final-hop pattern.</details>
+            <details class="note"><summary>PTI Pacifica (AS7131, CNMI) -&gt; Digicel Tonga (AS38198) -- a fresh MP&lt;-&gt;TO pair, landing on the existing GU(AS3605)-&gt;TO adjacency (AS45355&lt;-&gt;AS38198), a second…</summary>PTI Pacifica (AS7131, CNMI) -&gt; Digicel Tonga (AS38198) -- a fresh MP&lt;-&gt;TO pair, landing on the existing GU(AS3605)-&gt;TO adjacency (AS45355&lt;-&gt;AS38198), a second independent confirmation from a different source economy. Upstream of the target is AS45355 (Digicel Fiji), RIS-agreeing with an *exact* match (1,321), identical to the original finding. Genuinely new detail this time: probe 62689 resolves an intermediate hop to **AS132528** -- the same Telstra-operated Digicel-Australia backbone ASN already independently confirmed at Equinix Sydney in the NC-&gt;FJ/AS45355 entry above -- `ixp_crossings` confirms it directly at that same fabric again here, a second, unrelated measurement finding the identical real infrastructure. `has_routing_loop` flagged probe 60689 `True` -- checked directly per the now-standard process: a near-destination repeat (`202.43.12.5`, not the literal target `202.43.12.1`) with stable RTT, the same known ordinary-noise shape, not a real loop. All 3 probes eventually reach the same real, BGP-confirmed AS38198 address (`202.43.12.5`) already established in the original entry as this corridor&#x27;s routine final-hop pattern.
+
+---
+
+**2026-10-12 reverification (measurement 221439393, probe 65653, Saipan): the route has moved off Sydney to Los Angeles.** AS7131 -&gt; AS6453 (Tata) 64.86.252.73 `tcore2.lvw-losangeles.as6453.net` ~121ms -&gt; AS4637 (Telstra Global) 202.84.143.25 `tlot-core02.telstraglobal.net` ~167ms -&gt; AS45355 (Digicel Fiji) 202.129.231.109/.110 ~207ms -&gt; AS38198 202.43.12.5 ~213ms (double-answer, then dark; 202.43.12.1 never answered). Still an off-region detour, but over private interconnects with no IXP crossing, so the classifier filed the AS45355 -&gt; AS38198 edge as confirmed_local_transit (#295) and did not corroborate this finding. detour_hub stays Sydney: 211570035 is still the only corroborating measurement.</details>
         </div><div class="detour-card">
             <div class="headline">NC -&gt; TO
                 (AS38198): detours via AS132528 (Digicel Australia/Telstra-operated backbone) -- crosses Equinix Sydney
@@ -2076,7 +2080,7 @@ Twelfth confirmation of AS139609(SISCC)&lt;-&gt;AS45891. `AS55885 -&gt; AS9471 -
 
     <details class="section-toggle">
         <summary>Candidate peering (strong traceroute signal, RIS disagrees &mdash; unconfirmed)
-            <span class="count">(40)</span></summary>
+            <span class="count">(39)</span></summary>
         <div class="candidate-card">
             <div class="headline">AS7131 (PTI Pacifica Inc.,
                 MP) -&gt; AS3605
@@ -2213,14 +2217,6 @@ Twelfth confirmation of AS139609(SISCC)&lt;-&gt;AS45891. `AS55885 -&gt; AS9471 -
                 &middot; measurement 212141106
                 &middot; vantage point NU</div>
             <details class="note"><summary>NU(AS55885) -&gt; AS23676 (University of Guam): `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS23676`, but `ris_agrees: false` -- checked AS23676&#x27;s real RIS neighbor list…</summary>NU(AS55885) -&gt; AS23676 (University of Guam): `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS23676`, but `ris_agrees: false` -- checked AS23676&#x27;s real RIS neighbor list directly: AS395400 (University of Guam&#x27;s *other* ASN, already established elsewhere in this project) is dominant (380 of 380 observations). Real signal, one hop off from the real relationship. `has_routing_loop` False.</details>
-        </div><div class="candidate-card">
-            <div class="headline">AS7131 (PTI Pacifica Inc.,
-                MP) -&gt; AS38198
-                (Digicel Tonga Ltd, TO)</div>
-            <div>Traceroute agreement: 1/1 probes
-                &middot; measurement 212244674
-                &middot; vantage point MP</div>
-            <details class="note"><summary>measurement 212244674 (from MP); chain: AS7131; RIS disagrees…</summary>measurement 212244674 (from MP); chain: AS7131; RIS disagrees. measurement 216154532 (from MP); chain: AS7131; RIS disagrees.</details>
         </div><div class="candidate-card">
             <div class="headline">AS45355 (Digicel Fiji Limited,
                 FJ) -&gt; AS38442
@@ -2613,7 +2609,7 @@ NU(AS55885) -&gt; AS150403: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS139609 -&
         yet, queued until adoption has advanced further.
         <strong>45 of 158</strong> in-scope ASNs
         have at least one RIS-observed IPv6-originated prefix.
-        <strong>9 of 37</strong> connected
+        <strong>10 of 37</strong> connected
         Atlas probes work over IPv6 (3 more are
         IPv6-capable but tagged as not working).
     </p>

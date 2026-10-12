@@ -2561,3 +2561,16 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   held findings and nine others (#2, #210, #216, #221, #229, #255, #275,
   #277, #279), five of which (#210, #221, #275, #277, #279) rest only on
   failing corroborations.
+- Known loops (2026-10-12, owner): 117.20.32.0/24 (AS45879, Orange Wallis &
+  Futuna; every-other-hop loop to TTL 32, 221440472) and 202.43.12.0/23
+  (AS38198, Digicel Tonga; consecutive-TTL double-answer, 221439393), both
+  inside the target's own space.
+- Retired `candidate_peering` #10 (AS7131 MP -> AS38198 TO, owner,
+  2026-10-12): both corroborations were dead ends with chain `AS7131`, and
+  the 2026-10-11 trace 221439393 shows the real path AS7131 -> AS6453 ->
+  AS4637 -> AS45355 -> AS38198. 2 corroborations removed; findings 266 ->
+  265, report pathways 256 -> 255. DB backed up first.
+- #92 (MP -> TO detour) note extended with the 2026-10-12 Los Angeles route
+  (Tata LA, Telstra Global, Digicel Fiji). It has no IXP crossing, so the
+  run filed #295 (AS45355 -> AS38198 local transit) instead of corroborating
+  #92; detour_hub stays Sydney.
