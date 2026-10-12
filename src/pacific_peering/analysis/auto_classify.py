@@ -59,6 +59,12 @@ Classification rules, in priority order, per probe:
    at a hub this project has coordinates for
    (`economy_coordinates.EXTERNAL_HUB_LATLON`), that's a Confirmed Detour --
    `"TBA"` exchanges and unmapped hubs escalate instead of guessing.
+   No IXP crossing, but a router whose own hostname places it in an
+   off-region hub city (`router_location.find_router_hub`, added 2026-10-12
+   after 221439393 left MP for Tonga via Tata Los Angeles over private
+   interconnects) is a Confirmed Detour too, provided the hop's RTT clears
+   the fibre floor from the source to that city. A hostname that answers too
+   fast for its city, or names a city with no hub coordinates, escalates.
 3. **RIS+Atlas agreement on the immediate upstream of the target**
    (Validation Rule 1). If the confirmed upstream ASN is itself a fishbowl
    ASN (`data/asn_registry.json`), that's Confirmed Local Transit. If it's
@@ -112,6 +118,7 @@ from pacific_peering.analysis.ixp_lan_registry import (
     DEFAULT_REGISTRY_PATH as IXP_REGISTRY_PATH,
     load_ixp_lan_registry,
 )
+from pacific_peering.analysis.router_location import HUB_OK, HUB_TOO_FAST, RouterHub, find_router_hub, reverse_dns
 from pacific_peering.analysis.traceroute_topology import (
     DEFAULT_ATLAS_PARSED_DIR,
     analyze_measurement,
@@ -379,6 +386,7 @@ def _detour_feasibility(
     clean_probe_ids: set[int],
     hub_city: str,
     ix_city: dict[int, str],
+    router_hub_hops: dict[int, int] | None = None,
 ) -> tuple[str, str] | None:
     """Validation Rule 2 on a detour about to be filed: `(verdict, detail)` if
     impossible or mixed, else None (consistent, or nothing checkable).
@@ -405,6 +413,7 @@ def _detour_feasibility(
                 t, resolve_traceroute_hops(t["hops"], persist=False), ECONOMY_LATLON[candidate.source_cc],
                 EXTERNAL_HUB_LATLON[hub_city], hub_city, ECONOMY_LATLON[candidate.target_cc], ix_city,
                 ECONOMY_SPREAD_KM.get(candidate.source_cc, 0.0), ECONOMY_SPREAD_KM.get(candidate.target_cc, 0.0),
+                router_hub_hop=(router_hub_hops or {}).get(t["probe_id"]),
             )
             for t in traces
         ])
@@ -659,7 +668,7 @@ def classify_corridor(
         target_hop = next((h.hop for h in resolved if h.asns == (target_asn,)), None)
         return None if target_hop is None else hidden_hops_reason(raw, target_hop)
 
-    detour_pick: tuple[dict, str, str] | None = None  # (crossing, ix_name, hub_city)
+    detour_pick: tuple[dict | None, str, str] | None = None  # (crossing, ix_name, hub_city)
     local_transit_pick: dict | None = None
     candidate_picks: list[dict] = []
     tba_ixp_hit = False
@@ -702,6 +711,30 @@ def classify_corridor(
                     candidate.source_asn, candidate.target_asn, probe["probe_id"], hidden,
                 )
 
+    # Rule 2, no IXP crossed: a router placed off-region by its own hostname.
+    router_hubs: dict[int, RouterHub] = {}
+    if detour_pick is None:
+        for probe in clean_probes:
+            trace = {"probe_id": probe["probe_id"], "hops": hops_by_probe.get(probe["probe_id"], [])}
+            hub = find_router_hub(trace, candidate.source_cc, resolver=reverse_dns)
+            if hub is not None:
+                router_hubs[probe["probe_id"]] = hub
+        ok = [h for h in router_hubs.values() if h.verdict == HUB_OK]
+        if ok:
+            detour_pick = (None, f"{ok[0].hostname} (router in {ok[0].city}, no IXP crossing)", ok[0].city)
+        for hub in router_hubs.values():
+            if hub.verdict == HUB_OK:
+                continue
+            escalations.append(_Escalation(
+                candidate=candidate,
+                measurement_id=measurement_id,
+                reason=(
+                    "router hostname location physically impossible" if hub.verdict == HUB_TOO_FAST
+                    else "router in a hub city with no coordinates"
+                ),
+                detail=f"probe {hub.probe_id}: {hub.note()}",
+            ))
+
     if tba_ixp_hit and detour_pick is None:
         escalations.append(
             _Escalation(
@@ -734,6 +767,7 @@ def classify_corridor(
         feasibility = _detour_feasibility(
             candidate, measurement_id, {p["probe_id"] for p in clean_probes}, detour_pick[2],
             {ix_id: e.city for ix_id, e in ixp_registry.items()},
+            {pid: h.hop for pid, h in router_hubs.items() if h.verdict == HUB_OK},
         )
         if feasibility is not None:
             verdict, detail = feasibility
@@ -750,7 +784,9 @@ def classify_corridor(
         p["id"]: _probe_asn(p) for probes in _load_listing_or_empty().values() for p in probes
     }
 
-    def _corroborate(conn: sqlite3.Connection, finding_id: int, probes: list[dict]) -> None:
+    def _corroborate(
+        conn: sqlite3.Connection, finding_id: int, probes: list[dict], notes: dict[int, str] | None = None,
+    ) -> None:
         """Record each probe's own ASN as its vantage, not the candidate's label
         (the country-sourcing fallback can land on any ASN in the economy)."""
         for probe in probes:
@@ -773,6 +809,7 @@ def classify_corridor(
                 has_loop=probe["probe_id"] in loop_notes,
                 loop_note=loop_notes.get(probe["probe_id"]),
                 crosses_ixp=_local_ixp_crossing_name(probe),
+                note_extra=(notes or {}).get(probe["probe_id"]),
             )
 
     def _finalize() -> ClassifyResult:
@@ -798,7 +835,7 @@ def classify_corridor(
                     )
                 else:
                     finding_id = finding.id
-                _corroborate(conn, finding_id, clean_probes)
+                _corroborate(conn, finding_id, clean_probes, {pid: h.note() for pid, h in router_hubs.items()})
                 mark_corridor_tested(candidate.source_asn, candidate.target_asn)
                 if regenerate:
                     _regenerate_artifacts()

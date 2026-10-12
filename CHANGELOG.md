@@ -2574,3 +2574,13 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   (Tata LA, Telstra Global, Digicel Fiji). It has no IXP crossing, so the
   run filed #295 (AS45355 -> AS38198 local transit) instead of corroborating
   #92; detour_hub stays Sydney.
+- Detours with no IXP crossing (2026-10-12, owner): `classify_corridor` now
+  files a confirmed detour when a probe passes a router whose hostname places
+  it in an off-region hub city (`analysis/router_location.py`, via
+  `hop_geolocation`'s curated patterns) and whose RTT clears the fibre floor
+  from the source to that city. Prompted by 221439393 (MP -> TO via Tata Los
+  Angeles), which the IXP-only rule filed as local transit (#295). Too-fast
+  hostnames and cities with no hub coordinates escalate. The IXP rule still
+  takes precedence; existing findings are untouched (see
+  `outputs/reports/router_detour_sweep.txt`). Each PTR lookup is capped at
+  2 seconds and counts as no PTR if it doesn't answer.
