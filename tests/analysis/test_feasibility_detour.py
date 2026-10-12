@@ -71,3 +71,38 @@ def test_claim_probes_prefer_hub_crossers_even_without_an_rtt():
     assert fz.claim_verdict([crossed]) == fz.VERDICT_OK
     assert fz.claim_verdict([crossed, direct]) == fz.VERDICT_MIXED
     assert fz.claim_verdict([crossed_no_rtt]) == fz.VERDICT_NO_HOP
+
+
+SAIPAN, LOS_ANGELES, NUKUALOFA = (15.1780, 145.7500), (34.0522, -118.2437), (-21.1789, -175.1982)
+
+
+def _router_trace(probe_id, hops, target="202.43.12.1"):
+    return {"probe_id": probe_id, "target": target,
+            "hops": [{"hop": h, "min_rtt_ms": rtt, "addresses": [a]} for h, rtt, a in hops]}
+
+
+def test_router_hub_hop_stands_in_for_an_ixp_hop():
+    # 221439393 probe 65653: Tata Los Angeles router at hop 8, no IXP anywhere on the path.
+    trace = _router_trace(65653, [(8, 121.458, "64.86.252.73"), (18, 212.954, "202.43.12.5")])
+    c = fz.check_detour_trace(trace, [], SAIPAN, LOS_ANGELES, "Los Angeles", NUKUALOFA, {}, 150.0, 650.0,
+                              router_hub_hop=8)
+    assert c["hub"]["hop"] == 8 and c["hub"]["verdict"] == fz.VERDICT_OK
+    assert c["target_via_hub"]["verdict"] == fz.VERDICT_NO_HOP  # 202.43.12.1 never answered
+
+
+def test_too_fast_router_hub_hop_is_impossible():
+    trace = _router_trace(65653, [(4, 8.166, "103.57.234.108")])
+    c = fz.check_detour_trace(trace, [], SAIPAN, LOS_ANGELES, "Los Angeles", NUKUALOFA, {}, 150.0, 650.0,
+                              router_hub_hop=4)
+    assert c["hub"]["verdict"] == fz.VERDICT_IMPOSSIBLE
+
+
+def test_claim_rests_on_router_hub_probes_only():
+    # A country-sourced measurement: one probe via LA, one straight to the target at 40ms.
+    via_la = fz.check_detour_trace(
+        _router_trace(1, [(8, 121.458, "64.86.252.73")]), [], SAIPAN, LOS_ANGELES, "Los Angeles",
+        NUKUALOFA, {}, 150.0, 650.0, router_hub_hop=8)
+    direct = fz.check_detour_trace(
+        _router_trace(2, [(5, 40.0, "202.43.12.1")]), [], SAIPAN, LOS_ANGELES, "Los Angeles",
+        NUKUALOFA, {}, 150.0, 650.0)
+    assert [c["probe_id"] for c in fz.claim_probes([via_la, direct])] == [1]

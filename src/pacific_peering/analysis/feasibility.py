@@ -146,6 +146,7 @@ def check_detour_trace(
     ix_city: dict[int, str],
     source_spread_km: float = 0.0,
     target_spread_km: float = 0.0,
+    router_hub_hop: int | None = None,
 ) -> dict:
     """Validation Rule 2 for one probe's trace of a claimed detour via `hub_city`.
 
@@ -177,11 +178,14 @@ def check_detour_trace(
 
     Cumulative RTTs only ever overstate a segment, so neither check can
     false-flag a slow path; a high RTT is never evidence against the claim.
+    `router_hub_hop` is a hop already placed in `hub_city` by its own hostname
+    (`router_location`, 2026-10-12): it stands in for the IXP-LAN hop on a
+    detour that crossed no exchange, and gets the same hub floor.
     `resolved_hops` are `traceroute_topology.resolve_traceroute_hops` output
     for this trace; `ix_city` maps IXP id to its registry city.
     """
     single = {h["hop"]: h.get("min_rtt_ms") for h in traceroute["hops"] if len(h.get("addresses", [])) == 1}
-    hub_hop = next(
+    hub_hop = router_hub_hop if router_hub_hop is not None else next(
         (h.hop for h in resolved_hops
          if h.ixp_context is not None and ix_city.get(h.ixp_context.get("ix_id")) == hub_city),
         None,
