@@ -3478,3 +3478,16 @@ The headless session runs in `dontAsk` mode with a tool allowlist (no Atlas comm
     - **Next small change (not yet approved):** keep only OK router hubs in `detour_pick`'s city (`h.city == detour_pick[2]`) and add a two-probe, two-city test. This closes a narrow wrong-filing case (offshore target plus a slow Sydney probe turns IMPOSSIBLE into MIXED). Also escalate instead of filing when a located router's address belongs to a fishbowl ASN, which guards against misnamed or spoofed PTRs. FCrDNS isn't worth it.
     - **Known weak spots:** Sydney floors are 15-35 ms, so the RTT check proves little there and location rests on pattern curation. A trace that dies right after an off-region router now files a detour, as the IXP rule already does. Corroboration rows count every clean probe, including probes whose own hub was rejected.
     - **After the first nightly run:** compare the "Batch done ... in Ns" line in `logs/cron.log` with recent nights. Expected PTR cost is median 10 and p99 37 lookups per measurement, at most 2 s each.
+
+**Session close, 2026-10-13: probe outreach follow-up (email only, no code changes).**
+- **RIPE NCC (Lia Hestina):** she shared a draft email to hosts of disconnected or abandoned Pacific probes. The owner replied with comments: 77 entries but 56 distinct hosts, so dedupe; offer the software probe, since there are no more hardware probes; point to the public site; reframe as "where Pacific networks exchange traffic". The reply also listed everyone already approached, so RIPE NCC's note is a second nudge rather than a duplicate.
+- **Outcomes since the 2026-10-08 round:**
+  - **Fixed:** CK 22761 (Telecom Aitutaki) back online 2026-10-09.
+  - **Replacements under way:** TCC Tonga is building a VM software probe (replacing Abandoned 51448/21626). TFL Fiji has a new Raspberry Pi from Ulrich Speidel (replacing Abandoned 64611/32841).
+  - **Solomon Islands:** a Pi is heading to Our Telekom, and SISCC is keen.
+  - **Samoa:** NUS is reviewing hosting.
+  - **CenPac (Nauru):** brought up 1018134 on 2026-10-08 without replying by email. The owner sent a thank-you with the first NR results, cc RIPE NCC.
+  - **No reply yet:** 13 operators in KI, SB, NR, MH and CK. Nudge around 2026-10-15.
+- **bmobile SB (AS132462):** the Solomons mail domain is SERVFAIL from public resolvers (still so 2026-10-13), so both 2026-10-08 emails bounced. Resent to the RDAP admin contact on the PNG domain, with a note about the DNS failure.
+- **Coverage:** SB has never had a registered Atlas probe (API count 0). SB, WS, AS and WF still have no connected probe.
+- **When the TCC/TFL replacements register:** they will have new IDs, so the BOLO watch on the old IDs won't flag them; the weekly discovery refresh will. Per the standing rule, fire a real trace from each and check the path before trusting it.
