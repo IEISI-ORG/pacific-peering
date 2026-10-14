@@ -13,22 +13,41 @@ methodology, and every finding as it was made.
 
 ## Findings so far
 
-Two ASN-to-ASN adjacencies are confirmed by *both* RIS and live Atlas
-traceroutes (this project's bar for a real finding — see "Validation
-Rules" in `task_plan.md`), and both show Pacific-to-Pacific traffic
-detouring through Australia rather than staying in-region:
+As of 2026-10-15, `data/analysis/findings.db` holds 265 findings, backed
+by 402 RIPE Atlas traceroute measurements. A finding counts as confirmed
+only when RIS and a live Atlas traceroute agree on the ASN-to-ASN
+adjacency and the latency fits the distance (see "Validation Rules" in
+`task_plan.md`).
 
-- **Guam → Papua New Guinea** (AS17828, PNG DataCo): traceroute hits the
-  exact IP PeeringDB records for AS17828's Equinix Sydney port before
-  reaching PNG DataCo's own network.
-- **New Caledonia → Fiji** (AS4638, Telecom Fiji): traceroute transits
-  MegaIX Sydney before reaching Telecom Fiji's international ASN.
+| Kind | Count | What it means |
+|---|---|---|
+| Confirmed detour | 174 | Traffic between two in-scope networks passes through an exchange or carrier outside the fishbowl |
+| Confirmed local transit | 47 | A transit relationship inside the fishbowl, confirmed by RIS and Atlas |
+| Candidate peering | 44 | An adjacency seen in traceroutes that RIS does not confirm; a lead, not a finding |
 
-A 30-exchange IXP registry (`data/analysis/ixp_lan_registry.json`, built
-by `pacific-peering-ixp-lan-registry`) classifies every IXP this project
-has seen as in- or out-of-fishbowl — every classification is an explicit
-human confirmation, never auto-inferred (see task_plan.md's governance
-rule). Current status: 10 in-fishbowl, 20 out-of-fishbowl, 0 unconfirmed.
+The detours go through Sydney (108), Los Angeles (35), Tokyo (23), San
+Jose (5), Portland (2) and Honolulu (1). The exchanges seen most often
+are Equinix Sydney (33), MegaIX Sydney (15), Any2West (11) and BBIX
+Tokyo (7).
+
+In three detours, both ends are in the same economy. In the clearest
+one (measurement 219455952, 2026-10-06), a probe in Fiji reached Fiji
+National University by way of Telecom Fiji (2 ms), Equinix Sydney
+(37.9 ms) and AARNet, arriving at 80.1 ms.
+
+The first finding, from Guam to PNG DataCo (AS17828), hit the exact IP
+that PeeringDB records for AS17828's Equinix Sydney port before reaching
+PNG DataCo's own network.
+
+The IXP registry (`data/analysis/ixp_lan_registry.json`, built by
+`pacific-peering-ixp-lan-registry`) classifies every IXP this project
+has seen as in or out of the fishbowl. Each classification is an
+explicit human confirmation, never inferred automatically (see the
+governance rule in `task_plan.md`). Current status: 23 exchanges, 10 in
+the fishbowl, 13 outside, 0 unconfirmed.
+
+The nightly corridor tests add to these counts. The README is refreshed
+by hand, so the database is the current source.
 
 ## Project layout
 
