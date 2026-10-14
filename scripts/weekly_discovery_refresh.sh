@@ -52,6 +52,20 @@ echo "=== weekly discovery refresh: $(date -u +%Y-%m-%dT%H:%M:%SZ) ==="
 # a full WHOIS scan monthly, plus any newly added ASN, otherwise nothing.
 # Free (RIPEstat WHOIS only). New flags go to escalations.md.
 "$UV" run pacific-peering-leasing-check || echo "Leasing-marker check failed (see above); continuing."
+# README "Findings so far" counts (reports/readme_findings.py): regenerates
+# only the marked block from findings.db + the IXP registry, after the
+# pipeline and ASPA recheck above have updated both. Leaves README.md
+# untouched when the counts haven't changed. `git add` stages the whole
+# file, so this only runs (and README.md is only tracked below) when
+# README.md has no uncommitted edits beforehand -- an unattended job must
+# never publish someone's half-finished README changes.
+README_CLEAN=0
+if git diff --quiet HEAD -- README.md; then
+    README_CLEAN=1
+    "$UV" run pacific-peering-readme-findings || echo "README findings update failed (see above); continuing."
+else
+    echo "README.md has uncommitted edits; skipping the findings-count refresh this week."
+fi
 
 # Git-tracked outputs of the steps above -- data/* (the registries and the
 # SQLite store itself) is gitignored by design. A promoted ASPA finding
@@ -64,6 +78,7 @@ echo "=== weekly discovery refresh: $(date -u +%Y-%m-%dT%H:%M:%SZ) ==="
 # the tree.
 TRACK_PATHS=(corridor_backlog.md outputs/runs findings_export.jsonl outputs/reports outputs/viz)
 [ -f escalations.md ] && TRACK_PATHS+=(escalations.md)
+[ "$README_CLEAN" = 1 ] && TRACK_PATHS+=(README.md)
 if [ -n "$(git status --porcelain -- "${TRACK_PATHS[@]}")" ]; then
     git add "${TRACK_PATHS[@]}"
     git commit -m "$(cat <<EOF

@@ -2584,3 +2584,14 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   takes precedence; existing findings are untouched (see
   `outputs/reports/router_detour_sweep.txt`). Each PTR lookup is capped at
   2 seconds and counts as no PTR if it doesn't answer.
+- README findings counts refreshed weekly (2026-10-15):
+  `pacific-peering-readme-findings` regenerates the block between the
+  `findings-summary` markers in README.md's "Findings so far" from
+  findings.db and the IXP registry, leaving out quarantined and held
+  findings as the public report does. The weekly discovery refresh runs it
+  and commits README.md; a week with unchanged counts leaves the file
+  alone. It is skipped if README.md has uncommitted edits, and refuses to
+  write from a missing or empty findings.db. The worked examples around
+  the block stay hand-written. Corrects
+  the hand-written counts from earlier today, which had included the 10
+  held findings (265 -> 255).
