@@ -167,3 +167,18 @@ def test_main_refuses_an_empty_database(monkeypatch, tmp_path):
         rf.main()
     assert "0 reportable findings" in str(exc.value.code)
     assert "old numbers" in readme.read_text()
+
+
+def test_external_names_cannot_inject_markdown():
+    """Exchange names come from PeeringDB, so treat them as untrusted text."""
+    conn = sqlite3.connect(":memory:")
+    conn.row_factory = sqlite3.Row
+    conn.executescript(store._SCHEMA)
+    hostile = f"Evil | IX\n[click](https://example.invalid) {rf.END} <b>x</b>"
+    _detour(conn, ix=hostile)
+    text = rf.render_block(rf.summarize(conn, REGISTRY), as_of="2026-10-18")
+    row = next(line for line in text.splitlines() if line.startswith("| Evil"))
+    assert row.count(" | ") == 1  # still exactly two cells
+    assert "\n[click]" not in text and "[click](" not in text
+    assert rf.END not in text
+    assert "<b>" not in text

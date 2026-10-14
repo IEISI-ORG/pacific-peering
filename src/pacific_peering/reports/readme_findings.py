@@ -86,6 +86,15 @@ def summarize(conn: sqlite3.Connection, registry: dict) -> FindingsSummary:
     )
 
 
+_MD_ESCAPE = str.maketrans({c: "\\" + c for c in "\\`*_[]|!#"} | {"<": "&lt;", ">": "&gt;"})
+
+
+def _cell(name: str) -> str:
+    """A name as one inert table cell. Exchange names come from PeeringDB, so
+    newlines, pipes, links, HTML and our own marker comments must not survive."""
+    return " ".join(name.split()).translate(_MD_ESCAPE)
+
+
 def render_block(s: FindingsSummary, as_of: str) -> str:
     """The generated markdown between the markers (markers excluded)."""
     lines = [
@@ -102,10 +111,10 @@ def render_block(s: FindingsSummary, as_of: str) -> str:
     # Tables, not prose: carrier names already carry parentheses
     # ("AS6939 (Hurricane Electric)"), so "name (n)" reads badly.
     if s.hubs:
-        lines += ["", "| Detour hub | Detours |", "|---|---|", *(f"| {name} | {n} |" for name, n in s.hubs)]
+        lines += ["", "| Detour hub | Detours |", "|---|---|", *(f"| {_cell(name)} | {n} |" for name, n in s.hubs)]
     if s.exchanges:
         lines += ["", "| Exchange or carrier (most common) | Detours |", "|---|---|",
-                  *(f"| {name} | {n} |" for name, n in s.exchanges)]
+                  *(f"| {_cell(name)} | {n} |" for name, n in s.exchanges)]
     n = s.same_economy_detours
     lines += [
         "",
