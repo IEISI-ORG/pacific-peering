@@ -34,6 +34,7 @@ of this project's durable record is.
 
 from __future__ import annotations
 
+import argparse
 import json
 import logging
 import re
@@ -577,9 +578,30 @@ def pick_next_corridor(
     return candidates[0] if candidates else None
 
 
-def main() -> None:
+def main(argv: list[str] | None = None) -> None:
+    parser = argparse.ArgumentParser(
+        description="Report the corridor backlog; with --write, regenerate it."
+    )
+    parser.add_argument(
+        "--write",
+        action="store_true",
+        help="regenerate corridor_backlog.md and the change-detection snapshot "
+        "(the weekly discovery refresh). Without it the run is a read-only query: "
+        "it never moves the timestamp or consumes the new-probe/new-RIS flags.",
+    )
+    args = parser.parse_args(argv)
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
-    candidates = build_corridor_backlog()
+    if args.write:
+        candidates = build_corridor_backlog()
+    else:
+        candidates = enumerate_candidate_corridors()
+        logger.info(
+            "Corridor backlog (read-only check): %d candidates (%d new-probe, "
+            "%d new-RIS-relationship)",
+            len(candidates),
+            sum(1 for c in candidates if c.is_new_probe),
+            sum(1 for c in candidates if c.is_new_ris_relationship),
+        )
     for c in candidates[:10]:
         logger.info(
             "AS%d (%s, %s) -> AS%d (%s, %s) -- %s",

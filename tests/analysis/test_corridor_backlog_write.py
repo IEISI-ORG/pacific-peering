@@ -40,3 +40,29 @@ def test_missing_file_is_written(tmp_path: Path) -> None:
 
     assert _write_backlog_if_changed(path, OLD) is True
     assert path.read_text() == OLD
+
+
+def test_default_run_is_read_only(monkeypatch) -> None:
+    """The session-start check is a query: it must not regenerate anything."""
+    from pacific_peering.analysis import corridor_backlog
+
+    def _no_write(*args, **kwargs):
+        raise AssertionError("read-only run called build_corridor_backlog")
+
+    monkeypatch.setattr(corridor_backlog, "build_corridor_backlog", _no_write)
+    monkeypatch.setattr(corridor_backlog, "enumerate_candidate_corridors", lambda: [])
+
+    corridor_backlog.main([])
+
+
+def test_write_flag_regenerates(monkeypatch) -> None:
+    from pacific_peering.analysis import corridor_backlog
+
+    calls: list[bool] = []
+    monkeypatch.setattr(
+        corridor_backlog, "build_corridor_backlog", lambda: calls.append(True) or []
+    )
+
+    corridor_backlog.main(["--write"])
+
+    assert calls == [True]

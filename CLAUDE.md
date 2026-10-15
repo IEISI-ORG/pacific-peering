@@ -3,7 +3,7 @@
 Run this check at the start of every session in this repo, before anything else:
 
 ```bash
-uv run pacific-peering-corridor-backlog  # cheap, local -- reports the current candidate count
+uv run pacific-peering-corridor-backlog  # cheap, local, read-only -- reports the current candidate count
 ```
 
 The real data-freshness and corridor-testing work now runs unattended via system cron

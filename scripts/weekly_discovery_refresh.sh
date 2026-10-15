@@ -45,7 +45,7 @@ cd "$REPO_DIR"
 echo "=== weekly discovery refresh: $(date -u +%Y-%m-%dT%H:%M:%SZ) ==="
 
 "$UV" run pacific-peering-pipeline
-"$UV" run pacific-peering-corridor-backlog
+"$UV" run pacific-peering-corridor-backlog --write
 "$UV" run pacific-peering-reverify-enqueue
 "$UV" run pacific-peering-aspa-recheck
 # Leasing-marker check (discovery/leasing_check.py): schedules itself --
