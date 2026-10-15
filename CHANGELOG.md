@@ -2597,8 +2597,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   held findings (265 -> 255).
 - `pacific-peering-corridor-backlog` is a read-only query by default: it
   reports the candidate count and writes nothing. `--write` regenerates
-  `corridor_backlog.md` and the change-detection snapshot, and only the
-  weekly discovery refresh passes it. The session-start check used to save
+  `corridor_backlog.md` and the change-detection snapshot. Only the weekly
+  discovery refresh and the nightly batch's post-classification artifact
+  regeneration (`auto_classify._regenerate_artifacts`) pass it. The session-start check used to save
   the snapshot every run, which cleared the new-probe/new-RIS flags a real
   data change had just set. Even with `--write`, the file (and its "Last
   regenerated" timestamp) is only rewritten when its content changed, so a

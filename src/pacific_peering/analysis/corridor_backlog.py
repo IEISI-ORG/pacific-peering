@@ -586,7 +586,8 @@ def main(argv: list[str] | None = None) -> None:
         "--write",
         action="store_true",
         help="regenerate corridor_backlog.md and the change-detection snapshot "
-        "(the weekly discovery refresh). Without it the run is a read-only query: "
+        "(the weekly refresh and the nightly post-classification regeneration). "
+        "Without it the run is a read-only query: "
         "it never moves the timestamp or consumes the new-probe/new-RIS flags.",
     )
     args = parser.parse_args(argv)

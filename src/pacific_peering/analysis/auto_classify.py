@@ -963,14 +963,15 @@ def _regenerate_artifacts() -> None:
     time -- a long-lived classifier process can't just re-import them."""
     commands = [
         ["findings-export", "pacific_peering.analysis.store"],
-        ["corridor-backlog", "pacific_peering.analysis.corridor_backlog"],
+        # --write: the backlog command is a read-only query by default.
+        ["corridor-backlog", "pacific_peering.analysis.corridor_backlog", "--write"],
         ["report-ascii", "pacific_peering.reports.ascii_report"],
         ["report-html", "pacific_peering.reports.html_report"],
         ["viz-detours", "pacific_peering.viz.geographic"],
     ]
-    for label, module in commands:
+    for label, module, *args in commands:
         result = subprocess.run(
-            [sys.executable, "-m", module], capture_output=True, text=True
+            [sys.executable, "-m", module, *args], capture_output=True, text=True
         )
         if result.returncode != 0:
             logger.error("Artifact regeneration step %s failed:\n%s", label, result.stderr)

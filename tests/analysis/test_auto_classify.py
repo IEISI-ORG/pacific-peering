@@ -271,3 +271,25 @@ def test_starlink_is_not_a_proxy_for_the_rov_and_ipv6_checks():
     assert 14593 in auto_classify.NON_LOCAL_FIRST_HOP_ASNS
     assert 14593 not in auto_classify.KNOWN_PROXY_ASNS
     assert set(auto_classify.KNOWN_PROXY_ASNS) <= set(auto_classify.NON_LOCAL_FIRST_HOP_ASNS)
+
+
+def test_artifact_regeneration_writes_the_backlog(monkeypatch):
+    """After a classification the backlog is real data: it must run with --write.
+
+    The backlog command is a read-only query by default, so a bare call here
+    would leave corridor_backlog.md (and daily_facts' candidate count) stale.
+    """
+    calls: list[list[str]] = []
+
+    class _Done:
+        returncode = 0
+        stderr = ""
+
+    monkeypatch.setattr(
+        auto_classify.subprocess, "run", lambda cmd, **kw: calls.append(cmd) or _Done()
+    )
+
+    auto_classify._regenerate_artifacts()
+
+    backlog = [c for c in calls if "pacific_peering.analysis.corridor_backlog" in c]
+    assert backlog and backlog[0][-1] == "--write"
