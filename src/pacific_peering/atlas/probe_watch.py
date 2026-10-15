@@ -57,8 +57,9 @@ MEASUREMENT_LABEL = "probe-watch-egress"
 # Networks whose probes are known to egress via a proxy/VPN: traced weekly so
 # a fix shows up even if Atlas's metadata never changes.
 EGRESS_WATCH_ASNS: dict[int, str] = {
-    141695: "Pacific Community (SPC) -- via Zscaler 2026-09-19 to 2026-10-05, now native via "
-            "Telecom Fiji (218747738); SPC called that routing 'for now'",
+    141695: "Pacific Community (SPC) -- via Zscaler 2026-09-19 to 2026-10-05, now native and "
+            "load-balanced across Telecom Fiji and Digicel Fiji (223634394, 223636622); kept as a "
+            "Fiji source (owner, 2026-10-16), re-exclude only if Zscaler returns",
     **KNOWN_PROXY_ASNS,
 }
 # Be-on-the-lookout: Abandoned probes we want back. Any return to the listing
@@ -66,7 +67,7 @@ EGRESS_WATCH_ASNS: dict[int, str] = {
 BOLO_PROBES: dict[int, str] = {
     51448: "TCC (AS38201, Tonga) hardware probe, live 2019-09-18..25 only -- possibly still cabled but unpowered (PacNOG, 2026-10-02)",
     21626: "TCC (AS38201, Tonga) hardware probe, live 2019-12-11..12 only -- possibly still cabled but unpowered (PacNOG, 2026-10-02)",
-    # Telecom Fiji (AS4638, Suva): Fiji has no native vantage (SPC 60575 egresses via Zscaler).
+    # Telecom Fiji (AS4638, Suva): Fiji's only vantage is SPC 60575, load-balanced across TFL and Digicel.
     64611: "TFL (AS4638, Suva) v5 GPON probe, live 2025-06-29..2026-06-16, then Abandoned (owner follow-up, 2026-10-03)",
     32841: "TFL (AS4638, Suva) v3 probe, live 2017-10..2018-01 (owner follow-up, 2026-10-03)",
 }
