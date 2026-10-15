@@ -36,6 +36,7 @@ from __future__ import annotations
 
 import json
 import logging
+import re
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
@@ -501,6 +502,23 @@ def _render_backlog_markdown(
     return "\n".join(lines)
 
 
+_TIMESTAMP_LINE = re.compile(r"^Last regenerated: .*$", re.MULTILINE)
+
+
+def _write_backlog_if_changed(path: Path, text: str) -> bool:
+    """Write `text` to `path` unless only the "Last regenerated" line differs.
+
+    Keeps a no-op regeneration (the session-start check, a quiet cron night)
+    from leaving a timestamp-only diff in the tree. Returns whether it wrote.
+    """
+    if path.exists() and _TIMESTAMP_LINE.sub("", path.read_text()) == _TIMESTAMP_LINE.sub(
+        "", text
+    ):
+        return False
+    path.write_text(text)
+    return True
+
+
 def build_corridor_backlog(
     probe_registry_path: Path = DEFAULT_REGISTRY_PATH,
     fishbowl_path: Path = DEFAULT_SUMMARY_PATH,
@@ -525,12 +543,14 @@ def build_corridor_backlog(
     candidates = enumerate_candidate_corridors(
         probe_registry_path, fishbowl_path, tested_pairs_path, snapshot_path
     )
-    output_path.write_text(
-        _render_backlog_markdown(candidates, len(new_probe_asns), len(new_ris_pairs))
+    written = _write_backlog_if_changed(
+        output_path,
+        _render_backlog_markdown(candidates, len(new_probe_asns), len(new_ris_pairs)),
     )
     _save_snapshot(probe_registry, fishbowl, snapshot_path)
     logger.info(
-        "Corridor backlog regenerated: %d candidates (%d new-probe, %d new-RIS-relationship)",
+        "Corridor backlog %s: %d candidates (%d new-probe, %d new-RIS-relationship)",
+        "regenerated" if written else "unchanged (timestamp kept)",
         len(candidates),
         sum(1 for c in candidates if c.is_new_probe),
         sum(1 for c in candidates if c.is_new_ris_relationship),

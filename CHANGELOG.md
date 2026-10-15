@@ -2595,3 +2595,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   the block stay hand-written. Corrects
   the hand-written counts from earlier today, which had included the 10
   held findings (265 -> 255).
+- `pacific-peering-corridor-backlog` keeps `corridor_backlog.md`'s "Last
+  regenerated" timestamp when nothing else in the file changed. The
+  session-start check no longer leaves a timestamp-only diff in the tree,
+  and the cron jobs no longer commit one.
