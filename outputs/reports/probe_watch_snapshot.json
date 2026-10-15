@@ -1,5 +1,5 @@
 {
- "at": "2026-10-14T15:00:41.623984+00:00",
+ "at": "2026-10-15T15:01:36.112062+00:00",
  "pending_trace": [],
  "probes": {
   "1001562": {
@@ -12,13 +12,13 @@
    "asn_v4": 14593,
    "asn_v6": 14593,
    "cc": "KI",
-   "status": "Connected"
+   "status": "Disconnected"
   },
   "1008229": {
    "asn_v4": 14593,
    "asn_v6": 14593,
    "cc": "KI",
-   "status": "Connected"
+   "status": "Disconnected"
   },
   "1008536": {
    "asn_v4": 9249,
