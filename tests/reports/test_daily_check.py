@@ -72,3 +72,16 @@ def test_colours_survive_gmail_stripping_css_backgrounds():
     for colour in (status_email.OCEAN, status_email.OVERALL["attention"][0], status_email.CHECK["ok"][0], "#fff4e5"):
         assert f'bgcolor="{colour}"' in stripped
     assert "background" not in stripped
+
+
+def test_cron_run_that_died_does_not_take_the_next_jobs_done_line():
+    # 2026-10-14: the nightly push failed under set -e, so the next "=== done" was the
+    # unattended check's, six and a half hours later.
+    log = ("=== nightly corridor testing: 2026-10-14T15:00:01Z ===\n"
+           "fatal: Could not read from remote repository.\n"
+           "=== unattended daily check (live): 2026-10-14T21:30:01Z ===\n"
+           "Interactive session(s) in the last 20h; skipping.\n"
+           "=== done: 2026-10-14T21:30:01Z ===\n")
+    (run,) = daily_facts.cron_runs(log)
+    assert run["finished"] is None and not run["pushed"]
+    assert run["problems"] == ["fatal: Could not read from remote repository."]

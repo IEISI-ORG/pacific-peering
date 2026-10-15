@@ -62,6 +62,10 @@ def cron_runs(text: str, limit: int = 3) -> list[dict]:
             current["finished"] = done.group(1)
             current = None
             continue
+        if line.startswith("=== "):
+            # Another job's header: this run died (set -e) before its own done line.
+            current = None
+            continue
         if line.startswith("Committed and pushed"):
             current["pushed"] = True
         elif "Outcomes:" in line:
