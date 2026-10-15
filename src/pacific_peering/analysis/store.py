@@ -450,7 +450,11 @@ def export_jsonl(conn: sqlite3.Connection, path: Path = DEFAULT_EXPORT_PATH) -> 
                     "probe_agreement": f.probe_agreement,
                     "legacy_note": f.legacy_note,
                     "aspa_confirmed": f.aspa_confirmed,
-                    "aspa_checked_at": f.aspa_checked_at,
+                    # aspa_checked_at is left out on purpose: it records when a
+                    # lookup last ran (a query), not a change to the finding, and
+                    # exporting it committed a diff every weekly recheck. After a
+                    # rebuild from this file every candidate is simply rechecked
+                    # once -- one cached Radar snapshot, in-memory lookups.
                     "created_at": f.created_at,
                     "corroborations": [
                         {

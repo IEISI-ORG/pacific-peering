@@ -75,10 +75,10 @@ fi
 # Git-tracked outputs of the steps above -- data/* (the registries and the
 # SQLite store itself) is gitignored by design. A promoted ASPA finding
 # touches findings_export.jsonl and the reports/viz derived from it, same
-# as the nightly job's own tracked-paths list; a plain candidate recheck
-# with zero promotions still touches findings_export.jsonl (every checked
-# finding's aspa_checked_at moves) even though the reports/backlog only
-# get their timestamp line bumped. Scoped `git add`, not `-A`, so this
+# as the nightly job's own tracked-paths list; a recheck with zero
+# promotions changes nothing tracked (aspa_checked_at stays in findings.db,
+# and the backlog/SVGs keep their content when unchanged), so a quiet
+# week commits nothing. Scoped `git add`, not `-A`, so this
 # unattended job can never sweep in unrelated in-progress work sitting in
 # the tree.
 TRACK_PATHS=(corridor_backlog.md outputs/runs findings_export.jsonl outputs/reports outputs/viz)

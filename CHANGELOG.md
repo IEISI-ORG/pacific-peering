@@ -2617,3 +2617,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   (`pacific-peering-viz-as-graph`) after the pipeline refreshes the fishbowl.
   Nothing regenerated it before, so the published graph had been frozen
   since 2026-09-14. It commits only when the graph changes.
+- `findings_export.jsonl` no longer carries `aspa_checked_at`. It records
+  when an ASPA lookup last ran, not a change to a finding, and exporting it
+  made every weekly recheck commit a diff with zero promotions. It stays in
+  `findings.db`; a database rebuilt from the export rechecks each candidate
+  once (one cached Cloudflare Radar snapshot). Promotions still reach the
+  export through `kind` and `aspa_confirmed`.

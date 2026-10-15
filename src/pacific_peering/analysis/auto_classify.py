@@ -1103,11 +1103,10 @@ def recheck_aspa_candidates(
     finally:
         conn.close()
     if regenerate:
-        # Always re-export, even with zero promotions -- every checked
-        # finding's aspa_checked_at moved, and that has to reach the
-        # committed JSONL (the source of truth) or it's lost the next
-        # time the local, gitignored findings.db gets rebuilt from it,
-        # defeating the whole point of the 30-day gate.
+        # Re-export so a promotion reaches the committed JSONL. A recheck
+        # with zero promotions leaves it unchanged: aspa_checked_at stays
+        # in findings.db only (see store.export_jsonl), so a db rebuilt
+        # from the export just rechecks every candidate once -- cheap.
         _regenerate_artifacts()
     return {"checked": len(due), "promoted": promoted}
 
