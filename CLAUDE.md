@@ -39,6 +39,9 @@ each session:
   Also Wednesdays: the Cloudflare ROV test (`pacific-peering-rov-cloudflare --fire`, 4 measurements),
   tracing Cloudflare's RPKI-valid/invalid test prefixes from every connected probe to see where
   invalid traces die (`outputs/reports/rov_cloudflare.txt` + `rov_cloudflare_history.jsonl`).
+  After the batch it drains the fleet-trace queue (`pacific-peering-fleet-trace --run-queued`): any
+  target queued with `--enqueue IP --asn N --reason ...` is traced once from every connected probe
+  and reported to `outputs/reports/fleet_traces.txt` (report only; usually the queue is empty).
   Every night it also runs the offshore-hosting check (`pacific-peering-offshore-check --fire`), which
   schedules itself: a full ping sweep of all in-scope ASNs monthly, plus any newly added ASN, otherwise
   nothing. Probes come from AU/NZ/US/JP/SG/HK/GB; ASNs whose addresses don't answer get a second chance
