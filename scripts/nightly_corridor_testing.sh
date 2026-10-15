@@ -80,6 +80,14 @@ fi
 
 "$UV" run pacific-peering-auto-classify-batch --hours 2 --max-concurrent 5
 
+# Queued fleet traces (owner, 2026-10-16): any target queued with
+# `pacific-peering-fleet-trace --enqueue IP --asn N --reason ...` is traced
+# once from every Connected probe in tonight's listing (one measurement per
+# target, real Atlas credits) and reported to outputs/reports/fleet_traces.txt.
+# Usually the queue is empty and this fires nothing. Report only, files no
+# findings. After the batch so it never eats into the corridor budget.
+"$UV" run pacific-peering-fleet-trace --run-queued || echo "Fleet trace failed (see above); continuing."
+
 # Offshore-hosting check (owner, 2026-09-24): monthly full run, plus any ASN
 # the registry gained since the last run -- the module decides which each
 # night, and usually fires nothing. Pings in-scope addresses from AU/NZ/US/JP
