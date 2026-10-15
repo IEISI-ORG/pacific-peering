@@ -24,6 +24,7 @@ import matplotlib.pyplot as plt
 from pacific_peering.analysis import store as _store
 from pacific_peering.discovery.economies import ECONOMIES_BY_CC
 from pacific_peering.discovery.economy_coordinates import ECONOMY_LATLON, EXTERNAL_HUB_LATLON
+from pacific_peering.viz.svg import save_svg
 
 # Loaded from the SQLite store, not the legacy dataclass modules directly --
 # see reports/data.py's module docstring for why.
@@ -192,8 +193,7 @@ def plot_confirmed_detours(output_path: Path = DEFAULT_OUTPUT_PATH) -> Path:
     )
     ax.legend(handles=legend_handles, loc="lower left", fontsize=8, framealpha=0.9)
 
-    output_path.parent.mkdir(parents=True, exist_ok=True)
-    fig.savefig(output_path, bbox_inches="tight", dpi=150)
+    save_svg(fig, output_path)
     plt.close(fig)
     return output_path
 

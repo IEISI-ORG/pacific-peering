@@ -2608,3 +2608,8 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   `probe_watch.txt` and `probe_watch_snapshot.json` alone on a night with
   no metadata or status change, no egress trace, no pending trace and no
   escalation, so the nightly batch no longer commits a timestamp-only diff.
+- The committed SVGs (`geographic_detours.svg`, `as_graph.svg`) render
+  deterministically through `viz.save_svg`: no `<dc:date>` stamp and a fixed
+  `svg.hashsalt` for element ids. Re-rendering an unchanged figure is now
+  byte-identical; before, every regeneration rewrote ~1000 lines of the map.
+  `geographic_detours.svg` is re-rendered once in the new form (same content).

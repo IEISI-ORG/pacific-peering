@@ -20,6 +20,7 @@ import matplotlib.pyplot as plt
 import networkx as nx
 
 from pacific_peering.analysis.fishbowl import DEFAULT_SUMMARY_PATH
+from pacific_peering.viz.svg import save_svg
 
 DEFAULT_OUTPUT_PATH = Path("outputs/viz/as_graph.svg")
 DEFAULT_TOP_N_EXTERNAL = 15
@@ -163,8 +164,7 @@ def plot_as_graph(graph: nx.Graph, output_path: Path = DEFAULT_OUTPUT_PATH) -> P
     ]
     ax.legend(handles=legend_handles, loc="lower left", fontsize=8, framealpha=0.9)
 
-    output_path.parent.mkdir(parents=True, exist_ok=True)
-    fig.savefig(output_path, bbox_inches="tight", dpi=150)
+    save_svg(fig, output_path)
     plt.close(fig)
     return output_path
 
