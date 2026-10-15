@@ -211,3 +211,27 @@ def test_tfl_fiji_probes_are_on_the_bolo_list(monkeypatch, tmp_path):
     assert fired == [[64611]]
     assert "## Probe 64611 (FJ, AS4638) -- BOLO probe back online" in pw.ESCALATIONS_PATH.read_text()
     assert 32841 in pw.BOLO_PROBES
+
+
+def test_quiet_night_leaves_report_and_snapshot_untouched(monkeypatch, tmp_path):
+    """No change, no trace, no escalation is just a query: no timestamp-only diff to commit."""
+    _setup(monkeypatch, tmp_path, _listing(), {})
+    pw.run_watch(fire=True, now=NOW)
+    before = (pw.SNAPSHOT_PATH.read_text(), pw.REPORT_PATH.read_text())
+
+    fired = _setup(monkeypatch, tmp_path, _listing(), {})
+    pw.run_watch(fire=True, now=NOW.replace(day=30))
+
+    assert fired == []
+    assert (pw.SNAPSHOT_PATH.read_text(), pw.REPORT_PATH.read_text()) == before
+
+
+def test_status_change_alone_still_rewrites_report(monkeypatch, tmp_path):
+    _setup(monkeypatch, tmp_path, _listing(), {})
+    pw.run_watch(fire=True, now=NOW)
+
+    _setup(monkeypatch, tmp_path, _listing(spc_status="Disconnected"), {})
+    pw.run_watch(fire=True, now=NOW.replace(day=30))
+
+    assert "Generated 2026-09-30" in pw.REPORT_PATH.read_text()
+    assert json.loads(pw.SNAPSHOT_PATH.read_text())["probes"]["60575"]["status"] == "Disconnected"

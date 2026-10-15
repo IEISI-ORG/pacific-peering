@@ -2603,3 +2603,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   data change had just set. Even with `--write`, the file (and its "Last
   regenerated" timestamp) is only rewritten when its content changed, so a
   weekly re-fetch that returns the same data commits nothing.
+- Probe watch (`pacific-peering-probe-watch --fire`) leaves
+  `probe_watch.txt` and `probe_watch_snapshot.json` alone on a night with
+  no metadata or status change, no egress trace, no pending trace and no
+  escalation, so the nightly batch no longer commits a timestamp-only diff.

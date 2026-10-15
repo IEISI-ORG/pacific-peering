@@ -295,6 +295,14 @@ def run_watch(fire: bool, weekly: bool = False, now: datetime | None = None) -> 
     if blocks:
         with ESCALATIONS_PATH.open("a") as f:
             f.write("".join(blocks))
+    # A night with nothing traced, escalated or changed is just a query: keep
+    # the previous files (and their timestamps) so the cron commits nothing.
+    if (
+        snapshot is not None and not measurement_ids and not blocks
+        and snapshot["probes"] == current and snapshot.get("pending_trace", []) == pending
+    ):
+        logger.info("Probe watch: nothing changed; report and snapshot left as they were")
+        return {"changes": changes, "to_trace": to_trace, "egress": egress, "escalations": 0, "pending": pending}
     SNAPSHOT_PATH.parent.mkdir(parents=True, exist_ok=True)
     SNAPSHOT_PATH.write_text(json.dumps(
         {"at": now.isoformat(), "pending_trace": pending, "probes": current}, indent=1, sort_keys=True
