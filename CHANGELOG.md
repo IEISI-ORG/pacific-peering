@@ -2613,3 +2613,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   `svg.hashsalt` for element ids. Re-rendering an unchanged figure is now
   byte-identical; before, every regeneration rewrote ~1000 lines of the map.
   `geographic_detours.svg` is re-rendered once in the new form (same content).
+- The weekly discovery refresh re-renders the AS dependency graph
+  (`pacific-peering-viz-as-graph`) after the pipeline refreshes the fishbowl.
+  Nothing regenerated it before, so the published graph had been frozen
+  since 2026-09-14. It commits only when the graph changes.

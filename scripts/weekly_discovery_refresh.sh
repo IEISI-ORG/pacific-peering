@@ -46,6 +46,11 @@ echo "=== weekly discovery refresh: $(date -u +%Y-%m-%dT%H:%M:%SZ) ==="
 
 "$UV" run pacific-peering-pipeline
 "$UV" run pacific-peering-corridor-backlog --write
+# AS dependency graph (viz/as_graph.py) from the fishbowl the pipeline just
+# refreshed. Nothing else regenerates it. SVGs render deterministically
+# (viz.save_svg), so an unchanged graph leaves outputs/viz/as_graph.svg
+# byte-identical and nothing is committed for it.
+"$UV" run pacific-peering-viz-as-graph || echo "AS-graph render failed (see above); continuing."
 "$UV" run pacific-peering-reverify-enqueue
 "$UV" run pacific-peering-aspa-recheck
 # Leasing-marker check (discovery/leasing_check.py): schedules itself --

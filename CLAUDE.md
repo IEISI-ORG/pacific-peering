@@ -12,7 +12,8 @@ each session:
 
 - **Weekly discovery refresh** — `scripts/weekly_discovery_refresh.sh`, Sunday 1am
   (`0 1 * * 0`). Free APIs only (APNIC/RIS/PeeringDB/IRR/probe-registry), no Atlas credits,
-  no LLM. Regenerates the corridor backlog against fresh data, stages this week's
+  no LLM. Regenerates the corridor backlog and the AS dependency graph (`outputs/viz/as_graph.svg`)
+  against fresh data, stages this week's
   reverification ration (`pacific-peering-reverify-enqueue` — the oldest-verified 1/4 of
   all findings, by their most recent corroboration; full rotation roughly every 4 weeks),
   runs the monthly WHOIS leasing-marker check (`pacific-peering-leasing-check`, self-scheduling; new
