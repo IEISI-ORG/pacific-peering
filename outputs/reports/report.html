@@ -79,7 +79,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
 <body>
 <div class="wrap">
     <h1>Pacific Peering — Regional Routing Report</h1>
-    <div class="meta">Generated 2026-10-15T21:35:38.298301+00:00</div>
+    <div class="meta">Generated 2026-10-15T22:13:57.721564+00:00</div>
 
     <div class="feedback-box"><strong>Found a bug?</strong> This report is generated
         automatically, and bugs very likely remain in both the code and the data. If
@@ -95,13 +95,13 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
     </div>
 
     <div class="stat-row">
-        <div class="stat-tile"><div class="value">256</div><div class="label">Pathways found (total)</div></div>
+        <div class="stat-tile"><div class="value">257</div><div class="label">Pathways found (total)</div></div>
         <div class="stat-tile"><div class="value">87</div><div class="label">Internal (never leave the fish bowl)</div></div>
-        <div class="stat-tile red-box"><div class="value">169</div>
+        <div class="stat-tile red-box"><div class="value">170</div>
             <div class="label">External / Leaves the region</div></div>
     </div>
     <p class="section-intro">Full corridor-by-corridor detail for all
-        256 pathways above is further down this report
+        257 pathways above is further down this report
         (Confirmed sub-optimal routes / Confirmed local transit / Candidate
         peering), collapsed by default so it doesn't dominate the page &mdash;
         click any of those section headings to expand.</p>
@@ -307,8 +307,8 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
         </tr><tr>
             <td>AS7575</td><td>AARNet</td>
             <td>FJ, SB</td>
-            <td>CK, MP, PF, PG, PW, TO</td>
-            <td>7</td>
+            <td>CK, MP, PF, PG, PW, TO, TV</td>
+            <td>8</td>
             <td>no</td>
         </tr><tr>
             <td>AS132528</td><td>Digicel Australia/Telstra-operated backbone</td>
@@ -402,7 +402,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <th>Dependent economies</th></tr></thead>
         <tbody><tr>
             <td>Sydney</td>
-            <td>105</td>
+            <td>106</td>
             <td>62%</td>
             <td>24</td>
             <td>Melanesia, Micronesia, Polynesia</td>
@@ -493,7 +493,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
 
     <details class="section-toggle">
         <summary>Confirmed sub-optimal routes (RIS + Atlas both agree)
-            <span class="count">(169)</span></summary>
+            <span class="count">(170)</span></summary>
         <div class="detour-card">
             <div class="headline">NC -&gt; FJ
                 (AS4638): detours via MegaIX Sydney
@@ -872,6 +872,13 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <div>RIS observation count: 337
                 &middot; measurement 212013476</div>
             <details class="note"><summary>Palau NCC (AS17893) -&gt; University of the South Pacific&#x27;s own network (AS24390) -- a fresh PW&lt;-&gt;FJ pair, a fifth independent confirmation of the…</summary>Palau NCC (AS17893) -&gt; University of the South Pacific&#x27;s own network (AS24390) -- a fresh PW&lt;-&gt;FJ pair, a fifth independent confirmation of the AS7575(AARNet)&lt;-&gt;AS24390 adjacency (after MP, PF, CK, PG). `AS17893 -&gt; AS174 (Cogent) -&gt; AS1299 (Telia) -&gt; AS7575`, target never resolved, RIS-agreeing with the identical exact match (337). **First hop-level geolocation evidence for this detour&#x27;s hub**: AARNet&#x27;s own router hostname (`et-3-0-2.pe1.alxd.nsw.aarnet.net.au`) spells out New South Wales explicitly, and the very next hop (`xe-0-0-0.pe1.a.suv.aarnet.net.au`) names Suva directly -- real confirmation that Sydney (not a carrier-facility guess) is AARNet&#x27;s actual detour point on every AS7575&lt;-&gt;AS24390 entry filed so far. Added a new `nsw` pattern to `hop_geolocation.py` from this measurement.</details>
+        </div><div class="detour-card">
+            <div class="headline">TV -&gt; FJ
+                (AS24390): detours via Equinix Sydney
+                (Sydney)</div>
+            <div>RIS observation count: 337
+                &middot; measurement 223636622</div>
+            <details class="note"><summary>measurement 223636622 (from TV); chain: AS23917 -&gt; AS9241 -&gt; AS7575 -&gt; AS24390; RIS count 337; RIS agrees.</summary>measurement 223636622 (from TV); chain: AS23917 -&gt; AS9241 -&gt; AS7575 -&gt; AS24390; RIS count 337; RIS agrees.</details>
         </div><div class="detour-card">
             <div class="headline">CK -&gt; MH
                 (AS24439): detours via AS3257 (GTT Communications), via AS6453 (Tata Communications) -- international transit
@@ -2780,7 +2787,7 @@ NU(AS55885) -&gt; AS150403: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS139609 -&
             <td>Equinix Sydney</td><td>Sydney</td>
             <td>AU</td><td><span class="bool-false">out-of-fishbowl</span></td>
             <td>9</td>
-            <td>33</td>
+            <td>34</td>
             <td>CK, FJ, NC, PF, PG, TO, WS</td>
         </tr><tr>
             <td>Fiji-IXP</td><td>Suva</td>

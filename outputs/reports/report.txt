@@ -1,6 +1,6 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-10-15T21:35:35.889540+00:00                  
+                 Generated: 2026-10-15T22:13:56.619767+00:00                  
 ==============================================================================
 FOUND A BUG? Bugs very likely remain in both the code and the data.
 Please open an issue: https://github.com/IEISI-ORG/pacific-peering/issues/new
@@ -11,9 +11,9 @@ SUMMARY
 HEADLINE: 57% of the real peering points this region's own networks use sit OUTSIDE the fish bowl (13 of 23)
 
 PATHWAYS (every corridor with a filed finding, of any kind):
-  Total pathways found:                    256
+  Total pathways found:                    257
   Internal (never leave the fish bowl):    87
-  External / Leaves the region:            169
+  External / Leaves the region:            170
   (full corridor-by-corridor detail -- every confirmed detour, confirmed local transit, and candidate peering entry -- is in the appendix at the end of this report, not repeated here)
 
 Economies in scope:            20
@@ -69,9 +69,9 @@ AS3605    Guam Cablevision                         3        0       5      yes
 AS6453    Tata Communications                      2       12      17       no
     Dependent: MH, NR
     Vantage-only: CK, FJ, FM, GU, MP, NC, NU, PF, PG, PW, TV, VU
-AS7575    AARNet                                   2        6       7       no
+AS7575    AARNet                                   2        7       8       no
     Dependent: FJ, SB
-    Vantage-only: CK, MP, PF, PG, PW, TO
+    Vantage-only: CK, MP, PF, PG, PW, TO, TV
 AS132528  Digicel Australia/Telstra-operat         2        5       5       no
     Dependent: FJ, WS
     Vantage-only: FM, NC, NU, TO, VU
@@ -109,7 +109,7 @@ The mirror image of the regional hubs above: the real external cities where conf
 
 City           Entries  Share Carriers Subregions reached            
 ------------------------------------------------------------------------------
-Sydney             105    62%       24 Melanesia, Micronesia, Polynesia
+Sydney             106    62%       24 Melanesia, Micronesia, Polynesia
     Dependent economies: AS, FJ, KI, MH, NC, NR, PG, PW, SB, TO, VU, WS
 Los Angeles         35    21%        7 Melanesia, Micronesia, Polynesia
     Dependent economies: FJ, FM, GU, MH, NR, PF, WF
@@ -256,7 +256,7 @@ EdgeIX - Auckland            Auckland         NZ   False              1        0
 Equinix Los Angeles          Los Angeles      US   False              1        0  PF
 Equinix San Jose             San Jose         US   False              1        3  GU
 Equinix Singapore            Singapore        SG   False              1        0  GU
-Equinix Sydney               Sydney           AU   False              9       33  CK, FJ, NC, PF, PG, TO, WS
+Equinix Sydney               Sydney           AU   False              9       34  CK, FJ, NC, PF, PG, TO, WS
 Fiji-IXP                     Suva             FJ   True               3        3  FJ
 GOREX                        Piti             GU   True               1        0  GU
 GU-IX                        Guam             GU   True               1        0  GU
@@ -412,7 +412,7 @@ MH      64237 AS14593   Connected     Starlink (AS14593): satellite egress via S
 PF      23002 AS2200    Connected     Renater (AS2200): backhauls straight to metropolitan France (~500ms), never touches Pacific transit
 TO      11691 AS24390   Connected     ASN registered Fiji but probe physically in Tonga (geo-audit): counts as a TO vantage point, not FJ; USP (AS24390, registered FJ): regional academic network via AARNet (Australia), not a local commercial carrier; valid source, path unverified
 
-APPENDIX: FULL CORRIDOR DETAIL (256 pathways -- see the PATHWAYS summary at the top of this report for the plain counts)
+APPENDIX: FULL CORRIDOR DETAIL (257 pathways -- see the PATHWAYS summary at the top of this report for the plain counts)
 ==============================================================================
 
 Confirmed sub-optimal routes (RIS + Atlas both agree)
@@ -579,6 +579,9 @@ PG -> FJ (AS24390): detours via AS7575 (AARNet) -- international transit (Sydney
 PW -> FJ (AS24390): detours via AS7575 (AARNet) -- international transit (Sydney)
     RIS observation count: 337  [measurement 212013476]
     Palau NCC (AS17893) -> University of the South Pacific's own network (AS24390) -- a fresh PW<->FJ pair, a fifth independent confirmation of the AS7575(AARNet)<->AS24390 adjacency (after MP, PF, CK, PG). `AS17893 -> AS174 (Cogent) -> AS1299 (Telia) -> AS7575`, target never resolved, RIS-agreeing with the identical exact match (337). **First hop-level geolocation evidence for this detour's hub**: AARNet's own router hostname (`et-3-0-2.pe1.alxd.nsw.aarnet.net.au`) spells out New South Wales explicitly, and the very next hop (`xe-0-0-0.pe1.a.suv.aarnet.net.au`) names Suva directly -- real confirmation that Sydney (not a carrier-facility guess) is AARNet's actual detour point on every AS7575<->AS24390 entry filed so far. Added a new `nsw` pattern to `hop_geolocation.py` from this measurement.
+TV -> FJ (AS24390): detours via Equinix Sydney (Sydney)
+    RIS observation count: 337  [measurement 223636622]
+    measurement 223636622 (from TV); chain: AS23917 -> AS9241 -> AS7575 -> AS24390; RIS count 337; RIS agrees.
 CK -> MH (AS24439): detours via AS3257 (GTT Communications), via AS6453 (Tata Communications) -- international transit (Los Angeles)
     RIS observation count: 997  [measurement 211741326]
     Cook Islands (AS10131) -> Marshall Islands NTA ISP (AS24439) -- a fresh CK<->MH pair, a fifth independent confirmation of the AS6453(Tata)<->AS24439 adjacency (after GU via IIJ, MP via Cogent, VU via Singtel, and PF via this identical GTT/Tata chain). Only 1 of 3 requested probes returned; checked `participant_count` directly (1, not 3) -- the same genuine single-probe pattern as every other AS10131-sourced measurement this session. Result: `AS10131 -> AS9471 (ONATI) -> AS3257 (GTT) -> AS6453`, target never resolved, RIS-agreeing with the identical *exact* match (997). **Geolocated with the new `hop_geolocation` module from the start this time, rather than inheriting a hub label**: the resolved Tata hops (`64.86.197.98`, `180.87.9.2`, `180.87.60.178`) are the exact same addresses as the PF-sourced entry's now-corrected path -- Los Angeles, then Piti, Guam (Tata's confirmed facility in `regional_carrier_facilities.py`). Kept `detour_hub` as Los Angeles, matching the corrected PF entry, not the old Tokyo mislabeling.
