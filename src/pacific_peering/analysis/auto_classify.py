@@ -498,6 +498,43 @@ def classify_corridor(
             instead of firing one (a parked measurement picked up later --
             see `pending_measurements`). No alternate-IP retry.
     """
+    progress = _Progress()
+    try:
+        return _classify_corridor(candidate, lock, regenerate, measurement_id, progress)
+    except Exception as exc:
+        # A measurement fired in this call is paid for. If the failure came
+        # before any finding, corroboration or escalation was written, park
+        # it so a later run classifies its results instead of firing again.
+        # Once writing has started, re-classifying could file duplicates
+        # (corroborations aren't deduplicated), so it isn't parked.
+        if progress.fired is not None and not progress.writing:
+            with lock if lock is not None else contextlib.nullcontext():
+                pending_measurements.add_pending(
+                    candidate, progress.fired, f"classify error: {exc}",
+                    attempts=1, last_attempt_at=datetime.now(timezone.utc),
+                )
+        # Tell a caller re-classifying a parked measurement whether it may re-park it.
+        exc.classify_writing_started = progress.writing  # type: ignore[attr-defined]
+        raise
+
+
+@dataclass
+class _Progress:
+    """How far one `classify_corridor` call got, for its failure handling."""
+
+    fired: int | None = None  # measurement fired by this call
+    writing: bool = False  # durable writes (findings, escalations) have begun
+
+
+def _classify_corridor(
+    candidate: CorridorCandidate,
+    lock: threading.Lock | None,
+    regenerate: bool,
+    measurement_id: int | None,
+    progress: _Progress,
+) -> ClassifyResult:
+    """`classify_corridor`'s body; `progress` records the fired measurement
+    and the start of the write phase."""
     asn_to_cc = _load_asn_to_cc()
     ixp_registry = load_ixp_lan_registry(IXP_REGISTRY_PATH)
     name_cache: dict[int, str] = {}
@@ -513,6 +550,7 @@ def classify_corridor(
     for attempt, target_ip in enumerate(target_ips[:_MAX_TARGET_IP_ATTEMPTS]):
         try:
             measurement_id = _fire_measurement(candidate, target_ip)
+            progress.fired = measurement_id
         except MeasurementPending as exc:
             # Still running and already paid for: park it for a later run
             # rather than fail the corridor or fire it again. Not marked tested.
@@ -570,6 +608,7 @@ def classify_corridor(
     # produced no real signal at all, so the corridor should retry on its
     # own next run rather than being permanently skipped.
     if not triangulation["probes"]:
+        progress.writing = True
         return _escalate_and_return(
             escalations,
             candidate,
@@ -598,6 +637,7 @@ def classify_corridor(
             clean_probes.append(probe)
 
     if not clean_probes:
+        progress.writing = True
         return _escalate_and_return(
             escalations,
             candidate,
@@ -922,6 +962,7 @@ def classify_corridor(
         )
         return ClassifyResult(candidate, "inconclusive", None, escalations)
 
+    progress.writing = True
     with lock if lock is not None else contextlib.nullcontext():
         return _finalize()
 
@@ -1300,14 +1341,30 @@ def _classify_collected(lock: threading.Lock) -> list[ClassifyResult]:
     `run_batch`). Costs no Atlas credits: the measurements already ran.
     """
     results: list[ClassifyResult] = []
-    for candidate, measurement_id in pending_measurements.collect_ready():
+    for entry in pending_measurements.collect_ready():
+        candidate, measurement_id = entry.candidate, entry.measurement_id
         try:
             result = classify_corridor(candidate, lock=lock, regenerate=False, measurement_id=measurement_id)
-        except Exception:  # noqa: BLE001 - one corridor's failure must not sink the batch
+        except Exception as exc:  # noqa: BLE001 - one corridor's failure must not sink the batch
+            if getattr(exc, "classify_writing_started", False):
+                # Re-classifying could file duplicate corroborations.
+                logger.exception(
+                    "AS%d -> AS%d: classifying parked measurement %d failed after writing began; "
+                    "not re-parking it",
+                    candidate.source_asn, candidate.target_asn, measurement_id,
+                )
+                continue
             logger.exception(
-                "AS%d -> AS%d: classifying parked measurement %d failed, leaving untested",
+                "AS%d -> AS%d: classifying parked measurement %d failed; re-parking it (attempt %d of %d)",
                 candidate.source_asn, candidate.target_asn, measurement_id,
+                entry.attempts + 1, pending_measurements.MAX_CLASSIFY_ATTEMPTS,
             )
+            with lock:
+                pending_measurements.add_pending(
+                    candidate, measurement_id, f"classify error: {exc}",
+                    created_at=entry.created_at, attempts=entry.attempts + 1,
+                    last_attempt_at=datetime.now(timezone.utc),
+                )
             continue
         logger.info("AS%d -> AS%d: %s (parked measurement %d)",
                     candidate.source_asn, candidate.target_asn, result.outcome, measurement_id)
@@ -1420,7 +1477,27 @@ def run_batch(time_budget_seconds: float, max_concurrent: int = 5) -> list[Class
 
 
 def main() -> None:
+    """`uv run pacific-peering-auto-classify [--fire]` -- classify the next
+    backlog corridor. Without `--fire` it only names the corridor it would
+    test: firing spends Atlas credits, so it must be asked for (owner,
+    2026-10-17, after `--help` ran a real pass)."""
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
+    parser = argparse.ArgumentParser(description="Classify the next backlog corridor.")
+    parser.add_argument(
+        "--fire", action="store_true", help="fire the corridor's traceroute (spends Atlas credits)"
+    )
+    args = parser.parse_args()
+    if not args.fire:
+        candidate = pick_next_corridor()
+        if candidate is None:
+            logger.info("Dry run: the corridor backlog is empty")
+        else:
+            logger.info(
+                "Dry run -- pass --fire to classify AS%d (%s) -> AS%d (%s): %s",
+                candidate.source_asn, candidate.source_cc,
+                candidate.target_asn, candidate.target_cc, candidate.rationale,
+            )
+        return
     results = classify_next()
     for r in results:
         logger.info(

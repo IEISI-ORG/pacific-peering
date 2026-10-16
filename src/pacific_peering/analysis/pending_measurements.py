@@ -32,6 +32,13 @@ logger = logging.getLogger(__name__)
 
 DEFAULT_PENDING_PATH = Path("data/analysis/pending_measurements.json")
 MAX_AGE = timedelta(hours=24)
+# A measurement whose results are in but whose classification keeps failing
+# is re-parked (it's paid for) up to this many times, then dropped -- a
+# deterministic failure mustn't be retried forever.
+MAX_CLASSIFY_ATTEMPTS = 3
+# Batches collect at their start and end, two hours apart; spacing retries
+# keeps one bad night (say, an outside service down) from using every attempt.
+MIN_RETRY_INTERVAL = timedelta(hours=12)
 
 
 @dataclass(frozen=True)
@@ -40,6 +47,8 @@ class PendingMeasurement:
     measurement_id: int
     created_at: datetime
     reason: str
+    attempts: int = 0  # failed classifications so far
+    last_attempt_at: datetime | None = None  # when the latest one failed
 
 
 def load_pending(path: Path | None = None) -> list[PendingMeasurement]:
@@ -52,6 +61,10 @@ def load_pending(path: Path | None = None) -> list[PendingMeasurement]:
             measurement_id=entry["measurement_id"],
             created_at=datetime.fromisoformat(entry["created_at"]),
             reason=entry["reason"],
+            attempts=entry.get("attempts", 0),
+            last_attempt_at=(
+                datetime.fromisoformat(entry["last_attempt_at"]) if entry.get("last_attempt_at") else None
+            ),
         )
         for entry in json.loads(path.read_text()).get("pending", [])
     ]
@@ -65,6 +78,8 @@ def _save(entries: list[PendingMeasurement], path: Path) -> None:
                 "measurement_id": e.measurement_id,
                 "created_at": e.created_at.isoformat(),
                 "reason": e.reason,
+                "attempts": e.attempts,
+                "last_attempt_at": e.last_attempt_at.isoformat() if e.last_attempt_at else None,
                 "candidate": asdict(e.candidate),
             }
             for e in entries
@@ -79,11 +94,17 @@ def add_pending(
     reason: str,
     created_at: datetime | None = None,
     path: Path | None = None,
+    attempts: int = 0,
+    last_attempt_at: datetime | None = None,
 ) -> None:
     """Park a measurement. Callers running concurrently must hold their write lock."""
     path = path or DEFAULT_PENDING_PATH
     entries = [e for e in load_pending(path) if e.measurement_id != measurement_id]
-    entries.append(PendingMeasurement(candidate, measurement_id, created_at or datetime.now(timezone.utc), reason))
+    entries.append(
+        PendingMeasurement(
+            candidate, measurement_id, created_at or datetime.now(timezone.utc), reason, attempts, last_attempt_at
+        )
+    )
     _save(entries, path)
     logger.warning(
         "AS%d -> AS%d: measurement %d parked (%s); collecting on a later run, up to %dh",
@@ -96,23 +117,42 @@ def pending_pairs(path: Path | None = None) -> set[tuple[int, int]]:
     return {(e.candidate.source_asn, e.candidate.target_asn) for e in load_pending(path)}
 
 
-def collect_ready(path: Path | None = None) -> list[tuple[CorridorCandidate, int]]:
+def collect_ready(path: Path | None = None) -> list[PendingMeasurement]:
     """Fetch every parked measurement; return the ones ready to classify.
 
     Ready means it has results (persisted to the Atlas cache here), or it
     finished with none, which goes back to `classify_corridor`'s own
     zero-probe escalation. Anything else stays parked until it is older
-    than `MAX_AGE`, then it's dropped. Call only while no batch worker is
-    running: it rewrites the file without a lock.
+    than `MAX_AGE`, then it's dropped. Ready entries leave the file here; a
+    caller whose classification of one fails re-parks it with `attempts + 1`
+    (`auto_classify._classify_collected`). A re-parked entry is retried from
+    the cache no sooner than `MIN_RETRY_INTERVAL` after its last failure,
+    whatever its age, and is dropped after `MAX_CLASSIFY_ATTEMPTS` failures. Call only while no batch worker
+    is running: it rewrites the file without a lock.
     """
     path = path or DEFAULT_PENDING_PATH
     if not path.exists():
         return []
     now = datetime.now(timezone.utc)
-    ready: list[tuple[CorridorCandidate, int]] = []
+    ready: list[PendingMeasurement] = []
     keep: list[PendingMeasurement] = []
     for entry in load_pending(path):
         mid, cand = entry.measurement_id, entry.candidate
+        if entry.attempts >= MAX_CLASSIFY_ATTEMPTS:
+            logger.warning(
+                "AS%d -> AS%d: parked measurement %d failed classification %d times (%s); "
+                "dropping it, corridor left untested for a fresh test",
+                cand.source_asn, cand.target_asn, mid, entry.attempts, entry.reason,
+            )
+            continue
+        if entry.attempts:
+            # Its results were fetched and cached when it was first collected
+            # or fired, so retry from the cache: no fetch, no age limit.
+            if entry.last_attempt_at and now - entry.last_attempt_at < MIN_RETRY_INTERVAL:
+                keep.append(entry)
+            else:
+                ready.append(entry)
+            continue
         try:
             status = fetch_measurement_status(mid)
             results = fetch_raw_results(mid)
@@ -122,7 +162,7 @@ def collect_ready(path: Path | None = None) -> list[tuple[CorridorCandidate, int
             if results:
                 persist_results(mid, results)
             logger.info("AS%d -> AS%d: collected parked measurement %d (%s)", cand.source_asn, cand.target_asn, mid, status)
-            ready.append((cand, mid))
+            ready.append(entry)
         elif now - entry.created_at > MAX_AGE:
             logger.warning(
                 "AS%d -> AS%d: parked measurement %d still has no results after %s (%s); "

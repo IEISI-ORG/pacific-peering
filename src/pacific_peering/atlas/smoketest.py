@@ -18,6 +18,7 @@ directions"):
 
 from __future__ import annotations
 
+import argparse
 import json
 import logging
 from pathlib import Path
@@ -293,14 +294,26 @@ def _log_measurement(measurement_id: int) -> None:
             logger.info("  hop %2d: %s", hop["hop"], addrs)
 
 
+def _fire_requested(description: str) -> bool:
+    """Parse the command line; True only with `--fire` (each run spends Atlas credits)."""
+    parser = argparse.ArgumentParser(description=description)
+    parser.add_argument("--fire", action="store_true", help="fire the traceroute (spends Atlas credits)")
+    if parser.parse_args().fire:
+        return True
+    logger.info("Dry run -- pass --fire to %s", description[0].lower() + description[1:].rstrip("."))
+    return False
+
+
 def main() -> None:
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
-    _log_measurement(run_smoketest())
+    if _fire_requested(f"Fire one outbound traceroute toward AS{DEFAULT_TARGET_ASN}."):
+        _log_measurement(run_smoketest())
 
 
 def main_inbound() -> None:
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
-    _log_measurement(run_inbound_smoketest())
+    if _fire_requested(f"Fire one inbound traceroute into AS{DEFAULT_TARGET_ASN} from outside the region."):
+        _log_measurement(run_inbound_smoketest())
 
 
 if __name__ == "__main__":

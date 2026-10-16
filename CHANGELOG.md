@@ -2623,3 +2623,26 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   `findings.db`; a database rebuilt from the export rechecks each candidate
   once (one cached Cloudflare Radar snapshot). Promotions still reach the
   export through `kind` and `aspa_confirmed`.
+- `pacific-peering-auto-classify`, `pacific-peering-atlas-smoketest` and
+  `pacific-peering-atlas-inbound-smoketest` parse their arguments and fire
+  only with `--fire`. Without it they log what they would fire and exit;
+  `--help` prints help and an unknown flag is an error. Before, none of the
+  three had a parser, so `pacific-peering-auto-classify --help` ran a real
+  classification pass (2026-10-17; the backlog was empty, so nothing fired).
+  The nightly batch uses `pacific-peering-auto-classify-batch`, which is
+  unchanged.
+- A paid corridor measurement is no longer lost when classifying it fails.
+  A parked measurement whose classification raises is re-parked with its
+  original age, an `attempts` count and `last_attempt_at`
+  (`pending_measurements.json`). A freshly fired measurement that fails
+  before any finding, corroboration or escalation is written is parked the
+  same way, so a later run classifies its results instead of firing the
+  corridor again. A re-parked entry is retried from the cached results (no
+  Atlas fetch, no 24h age limit) no sooner than 12h after its last failure,
+  so one bad night can't use every attempt, and is dropped with a warning
+  after `MAX_CLASSIFY_ATTEMPTS` (3) failures. A failure after writing has
+  begun is never parked or re-parked, because re-classifying could file
+  duplicate corroborations; `classify_corridor` marks the exception with
+  `classify_writing_started` so `_classify_collected` can tell.
+  `collect_ready` now returns the parked entries rather than (candidate,
+  measurement id) pairs.

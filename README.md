@@ -111,8 +111,8 @@ real account credits and need a human choosing which AS pairs matter, so
 they stay a separate, manual step:
 
 ```bash
-uv run pacific-peering-atlas-smoketest           # outbound traceroute
-uv run pacific-peering-atlas-inbound-smoketest   # inbound traceroute
+uv run pacific-peering-atlas-smoketest --fire           # outbound traceroute (dry run without --fire)
+uv run pacific-peering-atlas-inbound-smoketest --fire   # inbound traceroute (dry run without --fire)
 uv run pacific-peering-atlas-coverage            # per-economy probe coverage
 uv run pacific-peering-triangulate               # check a measurement against RIS
 uv run pacific-peering-feasibility               # latency/hop-count sanity check
