@@ -3631,3 +3631,22 @@ The headless session runs in `dontAsk` mode with a tool allowlist (no Atlas comm
 - **Fiji-IXP members' PeeringDB email (owner, 2026-10-17): one shared email, Gmail draft created with headers only, body pasted by the owner.** It goes to the member role mailboxes for Vodafone, TFL, Digicel (APNIC contacts; Digicel has no PeeringDB POC) and FINTEL, Cc TAF and USP. It shows PeeringDB vs measured ports and asks each network to correct its own netixlan entry, Digicel to name its port, and the holders of .20/.21 to identify themselves. It sticks to measurements and doesn't mention #276.
 - **Probe 32810: the 14 Fiji traceroutes scheduled for 03:00Z (224018295-308) all ended `Failed`, 0 results; still no built-in results (checked 05:48Z).** The reformat didn't restore measurements. As planned, the 14 entries were removed from `data/analysis/pending_measurements.json` so Monday's batch doesn't log zero-result classifications. That file is untracked; a backup is in the session scratchpad. **Open for the owner:** tell TM, and suggest a software probe on a Pi or VM.
 - **Both emails sent (owner, 2026-10-17).** The Fiji-IXP members PeeringDB email went at 05:55Z. Recipients: Vodafone, TFL, Digicel (x2) and FINTEL role mailboxes; Cc TAF, the USP contact, FINTEL's named contact, Vodafone NOC, and **PITA** (added by the owner). The "[SWEEP RESULTS FOR .49-.255]" placeholder went out unfilled; a correction reply naming .60 (unidentified) and .70 (FINTEL) has been offered to the owner. The TM email (32810: reformat didn't restore measurements; try a fresh stick, then a software probe or a replacement) went at 05:56Z. **Watch for:** replies, netixlan changes on PeeringDB ix 3085, and 32810 built-in results (1001/5001) reappearing.
+- **Fiji-IXP port assignment table from the USP contact (owner, 2026-10-17 ~21:00 AEST).** The owner forwarded an image of the IXP's peering LAN plan. It came from a participant, not from PeeringDB or TAF. The image was deleted after transcription and not committed.
+
+  | Port | IPv4 | IPv6 | Measured 2026-10-17 |
+  |---|---|---|---|
+  | RS-1 | 103.147.194.1 | 2001:df2:a280:333::1 | answers from all 3 probes |
+  | RS-2 | 103.147.194.2 | 2001:df2:a280:333::2 | answers from all 3 probes |
+  | Vodafone | .10 | ::10 | answers; crossing hop into Vodafone (**matches**) |
+  | Digicel | .20 | ::20 | answers; never seen as a crossing hop |
+  | TFL | .30 | ::30 | answers (not from TFL); crossing hop into TFL (**matches**) |
+  | USP | .40 | ::40 | answers (not from Vanuatu) |
+  | FNU | .50 | ::50 | **silent**, consistent with FNU not being connected yet (#278) |
+  | Walesi | .60 | ::60 | answers; 15.1 ms from Vanuatu, Vodafone-like timing |
+  | FINTEL | .70 | ::70 | answers (not from Vanuatu); #275's crossing hop (**matches**) |
+
+  - **Every traced port matches.** The table also settles the three unknowns: **.20 = Digicel, .60 = Walesi, .50 = FNU's reserved port**. **.21 answers but isn't in the table**; it is probably Digicel's second interface (it sits next to .20 and has identical timing from all 3 probes). That is an inference.
+  - **The table says the LAN is 103.147.194.0/24.** PeeringDB says /23, and APNIC holds the /23. Neither the /24 nor the IPv6 LAN is announced in BGP (RIPEstat), which is normal for an IX LAN.
+  - **Fiji-IXP has an IPv6 LAN: 2001:df2:a280:333::/64.** It comes from 2001:df2:a280::/47, registered to the Telecommunications Authority of Fiji (TAOF-FJ) as "Used for IX". PeeringDB has no IPv6 for ix 3085. That answers the earlier open question of whether IPv6 is planned at Fiji-IXP. It doesn't show whether any member actually peers over IPv6. The fleet's IPv6 probes would need a ping or trace to the ::/64 addresses for that. Not fired.
+  - **#276 is now clearly mislabelled.** The participant's table puts Digicel at .20, and 219066887's AS45355 hop is .10, Vodafone's port. The chain is really TFL → Vodafone at Fiji-IXP. Relabelling #276 and adding a netixlan override (.10 → AS38442, .20 → AS45355, .30 → AS45349, .60 Walesi, .70 → AS9241) is still the owner's call. Nothing changed.
+  - Walesi (Fiji's free-to-air digital TV platform) wasn't previously known to be on the IXP. Its 15 ms reply from Vanuatu, like Vodafone's .10, suggests it is reached inside Vodafone's network, perhaps as a Vodafone customer. That is an inference, not traced.
