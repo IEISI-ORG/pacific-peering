@@ -1,6 +1,6 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-10-16T23:00:48.824249+00:00                  
+                 Generated: 2026-10-17T15:02:40.987332+00:00                  
 ==============================================================================
 FOUND A BUG? Bugs very likely remain in both the code and the data.
 Please open an issue: https://github.com/IEISI-ORG/pacific-peering/issues/new
@@ -222,7 +222,7 @@ Measurements: {'v4': [222352015, 222353113], 'v6': [222354434, 222355531]}. Deta
 
 IPV6 COVERAGE (adoption signal only -- no IPv6 testing yet)
 ==============================================================================
-45 of 158 in-scope ASNs have >=1 RIS-observed IPv6-originated prefix. 9 of 36 connected Atlas probes work over IPv6 (3 more are IPv6-capable but tagged as not working). Adoption tracking only -- this project deliberately isn't testing IPv6 corridors yet; queued until adoption has advanced further (see TODO below).
+45 of 158 in-scope ASNs have >=1 RIS-observed IPv6-originated prefix. 9 of 36 connected Atlas probes work over IPv6 (4 more are IPv6-capable but tagged as not working). Adoption tracking only -- this project deliberately isn't testing IPv6 corridors yet; queued until adoption has advanced further (see TODO below).
 CC   Name                      ASNs  w/ IPv6
 ------------------------------------------------------------------------------
 AS   American Samoa               2        1
@@ -291,7 +291,7 @@ PW   Palau                            Micronesia       3       3       1        
 TO   Tonga                            Polynesia        5       3       1         3
 FJ   Fiji                             Melanesia       21      20       2         2
 CK   Cook Islands                     Polynesia        2       6       1         1
-GU   Guam                             Micronesia      10      14       6         1
+GU   Guam                             Micronesia      10      14       5         1
 PF   French Polynesia                 Polynesia        6       9       6         1
 PG   Papua New Guinea                 Melanesia       38      10       1         1
 VU   Vanuatu                          Melanesia       10       5       1         1
