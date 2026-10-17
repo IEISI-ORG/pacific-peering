@@ -1,6 +1,6 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-10-17T15:02:40.987332+00:00                  
+                 Generated: 2026-10-17T23:41:33.986983+00:00                  
 ==============================================================================
 FOUND A BUG? Bugs very likely remain in both the code and the data.
 Please open an issue: https://github.com/IEISI-ORG/pacific-peering/issues/new
@@ -171,7 +171,7 @@ WS   Samoa                       10       3            1       2
 
 ASPA PROGRESS (RFC 9582 upstream-authorization adoption)
 ==============================================================================
-20 of 158 in-scope ASNs now publish an ASPA record (3588 total across the whole internet, per Cloudflare Radar). Adoption is still early -- absence means 'not published yet', not 'no real upstream'. Per-economy: how many of its own ASNs publish a record, and the distinct upstream ASNs those records declare, split by whether the declared provider is itself an in-scope Pacific ASN or an external carrier.
+20 of 158 in-scope ASNs now publish an ASPA record (3597 total across the whole internet, per Cloudflare Radar). Adoption is still early -- absence means 'not published yet', not 'no real upstream'. Per-economy: how many of its own ASNs publish a record, and the distinct upstream ASNs those records declare, split by whether the declared provider is itself an in-scope Pacific ASN or an external carrier.
 CC   Name                      ASNs  w/ ASPA  Upstr in-FB  Upstr ext
 ------------------------------------------------------------------------------
 CK   Cook Islands                 2        1            0          3
@@ -222,7 +222,7 @@ Measurements: {'v4': [222352015, 222353113], 'v6': [222354434, 222355531]}. Deta
 
 IPV6 COVERAGE (adoption signal only -- no IPv6 testing yet)
 ==============================================================================
-45 of 158 in-scope ASNs have >=1 RIS-observed IPv6-originated prefix. 9 of 36 connected Atlas probes work over IPv6 (4 more are IPv6-capable but tagged as not working). Adoption tracking only -- this project deliberately isn't testing IPv6 corridors yet; queued until adoption has advanced further (see TODO below).
+45 of 158 in-scope ASNs have >=1 RIS-observed IPv6-originated prefix. 9 of 36 connected Atlas probes work over IPv6 (3 more are IPv6-capable but tagged as not working). Adoption tracking only -- this project deliberately isn't testing IPv6 corridors yet; queued until adoption has advanced further (see TODO below).
 CC   Name                      ASNs  w/ IPv6
 ------------------------------------------------------------------------------
 AS   American Samoa               2        1
@@ -1140,9 +1140,9 @@ AS6939 (Hurricane Electric, US) -> AS23676 (University of Guam, GU)
 AS4638 (IS-FJ-AS - Telecom Fiji Limited, FJ) -> AS24390 (University of the South Pacific, FJ)
     Traceroute agreement: 1/1 probes  [measurement 223634394, vantage: FJ]
     Filed by hand at the owner's request (2026-10-16), overriding the dark-hop rule: hops 6-7 are two silent routers inside Telecom Fiji, between 202.62.126.21 (AS4638, 1.6 ms) and the TFL core 202.137.178.55/.54 (route object AS45349, 2.0/2.3 ms). Return TTLs step one hop at a time (251, 248, 247, 246, target 54 from 64) with no ittl, so nothing is hidden before the target. RIS can't see Fiji-IXP peering (no collector there).
-AS45355 (Digicel Fiji Limited, FJ) -> AS38442 (Vodafone Fiji Limited, FJ)
+AS45349 (Telecom Fiji Limited, FJ) -> AS38442 (Vodafone Fiji Limited, FJ)
     Traceroute agreement: 1/1 probes  [measurement 219066887, vantage: FJ]
-    measurement 219066887 (from FJ); chain: AS141695 -> AS4638 -> AS45355 -> AS38442; RIS disagrees.
+    measurement 219066887 (from FJ); chain: AS141695 -> AS4638 -> AS45349 -> AS38442; RIS disagrees.
 AS9246 (Teleguam Holdings, LLC (GTA), GU) -> AS38875 (FSM Telecommunications Corporation, FM)
     Traceroute agreement: 1/1 probe  [measurement 211484664, vantage: GU]
     Pulled from the corridor backlog: AS3605 (Guam Cablevision) -> AS38875 (FSM Telecommunications Corporation), a fresh GU<->FM economy pair. Only 1 of 3 requested probes returned. Result is genuinely different in kind from every other AS3605 detour this session: fully contiguous, and it actually **crosses a real, in-fishbowl exchange** -- AS3605 -> AS9246 (Teleguam Holdings/GTA, resolved via PeeringDB netixlan) at **MARIIX** (ix_id 2301, Mangilao, Guam -- in-fishbowl) -> AS139759. The literal target (AS38875) never itself resolved; the traceroute lands on AS139759 instead -- checked directly, and this is not a different network: AS38875's only RIS-observed neighbor is AS10130, and AS139759's only RIS-observed neighbor is also AS10130 -- both are sibling ASNs of the same real operator, FSM Telecommunications Corporation (confirmed via identical holder strings, the same pattern already established for ONATI's two ASNs). Even correcting for that sibling identity, RIS still doesn't confirm this specific adjacency: neither AS38875 nor AS139759 lists AS9246 (or AS3605) as a neighbor at all -- both show only AS10130. A clean, fully contiguous, real-exchange crossing that RIS simply doesn't corroborate -- exactly Validation Rule 4's shape: a real, physically-instantiated connection at an in-fishbowl exchange (Teleguam Holdings is a confirmed MARIIX member) that isn't announced anywhere RIS's route collectors can see. Kept as a candidate, not promoted, on the same principle as every other entry here -- a single clean traceroute doesn't satisfy Validation Rule 1 no matter how compelling the corroborating IXP membership evidence is.

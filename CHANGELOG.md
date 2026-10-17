@@ -2663,3 +2663,8 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   A cached address inside an override LAN has its exchange context
   recomputed on lookup. Retiring an entry means deleting it and dropping its
   addresses from `ip_resolution_cache.json`.
+- Finding #276 relabelled from Digicel AS45355 → Vodafone AS38442 to
+  TFL AS45349 → Vodafone AS38442 (candidate peering, owner decision). It was
+  filed from PeeringDB's stale netixlan entry for 103.147.194.10, which is
+  Vodafone's Fiji-IXP port. Corroboration 549's chain and note updated; ASPA
+  check state reset for the new pair.
