@@ -2646,3 +2646,20 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   `classify_writing_started` so `_classify_collected` can tell.
   `collect_ready` now returns the parked entries rather than (candidate,
   measurement id) pairs.
+- Hand-verified IXP overrides (`discovery/ixp_overrides.py`, `IXP_OVERRIDES`,
+  keyed by PeeringDB ix_id) correct stale PeeringDB records until the public
+  record is fixed; the owner retires an entry by hand. A listed port resolves
+  to its ASN (`ixp_override`) ahead of the IP-resolution cache, BGP and
+  netixlan, and the answer is written back to the cache. Route servers
+  resolve to no ASN (`ixp_route_server`) and log a warning if seen as a hop.
+  Override LANs are added to an exchange's PeeringDB prefixes inside
+  `classify_ixp_fabric` at lookup time, never saved to
+  `ixp_lan_registry.json`, and only for exchanges already in the registry.
+  First entry: Fiji-IXP (ix 3085) from its 2023 port plan, cross-checked by
+  the 2026-10-17 traces: route servers .1/.2, Vodafone .10, Digicel .20,
+  TFL .30, USP .40, FNU .50 (reserved), Walesi .60, FINTEL .70 (and ::N),
+  plus 103.147.194.0/24 and 2001:df2:a280:333::/64. Before this, the cache
+  held 103.147.194.10 as Digicel AS45355 from PeeringDB's 2020 record.
+  A cached address inside an override LAN has its exchange context
+  recomputed on lookup. Retiring an entry means deleting it and dropping its
+  addresses from `ip_resolution_cache.json`.

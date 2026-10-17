@@ -26,6 +26,7 @@ from pacific_peering.analysis.ixp_lan_registry import (
     classify_ixp_fabric,
     load_ixp_lan_registry,
 )
+from pacific_peering.discovery.ixp_overrides import ROUTE_SERVER, find_port_override, in_override_lan
 from pacific_peering.discovery.peeringdb import resolve_ip_via_netixlan
 from pacific_peering.ris.ripestat import resolve_ip_to_asns
 
@@ -49,7 +50,7 @@ class HopResolution:
     hop: int
     addresses: tuple[str, ...]
     asns: tuple[int, ...]
-    resolution_source: str | None  # "bgp", "peeringdb_netixlan", or None
+    resolution_source: str | None  # "bgp", "peeringdb_netixlan", "ixp_override", "ixp_route_server", ...
     ixp_context: dict | None = None  # {"ix_id", "name", "in_fishbowl"}, when known
 
 
@@ -71,6 +72,13 @@ def _is_private_address(address: str) -> bool:
         return ipaddress.ip_address(address).is_private
     except ValueError:
         return False
+
+
+def _ixp_context(entry: IxpLanEntry | None) -> dict | None:
+    """The `ixp_context` dict recorded for a hop inside a known exchange's LAN."""
+    if entry is None:
+        return None
+    return {"ix_id": entry.ix_id, "name": entry.name, "in_fishbowl": entry.in_fishbowl}
 
 
 def _resolve_address(
@@ -114,20 +122,42 @@ def _resolve_address(
     if _is_private_address(address):
         return None, "private", None
 
+    port_override = find_port_override(address)
+    if port_override is not None:
+        # Ahead of the cache: it may still hold PeeringDB's stale answer
+        # (Fiji-IXP's .10 was cached as Digicel). Written back so the
+        # cache stays right after the override is retired.
+        override, port = port_override
+        ixp_context = _ixp_context(classify_ixp_fabric(address, ixp_registry))
+        result: tuple[int | None, str | None, dict | None]
+        if port.role == ROUTE_SERVER:
+            logger.warning(
+                "%s is %s's route server (%s), seen as a traceroute hop; not crediting it to a member",
+                address,
+                override.name,
+                port.holder,
+            )
+            result = (None, "ixp_route_server", ixp_context)
+        else:
+            result = (port.asn, "ixp_override", ixp_context)
+        cache.set(address, *result)
+        return result
+
     cached = cache.get(address)
+    if cached is not None and in_override_lan(address):
+        # The override LAN may postdate this entry (e.g. an IPv6 address
+        # cached before PeeringDB's missing LAN was overridden).
+        asn, source, _stale_context = cached
+        ixp_context = _ixp_context(classify_ixp_fabric(address, ixp_registry))
+        if asn is None and source is None and ixp_context is not None:
+            source = "ixp_lan_registry"
+        cache.set(address, asn, source, ixp_context)
+        return asn, source, ixp_context
     if cached is not None:
         return cached
 
     ixp_entry = classify_ixp_fabric(address, ixp_registry)
-    ixp_context = (
-        {
-            "ix_id": ixp_entry.ix_id,
-            "name": ixp_entry.name,
-            "in_fishbowl": ixp_entry.in_fishbowl,
-        }
-        if ixp_entry is not None
-        else None
-    )
+    ixp_context = _ixp_context(ixp_entry)
 
     bgp_asns = resolve_ip_to_asns(address)
     if len(bgp_asns) == 1:

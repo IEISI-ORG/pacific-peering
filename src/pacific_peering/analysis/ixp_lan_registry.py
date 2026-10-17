@@ -29,6 +29,7 @@ from pathlib import Path
 
 from pacific_peering.analysis.fishbowl import DEFAULT_SUMMARY_PATH
 from pacific_peering.discovery.economies import ECONOMIES
+from pacific_peering.discovery.ixp_overrides import IXP_OVERRIDES
 from pacific_peering.discovery.peeringdb import (
     fetch_ix_info,
     fetch_ixp_by_country,
@@ -365,8 +366,13 @@ def prune_orphaned_entries(
 def classify_ixp_fabric(ip: str, registry: dict[int, IxpLanEntry]) -> IxpLanEntry | None:
     """Return the IXP whose LAN prefix contains `ip`, if any.
 
+    Hand-verified LANs from `discovery.ixp_overrides` count too, for an
+    exchange already in `registry` (e.g. Fiji-IXP's IPv6 LAN, missing
+    from PeeringDB). They're added here at lookup time, never saved into
+    the registry file.
+
     Args:
-        ip: An IPv4 address to check.
+        ip: An IPv4 or IPv6 address to check.
         registry: Result of `build_ixp_lan_registry` / `load_ixp_lan_registry`.
 
     Returns:
@@ -376,7 +382,9 @@ def classify_ixp_fabric(ip: str, registry: dict[int, IxpLanEntry]) -> IxpLanEntr
     """
     address = ipaddress.ip_address(ip)
     for entry in registry.values():
-        for prefix in entry.prefixes:
+        override = IXP_OVERRIDES.get(entry.ix_id)
+        extra = override.lans if override is not None else ()
+        for prefix in (*entry.prefixes, *extra):
             if address in ipaddress.ip_network(prefix):
                 return entry
     return None
