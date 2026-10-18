@@ -99,6 +99,28 @@ def test_collect_returns_ready_keeps_young_drops_expired(store, monkeypatch):
     assert pending_measurements.pending_pairs() == {(141695, 2), (141695, 4)}
 
 
+def test_collect_keeps_a_running_measurement_with_partial_results(store, monkeypatch):
+    # Regression, 2026-10-19: 224431120 (#90's reverify) was collected 13s
+    # after parking, still Ongoing, before all 3 probes had reported, and
+    # filed as inconclusive. Its full results reached the target AS.
+    pending_measurements.add_pending(_candidate(), 101, "status check failed", created_at=_age(0.01))
+    monkeypatch.setattr(pending_measurements, "fetch_measurement_status", lambda mid: "Ongoing")
+    monkeypatch.setattr(pending_measurements, "fetch_raw_results", lambda mid: [{"prb_id": 1}])
+
+    assert pending_measurements.collect_ready() == []
+    assert [e.measurement_id for e in pending_measurements.load_pending()] == [101]
+
+
+def test_collect_takes_partial_results_rather_than_dropping_an_expired_measurement(store, monkeypatch):
+    path, persisted = store
+    pending_measurements.add_pending(_candidate(), 101, "slow", created_at=_age(25))
+    monkeypatch.setattr(pending_measurements, "fetch_measurement_status", lambda mid: "Ongoing")
+    monkeypatch.setattr(pending_measurements, "fetch_raw_results", lambda mid: [{"prb_id": 1}])
+
+    assert [e.measurement_id for e in pending_measurements.collect_ready()] == [101]
+    assert persisted == {101: [{"prb_id": 1}]}
+
+
 def test_finished_but_empty_is_handed_back_for_the_zero_probe_path(store, monkeypatch):
     pending_measurements.add_pending(_candidate(), 101, "slow", created_at=_age(1))
     monkeypatch.setattr(pending_measurements, "fetch_measurement_status", lambda mid: "Failed")

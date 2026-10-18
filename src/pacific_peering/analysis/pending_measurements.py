@@ -120,10 +120,15 @@ def pending_pairs(path: Path | None = None) -> set[tuple[int, int]]:
 def collect_ready(path: Path | None = None) -> list[PendingMeasurement]:
     """Fetch every parked measurement; return the ones ready to classify.
 
-    Ready means it has results (persisted to the Atlas cache here), or it
-    finished with none, which goes back to `classify_corridor`'s own
-    zero-probe escalation. Anything else stays parked until it is older
-    than `MAX_AGE`, then it's dropped. Ready entries leave the file here; a
+    Ready means Atlas has finished it (results, if any, are persisted to
+    the Atlas cache here); one that finished with none goes back to
+    `classify_corridor`'s own zero-probe escalation. A measurement still
+    running isn't ready even with results in: its other probes may not have
+    reported yet (224431120, 2026-10-19, was collected 13s after parking
+    and filed inconclusive from a partial set). One-offs stop about 5-6
+    minutes after creation, so this costs at most a batch. Past `MAX_AGE`,
+    a running measurement is classified on whatever results it has, or
+    dropped if it has none. Ready entries leave the file here; a
     caller whose classification of one fails re-parks it with `attempts + 1`
     (`auto_classify._classify_collected`). A re-parked entry is retried from
     the cache no sooner than `MIN_RETRY_INTERVAL` after its last failure,
@@ -158,12 +163,18 @@ def collect_ready(path: Path | None = None) -> list[PendingMeasurement]:
             results = fetch_raw_results(mid)
         except requests.RequestException as exc:
             status, results = f"unreachable ({exc})", []
-        if results or status in _TERMINAL_STATUSES:
+        expired = now - entry.created_at > MAX_AGE
+        if status in _TERMINAL_STATUSES or (results and expired):
             if results:
                 persist_results(mid, results)
+            if status not in _TERMINAL_STATUSES:
+                logger.warning(
+                    "AS%d -> AS%d: parked measurement %d still %s after %s; classifying the %d result(s) in",
+                    cand.source_asn, cand.target_asn, mid, status, now - entry.created_at, len(results),
+                )
             logger.info("AS%d -> AS%d: collected parked measurement %d (%s)", cand.source_asn, cand.target_asn, mid, status)
             ready.append(entry)
-        elif now - entry.created_at > MAX_AGE:
+        elif expired:
             logger.warning(
                 "AS%d -> AS%d: parked measurement %d still has no results after %s (%s); "
                 "dropping it, corridor left untested for a fresh test",
