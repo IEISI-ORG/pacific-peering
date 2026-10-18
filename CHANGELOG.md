@@ -6,6 +6,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ## [Unreleased]
 
 ### Added
+- Website: `robots.txt` and a one-URL `sitemap.xml` (lastmod = build date) in `site/dist/`, for search engines and Google Search Console (2026-10-18).
 - Project scaffolding: `uv`-managed package layout (`discovery`, `ris`,
   `atlas`, `analysis`, `viz`, `reports` modules), `data/` and `outputs/`
   directories, `.gitignore`.

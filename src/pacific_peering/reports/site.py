@@ -9,7 +9,9 @@ only, so it runs in Cloudflare's build image without installing the project.
   (`../viz/*.svg`, relative to `outputs/reports/`) rewritten to `viz/*.svg`;
 - `viz/` holds those SVGs;
 - a few plain-text companion reports go under `reports/` for anyone who
-  wants the raw tables.
+  wants the raw tables;
+- `robots.txt` and a one-URL `sitemap.xml` (lastmod = build date) for search
+  engines and Google Search Console (owner, 2026-10-18).
 Nothing else from the repo is published: no data/, no findings database.
 Fails loudly if the report references a chart that isn't there, rather than
 publishing a page with broken images.
@@ -17,6 +19,7 @@ publishing a page with broken images.
 
 from __future__ import annotations
 
+import datetime
 import logging
 import re
 import shutil
@@ -40,9 +43,18 @@ NOT_FOUND_HTML = (
     "<a href=\"/\">the home page</a>.</p></body></html>\n"
 )
 _VIZ_REF = re.compile(r'(src|href)="\.\./viz/([^"]+)"')
+SITE_URL = "https://pacific-peering.ieisi.org/"
+ROBOTS_TXT = f"User-agent: *\nAllow: /\n\nSitemap: {SITE_URL}sitemap.xml\n"
+SITEMAP_XML = (
+    '<?xml version="1.0" encoding="UTF-8"?>\n'
+    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+    "  <url>\n    <loc>{loc}</loc>\n    <lastmod>{lastmod}</lastmod>\n  </url>\n"
+    "</urlset>\n"
+)
 
 
-def build_site(out_dir: Path = DEFAULT_OUT_DIR, reports_dir: Path = REPORT_HTML.parent, viz_dir: Path = VIZ_DIR) -> Path:
+def build_site(out_dir: Path = DEFAULT_OUT_DIR, reports_dir: Path = REPORT_HTML.parent, viz_dir: Path = VIZ_DIR,
+               build_date: datetime.date | None = None) -> Path:
     html = (reports_dir / REPORT_HTML.name).read_text()
     referenced = sorted(set(m.group(2) for m in _VIZ_REF.finditer(html)))
     missing = [name for name in referenced if not (viz_dir / name).exists()]
@@ -55,6 +67,9 @@ def build_site(out_dir: Path = DEFAULT_OUT_DIR, reports_dir: Path = REPORT_HTML.
     (out_dir / "reports").mkdir()
     (out_dir / "index.html").write_text(_VIZ_REF.sub(r'\1="viz/\2"', html))
     (out_dir / "404.html").write_text(NOT_FOUND_HTML)  # served by wrangler.jsonc's "404-page" handling
+    (out_dir / "robots.txt").write_text(ROBOTS_TXT)
+    lastmod = (build_date or datetime.date.today()).isoformat()
+    (out_dir / "sitemap.xml").write_text(SITEMAP_XML.format(loc=SITE_URL, lastmod=lastmod))
     for name in referenced:
         shutil.copy2(viz_dir / name, out_dir / "viz" / name)
     for name in TEXT_REPORTS:
