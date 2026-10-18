@@ -280,3 +280,9 @@ Corridors `auto_classify.py`'s mechanical rules couldn't confidently resolve on 
 - flagged: 2026-10-11T15:50:27.312831+00:00
 - resolved: 2026-10-12 -- added 202.43.12.0/23 (AS38198, Digicel Tonga) to known_anomalies.py (owner). Raw hops: Telstra Global (AS4637) -> Digicel Fiji (AS45355) -> .5 answers at hops 18-19 then dark to the end, target 202.43.12.1 never reached -- a double-answer inside the destination's own network.
 
+## AS3605 (GU) -> AS9751 (AS)
+- measurement: 224427229
+- reason: router in a hub city with no coordinates
+- detail: probe 64953: router hub: hop 13 154.54.43.9 be3669.ccr21.sfo01.atlas.cogentco.com -> San Francisco, 141.218ms (no hub coordinates, unmapped)
+- flagged: 2026-10-18T15:07:55.285055+00:00
+
