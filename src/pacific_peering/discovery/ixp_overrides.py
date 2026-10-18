@@ -101,7 +101,9 @@ IXP_OVERRIDES: dict[int, IxpOverride] = {
             "AS45349 at .4 and AS38442 at .5, both silent, and AS45355 at .10. LANs: the "
             "plan says /24 (PeeringDB keeps the APNIC /23); the IPv6 /64 is carved from "
             "TAOF-FJ's 2001:df2:a280::/47 'Used for IX'. .21 answers but isn't in the "
-            "plan (probably Digicel's second interface), so it is left out. Walesi's "
+            "plan (probably Digicel's second interface), so it is left out. Digicel "
+            "confirmed .20 on 2026-10-19 and moved its PeeringDB netixlan from .10 to .20 "
+            "(IPv4 only; .21 not explained). Walesi's "
             "ASN is from its PeeringDB net record; FNU's is the origin of 103.99.43.0/24."
         ),
         verified="2026-10-17",
