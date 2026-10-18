@@ -47,3 +47,36 @@ def infer_neighbors(
                 counter[normalized[-2]] += 1
         neighbors_by_asn[asn] = counter
     return neighbors_by_asn
+
+
+def infer_adjacencies(
+    aspaths_by_asn: dict[int, list[BgpStateRecord]], in_scope: set[int]
+) -> dict[int, Counter[int]]:
+    """Count every ASN seen next to each in-scope ASN anywhere in a path, either side.
+
+    `infer_neighbors` only looks at the AS just before each path's origin,
+    so a link where the in-scope ASN is *transit* never shows up there:
+    FINTEL AS9241 -> TFL AS45349 is seen only on paths to AS4638's
+    prefixes. This is for RIS-agreement checks only; `neighbors` keeps its
+    origin-upstream meaning for the backlog and offshore screens.
+
+    Args:
+        aspaths_by_asn: Origin ASN to its AS-path observations, as for
+            `infer_neighbors`.
+        in_scope: ASNs to record adjacencies for (other ASNs still count
+            as the far side of a pair).
+
+    Returns:
+        In-scope ASN to a Counter of {adjacent_asn: observation_count}, one
+        count per (prefix, vantage point) record that shows the pair.
+    """
+    adjacent: dict[int, Counter[int]] = {}
+    for records in aspaths_by_asn.values():
+        for record in records:
+            normalized = normalize_path(record.path)
+            for left, right in zip(normalized, normalized[1:]):
+                if left in in_scope:
+                    adjacent.setdefault(left, Counter())[right] += 1
+                if right in in_scope:
+                    adjacent.setdefault(right, Counter())[left] += 1
+    return adjacent

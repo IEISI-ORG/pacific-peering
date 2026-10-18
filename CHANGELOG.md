@@ -2680,3 +2680,12 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   AS9241) becomes confirmed local transit: RIS shows FINTEL as an upstream
   of AS45349 (314 observations), which the classifier's upstream-only RIS
   check had missed. #279 (Walesi) and #296 (USP) stay candidate peering.
+- RIS agreement now sees an adjacency anywhere in an AS path. `fishbowl.json`
+  gains an `adjacent` field per in-scope ASN (`peering.infer_adjacencies`:
+  every ASN next to it in any RIS path, either side, including where it is
+  transit), and `_bidirectional_ris_check` falls back to it after
+  `neighbors`. `neighbors` keeps its origin-upstream meaning, so the
+  backlog's new-RIS-relationship diff, the offshore upstream screen and the
+  AS graph are unchanged. Found on #275: FINTEL AS9241 -> TFL AS45349 is
+  only seen on paths to AS4638's prefixes, so it never reached `neighbors`.
+  The field appears at the next fishbowl rebuild (weekly refresh).

@@ -312,6 +312,12 @@ def _bidirectional_ris_check(fishbowl: dict, asn_a: int, asn_b: int) -> tuple[bo
     count_from_a = fishbowl.get(str(asn_a), {}).get("neighbors", {}).get(str(asn_b))
     if count_from_a is not None:
         return True, count_from_a
+    # Adjacent anywhere in a RIS path, e.g. where one side is transit
+    # (FINTEL AS9241 -> TFL AS45349 is only seen on paths to AS4638).
+    for asn, other in ((asn_b, asn_a), (asn_a, asn_b)):
+        count = fishbowl.get(str(asn), {}).get("adjacent", {}).get(str(other))
+        if count is not None:
+            return True, count
     return False, None
 
 
