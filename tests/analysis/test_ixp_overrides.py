@@ -139,14 +139,14 @@ def test_route_server_hop_is_a_gap_in_the_as_path(cache, monkeypatch):
     monkeypatch.setattr(
         traceroute_topology,
         "resolve_ip_to_asns",
-        lambda ip: [4638] if ip == "202.137.178.55" else [38442],
+        lambda ip: [4638] if ip == "202.62.126.21" else [38442],
     )
     monkeypatch.setattr(traceroute_topology, "resolve_ip_via_netixlan", _no_lookup)
     monkeypatch.setattr(
         traceroute_topology.IpResolutionCache, "load", lambda path: cache
     )
     hops = [
-        {"hop": 1, "addresses": ["202.137.178.55"]},
+        {"hop": 1, "addresses": ["202.62.126.21"]},
         {"hop": 2, "addresses": ["103.147.194.1"]},
         {"hop": 3, "addresses": ["203.123.1.1"]},
     ]
@@ -185,3 +185,88 @@ def test_every_override_port_sits_inside_its_own_lans(override):
     for port in override.ports:
         address = ipaddress.ip_address(port.address)
         assert any(address in lan for lan in lans), port.address
+
+
+# --- Per-prefix ASN overrides for unannounced infrastructure space ---------
+
+from pacific_peering.discovery.prefix_asn_overrides import PREFIX_ASN_OVERRIDES  # noqa: E402
+
+# Measurement 219066887 (finding #276), SPC probe 60575 -> Vodafone, frozen.
+TRACE_219066887 = [
+    {"hop": 1, "addresses": ["192.168.3.37"]},
+    {"hop": 2, "addresses": ["192.168.8.9"]},
+    {"hop": 3, "addresses": ["202.0.156.1"]},
+    {"hop": 4, "addresses": ["202.0.158.254"]},
+    {"hop": 5, "addresses": ["202.62.126.21"]},
+    {"hop": 6, "addresses": []},
+    {"hop": 7, "addresses": []},
+    {"hop": 8, "addresses": ["202.137.178.55"]},
+    {"hop": 9, "addresses": ["202.137.178.54"]},
+    {"hop": 10, "addresses": ["103.147.194.10"]},
+    {"hop": 11, "addresses": ["183.81.136.189"]},
+    {"hop": 12, "addresses": ["183.81.128.114"]},
+    {"hop": 13, "addresses": []},
+    {"hop": 14, "addresses": ["103.244.230.1"]},
+]
+BGP_219066887 = {
+    "202.0.156.1": [141695],
+    "202.0.158.254": [141695],
+    "202.62.126.21": [4638],
+    "183.81.136.189": [38442],
+    "183.81.128.114": [38442],
+    "103.244.230.1": [38442],
+}
+
+
+def test_unannounced_tfl_core_resolves_past_a_cached_gap(cache, monkeypatch):
+    # Fails if the prefix override is missing or checked after the cache,
+    # which holds 202.137.178.55 as unresolved.
+    monkeypatch.setattr(traceroute_topology, "resolve_ip_to_asns", _no_lookup)
+    monkeypatch.setattr(traceroute_topology, "resolve_ip_via_netixlan", _no_lookup)
+    cache.set("202.137.178.55", None, None, None)
+
+    asn, source, ctx = traceroute_topology._resolve_address(
+        "202.137.178.55", cache, REGISTRY
+    )
+
+    assert (asn, source, ctx) == (45349, "prefix_override", None)
+
+
+def test_neighbouring_announced_space_still_uses_bgp(cache, monkeypatch):
+    # 202.137.179.0/24 is announced by AS45349 itself; the override must
+    # not reach outside its own /24.
+    monkeypatch.setattr(traceroute_topology, "resolve_ip_to_asns", lambda ip: [45349])
+
+    asn, source, _ctx = traceroute_topology._resolve_address(
+        "202.137.179.1", cache, REGISTRY
+    )
+
+    assert (asn, source) == (45349, "bgp")
+
+
+def test_finding_276_trace_reaches_vodafone_contiguously_from_tfl(
+    cache, monkeypatch, tmp_path
+):
+    # Regression for #276: TFL core -> Vodafone's Fiji-IXP port -> Vodafone.
+    # Fails if either override goes (Digicel reappears, or the gap returns).
+    monkeypatch.setattr(
+        traceroute_topology, "resolve_ip_to_asns", lambda ip: BGP_219066887.get(ip, [])
+    )
+    monkeypatch.setattr(traceroute_topology, "resolve_ip_via_netixlan", _no_lookup)
+    monkeypatch.setattr(
+        traceroute_topology.IpResolutionCache, "load", lambda path: cache
+    )
+
+    resolved = traceroute_topology.resolve_traceroute_hops(
+        TRACE_219066887, ixp_registry_path=_registry_file(cache), persist=False
+    )
+    sequence = traceroute_topology.extract_as_sequence(resolved)
+
+    assert [a.asn for a in sequence] == [141695, 4638, 45349, 38442]
+    assert sequence[-1].contiguous_with_previous is True
+
+
+@pytest.mark.parametrize("override", PREFIX_ASN_OVERRIDES, ids=lambda o: o.prefix)
+def test_prefix_overrides_are_valid_networks(override):
+    # Catches a mistyped prefix (host bits set, bad syntax).
+    ipaddress.ip_network(override.prefix)

@@ -2668,3 +2668,10 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   filed from PeeringDB's stale netixlan entry for 103.147.194.10, which is
   Vodafone's Fiji-IXP port. Corroboration 549's chain and note updated; ASPA
   check state reset for the new pair.
+- Per-prefix ASN overrides for unannounced infrastructure space
+  (`discovery/prefix_asn_overrides.py`, `PREFIX_ASN_OVERRIDES`): an address
+  inside a listed prefix resolves to its ASN (`prefix_override`) ahead of
+  the IP-resolution cache and BGP. First entry: TFL's unannounced core
+  202.137.178.0/24 -> AS45349 (owner, 2026-10-18), which closes the gap
+  between AS4638 and every TFL exit in Fiji traces. #276's trace is frozen
+  as a regression test.

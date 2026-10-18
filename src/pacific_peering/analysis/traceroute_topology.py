@@ -28,6 +28,7 @@ from pacific_peering.analysis.ixp_lan_registry import (
 )
 from pacific_peering.discovery.ixp_overrides import ROUTE_SERVER, find_port_override, in_override_lan
 from pacific_peering.discovery.peeringdb import resolve_ip_via_netixlan
+from pacific_peering.discovery.prefix_asn_overrides import find_prefix_override
 from pacific_peering.ris.ripestat import resolve_ip_to_asns
 
 logger = logging.getLogger(__name__)
@@ -140,6 +141,18 @@ def _resolve_address(
             result = (None, "ixp_route_server", ixp_context)
         else:
             result = (port.asn, "ixp_override", ixp_context)
+        cache.set(address, *result)
+        return result
+
+    prefix_override = find_prefix_override(address)
+    if prefix_override is not None:
+        # Unannounced infrastructure space, so BGP has nothing and the
+        # cache holds a gap; see `discovery.prefix_asn_overrides`.
+        result = (
+            prefix_override.asn,
+            "prefix_override",
+            _ixp_context(classify_ixp_fabric(address, ixp_registry)),
+        )
         cache.set(address, *result)
         return result
 
