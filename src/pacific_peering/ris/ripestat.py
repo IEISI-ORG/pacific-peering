@@ -8,6 +8,7 @@ Phase 1a's full analysis fans this out across every in-scope ASN.
 
 from __future__ import annotations
 
+import ipaddress
 import logging
 import time
 from dataclasses import dataclass
@@ -248,9 +249,17 @@ def fetch_aspaths_for_asn(
         asn: Origin ASN to inspect.
         af: Address family, "v4" or "v6".
         max_prefixes: If set, only fetch bgp-state for the first N prefixes
-            (keeps smoke tests / demos fast and light on the public API).
+            in address order (keeps smoke tests / demos fast and light on
+            the public API). Sorted first so an unchanged ASN samples the
+            same prefixes every week, whatever order RIPEstat lists them in.
     """
-    prefixes = fetch_originated_prefixes(asn, af=af)
+    prefixes = sorted(
+        fetch_originated_prefixes(asn, af=af),
+        key=lambda p: (
+            ipaddress.ip_network(p, strict=False).network_address.packed,
+            ipaddress.ip_network(p, strict=False).prefixlen,
+        ),
+    )
     if max_prefixes is not None:
         prefixes = prefixes[:max_prefixes]
     logger.info(

@@ -2694,3 +2694,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   `fishbowl.json` no longer reuses 2026-09-14's `data/ris/raw/` every Sunday.
   A failed per-ASN fetch now keeps that ASN's previous cached paths instead
   of writing `[]` over them, and is retried on the next run.
+- 2026-10-18 fix(ris): `fetch_aspaths_for_asn` sorts an ASN's prefixes by
+  address before applying `max_prefixes`, so the 5-prefix sample (and the
+  `list_target_ips` targets drawn from it) only changes when the ASN's
+  announcements do, not when RIPEstat reorders its list.
