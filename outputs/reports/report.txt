@@ -1,6 +1,6 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-10-17T23:41:33.986983+00:00                  
+                 Generated: 2026-10-18T02:00:41.424324+00:00                  
 ==============================================================================
 FOUND A BUG? Bugs very likely remain in both the code and the data.
 Please open an issue: https://github.com/IEISI-ORG/pacific-peering/issues/new
@@ -222,7 +222,7 @@ Measurements: {'v4': [222352015, 222353113], 'v6': [222354434, 222355531]}. Deta
 
 IPV6 COVERAGE (adoption signal only -- no IPv6 testing yet)
 ==============================================================================
-45 of 158 in-scope ASNs have >=1 RIS-observed IPv6-originated prefix. 9 of 36 connected Atlas probes work over IPv6 (3 more are IPv6-capable but tagged as not working). Adoption tracking only -- this project deliberately isn't testing IPv6 corridors yet; queued until adoption has advanced further (see TODO below).
+45 of 158 in-scope ASNs have >=1 RIS-observed IPv6-originated prefix. 9 of 36 connected Atlas probes work over IPv6 (4 more are IPv6-capable but tagged as not working). Adoption tracking only -- this project deliberately isn't testing IPv6 corridors yet; queued until adoption has advanced further (see TODO below).
 CC   Name                      ASNs  w/ IPv6
 ------------------------------------------------------------------------------
 AS   American Samoa               2        1
@@ -941,6 +941,9 @@ Confirmed local transit (RIS + Atlas both agree, stays in-fishbowl)
 AS141695 (Pacific Community, FJ) -> AS4638 (Telecom Fiji Limited, FJ)
     RIS observation count: 334  [measurement 219061907, vantage: FJ]
     measurement 219061907 (from FJ); chain: AS141695 -> AS4638; RIS count 334; RIS agrees.
+AS45349 (Telecom Fiji Limited, FJ) -> AS9241 (Fiji International Telecomunications Ltd, FJ)
+    RIS observation count: 314  [measurement 219062598, vantage: FJ]
+    measurement 219062598 (from FJ); chain: AS141695 -> AS4638 -> AS45349 -> AS9241; RIS count 314; RIS agrees; loop noted (loop at 202.170.33.17 (A genuine 2-node alternating loop at FINTEL's (AS9241) own edge -- two addresses...)).
 AS38442 (Vodafone Fiji, FJ) -> AS9249 (Telecom Vanuatu, VU)
     RIS observation count: 1346  [measurement 210960114, vantage: PF]
     All 3 probes (sourced from French Polynesia, the best-covered available vantage point — not itself part of this adjacency) show AS38442 as the last resolved hop before AS9249, matching RIS's independently-observed neighbor count exactly. **Correction, made after fixing the resolver's RFC1918 handling (see task_plan.md): this entry originally reported a real gap between AS38442 and AS9249, attributed at the time to ordinary ICMP filtering.** Re-checked directly against the raw hop data: that gap was in fact one RFC1918 hop (10.200.4.208) sitting immediately before AS9249's own address — not ICMP filtering, and not a real unresolved intermediary. With the resolver now treating private hops as transparent rather than gap-inducing, this measurement is fully contiguous end to end for probe 53098: AS6939 -> AS4637 (Any2West) -> AS38442 -> AS9249, zero gaps. The adjacency is now proven at the literal last hop too, not just inferred from the last *resolved* one — strengthening, not just reinterpreting, this entry. Reinforced from the reverse direction by measurement 210970669 (Vanuatu -> FSM/AS38875, sourced from Vanuatu itself): AS38442 is the first resolved hop leaving AS9249's own network, matching this same adjacency from the other side. That measurement's actual target (AS38875) was not confirmed — RIS's only neighbor for AS38875 is AS10130, not the traceroute's last resolved hop (AS139759) — a correct negative result, not a new finding, and recorded here only as corroboration of the existing AS9249<->AS38442 adjacency. Separately, after fixing traceroute_topology._resolve_address to check IXP-fabric membership independently of ASN resolution: for 2 of the original 3 probes (French Polynesia -> AS9249), the hop immediately before AS38442 is AS4637 (Telstra Global), resolved via PeeringDB netixlan, whose address also falls inside Any2West's registered LAN prefix (Los Angeles/Silicon Valley, out-of-fishbowl). This does not touch the AS38442<->AS9249 adjacency itself (still confirmed on its own terms), but it does mean the vantage point's own path to reach Fiji transits a US exchange first -- a real, separate observation about French Polynesia's own upstream routing, not the confirmed finding's two endpoints. Separately, IRR-corroborated: AS38442's own PeeringDB-declared AS-SET (AS38442:AS-ALL) names AS9249 directly among its declared peers -- a declared intention, independently sourced (APNIC), matching this adjacency on a fourth, independent axis alongside RIS, Atlas, and the reverse-direction reinforcement above.
@@ -1095,9 +1098,6 @@ AS17893 (Palau National Communications Corp, PW) -> AS3605 (Guam Cablevision, LL
 AS7474 (SingTel Optus Pty Ltd, AU) -> AS4638 (Telecom Fiji Limited, FJ)
     Traceroute agreement: 1/1 probe  [measurement 212141026, vantage: NU]
     NU(AS55885) -> AS4638: `AS55885 -> AS9471 -> AS3257 (GTT) -> AS7474 -> AS4638`, but `ris_agrees: false` -- checked AS4638's real RIS neighbor list directly: dominated by AS45349 (32,318 of 32,318 observations, its effectively only neighbor), the same relationship already confirmed elsewhere in this project (NC->FJ/AS4638, upstream AS45349). AS7474 doesn't appear at all. Real signal, wrong immediate carrier. `has_routing_loop` False.
-AS4638 (Telecom Fiji Limited, FJ) -> AS9241 (Fiji International Telecomunications Ltd, FJ)
-    Traceroute agreement: 1/1 probes  [measurement 219062598, vantage: FJ]
-    measurement 219062598 (from FJ); chain: AS141695 -> AS4638 -> AS9241; RIS disagrees; loop noted (loop at 202.170.33.17 (A genuine 2-node alternating loop at FINTEL's (AS9241) own edge -- two addresses...)).
 AS3605 (Guam Cablevision, GU) -> AS9246 (Teleguam Holdings, GU)
     Traceroute agreement: 2/3 probes  [measurement 213204603, vantage: GU]
     measurement 213204603 (from GU); chain: AS3605 -> AS9246; RIS disagrees. measurement 213204603 (from GU); chain: AS3605 -> AS9246; RIS disagrees. measurement 213205466 (from GU); chain: AS3605 -> AS9246; RIS disagrees. measurement 213205466 (from GU); chain: AS3605 -> AS9246; RIS disagrees. measurement 213205473 (from GU); chain: AS3605 -> AS9246; RIS disagrees. measurement 216991839 (from GU); chain: AS3605 -> AS9246; RIS disagrees.
@@ -1137,7 +1137,7 @@ AS7131 (PTI Pacifica Inc., MP) -> AS23676 (Mariana Islands Internet Exchange, GU
 AS6939 (Hurricane Electric, US) -> AS23676 (University of Guam, GU)
     Traceroute agreement: 1/1 probe  [measurement 212141106, vantage: NU]
     NU(AS55885) -> AS23676 (University of Guam): `AS55885 -> AS9471 -> AS6939 -> AS23676`, but `ris_agrees: false` -- checked AS23676's real RIS neighbor list directly: AS395400 (University of Guam's *other* ASN, already established elsewhere in this project) is dominant (380 of 380 observations). Real signal, one hop off from the real relationship. `has_routing_loop` False.
-AS4638 (IS-FJ-AS - Telecom Fiji Limited, FJ) -> AS24390 (University of the South Pacific, FJ)
+AS45349 (Telecom Fiji Limited, FJ) -> AS24390 (University of the South Pacific, FJ)
     Traceroute agreement: 1/1 probes  [measurement 223634394, vantage: FJ]
     Filed by hand at the owner's request (2026-10-16), overriding the dark-hop rule: hops 6-7 are two silent routers inside Telecom Fiji, between 202.62.126.21 (AS4638, 1.6 ms) and the TFL core 202.137.178.55/.54 (route object AS45349, 2.0/2.3 ms). Return TTLs step one hop at a time (251, 248, 247, 246, target 54 from 64) with no ittl, so nothing is hidden before the target. RIS can't see Fiji-IXP peering (no collector there).
 AS45349 (Telecom Fiji Limited, FJ) -> AS38442 (Vodafone Fiji Limited, FJ)
@@ -1220,9 +1220,9 @@ AS45345 (Nautile, NC) -> AS136402 (Nautile SARL, NC)
 AS141197 (Pacific Community, NC) -> AS136402 (Nautile SARL, NC)
     Traceroute agreement: 1/1 probes  [measurement 217928879, vantage: NC]
     measurement 217928879 (from NC); chain: AS141197 -> AS136402; RIS disagrees.
-AS4638 (Telecom Fiji Limited, FJ) -> AS137890 (Walesi Ltd, FJ)
+AS45349 (Telecom Fiji Limited, FJ) -> AS137890 (Walesi Ltd, FJ)
     Traceroute agreement: 1/1 probes  [measurement 219076626, vantage: FJ]
-    measurement 219076626 (from FJ); chain: AS141695 -> AS4638 -> AS137890; RIS disagrees.
+    measurement 219076626 (from FJ); chain: AS141695 -> AS4638 -> AS45349 -> AS137890; RIS disagrees.
 AS139609 (SISCC, SB) -> AS139277 (Solomon Islands Government ICT Support Department, SB)
     Traceroute agreement: 1/1 probe  [measurement 212158129, vantage: NU]
     NU(AS55885) -> AS139277: `AS55885 -> AS9471 -> AS6939 -> AS139609 -> AS139277`, same mismatch already found via FM -- real neighbor is AS132468 (662 of 662 observations, itself confirmed this batch as a real SISCC customer), not SISCC directly. Second candidate entry for this target. `has_routing_loop` False.

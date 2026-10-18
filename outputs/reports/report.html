@@ -79,7 +79,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
 <body>
 <div class="wrap">
     <h1>Pacific Peering — Regional Routing Report</h1>
-    <div class="meta">Generated 2026-10-17T23:41:35.116108+00:00</div>
+    <div class="meta">Generated 2026-10-18T02:00:42.823312+00:00</div>
 
     <div class="feedback-box"><strong>Found a bug?</strong> This report is generated
         automatically, and bugs very likely remain in both the code and the data. If
@@ -1697,7 +1697,7 @@ Twelfth confirmation of AS139609(SISCC)&lt;-&gt;AS45891. `AS55885 -&gt; AS9471 -
 
     <details class="section-toggle">
         <summary>Confirmed local transit (RIS + Atlas both agree, stays in-fishbowl)
-            <span class="count">(47)</span></summary>
+            <span class="count">(48)</span></summary>
         <div class="transit-card">
             <div class="headline">AS141695 (Pacific Community,
                 FJ) -&gt; AS4638
@@ -1706,6 +1706,14 @@ Twelfth confirmation of AS139609(SISCC)&lt;-&gt;AS45891. `AS55885 -&gt; AS9471 -
                 &middot; measurement 219061907
                 &middot; vantage point FJ</div>
             <details class="note"><summary>measurement 219061907 (from FJ); chain: AS141695 -&gt; AS4638; RIS count 334; RIS agrees.</summary>measurement 219061907 (from FJ); chain: AS141695 -&gt; AS4638; RIS count 334; RIS agrees.</details>
+        </div><div class="transit-card">
+            <div class="headline">AS45349 (Telecom Fiji Limited,
+                FJ) -&gt; AS9241
+                (Fiji International Telecomunications Ltd, FJ)</div>
+            <div>RIS observation count: 314
+                &middot; measurement 219062598
+                &middot; vantage point FJ</div>
+            <details class="note"><summary>measurement 219062598 (from FJ); chain: AS141695 -&gt; AS4638 -&gt; AS45349 -&gt; AS9241; RIS count 314; RIS agrees; loop noted (loop at 202.170.33.17 (A genuine 2-node…</summary>measurement 219062598 (from FJ); chain: AS141695 -&gt; AS4638 -&gt; AS45349 -&gt; AS9241; RIS count 314; RIS agrees; loop noted (loop at 202.170.33.17 (A genuine 2-node alternating loop at FINTEL&#x27;s (AS9241) own edge -- two addresses...)).</details>
         </div><div class="transit-card">
             <div class="headline">AS38442 (Vodafone Fiji,
                 FJ) -&gt; AS9249
@@ -2087,7 +2095,7 @@ Twelfth confirmation of AS139609(SISCC)&lt;-&gt;AS45891. `AS55885 -&gt; AS9471 -
 
     <details class="section-toggle">
         <summary>Candidate peering (strong traceroute signal, RIS disagrees &mdash; unconfirmed)
-            <span class="count">(40)</span></summary>
+            <span class="count">(39)</span></summary>
         <div class="candidate-card">
             <div class="headline">AS7131 (PTI Pacifica Inc.,
                 MP) -&gt; AS3605
@@ -2112,14 +2120,6 @@ Twelfth confirmation of AS139609(SISCC)&lt;-&gt;AS45891. `AS55885 -&gt; AS9471 -
                 &middot; measurement 212141026
                 &middot; vantage point NU</div>
             <details class="note"><summary>NU(AS55885) -&gt; AS4638: `AS55885 -&gt; AS9471 -&gt; AS3257 (GTT) -&gt; AS7474 -&gt; AS4638`, but `ris_agrees: false` -- checked AS4638&#x27;s real RIS neighbor list directly:…</summary>NU(AS55885) -&gt; AS4638: `AS55885 -&gt; AS9471 -&gt; AS3257 (GTT) -&gt; AS7474 -&gt; AS4638`, but `ris_agrees: false` -- checked AS4638&#x27;s real RIS neighbor list directly: dominated by AS45349 (32,318 of 32,318 observations, its effectively only neighbor), the same relationship already confirmed elsewhere in this project (NC-&gt;FJ/AS4638, upstream AS45349). AS7474 doesn&#x27;t appear at all. Real signal, wrong immediate carrier. `has_routing_loop` False.</details>
-        </div><div class="candidate-card">
-            <div class="headline">AS4638 (Telecom Fiji Limited,
-                FJ) -&gt; AS9241
-                (Fiji International Telecomunications Ltd, FJ)</div>
-            <div>Traceroute agreement: 1/1 probes
-                &middot; measurement 219062598
-                &middot; vantage point FJ</div>
-            <details class="note"><summary>measurement 219062598 (from FJ); chain: AS141695 -&gt; AS4638 -&gt; AS9241; RIS disagrees; loop noted (loop at 202.170.33.17 (A genuine 2-node alternating loop at…</summary>measurement 219062598 (from FJ); chain: AS141695 -&gt; AS4638 -&gt; AS9241; RIS disagrees; loop noted (loop at 202.170.33.17 (A genuine 2-node alternating loop at FINTEL&#x27;s (AS9241) own edge -- two addresses...)).</details>
         </div><div class="candidate-card">
             <div class="headline">AS3605 (Guam Cablevision,
                 GU) -&gt; AS9246
@@ -2225,7 +2225,7 @@ Twelfth confirmation of AS139609(SISCC)&lt;-&gt;AS45891. `AS55885 -&gt; AS9471 -
                 &middot; vantage point NU</div>
             <details class="note"><summary>NU(AS55885) -&gt; AS23676 (University of Guam): `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS23676`, but `ris_agrees: false` -- checked AS23676&#x27;s real RIS neighbor list…</summary>NU(AS55885) -&gt; AS23676 (University of Guam): `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS23676`, but `ris_agrees: false` -- checked AS23676&#x27;s real RIS neighbor list directly: AS395400 (University of Guam&#x27;s *other* ASN, already established elsewhere in this project) is dominant (380 of 380 observations). Real signal, one hop off from the real relationship. `has_routing_loop` False.</details>
         </div><div class="candidate-card">
-            <div class="headline">AS4638 (IS-FJ-AS - Telecom Fiji Limited,
+            <div class="headline">AS45349 (Telecom Fiji Limited,
                 FJ) -&gt; AS24390
                 (University of the South Pacific, FJ)</div>
             <div>Traceroute agreement: 1/1 probes
@@ -2393,13 +2393,13 @@ NU(AS55885) -&gt; AS132462: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS38008 -&g
                 &middot; vantage point NC</div>
             <details class="note"><summary>measurement 217928879 (from NC); chain: AS141197 -&gt; AS136402; RIS disagrees.</summary>measurement 217928879 (from NC); chain: AS141197 -&gt; AS136402; RIS disagrees.</details>
         </div><div class="candidate-card">
-            <div class="headline">AS4638 (Telecom Fiji Limited,
+            <div class="headline">AS45349 (Telecom Fiji Limited,
                 FJ) -&gt; AS137890
                 (Walesi Ltd, FJ)</div>
             <div>Traceroute agreement: 1/1 probes
                 &middot; measurement 219076626
                 &middot; vantage point FJ</div>
-            <details class="note"><summary>measurement 219076626 (from FJ); chain: AS141695 -&gt; AS4638 -&gt; AS137890; RIS disagrees.</summary>measurement 219076626 (from FJ); chain: AS141695 -&gt; AS4638 -&gt; AS137890; RIS disagrees.</details>
+            <details class="note"><summary>measurement 219076626 (from FJ); chain: AS141695 -&gt; AS4638 -&gt; AS45349 -&gt; AS137890; RIS disagrees.</summary>measurement 219076626 (from FJ); chain: AS141695 -&gt; AS4638 -&gt; AS45349 -&gt; AS137890; RIS disagrees.</details>
         </div><div class="candidate-card">
             <div class="headline">AS139609 (SISCC,
                 SB) -&gt; AS139277
@@ -2625,7 +2625,7 @@ NU(AS55885) -&gt; AS150403: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS139609 -&
         <strong>45 of 158</strong> in-scope ASNs
         have at least one RIS-observed IPv6-originated prefix.
         <strong>9 of 36</strong> connected
-        Atlas probes work over IPv6 (3 more are
+        Atlas probes work over IPv6 (4 more are
         IPv6-capable but tagged as not working).
     </p>
     <table>

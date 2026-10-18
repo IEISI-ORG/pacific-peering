@@ -2675,3 +2675,8 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   202.137.178.0/24 -> AS45349 (owner, 2026-10-18), which closes the gap
   between AS4638 and every TFL exit in Fiji traces. #276's trace is frozen
   as a regression test.
+- Findings #275, #279 and #296 relabelled from TFL AS4638 to TFL AS45349
+  after the TFL core prefix override (owner, 2026-10-18). #275 (→ FINTEL
+  AS9241) becomes confirmed local transit: RIS shows FINTEL as an upstream
+  of AS45349 (314 observations), which the classifier's upstream-only RIS
+  check had missed. #279 (Walesi) and #296 (USP) stay candidate peering.
