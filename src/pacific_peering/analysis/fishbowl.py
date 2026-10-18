@@ -86,6 +86,7 @@ def build_fishbowl(
     summary_path: Path = DEFAULT_SUMMARY_PATH,
     peeringdb_cache_path: Path = DEFAULT_PEERINGDB_CACHE_PATH,
     refresh_peeringdb: bool = False,
+    refresh_ris: bool = True,
 ) -> dict[str, dict]:
     """Build and persist the combined RIS + IXP dataset for every in-scope ASN.
 
@@ -95,6 +96,9 @@ def build_fishbowl(
         peeringdb_cache_path: Where the 30-day PeeringDB cache lives.
         refresh_peeringdb: Force a live PeeringDB re-fetch even if the
             cache isn't 30 days stale yet.
+        refresh_ris: Refetch every ASN's RIS AS-paths rather than reading
+            `data/ris/raw/`. On by default so the weekly refresh sees
+            current paths (until 2026-10-18 it reused 2026-09-14's).
 
     Returns:
         Mapping of ASN (as string, for JSON-compatibility) to its combined
@@ -107,7 +111,9 @@ def build_fishbowl(
         for asn in entry["asns"]
     }
 
-    aspaths_by_asn = fetch_aspaths_for_registry(registry_path=registry_path)
+    aspaths_by_asn = fetch_aspaths_for_registry(
+        registry_path=registry_path, use_cache=not refresh_ris
+    )
     neighbors_by_asn = infer_neighbors(aspaths_by_asn)
     adjacent_by_asn = infer_adjacencies(aspaths_by_asn, in_scope=set(asn_to_economy))
     ipv6_prefix_counts = fetch_ipv6_prefix_counts_for_registry(registry_path=registry_path)

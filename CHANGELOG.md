@@ -2689,3 +2689,8 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   AS graph are unchanged. Found on #275: FINTEL AS9241 -> TFL AS45349 is
   only seen on paths to AS4638's prefixes, so it never reached `neighbors`.
   The field appears at the next fishbowl rebuild (weekly refresh).
+- 2026-10-18 fix(ris): the weekly refresh refetches RIS AS paths. `build_fishbowl`
+  now passes `use_cache=False` (new `refresh_ris=True` default), so
+  `fishbowl.json` no longer reuses 2026-09-14's `data/ris/raw/` every Sunday.
+  A failed per-ASN fetch now keeps that ASN's previous cached paths instead
+  of writing `[]` over them, and is retried on the next run.

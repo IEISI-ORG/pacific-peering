@@ -91,7 +91,7 @@ def test_build_fishbowl_writes_adjacent_and_leaves_neighbors_alone(
     monkeypatch.setattr(
         fishbowl_module,
         "fetch_aspaths_for_registry",
-        lambda registry_path: PATHS_TO_4638,
+        lambda registry_path, use_cache: PATHS_TO_4638,
     )
     monkeypatch.setattr(
         fishbowl_module,
@@ -118,3 +118,35 @@ def test_build_fishbowl_writes_adjacent_and_leaves_neighbors_alone(
     assert result["45349"]["adjacent"] == {"4638": 2, "9241": 1, "174": 1}
     assert result["4638"]["neighbors"] == {"45349": 2}
     assert result["45349"]["neighbors"] == {}
+
+
+def test_build_fishbowl_refetches_ris_paths_by_default(tmp_path, monkeypatch):
+    # Fails if the weekly refresh (pipeline -> build_fishbowl()) reads the
+    # RIS path cache instead of refetching: fishbowl.json stayed frozen at
+    # 2026-09-14 paths until 2026-10-18.
+    registry = tmp_path / "asn_registry.json"
+    registry.write_text(
+        json.dumps({"FJ": {"name": "Fiji", "subregion": "Melanesia", "asns": [4638]}})
+    )
+    calls = []
+
+    def _fetch(registry_path, use_cache):
+        calls.append(use_cache)
+        return PATHS_TO_4638
+
+    monkeypatch.setattr(fishbowl_module, "fetch_aspaths_for_registry", _fetch)
+    monkeypatch.setattr(
+        fishbowl_module, "fetch_ipv6_prefix_counts_for_registry", lambda registry_path: {}
+    )
+    monkeypatch.setattr(
+        fishbowl_module,
+        "_fetch_peeringdb_data",
+        lambda *args: {"on_peeringdb": [], "ixp_memberships": {}, "facility_presence": {}},
+    )
+
+    fishbowl_module.build_fishbowl(registry_path=registry, summary_path=tmp_path / "f.json")
+    fishbowl_module.build_fishbowl(
+        registry_path=registry, summary_path=tmp_path / "f.json", refresh_ris=False
+    )
+
+    assert calls == [False, True]

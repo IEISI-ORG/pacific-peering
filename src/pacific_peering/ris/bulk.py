@@ -74,7 +74,9 @@ def fetch_aspaths_for_registry(
             neighbors and is far cheaper than full coverage.
         max_workers: Thread pool size for concurrent per-ASN fetches.
         cache_dir: Directory to persist/read per-ASN raw results.
-        use_cache: If True, skip fetching for ASNs already cached.
+        use_cache: If True, skip fetching for ASNs already cached. If
+            False, refetch every ASN; one whose fetch fails keeps its
+            previous cached paths rather than losing them to `[]`.
 
     Returns:
         Mapping of ASN to its list of `BgpStateRecord` observations.
@@ -97,18 +99,22 @@ def fetch_aspaths_for_registry(
         len(to_fetch),
     )
 
-    def _fetch_one(asn: int) -> tuple[int, list[BgpStateRecord]]:
+    def _fetch_one(asn: int) -> tuple[int, list[BgpStateRecord] | None]:
         try:
-            records = fetch_aspaths_for_asn(asn, max_prefixes=max_prefixes_per_asn)
+            return asn, fetch_aspaths_for_asn(asn, max_prefixes=max_prefixes_per_asn)
         except Exception:
             logger.exception("Failed to fetch AS-paths for AS%d", asn)
-            records = []
-        return asn, records
+            return asn, None
 
     with ThreadPoolExecutor(max_workers=max_workers) as pool:
         futures = [pool.submit(_fetch_one, asn) for asn in to_fetch]
         for future in as_completed(futures):
             asn, records = future.result()
+            if records is None:
+                # Not written, so a failure never replaces good paths and a
+                # first-time failure is retried on the next run.
+                results[asn] = _load_cached(cache_dir, asn) or []
+                continue
             results[asn] = records
             _write_cache(cache_dir, asn, records)
 
