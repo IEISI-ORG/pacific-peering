@@ -286,3 +286,9 @@ Corridors `auto_classify.py`'s mechanical rules couldn't confidently resolve on 
 - detail: probe 64953: router hub: hop 13 154.54.43.9 be3669.ccr21.sfo01.atlas.cogentco.com -> San Francisco, 141.218ms (no hub coordinates, unmapped)
 - flagged: 2026-10-18T15:07:55.285055+00:00
 
+
+## Probe 62046 (FM, AS14593) -- metadata changed
+- reason: probe watch (atlas/probe_watch.py)
+- detail: asn_v4 139759 -> 14593; egress trace: AS14593 (Starlink (satellite egress)) -- non-local egress (measurement 225316709)
+- action: owner review -- check the path before trusting this probe's next results, or changing any exclusion
+- flagged: 2026-10-20T15:00:44.087554+00:00

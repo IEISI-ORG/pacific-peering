@@ -79,7 +79,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
 <body>
 <div class="wrap">
     <h1>Pacific Peering — Regional Routing Report</h1>
-    <div class="meta">Generated 2026-10-18T15:51:10.965428+00:00</div>
+    <div class="meta">Generated 2026-10-20T15:23:21.441751+00:00</div>
 
     <div class="feedback-box"><strong>Found a bug?</strong> This report is generated
         automatically, and bugs very likely remain in both the code and the data. If
@@ -2538,7 +2538,7 @@ NU(AS55885) -&gt; AS150403: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS139609 -&
     <h2>ASPA progress (RFC 9582 upstream-authorization adoption)</h2>
     <p class="section-intro">
         <strong>20 of 158</strong> in-scope ASNs
-        now publish an ASPA record (3597 total across the
+        now publish an ASPA record (3651 total across the
         whole internet, per Cloudflare Radar). Adoption is still early &mdash; absence
         means "not published yet," not "no real upstream." Per economy: how many of its
         own ASNs publish a record, and the distinct upstream ASNs those records declare,
@@ -2598,7 +2598,7 @@ NU(AS55885) -&gt; AS150403: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS139609 -&
 
     <h2>ROV enforcement (Cloudflare RPKI-invalid test, weekly)</h2>
     <p class="section-intro">
-        Latest run <strong>2026-10-13</strong>. Every connected probe traces
+        Latest run <strong>2026-10-20</strong>. Every connected probe traces
         Cloudflare's RPKI-valid and RPKI-invalid test prefixes; where the valid one answers but
         the invalid one dies, something on that path drops invalid routes. Where ASPA above counts
         who has <em>published</em> route-security data, this shows whose paths actually
@@ -2609,13 +2609,13 @@ NU(AS55885) -&gt; AS150403: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS139609 -&
     </p>
     <table>
         <thead><tr><th>CC</th><th>Name</th><th>ASNs</th><th>Probes</th><th>IPv4</th><th>IPv6</th></tr></thead>
-        <tbody><tr><td>CK</td><td>Cook Islands</td><td>1</td><td>1</td><td>0/1/0</td><td>&ndash;</td></tr><tr><td>FJ</td><td>Fiji</td><td>1</td><td>1</td><td>0/1/0</td><td>&ndash;</td></tr><tr><td>FM</td><td>Micronesia, Federated States of</td><td>1</td><td>3</td><td>0/3/0</td><td>0/1/0</td></tr><tr><td>GU</td><td>Guam</td><td>7</td><td>11</td><td>1/9/1</td><td>1/2/0</td></tr><tr><td>KI</td><td>Kiribati</td><td>1</td><td>2</td><td>0/2/0</td><td>0/0/2</td></tr><tr><td>MH</td><td>Marshall Islands</td><td>1</td><td>1</td><td>0/1/0</td><td>&ndash;</td></tr><tr><td>MP</td><td>Northern Mariana Islands</td><td>1</td><td>1</td><td>0/1/0</td><td>&ndash;</td></tr><tr><td>NC</td><td>New Caledonia</td><td>2</td><td>5</td><td>5/0/0</td><td>3/0/1</td></tr><tr><td>NR</td><td>Nauru</td><td>1</td><td>1</td><td>0/1/0</td><td>0/1/0</td></tr><tr><td>NU</td><td>Niue</td><td>1</td><td>1</td><td>0/1/0</td><td>&ndash;</td></tr><tr><td>PF</td><td>French Polynesia</td><td>2</td><td>7</td><td>0/6/1</td><td>0/2/0</td></tr><tr><td>PG</td><td>Papua New Guinea</td><td>1</td><td>1</td><td>0/1/0</td><td>&ndash;</td></tr><tr><td>PW</td><td>Palau</td><td>1</td><td>1</td><td>0/1/0</td><td>0/1/0</td></tr><tr><td>TO</td><td>Tonga</td><td>2</td><td>2</td><td>2/0/0</td><td>&ndash;</td></tr><tr><td>TV</td><td>Tuvalu</td><td>1</td><td>1</td><td>0/1/0</td><td>&ndash;</td></tr><tr><td>VU</td><td>Vanuatu</td><td>1</td><td>1</td><td>0/1/0</td><td>&ndash;</td></tr></tbody>
+        <tbody><tr><td>CK</td><td>Cook Islands</td><td>1</td><td>1</td><td>0/1/0</td><td>&ndash;</td></tr><tr><td>FJ</td><td>Fiji</td><td>1</td><td>1</td><td>0/1/0</td><td>&ndash;</td></tr><tr><td>FM</td><td>Micronesia, Federated States of</td><td>2</td><td>3</td><td>0/3/0</td><td>0/1/0</td></tr><tr><td>GU</td><td>Guam</td><td>7</td><td>11</td><td>2/9/0</td><td>1/2/0</td></tr><tr><td>KI</td><td>Kiribati</td><td>1</td><td>2</td><td>0/2/0</td><td>0/0/2</td></tr><tr><td>MH</td><td>Marshall Islands</td><td>1</td><td>1</td><td>0/1/0</td><td>&ndash;</td></tr><tr><td>MP</td><td>Northern Mariana Islands</td><td>1</td><td>1</td><td>1/0/0</td><td>&ndash;</td></tr><tr><td>NC</td><td>New Caledonia</td><td>2</td><td>5</td><td>5/0/0</td><td>3/0/1</td></tr><tr><td>NR</td><td>Nauru</td><td>1</td><td>1</td><td>0/1/0</td><td>0/1/0</td></tr><tr><td>NU</td><td>Niue</td><td>1</td><td>1</td><td>0/1/0</td><td>&ndash;</td></tr><tr><td>PF</td><td>French Polynesia</td><td>2</td><td>7</td><td>0/7/0</td><td>0/2/0</td></tr><tr><td>PG</td><td>Papua New Guinea</td><td>1</td><td>1</td><td>0/1/0</td><td>&ndash;</td></tr><tr><td>PW</td><td>Palau</td><td>1</td><td>1</td><td>0/1/0</td><td>0/1/0</td></tr><tr><td>TO</td><td>Tonga</td><td>2</td><td>2</td><td>2/0/0</td><td>&ndash;</td></tr><tr><td>TV</td><td>Tuvalu</td><td>1</td><td>1</td><td>0/1/0</td><td>&ndash;</td></tr><tr><td>VU</td><td>Vanuatu</td><td>1</td><td>1</td><td>0/1/0</td><td>&ndash;</td></tr></tbody>
     </table>
     <p>Not testable (no connected probe): AS, SB, WF, WS</p>
     <p>Where invalid traces died (last network reached; it or its upstream dropped the route):</p>
-    <ul><li>IPv4 &mdash; AS18200: 4 probe(s)</li><li>IPv6 &mdash; AS18200: 2 probe(s)</li><li>IPv4 &mdash; AS141197: 1 probe(s)</li><li>IPv6 &mdash; AS45345: 1 probe(s)</li><li>IPv4 &mdash; AS24390: 1 probe(s)</li><li>IPv4 &mdash; AS38198: 1 probe(s)</li><li>IPv6 &mdash; before the first public hop: 1 probe(s)</li><li>IPv4 &mdash; AS140627: 1 probe(s)</li></ul>
+    <ul><li>IPv4 &mdash; AS18200: 4 probe(s)</li><li>IPv6 &mdash; AS18200: 2 probe(s)</li><li>IPv4 &mdash; before the first public hop: 2 probe(s)</li><li>IPv4 &mdash; AS141197: 1 probe(s)</li><li>IPv6 &mdash; AS45345: 1 probe(s)</li><li>IPv4 &mdash; AS24390: 1 probe(s)</li><li>IPv4 &mdash; AS38198: 1 probe(s)</li><li>IPv6 &mdash; before the first public hop: 1 probe(s)</li><li>IPv4 &mdash; AS140627: 1 probe(s)</li></ul>
     <p>Valid and invalid traces left via different upstreams (a sign one of them drops the invalid route):</p><ul><li>PG probe 50365 (IPv4): valid via AS4826, invalid via AS7474</li></ul>
-    <p class="section-intro">Measurements: {&#x27;v4&#x27;: [222352015, 222353113], &#x27;v6&#x27;: [222354434, 222355531]}.
+    <p class="section-intro">Measurements: {&#x27;v4&#x27;: [225320704, 225321906], &#x27;v6&#x27;: [225323356, 225324358]}.
         Detail: <code>outputs/reports/rov_cloudflare.txt</code></p>
 
     <h2>IPv6 coverage</h2>
@@ -2624,8 +2624,8 @@ NU(AS55885) -&gt; AS150403: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS139609 -&
         yet, queued until adoption has advanced further.
         <strong>45 of 158</strong> in-scope ASNs
         have at least one RIS-observed IPv6-originated prefix.
-        <strong>10 of 36</strong> connected
-        Atlas probes work over IPv6 (3 more are
+        <strong>9 of 38</strong> connected
+        Atlas probes work over IPv6 (4 more are
         IPv6-capable but tagged as not working).
     </p>
     <table>
@@ -2961,7 +2961,7 @@ NU(AS55885) -&gt; AS150403: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS139609 -&
         </tr><tr>
             <td>GU</td><td>Guam</td>
             <td>Micronesia</td>
-            <td>10</td><td>14</td><td>5</td>
+            <td>10</td><td>14</td><td>6</td>
             <td>1</td>
         </tr><tr>
             <td>PF</td><td>French Polynesia</td>
@@ -2981,7 +2981,7 @@ NU(AS55885) -&gt; AS150403: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS139609 -&
         </tr><tr>
             <td>FM</td><td>Micronesia, Federated States of</td>
             <td>Micronesia</td>
-            <td>6</td><td>6</td><td>3</td>
+            <td>6</td><td>5</td><td>3</td>
             <td>0</td>
         </tr><tr>
             <td>NC</td><td>New Caledonia</td>
@@ -3128,14 +3128,14 @@ NU(AS55885) -&gt; AS150403: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS139609 -&
         </tr></tbody></table>
 
     <h2>Appendix: Probes not placed optimally for regional testing
-        <span class="count">(8)</span></h2>
+        <span class="count">(9)</span></h2>
     <p class="section-intro">Connected (or recently disconnected) in-scope Atlas probes whose
         network or location makes them a poor stand-in for local-carrier routing, and why. Built
         from what the pipeline already acts on: the corridor-candidacy exclusions, the proxy list
         and the probe geo-audit.</p>
     <table>
         <thead><tr><th>CC</th><th>Probe</th><th>ASN</th><th>Status</th><th>Why</th></tr></thead>
-        <tbody><tr><td>GU</td><td>60689</td><td>AS7131</td><td>Connected</td><td>ASN registered Northern Mariana Islands but probe physically in Guam (geo-audit): counts as a GU vantage point, not MP</td></tr><tr><td>GU</td><td>62689</td><td>AS7131</td><td>Connected</td><td>ASN registered Northern Mariana Islands but probe physically in Guam (geo-audit): counts as a GU vantage point, not MP</td></tr><tr><td>GU</td><td>65337</td><td>AS14593</td><td>Connected</td><td>Starlink (AS14593): satellite egress via Starlink PoPs, not a local carrier; excluded from corridor candidacy</td></tr><tr><td>KI</td><td>1008228</td><td>AS14593</td><td>Connected</td><td>Starlink (AS14593): satellite egress via Starlink PoPs, not a local carrier; excluded from corridor candidacy</td></tr><tr><td>KI</td><td>1008229</td><td>AS14593</td><td>Connected</td><td>Starlink (AS14593): satellite egress via Starlink PoPs, not a local carrier; excluded from corridor candidacy</td></tr><tr><td>MH</td><td>64237</td><td>AS14593</td><td>Connected</td><td>Starlink (AS14593): satellite egress via Starlink PoPs, not a local carrier; excluded from corridor candidacy</td></tr><tr><td>PF</td><td>23002</td><td>AS2200</td><td>Connected</td><td>Renater (AS2200): backhauls straight to metropolitan France (~500ms), never touches Pacific transit</td></tr><tr><td>TO</td><td>11691</td><td>AS24390</td><td>Connected</td><td>ASN registered Fiji but probe physically in Tonga (geo-audit): counts as a TO vantage point, not FJ; USP (AS24390, registered FJ): regional academic network via AARNet (Australia), not a local commercial carrier; valid source, path unverified</td></tr></tbody>
+        <tbody><tr><td>FM</td><td>62046</td><td>AS14593</td><td>Connected</td><td>dual uplink: Atlas labels it Starlink from its control-plane address (14.1.90.35), but all 33 cached traceroutes (2026-09-16..24) leave via AS139759 FSM Telecom at &lt;2ms -- in practice an FSM Telecom vantage point for measurements. Used as an AS139759 source since 2026-09-25 (asn_probes.PROBE_ASN_OVERRIDES), with corridor results dropped if their first hop is Starlink (a failover)</td></tr><tr><td>GU</td><td>60689</td><td>AS7131</td><td>Connected</td><td>ASN registered Northern Mariana Islands but probe physically in Guam (geo-audit): counts as a GU vantage point, not MP</td></tr><tr><td>GU</td><td>62689</td><td>AS7131</td><td>Connected</td><td>ASN registered Northern Mariana Islands but probe physically in Guam (geo-audit): counts as a GU vantage point, not MP</td></tr><tr><td>GU</td><td>65337</td><td>AS14593</td><td>Connected</td><td>Starlink (AS14593): satellite egress via Starlink PoPs, not a local carrier; excluded from corridor candidacy</td></tr><tr><td>KI</td><td>1008228</td><td>AS14593</td><td>Connected</td><td>Starlink (AS14593): satellite egress via Starlink PoPs, not a local carrier; excluded from corridor candidacy</td></tr><tr><td>KI</td><td>1008229</td><td>AS14593</td><td>Connected</td><td>Starlink (AS14593): satellite egress via Starlink PoPs, not a local carrier; excluded from corridor candidacy</td></tr><tr><td>MH</td><td>64237</td><td>AS14593</td><td>Connected</td><td>Starlink (AS14593): satellite egress via Starlink PoPs, not a local carrier; excluded from corridor candidacy</td></tr><tr><td>PF</td><td>23002</td><td>AS2200</td><td>Connected</td><td>Renater (AS2200): backhauls straight to metropolitan France (~500ms), never touches Pacific transit</td></tr><tr><td>TO</td><td>11691</td><td>AS24390</td><td>Connected</td><td>ASN registered Fiji but probe physically in Tonga (geo-audit): counts as a TO vantage point, not FJ; USP (AS24390, registered FJ): regional academic network via AARNet (Australia), not a local commercial carrier; valid source, path unverified</td></tr></tbody>
     </table>
 
     <footer class="about">
