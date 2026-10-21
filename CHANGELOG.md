@@ -14,6 +14,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - San Francisco is now a mapped external hub (`EXTERNAL_HUB_LATLON`), so Cogent `sfo01` routers get a fibre-floor check instead of escalating as "router in a hub city with no coordinates" (2026-10-21).
 
 ### Fixed
+- Finding #66 (NC -> AS23657) named its target "American Samoa Telecommunications Authority". AS23657 is Blue Sky Communications; ASTCA is AS9751. The note is corrected in `confirmed_detours.py` and `findings.db`, with the correction recorded inline (2026-10-22).
 - The weekly reverification ration now rotates. Each scheduled retest is recorded (`reverification_attempts` table) whatever its outcome, and findings rank by `max(last verified, last attempted)`. Previously a retest that filed nothing left its finding at the head of the queue, so #26/#33/#69/#76/#91/#121/#144 were re-fired five times each from 09-20 to 10-11 while most findings never came up (2026-10-21).
 - Detour feasibility (Validation Rule 2) now uses only routers in the claimed hub city as that city's hub hop. A probe's router in another city could pass the claimed city's floors and turn an impossible detour into a filed "mixed" one (2026-10-21).
 - Parked Atlas measurements are collected only once Atlas has finished them; a still-running one with partial results is no longer classified early (224431120, 2026-10-19). Past 24 h, a running measurement is classified on the results it has rather than dropped.

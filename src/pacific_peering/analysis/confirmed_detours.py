@@ -3156,8 +3156,10 @@ CONFIRMED_DETOURS: tuple[ConfirmedDetour, ...] = (
         measurement_id=212119894,
         ris_observation_count=329,
         note=(
-            "New Caledonia (AS45345) -> American Samoa Telecommunications "
-            "Authority (AS23657) -- **the first-ever confirmation of the "
+            "New Caledonia (AS45345) -> Blue Sky Communications "
+            "(AS23657) [name corrected 2026-10-22: originally labelled "
+            "American Samoa Telecommunications Authority, which is "
+            "AS9751] -- **the first-ever confirmation of the "
             "AS17993(Vodafone Samoa)<->AS23657 adjacency**, no prior "
             "entry for this target ASN existed anywhere in the project. "
             "Fully contiguous on all 3 probes: `AS45345 -> AS18200 "
