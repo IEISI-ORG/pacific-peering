@@ -3709,4 +3709,4 @@ The headless session runs in `dontAsk` mode with a tool allowlist (no Atlas comm
   - Escalation AS3605 (GU) -> AS9751 (AS), 224427229: the reverification of finding #33 had already corroborated it (618 probe 329 via Portland ok; 619 probe 64953 via sfo01). Re-run offline on the cached trace, 64953's hop 13 now gives floor 92.95ms, 141.218ms -> ok. Not reclassified: corroborations aren't deduplicated, so a re-run would double-count. 619's note left as written at the time.
   - Tests: the two unmapped-city tests now use OneQode Hong Kong (`hk-mgi`, still unmapped); new `test_san_francisco_is_mapped` freezes the 224427229 hop. 351 pass. `router_detour_sweep.txt` had no unmapped rows, so not regenerated. No findings, reports or map changed (no finding has detour_hub San Francisco).
   - `escalations.md`: 0 open.
-  - Noticed: stray 0-byte `data/findings.db` (dated 2026-10-09, gitignored); the real DB is `data/analysis/findings.db`. Left in place.
+  - Noticed: stray 0-byte `data/findings.db` (dated 2026-10-09, gitignored); the real DB is `data/analysis/findings.db`. Deleted 2026-10-21 (owner): untracked, unreferenced by code, scripts or cron.
