@@ -285,6 +285,7 @@ Corridors `auto_classify.py`'s mechanical rules couldn't confidently resolve on 
 - reason: router in a hub city with no coordinates
 - detail: probe 64953: router hub: hop 13 154.54.43.9 be3669.ccr21.sfo01.atlas.cogentco.com -> San Francisco, 141.218ms (no hub coordinates, unmapped)
 - flagged: 2026-10-18T15:07:55.285055+00:00
+- resolved: 2026-10-21 -- San Francisco added to EXTERNAL_HUB_LATLON (owner; reverses the 2026-10-12 decision to leave SF unmapped). Re-run offline on the cached trace: hop 13 sfo01 at 141.218ms vs floor 92.95ms from GU -> ok. The reverification of finding #33 (confirmed_detour, Tokyo) had already succeeded in this measurement (corroborations 618 via Portland and 619), so nothing was reclassified; corroboration 619's note keeps its original 'unmapped' text. Future Cogent sfo01 hops classify instead of escalating.
 
 
 ## Probe 62046 (FM, AS14593) -- metadata changed

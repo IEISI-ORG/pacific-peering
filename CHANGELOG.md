@@ -5,6 +5,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+### Changed
+- San Francisco is now a mapped external hub (`EXTERNAL_HUB_LATLON`), so Cogent `sfo01` routers get a fibre-floor check instead of escalating as "router in a hub city with no coordinates" (2026-10-21).
+
 ### Fixed
 - Parked Atlas measurements are collected only once Atlas has finished them; a still-running one with partial results is no longer classified early (224431120, 2026-10-19). Past 24 h, a running measurement is classified on the results it has rather than dropped.
 

@@ -125,11 +125,11 @@ def test_too_fast_hostname_escalates_and_keeps_local_transit(env):
 
 
 def test_unmapped_city_escalates(env):
-    env["ptr"] = {"64.86.252.73": "be5991.ccr22.sfo01.atlas.cogentco.com"}
+    env["ptr"] = {"64.86.252.73": "hk-mgi-rt1.oneqode.net"}
     result = auto_classify.classify_corridor(_candidate(), regenerate=False)
     assert result.outcome == "confirmed_local_transit"
     assert [e.reason for e in result.escalations] == ["router in a hub city with no coordinates"]
-    assert "sfo01" in result.escalations[0].detail
+    assert "hk-mgi" in result.escalations[0].detail
 
 
 def test_no_ptr_records_leaves_local_transit(env):

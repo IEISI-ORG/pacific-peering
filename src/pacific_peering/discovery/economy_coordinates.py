@@ -68,4 +68,5 @@ EXTERNAL_HUB_LATLON: dict[str, tuple[float, float]] = {
     "San Jose": (37.3382, -121.8863),
     "Los Angeles": (34.0522, -118.2437),
     "Portland": (45.5152, -122.6784),
+    "San Francisco": (37.7749, -122.4194),
 }

@@ -68,11 +68,19 @@ def test_only_the_first_located_hop_is_judged():
 
 
 def test_unmapped_city_has_no_floor():
-    # 216155108 probe 7455 (VU): Cogent San Francisco at 140.259ms. No EXTERNAL_HUB_LATLON entry.
-    trace = {"probe_id": 7455, "hops": [{"hop": 6, "addresses": ["154.54.168.254"], "min_rtt_ms": 140.259}]}
-    hub = rl.find_router_hub(trace, "VU", _resolver({"154.54.168.254": "be5991.ccr22.sfo01.atlas.cogentco.com"}))
-    assert (hub.city, hub.floor_ms, hub.verdict) == ("San Francisco", None, rl.HUB_UNMAPPED)
+    # OneQode Hong Kong (hk-mgi, 211527961): no EXTERNAL_HUB_LATLON entry.
+    trace = {"probe_id": 65653, "hops": [{"hop": 6, "addresses": ["103.151.64.21"], "min_rtt_ms": 95.0}]}
+    hub = rl.find_router_hub(trace, "MP", _resolver({"103.151.64.21": "hk-mgi-rt1.oneqode.net"}))
+    assert (hub.city, hub.floor_ms, hub.verdict) == ("Hong Kong", None, rl.HUB_UNMAPPED)
     assert "no hub coordinates" in hub.note()
+
+
+def test_san_francisco_is_mapped():
+    # 224427229 probe 64953 (GU): Cogent San Francisco at 141.218ms, escalated as unmapped
+    # until the hub was added (owner, 2026-10-21).
+    trace = {"probe_id": 64953, "hops": [{"hop": 13, "addresses": ["154.54.43.9"], "min_rtt_ms": 141.218}]}
+    hub = rl.find_router_hub(trace, "GU", _resolver({"154.54.43.9": "be3669.ccr21.sfo01.atlas.cogentco.com"}))
+    assert (hub.city, hub.floor_ms, hub.verdict) == ("San Francisco", 92.95, rl.HUB_OK)
 
 
 def test_in_region_hostname_is_skipped():
