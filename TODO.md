@@ -64,14 +64,16 @@ All four are in `auto_classify.py`, with 7 new tests in `test_router_detour.py`;
   `HUB_OK` routers span several cities, the run escalates "router hubs in several
   cities" with every probe's router and files no router-based detour, whatever
   the probe order. The city filter in the feasibility call stays as a second guard.
-- [ ] **Network guard passes when the hub address has no single ASN.** It
-  fires only if `asns` contains a fishbowl ASN. With no ASN (RIPEstat failure,
-  unannounced space) or more than one origin, the router stays `HUB_OK` and
-  the detour is filed. Option: treat no-ASN as unverified and escalate.
-  Related, pre-existing: `ip_resolution_cache` stores a RIPEstat failure as a
-  permanent negative (118 such entries), so one bad night disables the guard
-  for that address. Measured 2026-10-21: 0 of the 18 routers located
-  off-region lack an ASN; 77 negative entries are for public addresses.
+- [x] **Network guard needs a single BGP owner (owner, 2026-10-21).** A located
+  router whose hop resolves to no ASN, or to more than one, becomes `HUB_NO_OWNER`
+  and escalates ("router address has no single BGP owner") instead of filing.
+  It affects none of today's 18 located routers.
+- [ ] **IP-resolution cache keeps RIPEstat failures (separate change, not approved yet).**
+  A failed lookup is cached as a permanent "no owner" (77 public-address
+  negatives as of 2026-10-21). Now that the guard escalates no-owner routers,
+  a bad RIPEstat night turns such routers into permanent escalations instead
+  of silent passes. Fix: retry failures instead of caching them, and keep
+  genuine "unannounced" answers. This touches every hop resolution.
 
 ## P2: watch / later
 

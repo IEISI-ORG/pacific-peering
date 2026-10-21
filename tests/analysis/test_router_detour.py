@@ -48,8 +48,10 @@ def _candidate(reverify_finding_id=None):
 @pytest.fixture
 def env(monkeypatch, tmp_path):
     """Everything classify_corridor touches, pointed at tmp_path and stubbed off the network."""
+    # resolved: BGP owner per hop number, as resolve_traceroute_hops gives it. The located
+    # routers default to their real carriers (hop 8 Tata AS6453; hops 3 and 5 Cogent AS174).
     state = {"ptr": {}, "ptr_calls": [], "registry": {}, "triangulation": _triangulation(), "parsed_dir": tmp_path,
-             "resolved": {}}
+             "resolved": {8: (6453,), 5: (174,), 3: (174,)}}
     monkeypatch.setattr(auto_classify, "_load_asn_to_cc", lambda path=None: {7131: "MP", 45355: "FJ", 38198: "TO"})
     monkeypatch.setattr(auto_classify, "load_ixp_lan_registry", lambda path: state["registry"])
     monkeypatch.setattr(auto_classify, "list_target_ips", lambda asn: ["202.43.12.1"])
@@ -64,11 +66,11 @@ def env(monkeypatch, tmp_path):
     monkeypatch.setattr(auto_classify, "_write_escalations", lambda e: None)
     monkeypatch.setattr(auto_classify, "_asn_holder_name", lambda asn, cache: f"AS{asn}")
     monkeypatch.setattr(auto_classify, "_load_listing_or_empty", lambda: {})
-    # Per-hop ASNs for the hops a test names in state["resolved"] ({hop: (asn, ...)}); none otherwise.
+    # Per-hop ASNs for the hops in state["resolved"] ({hop: (asn, ...)}); an empty tuple for the rest.
     monkeypatch.setattr(auto_classify, "resolve_traceroute_hops", lambda hops, persist=False: [
-        HopResolution(hop=h["hop"], addresses=tuple(h.get("addresses", [])), asns=state["resolved"][h["hop"]],
-                      resolution_source="bgp")
-        for h in hops if h["hop"] in state["resolved"]])
+        HopResolution(hop=h["hop"], addresses=tuple(h.get("addresses", [])), asns=state["resolved"].get(h["hop"], ()),
+                      resolution_source="bgp" if h["hop"] in state["resolved"] else None)
+        for h in hops])
 
     def _ptr(address):
         state["ptr_calls"].append(address)
@@ -297,3 +299,19 @@ def test_routers_in_one_city_still_file_the_detour(env):
     env["ptr"] = {"64.86.252.73": TATA_LA}
     result = auto_classify.classify_corridor(_candidate(), regenerate=False)
     assert (result.outcome, result.escalations) == ("confirmed_detour", [])
+
+
+# --- 2026-10-21 owner decision (Q2): a located router needs a single BGP owner -----------------
+
+
+@pytest.mark.parametrize("asns", [(), (6453, 3356)], ids=["no_owner", "two_origins"])
+def test_router_with_no_single_bgp_owner_escalates_instead_of_filing(env, asns):
+    # No data is inconclusive: the network guard can't clear an address BGP doesn't
+    # pin to one network (RIPEstat failure, unannounced space, multiple origins).
+    env["ptr"] = {"64.86.252.73": TATA_LA}
+    env["resolved"] = {8: asns}
+    result = auto_classify.classify_corridor(_candidate(), regenerate=False)
+    assert result.outcome == "confirmed_local_transit"
+    assert [e.reason for e in result.escalations] == ["router address has no single BGP owner"]
+    assert "hop 8 64.86.252.73" in result.escalations[0].detail
+    assert _rows(env, "SELECT kind FROM findings") == [("confirmed_local_transit",)]

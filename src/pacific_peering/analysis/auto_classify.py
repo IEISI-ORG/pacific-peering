@@ -120,6 +120,7 @@ from pacific_peering.analysis.ixp_lan_registry import (
 )
 from pacific_peering.analysis.router_location import (
     HUB_IN_REGION,
+    HUB_NO_OWNER,
     HUB_OK,
     HUB_TOO_FAST,
     RouterHub,
@@ -772,13 +773,17 @@ def _classify_corridor(
                 # owner says it is. An off-region name on an address BGP gives to a
                 # fishbowl network is misnamed, spoofed, or that network's own PoP
                 # abroad; a human reads it, it's never filed as a detour by itself.
-                fishbowl = sorted({
-                    asn for h in resolve_traceroute_hops(trace["hops"], persist=False)
-                    if h.hop == hub.hop for asn in h.asns if asn in asn_to_cc
-                })
+                # No single origin (lookup failed, unannounced, multi-origin) can't
+                # be cleared either: no data is inconclusive (owner, 2026-10-21).
+                owners = next(
+                    (h.asns for h in resolve_traceroute_hops(trace["hops"], persist=False) if h.hop == hub.hop), ()
+                )
+                fishbowl = sorted({asn for asn in owners if asn in asn_to_cc})
                 if fishbowl:
                     in_region_asns[probe["probe_id"]] = fishbowl
                     hub = replace(hub, verdict=HUB_IN_REGION)
+                elif len(owners) != 1:
+                    hub = replace(hub, verdict=HUB_NO_OWNER)
             router_hubs[probe["probe_id"]] = hub
         ok = [h for h in router_hubs.values() if h.verdict == HUB_OK]
         if len({h.city for h in ok}) > 1:
@@ -803,6 +808,13 @@ def _classify_corridor(
                     + ", ".join(f"AS{a} ({asn_to_cc[a]})" for a in in_region_asns[hub.probe_id])
                     + " -- a misnamed or spoofed PTR, or that network's own router abroad; "
                     "needs a human look, not a detour"
+                )
+            elif hub.verdict == HUB_NO_OWNER:
+                reason = "router address has no single BGP owner"
+                detail = (
+                    f"probe {hub.probe_id}: {hub.note()} -- BGP gives no single origin for the address "
+                    "(lookup failed, unannounced, or multi-origin), so the hostname can't be checked "
+                    "against its network; needs a human look, not a detour"
                 )
             else:
                 reason = (

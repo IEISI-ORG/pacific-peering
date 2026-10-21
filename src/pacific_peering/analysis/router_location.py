@@ -41,6 +41,7 @@ HUB_OK = "ok"
 HUB_TOO_FAST = "too_fast"  # answered faster than fibre allows from the source to that city
 HUB_UNMAPPED = "unmapped"  # city has no EXTERNAL_HUB_LATLON entry, so no floor
 HUB_IN_REGION = "in_region"  # placed off-region by its hostname, but BGP puts the address in a fishbowl ASN
+HUB_NO_OWNER = "no_owner"  # BGP gives the address no single origin ASN, so the guard above can't clear it
 
 PtrResolver = Callable[[str], "str | None"]
 
@@ -61,7 +62,7 @@ class RouterHub:
     city: str
     min_rtt_ms: float
     floor_ms: float | None  # None when `city` has no EXTERNAL_HUB_LATLON entry
-    verdict: str  # HUB_OK | HUB_TOO_FAST | HUB_UNMAPPED
+    verdict: str  # HUB_OK | HUB_TOO_FAST | HUB_UNMAPPED; auto_classify may set HUB_IN_REGION | HUB_NO_OWNER
 
     def note(self) -> str:
         floor = "no hub coordinates" if self.floor_ms is None else f"floor {self.floor_ms}ms"
