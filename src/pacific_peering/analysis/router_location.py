@@ -40,6 +40,7 @@ logger = logging.getLogger(__name__)
 HUB_OK = "ok"
 HUB_TOO_FAST = "too_fast"  # answered faster than fibre allows from the source to that city
 HUB_UNMAPPED = "unmapped"  # city has no EXTERNAL_HUB_LATLON entry, so no floor
+HUB_IN_REGION = "in_region"  # placed off-region by its hostname, but BGP puts the address in a fishbowl ASN
 
 PtrResolver = Callable[[str], "str | None"]
 

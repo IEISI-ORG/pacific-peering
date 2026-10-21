@@ -91,7 +91,7 @@ import subprocess
 import sys
 import threading
 import time
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -118,7 +118,14 @@ from pacific_peering.analysis.ixp_lan_registry import (
     DEFAULT_REGISTRY_PATH as IXP_REGISTRY_PATH,
     load_ixp_lan_registry,
 )
-from pacific_peering.analysis.router_location import HUB_OK, HUB_TOO_FAST, RouterHub, find_router_hub, reverse_dns
+from pacific_peering.analysis.router_location import (
+    HUB_IN_REGION,
+    HUB_OK,
+    HUB_TOO_FAST,
+    RouterHub,
+    find_router_hub,
+    reverse_dns,
+)
 from pacific_peering.analysis.traceroute_topology import (
     DEFAULT_ATLAS_PARSED_DIR,
     analyze_measurement,
@@ -753,26 +760,48 @@ def _classify_corridor(
 
     # Rule 2, no IXP crossed: a router placed off-region by its own hostname.
     router_hubs: dict[int, RouterHub] = {}
+    in_region_asns: dict[int, list[int]] = {}  # probe -> fishbowl ASNs BGP gives its hub router's address
     if detour_pick is None:
         for probe in clean_probes:
             trace = {"probe_id": probe["probe_id"], "hops": hops_by_probe.get(probe["probe_id"], [])}
             hub = find_router_hub(trace, candidate.source_cc, resolver=reverse_dns)
-            if hub is not None:
-                router_hubs[probe["probe_id"]] = hub
+            if hub is None:
+                continue
+            if hub.verdict == HUB_OK:
+                # Network guard (owner, 2026-10-21): a PTR is whatever the address's
+                # owner says it is. An off-region name on an address BGP gives to a
+                # fishbowl network is misnamed, spoofed, or that network's own PoP
+                # abroad; a human reads it, it's never filed as a detour by itself.
+                fishbowl = sorted({
+                    asn for h in resolve_traceroute_hops(trace["hops"], persist=False)
+                    if h.hop == hub.hop for asn in h.asns if asn in asn_to_cc
+                })
+                if fishbowl:
+                    in_region_asns[probe["probe_id"]] = fishbowl
+                    hub = replace(hub, verdict=HUB_IN_REGION)
+            router_hubs[probe["probe_id"]] = hub
         ok = [h for h in router_hubs.values() if h.verdict == HUB_OK]
         if ok:
             detour_pick = (None, f"{ok[0].hostname} (router in {ok[0].city}, no IXP crossing)", ok[0].city)
         for hub in router_hubs.values():
             if hub.verdict == HUB_OK:
                 continue
-            escalations.append(_Escalation(
-                candidate=candidate,
-                measurement_id=measurement_id,
-                reason=(
+            if hub.verdict == HUB_IN_REGION:
+                reason = "router hostname off-region but address in a fishbowl network"
+                detail = (
+                    f"probe {hub.probe_id}: {hub.note()}; BGP gives the address to "
+                    + ", ".join(f"AS{a} ({asn_to_cc[a]})" for a in in_region_asns[hub.probe_id])
+                    + " -- a misnamed or spoofed PTR, or that network's own router abroad; "
+                    "needs a human look, not a detour"
+                )
+            else:
+                reason = (
                     "router hostname location physically impossible" if hub.verdict == HUB_TOO_FAST
                     else "router in a hub city with no coordinates"
-                ),
-                detail=f"probe {hub.probe_id}: {hub.note()}",
+                )
+                detail = f"probe {hub.probe_id}: {hub.note()}"
+            escalations.append(_Escalation(
+                candidate=candidate, measurement_id=measurement_id, reason=reason, detail=detail,
             ))
 
     if tba_ixp_hit and detour_pick is None:
@@ -807,7 +836,10 @@ def _classify_corridor(
         feasibility = _detour_feasibility(
             candidate, measurement_id, {p["probe_id"] for p in clean_probes}, detour_pick[2],
             {ix_id: e.city for ix_id, e in ixp_registry.items()},
-            {pid: h.hop for pid, h in router_hubs.items() if h.verdict == HUB_OK},
+            # Only routers in the claimed city stand in for its hub hop: another
+            # city's router judged against this city's floors can pass them and
+            # turn an impossible claim into a filed, mixed one.
+            {pid: h.hop for pid, h in router_hubs.items() if h.verdict == HUB_OK and h.city == detour_pick[2]},
         )
         if feasibility is not None:
             verdict, detail = feasibility
@@ -876,6 +908,19 @@ def _classify_corridor(
                 else:
                     finding_id = finding.id
                 _corroborate(conn, finding_id, clean_probes, {pid: h.note() for pid, h in router_hubs.items()})
+                if detour_pick[0] is None and local_transit_pick is not None:
+                    # A router-located detour (no IXP) and a local-transit edge can sit on
+                    # the same trace (221439393: #92 and #295). Refresh an edge already on
+                    # file so it doesn't age out; never create one from a detour run.
+                    upstream_asn = local_transit_pick["traceroute_upstream_asn"]
+                    edge = _store.find_existing(
+                        conn, _store.KIND_CONFIRMED_LOCAL_TRANSIT, upstream_asn, candidate.target_asn
+                    )
+                    if edge is not None:
+                        _corroborate(
+                            conn, edge.id,
+                            [p for p in clean_probes if p.get("traceroute_upstream_asn") == upstream_asn],
+                        )
                 mark_corridor_tested(candidate.source_asn, candidate.target_asn)
                 if regenerate:
                     _regenerate_artifacts()

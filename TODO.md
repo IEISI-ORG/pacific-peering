@@ -13,7 +13,8 @@ impossible" escalations.
 
 ## P0: owner decision
 
-- [ ] **Fix the reverify rotation (`last_attempted`).** Not built.
+- [ ] **Fix the reverify rotation (`last_attempted`).** Approved 2026-10-21;
+  in progress on a separate branch, built test-first.
   `select_reverification_batch` ranks by the latest corroboration, so a retest
   that files nothing (inconclusive, dark, or a different kind) leaves the
   finding at the head of the queue. It is still happening: the 10-18 nightly
@@ -22,43 +23,30 @@ impossible" escalations.
   "full rotation roughly every 4 weeks" in `CLAUDE.md` isn't true yet.
   Proposed fix: record `last_attempted` per finding and rank by
   `max(last_verified, last_attempted)`, built test-first.
-- [ ] **The 17 swept findings: probably resolved by the fix above.** The worry
-  was that a retest which now files a detour never refreshes the original
-  finding, so it is re-queued weekly. With `last_attempted`, any retest moves it
-  down the queue, so options 2 and 3 below become unnecessary. Real data so far
-  is mild: the 10-18 nightly retested #177, #233 and #239, and all three
-  corroborated as local transit with RIS agreeing, with no new detours.
-  #233 was retested from NU, not TV, so the predicted TV detour didn't occur.
-  Recommendation: option 1 (accept), together with the rotation fix.
-  1. Accept it: new detour findings may appear.
-  2. Hold the 17 out of the reverify queue until each is decided.
-  3. Prioritise multi-outcome filing (see P1).
+- [x] **The 17 swept findings: option 1, accept (owner, 2026-10-21).** New detour
+  findings may appear when one is retested. The rotation fix above keeps any
+  retest from leaving a finding stuck at the head of the queue, and
+  multi-outcome filing (done, below) keeps local-transit edges like #295
+  refreshed. No per-finding retire/hold/relabel unless one actually starts
+  filing detours. The list is in `outputs/reports/router_detour_sweep.txt`.
 
-  The 17: candidate_peering #2, #15, #16, #18, #229, #230; local_transit #177,
-  #184, #186, #187, #203, #233, #239, #249, #287, #293, #295. Per-finding
-  retire/hold/relabel can wait unless one actually starts filing detours. The
-  list is in `outputs/reports/router_detour_sweep.txt`.
+## P1: done 2026-10-21 (owner approved)
 
-## P1: next small change (needs owner approval: changes what gets filed)
+All four are in `auto_classify.py`, with 7 new tests in `test_router_detour.py`; 358 pass.
 
-- [ ] **City filter.** Still not built (2026-10-21): `auto_classify.py` passes
-  every `HUB_OK` router hub to `_detour_feasibility`, whatever its city. Pass
-  only `h.verdict == HUB_OK and h.city == detour_pick[2]`, and add a two-probe,
-  two-city test. This closes a narrow wrong-filing case: an offshore target
-  plus a slow probe via Sydney turns IMPOSSIBLE into MIXED, so a detour is
-  filed, with an escalation.
-- [ ] **Network guard against misnamed or spoofed PTRs.** If a located router's
-  address belongs to a fishbowl ASN (`asn_to_cc`), escalate instead of
-  filing. `resolve_traceroute_hops` already gives per-hop ASNs, so this costs
-  no extra network calls. FCrDNS was considered and rejected: it adds nightly
-  DNS work and drops real routers.
-- [ ] **Multi-outcome filing** (the Known limitation). When the detour is
-  router-based, also corroborate the local-transit edge the same trace shows,
-  so #295-style findings stop ageing out. Less urgent once the rotation fix
-  lands.
-- [ ] **Tests to add with the above.** A multi-probe measurement;
-  `classify_corridor` demoting a router pick on an impossible feasibility
-  verdict; a too_fast corroboration note.
+- [x] **City filter.** Only `HUB_OK` routers with `h.city == detour_pick[2]` stand in
+  for the hub hop. Test: `test_router_in_another_city_is_not_the_detour_hub`
+  (LA claim with an offshore-fast target plus a slow Sydney probe: was filed
+  mixed, now escalated impossible).
+- [x] **Network guard.** An OK router whose address BGP gives to a fishbowl ASN
+  becomes `HUB_IN_REGION` and escalates ("router hostname off-region but address
+  in a fishbowl network"), never a detour. Uses `resolve_traceroute_hops` only.
+- [x] **Multi-outcome filing.** A router-located detour also corroborates an
+  existing local-transit finding for the same upstream -> target edge. It never
+  creates one, and IXP detours are unchanged.
+- [x] **Tests:** multi-probe measurement; impossible feasibility demoting a router
+  pick; too_fast note on the detour corroboration; the guard; multi-outcome
+  (corroborates, never creates, IXP path untouched).
 
 ## P2: watch / later
 

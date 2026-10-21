@@ -6,9 +6,12 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ## [Unreleased]
 
 ### Changed
+- Router-located detours (no IXP crossed) now also corroborate a confirmed local-transit finding already on file for the same trace's upstream -> target edge, so findings like #295 stop ageing out behind their detour (#92). A detour run never creates a local-transit finding (2026-10-21).
+- A router whose hostname places it off-region but whose address BGP gives to a fishbowl ASN is escalated ("router hostname off-region but address in a fishbowl network") instead of filing a detour (2026-10-21).
 - San Francisco is now a mapped external hub (`EXTERNAL_HUB_LATLON`), so Cogent `sfo01` routers get a fibre-floor check instead of escalating as "router in a hub city with no coordinates" (2026-10-21).
 
 ### Fixed
+- Detour feasibility (Validation Rule 2) now uses only routers in the claimed hub city as that city's hub hop. A probe's router in another city could pass the claimed city's floors and turn an impossible detour into a filed "mixed" one (2026-10-21).
 - Parked Atlas measurements are collected only once Atlas has finished them; a still-running one with partial results is no longer classified early (224431120, 2026-10-19). Past 24 h, a running measurement is classified on the results it has rather than dropped.
 
 ### Added

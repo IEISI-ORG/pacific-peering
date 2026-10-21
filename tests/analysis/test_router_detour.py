@@ -16,6 +16,7 @@ import pytest
 from pacific_peering.analysis import auto_classify, store
 from pacific_peering.analysis.corridor_backlog import CorridorCandidate
 from pacific_peering.analysis.ixp_lan_registry import IxpLanEntry
+from pacific_peering.analysis.traceroute_topology import HopResolution
 
 MSM = 900000002
 TATA_LA = "ix-xe-2-1-4-0.tcore2.lvw-losangeles.as6453.net"
@@ -47,7 +48,8 @@ def _candidate(reverify_finding_id=None):
 @pytest.fixture
 def env(monkeypatch, tmp_path):
     """Everything classify_corridor touches, pointed at tmp_path and stubbed off the network."""
-    state = {"ptr": {}, "ptr_calls": [], "registry": {}, "triangulation": _triangulation()}
+    state = {"ptr": {}, "ptr_calls": [], "registry": {}, "triangulation": _triangulation(), "parsed_dir": tmp_path,
+             "resolved": {}}
     monkeypatch.setattr(auto_classify, "_load_asn_to_cc", lambda path=None: {7131: "MP", 45355: "FJ", 38198: "TO"})
     monkeypatch.setattr(auto_classify, "load_ixp_lan_registry", lambda path: state["registry"])
     monkeypatch.setattr(auto_classify, "list_target_ips", lambda asn: ["202.43.12.1"])
@@ -62,7 +64,11 @@ def env(monkeypatch, tmp_path):
     monkeypatch.setattr(auto_classify, "_write_escalations", lambda e: None)
     monkeypatch.setattr(auto_classify, "_asn_holder_name", lambda asn, cache: f"AS{asn}")
     monkeypatch.setattr(auto_classify, "_load_listing_or_empty", lambda: {})
-    monkeypatch.setattr(auto_classify, "resolve_traceroute_hops", lambda hops, persist=False: [])
+    # Per-hop ASNs for the hops a test names in state["resolved"] ({hop: (asn, ...)}); none otherwise.
+    monkeypatch.setattr(auto_classify, "resolve_traceroute_hops", lambda hops, persist=False: [
+        HopResolution(hop=h["hop"], addresses=tuple(h.get("addresses", [])), asns=state["resolved"][h["hop"]],
+                      resolution_source="bgp")
+        for h in hops if h["hop"] in state["resolved"]])
 
     def _ptr(address):
         state["ptr_calls"].append(address)
@@ -147,3 +153,115 @@ def test_ixp_detour_takes_precedence(env):
     assert result.outcome == "confirmed_detour"
     assert _rows(env, "SELECT detour_hub, detour_ix_name FROM findings") == [("Sydney", "Equinix Sydney")]
     assert env["ptr_calls"] == []
+
+
+# --- 2026-10-21 follow-ups (TODO.md P1): multi-probe measurements ---------------------------------
+
+TARGET = "202.43.12.5"
+COGENT_SYD = "be4026.ccr21.syd01.atlas.cogentco.com"
+COGENT_LAX = "be1.ccr41.lax01.atlas.cogentco.com"
+
+
+def _probe(probe_id):
+    return {**_triangulation()["probes"][0], "probe_id": probe_id}
+
+
+def _two_probe_measurement(env, hops_a, hops_b):
+    """Probe 65653 (hops_a) and probe 50000 (hops_b), both reaching the target via AS45355."""
+    env["triangulation"] = {"measurement_id": MSM, "target_asn": 38198, "probes": [_probe(65653), _probe(50000)]}
+    (env["parsed_dir"] / f"{MSM}.json").write_text(json.dumps([
+        {"measurement_id": MSM, "probe_id": 65653, "target": TARGET, "hops": hops_a},
+        {"measurement_id": MSM, "probe_id": 50000, "target": TARGET, "hops": hops_b},
+    ]))
+
+
+# Floors from MP: Los Angeles hub 94.63ms, LA-routed target 118.97ms; Sydney hub 54.9ms.
+LA_FAST_TARGET = [  # Tata LA is plausible, but the target answers too fast to be behind it (offshore)
+    {"hop": 1, "addresses": ["192.168.1.1"], "min_rtt_ms": 1.4},
+    {"hop": 8, "addresses": ["64.86.252.73"], "min_rtt_ms": 121.5},
+    {"hop": 12, "addresses": [TARGET], "min_rtt_ms": 80.0},
+]
+SYD_SLOW = [  # a Sydney router, slow enough to also clear the LA floors
+    {"hop": 1, "addresses": ["192.168.1.1"], "min_rtt_ms": 1.4},
+    {"hop": 5, "addresses": ["154.54.89.1"], "min_rtt_ms": 110.0},
+    {"hop": 14, "addresses": [TARGET], "min_rtt_ms": 250.0},
+]
+
+
+def test_router_in_another_city_is_not_the_detour_hub(env):
+    # Probe 50000's Sydney router used to stand in as the LA hub hop, so its slow trace
+    # "passed" the LA floors and turned an impossible claim into a filed, mixed one.
+    _two_probe_measurement(env, LA_FAST_TARGET, SYD_SLOW)
+    env["ptr"] = {"64.86.252.73": TATA_LA, "154.54.89.1": COGENT_SYD}
+    result = auto_classify.classify_corridor(_candidate(), regenerate=False)
+    assert result.outcome == "confirmed_local_transit"
+    assert "detour via Los Angeles physically impossible (Validation Rule 2)" in [e.reason for e in result.escalations]
+    assert _rows(env, "SELECT kind FROM findings") == [("confirmed_local_transit",)]
+
+
+def test_impossible_feasibility_demotes_a_router_pick(env):
+    _two_probe_measurement(env, LA_FAST_TARGET, LA_FAST_TARGET)
+    env["ptr"] = {"64.86.252.73": TATA_LA}
+    result = auto_classify.classify_corridor(_candidate(), regenerate=False)
+    assert result.outcome == "confirmed_local_transit"
+    (esc,) = [e for e in result.escalations if "Validation Rule 2" in e.reason]
+    assert esc.reason == "detour via Los Angeles physically impossible (Validation Rule 2)"
+    assert "probe 65653 target_via_hub hop 12 80.0ms" in esc.detail
+
+
+def test_too_fast_probe_note_lands_on_the_detour_corroboration(env):
+    too_fast = [{"hop": 1, "addresses": ["192.168.1.1"], "min_rtt_ms": 1.4},
+                {"hop": 3, "addresses": ["154.54.1.9"], "min_rtt_ms": 20.0}]
+    _two_probe_measurement(env, HOPS, too_fast)
+    env["ptr"] = {"64.86.252.73": TATA_LA, "154.54.1.9": COGENT_LAX}
+    result = auto_classify.classify_corridor(_candidate(), regenerate=False)
+    assert result.outcome == "confirmed_detour"
+    assert [e.reason for e in result.escalations] == ["router hostname location physically impossible"]
+    notes = [n for (n,) in _rows(env, "SELECT note_extra FROM corroborations")]
+    assert len(notes) == 2
+    assert any("hop 3 154.54.1.9" in n and "too_fast" in n for n in notes)
+    assert any("hop 8 64.86.252.73" in n and "(floor 94.63ms, ok)" in n for n in notes)
+
+
+def test_router_in_a_fishbowl_network_escalates_instead_of_filing(env):
+    # Hostname says Tata LA, but BGP says the address is Digicel Fiji's (in the fishbowl):
+    # a misnamed or spoofed PTR, never evidence of a detour on its own.
+    env["ptr"] = {"64.86.252.73": TATA_LA}
+    env["resolved"] = {8: (45355,)}
+    result = auto_classify.classify_corridor(_candidate(), regenerate=False)
+    assert result.outcome == "confirmed_local_transit"
+    assert [e.reason for e in result.escalations] == ["router hostname off-region but address in a fishbowl network"]
+    assert "AS45355" in result.escalations[0].detail and "hop 8 64.86.252.73" in result.escalations[0].detail
+
+
+def test_router_detour_also_corroborates_the_existing_local_transit_edge(env):
+    # 221439393 (MP -> TO): the detour (#92) and the Digicel Fiji -> Digicel Tonga edge (#295)
+    # are both on the same trace; only the detour used to be corroborated.
+    conn = env["db"]()
+    lt = store.create_finding(conn, kind=store.KIND_CONFIRMED_LOCAL_TRANSIT, source_cc="FJ", source_asn=45355,
+                              target_cc="TO", target_asn=38198)
+    conn.close()
+    env["ptr"] = {"64.86.252.73": TATA_LA}
+    result = auto_classify.classify_corridor(_candidate(), regenerate=False)
+    assert result.outcome == "confirmed_detour"
+    assert sorted(_rows(env, "SELECT finding_id FROM corroborations")) == sorted([(result.finding_id,), (lt,)])
+
+
+def test_router_detour_never_creates_a_local_transit_finding(env):
+    env["ptr"] = {"64.86.252.73": TATA_LA}
+    auto_classify.classify_corridor(_candidate(), regenerate=False)
+    assert _rows(env, "SELECT kind FROM findings") == [("confirmed_detour",)]
+
+
+def test_ixp_detour_leaves_the_local_transit_edge_alone(env):
+    conn = env["db"]()
+    store.create_finding(conn, kind=store.KIND_CONFIRMED_LOCAL_TRANSIT, source_cc="FJ", source_asn=45355,
+                         target_cc="TO", target_asn=38198)
+    conn.close()
+    env["registry"] = {94: IxpLanEntry(ix_id=94, name="Equinix Sydney", city="Sydney", country="AU",
+                                       in_fishbowl=False, prefixes=("45.127.172.0/22",))}
+    env["triangulation"] = _triangulation([{"ix_id": 94, "name": "Equinix Sydney", "in_fishbowl": False,
+                                            "hop": 6, "min_rtt_ms": 60.0}])
+    result = auto_classify.classify_corridor(_candidate(), regenerate=False)
+    assert result.outcome == "confirmed_detour"
+    assert _rows(env, "SELECT finding_id FROM corroborations") == [(result.finding_id,)]
