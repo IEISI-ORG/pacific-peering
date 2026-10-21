@@ -1044,16 +1044,27 @@ def _last_verified(conn: sqlite3.Connection, finding: _store.Finding) -> str:
     return max(c.created_at for c in corrobs)
 
 
+def _last_checked(conn: sqlite3.Connection, finding: _store.Finding) -> str:
+    """When this finding last got a fresh look: its latest corroboration or
+    its latest scheduled retest, whichever is later. A retest that files
+    nothing (inconclusive, dark, a different kind) moves `_last_verified`
+    not at all, so ranking on that alone re-staged the same findings every
+    week (#26/#33/#69/#76/#91/#121/#144, 5 times each over 2026-09-20..
+    10-11) while most never came up. ISO-8601 UTC strings sort as text."""
+    attempted = _store.last_reverification_attempt(conn, finding.id)
+    return max(_last_verified(conn, finding), attempted or "")
+
+
 def select_reverification_batch(fraction: float = _REVERIFY_FRACTION) -> list[int]:
-    """IDs of the oldest-verified `fraction` of all findings, by their most
-    recent corroboration -- the ones due for a fresh look, not the ones
-    already checked in on recently."""
+    """IDs of the `fraction` of all findings that have gone longest without
+    a fresh look (`_last_checked`) -- the ones due, not the ones already
+    checked in on recently, whatever that check concluded."""
     conn = _store.connect()
     try:
         # Quarantined ASNs' findings sit out: re-firing the same dark traces
         # spends credits without adding proof (discovery/quarantined_asns.py).
         findings = [f for f in _store.all_findings(conn) if not _store.is_quarantined(f)]
-        ranked = sorted(findings, key=lambda f: _last_verified(conn, f))
+        ranked = sorted(findings, key=lambda f: _last_checked(conn, f))
     finally:
         conn.close()
     n = math.ceil(len(ranked) * fraction)
@@ -1334,14 +1345,59 @@ def _pick_next_for_batch(
     return None
 
 
+def _note_reverification_attempt(
+    candidate: CorridorCandidate, outcome: str, lock: threading.Lock, measurement_id: int | None = None
+) -> None:
+    """Record that a scheduled retest of `candidate.reverify_finding_id` ran
+    to `outcome`, so `select_reverification_batch` moves on from it.
+
+    Stamped once the measurement's fate is known -- classified (any
+    outcome), failed after writing began, or given up on (`"lost"`) -- not
+    when it's fired: a `"pending"` result is skipped here and stamped by
+    `_classify_collected` when the parked measurement is collected or
+    dropped, so a parked retest is counted exactly once and never left at
+    the head of the ranking. A candidate that errored before any
+    measurement existed never reaches this (nothing was spent, nothing was
+    learned; it keeps its turn). Never raises: bookkeeping must not sink a
+    result that's already been filed.
+    """
+    if candidate.reverify_finding_id is None or outcome == "pending":
+        return
+    with lock:
+        try:
+            conn = _store.connect()
+            try:
+                _store.record_reverification_attempt(
+                    conn, finding_id=candidate.reverify_finding_id, outcome=outcome,
+                    measurement_id=measurement_id,
+                )
+            finally:
+                conn.close()
+        except sqlite3.Error as exc:
+            logger.warning(
+                "Finding #%d: couldn't record reverification attempt (%s): %s",
+                candidate.reverify_finding_id, outcome, exc,
+            )
+
+
 def _classify_collected(lock: threading.Lock) -> list[ClassifyResult]:
     """Classify every parked measurement whose results have now arrived.
 
     Runs only while no batch worker is in flight (start and end of
     `run_batch`). Costs no Atlas credits: the measurements already ran.
+    A parked scheduled retest is stamped here (`_note_reverification_attempt`),
+    including one `collect_ready` gives up on -- that's still an attempt
+    that spent credits, and leaving it unstamped would keep its finding at
+    the head of the queue for as long as its retests kept dying.
     """
     results: list[ClassifyResult] = []
-    for entry in pending_measurements.collect_ready():
+    parked_before = {e.measurement_id: e for e in pending_measurements.load_pending()}
+    ready = pending_measurements.collect_ready()
+    still_parked = {e.measurement_id for e in pending_measurements.load_pending()}
+    for measurement_id, entry in parked_before.items():
+        if measurement_id not in still_parked and all(r.measurement_id != measurement_id for r in ready):
+            _note_reverification_attempt(entry.candidate, "lost", lock, measurement_id)
+    for entry in ready:
         candidate, measurement_id = entry.candidate, entry.measurement_id
         try:
             result = classify_corridor(candidate, lock=lock, regenerate=False, measurement_id=measurement_id)
@@ -1353,6 +1409,7 @@ def _classify_collected(lock: threading.Lock) -> list[ClassifyResult]:
                     "not re-parking it",
                     candidate.source_asn, candidate.target_asn, measurement_id,
                 )
+                _note_reverification_attempt(candidate, "error", lock, measurement_id)
                 continue
             logger.exception(
                 "AS%d -> AS%d: classifying parked measurement %d failed; re-parking it (attempt %d of %d)",
@@ -1368,6 +1425,7 @@ def _classify_collected(lock: threading.Lock) -> list[ClassifyResult]:
             continue
         logger.info("AS%d -> AS%d: %s (parked measurement %d)",
                     candidate.source_asn, candidate.target_asn, result.outcome, measurement_id)
+        _note_reverification_attempt(candidate, result.outcome, lock, measurement_id)
         results.append(result)
     return results
 
@@ -1446,13 +1504,18 @@ def run_batch(time_budget_seconds: float, max_concurrent: int = 5) -> list[Class
                 if any(e.reason == "no probe data returned" for e in result.escalations):
                     with write_lock:
                         skip_this_run.add((candidate.source_asn, candidate.target_asn))
-            except Exception:  # noqa: BLE001 - one corridor's failure must not sink the worker
+                _note_reverification_attempt(candidate, result.outcome, write_lock)
+            except Exception as exc:  # noqa: BLE001 - one corridor's failure must not sink the worker
                 logger.exception(
                     "AS%d -> AS%d: classification failed, leaving untested for a future pull",
                     candidate.source_asn, candidate.target_asn,
                 )
                 with write_lock:
                     skip_this_run.add((candidate.source_asn, candidate.target_asn))
+                # Failed before writing began: either parked (stamped on
+                # collection) or never fired (not an attempt at all).
+                if getattr(exc, "classify_writing_started", False):
+                    _note_reverification_attempt(candidate, "error", write_lock)
             finally:
                 with write_lock:
                     in_flight.discard(candidate.source_asn)

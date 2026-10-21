@@ -141,6 +141,27 @@ CREATE TABLE IF NOT EXISTS corroborations (
 CREATE INDEX IF NOT EXISTS idx_findings_target ON findings(target_asn);
 CREATE INDEX IF NOT EXISTS idx_findings_source ON findings(source_asn);
 CREATE INDEX IF NOT EXISTS idx_corrob_finding ON corroborations(finding_id);
+
+-- Scheduled reverification attempts -- queue bookkeeping for
+-- auto_classify.select_reverification_batch, not evidence. A retest that
+-- files no corroboration (inconclusive, dark, a different kind) used to
+-- leave its finding at the head of the oldest-verified ranking, so the
+-- same few findings were re-fired every week (#26/#33/#69/#76/#91/#121/
+-- #144, 5 times each between 2026-09-20 and 10-11) while most never came
+-- up. One row per attempt, whatever the outcome. Not exported: like
+-- aspa_checked_at it records a query, not a change, and after a rebuild
+-- from the export the ranking simply falls back to last-verified.
+-- Added 2026-10-21 as its own table so the live .db picks it up from this
+-- CREATE IF NOT EXISTS on its next open, with no row of findings or
+-- corroborations touched.
+CREATE TABLE IF NOT EXISTS reverification_attempts (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    finding_id INTEGER NOT NULL REFERENCES findings(id) ON DELETE CASCADE,
+    measurement_id INTEGER,        -- NULL when the attempt's ID isn't known to the caller
+    outcome TEXT NOT NULL,         -- ClassifyResult.outcome, or "error" / "lost"
+    attempted_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_reverif_finding ON reverification_attempts(finding_id);
 """
 
 
@@ -417,6 +438,32 @@ def get_corroborations(conn: sqlite3.Connection, finding_id: int) -> list[Corrob
         )
         for r in rows
     ]
+
+
+def record_reverification_attempt(
+    conn: sqlite3.Connection,
+    *,
+    finding_id: int,
+    outcome: str,
+    measurement_id: int | None = None,
+    attempted_at: str | None = None,
+) -> None:
+    """Note that a scheduled reverification of `finding_id` was carried
+    through to `outcome` (see the schema comment). Not a corroboration."""
+    conn.execute(
+        "INSERT INTO reverification_attempts (finding_id, measurement_id, outcome, attempted_at) "
+        "VALUES (?,?,?,?)",
+        (finding_id, measurement_id, outcome, attempted_at or datetime.now(timezone.utc).isoformat()),
+    )
+    conn.commit()
+
+
+def last_reverification_attempt(conn: sqlite3.Connection, finding_id: int) -> str | None:
+    """When `finding_id` was last re-tested on schedule, or None if never."""
+    row = conn.execute(
+        "SELECT MAX(attempted_at) AS at FROM reverification_attempts WHERE finding_id = ?", (finding_id,)
+    ).fetchone()
+    return row["at"] if row is not None else None
 
 
 def all_findings(conn: sqlite3.Connection) -> list[Finding]:
