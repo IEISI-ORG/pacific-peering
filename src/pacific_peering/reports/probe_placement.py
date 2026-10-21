@@ -42,10 +42,13 @@ PROBE_NOTES: dict[int, str] = {
     # control-plane address 14.1.90.35 (Starlink, 14.1.64.0/19), but all 33
     # cached traceroutes from it (2026-09-16..24) leave via AS139759 FSM
     # Telecom at <2ms -- a dual-uplink site (Pacific Community, Pohnpei).
-    62046: "dual uplink: Atlas labels it Starlink from its control-plane address (14.1.90.35), but all 33 cached "
-           "traceroutes (2026-09-16..24) leave via AS139759 FSM Telecom at <2ms -- in practice an FSM Telecom vantage "
-           "point for measurements. Used as an AS139759 source since 2026-09-25 (asn_probes.PROBE_ASN_OVERRIDES), with "
-           "corridor results dropped if their first hop is Starlink (a failover)",
+    # Since 2026-10-20 its traces leave via Starlink instead (225316709,
+    # 225320704, 225321906: 14.1.90.1 at ~54ms); FSM Telecom's other probes
+    # were fine, so the site changed path. Owner kept the override (2026-10-21).
+    62046: "dual uplink: Atlas labels it Starlink from its control-plane address (14.1.90.35). Its traceroutes left "
+           "via AS139759 FSM Telecom at <2ms through 2026-10-02, but since 2026-10-20 they leave via Starlink "
+           "(14.1.90.1, ~54ms). Kept as an AS139759 source (asn_probes.PROBE_ASN_OVERRIDES); corridor results whose "
+           "first hop is Starlink are dropped, so it adds nothing to FM corridors until the site switches back",
 }
 
 
