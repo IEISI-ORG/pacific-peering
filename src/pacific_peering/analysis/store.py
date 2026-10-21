@@ -466,6 +466,15 @@ def last_reverification_attempt(conn: sqlite3.Connection, finding_id: int) -> st
     return row["at"] if row is not None else None
 
 
+def reverification_attempts(conn: sqlite3.Connection, finding_id: int) -> list[tuple[str, str]]:
+    """`(attempted_at, outcome)` for every scheduled retest of `finding_id`, oldest first."""
+    rows = conn.execute(
+        "SELECT attempted_at, outcome FROM reverification_attempts WHERE finding_id = ? ORDER BY attempted_at",
+        (finding_id,),
+    ).fetchall()
+    return [(r["attempted_at"], r["outcome"]) for r in rows]
+
+
 def all_findings(conn: sqlite3.Connection) -> list[Finding]:
     rows = conn.execute(
         "SELECT f.*, (SELECT COUNT(*) FROM corroborations c WHERE c.finding_id = f.id) AS corroboration_count "

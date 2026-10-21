@@ -198,3 +198,61 @@ def test_parked_reverification_that_is_given_up_on_is_stamped_as_lost(monkeypatc
     assert auto_classify._classify_collected(threading.Lock()) == []
     assert pending_measurements.load_pending() == []
     assert _attempts(conn) == [(finding_id, "lost")]
+
+
+# --- "no probe data returned" needs 3 attempts (owner, 2026-10-21) -----------------------------
+
+
+def _no_data(conn, finding_id, day):
+    _store.record_reverification_attempt(
+        conn, finding_id=finding_id, outcome=auto_classify.ATTEMPT_NO_DATA,
+        attempted_at=f"2026-10-{day:02d}T00:00:00+00:00",
+    )
+
+
+def test_no_data_retest_keeps_its_turn_until_the_third(monkeypatch, tmp_path):
+    # Zero probes reporting is usually a transient Atlas results-fetch race, not
+    # a look at the path, so one or two of them don't send the finding back.
+    db_path = tmp_path / "findings.db"
+    conn = _open(db_path)
+    oldest = _finding(conn, "2026-09-01T00:00:00+00:00", 1)
+    middle = _finding(conn, "2026-09-05T00:00:00+00:00", 2)
+    monkeypatch.setattr(_store, "connect", lambda: _open(db_path))
+
+    _no_data(conn, oldest, 1)
+    _no_data(conn, oldest, 8)
+    assert auto_classify.select_reverification_batch(fraction=0.5) == [oldest]
+    _no_data(conn, oldest, 15)
+    assert auto_classify.select_reverification_batch(fraction=0.5) == [middle]
+
+
+def test_no_data_count_restarts_after_a_real_attempt(monkeypatch, tmp_path):
+    db_path = tmp_path / "findings.db"
+    conn = _open(db_path)
+    oldest = _finding(conn, "2026-09-01T00:00:00+00:00", 1)
+    middle = _finding(conn, "2026-10-05T00:00:00+00:00", 2)
+    monkeypatch.setattr(_store, "connect", lambda: _open(db_path))
+
+    _no_data(conn, oldest, 1)
+    _no_data(conn, oldest, 2)
+    _store.record_reverification_attempt(
+        conn, finding_id=oldest, outcome="inconclusive", attempted_at="2026-10-03T00:00:00+00:00"
+    )
+    # The real attempt ranks it at 10-03, still ahead of middle (10-05), and the
+    # two earlier no-data attempts don't carry over: two more don't move it, a third does.
+    assert auto_classify.select_reverification_batch(fraction=0.5) == [oldest]
+    _no_data(conn, oldest, 10)
+    _no_data(conn, oldest, 11)
+    assert auto_classify.select_reverification_batch(fraction=0.5) == [oldest]
+    _no_data(conn, oldest, 12)
+    assert auto_classify.select_reverification_batch(fraction=0.5) == [middle]
+
+
+def test_zero_probe_escalation_is_recorded_as_no_data():
+    no_data = auto_classify.ClassifyResult(
+        _candidate(1), "escalated", None,
+        [auto_classify._Escalation(_candidate(1), 9, "no probe data returned", "x")],
+    )
+    dark = auto_classify.ClassifyResult(_candidate(1), "inconclusive", None, [])
+    assert auto_classify._attempt_outcome(no_data) == auto_classify.ATTEMPT_NO_DATA
+    assert auto_classify._attempt_outcome(dark) == "inconclusive"

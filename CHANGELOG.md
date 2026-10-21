@@ -6,6 +6,8 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ## [Unreleased]
 
 ### Changed
+- A measurement whose probes reach routers that hostnames place in more than one off-region city now escalates ("router hubs in several cities") instead of filing a detour through whichever city's probe came first (2026-10-21).
+- A scheduled retest ending in "no probe data returned" (usually a transient Atlas fetch race) now moves its finding down the reverification queue only on the third such retest in a row (2026-10-21).
 - Router-located detours (no IXP crossed) now also corroborate a confirmed local-transit finding already on file for the same trace's upstream -> target edge, so findings like #295 stop ageing out behind their detour (#92). A detour run never creates a local-transit finding (2026-10-21).
 - A router whose hostname places it off-region but whose address BGP gives to a fishbowl ASN is escalated ("router hostname off-region but address in a fishbowl network") instead of filing a detour (2026-10-21).
 - San Francisco is now a mapped external hub (`EXTERNAL_HUB_LATLON`), so Cogent `sfo01` routers get a fibre-floor check instead of escalating as "router in a hub city with no coordinates" (2026-10-21).

@@ -191,11 +191,13 @@ SYD_SLOW = [  # a Sydney router, slow enough to also clear the LA floors
 def test_router_in_another_city_is_not_the_detour_hub(env):
     # Probe 50000's Sydney router used to stand in as the LA hub hop, so its slow trace
     # "passed" the LA floors and turned an impossible claim into a filed, mixed one.
+    # Since the several-cities rule (below) this escalates before feasibility runs;
+    # the city filter in the feasibility call stays as a second guard.
     _two_probe_measurement(env, LA_FAST_TARGET, SYD_SLOW)
     env["ptr"] = {"64.86.252.73": TATA_LA, "154.54.89.1": COGENT_SYD}
     result = auto_classify.classify_corridor(_candidate(), regenerate=False)
     assert result.outcome == "confirmed_local_transit"
-    assert "detour via Los Angeles physically impossible (Validation Rule 2)" in [e.reason for e in result.escalations]
+    assert [e.reason for e in result.escalations] == ["router hubs in several cities"]
     assert _rows(env, "SELECT kind FROM findings") == [("confirmed_local_transit",)]
 
 
@@ -265,3 +267,33 @@ def test_ixp_detour_leaves_the_local_transit_edge_alone(env):
     result = auto_classify.classify_corridor(_candidate(), regenerate=False)
     assert result.outcome == "confirmed_detour"
     assert _rows(env, "SELECT finding_id FROM corroborations") == [(result.finding_id,)]
+
+
+# --- 2026-10-21 owner decision: routers in several cities escalate ------------------------------
+
+LA_ONLY = [{"hop": 1, "addresses": ["192.168.1.1"], "min_rtt_ms": 1.4},
+           {"hop": 8, "addresses": ["64.86.252.73"], "min_rtt_ms": 121.5}]
+SYD_ONLY = [{"hop": 1, "addresses": ["192.168.1.1"], "min_rtt_ms": 1.4},
+            {"hop": 5, "addresses": ["154.54.89.1"], "min_rtt_ms": 110.0}]
+
+
+@pytest.mark.parametrize("order", ["la_first", "syd_first"])
+def test_router_hubs_in_several_cities_escalate_instead_of_filing(env, order):
+    # Which city got filed used to depend on probe order (code review of 0e6370a).
+    hops_a, hops_b = (LA_ONLY, SYD_ONLY) if order == "la_first" else (SYD_ONLY, LA_ONLY)
+    _two_probe_measurement(env, hops_a, hops_b)
+    env["ptr"] = {"64.86.252.73": TATA_LA, "154.54.89.1": COGENT_SYD}
+    result = auto_classify.classify_corridor(_candidate(), regenerate=False)
+    assert result.outcome == "confirmed_local_transit"
+    assert [e.reason for e in result.escalations] == ["router hubs in several cities"]
+    detail = result.escalations[0].detail
+    assert "Los Angeles" in detail and "Sydney" in detail
+    assert "hop 8 64.86.252.73" in detail and "hop 5 154.54.89.1" in detail
+    assert _rows(env, "SELECT kind FROM findings") == [("confirmed_local_transit",)]
+
+
+def test_routers_in_one_city_still_file_the_detour(env):
+    _two_probe_measurement(env, LA_ONLY, LA_ONLY)
+    env["ptr"] = {"64.86.252.73": TATA_LA}
+    result = auto_classify.classify_corridor(_candidate(), regenerate=False)
+    assert (result.outcome, result.escalations) == ("confirmed_detour", [])

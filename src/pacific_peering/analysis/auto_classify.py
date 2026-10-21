@@ -781,7 +781,17 @@ def _classify_corridor(
                     hub = replace(hub, verdict=HUB_IN_REGION)
             router_hubs[probe["probe_id"]] = hub
         ok = [h for h in router_hubs.values() if h.verdict == HUB_OK]
-        if ok:
+        if len({h.city for h in ok}) > 1:
+            # Owner, 2026-10-21: which city got filed used to depend on probe
+            # order, and the other city's router was recorded nowhere.
+            escalations.append(_Escalation(
+                candidate=candidate,
+                measurement_id=measurement_id,
+                reason="router hubs in several cities",
+                detail="; ".join(f"probe {h.probe_id}: {h.note()}" for h in ok)
+                + " -- probes leave the region through different cities; needs a human read, not a detour",
+            ))
+        elif ok:
             detour_pick = (None, f"{ok[0].hostname} (router in {ok[0].city}, no IXP crossing)", ok[0].city)
         for hub in router_hubs.values():
             if hub.verdict == HUB_OK:
@@ -1089,6 +1099,21 @@ def _last_verified(conn: sqlite3.Connection, finding: _store.Finding) -> str:
     return max(c.created_at for c in corrobs)
 
 
+ATTEMPT_NO_DATA = "no_data"
+NO_DATA_ATTEMPTS_REQUIRED = 3
+"""Retests ending in "no probe data returned" that together count as one look
+(owner, 2026-10-21). Zero probes reporting is usually a transient Atlas
+results-fetch race, not a look at the path, so a finding keeps its turn until
+the third in a row since its last real attempt or corroboration."""
+
+
+def _attempt_outcome(result: ClassifyResult) -> str:
+    """The outcome a scheduled retest is recorded under in `reverification_attempts`."""
+    if any(e.reason == "no probe data returned" for e in result.escalations):
+        return ATTEMPT_NO_DATA
+    return result.outcome
+
+
 def _last_checked(conn: sqlite3.Connection, finding: _store.Finding) -> str:
     """When this finding last got a fresh look: its latest corroboration or
     its latest scheduled retest, whichever is later. A retest that files
@@ -1096,8 +1121,12 @@ def _last_checked(conn: sqlite3.Connection, finding: _store.Finding) -> str:
     not at all, so ranking on that alone re-staged the same findings every
     week (#26/#33/#69/#76/#91/#121/#144, 5 times each over 2026-09-20..
     10-11) while most never came up. ISO-8601 UTC strings sort as text."""
-    attempted = _store.last_reverification_attempt(conn, finding.id)
-    return max(_last_verified(conn, finding), attempted or "")
+    attempts = _store.reverification_attempts(conn, finding.id)
+    base = max([_last_verified(conn, finding)] + [at for at, outcome in attempts if outcome != ATTEMPT_NO_DATA])
+    # No-data retests since then count in threes (NO_DATA_ATTEMPTS_REQUIRED).
+    no_data = [at for at, outcome in attempts if outcome == ATTEMPT_NO_DATA and at > base]
+    counted = len(no_data) // NO_DATA_ATTEMPTS_REQUIRED * NO_DATA_ATTEMPTS_REQUIRED
+    return no_data[counted - 1] if counted else base
 
 
 def select_reverification_batch(fraction: float = _REVERIFY_FRACTION) -> list[int]:
@@ -1470,7 +1499,7 @@ def _classify_collected(lock: threading.Lock) -> list[ClassifyResult]:
             continue
         logger.info("AS%d -> AS%d: %s (parked measurement %d)",
                     candidate.source_asn, candidate.target_asn, result.outcome, measurement_id)
-        _note_reverification_attempt(candidate, result.outcome, lock, measurement_id)
+        _note_reverification_attempt(candidate, _attempt_outcome(result), lock, measurement_id)
         results.append(result)
     return results
 
@@ -1549,7 +1578,7 @@ def run_batch(time_budget_seconds: float, max_concurrent: int = 5) -> list[Class
                 if any(e.reason == "no probe data returned" for e in result.escalations):
                     with write_lock:
                         skip_this_run.add((candidate.source_asn, candidate.target_asn))
-                _note_reverification_attempt(candidate, result.outcome, write_lock)
+                _note_reverification_attempt(candidate, _attempt_outcome(result), write_lock)
             except Exception as exc:  # noqa: BLE001 - one corridor's failure must not sink the worker
                 logger.exception(
                     "AS%d -> AS%d: classification failed, leaving untested for a future pull",

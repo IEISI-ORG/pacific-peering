@@ -20,15 +20,19 @@ impossible" escalations.
   known: classified (any outcome), failed after writing began, or a parked
   measurement collected or given up on ("lost"). Not exported, so a rebuild
   from the JSONL falls back to last-verified. 6 tests in `test_reverify_rotation.py`.
-- [ ] **Rotation follow-ups (owner decision):**
-  - A retest ending in "no probe data returned" (usually a transient Atlas
-    fetch race) now counts as an attempt and goes to the back. Exclude that
-    reason in `_note_reverification_attempt` if it should keep its turn.
-  - Pre-existing: `_pop_reverify_candidate` drops a staged finding whose vantage
-    economy has no connected probe without stamping it, so it takes a ration
-    slot every week (no credits spent). Could stamp "no_vantage".
-  - Pre-existing, rare: a retest parked Saturday and collected Monday is still
-    in Sunday's queue, so it can be re-fired right after being stamped.
+- [x] **No-data retests need 3 attempts (owner, 2026-10-21).** A retest that
+  ends in "no probe data returned" is recorded as `no_data`. Only every third
+  one since the finding's last real attempt or corroboration moves it down
+  the queue (`NO_DATA_ATTEMPTS_REQUIRED`).
+- [ ] **Rotation, remaining (watch):**
+  - `_pop_reverify_candidate` drops a staged finding that can't be rebuilt
+    (no connected probe in its vantage economy) without recording an attempt,
+    so it would be re-staged every week, taking a ration slot each time
+    (no credits spent). It affects no findings today (0 of 257, checked
+    2026-10-21); it starts to matter only if an economy loses its last probe.
+    Fix if that happens: stamp `no_vantage`.
+  - Rare: a retest parked Saturday and collected Monday is still in Sunday's
+    queue, so it can be re-fired right after being stamped.
 - [x] **The 17 swept findings: option 1, accept (owner, 2026-10-21).** New detour
   findings may appear when one is retested. The rotation fix above keeps any
   retest from leaving a finding stuck at the head of the queue, and
@@ -56,20 +60,18 @@ All four are in `auto_classify.py`, with 7 new tests in `test_router_detour.py`;
 
 ## P1 review follow-ups (owner decision; code review of `0e6370a`, 2026-10-21)
 
-- [ ] **Router hubs in more than one city.** `detour_pick` takes its city from the
-  first `HUB_OK` probe, and the city filter now leaves other cities' routers
-  out of the feasibility check altogether. So one measurement can file an LA
-  detour or a Sydney one depending on probe order, and the other city's router
-  is recorded nowhere. Option: escalate "router hubs in several cities" naming
-  every city and hop, or check each city separately and file only the claims
-  that aren't impossible.
+- [x] **Router hubs in more than one city: escalate (owner, 2026-10-21).** When
+  `HUB_OK` routers span several cities, the run escalates "router hubs in several
+  cities" with every probe's router and files no router-based detour, whatever
+  the probe order. The city filter in the feasibility call stays as a second guard.
 - [ ] **Network guard passes when the hub address has no single ASN.** It
   fires only if `asns` contains a fishbowl ASN. With no ASN (RIPEstat failure,
   unannounced space) or more than one origin, the router stays `HUB_OK` and
   the detour is filed. Option: treat no-ASN as unverified and escalate.
   Related, pre-existing: `ip_resolution_cache` stores a RIPEstat failure as a
   permanent negative (118 such entries), so one bad night disables the guard
-  for that address.
+  for that address. Measured 2026-10-21: 0 of the 18 routers located
+  off-region lack an ASN; 77 negative entries are for public addresses.
 
 ## P2: watch / later
 
