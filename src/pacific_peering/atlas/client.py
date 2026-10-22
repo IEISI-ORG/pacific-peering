@@ -342,12 +342,21 @@ def parse_traceroute_results(raw_results: list[dict]) -> list[TracerouteResult]:
     the standard traceroute convention, since the minimum is the closest
     single sample to pure propagation delay (higher samples reflect
     queueing/jitter, not a longer physical path).
+
+    Replies marked `late` or `edst` are dropped, as RIPE NCC's own
+    ixp-country-jedi does. A `late` reply answers a packet sent at an
+    earlier hop (211495010: hop 4's router logged again at hop 8), and an
+    `edst` reply is an ICMP error for some other packet the probe sent
+    (218710339: errors for traffic to 193.0.0.164, RTTs included). A hop
+    left with nothing else is dark.
     """
     parsed: list[TracerouteResult] = []
     for result in raw_results:
         hops: list[TracerouteHop] = []
         for hop_result in result.get("result", []):
-            replies = hop_result.get("result", [])
+            replies = [
+                r for r in hop_result.get("result", []) if "late" not in r and "edst" not in r
+            ]
             addresses = tuple(sorted({r["from"] for r in replies if "from" in r}))
             rtts = [r["rtt"] for r in replies if "rtt" in r]
             min_rtt_ms = min(rtts) if rtts else None
