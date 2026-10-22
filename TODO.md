@@ -75,6 +75,26 @@ All four are in `auto_classify.py`, with 7 new tests in `test_router_detour.py`;
   of silent passes. Fix: retry failures instead of caching them, and keep
   genuine "unannounced" answers. This touches every hop resolution.
 
+## Owner decision (2026-10-22, ixp-country-jedi review)
+
+- [ ] **Corroboration chain text #87 and #89** (finding 58, GU -> WS,
+  measurement 212240634) still carries the stale-`late`-reply artefact: #87
+  shows a false `AS3605 -> AS3356 -> AS3605` loop and #89 omits AS3356. The
+  finding's conclusion is unchanged (its detour description already names
+  AS3356). Correct the text in `findings.db` or leave it as recorded? See
+  `docs/traceroute_late_edst_and_guessed_probe_locations.md`.
+
+## Parked by the owner (2026-10-22)
+
+- [ ] **Anchor stitching** (ixp-country-jedi's `viaanchor`: direct min RTT
+  A->B vs A->anchor + anchor->B, to estimate what a regional hub would save).
+  Start once there are more Pacific anchors (TFL's Fiji anchor is the first in
+  progress).
+- [ ] **Weighting findings by users.** Needs research first: what a weight
+  should mean and which measure is reliable for the Pacific. The owner does not
+  trust ad-sampled eyeball estimates (APNIC's per-ASN user shares come from
+  Google ad placements) to weight Pacific use fairly.
+
 ## P2: watch / later
 
 - [ ] **Sydney floors are weak** (15-35 ms from NC/PG/FJ/TO/TV), so location

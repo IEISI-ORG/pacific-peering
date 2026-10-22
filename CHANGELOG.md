@@ -6,6 +6,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ## [Unreleased]
 
 ### Changed
+- Corridor source selection skips probes whose country Atlas guessed from GeoIP (`system-auto-geoip-country`, now recorded as `auto_geoip` in the probe listing). On 2026-10-22 that excludes 1012513 (GU) and 1008625 (NC), both at their economy's centroid; neither was the only source for its ASN or the vantage of any corroboration. See `docs/traceroute_late_edst_and_guessed_probe_locations.md` (2026-10-22).
 - A router located off-region by its hostname must have exactly one BGP origin ASN to back a detour. With none (failed lookup, unannounced space) or several, it escalates ("router address has no single BGP owner") instead (2026-10-21).
 - A measurement whose probes reach routers that hostnames place in more than one off-region city now escalates ("router hubs in several cities") instead of filing a detour through whichever city's probe came first (2026-10-21).
 - A scheduled retest ending in "no probe data returned" (usually a transient Atlas fetch race) now moves its finding down the reverification queue only on the third such retest in a row (2026-10-21).
@@ -14,6 +15,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - San Francisco is now a mapped external hub (`EXTERNAL_HUB_LATLON`), so Cogent `sfo01` routers get a fibre-floor check instead of escalating as "router in a hub city with no coordinates" (2026-10-21).
 
 ### Fixed
+- Traceroute parsing drops replies marked `late` (an answer to an earlier hop's packet) or `edst` (an ICMP error for a different packet), as RIPE NCC's ixp-country-jedi does. They had put stale addresses into 86 cached hops in 28 measurements, mostly Guam Cablevision's first routers (probes 329, 64953) and Starlink routers at the end of dark traces, creating false AS loops and trailing ASNs and hiding IIJ/Lumen behind two-ASN hops. The 28 parsed files were re-parsed from the raw cache. No finding's conclusion changes; corroborations #87/#89 keep the artefact in their chain text pending the owner (2026-10-22).
 - Finding #66 (NC -> AS23657) named its target "American Samoa Telecommunications Authority". AS23657 is Blue Sky Communications; ASTCA is AS9751. The note is corrected in `confirmed_detours.py` and `findings.db`, with the correction recorded inline (2026-10-22).
 - The weekly reverification ration now rotates. Each scheduled retest is recorded (`reverification_attempts` table) whatever its outcome, and findings rank by `max(last verified, last attempted)`. Previously a retest that filed nothing left its finding at the head of the queue, so #26/#33/#69/#76/#91/#121/#144 were re-fired five times each from 09-20 to 10-11 while most findings never came up (2026-10-21).
 - Detour feasibility (Validation Rule 2) now uses only routers in the claimed hub city as that city's hub hop. A probe's router in another city could pass the claimed city's floors and turn an impossible detour into a filed "mixed" one (2026-10-21).
