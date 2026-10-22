@@ -187,10 +187,17 @@ def _probe_live_cc_by_asn(
     connected probes sit in different countries -- e.g. AS7131 (Docomo
     Pacific): two probes live in Guam, one in the Northern Mariana
     Islands. Each becomes its own independent, correctly-labeled source.
+
+    A probe whose country Atlas guessed from GeoIP (`auto_geoip`, the
+    `system-auto-geoip-country` tag) has no host-set location to trust,
+    so it is never a source.
     """
     listing = load_probe_listing(listing_path)
     live_cc_by_probe = {
-        p["id"]: cc for cc, probes in listing.items() for p in probes if p["status"] == "Connected"
+        p["id"]: cc
+        for cc, probes in listing.items()
+        for p in probes
+        if p["status"] == "Connected" and not p.get("auto_geoip")
     }
     result: dict[int, set[str]] = {}
     for asn, probe_ids in probe_registry.items():

@@ -46,6 +46,29 @@ def test_fetch_probes_keeps_asn_v6_and_only_system_ipv6_tags(monkeypatch):
     assert result[1]["ipv6_tags"] == []
 
 
+def test_fetch_probes_marks_a_probe_whose_country_atlas_guessed(monkeypatch):
+    # Atlas's live answer for GU probe 1012513 on 2026-10-22: no description,
+    # coordinates at Guam's centroid, located by GeoIP rather than by its host.
+    payload = {
+        "results": [
+            {
+                "id": 1012513,
+                "status": {"name": "Connected"},
+                "asn_v4": 152735,
+                "asn_v6": None,
+                "tags": [{"slug": "system-auto-geoip-country"}, {"slug": "system-ipv4-works"}],
+            },
+            {"id": 7385, "status": {"name": "Connected"}, "asn_v4": 152735, "asn_v6": None, "tags": []},
+        ]
+    }
+    monkeypatch.setattr(probes.requests, "get", lambda url, params, timeout: _FakeResponse(payload))
+
+    result = probes.fetch_probes_for_economy("GU")
+
+    assert result[0]["auto_geoip"] is True
+    assert result[1]["auto_geoip"] is False
+
+
 # Probes physically in an in-scope economy but registered by Atlas under another
 # country are invisible to a country_code query: the OneQode Guam anchor 6923
 # (gu-pit-as140627, Atlas country US) was never listed (found 2026-10-03).

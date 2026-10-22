@@ -64,6 +64,11 @@ def _listing_entry(p: dict) -> dict:
         "ipv6_tags": sorted(
             t["slug"] for t in p.get("tags") or [] if t.get("slug", "").startswith("system-ipv6")
         ),
+        # Atlas guessed this probe's country from GeoIP because its host never
+        # set a location (RIPE's ixp-country-jedi drops these probes). On
+        # 2026-10-22 both in scope, 1012513 (GU) and 1008625 (NC), sat at
+        # their economy's centroid. `corridor_backlog` won't use them as sources.
+        "auto_geoip": any(t.get("slug") == "system-auto-geoip-country" for t in p.get("tags") or []),
     }
 
 
