@@ -77,11 +77,10 @@ All four are in `auto_classify.py`, with 7 new tests in `test_router_detour.py`;
 
 ## Owner decision (2026-10-22, ixp-country-jedi review)
 
-- [ ] **Corroboration chain text #87 and #89** (finding 58, GU -> WS,
-  measurement 212240634) still carries the stale-`late`-reply artefact: #87
-  shows a false `AS3605 -> AS3356 -> AS3605` loop and #89 omits AS3356. The
-  finding's conclusion is unchanged (its detour description already names
-  AS3356). Correct the text in `findings.db` or leave it as recorded? See
+- [x] **Corroboration chain text #87 and #89 corrected (owner, 2026-10-22).**
+  Finding 58, GU -> WS, measurement 212240634: both now read
+  `AS3605 -> AS3356 -> AS174 -> AS17993` (was a false AS3605 loop in #87, and
+  AS3356 missing in #89), with the old chain and cause in `note_extra`. See
   `docs/traceroute_late_edst_and_guessed_probe_locations.md`.
 
 ## Parked by the owner (2026-10-22)

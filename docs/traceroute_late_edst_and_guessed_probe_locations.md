@@ -123,11 +123,21 @@ Each was checked against the new AS sequences.
 - **No finding's conclusion changes.** Finding 58 (GU -> WS, AS17993) already
   names AS3356 in its detour description, and finding 171 (GU -> NR,
   AS152706) already names AS2497. The analyst read past the artefact.
-- **Two stored chains carry it** (finding 58, measurement 212240634):
-  corroboration #87 reads `AS3605 -> AS3356 -> AS3605 -> AS174 -> AS17993`
-  (the second AS3605 is the stale reply; `has_loop` was never set), and #89
-  reads `AS3605 -> AS174 -> AS17993` (missing AS3356). Correcting the text is
-  left to the project owner.
+- **Two stored chains carried it, now corrected** (finding 58, measurement
+  212240634, owner-approved 2026-10-22). Both now read
+  `AS3605 -> AS3356 -> AS174 -> AS17993`, as the project's own chain builder
+  gives on the re-parsed trace. Each row's `note_extra` records the old chain
+  and the cause:
+  - #87 (probe 329) read `AS3605 -> AS3356 -> AS3605 -> AS174 -> AS17993`.
+    Hop 1's router 202.128.5.149 only ever answered late, and one copy landed
+    at hop 7, between Lumen (hop 6) and Cogent (hop 8). It was not a loop;
+    `has_loop` was never set.
+  - #89 (probe 64953) read `AS3605 -> AS174 -> AS17993`. Hop 4's router
+    202.128.2.86 answered late and was logged at hop 9 beside Lumen's
+    4.14.44.25, so that hop resolved to two ASNs and AS3356 was skipped.
+  - #88 (probe 60689, `AS7131 -> AS6939 -> AS17993`) was unaffected.
+  The database was backed up first, and `findings_export.jsonl` was
+  regenerated (one line changed). No report prints these chains.
 - Every other citation either uses a probe whose sequence did not change or
   changes only a contiguity flag beside an unchanged adjacency.
 
