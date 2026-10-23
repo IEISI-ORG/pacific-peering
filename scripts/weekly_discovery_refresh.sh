@@ -7,19 +7,14 @@
 # rate-limiting this project has already hit once on a single run.
 #
 # Scope, deliberately: only re-derives the free-API-backed registries and
-# regenerates the corridor backlog against them, plus staging this week's
-# reverification ration (see below). Never fires an Atlas traceroute itself
-# (that costs real account credits and needs a real candidate to exist
-# first -- the nightly job, scripts/nightly_corridor_testing.sh, does that
-# on its own cadence).
+# regenerates the corridor backlog against them. Never fires an Atlas
+# traceroute itself (that costs real account credits and needs a real
+# candidate to exist first -- the nightly job,
+# scripts/nightly_corridor_testing.sh, does that on its own cadence).
 #
-# Also stages the oldest-verified quarter of all findings for this week's
-# nightly runs to re-test -- per the project owner: a rolling reverification
-# (oldest 1/4 each week) rather than one big periodic re-check, so it never
-# competes with new-corridor testing for a whole night's budget, and every
-# finding gets a fresh look roughly every 4 weeks. See
-# auto_classify.write_reverification_queue()/run_batch() for how the
-# nightly job actually drains this queue.
+# The reverification ration used to be staged here, a quarter of all
+# findings each Sunday. Since 2026-10-24 the nightly job stages a twelfth
+# each night instead (owner's choice; see that script).
 #
 # Also re-checks every candidate_peering finding against Cloudflare Radar's
 # ASPA data (an ASPA record is the target AS's own cryptographically-signed
@@ -51,7 +46,6 @@ echo "=== weekly discovery refresh: $(date -u +%Y-%m-%dT%H:%M:%SZ) ==="
 # (viz.save_svg), so an unchanged graph leaves outputs/viz/as_graph.svg
 # byte-identical and nothing is committed for it.
 "$UV" run pacific-peering-viz-as-graph || echo "AS-graph render failed (see above); continuing."
-"$UV" run pacific-peering-reverify-enqueue
 "$UV" run pacific-peering-aspa-recheck
 # Leasing-marker check (discovery/leasing_check.py): schedules itself --
 # a full WHOIS scan monthly, plus any newly added ASN, otherwise nothing.

@@ -13,15 +13,15 @@ each session:
 - **Weekly discovery refresh** — `scripts/weekly_discovery_refresh.sh`, Sunday 1am
   (`0 1 * * 0`). Free APIs only (APNIC/RIS/PeeringDB/IRR/probe-registry), no Atlas credits,
   no LLM. Regenerates the corridor backlog and the AS dependency graph (`outputs/viz/as_graph.svg`)
-  against fresh data, stages this week's
-  reverification ration (`pacific-peering-reverify-enqueue` — the oldest-verified 1/4 of
-  all findings, by their most recent corroboration; full rotation roughly every 4 weeks),
-  runs the monthly WHOIS leasing-marker check (`pacific-peering-leasing-check`, self-scheduling; new
+  against fresh data, runs the monthly WHOIS leasing-marker check (`pacific-peering-leasing-check`, self-scheduling; new
   flags to `escalations.md`), and commits+pushes `corridor_backlog.md`/`outputs/runs/*`/`escalations.md` if anything changed. Per the
   project owner: not expected to need to run more often than this.
 - **Nightly corridor testing** — `scripts/nightly_corridor_testing.sh`, Mon–Sat 1am
   (`0 1 * * 1-6`, deliberately skips Sunday so it never races the discovery refresh).
-  Runs `pacific-peering-auto-classify-batch --hours 2 --max-concurrent 5` — fits as many
+  First stages tonight's reverification ration (`pacific-peering-reverify-enqueue`: the
+  oldest-checked 1/12 of all findings, by latest corroboration or retest, skipping any still
+  parked; full rotation roughly every 2 weeks, since 2026-10-24). Then
+  runs `pacific-peering-auto-classify-batch --hours 2 --max-concurrent 5` — fits as many
   corridor tests as possible into a 2-hour budget, firing concurrently across different
   source-economy probes (see `auto_classify.run_batch()`'s docstring for why concurrency,
   not just a longer queue, is the actual throughput lever). Each worker drains the

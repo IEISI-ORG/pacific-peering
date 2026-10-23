@@ -6,6 +6,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ## [Unreleased]
 
 ### Changed
+- Reverification is staged nightly, not weekly: the oldest-checked 1/12 of findings (`_REVERIFY_FRACTION`) before each Mon-Sat batch, so every finding is retested roughly every 2 weeks instead of 4. The Sunday refresh no longer stages anything. The weekly quarter drained in one night (67 tests on 10-19) and left five nights idle; credits were never the limit (balance 102.7M, income ~121k/day). Staging now skips a finding whose retest is still parked, so it isn't fired twice before it's collected (2026-10-24).
 - Corridor source selection skips probes whose country Atlas guessed from GeoIP (`system-auto-geoip-country`, now recorded as `auto_geoip` in the probe listing). On 2026-10-22 that excludes 1012513 (GU) and 1008625 (NC), both at their economy's centroid; neither was the only source for its ASN or the vantage of any corroboration. See `docs/traceroute_late_edst_and_guessed_probe_locations.md` (2026-10-22).
 - A router located off-region by its hostname must have exactly one BGP origin ASN to back a detour. With none (failed lookup, unannounced space) or several, it escalates ("router address has no single BGP owner") instead (2026-10-21).
 - A measurement whose probes reach routers that hostnames place in more than one off-region city now escalates ("router hubs in several cities") instead of filing a detour through whichever city's probe came first (2026-10-21).

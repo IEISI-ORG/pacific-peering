@@ -18,11 +18,19 @@ import threading
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
+import pytest
+
 from pacific_peering.analysis import auto_classify, pending_measurements
 from pacific_peering.analysis import store as _store
 from pacific_peering.analysis.corridor_backlog import CorridorCandidate
 from pacific_peering.analysis.store import connect as _real_connect  # bound before conftest patches it
 from pacific_peering.atlas.client import MeasurementPending
+
+
+@pytest.fixture(autouse=True)
+def _no_live_pending_file(monkeypatch, tmp_path):
+    """Selection now reads the parked-measurement file; keep it off the real one."""
+    monkeypatch.setattr(pending_measurements, "DEFAULT_PENDING_PATH", tmp_path / "pending.json")
 
 
 def _open(db_path: Path) -> sqlite3.Connection:
@@ -100,6 +108,22 @@ def test_corroborated_finding_ranks_by_its_corroboration_as_before(monkeypatch, 
         conn, finding_id=oldest, outcome="inconclusive", attempted_at="2026-09-20T00:00:00+00:00"
     )
     assert auto_classify.select_reverification_batch(fraction=0.5) == [middle]
+
+
+def test_a_finding_whose_retest_is_still_parked_is_not_staged_again(monkeypatch, tmp_path):
+    # Staging runs every night (2026-10-24). A parked retest isn't stamped until
+    # it's collected, so without this the next night re-fires the same finding.
+    db_path = tmp_path / "findings.db"
+    conn = _open(db_path)
+    oldest = _finding(conn, "2026-09-01T00:00:00+00:00", 1)
+    middle = _finding(conn, "2026-09-05T00:00:00+00:00", 2)
+    _finding(conn, "2026-09-10T00:00:00+00:00", 3)
+    monkeypatch.setattr(_store, "connect", lambda: _open(db_path))
+
+    pending_measurements.add_pending(_candidate(oldest), 219075862, "slow")
+
+    # Same ration size (1 of 3), filled from the next finding due.
+    assert auto_classify.select_reverification_batch(fraction=1 / 3) == [middle]
 
 
 def test_a_finding_that_errored_before_any_measurement_is_not_stamped(monkeypatch, tmp_path):

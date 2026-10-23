@@ -154,7 +154,7 @@ DEFAULT_ESCALATIONS_PATH = Path("escalations.md")
 DEFAULT_REVERIFY_QUEUE_PATH = Path("data/analysis/reverify_queue.json")
 _PROBE_COUNT = 3
 _MAX_TARGET_IP_ATTEMPTS = 2  # primary + one alternate prefix, per the retry-on-deadend feedback
-_REVERIFY_FRACTION = 0.25  # oldest quarter each week -> full rotation roughly every 4 weeks
+_REVERIFY_FRACTION = 1 / 12  # oldest twelfth each testing night (Mon-Sat) -> full rotation roughly every 2 weeks
 _ASPA_RECHECK_MAX_AGE_DAYS = 30  # project owner's own cadence choice
 
 # A hop crossing a *local* (in_fishbowl=True) IXP should show fiber-propagation-
@@ -1144,7 +1144,12 @@ def _last_checked(conn: sqlite3.Connection, finding: _store.Finding) -> str:
 def select_reverification_batch(fraction: float = _REVERIFY_FRACTION) -> list[int]:
     """IDs of the `fraction` of all findings that have gone longest without
     a fresh look (`_last_checked`) -- the ones due, not the ones already
-    checked in on recently, whatever that check concluded."""
+    checked in on recently, whatever that check concluded.
+
+    A finding whose retest is still parked (`pending_measurements`) is
+    skipped: it isn't stamped until collected, so staging it again the next
+    night would re-fire a measurement that already ran."""
+    parked = {e.candidate.reverify_finding_id for e in pending_measurements.load_pending()}
     conn = _store.connect()
     try:
         # Quarantined ASNs' findings sit out: re-firing the same dark traces
@@ -1154,21 +1159,24 @@ def select_reverification_batch(fraction: float = _REVERIFY_FRACTION) -> list[in
     finally:
         conn.close()
     n = math.ceil(len(ranked) * fraction)
-    return [f.id for f in ranked[:n]]
+    return [f.id for f in ranked if f.id not in parked][:n]
 
 
 def write_reverification_queue(
     path: Path = DEFAULT_REVERIFY_QUEUE_PATH, fraction: float = _REVERIFY_FRACTION
 ) -> int:
-    """Stage the oldest-verified quarter of findings for this week's nightly
-    runs to re-test. Per the project owner: a rolling reverification (the
-    oldest quarter, every week) rather than one giant periodic re-check --
-    it never has to compete with new-corridor testing for a whole night's
-    budget, and every finding gets a fresh look roughly every 4 weeks.
-    Overwrites any prior queue contents -- this is "this week's ration,"
-    not an ever-growing backlog; whatever the nightly runs didn't get to
-    this week is superseded, not lost (it'll be near the front again once
-    its turn comes back around, since it's still among the oldest-verified).
+    """Stage the oldest-verified twelfth of findings for tonight's batch to
+    re-test. Per the project owner: a rolling reverification rather than
+    one giant periodic re-check. Staged nightly since 2026-10-24 (weekly,
+    a quarter at a time, before that): the old weekly ration drained in one
+    night and left the other five idle, while credits (~121k/day income
+    against a ~102M balance) were never the limit. Small nightly rations
+    give every finding a fresh look roughly every 2 weeks and date a
+    routing change to within a day.
+    Overwrites any prior queue contents -- this is "tonight's ration,"
+    not an ever-growing backlog; whatever last night's run didn't get to
+    is superseded, not lost (it's still among the oldest-checked, so it's
+    staged again).
     """
     finding_ids = select_reverification_batch(fraction)
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -1179,7 +1187,7 @@ def write_reverification_queue(
         )
         + "\n"
     )
-    logger.info("Staged %d finding(s) for reverification this week", len(finding_ids))
+    logger.info("Staged %d finding(s) for reverification tonight", len(finding_ids))
     return len(finding_ids)
 
 
@@ -1555,8 +1563,8 @@ def run_batch(time_budget_seconds: float, max_concurrent: int = 5) -> list[Class
     def worker() -> None:
         while time.monotonic() < deadline:
             with write_lock:
-                # Reverification queue first -- it's a fixed weekly ration
-                # meant to finish within the week, whereas new corridors
+                # Reverification queue first -- it's a fixed nightly ration
+                # meant to finish tonight, whereas new corridors
                 # just keep accumulating regardless of when they're tested.
                 # (Reverify candidates are popped from their queue on pick,
                 # so they can't loop the same way a fresh candidate can --
@@ -1679,9 +1687,9 @@ def main_batch() -> None:
 
 def main_reverify_enqueue() -> None:
     """`uv run pacific-peering-reverify-enqueue [--fraction F]` -- stage the
-    oldest-verified fraction of findings (default 1/4) for the nightly
-    batches to re-test this week. Run from the weekly discovery refresh,
-    right after the backlog regen -- see `write_reverification_queue`."""
+    oldest-verified fraction of findings (default 1/12) for tonight's batch
+    to re-test. Run by the nightly corridor-testing script just before the
+    batch -- see `write_reverification_queue`."""
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
     parser = argparse.ArgumentParser(description="Stage findings for reverification.")
     parser.add_argument(

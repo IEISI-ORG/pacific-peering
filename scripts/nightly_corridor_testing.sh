@@ -8,8 +8,8 @@
 # against data that's mid-refresh would be working from a moving target.
 #
 # Two sources of work, drained by the same run: genuinely new corridors from
-# the backlog, and this week's reverification ration (the oldest-verified
-# quarter of all findings, staged by the Sunday job) -- see
+# the backlog, and tonight's reverification ration (the oldest-checked
+# twelfth of all findings, staged just before the batch below) -- see
 # auto_classify.run_batch()'s docstring for how a worker checks the
 # reverification queue before falling back to a new corridor.
 #
@@ -77,6 +77,16 @@ if [ "$_dow" = "3" ]; then
 else
     "$UV" run pacific-peering-probe-watch --fire || echo "Probe watch failed (see above); continuing."
 fi
+
+# Tonight's reverification ration (owner, 2026-10-24): the oldest-checked
+# 1/12 of all findings, so over the 12 testing nights in two weeks every
+# finding gets a fresh look roughly once a fortnight. It used to be staged
+# as a quarter each Sunday, which one night drained and left five nights
+# idle. Credits were never the limit (~121k/day income, ~102M balance).
+# Overwrites last night's queue; findings with a retest still parked are
+# skipped so they aren't fired twice. Free (local DB only). A failure leaves
+# last night's leftovers queued and must not block new-corridor testing.
+"$UV" run pacific-peering-reverify-enqueue || echo "Reverify staging failed (see above); keeping last night's queue."
 
 "$UV" run pacific-peering-auto-classify-batch --hours 2 --max-concurrent 5
 
