@@ -94,6 +94,73 @@ All four are in `auto_classify.py`, with 7 new tests in `test_router_detour.py`;
   trust ad-sampled eyeball estimates (APNIC's per-ASN user shares come from
   Google ad placements) to weight Pacific use fairly.
 
+## Bounce follow-ups (mail sweep 2026-10-23)
+
+Every `mailer-daemon@googlemail.com` notice from the last 30 days (28 notices,
+13 addresses, all in the tcsweetser mailbox, none in the other four), plus
+three bounces sent by recipients' own servers. Subjects below are the
+original messages. One item per operator whose contact never got the mail.
+Addresses are in the private contact notes, not here.
+
+- [ ] **MTC, AS9839 (MP): nobody got "Request: hosting a RIPE Atlas probe on
+  MTC (AS9839)" (10-21).** The named contact failed 5.1.1. The second
+  address has been delayed since 10-22 because its domain's MX lookup returns
+  SERVFAIL (still SERVFAIL 10-23 via 8.8.8.8). Gmail gives up around
+  10-24 22:44Z. The other MTC domain's mail runs on mx.ite.net, so try IT&E
+  (AS7131) or an MTC role mailbox. Low priority: AS9839's only RIS neighbour
+  is AS7131, which already hosts Saipan's probe.
+- [ ] **bmobile Solomon Islands, AS132462 (SB): "Request: hosting a RIPE
+  Atlas probe on bmobile Solomon Islands (AS132462)" never arrived.** Two
+  SB addresses on 10-08 (domain SERVFAIL, still so 10-23), then a resend to
+  the PNG domain on 10-13 (MX timed out for 3 days, failed 10-16). There is no
+  email route. Try LinkedIn, Lia (RIPE NCC) or PacNOG. The Netcraft/SISCC lead
+  doesn't cover this ASN.
+- [ ] **Vodafone Kiribati, AS4865/AS134783 (KI): the named contact on
+  "Request: hosting a RIPE Atlas probe on Vodafone Kiribati (AS4865,
+  AS134783)" (10-08) doesn't exist (5.1.1).** The IT helpdesk copy was
+  delivered, but there has been no reply in 15 days, and round 2 didn't nudge
+  KI. Nudge the helpdesk and find a named engineer.
+- [ ] **Ocean Link, AS132486 (KI): one of the two addresses on "Request:
+  hosting a RIPE Atlas probe on Ocean Link (AS132486)" (10-08) doesn't
+  exist (554).** The other was delivered, with no reply since. Nudge it and
+  look for a second contact.
+- [ ] **Vodafone Fiji (FJ): "Fiji-IXP port addresses in PeeringDB don't match
+  traceroutes" and its reply (10-17) both bounced at the PeeringDB peering
+  POC (554 5.4.14 mail loop).** No other Vodafone Fiji address is in Sent,
+  so Vodafone Fiji hasn't seen the question. (The NOC on that message is
+  TFL's, not Vodafone's.) Find a working Vodafone Fiji NOC address, resend,
+  and ask them to fix the PeeringDB POC.
+- [ ] **FINTEL (FJ): the named contact on "Re: Fiji-IXP port addresses in
+  PeeringDB don't match traceroutes" (10-17) is still undelivered.** FINTEL's
+  MX times out, and the final failure is due around 10-24 11:00Z. The FINTEL
+  NOC named Taniela Sikivou and Meiva Tinivai on 10-19, but nobody has sent
+  them the port-address question. Send it to both, and leave the dead address
+  off replies.
+- [ ] **TAF / Fiji-IXP: the 2020 PeeringDB tech contact Cc'd on "Fiji-IXP:
+  offer of help with PeeringDB, a RIPE Atlas probe and operations" (10-16)
+  is gone (550 5.4.1).** The official contact copy was delivered, with no
+  TAF reply in 7 days. Nudge it, or ask Ravneel (USP) who at TAF runs the
+  exchange now.
+- [ ] **Digicel Vanuatu, AS132429 (VU): "Request: hosting a RIPE Atlas probe
+  on Digicel Vanuatu (AS132429)" (10-21) was rejected by the RDAP group,
+  which only accepts internal senders (5.7.133).** The route is Mark Duffell
+  (Digicel-wide note sent 10-22), and he hasn't replied yet. Chase him if
+  nothing arrives.
+- [ ] **Blue Sky, AS23657 (AS): the RDAP admin Cc on "Re: [pacnog] Re: We
+  need more RIPE ATLAS PROBES across the Pacific" (10-21, the follow-up to
+  Alo Anesi) was blocked (5.7.1).** Alo's own copy was delivered, but he
+  hasn't replied. If he stays quiet, use the PacNOG thread or his office phone.
+- [x] **Vodafone Cook Islands: both bounces on "RIPE Atlas probe 22761
+  (Telecom Aitutaki) offline since 1 October" (10-08).** No action: Andreas
+  Pareanga replied 10-09 and the probe is back.
+- [x] **Interchange VU: one role mailbox bounced twice on "Request: hosting a
+  RIPE Atlas probe on Interchange / Prima DC (AS45495, AS132254)" (10-21).**
+  No action: the other addresses were delivered and Simon Fletcher (Prima DC)
+  replied the same day.
+
+Not project bounces: a personal newsletter reply (10-08) and an ASX forward
+(Digital Directors mailbox).
+
 ## P2: watch / later
 
 - [ ] **Sydney floors are weak** (15-35 ms from NC/PG/FJ/TO/TV), so location
