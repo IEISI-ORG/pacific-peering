@@ -4430,7 +4430,79 @@ z
      <use xlink:href="#DejaVuSans-Bold-47" transform="translate(412.0625 0)"/>
     </g>
    </g>
+   <g id="PathCollection_27">
+    <g clip-path="url(#pa76a8657c3)">
+     <use xlink:href="#m8b86964f17" x="608.235224" y="87.901963" style="fill: #d03b3b; stroke: #ffffff"/>
+    </g>
+   </g>
    <g id="text_43">
+    <!-- San Francisco -->
+    <g style="fill: #d03b3b" transform="translate(614.235224 97.901963) scale(0.08 -0.08)">
+     <defs>
+      <path id="DejaVuSans-Bold-29" d="M 588 4666 
+L 3834 4666 
+L 3834 3756 
+L 1791 3756 
+L 1791 2888 
+L 3713 2888 
+L 3713 1978 
+L 1791 1978 
+L 1791 0 
+L 588 0 
+L 588 4666 
+z
+" transform="scale(0.015625)"/>
+      <path id="DejaVuSans-Bold-46" d="M 3366 3391 
+L 3366 2478 
+Q 3138 2634 2908 2709 
+Q 2678 2784 2431 2784 
+Q 1963 2784 1702 2511 
+Q 1441 2238 1441 1747 
+Q 1441 1256 1702 982 
+Q 1963 709 2431 709 
+Q 2694 709 2930 787 
+Q 3166 866 3366 1019 
+L 3366 103 
+Q 3103 6 2833 -42 
+Q 2563 -91 2291 -91 
+Q 1344 -91 809 395 
+Q 275 881 275 1747 
+Q 275 2613 809 3098 
+Q 1344 3584 2291 3584 
+Q 2566 3584 2833 3536 
+Q 3100 3488 3366 3391 
+z
+" transform="scale(0.015625)"/>
+      <path id="DejaVuSans-Bold-4c" d="M 538 3500 
+L 1656 3500 
+L 1656 0 
+L 538 0 
+L 538 3500 
+z
+M 538 4863 
+L 1656 4863 
+L 1656 3950 
+L 538 3950 
+L 538 4863 
+z
+" transform="scale(0.015625)"/>
+     </defs>
+     <use xlink:href="#DejaVuSans-Bold-36"/>
+     <use xlink:href="#DejaVuSans-Bold-44" transform="translate(72.015625 0)"/>
+     <use xlink:href="#DejaVuSans-Bold-51" transform="translate(139.5 0)"/>
+     <use xlink:href="#DejaVuSans-Bold-3" transform="translate(210.6875 0)"/>
+     <use xlink:href="#DejaVuSans-Bold-29" transform="translate(245.5 0)"/>
+     <use xlink:href="#DejaVuSans-Bold-55" transform="translate(307.421875 0)"/>
+     <use xlink:href="#DejaVuSans-Bold-44" transform="translate(356.734375 0)"/>
+     <use xlink:href="#DejaVuSans-Bold-51" transform="translate(424.21875 0)"/>
+     <use xlink:href="#DejaVuSans-Bold-46" transform="translate(495.40625 0)"/>
+     <use xlink:href="#DejaVuSans-Bold-4c" transform="translate(554.6875 0)"/>
+     <use xlink:href="#DejaVuSans-Bold-56" transform="translate(588.96875 0)"/>
+     <use xlink:href="#DejaVuSans-Bold-46" transform="translate(648.484375 0)"/>
+     <use xlink:href="#DejaVuSans-Bold-52" transform="translate(707.765625 0)"/>
+    </g>
+   </g>
+   <g id="text_44">
     <!-- Routing findings: detours, local transit, and candidate peering -->
     <g style="fill: #0b0b0b" transform="translate(44.084453 16.659355) scale(0.11 -0.11)">
      <defs>
@@ -4927,7 +4999,7 @@ z
       <use xlink:href="#m048da3a366" x="59.284453" y="340.016738" style="fill: #2a78d6; stroke: #ffffff"/>
      </g>
     </g>
-    <g id="text_44">
+    <g id="text_45">
      <!-- Melanesia -->
      <g transform="translate(73.684453 342.816738) scale(0.08 -0.08)">
       <use xlink:href="#DejaVuSans-30"/>
@@ -4963,7 +5035,7 @@ z
       <use xlink:href="#m95305b1a89" x="59.284453" y="352.017363" style="fill: #eb6834; stroke: #ffffff"/>
      </g>
     </g>
-    <g id="text_45">
+    <g id="text_46">
      <!-- Polynesia -->
      <g transform="translate(73.684453 354.817363) scale(0.08 -0.08)">
       <use xlink:href="#DejaVuSans-33"/>
@@ -4999,7 +5071,7 @@ z
       <use xlink:href="#mb3664b1177" x="59.284453" y="364.017988" style="fill: #1baf7a; stroke: #ffffff"/>
      </g>
     </g>
-    <g id="text_46">
+    <g id="text_47">
      <!-- Micronesia -->
      <g transform="translate(73.684453 366.817988) scale(0.08 -0.08)">
       <use xlink:href="#DejaVuSans-30"/>
@@ -5031,7 +5103,7 @@ z
       <use xlink:href="#m35e99af92f" x="59.284453" y="376.018613" style="fill: #d03b3b; stroke: #ffffff; stroke-linejoin: miter"/>
      </g>
     </g>
-    <g id="text_47">
+    <g id="text_48">
      <!-- out-of-fishbowl hub -->
      <g transform="translate(73.684453 378.818613) scale(0.08 -0.08)">
       <use xlink:href="#DejaVuSans-52"/>
@@ -5060,7 +5132,7 @@ L 59.284453 388.019238
 L 67.284453 388.019238 
 " style="fill: none; stroke: #d03b3b; stroke-width: 2; stroke-linecap: square"/>
     </g>
-    <g id="text_48">
+    <g id="text_49">
      <!-- confirmed detour -->
      <g transform="translate(73.684453 390.819238) scale(0.08 -0.08)">
       <use xlink:href="#DejaVuSans-46"/>
@@ -5086,7 +5158,7 @@ L 59.284453 400.019863
 L 67.284453 400.019863 
 " style="fill: none; stroke: #0ca30c; stroke-width: 2; stroke-linecap: square"/>
     </g>
-    <g id="text_49">
+    <g id="text_50">
      <!-- confirmed local transit -->
      <g transform="translate(73.684453 402.819863) scale(0.08 -0.08)">
       <use xlink:href="#DejaVuSans-46"/>
@@ -5119,7 +5191,7 @@ L 59.284453 412.020488
 L 67.284453 412.020488 
 " style="fill: none; stroke-dasharray: 8,6; stroke-dashoffset: 0; stroke: #fab219; stroke-width: 2"/>
     </g>
-    <g id="text_50">
+    <g id="text_51">
      <!-- candidate peering (unconfirmed) -->
      <g transform="translate(73.684453 414.820488) scale(0.08 -0.08)">
       <use xlink:href="#DejaVuSans-46"/>

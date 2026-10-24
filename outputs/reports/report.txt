@@ -1,6 +1,6 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-10-21T22:17:01.891423+00:00                  
+                 Generated: 2026-10-24T15:04:13.054358+00:00                  
 ==============================================================================
 FOUND A BUG? Bugs very likely remain in both the code and the data.
 Please open an issue: https://github.com/IEISI-ORG/pacific-peering/issues/new
@@ -17,8 +17,8 @@ PATHWAYS (every corridor with a filed finding, of any kind):
   (full corridor-by-corridor detail -- every confirmed detour, confirmed local transit, and candidate peering entry -- is in the appendix at the end of this report, not repeated here)
 
 Economies in scope:            20
-ASNs in scope:                  158
-ASNs with >=1 RIS neighbor:     120
+ASNs in scope:                  162
+ASNs with >=1 RIS neighbor:     121
 ASNs with >=1 IXP membership:   36
 ASNs with >=1 facility presence:20
 IXP LAN registry: 10 in-fishbowl, 13 out-of-fishbowl, 0 unconfirmed
@@ -29,17 +29,17 @@ CC   Name                             Subregion     ASNs   Nbr   IXP   Fac
 ------------------------------------------------------------------------------
 AS   American Samoa                   Polynesia        2     2     1     0
 CK   Cook Islands                     Polynesia        2     2     1     0
-FJ   Fiji                             Melanesia       21    15     3     1
+FJ   Fiji                             Melanesia       21    16     3     1
 FM   Micronesia, Federated States of  Micronesia       6     5     1     1
 GU   Guam                             Micronesia      10     7     5     5
-KI   Kiribati                         Micronesia       5     3     0     0
+KI   Kiribati                         Micronesia       6     3     0     0
 MH   Marshall Islands                 Micronesia       1     1     0     0
-MP   Northern Mariana Islands         Micronesia       2     1     1     1
+MP   Northern Mariana Islands         Micronesia       2     2     1     1
 NC   New Caledonia                    Melanesia       17    13     6     4
 NR   Nauru                            Micronesia       5     4     1     1
 NU   Niue                             Polynesia        1     1     0     0
 PF   French Polynesia                 Polynesia        6     5     1     1
-PG   Papua New Guinea                 Melanesia       38    29     9     3
+PG   Papua New Guinea                 Melanesia       41    28     9     3
 PW   Palau                            Micronesia       3     3     1     1
 SB   Solomon Islands                  Melanesia       10     9     1     0
 TO   Tonga                            Polynesia        5     4     1     0
@@ -131,26 +131,26 @@ Which in-scope economies have a known relationship to a satellite operator, and 
 ASN        Operator                       Subregions reached          
 ------------------------------------------------------------------------------
 AS14593    SpaceX Starlink                Micronesia, Polynesia       
-    RIS economies: KI, TV
+    RIS economies: KI, NR
     Traceroute-confirmed (served): KI, TV
     Tested from (vantage points): FM, GU, NC, NU, TV
 AS12684    SES ASTRA S.A.                 Melanesia, Micronesia, Polynesia
-    RIS economies: CK, KI, NR, PG
+    RIS economies: CK, PG
     Traceroute-confirmed (served): NR
     Tested from (vantage points): CK, FJ, PF, TV
 AS135409   Kacific Broadband Satellites   Melanesia, Polynesia        
-    RIS economies: PG, TO
+    RIS economies: PG
     Traceroute-confirmed (served): TO
     Tested from (vantage points): FJ, FM, NC, NU
 
 Per-operator evidence summary, computed fresh from the current finding dataclasses every regeneration -- "served" means the economy's own reachability was confirmed to depend on this operator; "vantage points" just means a traceroute was fired from there, which is a measure of testing breadth, not reach:
-- AS14593 (SpaceX Starlink) is traceroute-confirmed reaching Kiribati (KI), Tuvalu (TV), tested from 5 distinct vantage points (Micronesia, Federated States of (FM), Guam (GU), New Caledonia (NC), Niue (NU), Tuvalu (TV)).
-- AS12684 (SES ASTRA S.A.) is traceroute-confirmed reaching Nauru (NR), tested from 4 distinct vantage points (Cook Islands (CK), Fiji (FJ), French Polynesia (PF), Tuvalu (TV)). Still untested: Cook Islands (CK), Kiribati (KI), Papua New Guinea (PG) -- a real RIS-observed relationship this project has never traceroute-confirmed.
+- AS14593 (SpaceX Starlink) is traceroute-confirmed reaching Kiribati (KI), Tuvalu (TV), tested from 5 distinct vantage points (Micronesia, Federated States of (FM), Guam (GU), New Caledonia (NC), Niue (NU), Tuvalu (TV)). Still untested: Nauru (NR) -- a real RIS-observed relationship this project has never traceroute-confirmed.
+- AS12684 (SES ASTRA S.A.) is traceroute-confirmed reaching Nauru (NR), tested from 4 distinct vantage points (Cook Islands (CK), Fiji (FJ), French Polynesia (PF), Tuvalu (TV)). Still untested: Cook Islands (CK), Papua New Guinea (PG) -- a real RIS-observed relationship this project has never traceroute-confirmed.
 - AS135409 (Kacific Broadband Satellites) is traceroute-confirmed reaching Tonga (TO), tested from 4 distinct vantage points (Fiji (FJ), Micronesia, Federated States of (FM), New Caledonia (NC), Niue (NU)). Still untested: Papua New Guinea (PG) -- a real RIS-observed relationship this project has never traceroute-confirmed.
 
 PEERINGDB DATA QUALITY
 ==============================================================================
-72 of 158 in-scope ASNs have a PeeringDB net record at all. 'Zero facilities'/'zero IXP memberships' elsewhere in this report can mean either of two very different things: this ASN was never on PeeringDB to begin with, or it IS registered and simply declared nothing. The two columns below are counted against ASNs that ARE on PeeringDB, not against every in-scope ASN, so they show the real gap, not a re-blend of the two. Known concrete cases: AS12684 (SES Astra) and AS3549 (the former Global Crossing backbone ASN) are both real, traceroute-confirmed carriers with zero PeeringDB facilities -- this is PeeringDB's own coverage gap, not a measurement gap in this project's findings.
+72 of 162 in-scope ASNs have a PeeringDB net record at all. 'Zero facilities'/'zero IXP memberships' elsewhere in this report can mean either of two very different things: this ASN was never on PeeringDB to begin with, or it IS registered and simply declared nothing. The two columns below are counted against ASNs that ARE on PeeringDB, not against every in-scope ASN, so they show the real gap, not a re-blend of the two. Known concrete cases: AS12684 (SES Astra) and AS3549 (the former Global Crossing backbone ASN) are both real, traceroute-confirmed carriers with zero PeeringDB facilities -- this is PeeringDB's own coverage gap, not a measurement gap in this project's findings.
 CC   Name                      ASNs  On PDB  w/ Facility  w/ IXP
 ------------------------------------------------------------------------------
 AS   American Samoa               2       1            0       1
@@ -162,7 +162,7 @@ MP   Northern Mariana Islands     2       1            1       1
 NC   New Caledonia               17      11            4       6
 NR   Nauru                        5       3            1       1
 PF   French Polynesia             6       3            1       1
-PG   Papua New Guinea            38      11            3       9
+PG   Papua New Guinea            41      11            3       9
 PW   Palau                        3       1            1       1
 SB   Solomon Islands             10       2            0       1
 TO   Tonga                        5       3            0       1
@@ -171,14 +171,14 @@ WS   Samoa                       10       3            1       2
 
 ASPA PROGRESS (RFC 9582 upstream-authorization adoption)
 ==============================================================================
-20 of 158 in-scope ASNs now publish an ASPA record (3734 total across the whole internet, per Cloudflare Radar). Adoption is still early -- absence means 'not published yet', not 'no real upstream'. Per-economy: how many of its own ASNs publish a record, and the distinct upstream ASNs those records declare, split by whether the declared provider is itself an in-scope Pacific ASN or an external carrier.
+20 of 162 in-scope ASNs now publish an ASPA record (3787 total across the whole internet, per Cloudflare Radar). Adoption is still early -- absence means 'not published yet', not 'no real upstream'. Per-economy: how many of its own ASNs publish a record, and the distinct upstream ASNs those records declare, split by whether the declared provider is itself an in-scope Pacific ASN or an external carrier.
 CC   Name                      ASNs  w/ ASPA  Upstr in-FB  Upstr ext
 ------------------------------------------------------------------------------
 CK   Cook Islands                 2        1            0          3
 FJ   Fiji                        21        4            2          3
 GU   Guam                        10        1            1          0
 NR   Nauru                        5        4            4          4
-PG   Papua New Guinea            38        4            1          1
+PG   Papua New Guinea            41        4            1          1
 TO   Tonga                        5        3            3          4
 VU   Vanuatu                     10        1            1          0
 WS   Samoa                       10        2            1          2
@@ -223,7 +223,7 @@ Measurements: {'v4': [225320704, 225321906], 'v6': [225323356, 225324358]}. Deta
 
 IPV6 COVERAGE (adoption signal only -- no IPv6 testing yet)
 ==============================================================================
-45 of 158 in-scope ASNs have >=1 RIS-observed IPv6-originated prefix. 9 of 38 connected Atlas probes work over IPv6 (3 more are IPv6-capable but tagged as not working). Adoption tracking only -- this project deliberately isn't testing IPv6 corridors yet; queued until adoption has advanced further (see TODO below).
+45 of 162 in-scope ASNs have >=1 RIS-observed IPv6-originated prefix. 9 of 38 connected Atlas probes work over IPv6 (4 more are IPv6-capable but tagged as not working). Adoption tracking only -- this project deliberately isn't testing IPv6 corridors yet; queued until adoption has advanced further (see TODO below).
 CC   Name                      ASNs  w/ IPv6
 ------------------------------------------------------------------------------
 AS   American Samoa               2        1
@@ -236,7 +236,7 @@ MP   Northern Mariana Islands     2        1
 NC   New Caledonia               17       12
 NR   Nauru                        5        2
 PF   French Polynesia             6        3
-PG   Papua New Guinea            38        2
+PG   Papua New Guinea            41        2
 PW   Palau                        3        1
 SB   Solomon Islands             10        2
 TO   Tonga                        5        3
@@ -278,7 +278,7 @@ PATHWAY COVERAGE (per economy)
 How many Atlas probes this economy's own ASNs have ever had registered ("Listed", any status) versus currently Connected ("Active" -- zero means it can never be a traceroute source right now, only ever reached as a target); and how many of the other 19 in-scope economies still have zero finding connecting to it. A Listed count above Active is a gap worth closing either way -- a stale Atlas registration to clean up, or a real host that could be brought back online -- see the PATHWAYS summary at the top for the region-wide totals this is derived from.
 CC   Name                             Subregion     ASNs  Listed  Active  Untested
 ------------------------------------------------------------------------------
-KI   Kiribati                         Micronesia       5       0       0        16
+KI   Kiribati                         Micronesia       6       0       0        16
 MH   Marshall Islands                 Micronesia       1       4       0         7
 NR   Nauru                            Micronesia       5       1       1         7
 WF   Wallis and Futuna                Polynesia        1       0       0         7
@@ -294,7 +294,7 @@ FJ   Fiji                             Melanesia       21      20       2        
 CK   Cook Islands                     Polynesia        2       6       1         1
 GU   Guam                             Micronesia      10      14       6         1
 PF   French Polynesia                 Polynesia        6       9       6         1
-PG   Papua New Guinea                 Melanesia       38      10       1         1
+PG   Papua New Guinea                 Melanesia       41      10       1         1
 VU   Vanuatu                          Melanesia       10       5       1         1
 FM   Micronesia, Federated States of  Micronesia       6       5       3         0
 NC   New Caledonia                    Melanesia       17      19       5         0
