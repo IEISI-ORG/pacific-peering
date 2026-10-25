@@ -1,11 +1,9 @@
 Probe watch (atlas/probe_watch.py) -- nightly metadata diff; egress traced on change and weekly for proxy-flagged networks.
-Generated 2026-10-20T15:00:44+00:00; 44 Connected/Disconnected probes tracked.
+Generated 2026-10-25T15:00:40+00:00; 43 Connected/Disconnected probes tracked.
 
 Changes since the previous snapshot: 1
-  probe 62046: asn_v4 139759 -> 14593
+  probe 24944: tracked True -> False
 
-Egress checks tonight: 2 (measurement(s) [225316709])
-  probe 60575 (FJ, AS141695): first hop AS141695
-  probe 62046 (FM, AS14593): first hop AS14593 (Starlink (satellite egress)) -- non-local egress
+Egress checks tonight: none (measurement(s) -)
 
 Regression traces still pending: [1087, 32810]

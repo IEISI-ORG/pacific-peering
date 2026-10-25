@@ -294,3 +294,33 @@ Corridors `auto_classify.py`'s mechanical rules couldn't confidently resolve on 
 - action: owner review -- check the path before trusting this probe's next results, or changing any exclusion
 - flagged: 2026-10-20T15:00:44.087554+00:00
 - resolved: 2026-10-21 -- option (a), guarded (owner): SPC Pohnpei's dual-uplink site now egresses via Starlink. All three traces on 10-20 (egress 225316709; ROV 225320704/225321906) go 10.10.15.50 -> 14.1.90.1 (AS14593, ~54ms) -> Cloudflare, versus AS139759 at <2ms in the 33 cached traces of 09-16..24 and the 10-02 egress check. FSM Telecom itself is fine (FM 7448/50897 traced normally the same night), so this is the site's path choice, not an outage. PROBE_ASN_OVERRIDES (62046 -> AS139759) and rule 0 (NON_LOCAL_FIRST_HOP_ASNS) left as-is: any corridor trace starting in AS14593 is dropped, so 62046 contributes nothing to FM corridors while on Starlink and resumes automatically if the site switches back. No findings affected; SPC not contacted.
+## AS141695 (FJ) -> AS154229 (FJ)
+- measurement: 227408126
+- reason: unrecognized routing loop
+- detail: probe 60575: loop involving address 202.62.124.42, not in known_anomalies.py
+- flagged: 2026-10-25T15:13:16.786786+00:00
+
+
+## AS9246 (GU) -- possible offshore-hosted address space
+- reason: offshore-hosting check (atlas/offshore_check.py)
+- detail: 114.142.196.155: probe 1012863 0.37ms < 25.1ms minimum (measurement 227417811)
+- action: owner review; if confirmed, add to discovery/excluded_asns.py (offshore_hosted)
+- flagged: 2026-10-25T15:42:08.178346+00:00
+
+## AS132462 (SB) -- possible offshore-hosted address space
+- reason: offshore-hosting check (atlas/offshore_check.py)
+- detail: 103.21.248.1: probe 1017873 2.51ms < 61.1ms minimum (measurement 227412138)
+- action: owner review; if confirmed, add to discovery/excluded_asns.py (offshore_hosted)
+- flagged: 2026-10-25T15:42:08.178346+00:00
+
+## AS152655 (PG) -- possible offshore-hosted address space
+- reason: offshore-hosting check (atlas/offshore_check.py)
+- detail: 14.192.75.1: probe 1013222 11.19ms < 27.3ms minimum (measurement 227413970)
+- action: owner review; if confirmed, add to discovery/excluded_asns.py (offshore_hosted)
+- flagged: 2026-10-25T15:42:08.178346+00:00
+
+## AS151398 (PG) -- silent ASN with only foreign hosting-type upstreams
+- reason: offshore check upstream screen (atlas/offshore_alternates.py)
+- detail: no address answered (including 0 sweep responder(s) retried); RIS upstream(s): AS13335 Cloudflare, Inc. (614 RIS obs)
+- action: traceroute the prefix from AU and home-economy probes and judge where it ends; then owner review (acknowledge in SCREEN_ACKNOWLEDGED, quarantine, or exclude)
+- flagged: 2026-10-25T15:42:08.178346+00:00
