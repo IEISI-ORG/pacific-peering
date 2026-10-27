@@ -213,4 +213,27 @@ EXCLUDED_ASNS: tuple[ExcludedAsn, ...] = (
             "464 were removed."
         ),
     ),
+    ExcludedAsn(
+        asn=152655,
+        country_cc="PG",
+        name="DIGICELPNG-AS-AP (Digicel (PNG) Ltd)",
+        category="offshore_hosted",
+        note=(
+            "Registered in Papua New Guinea (APNIC inetnum DIGICELPNG-PG) but "
+            "its only originated prefix, 14.192.75.0/24, terminates on the "
+            "ground in Australia behind SES. Every RIS path ends `12684 "
+            "152655` (318 of 318, 2026-10-27). The 2026-10-25 offshore check "
+            "flagged 14.192.75.1 at 11.19ms from probe 1013222 (AS31898, "
+            "western Sydney) and from AS7545 too, against a 27.3ms floor to "
+            "Port Moresby (measurement 227413970). A 2026-10-27 ping sweep "
+            "from Brisbane found 24 live hosts, all at 21-22ms; unassigned "
+            "addresses stay silent. A UDP traceroute runs Megaport IX "
+            "103.26.68.225 (13ms) -> SES 148.253.23.174 (21.8ms) -> "
+            "14.192.75.1 (22-24ms), with no satellite delay. Cloudflare "
+            "Radar geolocates 14.192.75.1 to AU. Likely a satellite-service "
+            "ASN handed off at SES's Australian gateway; Digicel PNG's main "
+            "AS58460 is unaffected. No findings targeted it. Excluded at the "
+            "owner's direction (2026-10-27)."
+        ),
+    ),
 )

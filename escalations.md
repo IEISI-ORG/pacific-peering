@@ -318,6 +318,7 @@ Corridors `auto_classify.py`'s mechanical rules couldn't confidently resolve on 
 - detail: 14.192.75.1: probe 1013222 11.19ms < 27.3ms minimum (measurement 227413970)
 - action: owner review; if confirmed, add to discovery/excluded_asns.py (offshore_hosted)
 - flagged: 2026-10-25T15:42:08.178346+00:00
+- resolved: 2026-10-27 -- confirmed offshore: sole prefix 14.192.75.0/24 terminates in AU behind SES (AS12684 only upstream; 24 live hosts at 21-22ms from Brisbane, traceroute Megaport IX -> SES 148.253.23.174 -> target, Radar geolocates AU). Excluded as offshore_hosted in discovery/excluded_asns.py at the owner's direction; no findings to remove; AS58460 stays in scope.
 
 ## AS151398 (PG) -- silent ASN with only foreign hosting-type upstreams
 - reason: offshore check upstream screen (atlas/offshore_alternates.py)
