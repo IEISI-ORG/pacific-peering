@@ -64,7 +64,7 @@ def build_as_graph(
         asn for asn, _w in sorted(external_weight.items(), key=lambda kv: -kv[1])[:top_n_external]
     }
 
-    graph = nx.Graph()
+    graph: nx.Graph[int] = nx.Graph()
     for asn_str, entry in fishbowl.items():
         asn = int(asn_str)
         graph.add_node(
