@@ -40,10 +40,11 @@ LOW_BALANCE_WARNING = 100_000  # credits; the balance was ~101M on 2026-09-24
 
 def count_in_flight(api_key: str | None = None, timeout: float = 30.0) -> int | None:
     """This account's measurements not yet finished, or None if Atlas couldn't be asked."""
+    params: dict[str, str | int] = {"status__in": IN_FLIGHT_STATUSES, "page_size": 1}
     try:
         response = requests.get(
             ATLAS_MY_MEASUREMENTS_URL,
-            params={"status__in": IN_FLIGHT_STATUSES, "page_size": 1},
+            params=params,
             headers={"Authorization": f"Key {api_key or load_atlas_api_key()}"},
             timeout=timeout,
         )

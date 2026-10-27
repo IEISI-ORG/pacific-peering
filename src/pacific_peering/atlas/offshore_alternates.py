@@ -69,7 +69,7 @@ def _in_any(address: str, networks: list[ipaddress.IPv4Network]) -> bool:
 def cached_responders(prefixes: list[str], parsed_dir: Path = PARSED_DIR) -> list[str]:
     """Addresses inside `prefixes` that answered as a hop (or as the target) in
     any cached Atlas traceroute, most-seen first."""
-    networks = [ipaddress.ip_network(p, strict=False) for p in prefixes if ":" not in p]
+    networks = [ipaddress.IPv4Network(p, strict=False) for p in prefixes if ":" not in p]
     if not networks or not parsed_dir.exists():
         return []
     seen: dict[str, int] = {}
@@ -92,7 +92,7 @@ def sweep_targets(prefixes: list[str]) -> list[str]:
     for p in prefixes:
         if ":" in p:
             continue
-        net = ipaddress.ip_network(p, strict=False)
+        net = ipaddress.IPv4Network(p, strict=False)
         if net.prefixlen < SWEEP_MAX_PREFIXLEN:
             net = next(net.subnets(new_prefix=SWEEP_MAX_PREFIXLEN))
         out.append(str(net))

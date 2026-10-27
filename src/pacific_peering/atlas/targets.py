@@ -69,12 +69,19 @@ EXCLUDED_TARGET_PREFIXES: dict[str, str] = {
 }
 
 
+def _same_family_subnet(
+    net: ipaddress.IPv4Network | ipaddress.IPv6Network, ex: ipaddress.IPv4Network | ipaddress.IPv6Network
+) -> bool:
+    if isinstance(net, ipaddress.IPv4Network) and isinstance(ex, ipaddress.IPv4Network):
+        return net.subnet_of(ex)
+    if isinstance(net, ipaddress.IPv6Network) and isinstance(ex, ipaddress.IPv6Network):
+        return net.subnet_of(ex)
+    return False
+
+
 def _is_excluded(prefix: str) -> bool:
     net = ipaddress.ip_network(prefix, strict=False)
-    return any(
-        net.version == ex.version and net.subnet_of(ex)
-        for ex in (ipaddress.ip_network(p) for p in EXCLUDED_TARGET_PREFIXES)
-    )
+    return any(_same_family_subnet(net, ipaddress.ip_network(p)) for p in EXCLUDED_TARGET_PREFIXES)
 
 
 def list_target_ips(asn: int, cache_dir: Path = DEFAULT_CACHE_DIR, include_excluded: bool = False) -> list[str]:

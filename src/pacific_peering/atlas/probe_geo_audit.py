@@ -119,7 +119,7 @@ def audit_tracked_probes(
 
 def write_quarantine(
     records: list[ProbeGeoRecord], path: Path = DEFAULT_QUARANTINE_PATH
-) -> dict[int, dict]:
+) -> dict[str, dict]:
     """Persist "do not use as a source for their registry economy" for every mismatched probe.
 
     Deliberately keyed by probe ID, not ASN: a regional-org ASN (AS24390)

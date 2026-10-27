@@ -10,6 +10,7 @@ from __future__ import annotations
 import logging
 import time
 from dataclasses import dataclass
+from typing import Any
 
 import requests
 
@@ -127,7 +128,7 @@ def create_traceroute_measurement(
     """
     _validate_definition(description, af)
     api_key = api_key or load_atlas_api_key()
-    payload = {
+    payload: dict[str, Any] = {
         "definitions": [
             {
                 "target": target,
@@ -367,8 +368,8 @@ def parse_traceroute_results(raw_results: list[dict]) -> list[TracerouteResult]:
             )
         parsed.append(
             TracerouteResult(
-                measurement_id=result.get("msm_id"),
-                probe_id=result.get("prb_id"),
+                measurement_id=result["msm_id"],
+                probe_id=result["prb_id"],
                 target=result.get("dst_addr") or result.get("dst_name", ""),
                 hops=tuple(hops),
             )

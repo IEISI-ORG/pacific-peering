@@ -201,30 +201,30 @@ def escalation_blocks(
         blocks.append(_block(str(pid), s, "BOLO probe back online", "probe watch BOLO",
                              f"{BOLO_PROBES[pid]}; status {s.get('status')}; egress trace: {result}",
                              "owner review -- thank the host, check the path, then let discovery pick it up", now))
-    for pid, asn in sorted(egress.items(), key=lambda kv: int(kv[0])):
-        s = current.get(pid, {})
-        if asn is None or int(pid) in changed or int(pid) in BOLO_PROBES and int(pid) in new:
+    for probe_key, asn in sorted(egress.items(), key=lambda kv: int(kv[0])):
+        s = current.get(probe_key, {})
+        if asn is None or int(probe_key) in changed or int(probe_key) in BOLO_PROBES and int(probe_key) in new:
             continue
-        if int(pid) in deferred:
-            blocks.append(_block(pid, s, "deferred regression trace", "probe watch",
+        if int(probe_key) in deferred:
+            blocks.append(_block(probe_key, s, "deferred regression trace", "probe watch",
                                  f"egress trace after an earlier metadata change: {describe_egress(asn)} "
                                  f"(measurement {msm})", _REVIEW_PATH, now))
             continue
-        if int(pid) in new:
+        if int(probe_key) in new:
             if asn in NON_LOCAL_FIRST_HOP_ASNS:
-                blocks.append(_block(pid, s, "new probe egresses non-locally", "probe watch",
+                blocks.append(_block(probe_key, s, "new probe egresses non-locally", "probe watch",
                                      f"first hop {describe_egress(asn)} (measurement {msm})", _REVIEW_PATH, now))
             continue
-        if pid in previous_egress:
-            if previous_egress[pid] == asn:
+        if probe_key in previous_egress:
+            if previous_egress[probe_key] == asn:
                 continue
-            before = describe_egress(previous_egress[pid])
+            before = describe_egress(previous_egress[probe_key])
         elif asn in NON_LOCAL_FIRST_HOP_ASNS:
             continue  # first check, still proxied: that's the expected baseline
         else:
             before = "no earlier check (watched as proxy-egressing)"
         blocks.append(_block(
-            pid, s, "egress changed", "probe watch weekly egress check",
+            probe_key, s, "egress changed", "probe watch weekly egress check",
             f"first-hop {before} -> {describe_egress(asn)} (measurement {msm})",
             "owner review; if the proxy is really gone, regression-test real corridors before removing "
             "its ASN from corridor_backlog.EXTERNAL_NON_CANDIDATE_ASNS", now,

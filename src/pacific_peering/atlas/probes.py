@@ -140,9 +140,10 @@ def asn_listed_registry(listing: dict[str, list[dict]]) -> dict[int, list[int]]:
 
 def count_connected_probes(country_code: str, timeout: float = _DEFAULT_TIMEOUT) -> int:
     """Return the number of currently-connected Atlas probes in a country."""
+    params: dict[str, str | int] = {"country_code": country_code, "status": 1}
     response = requests.get(
         f"{ATLAS_BASE_URL}/probes/",
-        params={"country_code": country_code, "status": 1},
+        params=params,
         timeout=timeout,
     )
     response.raise_for_status()
@@ -186,7 +187,7 @@ def pick_best_covered_economy(
     }
     if not candidates:
         raise ValueError("No in-scope economy (excluding exclude_cc) has a connected Atlas probe")
-    return max(candidates, key=candidates.get)
+    return max(candidates, key=lambda cc: candidates[cc])
 
 
 def main() -> None:

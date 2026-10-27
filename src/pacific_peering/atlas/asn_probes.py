@@ -72,9 +72,10 @@ def build_asn_probe_registry(
     """
     registry: dict[int, list[int]] = {}
     for economy in economies:
+        params: dict[str, str | int] = {"country_code": economy.cc, "status": 1}
         response = requests.get(
             f"{ATLAS_BASE_URL}/probes/",
-            params={"country_code": economy.cc, "status": 1},
+            params=params,
             timeout=timeout,
         )
         response.raise_for_status()

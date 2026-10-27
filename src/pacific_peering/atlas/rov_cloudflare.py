@@ -48,6 +48,7 @@ import logging
 from collections import Counter
 from datetime import datetime, timezone
 from pathlib import Path
+from typing import Any
 
 from pacific_peering.analysis.auto_classify import KNOWN_PROXY_ASNS
 from pacific_peering.analysis.traceroute_topology import extract_as_sequence, resolve_traceroute_hops
@@ -129,10 +130,11 @@ def classify_probe(
     invalid_path: list[int],
 ) -> dict:
     """One probe's verdict for one family, from its valid and invalid traces and their AS paths."""
-    verdict = {"label": INCONCLUSIVE, "drop_asn": None, "reason": None, "diverged": None}
+    verdict: dict[str, Any] = {"label": INCONCLUSIVE, "drop_asn": None, "reason": None, "diverged": None}
     if valid is None or invalid is None:
         return {**verdict, "reason": "no result for one of the pair"}
-    first = (valid_path or invalid_path or [None])[0]
+    path = valid_path or invalid_path
+    first = path[0] if path else None
     if first in KNOWN_PROXY_ASNS:
         return {**verdict, "reason": f"path starts at proxy AS{first} ({KNOWN_PROXY_ASNS[first]})"}
     verdict["diverged"] = path_divergence(valid_path, invalid_path)
