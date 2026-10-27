@@ -27,6 +27,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - Parked Atlas measurements are collected only once Atlas has finished them; a still-running one with partial results is no longer classified early (224431120, 2026-10-19). Past 24 h, a running measurement is classified on the results it has rather than dropped.
 
 ### Security
+- GitHub secret scanning and push protection are enabled on the repo: a push containing a recognised provider credential (e.g. from the gitignored `secrets.yaml`) is rejected before it lands (2026-10-27).
 - Upgraded certifi 2026.7.22 -> 2026.10.23 (PYSEC-2026-4320, via requests) and pillow 12.3.0 -> 13.0.0 (37 CVEs, via matplotlib); pip-audit reports no known vulnerabilities. Lockfile-only; both committed SVGs render byte-identical (2026-10-27).
 
 ### Added
