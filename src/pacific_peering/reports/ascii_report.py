@@ -10,7 +10,7 @@ from __future__ import annotations
 import logging
 from pathlib import Path
 
-from pacific_peering.reports.data import FISHBOWL_EXPLANATION, ISSUES_URL, LEGAL_NOTICE, ReportData, build_report_data
+from pacific_peering.reports.data import FISHBOWL_EXPLANATION, ISSUES_URL, LEGAL_NOTICE, ReportData, build_report_data, subregions_served
 
 logger = logging.getLogger(__name__)
 
@@ -203,9 +203,7 @@ def render_ascii_report(data: ReportData) -> str:
         lines.append(_rule())
         for hub in data.regional_hubs:
             name = f"{hub['economy_name']} ({hub['economy_cc']})"
-            subregions = sorted(
-                {subregion_of.get(cc) for cc in hub["dependent_economies"]} - {None}
-            )
+            subregions = subregions_served(subregion_of, hub["dependent_economies"])
             lines.append(
                 f"{name:<32.32} {len(hub['dependent_economies']):>7} "
                 f"{hub['corroboration_count']:>7} {', '.join(subregions):<28}"
@@ -236,7 +234,7 @@ def render_ascii_report(data: ReportData) -> str:
         lines.append(_rule())
         for hub in data.external_hubs:
             share = hub["entry_count"] / total_detours if total_detours else 0.0
-            subregions = sorted({subregion_of.get(cc) for cc in hub["dependent_economies"]} - {None})
+            subregions = subregions_served(subregion_of, hub["dependent_economies"])
             lines.append(
                 f"{hub['name']:<14} {hub['entry_count']:>7} {share:>6.0%} "
                 f"{hub['carrier_count']:>8} {', '.join(subregions)}"
@@ -271,7 +269,7 @@ def render_ascii_report(data: ReportData) -> str:
         lines.append(_rule())
         for sat in data.satellite_pathways:
             all_economies = set(sat["ris_economies"]) | set(sat["traceroute_confirmed_economies"])
-            subregions = sorted({subregion_of.get(cc) for cc in all_economies} - {None})
+            subregions = subregions_served(subregion_of, all_economies)
             lines.append(
                 f"AS{sat['asn']:<8} {sat['name']:<30.30} {', '.join(subregions):<28}"
             )
@@ -342,12 +340,12 @@ def render_ascii_report(data: ReportData) -> str:
         f"{'Upstr in-FB':>12} {'Upstr ext':>10}"
     )
     lines.append(_rule())
-    for e in data.aspa_economies:
-        if e.asns_with_aspa == 0:
+    for aspa in data.aspa_economies:
+        if aspa.asns_with_aspa == 0:
             continue
         lines.append(
-            f"{e.cc:<4} {e.name:<24.24} {e.asn_count:>5} {e.asns_with_aspa:>8} "
-            f"{e.unique_upstream_in_fishbowl:>12} {e.unique_upstream_out_of_fishbowl:>10}"
+            f"{aspa.cc:<4} {aspa.name:<24.24} {aspa.asn_count:>5} {aspa.asns_with_aspa:>8} "
+            f"{aspa.unique_upstream_in_fishbowl:>12} {aspa.unique_upstream_out_of_fishbowl:>10}"
         )
     if not any(e.asns_with_aspa for e in data.aspa_economies):
         lines.append("(no in-scope ASN publishes an ASPA record yet)")
@@ -371,10 +369,10 @@ def render_ascii_report(data: ReportData) -> str:
     )
     lines.append(f"{'CC':<4} {'Name':<24} {'ASNs':>5} {'w/ IPv6':>8}")
     lines.append(_rule())
-    for e in data.ipv6_economies:
-        if e.asns_with_ipv6 == 0:
+    for v6 in data.ipv6_economies:
+        if v6.asns_with_ipv6 == 0:
             continue
-        lines.append(f"{e.cc:<4} {e.name:<24.24} {e.asn_count:>5} {e.asns_with_ipv6:>8}")
+        lines.append(f"{v6.cc:<4} {v6.name:<24.24} {v6.asn_count:>5} {v6.asns_with_ipv6:>8}")
     if not any(e.asns_with_ipv6 for e in data.ipv6_economies):
         lines.append("(no in-scope ASN has an RIS-observed IPv6 prefix yet)")
     # TODO: IPv6 corridor testing (traceroute/RIS validation over v6) --

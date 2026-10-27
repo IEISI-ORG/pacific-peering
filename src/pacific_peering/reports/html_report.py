@@ -14,7 +14,7 @@ import re
 import logging
 from pathlib import Path
 
-from pacific_peering.reports.data import FISHBOWL_EXPLANATION, ISSUES_URL, LEGAL_NOTICE, ReportData, build_report_data
+from pacific_peering.reports.data import FISHBOWL_EXPLANATION, ISSUES_URL, LEGAL_NOTICE, ReportData, build_report_data, subregions_served
 
 logger = logging.getLogger(__name__)
 
@@ -242,7 +242,7 @@ def render_html_report(data: ReportData, viz_dir: Path | None = Path("../viz")) 
             <td>{html.escape(h['economy_name'])} ({html.escape(h['economy_cc'])})</td>
             <td>{len(h['dependent_economies'])}</td>
             <td>{h['corroboration_count']}</td>
-            <td>{html.escape(', '.join(sorted({subregion_of.get(cc) for cc in h['dependent_economies']} - {None})))}</td>
+            <td>{html.escape(', '.join(subregions_served(subregion_of, h['dependent_economies'])))}</td>
             <td>{html.escape(', '.join(h['carriers']))}</td>
             <td>{html.escape(', '.join(h['dependent_economies']))}</td>
         </tr>"""
@@ -255,7 +255,7 @@ def render_html_report(data: ReportData, viz_dir: Path | None = Path("../viz")) 
             <td>{h['entry_count']}</td>
             <td>{h['entry_count'] / total_detours if total_detours else 0:.0%}</td>
             <td>{h['carrier_count']}</td>
-            <td>{html.escape(', '.join(sorted({subregion_of.get(cc) for cc in h['dependent_economies']} - {None})))}</td>
+            <td>{html.escape(', '.join(subregions_served(subregion_of, h['dependent_economies'])))}</td>
             <td>{html.escape(', '.join(h['dependent_economies']))}</td>
         </tr>"""
         for h in data.external_hubs
@@ -269,7 +269,7 @@ def render_html_report(data: ReportData, viz_dir: Path | None = Path("../viz")) 
     satellite_rows = "".join(
         f"""<tr>
             <td>AS{s['asn']}</td><td>{html.escape(s['name'])}</td>
-            <td>{html.escape(', '.join(sorted({subregion_of.get(cc) for cc in set(s['ris_economies']) | set(s['traceroute_confirmed_economies'])} - {None})))}</td>
+            <td>{html.escape(', '.join(subregions_served(subregion_of, set(s['ris_economies']) | set(s['traceroute_confirmed_economies']))))}</td>
             <td>{html.escape(', '.join(s['ris_economies']) or '(none)')}</td>
             <td>{html.escape(', '.join(s['traceroute_confirmed_economies']) or '(none)')}</td>
             <td>{html.escape(', '.join(s['traceroute_vantage_economies']) or '(none)')}</td>

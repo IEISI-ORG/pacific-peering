@@ -21,6 +21,7 @@ from __future__ import annotations
 import json
 import logging
 import re
+from collections.abc import Iterable
 from dataclasses import asdict, dataclass
 from datetime import datetime, timezone
 from itertools import combinations
@@ -270,6 +271,11 @@ _CORROBORATION_RE = re.compile(
     re.IGNORECASE,
 )
 _CARRIER_NAME_RE = re.compile(r"AS(\d+) \(([^,)]+)")
+
+
+def subregions_served(subregion_of: dict[str, str], economies: Iterable[str]) -> list[str]:
+    """Sorted distinct subregions of `economies`, skipping any economy not in `subregion_of`."""
+    return sorted({subregion_of[cc] for cc in economies if cc in subregion_of})
 
 
 def _max_corroboration_ordinal(note: str) -> int:

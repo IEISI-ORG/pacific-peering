@@ -171,7 +171,7 @@ def render_html(s: dict) -> str:
 
 
 def render_text(s: dict) -> str:
-    out = [f"Pacific Peering daily check {_local_date(s.get('run_at', ''))} -- {OVERALL.get(s.get('overall'), OVERALL['attention'])[1]}",
+    out = [f"Pacific Peering daily check {_local_date(s.get('run_at', ''))} -- {OVERALL.get(s.get('overall', ''), OVERALL['attention'])[1]}",
            s.get("headline", ""), ""]
     if s.get("mode") == "dry-run":
         out += ["(Dry run: drafted, not sent.)", ""]
