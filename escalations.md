@@ -306,6 +306,7 @@ Corridors `auto_classify.py`'s mechanical rules couldn't confidently resolve on 
 - detail: 114.142.196.155: probe 1012863 0.37ms < 25.1ms minimum (measurement 227417811)
 - action: owner review; if confirmed, add to discovery/excluded_asns.py (offshore_hosted)
 - flagged: 2026-10-25T15:42:08.178346+00:00
+- resolved: 2026-10-27 -- operator router, not hosted space; AS9246 stays in scope, no exclusion. 114.142.196.155 is 114-142-196-155.core.static.teleguam.net in GTA's core block (.145-.170 all core.static). It answers at Tokyo distance from Japan (Atlas JP 0.37ms on AS141995/AS17511; Brisbane trace reaches it at 112ms, the same as the Tokyo hop before it, while .164 is +28ms on, i.e. Guam; Radar: .155 JP, .164/.166 GU). From inside the region it behaves as a Guam hop: in all 140 appearances across 52 of our measurements (FM probes 7448/50897/62046, GU probe 23039) its RTT equals the previous hop's (median step-in -0.2..-0.4ms, step-out +1.2ms), so it answers at both ends of the Tokyo link (shared loopback or MPLS behaviour) and has distorted no classification. Corridor tests target 114.142.192.1, never .155, so no target exclusion is needed. The offshore check will not re-escalate it (already offshore in its history).
 
 ## AS132462 (SB) -- possible offshore-hosted address space
 - reason: offshore-hosting check (atlas/offshore_check.py)
