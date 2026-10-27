@@ -358,3 +358,33 @@ Corridors `auto_classify.py`'s mechanical rules couldn't confidently resolve on 
 - detail: label hand-entered in the 2026-09-16 bulk clear-out (candidate_peering.py:695 and :774). The pair is the HK transit hop of the AS132462 hijack path above, not a PG->SB peering.
 - proposed correction: retire #15 (or relabel upstream_cc HK / Aperture) once the owner decides on AS132462.
 - flagged: 2026-10-27T04:57:01Z
+## AS139759 (FM) -> AS17893 (PW)
+- measurement: 228276160
+- reason: local IXP crossing with implausibly high latency
+- detail: probe 50897: hop 7 crosses Guam IX (in-fishbowl) at 40.186ms, above the 10.0ms local-fiber threshold -- either this hop isn't genuinely local despite the registry, or there's an unexpected detour/backhaul before reaching it; needs a human look, not a guess
+- flagged: 2026-10-27T15:10:27.516298+00:00
+
+## AS17893 (PW) -> AS3605 (GU)
+- measurement: 228276691
+- reason: local IXP crossing with implausibly high latency
+- detail: probe 7455: hop 3 crosses GU-IX (in-fishbowl) at 19.174ms, above the 10.0ms local-fiber threshold -- either this hop isn't genuinely local despite the registry, or there's an unexpected detour/backhaul before reaching it; needs a human look, not a guess
+- flagged: 2026-10-27T15:13:13.434029+00:00
+
+## AS55885 (NU) -> AS154100 (KI)
+- measurement: 228277577
+- reason: unrecognized routing loop
+- detail: probe 64391: loop involving address 180.87.60.189, not in known_anomalies.py
+- flagged: 2026-10-27T15:16:20.038283+00:00
+
+## AS17893 (PW) -> AS55722 (NR)
+- measurement: 228277632
+- reason: local IXP crossing with implausibly high latency
+- detail: probe 7455: hop 3 crosses Guam IX (in-fishbowl) at 54.533ms, above the 10.0ms local-fiber threshold -- either this hop isn't genuinely local despite the registry, or there's an unexpected detour/backhaul before reaching it; needs a human look, not a guess
+- flagged: 2026-10-27T15:16:30.067296+00:00
+
+## AS55885 (NU) -> AS55885 (NU)
+- measurement: 228278355
+- reason: unrecognized routing loop
+- detail: probe 64391: loop involving address 49.156.51.245, not in known_anomalies.py
+- flagged: 2026-10-27T15:19:26.473434+00:00
+

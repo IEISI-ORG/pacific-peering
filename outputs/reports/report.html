@@ -79,7 +79,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
 <body>
 <div class="wrap">
     <h1>Pacific Peering — Regional Routing Report</h1>
-    <div class="meta">Generated 2026-10-26T16:10:08.017810+00:00</div>
+    <div class="meta">Generated 2026-10-27T15:44:49.650402+00:00</div>
 
     <div class="feedback-box"><strong>Found a bug?</strong> This report is generated
         automatically, and bugs very likely remain in both the code and the data. If
@@ -95,13 +95,13 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
     </div>
 
     <div class="stat-row">
-        <div class="stat-tile"><div class="value">259</div><div class="label">Pathways found (total)</div></div>
+        <div class="stat-tile"><div class="value">265</div><div class="label">Pathways found (total)</div></div>
         <div class="stat-tile"><div class="value">89</div><div class="label">Internal (never leave the fish bowl)</div></div>
-        <div class="stat-tile red-box"><div class="value">170</div>
+        <div class="stat-tile red-box"><div class="value">176</div>
             <div class="label">External / Leaves the region</div></div>
     </div>
     <p class="section-intro">Full corridor-by-corridor detail for all
-        259 pathways above is further down this report
+        265 pathways above is further down this report
         (Confirmed sub-optimal routes / Confirmed local transit / Candidate
         peering), collapsed by default so it doesn't dominate the page &mdash;
         click any of those section headings to expand.</p>
@@ -295,7 +295,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
         </tr><tr>
             <td>AS3605</td><td>Guam Cablevision</td>
             <td>GU, NR, PW</td>
-            <td>(none)</td>
+            <td>TO</td>
             <td>5</td>
             <td>yes</td>
         </tr><tr>
@@ -402,25 +402,25 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <th>Dependent economies</th></tr></thead>
         <tbody><tr>
             <td>Sydney</td>
-            <td>106</td>
+            <td>109</td>
             <td>62%</td>
-            <td>24</td>
+            <td>25</td>
             <td>Melanesia, Micronesia, Polynesia</td>
             <td>AS, FJ, KI, MH, NC, NR, PG, PW, SB, TO, VU, WS</td>
         </tr><tr>
             <td>Los Angeles</td>
-            <td>35</td>
+            <td>37</td>
             <td>21%</td>
-            <td>7</td>
-            <td>Melanesia, Micronesia, Polynesia</td>
-            <td>FJ, FM, GU, MH, NR, PF, WF</td>
-        </tr><tr>
-            <td>Tokyo</td>
-            <td>21</td>
-            <td>12%</td>
             <td>8</td>
             <td>Melanesia, Micronesia, Polynesia</td>
-            <td>AS, FJ, GU, MH, NC, NR, PW, SB, VU, WF</td>
+            <td>FJ, FM, GU, KI, MH, NR, PF, WF</td>
+        </tr><tr>
+            <td>Tokyo</td>
+            <td>22</td>
+            <td>12%</td>
+            <td>9</td>
+            <td>Melanesia, Micronesia, Polynesia</td>
+            <td>AS, FJ, GU, KI, MH, NC, NR, PW, SB, VU, WF</td>
         </tr><tr>
             <td>San Jose</td>
             <td>5</td>
@@ -493,7 +493,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
 
     <details class="section-toggle">
         <summary>Confirmed sub-optimal routes (RIS + Atlas both agree)
-            <span class="count">(170)</span></summary>
+            <span class="count">(176)</span></summary>
         <div class="detour-card">
             <div class="headline">NC -&gt; FJ
                 (AS4638): detours via MegaIX Sydney
@@ -768,6 +768,13 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
                 &middot; measurement 211558417</div>
             <details class="note"><summary>PTI Pacifica (AS7131, CNMI) -&gt; Samoa (AS17993) -- a fresh MP&lt;-&gt;WS pair…</summary>PTI Pacifica (AS7131, CNMI) -&gt; Samoa (AS17993) -- a fresh MP&lt;-&gt;WS pair. All 3 probes: AS7131 -&gt; AS6939 (Hurricane Electric) -&gt; [gap] -&gt; AS17993, upstream of target AS6939, RIS-agreeing with an *exact* match (150). A **different** carrier than the existing GU(AS3605)-&gt;WS entry (AS174/Cogent + AS3356/Level3, count 1,455) -- checked against AS17993&#x27;s full neighbor list (`{174: 1455, 6939: 150, 64073: 10, ...}`, already on record from that earlier entry): AS6939 is a real, minor-but-genuine relationship, not the dominant one, confirming Samoa&#x27;s real transit mix includes at least two distinct Tier-1 carriers, the same shape already seen for American Samoa (AS9751, Cogent vs. Wave Broadband). Real IXP crossing confirmed directly this time -- `ixp_crossings` non-empty for all 3 probes, all landing on Equinix Sydney (one shows both AS6939 and AS17993 as members at the same hop, the other two resolve AS17993 itself there via PeeringDB netixlan).</details>
         </div><div class="detour-card">
+            <div class="headline">NC -&gt; WS
+                (AS17993): detours via Equinix Sydney
+                (Sydney)</div>
+            <div>RIS observation count: 0
+                &middot; measurement 228278360</div>
+            <details class="note"><summary>measurement 228278360 (from NC); chain: AS45345 -&gt; AS18200 -&gt; AS17993; RIS disagrees…</summary>measurement 228278360 (from NC); chain: AS45345 -&gt; AS18200 -&gt; AS17993; RIS disagrees. measurement 228278360 (from NC); chain: AS45345 -&gt; AS18200 -&gt; AS17993; RIS disagrees. measurement 228278360 (from NC); chain: AS45345 -&gt; AS18200 -&gt; AS17993; RIS disagrees.</details>
+        </div><div class="detour-card">
             <div class="headline">NU -&gt; WS
                 (AS17993): detours via AS6939 (Hurricane Electric)
                 (Sydney)</div>
@@ -781,6 +788,13 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <div>RIS observation count: 150
                 &middot; measurement 211677101</div>
             <details class="note"><summary>ONATI (AS9471, French Polynesia) -&gt; Vodafone Samoa Limited (AS17993) -- a fresh PF&lt;-&gt;WS pair, a second independent confirmation of the AS6939(Hurricane…</summary>ONATI (AS9471, French Polynesia) -&gt; Vodafone Samoa Limited (AS17993) -- a fresh PF&lt;-&gt;WS pair, a second independent confirmation of the AS6939(Hurricane Electric)&lt;-&gt;AS17993 adjacency (after the MP entry). All 3 probes: `AS9471 -&gt; AS6939 -&gt; AS17993`, RIS-agreeing with the identical *exact* match (150). Crosses **Equinix Sydney** directly (`ixp_crossings` confirms it for all three probes) -- the same exchange as the original entry, now confirmed for the full probe set.</details>
+        </div><div class="detour-card">
+            <div class="headline">PG -&gt; WS
+                (AS17993): detours via Equinix Sydney
+                (Sydney)</div>
+            <div>RIS observation count: 0
+                &middot; measurement 228277579</div>
+            <details class="note"><summary>measurement 228277579 (from PG); chain: AS17828 -&gt; AS4826 -&gt; AS17993; RIS disagrees.</summary>measurement 228277579 (from PG); chain: AS17828 -&gt; AS4826 -&gt; AS17993; RIS disagrees.</details>
         </div><div class="detour-card">
             <div class="headline">PW -&gt; WS
                 (AS17993): detours via AS174 (Cogent Communications) -- international transit
@@ -1143,6 +1157,13 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
                 &middot; measurement 211632578</div>
             <details class="note"><summary>Telecom Vanuatu (AS9249) -&gt; Digicel Samoa Ltd (AS38800) -- targeting Digicel Samoa directly, immediately after last tranche&#x27;s corridor happened to transit…</summary>Telecom Vanuatu (AS9249) -&gt; Digicel Samoa Ltd (AS38800) -- targeting Digicel Samoa directly, immediately after last tranche&#x27;s corridor happened to transit through it on the way to CSL Samoa (AS38227). Both probes fully contiguous: AS9249 -&gt; AS38442 (Vodafone Fiji) -&gt; **AS132528** -&gt; AS38800. Upstream of the target is AS132528 itself directly -- the **fifth** occurrence of this Telstra-operated Digicel-Australia backbone ASN at Equinix Sydney this session, but the *first* time it&#x27;s the literal immediate upstream of the target rather than an intermediate waypoint before further Pacific infrastructure. RIS agrees with an *exact* match (1,656) -- checked directly against AS38800&#x27;s full neighbor list: AS132528 is its *only* RIS-observed neighbor at all (1,656 of 1,656 total observations), confirming Digicel Samoa&#x27;s real international upstream is exclusively Digicel&#x27;s own Australia-based backbone. The cleanest, most direct confirmation yet of this now-well-established infrastructure.</details>
         </div><div class="detour-card">
+            <div class="headline">NU -&gt; FM
+                (AS38875): detours via be5.core1.lax2.he.net (router in Los Angeles, no IXP crossing)
+                (Los Angeles)</div>
+            <div>RIS observation count: 0
+                &middot; measurement 228279157</div>
+            <details class="note"><summary>measurement 228279157 (from NU); chain: AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS9246 -&gt; AS139759; RIS disagrees.</summary>measurement 228279157 (from NU); chain: AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS9246 -&gt; AS139759; RIS disagrees.</details>
+        </div><div class="detour-card">
             <div class="headline">CK -&gt; FM
                 (AS45193): detours via Any2West
                 (Los Angeles)</div>
@@ -1476,6 +1497,13 @@ Twelfth confirmation of AS139609(SISCC)&lt;-&gt;AS45891. `AS55885 -&gt; AS9471 -
                 &middot; measurement 213459860</div>
             <details class="note"><summary>measurement 213459860 (from TO); chain: AS24390 -&gt; AS7575 -&gt; AS139609 -&gt; AS132468; RIS count 1319; RIS agrees.</summary>measurement 213459860 (from TO); chain: AS24390 -&gt; AS7575 -&gt; AS139609 -&gt; AS132468; RIS count 1319; RIS agrees.</details>
         </div><div class="detour-card">
+            <div class="headline">FM -&gt; KI
+                (AS132486): detours via if-ae-51-2.tcore1.tv2-tokyo.as6453.net (router in Tokyo, no IXP crossing)
+                (Tokyo)</div>
+            <div>RIS observation count: 880
+                &middot; measurement 228275431</div>
+            <details class="note"><summary>measurement 228275431 (from FM); chain: AS139759 -&gt; AS9246 -&gt; AS4637 -&gt; AS6453 -&gt; AS154100; RIS count 880; RIS agrees.</summary>measurement 228275431 (from FM); chain: AS139759 -&gt; AS9246 -&gt; AS4637 -&gt; AS6453 -&gt; AS154100; RIS count 880; RIS agrees.</details>
+        </div><div class="detour-card">
             <div class="headline">FM -&gt; TO
                 (AS132579): detours via AS4637 (Telstra Global), then AS174 (Cogent Communications)
                 (Sydney)</div>
@@ -1496,6 +1524,13 @@ Twelfth confirmation of AS139609(SISCC)&lt;-&gt;AS45891. `AS55885 -&gt; AS9471 -
             <div>RIS observation count: 663
                 &middot; measurement 213459992</div>
             <details class="note"><summary>measurement 213459992 (from TO); chain: AS24390 -&gt; AS7575 -&gt; AS139609 -&gt; AS45891; RIS count 663; RIS agrees.</summary>measurement 213459992 (from TO); chain: AS24390 -&gt; AS7575 -&gt; AS139609 -&gt; AS45891; RIS count 663; RIS agrees.</details>
+        </div><div class="detour-card">
+            <div class="headline">GU -&gt; KI
+                (AS134783): detours via if-ae-44-2.tcore2.lvw-losangeles.as6453.net (router in Los Angeles, no IXP crossing)
+                (Los Angeles)</div>
+            <div>RIS observation count: 1433
+                &middot; measurement 228276748</div>
+            <details class="note"><summary>measurement 228276748 (from GU); chain: AS3605 -&gt; AS3356 -&gt; AS6453 -&gt; AS154100; RIS count 1433; RIS agrees…</summary>measurement 228276748 (from GU); chain: AS3605 -&gt; AS3356 -&gt; AS6453 -&gt; AS154100; RIS count 1433; RIS agrees. measurement 228276748 (from GU); chain: AS3605 -&gt; AS3356 -&gt; AS6453 -&gt; AS154100; RIS count 1433; RIS agrees.</details>
         </div><div class="detour-card">
             <div class="headline">NC -&gt; KI
                 (AS134783): detours via Equinix Sydney
@@ -1566,6 +1601,13 @@ Twelfth confirmation of AS139609(SISCC)&lt;-&gt;AS45891. `AS55885 -&gt; AS9471 -
             <div>RIS observation count: 616
                 &middot; measurement 211706787</div>
             <details class="note"><summary>ONATI (AS9471, French Polynesia) -&gt; a distinct Nauru ASN (AS140504) -- the exact lead flagged in an earlier VU-sourced tranche this session…</summary>ONATI (AS9471, French Polynesia) -&gt; a distinct Nauru ASN (AS140504) -- the exact lead flagged in an earlier VU-sourced tranche this session. First address dead-ended the same way as that prior attempt: all 3 probes resolved to AS36149 (Hawaiian Telcom) with `ris_agrees: False`. Applied the standing retry policy against a different cached prefix. **The retry reached AS140504&#x27;s real relationship directly**: all 3 probes `AS9471 -&gt; AS6939 (Hurricane Electric) -&gt; AS36149 (Hawaiian Telcom) -&gt; [gap] -&gt; AS12684`, BGP-resolved and RIS-agreeing with an *exact* match (616) -- the second entry in AS140504&#x27;s own two-relationship RIS neighbor list (`{132528: 1032, 12684: 616}`), leaving only AS132528 as the still-untested one. Checked AS12684&#x27;s holder identity directly: **SES ASTRA S.A.**, a major geostationary satellite operator -- the same carrier flagged, but never confirmed, in an earlier Cook Islands tranche (that attempt stalled at generic transit and never got close enough to confirm or deny the relationship; a direct-source test was later ruled out entirely, since AS12684 has zero connected Atlas probes, all five ever registered against it Abandoned). **This is the first traceroute-confirmed SES Astra relationship this project has recorded**, closing that open thread from the other direction instead. Hub attribution: checked AS12684&#x27;s own PeeringDB record directly first -- zero registered facilities at all (expected for a satellite operator with no physical colocation), so attributed the hub from AS36149&#x27;s own verified facility list instead (CoreSite LA1/LA2, Los Angeles) -- the immediately preceding carrier in the resolved chain. **Caught a real query bug before trusting any of this**: an initial PeeringDB facility lookup using `asn=` as the netfac filter silently returned unfiltered, unrelated global data for both AS12684 and AS36149 -- re-queried using each network&#x27;s actual `net_id` (via `/api/net?asn=`) and got correct, small, verifiable facility lists instead.</details>
+        </div><div class="detour-card">
+            <div class="headline">TO -&gt; NR
+                (AS140504): detours via xe-0-0-2.pe1.bkvl.nsw.aarnet.net.au (router in Sydney, no IXP crossing)
+                (Sydney)</div>
+            <div>RIS observation count: 1115
+                &middot; measurement 228277659</div>
+            <details class="note"><summary>measurement 228277659 (from TO); chain: AS24390 -&gt; AS7575 -&gt; AS3605; RIS count 1115; RIS agrees.</summary>measurement 228277659 (from TO); chain: AS24390 -&gt; AS7575 -&gt; AS3605; RIS count 1115; RIS agrees.</details>
         </div><div class="detour-card">
             <div class="headline">TV -&gt; NR
                 (AS140504): detours via AS12684 (SES ASTRA S.A.) -- satellite operator, international transit
@@ -2614,7 +2656,7 @@ NU(AS55885) -&gt; AS150403: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS139609 -&
 
     <h2>ROV enforcement (Cloudflare RPKI-invalid test, weekly)</h2>
     <p class="section-intro">
-        Latest run <strong>2026-10-20</strong>. Every connected probe traces
+        Latest run <strong>2026-10-27</strong>. Every connected probe traces
         Cloudflare's RPKI-valid and RPKI-invalid test prefixes; where the valid one answers but
         the invalid one dies, something on that path drops invalid routes. Where ASPA above counts
         who has <em>published</em> route-security data, this shows whose paths actually
@@ -2625,13 +2667,13 @@ NU(AS55885) -&gt; AS150403: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS139609 -&
     </p>
     <table>
         <thead><tr><th>CC</th><th>Name</th><th>ASNs</th><th>Probes</th><th>IPv4</th><th>IPv6</th></tr></thead>
-        <tbody><tr><td>CK</td><td>Cook Islands</td><td>1</td><td>1</td><td>0/1/0</td><td>&ndash;</td></tr><tr><td>FJ</td><td>Fiji</td><td>1</td><td>1</td><td>0/1/0</td><td>&ndash;</td></tr><tr><td>FM</td><td>Micronesia, Federated States of</td><td>2</td><td>3</td><td>0/3/0</td><td>0/1/0</td></tr><tr><td>GU</td><td>Guam</td><td>7</td><td>11</td><td>2/9/0</td><td>1/2/0</td></tr><tr><td>KI</td><td>Kiribati</td><td>1</td><td>2</td><td>0/2/0</td><td>0/0/2</td></tr><tr><td>MH</td><td>Marshall Islands</td><td>1</td><td>1</td><td>0/1/0</td><td>&ndash;</td></tr><tr><td>MP</td><td>Northern Mariana Islands</td><td>1</td><td>1</td><td>1/0/0</td><td>&ndash;</td></tr><tr><td>NC</td><td>New Caledonia</td><td>2</td><td>5</td><td>5/0/0</td><td>3/0/1</td></tr><tr><td>NR</td><td>Nauru</td><td>1</td><td>1</td><td>0/1/0</td><td>0/1/0</td></tr><tr><td>NU</td><td>Niue</td><td>1</td><td>1</td><td>0/1/0</td><td>&ndash;</td></tr><tr><td>PF</td><td>French Polynesia</td><td>2</td><td>7</td><td>0/7/0</td><td>0/2/0</td></tr><tr><td>PG</td><td>Papua New Guinea</td><td>1</td><td>1</td><td>0/1/0</td><td>&ndash;</td></tr><tr><td>PW</td><td>Palau</td><td>1</td><td>1</td><td>0/1/0</td><td>0/1/0</td></tr><tr><td>TO</td><td>Tonga</td><td>2</td><td>2</td><td>2/0/0</td><td>&ndash;</td></tr><tr><td>TV</td><td>Tuvalu</td><td>1</td><td>1</td><td>0/1/0</td><td>&ndash;</td></tr><tr><td>VU</td><td>Vanuatu</td><td>1</td><td>1</td><td>0/1/0</td><td>&ndash;</td></tr></tbody>
+        <tbody><tr><td>CK</td><td>Cook Islands</td><td>1</td><td>1</td><td>0/1/0</td><td>&ndash;</td></tr><tr><td>FJ</td><td>Fiji</td><td>1</td><td>1</td><td>1/0/0</td><td>&ndash;</td></tr><tr><td>FM</td><td>Micronesia, Federated States of</td><td>2</td><td>3</td><td>0/2/1</td><td>0/0/1</td></tr><tr><td>GU</td><td>Guam</td><td>7</td><td>11</td><td>2/9/0</td><td>1/2/0</td></tr><tr><td>KI</td><td>Kiribati</td><td>1</td><td>2</td><td>0/2/0</td><td>0/0/2</td></tr><tr><td>MH</td><td>Marshall Islands</td><td>1</td><td>1</td><td>0/1/0</td><td>&ndash;</td></tr><tr><td>MP</td><td>Northern Mariana Islands</td><td>1</td><td>1</td><td>0/1/0</td><td>&ndash;</td></tr><tr><td>NC</td><td>New Caledonia</td><td>2</td><td>5</td><td>5/0/0</td><td>3/0/1</td></tr><tr><td>NR</td><td>Nauru</td><td>1</td><td>1</td><td>0/1/0</td><td>0/1/0</td></tr><tr><td>NU</td><td>Niue</td><td>1</td><td>1</td><td>0/1/0</td><td>&ndash;</td></tr><tr><td>PF</td><td>French Polynesia</td><td>2</td><td>7</td><td>0/7/0</td><td>0/2/0</td></tr><tr><td>PG</td><td>Papua New Guinea</td><td>1</td><td>1</td><td>0/1/0</td><td>&ndash;</td></tr><tr><td>PW</td><td>Palau</td><td>1</td><td>1</td><td>0/1/0</td><td>0/1/0</td></tr><tr><td>TO</td><td>Tonga</td><td>2</td><td>2</td><td>2/0/0</td><td>&ndash;</td></tr><tr><td>TV</td><td>Tuvalu</td><td>1</td><td>1</td><td>0/1/0</td><td>&ndash;</td></tr><tr><td>VU</td><td>Vanuatu</td><td>1</td><td>1</td><td>0/1/0</td><td>&ndash;</td></tr></tbody>
     </table>
     <p>Not testable (no connected probe): AS, SB, WF, WS</p>
     <p>Where invalid traces died (last network reached; it or its upstream dropped the route):</p>
-    <ul><li>IPv4 &mdash; AS18200: 4 probe(s)</li><li>IPv6 &mdash; AS18200: 2 probe(s)</li><li>IPv4 &mdash; before the first public hop: 2 probe(s)</li><li>IPv4 &mdash; AS141197: 1 probe(s)</li><li>IPv6 &mdash; AS45345: 1 probe(s)</li><li>IPv4 &mdash; AS24390: 1 probe(s)</li><li>IPv4 &mdash; AS38198: 1 probe(s)</li><li>IPv6 &mdash; before the first public hop: 1 probe(s)</li><li>IPv4 &mdash; AS140627: 1 probe(s)</li></ul>
+    <ul><li>IPv4 &mdash; AS18200: 3 probe(s)</li><li>IPv6 &mdash; AS18200: 3 probe(s)</li><li>IPv4 &mdash; AS45355: 1 probe(s)</li><li>IPv4 &mdash; AS141197: 1 probe(s)</li><li>IPv4 &mdash; AS45345: 1 probe(s)</li><li>IPv4 &mdash; AS24390: 1 probe(s)</li><li>IPv4 &mdash; AS38198: 1 probe(s)</li><li>IPv6 &mdash; before the first public hop: 1 probe(s)</li><li>IPv4 &mdash; before the first public hop: 1 probe(s)</li><li>IPv4 &mdash; AS140627: 1 probe(s)</li></ul>
     <p>Valid and invalid traces left via different upstreams (a sign one of them drops the invalid route):</p><ul><li>PG probe 50365 (IPv4): valid via AS4826, invalid via AS7474</li></ul>
-    <p class="section-intro">Measurements: {&#x27;v4&#x27;: [225320704, 225321906], &#x27;v6&#x27;: [225323356, 225324358]}.
+    <p class="section-intro">Measurements: {&#x27;v4&#x27;: [228282907, 228284148], &#x27;v6&#x27;: [228284356, 228285629]}.
         Detail: <code>outputs/reports/rov_cloudflare.txt</code></p>
 
     <h2>IPv6 coverage</h2>
@@ -2640,8 +2682,8 @@ NU(AS55885) -&gt; AS150403: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS139609 -&
         yet, queued until adoption has advanced further.
         <strong>45 of 162</strong> in-scope ASNs
         have at least one RIS-observed IPv6-originated prefix.
-        <strong>10 of 38</strong> connected
-        Atlas probes work over IPv6 (3 more are
+        <strong>8 of 38</strong> connected
+        Atlas probes work over IPv6 (4 more are
         IPv6-capable but tagged as not working).
     </p>
     <table>
@@ -2803,7 +2845,7 @@ NU(AS55885) -&gt; AS150403: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS139609 -&
             <td>Equinix Sydney</td><td>Sydney</td>
             <td>AU</td><td><span class="bool-false">out-of-fishbowl</span></td>
             <td>9</td>
-            <td>34</td>
+            <td>36</td>
             <td>CK, FJ, NC, PF, PG, TO, WS</td>
         </tr><tr>
             <td>Fiji-IXP</td><td>Suva</td>
@@ -2821,13 +2863,13 @@ NU(AS55885) -&gt; AS150403: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS139609 -&
             <td>GU-IX</td><td>Guam</td>
             <td>GU</td><td><span class="bool-true">in-fishbowl</span></td>
             <td>1</td>
-            <td>0</td>
+            <td>1</td>
             <td>GU</td>
         </tr><tr>
             <td>Guam IX</td><td>Tamuning</td>
             <td>GU</td><td><span class="bool-true">in-fishbowl</span></td>
             <td>5</td>
-            <td>1</td>
+            <td>3</td>
             <td>FM, GU, MP, NR, PW</td>
         </tr><tr>
             <td>IX Australia Sydney (NSW-IX)</td><td>Sydney</td>
@@ -2908,7 +2950,7 @@ NU(AS55885) -&gt; AS150403: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS139609 -&
             <td>KI</td><td>Kiribati</td>
             <td>Micronesia</td>
             <td>6</td><td>0</td><td>0</td>
-            <td>16</td>
+            <td>15</td>
         </tr><tr>
             <td>MH</td><td>Marshall Islands</td>
             <td>Micronesia</td>
@@ -2975,11 +3017,6 @@ NU(AS55885) -&gt; AS150403: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS139609 -&
             <td>2</td><td>6</td><td>1</td>
             <td>1</td>
         </tr><tr>
-            <td>GU</td><td>Guam</td>
-            <td>Micronesia</td>
-            <td>10</td><td>14</td><td>6</td>
-            <td>1</td>
-        </tr><tr>
             <td>PF</td><td>French Polynesia</td>
             <td>Polynesia</td>
             <td>6</td><td>9</td><td>6</td>
@@ -3000,6 +3037,11 @@ NU(AS55885) -&gt; AS150403: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS139609 -&
             <td>6</td><td>5</td><td>3</td>
             <td>0</td>
         </tr><tr>
+            <td>GU</td><td>Guam</td>
+            <td>Micronesia</td>
+            <td>10</td><td>14</td><td>6</td>
+            <td>0</td>
+        </tr><tr>
             <td>NC</td><td>New Caledonia</td>
             <td>Melanesia</td>
             <td>17</td><td>19</td><td>5</td>
@@ -3008,7 +3050,7 @@ NU(AS55885) -&gt; AS150403: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS139609 -&
     </table>
 
     <h2>Appendix: Low data quality issues
-        <span class="count">(6 known, resolved)</span></h2>
+        <span class="count">(7 known, resolved)</span></h2>
     <p class="section-intro">Known problems in this project's underlying sources
         (APNIC delegation, PeeringDB, ASPA, etc.) that have already been found,
         verified, and corrected for elsewhere in the pipeline &mdash; kept visible
@@ -3039,6 +3081,10 @@ NU(AS55885) -&gt; AS150403: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS139609 -&
             <div class="headline">AS154410 (MTL-AS-AP (Marshall Telecom Ltd)) -- registered MH
                 <span class="count">[local company whose announced space is hosted abroad]</span></div>
             <details class="note"><summary>Registered in the Marshall Islands (APNIC registrant ORG-MTL14-AP, Marshall Telecom LTD) but every originated prefix is served from Paris…</summary>Registered in the Marshall Islands (APNIC registrant ORG-MTL14-AP, Marshall Telecom LTD) but every originated prefix is served from Paris. Sole RIS upstream AS137409 (GSL Networks). 2026-10-01 traceroutes (measurements 217755229, 217755231, 217755234, 217755242, 217757573, 217757574) from AU probes and MH probe 64237 to 103.112.144.1, 151.247.194.1 and 82.24.175.1 end at core01.par2.dyjix.eu / 185.171.202.195.rev.dyjix.eu (AS212815 Dyjix SAS, Paris) at ~300ms. The earlier candidate_peering finding (row 253, measurement 213462780) already showed the path ending at AS212815. Per the project owner, 151.247.194.0 and 82.24.175.0 are IPXO-leased (IPXO geofeed, IPXO-MNT markers), and rDNS in 82.24.175.0 shows consumer NAS endpoints (Synology QuickConnect, WD remotewd): leased space used wherever the lessee is. Excluded at the owner&#x27;s direction (2026-10-01); finding row 253 and corroboration 464 were removed.</details>
+        </div><div class="issue-card">
+            <div class="headline">AS152655 (DIGICELPNG-AS-AP (Digicel (PNG) Ltd)) -- registered PG
+                <span class="count">[local company whose announced space is hosted abroad]</span></div>
+            <details class="note"><summary>Registered in Papua New Guinea (APNIC inetnum DIGICELPNG-PG) but its only originated prefix, 14.192.75.0/24, terminates on the ground in Australia behind SES…</summary>Registered in Papua New Guinea (APNIC inetnum DIGICELPNG-PG) but its only originated prefix, 14.192.75.0/24, terminates on the ground in Australia behind SES. Every RIS path ends `12684 152655` (318 of 318, 2026-10-27). The 2026-10-25 offshore check flagged 14.192.75.1 at 11.19ms from probe 1013222 (AS31898, western Sydney) and from AS7545 too, against a 27.3ms floor to Port Moresby (measurement 227413970). A 2026-10-27 ping sweep from Brisbane found 24 live hosts, all at 21-22ms; unassigned addresses stay silent. A UDP traceroute runs Megaport IX 103.26.68.225 (13ms) -&gt; SES 148.253.23.174 (21.8ms) -&gt; 14.192.75.1 (22-24ms), with no satellite delay. Cloudflare Radar geolocates 14.192.75.1 to AU. Likely a satellite-service ASN handed off at SES&#x27;s Australian gateway; Digicel PNG&#x27;s main AS58460 is unaffected. No findings targeted it. Excluded at the owner&#x27;s direction (2026-10-27).</details>
         </div>
 
     <h2>Appendix: Quarantined ASNs and findings
