@@ -1,0 +1,33 @@
+name: pip-audit
+
+# Audits every locked dependency in uv.lock against the PyPI/OSV advisory
+# databases. Read-only: it never commits, so the cron jobs' commit-and-push
+# flow (no git pull) is unaffected. The weekly run catches advisories
+# published against dependencies that haven't changed. A failed run emails
+# the owner; nothing is blocked.
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: "17 20 * * 0" # Sunday 20:17 UTC = Monday 06:17 AEST
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@1c37ad07a6a961277cf70c0d37d6f313000f5884 # v10.3.0
+        with:
+          version: "0.12.5" # same uv as the local cron jobs; export is read-only either way
+          enable-cache: false
+      - name: Export locked requirements
+        run: uv export --frozen --no-emit-project --format requirements-txt -o "$RUNNER_TEMP/requirements.txt"
+      - name: Audit
+        run: uvx pip-audit==2.10.1 --disable-pip -r "$RUNNER_TEMP/requirements.txt"
