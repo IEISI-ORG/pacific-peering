@@ -30,6 +30,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - Upgraded certifi 2026.7.22 -> 2026.10.23 (PYSEC-2026-4320, via requests) and pillow 12.3.0 -> 13.0.0 (37 CVEs, via matplotlib); pip-audit reports no known vulnerabilities. Lockfile-only; both committed SVGs render byte-identical (2026-10-27).
 
 ### Added
+- CI: `.github/workflows/pip-audit.yml` audits `uv.lock` on every push to main and weekly (Mon 06:17 AEST); a failed run emails the owner and blocks nothing. Chosen over Dependabot, whose uv 0.13.5 lockfile revision 5 the local uv 0.12.5 can't safely read, and whose merges on GitHub would break the cron's push-without-pull flow (2026-10-27).
 - Dev dependencies: `mypy`, `types-PyYAML` and `types-networkx`, so `uv run mypy src/` runs from the lockfile (2026-10-27).
 - Website: `robots.txt` and a one-URL `sitemap.xml` (lastmod = build date) in `site/dist/`, for search engines and Google Search Console (2026-10-18).
 - Project scaffolding: `uv`-managed package layout (`discovery`, `ris`,
