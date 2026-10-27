@@ -334,6 +334,7 @@ Corridors `auto_classify.py`'s mechanical rules couldn't confidently resolve on 
 - detail: latency: 103.21.248.1 answers 2.51ms from probe 1017873 (Alibaba HK) and from 4 networks (AS16276, AS3491, AS45102, AS59253) vs a 61.1ms physical floor to Honiara.
 - proposed correction: treat AS132462 as not-in-SB (offshore_hosted exclusion) pending owner decision; report to APNIC (Dave Phelan) as a probable squat/hijack of an abandoned resource -- draft prepared in terry@ieisi.org for owner approval.
 - flagged: 2026-10-27T04:57:01Z
+- reported: 2026-10-27T05:00:58Z to APNIC (Dave Phelan, dave.phelan@apnic.net) from terry@ieisi.org, thread 1a17bb8c4babafa5; awaiting reply
 
 ## AS152706 (NR) -- intermittent forged-origin path via AS38008/AS45904 for Neotel's 103.36.150.0/23
 - reason: interactive daily check -- AS152706 sits in the same ALTDB AS-OPTIONS set as AS132462
@@ -342,6 +343,7 @@ Corridors `auto_classify.py`'s mechanical rules couldn't confidently resolve on 
 - detail: earlier trace FJ -> AS152706 died after AS38008 via AS3491 (task_plan.md: logged inconclusive) -- likely followed the forged path.
 - proposed correction: no change to findings (all Neotel corroborations are via AS6453 and RIS-agreed); include in the APNIC report as a live, ROA-covered victim; owner may want to tell Neotel (admin@neotel.nr).
 - flagged: 2026-10-27T04:57:01Z
+- reported: 2026-10-27T05:00:58Z to APNIC (Dave Phelan, dave.phelan@apnic.net) from terry@ieisi.org, thread 1a17bb8c4babafa5; awaiting reply
 
 ## Finding #15 (PG AS38008 -> SB AS132462) -- AS38008 mislabelled as Telikom PNG
 - measurement: 212143004, 212158110, 213459523, 220513022
