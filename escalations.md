@@ -324,3 +324,28 @@ Corridors `auto_classify.py`'s mechanical rules couldn't confidently resolve on 
 - detail: no address answered (including 0 sweep responder(s) retried); RIS upstream(s): AS13335 Cloudflare, Inc. (614 RIS obs)
 - action: traceroute the prefix from AU and home-economy probes and judge where it ends; then owner review (acknowledge in SCREEN_ACKNOWLEDGED, quarantine, or exclude)
 - flagged: 2026-10-25T15:42:08.178346+00:00
+
+## AS132462 (SB) -- WHOIS and routing diverge: Bemobile SI space announced from HK via Bangladesh
+- measurement: 227412138
+- reason: interactive daily check -- follow-up to the 2026-10-25 offshore flag; registry says Honiara, routing says Hong Kong
+- detail: WHOIS (APNIC): AS132462 + 103.21.248.0/22 = Bemobile Solomon Islands Ltd, Point Cruz, Honiara, SB; inetnum/aut-num last-modified 2020-07-15; IRT contact devan.kula@bmobile.com.sb marked "is invalid" by APNIC; no ROA (RPKI unknown). bmobile.com.sb registry expiry 2025-12-03, SERVFAIL; bmobile.com.pg expiry 2025-11-08. Legit route objects: APNIC (origin AS132462, 2014) and RADB proxy object origin AS38456 Speedcast AU (MAINT-AS4637, 2023-11-13).
+- detail: routing (RIPEstat): the SISCC-transited (AS139609) /24s were last seen 2026-10-07 (same day ex-Bemobile PNG AS133137 went dark). A /22 aggregate appeared 2026-08-08 via AS140889 Impex Bd Net (BD), switched 2026-09-18 to AS45904 Banglalion WiMAX (BD); all 317 RIS paths now end `3356|3491|... 38008 45904 132462`. AS38008 = Aperture Science Ltd, HK (export: announce AS-APERNET).
+- detail: IRR cover: AS-APERNET -> AS-APERNET-CUSTOMER-MACROS -> AS-OPTIONS (ALTDB, MAINT-AS10241, Options & Choices Inc, Cheyenne WY), which lists AS132462, AS45904 and AS152706; last changed by dblaney@ociwyo.com 2026-08-08 -- the day the /22 first appeared.
+- detail: latency: 103.21.248.1 answers 2.51ms from probe 1017873 (Alibaba HK) and from 4 networks (AS16276, AS3491, AS45102, AS59253) vs a 61.1ms physical floor to Honiara.
+- proposed correction: treat AS132462 as not-in-SB (offshore_hosted exclusion) pending owner decision; report to APNIC (Dave Phelan) as a probable squat/hijack of an abandoned resource -- draft prepared in terry@ieisi.org for owner approval.
+- flagged: 2026-10-27T04:57:01Z
+
+## AS152706 (NR) -- intermittent forged-origin path via AS38008/AS45904 for Neotel's 103.36.150.0/23
+- reason: interactive daily check -- AS152706 sits in the same ALTDB AS-OPTIONS set as AS132462
+- detail: WHOIS is healthy: TNC-NR / Neotel, contacts validated 2026-05-23, route object 2025-01-22, ROA valid (AS152706, maxLength 23). Announced continuously since 2025-01-19; all 317 current RIS RIB paths are via AS6453 Tata (matches our findings #170-174).
+- detail: RIPEstat neighbour history adds AS140889 (2026-08-08 to 09-18) and AS45904 (2026-09-18 onward), the same pattern and start date as AS132462. bgp-updates 2026-10-01..26: `38008 45904 152706` announced on 25 of 26 days, seen at 17 RRCs (last 2026-10-26T03:12Z), but never wins best path in the RIB snapshot. Forged origin, so ROV passes it.
+- detail: earlier trace FJ -> AS152706 died after AS38008 via AS3491 (task_plan.md: logged inconclusive) -- likely followed the forged path.
+- proposed correction: no change to findings (all Neotel corroborations are via AS6453 and RIS-agreed); include in the APNIC report as a live, ROA-covered victim; owner may want to tell Neotel (admin@neotel.nr).
+- flagged: 2026-10-27T04:57:01Z
+
+## Finding #15 (PG AS38008 -> SB AS132462) -- AS38008 mislabelled as Telikom PNG
+- measurement: 212143004, 212158110, 213459523, 220513022
+- reason: interactive daily check -- APNIC RDAP: AS38008 is APERTURE-AS-AP, Aperture Science Ltd, HK (registered 2020-06-15), not "Telikom PNG Satellite Tier 1 AS" (that is AS38009)
+- detail: label hand-entered in the 2026-09-16 bulk clear-out (candidate_peering.py:695 and :774). The pair is the HK transit hop of the AS132462 hijack path above, not a PG->SB peering.
+- proposed correction: retire #15 (or relabel upstream_cc HK / Aperture) once the owner decides on AS132462.
+- flagged: 2026-10-27T04:57:01Z
