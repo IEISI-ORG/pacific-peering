@@ -6,6 +6,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ## [Unreleased]
 
 ### Changed
+- AS152655 (Digicel PNG) is excluded as `offshore_hosted`: its only prefix, 14.192.75.0/24, terminates in Australia behind SES (AS12684), and all 24 live hosts answer at ground-side RTT. Digicel's main AS58460 stays in scope (2026-10-27).
+- TFL's last link before FNPF (202.62.124.40/30, AS4638) is a known loop location: the `.41 .42 * .42` tail is FNPF's filtered edge, reproduced from 17/23 probes on an alternate address (measurement 228090126), with a regression test frozen from 227408126. AS151398 (Credit Corp PNG) joins `SCREEN_ACKNOWLEDGED`: Cloudflare Magic Transit to an origin in PNG (2026-10-27).
+- `parse_traceroute_results` now requires `msm_id` and `prb_id` on each Atlas result; a result missing them fails at parse time instead of carrying `None` downstream (2026-10-27).
 - Reverification is staged nightly, not weekly: the oldest-checked 1/12 of findings (`_REVERIFY_FRACTION`) before each Mon-Sat batch, so every finding is retested roughly every 2 weeks instead of 4. The Sunday refresh no longer stages anything. The weekly quarter drained in one night (67 tests on 10-19) and left five nights idle; credits were never the limit (balance 102.7M, income ~121k/day). Staging now skips a finding whose retest is still parked, so it isn't fired twice before it's collected (2026-10-24).
 - Corridor source selection skips probes whose country Atlas guessed from GeoIP (`system-auto-geoip-country`, now recorded as `auto_geoip` in the probe listing). On 2026-10-22 that excludes 1012513 (GU) and 1008625 (NC), both at their economy's centroid; neither was the only source for its ASN or the vantage of any corroboration. See `docs/traceroute_late_edst_and_guessed_probe_locations.md` (2026-10-22).
 - A router located off-region by its hostname must have exactly one BGP origin ASN to back a detour. With none (failed lookup, unannounced space) or several, it escalates ("router address has no single BGP owner") instead (2026-10-21).
@@ -16,13 +19,18 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - San Francisco is now a mapped external hub (`EXTERNAL_HUB_LATLON`), so Cogent `sfo01` routers get a fibre-floor check instead of escalating as "router in a hub city with no coordinates" (2026-10-21).
 
 ### Fixed
+- `mypy src/` is clean (54 errors to 0) with no behaviour change. Two annotations were wrong rather than the code: `store.create_finding`'s `source_asn` is nullable (155 detour findings store NULL), and `write_quarantine` returns str keys. ASCII and HTML reports render byte-identical before and after (2026-10-27).
 - Traceroute parsing drops replies marked `late` (an answer to an earlier hop's packet) or `edst` (an ICMP error for a different packet), as RIPE NCC's ixp-country-jedi does. They had put stale addresses into 86 cached hops in 28 measurements, mostly Guam Cablevision's first routers (probes 329, 64953) and Starlink routers at the end of dark traces, creating false AS loops and trailing ASNs and hiding IIJ/Lumen behind two-ASN hops. The 28 parsed files were re-parsed from the raw cache. No finding's conclusion changes. Corroborations #87/#89 (finding 58, GU -> WS) had stored the artefact; both chains are corrected to `AS3605 -> AS3356 -> AS174 -> AS17993`, with the old chain and cause in `note_extra` (2026-10-22).
 - Finding #66 (NC -> AS23657) named its target "American Samoa Telecommunications Authority". AS23657 is Blue Sky Communications; ASTCA is AS9751. The note is corrected in `confirmed_detours.py` and `findings.db`, with the correction recorded inline (2026-10-22).
 - The weekly reverification ration now rotates. Each scheduled retest is recorded (`reverification_attempts` table) whatever its outcome, and findings rank by `max(last verified, last attempted)`. Previously a retest that filed nothing left its finding at the head of the queue, so #26/#33/#69/#76/#91/#121/#144 were re-fired five times each from 09-20 to 10-11 while most findings never came up (2026-10-21).
 - Detour feasibility (Validation Rule 2) now uses only routers in the claimed hub city as that city's hub hop. A probe's router in another city could pass the claimed city's floors and turn an impossible detour into a filed "mixed" one (2026-10-21).
 - Parked Atlas measurements are collected only once Atlas has finished them; a still-running one with partial results is no longer classified early (224431120, 2026-10-19). Past 24 h, a running measurement is classified on the results it has rather than dropped.
 
+### Security
+- Upgraded certifi 2026.7.22 -> 2026.10.23 (PYSEC-2026-4320, via requests) and pillow 12.3.0 -> 13.0.0 (37 CVEs, via matplotlib); pip-audit reports no known vulnerabilities. Lockfile-only; both committed SVGs render byte-identical (2026-10-27).
+
 ### Added
+- Dev dependencies: `mypy`, `types-PyYAML` and `types-networkx`, so `uv run mypy src/` runs from the lockfile (2026-10-27).
 - Website: `robots.txt` and a one-URL `sitemap.xml` (lastmod = build date) in `site/dist/`, for search engines and Google Search Console (2026-10-18).
 - Project scaffolding: `uv`-managed package layout (`discovery`, `ris`,
   `atlas`, `analysis`, `viz`, `reports` modules), `data/` and `outputs/`
