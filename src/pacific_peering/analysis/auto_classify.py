@@ -638,7 +638,7 @@ def _classify_corridor(
     for probe in triangulation["probes"]:
         as_sequence = probe.get("as_sequence", [])
         first_asn = as_sequence[0]["asn"] if as_sequence else None
-        proxy_name = NON_LOCAL_FIRST_HOP_ASNS.get(first_asn)
+        proxy_name = NON_LOCAL_FIRST_HOP_ASNS.get(first_asn) if first_asn is not None else None
         if proxy_name is not None:
             proxy_corrupted[probe["probe_id"]] = proxy_name
         else:
@@ -989,7 +989,7 @@ def _classify_corridor(
                 by_upstream: dict[int, list[dict]] = {}
                 for pick in candidate_picks:
                     by_upstream.setdefault(pick["traceroute_upstream_asn"], []).append(pick)
-                finding_id = None
+                first_group_id: int | None = None
                 for upstream_asn, picks in sorted(by_upstream.items(), key=lambda kv: -len(kv[1])):
                     finding = _store.find_existing(
                         conn, _store.KIND_CANDIDATE_PEERING, upstream_asn, candidate.target_asn
@@ -1009,13 +1009,13 @@ def _classify_corridor(
                     else:
                         group_finding_id = finding.id
                     _corroborate(conn, group_finding_id, picks)
-                    finding_id = finding_id or group_finding_id
+                    first_group_id = first_group_id or group_finding_id
                 mark_corridor_tested(candidate.source_asn, candidate.target_asn)
                 if regenerate:
                     _regenerate_artifacts()
                 if escalations:
                     _write_escalations(escalations)
-                return ClassifyResult(candidate, "candidate_peering", finding_id, escalations)
+                return ClassifyResult(candidate, "candidate_peering", first_group_id, escalations)
         finally:
             conn.close()
 

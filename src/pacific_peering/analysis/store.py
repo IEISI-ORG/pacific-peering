@@ -361,7 +361,7 @@ def create_finding(
     *,
     kind: str,
     source_cc: str,
-    source_asn: int,
+    source_asn: int | None,
     target_cc: str,
     target_asn: int,
     source_name: str | None = None,
@@ -389,6 +389,8 @@ def create_finding(
         ),
     )
     conn.commit()
+    if cur.lastrowid is None:
+        raise RuntimeError("INSERT returned no rowid")
     return cur.lastrowid
 
 
@@ -420,6 +422,8 @@ def add_corroboration(
         ),
     )
     conn.commit()
+    if cur.lastrowid is None:
+        raise RuntimeError("INSERT returned no rowid")
     return cur.lastrowid
 
 

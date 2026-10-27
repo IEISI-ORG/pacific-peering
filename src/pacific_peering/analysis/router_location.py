@@ -119,7 +119,9 @@ def find_router_hub(trace: dict, source_cc: str, resolver: PtrResolver = reverse
             continue
         address = addresses[0]
         hostname = resolver(address)
-        location = resolve_hostname(hostname) if hostname else None
+        if not hostname:
+            continue
+        location = resolve_hostname(hostname)
         if location is None or location.economy_cc is not None:
             continue
         floor_ms: float | None = None

@@ -127,7 +127,7 @@ def build_fishbowl(
     fishbowl: dict[str, dict] = {}
     for asn, economy in asn_to_economy.items():
         records = aspaths_by_asn.get(asn, [])
-        neighbors = neighbors_by_asn.get(asn, {})
+        neighbors: dict[int, int] = neighbors_by_asn.get(asn, {})
         fishbowl[str(asn)] = {
             "economy": economy,
             "num_path_observations": len(records),

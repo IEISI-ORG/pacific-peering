@@ -214,9 +214,10 @@ def run_check(now: datetime | None = None, force_full: bool = False) -> dict | N
         return None
     results = _scan(targets)
     fresh = new_flags(history, results)
+    flags = sorted(_flag_keys(results))
     snapshot = {
         "run_at": now.isoformat(), "mode": mode, "asns": asns, "results": results,
-        "flags": sorted(_flag_keys(results)),
+        "flags": flags,
         "complete": not any("error" in r for r in results.values()),
     }
     HISTORY_PATH.parent.mkdir(parents=True, exist_ok=True)
@@ -224,7 +225,7 @@ def run_check(now: datetime | None = None, force_full: bool = False) -> dict | N
         f.write(json.dumps(snapshot) + "\n")
     REPORT_PATH.write_text(render_report(snapshot, fresh))
     _escalate(fresh, results, now)
-    logger.info("Leasing check done: %d flag(s), %d new", len(snapshot["flags"]), len(fresh))
+    logger.info("Leasing check done: %d flag(s), %d new", len(flags), len(fresh))
     return snapshot
 
 

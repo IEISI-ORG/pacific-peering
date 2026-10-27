@@ -21,6 +21,7 @@ from __future__ import annotations
 import json
 import logging
 from collections import Counter
+from typing import Any
 from pathlib import Path
 
 from pacific_peering.analysis import store as _store
@@ -63,7 +64,7 @@ def sweep(parsed_dir: Path = DEFAULT_ATLAS_PARSED_DIR) -> list[dict]:
         for finding in _store.all_findings(conn):
             if finding.kind != _store.KIND_CONFIRMED_DETOUR:
                 continue
-            row = {"finding": finding.id, "source_cc": finding.source_cc, "target_cc": finding.target_cc,
+            row: dict[str, Any] = {"finding": finding.id, "source_cc": finding.source_cc, "target_cc": finding.target_cc,
                    "target_asn": finding.target_asn, "hub": finding.detour_hub, "probes": [], "skipped": None}
             results.append(row)
             if finding.detour_hub not in EXTERNAL_HUB_LATLON or finding.target_cc not in ECONOMY_LATLON:
