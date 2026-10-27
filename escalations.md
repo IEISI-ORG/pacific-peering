@@ -334,6 +334,8 @@ Corridors `auto_classify.py`'s mechanical rules couldn't confidently resolve on 
 - detail: latency: 103.21.248.1 answers 2.51ms from probe 1017873 (Alibaba HK) and from 4 networks (AS16276, AS3491, AS45102, AS59253) vs a 61.1ms physical floor to Honiara.
 - proposed correction: treat AS132462 as not-in-SB (offshore_hosted exclusion) pending owner decision; report to APNIC (Dave Phelan) as a probable squat/hijack of an abandoned resource -- draft prepared in terry@ieisi.org for owner approval.
 - flagged: 2026-10-27T04:57:01Z
+- detail: Cloudflare Radar (2026-10-27T05:03Z): IP entity 103.21.248.1 geolocates to Hong Kong (ASN location SB) -- independent of our Atlas latency; pfx2as single origin AS132462, 72/78 peers, RPKI Unknown; no MOAS; only relationship AS45904 (provider and peer, aspa_validated false); no ASPA object; upstream share AS139609 1.00 to 08-06, intermittent to 10-07, 0 since, 'OTHER' 1.00 from 08-08; no hijack or leak events in 52w (origin unchanged, so origin-based detection misses it).
+- detail: press search (2026-10-27): no public announcement of a bmobile SI sale, closure or network exit. Latest found: KCH expression-of-interest sale notice (Island Sun, 2020-11-11, no buyer or outcome reported); PNG Telikom/bmobile merger into Telikom Ltd (2021-22, SI unit's fate not reported); SATSOL interconnection with bmobile SI (May 2025); a 2026 travel guide still lists bmobile as one of two SB mobile operators (weak evidence). So the retail operation may still exist -- the routing evidence says its AS132462/103.21.248.0/22 has been taken over, not that the company has gone.
 - reported: 2026-10-27T05:00:58Z to APNIC (Dave Phelan, dave.phelan@apnic.net) from terry@ieisi.org, thread 1a17bb8c4babafa5; awaiting reply
 
 ## AS152706 (NR) -- intermittent forged-origin path via AS38008/AS45904 for Neotel's 103.36.150.0/23
@@ -343,6 +345,7 @@ Corridors `auto_classify.py`'s mechanical rules couldn't confidently resolve on 
 - detail: earlier trace FJ -> AS152706 died after AS38008 via AS3491 (task_plan.md: logged inconclusive) -- likely followed the forged path.
 - proposed correction: no change to findings (all Neotel corroborations are via AS6453 and RIS-agreed); include in the APNIC report as a live, ROA-covered victim; owner may want to tell Neotel (admin@neotel.nr).
 - flagged: 2026-10-27T04:57:01Z
+- detail: Cloudflare Radar (2026-10-27T05:03Z): Neotel publishes ASPA (customer AS152706, providers [AS6453] only), so `... 45904 152706` is ASPA-invalid -- the likely reason the forged path churns in updates but never wins in RIB snapshots. Radar lists 6453->152706 provider-customer aspa_validated true and 45904->152706 provider-customer aspa_validated false; pfx2as RPKI Valid, 71/78 peers; no MOAS; no hijack events in 52w.
 - reported: 2026-10-27T05:00:58Z to APNIC (Dave Phelan, dave.phelan@apnic.net) from terry@ieisi.org, thread 1a17bb8c4babafa5; awaiting reply
 
 ## Finding #15 (PG AS38008 -> SB AS132462) -- AS38008 mislabelled as Telikom PNG
