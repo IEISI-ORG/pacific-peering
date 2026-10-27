@@ -194,11 +194,10 @@ def _probe_info(
     countries: dict[int, str | None] = {}
     ids = sorted(probe_ids)
     for i in range(0, len(ids), 400):
-        response = requests.get(
-            "https://atlas.ripe.net/api/v2/probes/",
-            params={"id__in": ",".join(map(str, ids[i:i + 400])), "fields": "id,geometry,asn_v4,country_code", "page_size": 500},
-            timeout=30,
-        )
+        params: dict[str, str | int] = {
+            "id__in": ",".join(map(str, ids[i:i + 400])), "fields": "id,geometry,asn_v4,country_code", "page_size": 500,
+        }
+        response = requests.get("https://atlas.ripe.net/api/v2/probes/", params=params, timeout=30)
         response.raise_for_status()
         for p in response.json()["results"]:
             coords = (p.get("geometry") or {}).get("coordinates")
@@ -254,7 +253,7 @@ def _measure(targets: list[tuple[int, str, str]]) -> tuple[dict[str, int | None]
         wait_for_headroom(len(batch))  # account-level pre-flight (atlas/rate_limit.py)
         for asn, cc, address in batch:
             ids[address] = _create_with_retry(asn, cc, address)
-        created = [ids[a] for _, _, a in batch if ids[a] is not None]
+        created = [mid for _, _, a in batch if (mid := ids[a]) is not None]
         _wait_until_done(created)
         for _, _, address in batch:
             mid = ids[address]
@@ -297,14 +296,15 @@ def run_check(fire: bool, now: datetime | None = None, force_full: bool = False)
     _judge_into(per_asn, targets, *_measure(targets))
     _second_chance(per_asn)
     _screen_silent(per_asn)
+    screen_flags = sorted((a for a, e in per_asn.items() if e.get("upstream_screen")), key=int)
     snapshot = {
         "run_at": now.isoformat(), "mode": mode, "asns": sorted(per_asn, key=int) + [str(a) for a in untestable],
         "untestable": untestable, "results": per_asn,
-        "screen_flags": sorted((a for a, e in per_asn.items() if e.get("upstream_screen")), key=int),
+        "screen_flags": screen_flags,
         "complete": not any(e["verdict"] == NOT_MEASURED for e in per_asn.values()),
     }
     new_flags = _new_offshore(history, per_asn)
-    new_screen = _new_screen_flags(history, snapshot["screen_flags"])
+    new_screen = _new_screen_flags(history, screen_flags)
     HISTORY_PATH.parent.mkdir(parents=True, exist_ok=True)
     with HISTORY_PATH.open("a") as f:
         f.write(json.dumps(snapshot) + "\n")
