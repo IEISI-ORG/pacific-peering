@@ -190,6 +190,21 @@ KNOWN_LOOP_LOCATIONS: tuple[KnownLoopLocation, ...] = (
         "pattern as Datec-PNG (202.95.200.0/24) above.",
         asn=38198,
     ),
+    KnownLoopLocation(
+        "202.62.124.40/30",
+        "TFL's (AS4638) last link before FNPF (AS154229). First flagged "
+        "on probe 60575's AS141695->AS154229 trace (measurement "
+        "227408126): 202.62.124.41, .42, a silent hop, .42 again, then "
+        "dark short of 203.55.68.1. A fleet trace to a different FNPF "
+        "address, 203.55.68.254 (measurement 228090126, 2026-10-27), "
+        "showed the same tail from 17 of the 23 probes that reached "
+        ".42, from CK, FM, KI, MH, NC, NU, PF, PG, PW, TO, TV and VU. "
+        "No new router ever followed .42. It is the edge router "
+        "answering once more as the trace dies at FNPF's filtered "
+        "edge, not a two-router cycle. Resolved at the owner's "
+        "direction (2026-10-27).",
+        asn=4638,
+    ),
 )
 
 

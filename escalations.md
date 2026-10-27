@@ -299,6 +299,7 @@ Corridors `auto_classify.py`'s mechanical rules couldn't confidently resolve on 
 - reason: unrecognized routing loop
 - detail: probe 60575: loop involving address 202.62.124.42, not in known_anomalies.py
 - flagged: 2026-10-25T15:13:16.786786+00:00
+- resolved: 2026-10-27 -- not a loop: TFL's (AS4638) last link before FNPF answering again at a filtered edge. Fleet trace to the alternate address 203.55.68.254 (measurement 228090126) gave the same `.41 .42 * .42` tail from 17 of the 23 probes that reached .42, from 12 economies, with no router ever after .42. 202.62.124.40/30 added to known_anomalies.py at the owner's direction, with a regression test frozen from 227408126.
 
 
 ## AS9246 (GU) -- possible offshore-hosted address space
@@ -326,6 +327,7 @@ Corridors `auto_classify.py`'s mechanical rules couldn't confidently resolve on 
 - detail: no address answered (including 0 sweep responder(s) retried); RIS upstream(s): AS13335 Cloudflare, Inc. (614 RIS obs)
 - action: traceroute the prefix from AU and home-economy probes and judge where it ends; then owner review (acknowledge in SCREEN_ACKNOWLEDGED, quarantine, or exclude)
 - flagged: 2026-10-25T15:42:08.178346+00:00
+- resolved: 2026-10-27 -- in PNG behind Cloudflare Magic Transit (Kina Bank pattern). Fleet trace to live host 103.215.93.76 (measurement 228089158) went dark at each probe's nearest Cloudflare PoP; TCP 443 on .76/.205 connects in 54ms from Brisbane vs 1.4ms to local Cloudflare, with no Cloudflare certificate or headers, so the origin sits beyond the tunnel. Added to SCREEN_ACKNOWLEDGED at the owner's direction.
 
 ## AS132462 (SB) -- WHOIS and routing diverge: Bemobile SI space announced from HK via Bangladesh
 - measurement: 227412138

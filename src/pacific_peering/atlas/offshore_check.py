@@ -77,6 +77,9 @@ SCREEN_ACKNOWLEDGED: dict[int, str] = {
            "48ms from Brisbane -- in Vanuatu (measurements 217759734, 217759912, 217760816; 2026-10-01)",
     142269: "Kina Bank (PG): Cloudflare Magic Transit; its own 103.167.47.254 answers ~38ms beyond "
             "Cloudflare Sydney -- in PNG (measurement 217757576; 2026-10-01)",
+    151398: "Credit Corp (PG): Cloudflare Magic Transit; fleet trace to 103.215.93.76 goes dark at each "
+            "probe's nearest Cloudflare PoP (measurement 228089158), but TCP 443 on .76/.205 connects in 54ms "
+            "from Brisbane vs 1.4ms to local Cloudflare, so the origin is not Cloudflare -- in PNG (2026-10-27)",
 }
 MAX_PREFIXES_PER_ASN = 3
 PHYSICS_MARGIN = 0.7  # headroom for capital-vs-island distance and coordinate slop
