@@ -388,3 +388,63 @@ Corridors `auto_classify.py`'s mechanical rules couldn't confidently resolve on 
 - detail: probe 64391: loop involving address 49.156.51.245, not in known_anomalies.py
 - flagged: 2026-10-27T15:19:26.473434+00:00
 
+## AS45345 (NC) -> AS4638 (FJ)
+- measurement: 228735988
+- reason: local IXP crossing with implausibly high latency
+- detail: probe 33674: hop 8 crosses Fiji-IXP (in-fishbowl) at 40.32ms, above the 10.0ms local-fiber threshold -- either this hop isn't genuinely local despite the registry, or there's an unexpected detour/backhaul before reaching it; needs a human look, not a guess
+- flagged: 2026-10-28T15:03:59.475869+00:00
+
+## AS45345 (NC) -> AS4638 (FJ)
+- measurement: 228735988
+- reason: local IXP crossing with implausibly high latency
+- detail: probe 63050: hop 8 crosses Fiji-IXP (in-fishbowl) at 39.95ms, above the 10.0ms local-fiber threshold -- either this hop isn't genuinely local despite the registry, or there's an unexpected detour/backhaul before reaching it; needs a human look, not a guess
+- flagged: 2026-10-28T15:03:59.475869+00:00
+
+## AS45345 (NC) -> AS4638 (FJ)
+- measurement: 228735988
+- reason: local IXP crossing with implausibly high latency
+- detail: probe 7018: hop 8 crosses Fiji-IXP (in-fishbowl) at 39.082ms, above the 10.0ms local-fiber threshold -- either this hop isn't genuinely local despite the registry, or there's an unexpected detour/backhaul before reaching it; needs a human look, not a guess
+- flagged: 2026-10-28T15:03:59.475869+00:00
+
+## AS152735 (GU) -> AS17893 (PW)
+- measurement: 228736794
+- reason: local IXP crossing with implausibly high latency
+- detail: probe 1012513: hop 2 crosses Guam IX (in-fishbowl) at 19.126ms, above the 10.0ms local-fiber threshold -- either this hop isn't genuinely local despite the registry, or there's an unexpected detour/backhaul before reaching it; needs a human look, not a guess
+- flagged: 2026-10-28T15:07:06.213468+00:00
+
+## AS152735 (GU) -> AS17893 (PW)
+- measurement: 228736794
+- reason: local IXP crossing with implausibly high latency
+- detail: probe 60703: hop 3 crosses Guam IX (in-fishbowl) at 19.629ms, above the 10.0ms local-fiber threshold -- either this hop isn't genuinely local despite the registry, or there's an unexpected detour/backhaul before reaching it; needs a human look, not a guess
+- flagged: 2026-10-28T15:07:06.213468+00:00
+
+## AS152735 (GU) -> AS17893 (PW)
+- measurement: 228736794
+- reason: local IXP crossing with implausibly high latency
+- detail: probe 7385: hop 2 crosses Guam IX (in-fishbowl) at 19.128ms, above the 10.0ms local-fiber threshold -- either this hop isn't genuinely local despite the registry, or there's an unexpected detour/backhaul before reaching it; needs a human look, not a guess
+- flagged: 2026-10-28T15:07:06.213468+00:00
+
+## AS45345 (NC) -> AS45355 (FJ)
+- measurement: 228736784
+- reason: local IXP crossing with implausibly high latency
+- detail: probe 33674: hop 8 crosses Fiji-IXP (in-fishbowl) at 16.537ms, above the 10.0ms local-fiber threshold -- either this hop isn't genuinely local despite the registry, or there's an unexpected detour/backhaul before reaching it; needs a human look, not a guess
+- flagged: 2026-10-28T15:07:09.293064+00:00
+
+## AS45345 (NC) -> AS45355 (FJ)
+- measurement: 228736784
+- reason: local IXP crossing with implausibly high latency
+- detail: probe 63050: hop 8 crosses Fiji-IXP (in-fishbowl) at 17.238ms, above the 10.0ms local-fiber threshold -- either this hop isn't genuinely local despite the registry, or there's an unexpected detour/backhaul before reaching it; needs a human look, not a guess
+- flagged: 2026-10-28T15:07:09.293064+00:00
+
+## AS45345 (NC) -> AS45355 (FJ)
+- measurement: 228736784
+- reason: local IXP crossing with implausibly high latency
+- detail: probe 7018: hop 8 crosses Fiji-IXP (in-fishbowl) at 16.45ms, above the 10.0ms local-fiber threshold -- either this hop isn't genuinely local despite the registry, or there's an unexpected detour/backhaul before reaching it; needs a human look, not a guess
+- flagged: 2026-10-28T15:07:09.293064+00:00
+
+## AS3605 (GU) -> AS17993 (WS)
+- measurement: 228737735
+- reason: router hubs in several cities
+- detail: probe 329: router hub: hop 11 154.54.28.189 be9852.ccr22.pdx01.atlas.cogentco.com -> Portland, 116.318ms (floor 90.97ms, ok); probe 64953: router hub: hop 13 154.54.43.13 be3670.ccr22.sfo01.atlas.cogentco.com -> San Francisco, 141.1ms (floor 92.95ms, ok) -- probes leave the region through different cities; needs a human read, not a detour
+- flagged: 2026-10-28T15:10:19.176715+00:00
+
