@@ -141,6 +141,11 @@ Addresses are in the private contact notes, not here.
   is gone (550 5.4.1).** The official contact copy was delivered, with no
   TAF reply in 7 days. Nudge it, or ask Ravneel (USP) who at TAF runs the
   exchange now.
+  **2026-10-28:** route now via Savenaca Siwatibau (Fiji Ministry of Policing
+  and Communication, cybersecurity), who offered on PacNOG to connect us with
+  TAF; off-list reply sent with the PeeringDB-vs-measured comparison. Tevita
+  Navila has left TAF; ISOC says a new TAF person is coming, name unknown.
+  Waiting on Savenaca's introduction.
 - [ ] **Digicel Vanuatu, AS132429 (VU): "Request: hosting a RIPE Atlas probe
   on Digicel Vanuatu (AS132429)" (10-21) was rejected by the RDAP group,
   which only accepts internal senders (5.7.133).** The route is Mark Duffell
