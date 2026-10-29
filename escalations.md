@@ -460,3 +460,10 @@ Corridors `auto_classify.py`'s mechanical rules couldn't confidently resolve on 
 - detail: probe 60689: loop involving address 168.123.136.7, not in known_anomalies.py
 - flagged: 2026-10-29T15:17:13.068192+00:00
 
+## AS9249 (VU) -> AS17993 (WS) -- parked measurement retried 3 nights against a Failed Atlas measurement
+- measurement: 228276817
+- reason: unattended daily check -- the parked-measurement retry treated an Atlas-Failed measurement as a classify error and spent all 3 attempts on it
+- detail: Atlas reports 228276817 (probe 64783, National University of Vanuatu, to 110.5.112.1) as status Failed (id 7), created 2026-10-27T15:10:29Z, stopped 2026-10-27T15:16:00Z, participant_count 1, results endpoint returns []. No data/atlas/raw or data/atlas/parsed file was ever written for it, so the 10-28, 10-29 and 10-30 nightly runs each raised `[Errno 2] No such file or directory: 'data/atlas/parsed/228276817.json'` (with traceback) and re-parked it; the 10-30 run dropped it after attempt 3. The corridor is left untested and will be fired fresh. Probe 64783 is Connected again since 2026-10-29T03:43:59Z, so the failure was most likely a probe outage, not a corridor property.
+- proposed correction: when collecting a parked measurement, check its Atlas status first; on Failed/Stopped with zero results, drop it at once (or record it as no-data) instead of re-parking it and logging a traceback for three nights. Code change for the owner to decide; no data change needed.
+- flagged: 2026-10-29T21:31:32Z
+
