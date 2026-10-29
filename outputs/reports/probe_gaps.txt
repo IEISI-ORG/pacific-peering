@@ -90,10 +90,10 @@ ADEQUATE -- 2+ connected probes (6/20):
       Probes: 3 listed, 2 actually useful
         Useful (Connected): 1008228, 1008229
         Not useful yet -- fix the data or get it back online: 3630 (Abandoned)
-  NC  New Caledonia (5 connected)
-      Probes: 23 listed, 5 actually useful
-        Useful (Connected): 7018, 33674, 61210, 63050, 1008625
-        Not useful yet -- fix the data or get it back online: 301 (Abandoned), 1089 (Abandoned), 6162 (Written Off), 15626 (Abandoned), 17007 (Abandoned), 17164 (Abandoned), 21812 (Abandoned), 22638 (Abandoned), 22662 (Written Off), 22663 (Never Connected), 22665 (Abandoned), 22669 (Abandoned), 22701 (Abandoned), 22821 (Abandoned), 24235 (Abandoned), 33962 (Never Connected), 33984 (Abandoned), 1005847 (Abandoned)
+  NC  New Caledonia (4 connected)
+      Probes: 23 listed, 4 actually useful
+        Useful (Connected): 7018, 33674, 61210, 63050
+        Not useful yet -- fix the data or get it back online: 301 (Abandoned), 1089 (Abandoned), 6162 (Written Off), 15626 (Abandoned), 17007 (Abandoned), 17164 (Abandoned), 21812 (Abandoned), 22638 (Abandoned), 22662 (Written Off), 22663 (Never Connected), 22665 (Abandoned), 22669 (Abandoned), 22701 (Abandoned), 22821 (Abandoned), 24235 (Abandoned), 33962 (Never Connected), 33984 (Abandoned), 1005847 (Abandoned), 1008625 (Disconnected)
       Local IXP: CAN'L IX (NOUMEA) -- members: AS17480, AS45345, AS131248, AS134405, AS149520
   PF  French Polynesia (7 connected)
       Probes: 10 listed, 7 actually useful
@@ -145,7 +145,7 @@ PATHWAY COVERAGE (20 economies) -- same table as the main report's Pathway Cover
   VU  Vanuatu (Melanesia) -- 10 ASN(s), 5 listed / 1 active probe(s) on a tracked ASN, 1 untested pathway(s)
   FM  Micronesia, Federated States of (Micronesia) -- 6 ASN(s), 5 listed / 3 active probe(s) on a tracked ASN, 0 untested pathway(s)
   GU  Guam (Micronesia) -- 10 ASN(s), 14 listed / 6 active probe(s) on a tracked ASN, 0 untested pathway(s)
-  NC  New Caledonia (Melanesia) -- 17 ASN(s), 19 listed / 5 active probe(s) on a tracked ASN, 0 untested pathway(s)
+  NC  New Caledonia (Melanesia) -- 17 ASN(s), 19 listed / 4 active probe(s) on a tracked ASN, 0 untested pathway(s)
 
   Note: this section's "listed"/"active" counts only probes hosted on one of this project's own tracked in-scope ASNs -- a different, stricter question than the ZERO/FRAGILE/ADEQUATE breakdown above, which counts any physically-connected probe in the country. A country can show >=1 active above and 0 here (e.g. a probe hosted on a Starlink ASN, or on an ASN registered to a different country) -- that's expected, not a data-quality problem.
 

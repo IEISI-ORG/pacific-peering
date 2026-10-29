@@ -448,3 +448,15 @@ Corridors `auto_classify.py`'s mechanical rules couldn't confidently resolve on 
 - detail: probe 329: router hub: hop 11 154.54.28.189 be9852.ccr22.pdx01.atlas.cogentco.com -> Portland, 116.318ms (floor 90.97ms, ok); probe 64953: router hub: hop 13 154.54.43.13 be3670.ccr22.sfo01.atlas.cogentco.com -> San Francisco, 141.1ms (floor 92.95ms, ok) -- probes leave the region through different cities; needs a human read, not a detour
 - flagged: 2026-10-28T15:10:19.176715+00:00
 
+## AS7131 (GU) -> AS17456 (GU)
+- measurement: 229249301
+- reason: local IXP crossing with implausibly high latency
+- detail: probe 60689: hop 8 crosses MARIIX (in-fishbowl) at 10.067ms, above the 10.0ms local-fiber threshold -- either this hop isn't genuinely local despite the registry, or there's an unexpected detour/backhaul before reaching it; needs a human look, not a guess
+- flagged: 2026-10-29T15:07:32.078050+00:00
+
+## AS7131 (GU) -> AS395400 (GU)
+- measurement: 229251973
+- reason: unrecognized routing loop
+- detail: probe 60689: loop involving address 168.123.136.7, not in known_anomalies.py
+- flagged: 2026-10-29T15:17:13.068192+00:00
+

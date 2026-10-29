@@ -1,6 +1,6 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-10-28T15:22:52.491981+00:00                  
+                 Generated: 2026-10-29T15:17:17.731723+00:00                  
 ==============================================================================
 FOUND A BUG? Bugs very likely remain in both the code and the data.
 Please open an issue: https://github.com/IEISI-ORG/pacific-peering/issues/new
@@ -11,9 +11,9 @@ SUMMARY
 HEADLINE: 57% of the real peering points this region's own networks use sit OUTSIDE the fish bowl (13 of 23)
 
 PATHWAYS (every corridor with a filed finding, of any kind):
-  Total pathways found:                    268
+  Total pathways found:                    269
   Internal (never leave the fish bowl):    91
-  External / Leaves the region:            177
+  External / Leaves the region:            178
   (full corridor-by-corridor detail -- every confirmed detour, confirmed local transit, and candidate peering entry -- is in the appendix at the end of this report, not repeated here)
 
 Economies in scope:            20
@@ -109,11 +109,11 @@ The mirror image of the regional hubs above: the real external cities where conf
 
 City           Entries  Share Carriers Subregions reached            
 ------------------------------------------------------------------------------
-Sydney             109    62%       25 Melanesia, Micronesia, Polynesia
+Sydney             109    61%       25 Melanesia, Micronesia, Polynesia
     Dependent economies: AS, FJ, KI, MH, NC, NR, PG, PW, SB, TO, VU, WS
 Los Angeles         38    21%        8 Melanesia, Micronesia, Polynesia
     Dependent economies: FJ, FM, GU, KI, MH, NR, PF, VU, WF
-Tokyo               22    12%        9 Melanesia, Micronesia, Polynesia
+Tokyo               23    13%        9 Melanesia, Micronesia, Polynesia
     Dependent economies: AS, FJ, GU, KI, MH, NC, NR, PW, SB, VU, WF
 San Jose             5     3%        1 Polynesia
     Dependent economies: AS
@@ -122,7 +122,7 @@ Portland             2     1%        1 Polynesia
 Honolulu             1     1%        1 Polynesia
     Dependent economies: AS
 
-Just the top 3 cities above account for 95% of every confirmed detour this project has recorded -- almost the entire region's out-of-fishbowl traffic funnels through three physical places.
+Just the top 3 cities above account for 96% of every confirmed detour this project has recorded -- almost the entire region's out-of-fishbowl traffic funnels through three physical places.
 
 FINDINGS: SATELLITE OPERATOR PATHWAYS
 ==============================================================================
@@ -225,7 +225,7 @@ Measurements: {'v4': [228282907, 228284148], 'v6': [228284356, 228285629]}. Deta
 
 IPV6 COVERAGE (adoption signal only -- no IPv6 testing yet)
 ==============================================================================
-45 of 162 in-scope ASNs have >=1 RIS-observed IPv6-originated prefix. 10 of 38 connected Atlas probes work over IPv6 (3 more are IPv6-capable but tagged as not working). Adoption tracking only -- this project deliberately isn't testing IPv6 corridors yet; queued until adoption has advanced further (see TODO below).
+45 of 162 in-scope ASNs have >=1 RIS-observed IPv6-originated prefix. 8 of 37 connected Atlas probes work over IPv6 (3 more are IPv6-capable but tagged as not working). Adoption tracking only -- this project deliberately isn't testing IPv6 corridors yet; queued until adoption has advanced further (see TODO below).
 CC   Name                      ASNs  w/ IPv6
 ------------------------------------------------------------------------------
 AS   American Samoa               2        1
@@ -252,7 +252,7 @@ IXPS (registered exchanges, this project's confirmed classification)
 Name                         City             CC   In fishbowl  Members Verified  Economies
 ------------------------------------------------------------------------------
 Any2West                     Los Angeles and  US   False              4       11  GU, MP, PF
-BBIX Tokyo                   Tokyo            JP   False              4        7  GU, MP, PW
+BBIX Tokyo                   Tokyo            JP   False              4        8  GU, MP, PW
 CAN'L IX                     NOUMEA           NC   True               5        1  NC
 DRF IX                       Honolulu         US   False              2        0  AS, PF
 EdgeIX - Auckland            Auckland         NZ   False              1        0  WS
@@ -299,7 +299,7 @@ PG   Papua New Guinea                 Melanesia       41      10       1        
 VU   Vanuatu                          Melanesia       10       5       1         1
 FM   Micronesia, Federated States of  Micronesia       6       5       3         0
 GU   Guam                             Micronesia      10      14       6         0
-NC   New Caledonia                    Melanesia       17      19       5         0
+NC   New Caledonia                    Melanesia       17      19       4         0
 
 APPENDIX: LOW DATA QUALITY ISSUES (7 known, resolved)
 ==============================================================================
@@ -419,7 +419,7 @@ MH      64237 AS14593   Connected     Starlink (AS14593): satellite egress via S
 PF      23002 AS2200    Connected     Renater (AS2200): backhauls straight to metropolitan France (~500ms), never touches Pacific transit
 TO      11691 AS24390   Connected     ASN registered Fiji but probe physically in Tonga (geo-audit): counts as a TO vantage point, not FJ; USP (AS24390, registered FJ): regional academic network via AARNet (Australia), not a local commercial carrier; valid source, path unverified
 
-APPENDIX: FULL CORRIDOR DETAIL (268 pathways -- see the PATHWAYS summary at the top of this report for the plain counts)
+APPENDIX: FULL CORRIDOR DETAIL (269 pathways -- see the PATHWAYS summary at the top of this report for the plain counts)
 ==============================================================================
 
 Confirmed sub-optimal routes (RIS + Atlas both agree)
@@ -558,7 +558,7 @@ PW -> WS (AS17993): detours via AS174 (Cogent Communications) -- international t
     Palau NCC (AS17893) -> Vodafone Samoa Limited (AS17993) -- a fresh PW<->WS pair, a second independent confirmation of the AS174(Cogent)<->AS17993 adjacency (after GU). Only one probe responded and the destination IP never answered, but the second-to-last hop resolves directly to AS17993 by RIS BGP lookup, so the adjacency is fully contiguous. `AS17893 -> AS174 -> AS17993`, RIS-agreeing with the identical *exact* match (1,455). **Geolocated with `hop_geolocation` for the first time on this specific corridor**: the Cogent hops (`ccr71.syd01.atlas.cogentco.com`, `agr51.syd01.atlas.cogentco.com`) resolve to Sydney -- confirming, with real hop-level PTR evidence, the carrier-facility guess the earlier GU entry had used for the same 'Sydney' hub. Added a new `syd` pattern to `hop_geolocation.py` from this measurement.
 TO -> WS (AS17993): detours via Equinix Sydney (Sydney)
     RIS observation count: 0  [measurement 213458474]
-    measurement 213458474 (from TO); chain: AS24390 -> AS7575 -> AS17993; RIS disagrees.
+    measurement 213458474 (from TO); chain: AS24390 -> AS7575 -> AS17993; RIS disagrees. measurement 229251264 (from TO); chain: AS24390 -> AS7575 -> AS17993; RIS disagrees.
 TV -> WS (AS17993): detours via Equinix Sydney (Sydney)
     RIS observation count: 150  [measurement 212054917]
     Tuvalu (AS23917) -> Vodafone Samoa Limited (AS17993) -- a fresh TV<->WS pair, a fourth independent confirmation of the AS6939(Hurricane Electric)<->AS17993 adjacency (after MP, PF, CK): `AS23917 -> AS9241 (FINTEL) -> AS6939 -> AS17993`, fully contiguous, RIS-agreeing with the identical exact match (150). Both AS6939 and AS17993 resolve via `peeringdb_netixlan` directly at **Equinix Sydney** (`ixp_crossings` confirms both hops), the same clean, no-gap shape as the AS17480 entry this same tranche -- Tuvalu's own path (via FINTEL, then Hurricane Electric) reaching straight into the target's registered LAN prefix with no dead end.
@@ -576,7 +576,7 @@ NU -> AS (AS23657): detours via AS17993 (Vodafone Samoa) (Sydney)
     Third confirmation of AS17993<->AS23657 (after NC, FM). `AS55885 -> AS9471 -> AS6939 -> AS17993 -> AS23657`, RIS agrees exactly (329). `has_routing_loop` False.
 TO -> AS (AS23657): detours via Equinix Sydney (Sydney)
     RIS observation count: 329  [measurement 213458807]
-    measurement 213458807 (from TO); chain: AS24390 -> AS7575 -> AS17993 -> AS23657; RIS count 329; RIS agrees.
+    measurement 213458807 (from TO); chain: AS24390 -> AS7575 -> AS17993 -> AS23657; RIS count 329; RIS agrees. measurement 229251872 (from TO); chain: AS24390 -> AS7575 -> AS2914 -> AS174 -> AS23657; RIS count 1118; RIS agrees.
 CK -> FJ (AS24390): detours via Any2West (Los Angeles)
     RIS observation count: 337  [measurement 211738209]
     Cook Islands (AS10131) -> University of the South Pacific's own network (AS24390) -- a fresh CK<->FJ pair, a third independent confirmation of the AS7575(AARNet)<->AS24390 adjacency (after MP via OneQode and PF via Hurricane Electric/Any2West). Only 1 of 3 requested probes returned; checked `participant_count` directly (1, not 3) -- the same genuine single-probe pattern as every other AS10131-sourced measurement this session. Result: `AS10131 -> AS9471 (ONATI) -> AS6939 (Hurricane Electric) -> AS7575`, target never resolved (ordinary ICMP filtering), RIS-agreeing with the identical *exact* match (337). Crosses **Any2West** directly (`ixp_crossings` confirms it, a real hop-level LAN-prefix match, not a carrier-level guess) -- the same exchange as the PF entry, and the same ONATI-transit shape seen on every AS10131-sourced corridor this tranche cycle.
@@ -951,6 +951,9 @@ NU -> NR (AS152706): detours via AS3257 (GTT), then AS6453 (Tata Communications)
 VU -> NR (AS152706): detours via AS4637 (Telstra Global), then AS6453 (Tata Communications) -- international transit (Tokyo)
     RIS observation count: 292  [measurement 211657025]
     Telecom Vanuatu (AS9249) -> Neotel (AS152706, Nauru) -- a fresh VU<->NR pair, a second independent confirmation of the AS6453(Tata)<->AS152706 adjacency (after the GU entry via IIJ/Tokyo). Path: `AS9249 -> AS38442 (Vodafone Fiji) -> AS4637 (Telstra Global) -> AS6453`, upstream of the target, RIS-agreeing with the identical *exact* match (292). No IXP crossing this time (`ixp_crossings` empty for both probes); checked Tata's real PeeringDB facility list before keeping the hub -- genuine presence at both Equinix Tokyo and Sydney, so kept `detour_hub` as Tokyo, matching the original entry.
+GU -> GU (AS152735): detours via BBIX Tokyo (Tokyo)
+    RIS observation count: 320  [measurement 229248161]
+    measurement 229248161 (from GU); chain: AS9246 -> AS6939 -> AS7131 -> AS152735; RIS count 320; RIS agrees.
 FM -> WS (AS153053): detours via AS4637 (Telstra Global), then AS45177 and AS18400 (Sydney)
     RIS observation count: 382  [measurement 212143021]
     **First-ever confirmation for this target**: AS18400<->AS153053 (Lesamoa.net), directly RIS-confirmed. A long, genuinely deep traceroute (22-25 real hops) reaching the target directly on all 3 probes: `AS139759 -> AS9246 -> AS4637 -> AS45177 -> AS18400 -> AS153053`, RIS agrees exactly (382). `has_routing_loop` False on all 3 once the correct target IP was checked -- an earlier internal processing pass wrongly flagged all 3 probes as loops by omitting the target IP from the check; caught and corrected before filing (one benign consecutive-address repeat mid-path, ordinary ECMP noise, not a real loop, since the target was cleanly reached).
@@ -983,7 +986,7 @@ AS9471 (ONATI (Office des Postes et Telecommunications), PF) -> AS10131 (Telecom
     AS9471 has 6 connected Atlas probes -- the most of any ASN in the registry -- but had never been used as a traceroute *source* until this tranche; picked as a well-motivated corridor because AS10131 (Cook Islands)'s own RIS neighbor list already showed AS55943 -- ONATI's other, previously-established sibling ASN (see the Niue<->ONATI entry above) -- as its second-largest neighbor (658 observations), a real relationship flagged but never directly tested since the Cook Islands/SES Astra tranche a few loops ago. Sourced directly from AS9471 toward AS10131's own address. Result: all 3 probes show an almost entirely private-address path -- RFC1918 hops (10.x.x.x, 192.168.x.x) the whole way, except for one public transit IP (103.254.224.70) that resolves cleanly to AS9471 itself (checked directly via RIPEstat, not assumed), before landing directly on AS10131's own address. **Initially read as inconclusive (`contiguous: false`) before investigation** -- every private hop sat between two points already independently confirmed as AS9471's own address space, so there was no real unknown intermediary, just private addressing the resolver couldn't yet distinguish from a genuinely-unresolvable public hop. Per the project owner: several Pacific carriers don't have enough public IPv4 for their own internal infrastructure and route through private space for it -- this measurement is the concrete case that motivated fixing `traceroute_topology.extract_as_sequence` to treat RFC1918/private hops as transparent rather than gap-inducing (see task_plan.md). Re-run under the fix: fully `contiguous: true` for all 3 probes -- effectively a direct, single-AS-hop path from ONATI to Telecom Cook Islands, with no caveat needed anymore. And exactly as the Niue precedent established, RIS's real confirmation of this relationship comes via AS9471's sibling identity, AS55943 (658 observations -- an *exact* match), not the literal AS9471 number the traceroute resolves to. Recorded as confirmed on that same, now twice-independently-applied sibling-ASN basis. **A genuinely different kind of corroboration surfaced from the corridor backlog (measurement 211393633, GU/AS3605 -> CK/AS10131, pulled as a fresh GU<->CK economy pair, not aimed at this relationship deliberately)**: both probes reach Cook Islands via AS3605 -> AS2497 (IIJ, Japan) -> AS3257 (GTT) -> **AS9471** -> AS10131 -- landing on this exact same already-confirmed adjacency as the last leg of a completely different source's path. Unlike every other detour finding this session, the transit waypoint here (AS9471/ONATI) is itself an in-scope, in-fishbowl Pacific carrier, not an external AU/NZ/JP/US hub -- Guam's traffic reaches Cook Islands by transiting through French Polynesia's own network, not by leaving the region for its final leg (only the Tokyo/GTT hop to *reach* ONATI is external). Real evidence that ONATI isn't just Cook Islands' own upstream -- it's a waypoint other Pacific economies' traffic actually transits through, a small but genuine data point for regional-hub structure within the fishbowl itself. Not a new entry -- the confirmed adjacency is identical to the one already on record here -- but real, independent reinforcement from a second, unrelated source path. **A third, independent reinforcement** (measurement 211546477, MP/AS7131 -> CK/AS10131, pulled from the corridor backlog as a fresh MP<->CK economy pair): both probes land on the identical adjacency again -- AS7131 -> AS174 (Cogent) -> AS3257 (GTT) -> **AS9471** -> AS10131 -- a third distinct source economy (after ONATI's own vantage point and Guam) confirming the same last-leg transit through French Polynesia's network. Not a new entry; same sibling-ASN basis (RIS confirms via AS55943, 658 observations, exact match). **A fourth, independent reinforcement** (measurement 211616908, VU/AS9249 -> CK/AS10131, the first AS9249-sourced firing to reach a target directly): AS9249 -> AS38442 (Vodafone Fiji) -> AS4637 (Telstra Global) -> AS3257 (GTT) -> **AS9471** -> AS10131, landing on the identical adjacency a fourth time, from a fourth distinct source economy (Vanuatu, after ONATI's own vantage point, Guam, and CNMI). Same sibling-ASN basis.
 AS3605 (Guam Cablevision, GU) -> AS17456 (Pacific Data Systems, GU)
     RIS observation count: 1333  [measurement 213205489, vantage: GU]
-    measurement 213205489 (from GU); chain: AS3605 -> AS17456; RIS count 1333; RIS agrees. measurement 213205489 (from GU); chain: AS3605 -> AS17456; RIS count 1333; RIS agrees. measurement 213206914 (from GU); chain: AS3605 -> AS17456; RIS count 1333; RIS agrees. measurement 213206910 (from GU); chain: AS3605 -> AS17456; RIS count 1333; RIS agrees.
+    measurement 213205489 (from GU); chain: AS3605 -> AS17456; RIS count 1333; RIS agrees. measurement 213205489 (from GU); chain: AS3605 -> AS17456; RIS count 1333; RIS agrees. measurement 213206914 (from GU); chain: AS3605 -> AS17456; RIS count 1333; RIS agrees. measurement 213206910 (from GU); chain: AS3605 -> AS17456; RIS count 1333; RIS agrees. measurement 229248159 (from GU); chain: AS3605 -> AS17456; RIS count 1118; RIS agrees. measurement 229248159 (from GU); chain: AS3605 -> AS17456; RIS count 1118; RIS agrees.
 AS18200 (Office des Postes et Telecommunications New-Caledonia, NC) -> AS17480 (CANL, NC)
     RIS observation count: 1665  [measurement 213187776, vantage: NC]
     measurement 213187776 (from NC); chain: AS45345 -> AS18200 -> AS17480; RIS count 1665; RIS agrees. measurement 213187776 (from NC); chain: AS45345 -> AS18200 -> AS17480; RIS count 1665; RIS agrees. measurement 213458821 (from NC); chain: AS45345 -> AS18200 -> AS17480; RIS count 1665; RIS agrees. measurement 213458821 (from NC); chain: AS45345 -> AS18200 -> AS17480; RIS count 1665; RIS agrees. measurement 217920678 (from NC); chain: AS141197 -> AS18200 -> AS17480; RIS count 1665; RIS agrees. measurement 228736777 (from PF); chain: AS6939 -> AS18200 -> AS17480; RIS count 1393; RIS agrees. measurement 228736777 (from PF); chain: AS6939 -> AS18200 -> AS17480; RIS count 1393; RIS agrees. measurement 228736777 (from PF); chain: AS6939 -> AS18200 -> AS17480; RIS count 1393; RIS agrees.
@@ -1125,7 +1128,7 @@ Candidate peering (strong traceroute signal, RIS disagrees -- unconfirmed)
 ==============================================================================
 AS7131 (PTI Pacifica Inc., MP) -> AS3605 (Guam Cablevision, GU)
     Traceroute agreement: 2/2 probes  [measurement 213204604, vantage: GU]
-    measurement 213204604 (from GU); chain: AS7131 -> AS3605; RIS disagrees. measurement 213204604 (from GU); chain: AS7131 -> AS3605; RIS disagrees. measurement 213204605 (from GU); chain: AS7131 -> AS3605; RIS disagrees. measurement 213204605 (from GU); chain: AS7131 -> AS3605; RIS disagrees.
+    measurement 213204604 (from GU); chain: AS7131 -> AS3605; RIS disagrees. measurement 213204604 (from GU); chain: AS7131 -> AS3605; RIS disagrees. measurement 213204605 (from GU); chain: AS7131 -> AS3605; RIS disagrees. measurement 213204605 (from GU); chain: AS7131 -> AS3605; RIS disagrees. measurement 229248164 (from GU); chain: AS7131 -> AS3605; RIS disagrees. measurement 229248164 (from GU); chain: AS7131 -> AS3605; RIS disagrees.
 AS17893 (Palau National Communications Corp, PW) -> AS3605 (Guam Cablevision, LLC, GU)
     Traceroute agreement: 1/1 probe  [measurement 211067648, vantage: PW]
     The direct followup to the AS3605 lead above, this time sourced from Palau itself: a connected Atlas probe on AS17893 was found via the new ASN probe registry (`atlas.asn_probes`), letting this project source a traceroute from Palau for the first time all session. Fired AS17893 -> AS3605's own address directly. Result: the single cleanest adjacency this project has observed -- fully contiguous, *zero* gap, immediately AS17893 then AS3605, and the crossing hop lands inside **GU-IX**'s registered LAN prefix (ix_id 463, in fishbowl). Unlike most of this project's IXP-crossing evidence, AS3605's GU-IX membership isn't just inferred from the traceroute -- PeeringDB independently lists it as a real GU-IX member already. Still `ris_agrees: false`: AS3605's real RIS neighbor list (22 ASNs, none of them 17893) doesn't include this adjacency. Given (a) a fully contiguous single hop with no ambiguity at all, (b) AS3605's GU-IX presence confirmed independently of this measurement, and (c) this is exactly the corridor AS3605's own IRR AS-SET declared -- this reads as the strongest hidden-peering candidate in the project so far, per Validation Rule 4: a real, physically-instantiated local peering session at GU-IX that simply isn't announced anywhere RIS's route collectors can see it. Kept as a candidate, not promoted to confirmed, on principle -- Validation Rule 1 doesn't bend for how clean a single traceroute looks, no matter how compelling the corroborating evidence. The reverse direction (AS3605 sourcing toward AS17893) is already on record as a *different* finding -- see `confirmed_detours.CONFIRMED_DETOURS`'s GU->PW entry: AS3605's own outbound routing uses conventional Tokyo/Cogent transit, not this GU-IX-local path, a genuine asymmetry rather than a contradiction.
@@ -1170,7 +1173,7 @@ AS17456 (Pacific Data Systems, GU) -> AS23676 (Mariana Islands Internet Exchange
     measurement 213206915 (from GU); chain: AS3605 -> AS17456 -> AS23676; RIS disagrees. measurement 213206920 (from GU); chain: AS17456 -> AS23676; RIS disagrees. measurement 213206920 (from GU); chain: AS3605 -> AS17456 -> AS23676; RIS disagrees. measurement 213206920 (from GU); chain: AS3605 -> AS17456 -> AS23676; RIS disagrees. measurement 213207618 (from GU); chain: AS3605 -> AS17456 -> AS23676; RIS disagrees. measurement 213207619 (from GU); chain: AS3605 -> AS17456 -> AS23676; RIS disagrees. measurement 217920667 (from GU); chain: AS17456 -> AS23676; RIS disagrees.
 AS7131 (PTI Pacifica Inc., MP) -> AS23676 (Mariana Islands Internet Exchange, GU)
     Traceroute agreement: 1/2 probes  [measurement 213206915, vantage: GU]
-    measurement 213206915 (from GU); chain: AS7131 -> AS23676; RIS disagrees. measurement 213207618 (from GU); chain: AS7131 -> AS23676; RIS disagrees. measurement 213207619 (from GU); chain: AS7131 -> AS23676; RIS disagrees. measurement 213207619 (from GU); chain: AS7131 -> AS23676; RIS disagrees.
+    measurement 213206915 (from GU); chain: AS7131 -> AS23676; RIS disagrees. measurement 213207618 (from GU); chain: AS7131 -> AS23676; RIS disagrees. measurement 213207619 (from GU); chain: AS7131 -> AS23676; RIS disagrees. measurement 213207619 (from GU); chain: AS7131 -> AS23676; RIS disagrees. measurement 229250592 (from GU); chain: AS7131 -> AS23676; RIS disagrees. measurement 229250592 (from GU); chain: AS7131 -> AS23676; RIS disagrees.
 AS6939 (Hurricane Electric, US) -> AS23676 (University of Guam, GU)
     Traceroute agreement: 1/1 probe  [measurement 212141106, vantage: NU]
     NU(AS55885) -> AS23676 (University of Guam): `AS55885 -> AS9471 -> AS6939 -> AS23676`, but `ris_agrees: false` -- checked AS23676's real RIS neighbor list directly: AS395400 (University of Guam's *other* ASN, already established elsewhere in this project) is dominant (380 of 380 observations). Real signal, one hop off from the real relationship. `has_routing_loop` False.
@@ -1250,10 +1253,10 @@ AS3257 (GTT Communications, US) -> AS132797 ((Vanuatu ASN), VU)
     NU(AS55885) -> AS132797: `AS55885 -> AS9471 -> AS3257 (GTT) -> AS132797`, but `ris_agrees: false` -- checked AS132797's real RIS neighbor list directly: AS133383 is its only real neighbor (331 of 331 observations) -- a domestic Vanuatu adjacency (AS133383 is itself confirmed this same batch as AS45495's real customer), not GTT. Real signal, wrong immediate carrier. `has_routing_loop` False.
 AS9249 (Telecom Vanuatu Limited, VU) -> AS132797 (Vanuatu Internet Exchange (VIX), VU)
     Traceroute agreement: 2/2 probes  [measurement 213196571, vantage: VU]
-    measurement 213196571 (from VU); chain: AS9249 -> AS132797; RIS disagrees. measurement 213196571 (from VU); chain: AS9249 -> AS132797; RIS disagrees.
+    measurement 213196571 (from VU); chain: AS9249 -> AS132797; RIS disagrees. measurement 213196571 (from VU); chain: AS9249 -> AS132797; RIS disagrees. measurement 229248163 (from VU); chain: AS9249 -> AS132797; RIS disagrees.
 AS132228 (Vanuatu Government, VU) -> AS133383 (Vanuatu Government, VU)
     Traceroute agreement: 2/2 probes  [measurement 213197674, vantage: VU]
-    measurement 213197674 (from VU); chain: AS9249 -> AS132228 -> AS133383; RIS disagrees. measurement 213197674 (from VU); chain: AS9249 -> AS132228 -> AS133383; RIS disagrees.
+    measurement 213197674 (from VU); chain: AS9249 -> AS132228 -> AS133383; RIS disagrees. measurement 213197674 (from VU); chain: AS9249 -> AS132228 -> AS133383; RIS disagrees. measurement 229249276 (from VU); chain: AS9249 -> AS132228 -> AS133383; RIS disagrees.
 AS45345 (Nautile, NC) -> AS136402 (Nautile SARL, NC)
     Traceroute agreement: 3/3 probes  [measurement 213198674, vantage: NC]
     measurement 213198674 (from NC); chain: AS45345 -> AS136402; RIS disagrees. measurement 213198674 (from NC); chain: AS45345 -> AS136402; RIS disagrees. measurement 213198674 (from NC); chain: AS45345 -> AS136402; RIS disagrees. measurement 213460360 (from NC); chain: AS45345 -> AS136402; RIS disagrees. measurement 213460360 (from NC); chain: AS45345 -> AS136402; RIS disagrees.
@@ -1287,7 +1290,7 @@ AS17456 (Pacific Data Systems, GU) -> AS152735 (Guam Exchange, GU)
     measurement 213209042 (from GU); chain: AS17456 -> AS152735; RIS disagrees.
 AS7131 (PTI Pacifica Inc., MP) -> AS395400 (University of Guam, GU)
     Traceroute agreement: 2/3 probes  [measurement 213209267, vantage: GU]
-    measurement 213209267 (from GU); chain: AS7131 -> AS395400; RIS disagrees. measurement 213209267 (from GU); chain: AS7131 -> AS395400; RIS disagrees. measurement 213209268 (from GU); chain: AS7131 -> AS395400; RIS disagrees. measurement 213209280 (from GU); chain: AS7131 -> AS395400; RIS disagrees. measurement 213209280 (from GU); chain: AS7131 -> AS395400; RIS disagrees.
+    measurement 213209267 (from GU); chain: AS7131 -> AS395400; RIS disagrees. measurement 213209267 (from GU); chain: AS7131 -> AS395400; RIS disagrees. measurement 213209268 (from GU); chain: AS7131 -> AS395400; RIS disagrees. measurement 213209280 (from GU); chain: AS7131 -> AS395400; RIS disagrees. measurement 213209280 (from GU); chain: AS7131 -> AS395400; RIS disagrees. measurement 229251973 (from GU); chain: AS7131 -> AS395400; RIS disagrees. measurement 229251973 (from GU); chain: AS7131 -> AS395400; RIS disagrees.
 
 ABOUT THIS PROJECT
 ==============================================================================
