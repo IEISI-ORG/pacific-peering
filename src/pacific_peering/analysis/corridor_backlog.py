@@ -118,6 +118,26 @@ DOMESTIC_WHOLESALE_ONLY_ASNS = frozenset(
     }
 )
 
+# Sibling ASNs of one operator that run as one network: a corridor between
+# them traces that operator's internal routing, not an interconnection, so
+# it's skipped like source == target. Per the project owner (2026-10-31):
+# "they both upstream to AS18200 as well, they are effectively the same
+# network". Only verified groups belong here: same APNIC org object, and
+# the traces confirm it.
+SAME_NETWORK_ASN_GROUPS: tuple[frozenset[int], ...] = (
+    # Nautile (NC): AS45345 NAUTILE-NC-AS-AP and AS136402 NTL-NC-AS-AP, both
+    # ORG-NS1-AP / MAINT-NAUTILE-NC, each with OPT-NC (AS18200) as its only
+    # RIS neighbour. Nautile's probes reach 45.114.232.1 inside Noumea in
+    # 0.4-1.5ms with no OPT hop. Finding #221 (filed as candidate peering
+    # AS45345 -> AS136402) was deleted for this reason.
+    frozenset({45345, 136402}),
+)
+
+
+def _same_network(a: int, b: int) -> bool:
+    """True if `a` and `b` are the same ASN or siblings in one `SAME_NETWORK_ASN_GROUPS` entry."""
+    return a == b or any(a in group and b in group for group in SAME_NETWORK_ASN_GROUPS)
+
 # Economies explicitly opted into domestic (same-economy) corridor testing --
 # an intentional exception to the cross-economy-only scope below. Per the
 # project owner: this project's whole point is measuring local peering
@@ -399,7 +419,7 @@ def enumerate_candidate_corridors(
     for source_asn, source_cc in source_pairs:
         source_name = ECONOMIES_BY_CC[source_cc].name if source_cc in ECONOMIES_BY_CC else "??"
         for target_asn in target_asns:
-            if source_asn == target_asn:
+            if _same_network(source_asn, target_asn):
                 continue
             target_cc = asn_cc.get(target_asn)
             if target_cc is None:

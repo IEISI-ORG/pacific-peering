@@ -6,6 +6,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ## [Unreleased]
 
 ### Changed
+- Finding #221 (candidate peering NC, AS45345 Nautile -> AS136402 Nautile SARL) is deleted: the two ASNs are one operator's network (same APNIC org ORG-NS1-AP and maintainer, OPT-NC AS18200 as each one's only RIS neighbour), so the traces showed Nautile's internal routing, not peering. Owner, 2026-10-31: "effectively the same network". `corridor_backlog.SAME_NETWORK_ASN_GROUPS` now skips corridors between sibling ASNs like source == target. Report pathways 269 -> 268 (2026-10-31).
 - AS152655 (Digicel PNG) is excluded as `offshore_hosted`: its only prefix, 14.192.75.0/24, terminates in Australia behind SES (AS12684), and all 24 live hosts answer at ground-side RTT. Digicel's main AS58460 stays in scope (2026-10-27).
 - TFL's last link before FNPF (202.62.124.40/30, AS4638) is a known loop location: the `.41 .42 * .42` tail is FNPF's filtered edge, reproduced from 17/23 probes on an alternate address (measurement 228090126), with a regression test frozen from 227408126. AS151398 (Credit Corp PNG) joins `SCREEN_ACKNOWLEDGED`: Cloudflare Magic Transit to an origin in PNG (2026-10-27).
 - `parse_traceroute_results` now requires `msm_id` and `prb_id` on each Atlas result; a result missing them fails at parse time instead of carrying `None` downstream (2026-10-27).

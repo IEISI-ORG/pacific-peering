@@ -1,6 +1,6 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-10-30T15:35:41.665153+00:00                  
+                 Generated: 2026-10-30T22:20:33.188203+00:00                  
 ==============================================================================
 FOUND A BUG? Bugs very likely remain in both the code and the data.
 Please open an issue: https://github.com/IEISI-ORG/pacific-peering/issues/new
@@ -11,8 +11,8 @@ SUMMARY
 HEADLINE: 57% of the real peering points this region's own networks use sit OUTSIDE the fish bowl (13 of 23)
 
 PATHWAYS (every corridor with a filed finding, of any kind):
-  Total pathways found:                    269
-  Internal (never leave the fish bowl):    91
+  Total pathways found:                    268
+  Internal (never leave the fish bowl):    90
   External / Leaves the region:            178
   (full corridor-by-corridor detail -- every confirmed detour, confirmed local transit, and candidate peering entry -- is in the appendix at the end of this report, not repeated here)
 
@@ -419,7 +419,7 @@ MH      64237 AS14593   Connected     Starlink (AS14593): satellite egress via S
 PF      23002 AS2200    Connected     Renater (AS2200): backhauls straight to metropolitan France (~500ms), never touches Pacific transit
 TO      11691 AS24390   Connected     ASN registered Fiji but probe physically in Tonga (geo-audit): counts as a TO vantage point, not FJ; USP (AS24390, registered FJ): regional academic network via AARNet (Australia), not a local commercial carrier; valid source, path unverified
 
-APPENDIX: FULL CORRIDOR DETAIL (269 pathways -- see the PATHWAYS summary at the top of this report for the plain counts)
+APPENDIX: FULL CORRIDOR DETAIL (268 pathways -- see the PATHWAYS summary at the top of this report for the plain counts)
 ==============================================================================
 
 Confirmed sub-optimal routes (RIS + Atlas both agree)
@@ -1257,9 +1257,6 @@ AS9249 (Telecom Vanuatu Limited, VU) -> AS132797 (Vanuatu Internet Exchange (VIX
 AS132228 (Vanuatu Government, VU) -> AS133383 (Vanuatu Government, VU)
     Traceroute agreement: 2/2 probes  [measurement 213197674, vantage: VU]
     measurement 213197674 (from VU); chain: AS9249 -> AS132228 -> AS133383; RIS disagrees. measurement 213197674 (from VU); chain: AS9249 -> AS132228 -> AS133383; RIS disagrees. measurement 229249276 (from VU); chain: AS9249 -> AS132228 -> AS133383; RIS disagrees.
-AS45345 (Nautile, NC) -> AS136402 (Nautile SARL, NC)
-    Traceroute agreement: 3/3 probes  [measurement 213198674, vantage: NC]
-    measurement 213198674 (from NC); chain: AS45345 -> AS136402; RIS disagrees. measurement 213198674 (from NC); chain: AS45345 -> AS136402; RIS disagrees. measurement 213198674 (from NC); chain: AS45345 -> AS136402; RIS disagrees. measurement 213460360 (from NC); chain: AS45345 -> AS136402; RIS disagrees. measurement 213460360 (from NC); chain: AS45345 -> AS136402; RIS disagrees. measurement 229795229 (from NC); chain: AS45345 -> AS136402; RIS disagrees.
 AS141197 (Pacific Community, NC) -> AS136402 (Nautile SARL, NC)
     Traceroute agreement: 1/1 probes  [measurement 217928879, vantage: NC]
     measurement 217928879 (from NC); chain: AS141197 -> AS136402; RIS disagrees.
