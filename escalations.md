@@ -467,3 +467,33 @@ Corridors `auto_classify.py`'s mechanical rules couldn't confidently resolve on 
 - proposed correction: when collecting a parked measurement, check its Atlas status first; on Failed/Stopped with zero results, drop it at once (or record it as no-data) instead of re-parking it and logging a traceback for three nights. Code change for the owner to decide; no data change needed.
 - flagged: 2026-10-29T21:31:32Z
 
+
+## AS9249 (VU) -- 103.16.15.0/24 leased or foreign-registered space
+- reason: leasing-marker check (discovery/leasing_check.py)
+- detail: registered_abroad: RIR record country AU, not VU
+- action: sweep the prefix for live hosts and ping them from AU and home-economy probes; then owner review (acknowledge, exclude the prefix as a target, or exclude the ASN)
+- flagged: 2026-10-31T15:04:13.201328+00:00
+
+## AS56017 (PF) -- 38.51.136.0/22 leased or foreign-registered space
+- reason: leasing-marker check (discovery/leasing_check.py)
+- detail: foreign_registry: held by ARIN; registered_abroad: RIR record country US, not PF
+- action: sweep the prefix for live hosts and ping them from AU and home-economy probes; then owner review (acknowledge, exclude the prefix as a target, or exclude the ASN)
+- flagged: 2026-10-31T15:04:13.201328+00:00
+
+## AS56017 (PF) -- 38.51.137.0/24 leased or foreign-registered space
+- reason: leasing-marker check (discovery/leasing_check.py)
+- detail: foreign_registry: held by ARIN; registered_abroad: RIR record country US, not PF
+- action: sweep the prefix for live hosts and ping them from AU and home-economy probes; then owner review (acknowledge, exclude the prefix as a target, or exclude the ASN)
+- flagged: 2026-10-31T15:04:13.201328+00:00
+
+## AS56017 (PF) -- 38.51.138.0/24 leased or foreign-registered space
+- reason: leasing-marker check (discovery/leasing_check.py)
+- detail: foreign_registry: held by ARIN; registered_abroad: RIR record country US, not PF
+- action: sweep the prefix for live hosts and ping them from AU and home-economy probes; then owner review (acknowledge, exclude the prefix as a target, or exclude the ASN)
+- flagged: 2026-10-31T15:04:13.201328+00:00
+
+## AS132831 (TO) -- 103.36.146.0/24 leased or foreign-registered space
+- reason: leasing-marker check (discovery/leasing_check.py)
+- detail: registered_abroad: RIR record country AU, not TO
+- action: sweep the prefix for live hosts and ping them from AU and home-economy probes; then owner review (acknowledge, exclude the prefix as a target, or exclude the ASN)
+- flagged: 2026-10-31T15:04:13.201328+00:00

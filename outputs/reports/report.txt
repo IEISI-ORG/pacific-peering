@@ -1,6 +1,6 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-10-30T22:20:33.188203+00:00                  
+                 Generated: 2026-10-31T15:04:10.996560+00:00                  
 ==============================================================================
 FOUND A BUG? Bugs very likely remain in both the code and the data.
 Please open an issue: https://github.com/IEISI-ORG/pacific-peering/issues/new
@@ -18,7 +18,7 @@ PATHWAYS (every corridor with a filed finding, of any kind):
 
 Economies in scope:            20
 ASNs in scope:                  162
-ASNs with >=1 RIS neighbor:     121
+ASNs with >=1 RIS neighbor:     120
 ASNs with >=1 IXP membership:   36
 ASNs with >=1 facility presence:20
 IXP LAN registry: 10 in-fishbowl, 13 out-of-fishbowl, 0 unconfirmed
@@ -39,12 +39,12 @@ NC   New Caledonia                    Melanesia       17    13     6     4
 NR   Nauru                            Micronesia       5     4     1     1
 NU   Niue                             Polynesia        1     1     0     0
 PF   French Polynesia                 Polynesia        6     5     1     1
-PG   Papua New Guinea                 Melanesia       41    28     9     3
+PG   Papua New Guinea                 Melanesia       40    27     9     3
 PW   Palau                            Micronesia       3     3     1     1
 SB   Solomon Islands                  Melanesia       10     9     1     0
 TO   Tonga                            Polynesia        5     4     1     0
 TV   Tuvalu                           Polynesia        3     1     0     0
-VU   Vanuatu                          Melanesia       10     8     2     1
+VU   Vanuatu                          Melanesia       11     8     2     1
 WF   Wallis and Futuna                Polynesia        1     1     0     0
 WS   Samoa                            Polynesia       10     6     2     1
 
@@ -134,8 +134,8 @@ AS14593    SpaceX Starlink                Micronesia, Polynesia
     RIS economies: KI, NR
     Traceroute-confirmed (served): KI, NR, TV
     Tested from (vantage points): FM, GU, NC, NU, PG, TV
-AS12684    SES ASTRA S.A.                 Melanesia, Micronesia, Polynesia
-    RIS economies: CK, PG
+AS12684    SES ASTRA S.A.                 Micronesia, Polynesia       
+    RIS economies: CK
     Traceroute-confirmed (served): NR
     Tested from (vantage points): CK, FJ, PF, TV
 AS135409   Kacific Broadband Satellites   Melanesia, Polynesia        
@@ -145,7 +145,7 @@ AS135409   Kacific Broadband Satellites   Melanesia, Polynesia
 
 Per-operator evidence summary, computed fresh from the current finding dataclasses every regeneration -- "served" means the economy's own reachability was confirmed to depend on this operator; "vantage points" just means a traceroute was fired from there, which is a measure of testing breadth, not reach:
 - AS14593 (SpaceX Starlink) is traceroute-confirmed reaching Kiribati (KI), Nauru (NR), Tuvalu (TV), tested from 6 distinct vantage points (Micronesia, Federated States of (FM), Guam (GU), New Caledonia (NC), Niue (NU), Papua New Guinea (PG), Tuvalu (TV)).
-- AS12684 (SES ASTRA S.A.) is traceroute-confirmed reaching Nauru (NR), tested from 4 distinct vantage points (Cook Islands (CK), Fiji (FJ), French Polynesia (PF), Tuvalu (TV)). Still untested: Cook Islands (CK), Papua New Guinea (PG) -- a real RIS-observed relationship this project has never traceroute-confirmed.
+- AS12684 (SES ASTRA S.A.) is traceroute-confirmed reaching Nauru (NR), tested from 4 distinct vantage points (Cook Islands (CK), Fiji (FJ), French Polynesia (PF), Tuvalu (TV)). Still untested: Cook Islands (CK) -- a real RIS-observed relationship this project has never traceroute-confirmed.
 - AS135409 (Kacific Broadband Satellites) is traceroute-confirmed reaching Tonga (TO), tested from 4 distinct vantage points (Fiji (FJ), Micronesia, Federated States of (FM), New Caledonia (NC), Niue (NU)). Still untested: Papua New Guinea (PG) -- a real RIS-observed relationship this project has never traceroute-confirmed.
 
 PEERINGDB DATA QUALITY
@@ -162,11 +162,11 @@ MP   Northern Mariana Islands     2       1            1       1
 NC   New Caledonia               17      11            4       6
 NR   Nauru                        5       3            1       1
 PF   French Polynesia             6       3            1       1
-PG   Papua New Guinea            41      11            3       9
+PG   Papua New Guinea            40      11            3       9
 PW   Palau                        3       1            1       1
 SB   Solomon Islands             10       2            0       1
 TO   Tonga                        5       3            0       1
-VU   Vanuatu                     10       5            1       2
+VU   Vanuatu                     11       5            1       2
 WS   Samoa                       10       3            1       2
 
 ASPA PROGRESS (RFC 9582 upstream-authorization adoption)
@@ -179,9 +179,9 @@ FJ   Fiji                        21        4            2          3
 GU   Guam                        10        1            1          0
 NC   New Caledonia               17        2            1          0
 NR   Nauru                        5        4            4          4
-PG   Papua New Guinea            41        4            1          1
+PG   Papua New Guinea            40        4            1          1
 TO   Tonga                        5        3            3          4
-VU   Vanuatu                     10        1            1          0
+VU   Vanuatu                     11        1            1          0
 WS   Samoa                       10        2            1          2
 
 ROV ENFORCEMENT (Cloudflare RPKI-invalid test, weekly)
@@ -225,7 +225,7 @@ Measurements: {'v4': [228282907, 228284148], 'v6': [228284356, 228285629]}. Deta
 
 IPV6 COVERAGE (adoption signal only -- no IPv6 testing yet)
 ==============================================================================
-45 of 162 in-scope ASNs have >=1 RIS-observed IPv6-originated prefix. 8 of 37 connected Atlas probes work over IPv6 (4 more are IPv6-capable but tagged as not working). Adoption tracking only -- this project deliberately isn't testing IPv6 corridors yet; queued until adoption has advanced further (see TODO below).
+45 of 162 in-scope ASNs have >=1 RIS-observed IPv6-originated prefix. 8 of 37 connected Atlas probes work over IPv6 (3 more are IPv6-capable but tagged as not working). Adoption tracking only -- this project deliberately isn't testing IPv6 corridors yet; queued until adoption has advanced further (see TODO below).
 CC   Name                      ASNs  w/ IPv6
 ------------------------------------------------------------------------------
 AS   American Samoa               2        1
@@ -238,12 +238,12 @@ MP   Northern Mariana Islands     2        1
 NC   New Caledonia               17       12
 NR   Nauru                        5        2
 PF   French Polynesia             6        3
-PG   Papua New Guinea            41        2
+PG   Papua New Guinea            40        2
 PW   Palau                        3        1
 SB   Solomon Islands             10        2
 TO   Tonga                        5        3
 TV   Tuvalu                       3        1
-VU   Vanuatu                     10        1
+VU   Vanuatu                     11        1
 WS   Samoa                       10        2
 
 IXPS (registered exchanges, this project's confirmed classification)
@@ -295,8 +295,8 @@ TO   Tonga                            Polynesia        5       3       1        
 FJ   Fiji                             Melanesia       21      20       2         2
 CK   Cook Islands                     Polynesia        2       6       1         1
 PF   French Polynesia                 Polynesia        6       9       6         1
-PG   Papua New Guinea                 Melanesia       41      10       1         1
-VU   Vanuatu                          Melanesia       10       5       1         1
+PG   Papua New Guinea                 Melanesia       40      10       1         1
+VU   Vanuatu                          Melanesia       11       5       1         1
 FM   Micronesia, Federated States of  Micronesia       6       5       3         0
 GU   Guam                             Micronesia      10      14       6         0
 NC   New Caledonia                    Melanesia       17      19       4         0
