@@ -98,3 +98,56 @@ def test_latest_flagged_summarises_last_complete_full_run():
     assert summary["geofeed_prefixes"] == 1
     assert [(e["asn"], e["verdict"] is not None) for e in summary["entries"]] == [(58460, True), (64500, False)]
     assert lc.latest_flagged([]) is None
+
+
+# --- 2026-11-02: a prefix with no delegation record --------------------------
+# 103.16.15.0/24 (AS9249 Telecom Vanuatu): APNIC reclaimed SPIM's assignment on
+# 2026-04-26, so RIPEstat returns only APNIC's own 103.0.0.0/8 block -- whose
+# country AU used to raise a misleading `registered_abroad`.
+_APNIC_PARENT_BLOCK = (
+    ("inetnum", "103.0.0.0/8"), ("netname", "APNIC-AP"),
+    ("descr", "Asia Pacific Network Information Centre"), ("country", "AU"),
+    ("org", "ORG-APNI3-AP"), ("status", "ALLOCATED PORTABLE"), ("mnt-by", "APNIC-HM"), ("source", "APNIC"),
+)
+
+
+def test_rir_parent_block_only_is_no_delegation_not_registered_abroad():
+    markers = lc.find_markers(_whois(records=[_APNIC_PARENT_BLOCK]), "VU")
+    assert _kinds(markers) == ["no_delegation"]
+    assert "103.0.0.0/8" in markers[0]["detail"]
+
+
+def test_a_member_assignment_maintained_by_apnic_hm_is_not_no_delegation():
+    # WanTok's 103.36.146.0/24: APNIC-HM maintains member records too.
+    whois = _whois(records=[(("inetnum", "103.36.146.0 - 103.36.146.255"), ("netname", "WANTOK-NETWORK-AU"),
+                             ("country", "AU"), ("mnt-by", "APNIC-HM"), ("source", "APNIC"))])
+    assert _kinds(lc.find_markers(whois, "TO")) == ["registered_abroad"]
+
+
+# Trimmed from rdap.apnic.net/history/ip/103.16.15.0/24 (2026-11-02).
+_WHOWAS = {"records": [
+    {"applicableFrom": "2011-12-06T00:00:00Z", "applicableUntil": "2018-02-06T00:00:00Z",
+     "content": {"startAddress": "103.0.0.0", "endAddress": "103.255.255.255", "name": "APNIC-AP", "country": "AU"}},
+    {"applicableFrom": "2025-11-18T00:00:00Z", "applicableUntil": "2026-04-26T05:12:00Z",
+     "content": {"startAddress": "103.16.15.0", "endAddress": "103.16.15.255", "name": "SPIM-AP", "country": "VU"}},
+    {"applicableFrom": "2013-01-30T02:28:44Z", "applicableUntil": "2014-09-06T03:56:53Z",
+     "content": {"startAddress": "103.16.15.0", "endAddress": "103.16.15.255", "name": "SPIM-AP", "country": "VU"}},
+    {"applicableFrom": "2026-04-26T05:12:00Z", "applicableUntil": None,
+     "content": {"startAddress": "103.16.15.0", "endAddress": "103.16.15.255"}},
+]}
+
+
+def test_whowas_names_the_last_holder_of_the_exact_prefix():
+    assert lc.last_holder(_WHOWAS, "103.16.15.0/24") == {"name": "SPIM-AP", "country": "VU", "until": "2026-04-26"}
+
+
+def test_whowas_with_no_record_for_the_prefix_gives_none():
+    assert lc.last_holder({"records": _WHOWAS["records"][:1]}, "103.16.15.0/24") is None
+
+
+def test_scan_adds_the_last_holder_to_a_no_delegation_marker(monkeypatch):
+    monkeypatch.setattr(lc, "fetch_whois", lambda prefix: _whois(records=[_APNIC_PARENT_BLOCK]))
+    monkeypatch.setattr(lc, "fetch_whowas", lambda prefix: _WHOWAS)
+    (marker,) = lc._scan([(9249, "VU", "103.16.15.0/24")])["103.16.15.0/24"]["markers"]
+    assert marker["kind"] == "no_delegation"
+    assert "SPIM-AP (VU) until 2026-04-26" in marker["detail"]

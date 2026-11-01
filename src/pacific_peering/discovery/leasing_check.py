@@ -16,7 +16,11 @@ plus IRR route objects -- and look for:
 - `registered_abroad`: the RIR record's country isn't the ASN's economy (nor
   a neighbour it legitimately shares space with, `SHARED_REGISTRATIONS`);
 - `foreign_registry`: the block is held by RIPE NCC, AFRINIC or LACNIC (or
-  ARIN, for an economy with no US association).
+  ARIN, for an economy with no US association);
+- `no_delegation`: the only RIR record is the RIR's own parent block, so no
+  assignment covers the prefix (103.16.15.0/24, reclaimed 2026-04-26). Its
+  country is the RIR's, so it isn't read as `registered_abroad`; APNIC's
+  WHOWAS history (`fetch_whowas`) names the last holder in the detail.
 
 Those three are escalated to `escalations.md` the first time each
 (ASN, prefix, kind) is seen, unless already reviewed (`ACKNOWLEDGED`).
@@ -31,6 +35,7 @@ Scheduling: monthly, plus new ASNs, same as `atlas.offshore_check` -- run from
 from __future__ import annotations
 
 import argparse
+import ipaddress
 import json
 import logging
 import re
@@ -95,9 +100,17 @@ ACKNOWLEDGED: dict[tuple[int, str], str] = {
     (56017, "38.51.136.0/22"): "Cogent provider-assigned ARIN space; ora.pf geofeed: Papeete PF (2026-11-02)",
     (56017, "38.51.137.0/24"): "Cogent provider-assigned ARIN space; ora.pf geofeed: Papeete PF (2026-11-02)",
     (56017, "38.51.138.0/24"): "Cogent provider-assigned ARIN space; ora.pf geofeed: Papeete PF (2026-11-02)",
+    (9249, "103.16.15.0/24"): "SPIM (VU) assignment with AS132548, both reclaimed by APNIC 2026-04-26 (WHOWAS), "
+    "now reserved; TVL has originated it since 2013 -- recorded, no action (owner, 2026-11-02)",
 }
 
-ESCALATED_KINDS = ("broker", "registered_abroad", "foreign_registry")
+ESCALATED_KINDS = ("broker", "registered_abroad", "foreign_registry", "no_delegation")
+
+# The RIRs' own parent-block records: matched by org or netname, not mnt-by,
+# since APNIC-HM maintains member assignments too (2026-11-02).
+RIR_SELF_ORGS = frozenset({"ORG-APNI3-AP"})
+RIR_SELF_NETNAMES = frozenset({"APNIC-AP"})
+WHOWAS_URL = "https://rdap.apnic.net/history/ip/{prefix}"
 
 
 def load_history(path: Path = HISTORY_PATH) -> list[dict]:
@@ -136,8 +149,12 @@ def find_markers(whois: dict, cc: str) -> list[dict]:
     }
     markers += [{"kind": "broker", "detail": f"{name} ({where})"} for name, where in sorted(brokers.items())]
 
+    parent_only = bool(whois["records"]) and all(_is_rir_parent_block(rec) for rec in whois["records"])
+    if parent_only:
+        blocks = ", ".join(v for rec in whois["records"] for k, v in ((x["key"], x["value"]) for x in rec) if k == "inetnum")
+        markers.append({"kind": "no_delegation", "detail": f"no RIR assignment covers it (only the RIR's own block {blocks})"})
     countries = {x["value"].upper() for rec in whois["records"] for x in rec if x["key"].lower() == "country"}
-    abroad = sorted(countries - {cc} - SHARED_REGISTRATIONS.get(cc, frozenset()))
+    abroad = [] if parent_only else sorted(countries - {cc} - SHARED_REGISTRATIONS.get(cc, frozenset()))
     if abroad:
         markers.append({"kind": "registered_abroad", "detail": f"RIR record country {', '.join(abroad)}, not {cc}"})
 
@@ -157,12 +174,55 @@ def find_markers(whois: dict, cc: str) -> list[dict]:
     return markers
 
 
+def _is_rir_parent_block(record: list[dict]) -> bool:
+    fields = {x["key"].lower(): x["value"].upper() for x in record}
+    return fields.get("org") in RIR_SELF_ORGS or fields.get("netname") in RIR_SELF_NETNAMES
+
+
+def fetch_whowas(prefix: str, timeout: float = 30.0) -> dict:
+    """APNIC's WHOWAS (RDAP history) for `prefix`: every past version of the registrations covering it."""
+    response = requests.get(WHOWAS_URL.format(prefix=prefix), timeout=timeout)
+    response.raise_for_status()
+    return response.json()
+
+
+def last_holder(whowas: dict, prefix: str) -> dict | None:
+    """{"name", "country", "until"} of the latest named record for exactly `prefix`, or None."""
+    net = ipaddress.ip_network(prefix, strict=False)
+    start, end = str(net.network_address), str(net.broadcast_address)
+    named = [
+        r for r in whowas.get("records", [])
+        if r["content"].get("startAddress") == start and r["content"].get("endAddress") == end and r["content"].get("name")
+    ]
+    if not named:
+        return None
+    latest = max(named, key=lambda r: r["applicableFrom"])
+    return {"name": latest["content"]["name"], "country": latest["content"].get("country"),
+            "until": (latest.get("applicableUntil") or "")[:10] or None}
+
+
+def _with_last_holder(prefix: str, markers: list[dict]) -> list[dict]:
+    """Name the last holder (APNIC WHOWAS) in a `no_delegation` marker; best effort."""
+    if not any(m["kind"] == "no_delegation" for m in markers):
+        return markers
+    try:
+        holder = last_holder(fetch_whowas(prefix), prefix)
+    except (requests.exceptions.RequestException, ValueError, KeyError) as exc:
+        logger.warning("WHOWAS lookup failed for %s: %s", prefix, exc)
+        return markers
+    if holder is None:
+        return markers
+    note = f"; last held by {holder['name']} ({holder['country']}) until {holder['until']}, per APNIC WHOWAS"
+    return [{**m, "detail": m["detail"] + note} if m["kind"] == "no_delegation" else m for m in markers]
+
+
 def _scan(targets: list[tuple[int, str, str]]) -> dict[str, dict]:
     """{prefix: {"asn", "cc", "markers"} or {"asn", "cc", "error"}} for every target."""
     def one(target: tuple[int, str, str]) -> tuple[str, dict]:
         asn, cc, prefix = target
         try:
-            return prefix, {"asn": asn, "cc": cc, "markers": find_markers(fetch_whois(prefix), cc)}
+            markers = _with_last_holder(prefix, find_markers(fetch_whois(prefix), cc))
+            return prefix, {"asn": asn, "cc": cc, "markers": markers}
         except requests.exceptions.RequestException as exc:
             logger.warning("WHOIS fetch failed for %s (AS%d): %s", prefix, asn, exc)
             return prefix, {"asn": asn, "cc": cc, "error": str(exc)}
@@ -256,7 +316,8 @@ def render_report(snapshot: dict, fresh: list[tuple[int, str, str]]) -> str:
         "Auto-generated by `pacific-peering-leasing-check` (discovery/leasing_check.py): monthly, plus new ASNs.",
         "WHOIS (RIR record + IRR route objects) for every IPv4 prefix each in-scope ASN originates. Flags:",
         "`broker` (a known IPv4 leasing broker), `registered_abroad` (RIR country isn't the economy),",
-        "`foreign_registry` (RIPE/AFRINIC/LACNIC, or ARIN outside US-associated economies). New, unreviewed",
+        "`foreign_registry` (RIPE/AFRINIC/LACNIC, or ARIN outside US-associated economies), `no_delegation`",
+        "(only the RIR's own block covers it; last holder from APNIC WHOWAS). New, unreviewed",
         "flags go to escalations.md as leads for a latency test. Nothing is auto-excluded.",
         "",
         f"Prefixes checked: {len(res)} across {len(snapshot['asns'])} ASNs; WHOIS errors: {len(errors)}.",
