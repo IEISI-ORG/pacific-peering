@@ -138,3 +138,11 @@ def test_one_address_answering_every_hop_is_still_a_loop():
     hops = _numbered((9, "188.209.155.254", False),
                      *((n, "188.209.155.250", False) for n in range(10, 33)))
     assert targets.looping_address(hops, target="103.98.52.1") == "188.209.155.250"
+
+
+def test_toko_sydney_hosted_prefix_is_not_a_target(tmp_path):
+    # AS132831 TokoWireless (TO): WanTok's 103.36.146.0/24 is served from Vultr
+    # Sydney (TCP/443 trace 230614528: 0.7ms from Sydney, 3 networks under the
+    # Tonga floor); 103.134.118.0/24 tests local (owner, 2026-11-02).
+    cache = _cache(tmp_path, 132831, ["103.124.187.0/24", "103.134.118.0/24", "103.36.146.0/24", "103.54.78.0/24"])
+    assert targets.list_target_ips(132831, cache) == ["103.124.187.1", "103.134.118.1", "103.54.78.1"]

@@ -100,6 +100,8 @@ ACKNOWLEDGED: dict[tuple[int, str], str] = {
     (56017, "38.51.136.0/22"): "Cogent provider-assigned ARIN space; ora.pf geofeed: Papeete PF (2026-11-02)",
     (56017, "38.51.137.0/24"): "Cogent provider-assigned ARIN space; ora.pf geofeed: Papeete PF (2026-11-02)",
     (56017, "38.51.138.0/24"): "Cogent provider-assigned ARIN space; ora.pf geofeed: Papeete PF (2026-11-02)",
+    (132831, "103.36.146.0/24"): "WanTok cloud block at Vultr Sydney (TCP/443 230614528); in "
+    "atlas.targets.EXCLUDED_TARGET_PREFIXES (owner, 2026-11-02)",
     (9249, "103.16.15.0/24"): "SPIM (VU) assignment with AS132548, both reclaimed by APNIC 2026-04-26 (WHOWAS), "
     "now reserved; TVL has originated it since 2013 -- recorded, no action (owner, 2026-11-02)",
 }

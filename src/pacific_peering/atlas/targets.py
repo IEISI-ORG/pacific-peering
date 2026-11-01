@@ -66,6 +66,12 @@ EXCLUDED_TARGET_PREFIXES: dict[str, str] = {
         "AS132468 SATSOL (satellite ISP): hosted in Sydney -- 11.1ms from Sydney vs a ~28.5ms "
         "Sydney-Honiara minimum, on 2 networks (measurement 215228678); AS132468's 103.115.80.0/24 is local"
     ),
+    "103.36.146.0/24": (
+        "AS132831 TokoWireless (TO): WanTok's AU-registered cloud block, hosted at Vultr Sydney (sole "
+        "upstream AS20473, cert au.wantok.cloud) -- ICMP-filtered; TCP/443 0.7ms from Sydney vs a ~35.8ms "
+        "Sydney-Tonga minimum, on 3 networks (measurement 230614528); AS132831's 103.134.118.0/24 is local "
+        "(owner, 2026-11-02)"
+    ),
 }
 
 
