@@ -64,6 +64,7 @@ def persist_results(measurement_id: int, raw_results: list[dict]) -> None:
             "target": r.target,
             "hops": [
                 {"hop": h.hop, "addresses": list(h.addresses), "min_rtt_ms": h.min_rtt_ms}
+                | ({"error_addresses": list(h.error_addresses)} if h.error_addresses else {})
                 for h in r.hops
             ],
         }

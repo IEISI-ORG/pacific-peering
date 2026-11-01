@@ -73,3 +73,25 @@ def test_edst_replies_leave_the_hop_dark():
     for hop in trace.hops:
         assert hop.addresses == ()
         assert hop.min_rtt_ms is None
+
+
+# 230524076, probe 60689 (GU AS7131 -> AS9246 103.7.100.1): hop 11's reply from
+# 114.142.196.81 carries "err": "H" -- the router reporting the target
+# unreachable. The loop check needs that flag, so the parser keeps it.
+_GU_HOP_10 = {"hop": 10, "result": [
+    {"from": "114.142.196.81", "ttl": 247, "size": 28, "rtt": 46.989},
+    {"from": "114.142.196.81", "ttl": 247, "size": 28, "rtt": 23.145},
+    {"from": "114.142.196.81", "ttl": 247, "size": 28, "rtt": 18.049},
+]}
+_GU_HOP_11 = {"hop": 11, "result": [
+    {"from": "114.142.196.81", "ttl": 247, "size": 28, "rtt": 25.242, "err": "H"},
+    {"x": "*"}, {"x": "*"},
+]}
+
+
+def test_icmp_error_replies_are_recorded_per_address():
+    (result,) = parse_traceroute_results([_trace(230524076, 60689, "103.7.100.1", [_GU_HOP_10, _GU_HOP_11])])
+    assert result.hops[0].error_addresses == ()
+    assert result.hops[1].addresses == ("114.142.196.81",)
+    assert result.hops[1].error_addresses == ("114.142.196.81",)
+    assert result.hops[1].min_rtt_ms == 25.242

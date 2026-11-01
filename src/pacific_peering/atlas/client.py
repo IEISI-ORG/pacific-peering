@@ -54,6 +54,10 @@ class TracerouteHop:
     hop: int
     addresses: tuple[str, ...]
     min_rtt_ms: float | None = None
+    # Addresses whose reply carried an ICMP error (`err`, e.g. "H" host
+    # unreachable): the router reporting the target unreachable, which the
+    # loop check must not count as the packet cycling back (2026-11-02).
+    error_addresses: tuple[str, ...] = ()
 
 
 @dataclass(frozen=True)
@@ -361,9 +365,11 @@ def parse_traceroute_results(raw_results: list[dict]) -> list[TracerouteResult]:
             addresses = tuple(sorted({r["from"] for r in replies if "from" in r}))
             rtts = [r["rtt"] for r in replies if "rtt" in r]
             min_rtt_ms = min(rtts) if rtts else None
+            error_addresses = tuple(sorted({r["from"] for r in replies if "from" in r and "err" in r}))
             hops.append(
                 TracerouteHop(
-                    hop=hop_result.get("hop", -1), addresses=addresses, min_rtt_ms=min_rtt_ms
+                    hop=hop_result.get("hop", -1), addresses=addresses, min_rtt_ms=min_rtt_ms,
+                    error_addresses=error_addresses,
                 )
             )
         parsed.append(

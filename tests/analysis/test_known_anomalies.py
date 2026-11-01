@@ -16,12 +16,22 @@ FNPF_EDGE_HOPS = [
     {"hop": 9, "addresses": ["202.62.124.41"], "min_rtt_ms": 2.227},
     {"hop": 10, "addresses": ["202.62.124.42"], "min_rtt_ms": 1.215},
     {"hop": 11, "addresses": [], "min_rtt_ms": None},
-    {"hop": 12, "addresses": ["202.62.124.42"], "min_rtt_ms": 1.551},
+    # The real reply carries err=H (host unreachable); added 2026-11-02 when
+    # the parser started keeping ICMP errors.
+    {"hop": 12, "addresses": ["202.62.124.42"], "min_rtt_ms": 1.551, "error_addresses": ["202.62.124.42"]},
 ]
 
 
-def test_fnpf_edge_tail_is_a_known_location() -> None:
-    address = looping_address(FNPF_EDGE_HOPS, target="203.55.68.1")
+def test_fnpf_edge_tail_is_not_a_loop() -> None:
+    # .42 answers again only to report the target unreachable: FNPF's filtered
+    # edge, not a cycle (owner rule queued 2026-10-05, built 2026-11-02).
+    assert looping_address(FNPF_EDGE_HOPS, target="203.55.68.1") is None
+
+
+def test_fnpf_edge_tail_without_the_error_would_be_a_known_location() -> None:
+    hops = [dict(h) for h in FNPF_EDGE_HOPS]
+    hops[-1].pop("error_addresses")
+    address = looping_address(hops, target="203.55.68.1")
     assert address == "202.62.124.42"
     loc = classify_loop_address(address)
     assert loc is not None

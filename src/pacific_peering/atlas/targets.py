@@ -199,17 +199,30 @@ def looping_address(hops: list[dict], target: str | None = None) -> str | None:
     recent: list[str] = []
     window = 3
     tail_repeat: str | None = None
-    for hop in hops:
+    last_hop: dict[str, int] = {}
+    runs: dict[str, int] = {}  # consecutive-hop answers so far, per address
+    for index, hop in enumerate(hops, start=1):
         addresses = hop.get("addresses") or []
         if target is not None and target in addresses:
             return None
         current = addresses[0] if len(addresses) == 1 else None
         if current is None:
             continue
+        number = hop.get("hop", index)
+        # Not a cycle (owner-queued 2026-10-05, built 2026-11-02): a reply
+        # carrying an ICMP error is the router reporting the target
+        # unreachable (213209039, 228277577, 230524076); and one router
+        # answering exactly two consecutive TTLs (216154286, 229251973).
+        # A third consecutive answer is a stuck trace and still counts
+        # (217755235: 188.209.155.250 at every hop, flat RTT).
+        run = runs.get(current, 0) + 1 if number - last_hop.get(current, -9) == 1 else 1
+        runs[current] = run
+        last_hop[current] = number
+        cycles_back = current not in (hop.get("error_addresses") or []) and run != 2
         if current not in seen:
             seen.add(current)
             tail_repeat = None  # forward progress: any earlier repeat was noise
-        elif current in recent and tail_repeat is None:
+        elif current in recent and tail_repeat is None and cycles_back:
             tail_repeat = current
         recent.append(current)
         if len(recent) > window:
