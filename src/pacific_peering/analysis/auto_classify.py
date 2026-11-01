@@ -246,6 +246,25 @@ def _load_asn_to_cc(path: Path = DEFAULT_ASN_REGISTRY_PATH) -> dict[int, str]:
     return {asn: cc for cc, entry in registry.items() for asn in entry["asns"]}
 
 
+def _local_ixp_excess_ms(ixp_hop: int, hops: list[dict]) -> float | None:
+    """Time an in-fishbowl IXP crossing adds: the minimum RTT over the IXP hop
+    and every later hop, minus the last answering hop before it (0 if none).
+
+    Owner rule queued 2026-10-05, built 2026-11-02. An exchange router's own
+    ICMP reply is often slower than the hops after it (all five 2026-10-05
+    MARIIX flags), and some probes sit ~10ms out before any IXP (60689,
+    64953), so the IXP hop's absolute RTT overstates the path. None if the
+    IXP hop isn't in `hops`.
+    """
+    if not any(h.get("hop") == ixp_hop for h in hops):
+        return None
+    after = [h["min_rtt_ms"] for h in hops if h.get("hop", -1) >= ixp_hop and h.get("min_rtt_ms") is not None]
+    before = [h["min_rtt_ms"] for h in hops if h.get("hop", -1) < ixp_hop and h.get("min_rtt_ms") is not None]
+    if not after:
+        return None
+    return min(after) - (before[-1] if before else 0.0)
+
+
 def _local_ixp_crossing_name(probe: dict) -> str | None:
     """The name of the first *local* (in_fishbowl=True) IXP this probe's path crosses, if any.
 
@@ -741,7 +760,11 @@ def _classify_corridor(
             elif in_fishbowl is True:
                 rtt = crossing.get("min_rtt_ms")
                 if rtt is not None and rtt > LOCAL_IXP_LATENCY_THRESHOLD_MS:
-                    high_latency_local_crossings.append({**crossing, "probe_id": probe["probe_id"]})
+                    excess = _local_ixp_excess_ms(crossing.get("hop", -1), hops_by_probe.get(probe["probe_id"], []))
+                    if excess is None or excess > LOCAL_IXP_LATENCY_THRESHOLD_MS:
+                        high_latency_local_crossings.append(
+                            {**crossing, "probe_id": probe["probe_id"], "excess_ms": excess}
+                        )
 
         upstream_asn = probe.get("traceroute_upstream_asn")
         if upstream_asn is None:
@@ -850,8 +873,12 @@ def _classify_corridor(
                 reason="local IXP crossing with implausibly high latency",
                 detail=(
                     f"probe {crossing['probe_id']}: hop {crossing['hop']} crosses "
-                    f"{crossing.get('name', '?')} (in-fishbowl) at {crossing['min_rtt_ms']}ms, "
-                    f"above the {LOCAL_IXP_LATENCY_THRESHOLD_MS}ms local-fiber threshold -- "
+                    f"{crossing.get('name', '?')} (in-fishbowl) at {crossing['min_rtt_ms']}ms"
+                    + (
+                        f", {crossing['excess_ms']:.1f}ms more than the hop before it (minimum over it and later hops)"
+                        if crossing.get("excess_ms") is not None else ""
+                    )
+                    + f", above the {LOCAL_IXP_LATENCY_THRESHOLD_MS}ms local-fiber threshold -- "
                     "either this hop isn't genuinely local despite the registry, or there's "
                     "an unexpected detour/backhaul before reaching it; needs a human look, "
                     "not a guess"
