@@ -390,24 +390,28 @@ Corridors `auto_classify.py`'s mechanical rules couldn't confidently resolve on 
 - reason: unrecognized routing loop
 - detail: probe 64391: loop involving address 49.156.51.245, not in known_anomalies.py
 - flagged: 2026-10-27T15:19:26.473434+00:00
+- resolved: 2026-11-02 -- reverify bug, fixed (owner): a retest of #182 (PF AS9471 -> NU AS55885), whose only corroboration came from Niue's own probe, rebuilt as 55885 -> 55885 and traced Niue to itself. The 49.156.51.245/.246 alternation is a real loop inside Telecom Niue toward 49.156.48.1 (probably an unassigned address, like AS55792 on 2026-10-05), but it says nothing about #182. Retests now fire from the finding's upstream (`d7de623`).
 
 ## AS45345 (NC) -> AS4638 (FJ)
 - measurement: 228735988
 - reason: local IXP crossing with implausibly high latency
 - detail: probe 33674: hop 8 crosses Fiji-IXP (in-fishbowl) at 40.32ms, above the 10.0ms local-fiber threshold -- either this hop isn't genuinely local despite the registry, or there's an unexpected detour/backhaul before reaching it; needs a human look, not a guess
 - flagged: 2026-10-28T15:03:59.475869+00:00
+- detail: 2026-11-02 -- still open: TFL's Fiji-IXP port .30 and core 202.137.178.55 sit ~23ms above FINTEL's 16ms cable hop, while Digicel's .20 on the same forward path adds <1ms. Hypothesis: TFL's return path to OPT-NC space is the long one. Reverse trace 230608167 (SPC 60575 -> Nautile 103.2.187.254, 17.5ms) left via Digicel Fiji (202.129.230.121, AS45355), not TFL, so TFL's return path is untested; it needs a probe on AS4638 (the TFL anchor, or a software probe meanwhile). The new latency rule (`820480f`) still flags it (+22.5-23.0ms).
 
 ## AS45345 (NC) -> AS4638 (FJ)
 - measurement: 228735988
 - reason: local IXP crossing with implausibly high latency
 - detail: probe 63050: hop 8 crosses Fiji-IXP (in-fishbowl) at 39.95ms, above the 10.0ms local-fiber threshold -- either this hop isn't genuinely local despite the registry, or there's an unexpected detour/backhaul before reaching it; needs a human look, not a guess
 - flagged: 2026-10-28T15:03:59.475869+00:00
+- detail: 2026-11-02 -- still open: TFL's Fiji-IXP port .30 and core 202.137.178.55 sit ~23ms above FINTEL's 16ms cable hop, while Digicel's .20 on the same forward path adds <1ms. Hypothesis: TFL's return path to OPT-NC space is the long one. Reverse trace 230608167 (SPC 60575 -> Nautile 103.2.187.254, 17.5ms) left via Digicel Fiji (202.129.230.121, AS45355), not TFL, so TFL's return path is untested; it needs a probe on AS4638 (the TFL anchor, or a software probe meanwhile). The new latency rule (`820480f`) still flags it (+22.5-23.0ms).
 
 ## AS45345 (NC) -> AS4638 (FJ)
 - measurement: 228735988
 - reason: local IXP crossing with implausibly high latency
 - detail: probe 7018: hop 8 crosses Fiji-IXP (in-fishbowl) at 39.082ms, above the 10.0ms local-fiber threshold -- either this hop isn't genuinely local despite the registry, or there's an unexpected detour/backhaul before reaching it; needs a human look, not a guess
 - flagged: 2026-10-28T15:03:59.475869+00:00
+- detail: 2026-11-02 -- still open: TFL's Fiji-IXP port .30 and core 202.137.178.55 sit ~23ms above FINTEL's 16ms cable hop, while Digicel's .20 on the same forward path adds <1ms. Hypothesis: TFL's return path to OPT-NC space is the long one. Reverse trace 230608167 (SPC 60575 -> Nautile 103.2.187.254, 17.5ms) left via Digicel Fiji (202.129.230.121, AS45355), not TFL, so TFL's return path is untested; it needs a probe on AS4638 (the TFL anchor, or a software probe meanwhile). The new latency rule (`820480f`) still flags it (+22.5-23.0ms).
 
 ## AS152735 (GU) -> AS17893 (PW)
 - measurement: 228736794
@@ -478,6 +482,7 @@ Corridors `auto_classify.py`'s mechanical rules couldn't confidently resolve on 
 - detail: Atlas reports 228276817 (probe 64783, National University of Vanuatu, to 110.5.112.1) as status Failed (id 7), created 2026-10-27T15:10:29Z, stopped 2026-10-27T15:16:00Z, participant_count 1, results endpoint returns []. No data/atlas/raw or data/atlas/parsed file was ever written for it, so the 10-28, 10-29 and 10-30 nightly runs each raised `[Errno 2] No such file or directory: 'data/atlas/parsed/228276817.json'` (with traceback) and re-parked it; the 10-30 run dropped it after attempt 3. The corridor is left untested and will be fired fresh. Probe 64783 is Connected again since 2026-10-29T03:43:59Z, so the failure was most likely a probe outage, not a corridor property.
 - proposed correction: when collecting a parked measurement, check its Atlas status first; on Failed/Stopped with zero results, drop it at once (or record it as no-data) instead of re-parking it and logging a traceback for three nights. Code change for the owner to decide; no data change needed.
 - flagged: 2026-10-29T21:31:32Z
+- resolved: 2026-11-02 -- fixed (owner): a parked measurement Atlas reports Failed or "No suitable probes" with no results is now dropped at collection and its retest stamped lost (`7bbce26`).
 
 
 ## AS9249 (VU) -- 103.16.15.0/24 leased or foreign-registered space
