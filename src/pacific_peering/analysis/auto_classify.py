@@ -102,6 +102,7 @@ from pacific_peering.analysis.hidden_hops import hidden_hops_reason
 from pacific_peering.analysis import store as _store
 from pacific_peering.analysis.corridor_backlog import (
     CorridorCandidate,
+    _same_network,
     enumerate_candidate_corridors,
     mark_corridor_tested,
     pick_next_corridor,
@@ -1144,6 +1145,9 @@ def _last_verified(conn: sqlite3.Connection, finding: _store.Finding) -> str:
 
 
 ATTEMPT_NO_DATA = "no_data"
+# A staged retest that would trace a network to itself and whose finding's own
+# upstream has no connected probe: skipped, but recorded so it rotates (2026-11-02).
+ATTEMPT_NO_VANTAGE = "no_vantage"
 NO_DATA_ATTEMPTS_REQUIRED = 3
 """Retests ending in "no probe data returned" that together count as one look
 (owner, 2026-10-21). Zero probes reporting is usually a transient Atlas
@@ -1395,6 +1399,27 @@ def _candidate_from_finding(conn: sqlite3.Connection, finding_id: int) -> Corrid
         source_asn = latest.vantage_point_asn or _any_probe_asn_for_cc(source_cc)
     if source_asn is None:
         return None
+    if _same_network(source_asn, finding.target_asn):
+        # The finding was corroborated from the target's own probe (#179, #182),
+        # so the vantage rebuilds as a trace from the target to itself. Retest
+        # from the finding's own upstream instead (owner, 2026-11-02).
+        upstream_asn = finding.source_asn
+        upstream_probes = (
+            _source_probe_ids(CorridorCandidate(
+                upstream_asn, finding.source_cc, finding.source_cc, finding.target_asn,
+                finding.target_cc, finding.target_cc, "upstream probe check",
+            ))
+            if upstream_asn is not None and not _same_network(upstream_asn, finding.target_asn)
+            else []
+        )
+        if upstream_asn is None or not upstream_probes:
+            logger.info(
+                "Finding #%d: retest would trace AS%d to itself and its upstream has no connected probe; "
+                "skipping it (%s)", finding_id, finding.target_asn, ATTEMPT_NO_VANTAGE,
+            )
+            _store.record_reverification_attempt(conn, finding_id=finding_id, outcome=ATTEMPT_NO_VANTAGE)
+            return None
+        source_asn, source_cc = upstream_asn, finding.source_cc
     source_economy = ECONOMIES_BY_CC.get(source_cc)
     target_economy = ECONOMIES_BY_CC.get(finding.target_cc)
     # A target outside the registry is an external carrier's in-region
