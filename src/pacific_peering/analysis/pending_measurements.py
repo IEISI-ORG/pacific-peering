@@ -32,6 +32,8 @@ logger = logging.getLogger(__name__)
 
 DEFAULT_PENDING_PATH = Path("data/analysis/pending_measurements.json")
 MAX_AGE = timedelta(hours=24)
+# Terminal statuses meaning Atlas never ran the measurement on its probe.
+_NEVER_RAN_STATUSES = ("Failed", "No suitable probes")
 # A measurement whose results are in but whose classification keeps failing
 # is re-parked (it's paid for) up to this many times, then dropped -- a
 # deterministic failure mustn't be retried forever.
@@ -122,7 +124,8 @@ def collect_ready(path: Path | None = None) -> list[PendingMeasurement]:
 
     Ready means Atlas has finished it (results, if any, are persisted to
     the Atlas cache here); one that finished with none goes back to
-    `classify_corridor`'s own zero-probe escalation. A measurement still
+    `classify_corridor`'s own zero-probe escalation, except one Atlas never
+    ran (Failed, No suitable probes), which is dropped at once. A measurement still
     running isn't ready even with results in: its other probes may not have
     reported yet (224431120, 2026-10-19, was collected 13s after parking
     and filed inconclusive from a partial set). One-offs stop about 5-6
@@ -164,9 +167,20 @@ def collect_ready(path: Path | None = None) -> list[PendingMeasurement]:
         except requests.RequestException as exc:
             status, results = f"unreachable ({exc})", []
         expired = now - entry.created_at > MAX_AGE
+        if status in _NEVER_RAN_STATUSES and not results:
+            # Atlas never ran it (228276817, 2026-10-27: source probe offline).
+            # Nothing will ever arrive, so drop it now rather than hand back a
+            # measurement with no parsed file to fail three nights running.
+            logger.warning(
+                "AS%d -> AS%d: parked measurement %d is %s with no results; "
+                "dropping it, corridor left untested for a fresh test",
+                cand.source_asn, cand.target_asn, mid, status,
+            )
+            continue
         if status in _TERMINAL_STATUSES or (results and expired):
-            if results:
-                persist_results(mid, results)
+            # Cache even an empty result: classify_corridor reads the parsed
+            # file, and an empty one leads to its zero-probe escalation.
+            persist_results(mid, results)
             if status not in _TERMINAL_STATUSES:
                 logger.warning(
                     "AS%d -> AS%d: parked measurement %d still %s after %s; classifying the %d result(s) in",

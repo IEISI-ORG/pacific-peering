@@ -122,12 +122,31 @@ def test_collect_takes_partial_results_rather_than_dropping_an_expired_measureme
 
 
 def test_finished_but_empty_is_handed_back_for_the_zero_probe_path(store, monkeypatch):
+    path, persisted = store
     pending_measurements.add_pending(_candidate(), 101, "slow", created_at=_age(1))
-    monkeypatch.setattr(pending_measurements, "fetch_measurement_status", lambda mid: "Failed")
+    monkeypatch.setattr(pending_measurements, "fetch_measurement_status", lambda mid: "Stopped")
     monkeypatch.setattr(pending_measurements, "fetch_raw_results", lambda mid: [])
 
     assert [e.measurement_id for e in pending_measurements.collect_ready()] == [101]
     assert pending_measurements.pending_pairs() == set()
+    # The empty result is cached, so classify_corridor finds a parsed file and
+    # reaches its zero-probe escalation instead of a FileNotFoundError.
+    assert persisted == {101: []}
+
+
+@pytest.mark.parametrize("status", ["Failed", "No suitable probes"])
+def test_a_measurement_atlas_never_ran_is_dropped_at_once(store, monkeypatch, status):
+    """228276817 (2026-10-27, probe 64783 offline): Atlas said Failed with no
+    results. Handed back, it raised FileNotFoundError three nights running
+    before being dropped (owner, 2026-11-02: drop it at once)."""
+    path, persisted = store
+    pending_measurements.add_pending(_candidate(), 228276817, "slow", created_at=_age(1))
+    monkeypatch.setattr(pending_measurements, "fetch_measurement_status", lambda mid: status)
+    monkeypatch.setattr(pending_measurements, "fetch_raw_results", lambda mid: [])
+
+    assert pending_measurements.collect_ready() == []
+    assert pending_measurements.pending_pairs() == set()
+    assert persisted == {}
 
 
 def test_collect_drops_an_entry_that_has_failed_classification_too_often(store, monkeypatch):
