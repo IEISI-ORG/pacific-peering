@@ -497,3 +497,9 @@ Corridors `auto_classify.py`'s mechanical rules couldn't confidently resolve on 
 - detail: registered_abroad: RIR record country AU, not TO
 - action: sweep the prefix for live hosts and ping them from AU and home-economy probes; then owner review (acknowledge, exclude the prefix as a target, or exclude the ASN)
 - flagged: 2026-10-31T15:04:13.201328+00:00
+## AS7131 (GU) -> AS9246 (GU)
+- measurement: 230524076
+- reason: unrecognized routing loop
+- detail: probe 60689: loop involving address 114.142.196.81, not in known_anomalies.py
+- flagged: 2026-11-01T15:04:09.869171+00:00
+

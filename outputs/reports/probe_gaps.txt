@@ -50,7 +50,7 @@ FRAGILE -- exactly 1 connected probe (10/20) -- a single point of failure, and t
         Useful (Connected): 64391
         Not useful yet -- fix the data or get it back online: 22760 (Abandoned), 23047 (Abandoned)
   PG  Papua New Guinea [used in a confirmed/candidate finding]
-      ASNs: 17828, 38009, 45826, 45924, 55792, 58460, 63945, 132786, 133137, 133428, 134151, 134605, 135571, 136239, 136587, 136802, 136940, 137054, 137068, 138506, 138902, 139778, 139898, 140665, 140935, 142269, 146949, 147024, 150392, 150693, 151398, 151647, 152477, 152655, 152883, 153621, 153781, 154868, 155035, 155036, 155038
+      ASNs: 17828, 38009, 45826, 45924, 55792, 58460, 63945, 132786, 133137, 133428, 134151, 134605, 135571, 136239, 136587, 136802, 136940, 137054, 137068, 138506, 138902, 139778, 139898, 140665, 140935, 142269, 146949, 147024, 150392, 150693, 151398, 151647, 152477, 152883, 153621, 153781, 154868, 155035, 155036, 155038
       Probes: 11 listed, 1 actually useful
         Useful (Connected): 50365
         Not useful yet -- fix the data or get it back online: 188 (Abandoned), 503 (Abandoned), 1087 (Disconnected), 6218 (Written Off), 7347 (Written Off), 22180 (Abandoned), 26174 (Abandoned), 32842 (Abandoned), 32911 (Abandoned), 50277 (Abandoned)
@@ -67,7 +67,7 @@ FRAGILE -- exactly 1 connected probe (10/20) -- a single point of failure, and t
       Probes: 1 listed, 1 actually useful
         Useful (Connected): 7588
   VU  Vanuatu [used in a confirmed/candidate finding]
-      ASNs: 9249, 45495, 45935, 131166, 132228, 132254, 132429, 132797, 133383, 136949
+      ASNs: 9249, 45495, 45935, 131166, 132228, 132254, 132429, 132797, 133383, 136949, 155052
       Probes: 8 listed, 1 actually useful
         Useful (Connected): 64783
         Not useful yet -- fix the data or get it back online: 1069 (Abandoned), 3322 (Abandoned), 3324 (Abandoned), 14447 (Abandoned), 64531 (Abandoned), 65709 (Abandoned), 1008536 (Disconnected)
@@ -141,8 +141,8 @@ PATHWAY COVERAGE (20 economies) -- same table as the main report's Pathway Cover
   FJ  Fiji (Melanesia) -- 21 ASN(s), 20 listed / 2 active probe(s) on a tracked ASN, 2 untested pathway(s)
   CK  Cook Islands (Polynesia) -- 2 ASN(s), 6 listed / 1 active probe(s) on a tracked ASN, 1 untested pathway(s)
   PF  French Polynesia (Polynesia) -- 6 ASN(s), 9 listed / 6 active probe(s) on a tracked ASN, 1 untested pathway(s)
-  PG  Papua New Guinea (Melanesia) -- 41 ASN(s), 10 listed / 1 active probe(s) on a tracked ASN, 1 untested pathway(s)
-  VU  Vanuatu (Melanesia) -- 10 ASN(s), 5 listed / 1 active probe(s) on a tracked ASN, 1 untested pathway(s)
+  PG  Papua New Guinea (Melanesia) -- 40 ASN(s), 10 listed / 1 active probe(s) on a tracked ASN, 1 untested pathway(s)
+  VU  Vanuatu (Melanesia) -- 11 ASN(s), 5 listed / 1 active probe(s) on a tracked ASN, 1 untested pathway(s)
   FM  Micronesia, Federated States of (Micronesia) -- 6 ASN(s), 5 listed / 3 active probe(s) on a tracked ASN, 0 untested pathway(s)
   GU  Guam (Micronesia) -- 10 ASN(s), 14 listed / 6 active probe(s) on a tracked ASN, 0 untested pathway(s)
   NC  New Caledonia (Melanesia) -- 17 ASN(s), 19 listed / 4 active probe(s) on a tracked ASN, 0 untested pathway(s)
