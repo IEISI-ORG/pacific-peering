@@ -90,6 +90,11 @@ ACKNOWLEDGED: dict[tuple[int, str], str] = {
     (9246, "120.29.200.0/21"): "Tata Communications provider-assigned space (registered IN) (2026-10-01)",
     (56017, "38.51.136.0/24"): "Cogent provider-assigned ARIN space; VITI asks for its own PF geofeed (2026-10-01)",
     (56017, "38.51.139.0/24"): "Cogent provider-assigned ARIN space; VITI asks for its own PF geofeed (2026-10-01)",
+    # Same Cogent assignment as the two /24s above; ora.pf/geofeed.csv lists
+    # 38.51.136.0/22 as PF, Papeete (owner, 2026-11-02).
+    (56017, "38.51.136.0/22"): "Cogent provider-assigned ARIN space; ora.pf geofeed: Papeete PF (2026-11-02)",
+    (56017, "38.51.137.0/24"): "Cogent provider-assigned ARIN space; ora.pf geofeed: Papeete PF (2026-11-02)",
+    (56017, "38.51.138.0/24"): "Cogent provider-assigned ARIN space; ora.pf geofeed: Papeete PF (2026-11-02)",
 }
 
 ESCALATED_KINDS = ("broker", "registered_abroad", "foreign_registry")

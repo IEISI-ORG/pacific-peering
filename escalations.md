@@ -363,18 +363,21 @@ Corridors `auto_classify.py`'s mechanical rules couldn't confidently resolve on 
 - reason: local IXP crossing with implausibly high latency
 - detail: probe 50897: hop 7 crosses Guam IX (in-fishbowl) at 40.186ms, above the 10.0ms local-fiber threshold -- either this hop isn't genuinely local despite the registry, or there's an unexpected detour/backhaul before reaching it; needs a human look, not a guess
 - flagged: 2026-10-27T15:10:27.516298+00:00
+- resolved: 2026-11-02 -- ordinary (owner): FM probe reaches Guam at ~21ms (119.252.112.181/.169), then PNCC's Guam IX port 103.142.153.18 at 40.2ms and the PW target at 40.7ms: FM->Guam plus Guam->Palau cable legs. Same remote-port reading as the GU->PW flags (measurement 228736794).
 
 ## AS17893 (PW) -> AS3605 (GU)
 - measurement: 228276691
 - reason: local IXP crossing with implausibly high latency
 - detail: probe 7455: hop 3 crosses GU-IX (in-fishbowl) at 19.174ms, above the 10.0ms local-fiber threshold -- either this hop isn't genuinely local despite the registry, or there's an unexpected detour/backhaul before reaching it; needs a human look, not a guess
 - flagged: 2026-10-27T15:13:13.434029+00:00
+- resolved: 2026-11-02 -- ordinary (owner): 202.128.12.10 is docomo.gw8.gu-ix.net; 19.2ms from Palau is the Palau->Guam cable leg (PNCC hops before it at 0.2-0.3ms), target 19.9ms.
 
 ## AS55885 (NU) -> AS154100 (KI)
 - measurement: 228277577
 - reason: unrecognized routing loop
 - detail: probe 64391: loop involving address 180.87.60.189, not in known_anomalies.py
 - flagged: 2026-10-27T15:16:20.038283+00:00
+- resolved: 2026-11-02 -- not a loop (owner): 180.87.60.189 (Tata, after Piti 180.87.60.178) answers at hop 10, then again at hop 14 with ICMP host-unreachable (err H) -- the router reporting the target unreachable, as in 213209039. Inconclusive dead end.
 
 ## AS17893 (PW) -> AS55722 (NR)
 - measurement: 228277632
@@ -411,54 +414,63 @@ Corridors `auto_classify.py`'s mechanical rules couldn't confidently resolve on 
 - reason: local IXP crossing with implausibly high latency
 - detail: probe 1012513: hop 2 crosses Guam IX (in-fishbowl) at 19.126ms, above the 10.0ms local-fiber threshold -- either this hop isn't genuinely local despite the registry, or there's an unexpected detour/backhaul before reaching it; needs a human look, not a guess
 - flagged: 2026-10-28T15:07:06.213468+00:00
+- resolved: 2026-11-02 -- ordinary (owner): 103.142.153.18 is PNCC AS17893's Guam IX port (PeeringDB netixlan). From probes in Guam it answers at ~19ms with PNCC's target 0.2ms behind it, so the router on that port answers from ~19ms away (a remote port, router most likely in Koror); traffic still crosses the Guam IX fabric in-region. The 10ms check uses absolute RTT, which a cross-economy or remote-port crossing always exceeds. Probe 1012513: 19.1ms, then dark.
 
 ## AS152735 (GU) -> AS17893 (PW)
 - measurement: 228736794
 - reason: local IXP crossing with implausibly high latency
 - detail: probe 60703: hop 3 crosses Guam IX (in-fishbowl) at 19.629ms, above the 10.0ms local-fiber threshold -- either this hop isn't genuinely local despite the registry, or there's an unexpected detour/backhaul before reaching it; needs a human look, not a guess
 - flagged: 2026-10-28T15:07:06.213468+00:00
+- resolved: 2026-11-02 -- ordinary (owner): 103.142.153.18 is PNCC AS17893's Guam IX port (PeeringDB netixlan). From probes in Guam it answers at ~19ms with PNCC's target 0.2ms behind it, so the router on that port answers from ~19ms away (a remote port, router most likely in Koror); traffic still crosses the Guam IX fabric in-region. The 10ms check uses absolute RTT, which a cross-economy or remote-port crossing always exceeds. Probe 60703: 19.6ms, target 19.8ms.
 
 ## AS152735 (GU) -> AS17893 (PW)
 - measurement: 228736794
 - reason: local IXP crossing with implausibly high latency
 - detail: probe 7385: hop 2 crosses Guam IX (in-fishbowl) at 19.128ms, above the 10.0ms local-fiber threshold -- either this hop isn't genuinely local despite the registry, or there's an unexpected detour/backhaul before reaching it; needs a human look, not a guess
 - flagged: 2026-10-28T15:07:06.213468+00:00
+- resolved: 2026-11-02 -- ordinary (owner): 103.142.153.18 is PNCC AS17893's Guam IX port (PeeringDB netixlan). From probes in Guam it answers at ~19ms with PNCC's target 0.2ms behind it, so the router on that port answers from ~19ms away (a remote port, router most likely in Koror); traffic still crosses the Guam IX fabric in-region. The 10ms check uses absolute RTT, which a cross-economy or remote-port crossing always exceeds. Probe 7385: 19.1ms, target 19.3ms.
 
 ## AS45345 (NC) -> AS45355 (FJ)
 - measurement: 228736784
 - reason: local IXP crossing with implausibly high latency
 - detail: probe 33674: hop 8 crosses Fiji-IXP (in-fishbowl) at 16.537ms, above the 10.0ms local-fiber threshold -- either this hop isn't genuinely local despite the registry, or there's an unexpected detour/backhaul before reaching it; needs a human look, not a guess
 - flagged: 2026-10-28T15:07:09.293064+00:00
+- resolved: 2026-11-02 -- ordinary (owner): FINTEL 202.170.33.250 at 15.9ms (the NC-Fiji cable), Fiji-IXP .20 at 16.5ms, target 17.9ms.
 
 ## AS45345 (NC) -> AS45355 (FJ)
 - measurement: 228736784
 - reason: local IXP crossing with implausibly high latency
 - detail: probe 63050: hop 8 crosses Fiji-IXP (in-fishbowl) at 17.238ms, above the 10.0ms local-fiber threshold -- either this hop isn't genuinely local despite the registry, or there's an unexpected detour/backhaul before reaching it; needs a human look, not a guess
 - flagged: 2026-10-28T15:07:09.293064+00:00
+- resolved: 2026-11-02 -- ordinary (owner): FINTEL 202.170.33.250 at 17.1ms (the NC-Fiji cable), Fiji-IXP .20 at 17.2ms, target 18.8ms.
 
 ## AS45345 (NC) -> AS45355 (FJ)
 - measurement: 228736784
 - reason: local IXP crossing with implausibly high latency
 - detail: probe 7018: hop 8 crosses Fiji-IXP (in-fishbowl) at 16.45ms, above the 10.0ms local-fiber threshold -- either this hop isn't genuinely local despite the registry, or there's an unexpected detour/backhaul before reaching it; needs a human look, not a guess
 - flagged: 2026-10-28T15:07:09.293064+00:00
+- resolved: 2026-11-02 -- ordinary (owner): FINTEL 202.170.33.250 at 16.0ms (the NC-Fiji cable), Fiji-IXP .20 at 16.4ms, target 18.0ms.
 
 ## AS3605 (GU) -> AS17993 (WS)
 - measurement: 228737735
 - reason: router hubs in several cities
 - detail: probe 329: router hub: hop 11 154.54.28.189 be9852.ccr22.pdx01.atlas.cogentco.com -> Portland, 116.318ms (floor 90.97ms, ok); probe 64953: router hub: hop 13 154.54.43.13 be3670.ccr22.sfo01.atlas.cogentco.com -> San Francisco, 141.1ms (floor 92.95ms, ok) -- probes leave the region through different cities; needs a human read, not a detour
 - flagged: 2026-10-28T15:10:19.176715+00:00
+- resolved: 2026-11-02 -- ordinary (owner): both probes go Guam -> IIJ Tokyo -> IIJ Seattle (sea002bb00) -> Cogent pdx01/sfo01 -> pdx02 -> syd01 (250ms) -> Samoa (~300ms). Portland and San Francisco are only where each probe enters Cogent; the paths converge, and the last off-region hub is Sydney, so finding #58's Sydney hub stands (the pre-Sydney leg now runs via Seattle/Portland).
 
 ## AS7131 (GU) -> AS17456 (GU)
 - measurement: 229249301
 - reason: local IXP crossing with implausibly high latency
 - detail: probe 60689: hop 8 crosses MARIIX (in-fishbowl) at 10.067ms, above the 10.0ms local-fiber threshold -- either this hop isn't genuinely local despite the registry, or there's an unexpected detour/backhaul before reaching it; needs a human look, not a guess
 - flagged: 2026-10-29T15:07:32.078050+00:00
+- resolved: 2026-11-02 -- ordinary (owner): MARIIX hop 103.115.193.13 (pds.ix.mariix.net) at 10.07ms vs the 10.0ms limit; probe 60689 already sits 9-11ms out before any IXP (hops 3-6), as on 2026-10-05.
 
 ## AS7131 (GU) -> AS395400 (GU)
 - measurement: 229251973
 - reason: unrecognized routing loop
 - detail: probe 60689: loop involving address 168.123.136.7, not in known_anomalies.py
 - flagged: 2026-10-29T15:17:13.068192+00:00
+- resolved: 2026-11-02 -- not a loop (owner): 168.123.136.7 (the hop after MARIIX .5) repeats at hops 8-9 at the tail with no new router after it, then dark -- the 216154286 pattern. Inconclusive dead end.
 
 ## AS9249 (VU) -> AS17993 (WS) -- parked measurement retried 3 nights against a Failed Atlas measurement
 - measurement: 228276817
@@ -479,18 +491,21 @@ Corridors `auto_classify.py`'s mechanical rules couldn't confidently resolve on 
 - detail: foreign_registry: held by ARIN; registered_abroad: RIR record country US, not PF
 - action: sweep the prefix for live hosts and ping them from AU and home-economy probes; then owner review (acknowledge, exclude the prefix as a target, or exclude the ASN)
 - flagged: 2026-10-31T15:04:13.201328+00:00
+- resolved: 2026-11-02 -- acknowledged (owner): same Cogent provider-assigned ARIN assignment as the 38.51.136.0/24 and .139.0/24 acknowledged 2026-10-01; ora.pf/geofeed.csv lists 38.51.136.0/22 as PF, Papeete. Added to leasing_check.ACKNOWLEDGED.
 
 ## AS56017 (PF) -- 38.51.137.0/24 leased or foreign-registered space
 - reason: leasing-marker check (discovery/leasing_check.py)
 - detail: foreign_registry: held by ARIN; registered_abroad: RIR record country US, not PF
 - action: sweep the prefix for live hosts and ping them from AU and home-economy probes; then owner review (acknowledge, exclude the prefix as a target, or exclude the ASN)
 - flagged: 2026-10-31T15:04:13.201328+00:00
+- resolved: 2026-11-02 -- acknowledged (owner): same Cogent provider-assigned ARIN assignment as the 38.51.136.0/24 and .139.0/24 acknowledged 2026-10-01; ora.pf/geofeed.csv lists 38.51.136.0/22 as PF, Papeete. Added to leasing_check.ACKNOWLEDGED.
 
 ## AS56017 (PF) -- 38.51.138.0/24 leased or foreign-registered space
 - reason: leasing-marker check (discovery/leasing_check.py)
 - detail: foreign_registry: held by ARIN; registered_abroad: RIR record country US, not PF
 - action: sweep the prefix for live hosts and ping them from AU and home-economy probes; then owner review (acknowledge, exclude the prefix as a target, or exclude the ASN)
 - flagged: 2026-10-31T15:04:13.201328+00:00
+- resolved: 2026-11-02 -- acknowledged (owner): same Cogent provider-assigned ARIN assignment as the 38.51.136.0/24 and .139.0/24 acknowledged 2026-10-01; ora.pf/geofeed.csv lists 38.51.136.0/22 as PF, Papeete. Added to leasing_check.ACKNOWLEDGED.
 
 ## AS132831 (TO) -- 103.36.146.0/24 leased or foreign-registered space
 - reason: leasing-marker check (discovery/leasing_check.py)
@@ -502,4 +517,5 @@ Corridors `auto_classify.py`'s mechanical rules couldn't confidently resolve on 
 - reason: unrecognized routing loop
 - detail: probe 60689: loop involving address 114.142.196.81, not in known_anomalies.py
 - flagged: 2026-11-01T15:04:09.869171+00:00
+- resolved: 2026-11-02 -- not a loop (owner): 114.142.196.81 answers at hop 10, then at hop 11 with ICMP host-unreachable (err H) -- the router reporting the target unreachable. Inconclusive dead end.
 
