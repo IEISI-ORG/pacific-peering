@@ -548,7 +548,12 @@ def _classify_corridor(
     name_cache: dict[int, str] = {}
     escalations: list[_Escalation] = []
 
-    target_ips = [] if measurement_id is not None else list_target_ips(candidate.target_asn)
+    if measurement_id is not None:
+        target_ips: list[str] = []
+    elif candidate.target_ip is not None:
+        target_ips = [candidate.target_ip]
+    else:
+        target_ips = list_target_ips(candidate.target_asn)
     triangulation: dict | None = None
     parsed: list[dict] = []
     if measurement_id is not None:
@@ -1327,6 +1332,16 @@ def _original_vantage(
     return ccs.pop(), (asns.pop() if len(asns) == 1 else None)
 
 
+def _traced_address(measurement_id: int, parsed_dir: Path | None = None) -> str | None:
+    """The single address `measurement_id` traced to, from its parsed file, or None."""
+    path = (parsed_dir or DEFAULT_ATLAS_PARSED_DIR) / f"{measurement_id}.json"
+    try:
+        targets = {t.get("target") for t in json.loads(path.read_text())} - {None}
+    except (OSError, ValueError, TypeError, AttributeError):
+        return None
+    return targets.pop() if len(targets) == 1 else None
+
+
 def _candidate_from_finding(conn: sqlite3.Connection, finding_id: int) -> CorridorCandidate | None:
     """Rebuild a firable `CorridorCandidate` from an existing finding, using
     its most recent corroboration's vantage point as the source -- this
@@ -1355,6 +1370,12 @@ def _candidate_from_finding(conn: sqlite3.Connection, finding_id: int) -> Corrid
         return None
     source_economy = ECONOMIES_BY_CC.get(source_cc)
     target_economy = ECONOMIES_BY_CC.get(finding.target_cc)
+    # A target outside the registry is an external carrier's in-region
+    # facility (#272: OneQode Guam), which has no RIS cache, and whose ASN-level
+    # pick would land in the wrong city: re-trace the address actually traced.
+    target_ip = None
+    if finding.target_asn not in _load_asn_to_cc():
+        target_ip = _traced_address(latest.measurement_id)
     return CorridorCandidate(
         source_asn=source_asn,
         source_cc=source_cc,
@@ -1363,6 +1384,7 @@ def _candidate_from_finding(conn: sqlite3.Connection, finding_id: int) -> Corrid
         target_cc=finding.target_cc,
         target_name=target_economy.name if target_economy else finding.target_cc,
         reverify_finding_id=finding.id,
+        target_ip=target_ip,
         rationale=(
             f"scheduled reverification of finding #{finding.id} "
             f"(kind={finding.kind}, last verified {latest.created_at})"

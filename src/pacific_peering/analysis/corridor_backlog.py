@@ -244,6 +244,10 @@ class CorridorCandidate:
     # result attaches there even if the source economy was corrected
     # (auto_classify._original_vantage) and no longer matches the finding's.
     reverify_finding_id: int | None = None
+    # Set on a reverification whose target is an external carrier's in-region
+    # facility (target ASN outside asn_registry.json, e.g. #272's OneQode Guam):
+    # fire at this exact address instead of looking the ASN up in the RIS cache.
+    target_ip: str | None = None
 
 
 def _load_tested_pairs(path: Path = DEFAULT_TESTED_PAIRS_PATH) -> set[tuple[int, int]]:
