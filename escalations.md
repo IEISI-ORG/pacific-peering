@@ -530,3 +530,21 @@ Corridors `auto_classify.py`'s mechanical rules couldn't confidently resolve on 
 - flagged: 2026-11-01T15:04:09.869171+00:00
 - resolved: 2026-11-02 -- not a loop (owner): 114.142.196.81 answers at hop 10, then at hop 11 with ICMP host-unreachable (err H) -- the router reporting the target unreachable. Inconclusive dead end.
 
+## AS7131 (GU) -> AS24390 (FJ)
+- measurement: 231753360
+- reason: unrecognized routing loop
+- detail: probe 60689: loop involving address 113.197.15.213, not in known_anomalies.py
+- flagged: 2026-11-03T15:13:31.780878+00:00
+
+## AS3605 (GU) -> AS9751 (AS)
+- measurement: 231754538
+- reason: router hubs in several cities
+- detail: probe 329: router hub: hop 11 154.54.26.165 be9851.ccr21.pdx01.atlas.cogentco.com -> Portland, 121.894ms (floor 90.97ms, ok); probe 64953: router hub: hop 13 154.54.43.13 be3670.ccr22.sfo01.atlas.cogentco.com -> San Francisco, 139.985ms (floor 92.95ms, ok) -- probes leave the region through different cities; needs a human read, not a detour
+- flagged: 2026-11-03T15:16:41.134610+00:00
+
+## AS9471 (PF) -> AS24390 (FJ)
+- measurement: 231756512
+- reason: router hubs in several cities
+- detail: probe 30712: router hub: hop 6 184.104.194.220 be5.core1.lax2.he.net -> Los Angeles, 104.855ms (floor 49.31ms, ok); probe 52614: router hub: hop 10 113.197.15.136 et-3-0-2.pe1.alxd.nsw.aarnet.net.au -> Sydney, 237.607ms (floor 44.23ms, ok); probe 53098: router hub: hop 8 113.197.15.136 et-3-0-2.pe1.alxd.nsw.aarnet.net.au -> Sydney, 233.257ms (floor 44.23ms, ok) -- probes leave the region through different cities; needs a human read, not a detour
+- flagged: 2026-11-03T15:19:37.858045+00:00
+
