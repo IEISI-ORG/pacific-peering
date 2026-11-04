@@ -535,6 +535,7 @@ Corridors `auto_classify.py`'s mechanical rules couldn't confidently resolve on 
 - reason: unrecognized routing loop
 - detail: probe 60689: loop involving address 113.197.15.213, not in known_anomalies.py
 - flagged: 2026-11-03T15:13:31.780878+00:00
+- detail: 2026-11-04 recheck 232195299 (owner asked), probe 60689 reproduces it: 113.197.15.213 xe-0-0-0.pe1.a.suv.aarnet.net.au (10) -> 202.158.204.194 fastethernet0-0.aarnie.usp.ac.fj (11) -> 113.197.15.136 et-3-0-2.pe1.alxd.nsw.aarnet.net.au (12) -> 113.197.15.213 again (13, 210ms), then dark. A real loop: AARNet Suva PE -> USP border -> back via AARNet Sydney. Probe 62689 and all other traces to 144.120.0.1 stop after .194. Likely reading: 144.120.0.1 unused inside USP, USP default-routes back to AARNet. Query drafted to noc@aarnet.edu.au (tcsweetser, unsent) -- awaiting reply.
 
 ## AS3605 (GU) -> AS9751 (AS)
 - measurement: 231754538
