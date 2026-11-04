@@ -74,10 +74,10 @@ FRAGILE -- exactly 1 connected probe (10/20) -- a single point of failure, and t
       Local IXP: VIX.VU (Port Vila) -- members: AS132228, AS132797
 
 ADEQUATE -- 2+ connected probes (6/20):
-  FM  Micronesia, Federated States of (2 connected)
-      Probes: 8 listed, 2 actually useful
-        Useful (Connected): 7448, 62046
-        Not useful yet -- fix the data or get it back online: 1057 (Written Off), 24222 (Abandoned), 24900 (Abandoned), 25082 (Abandoned), 26163 (Abandoned), 50897 (Disconnected)
+  FM  Micronesia, Federated States of (3 connected)
+      Probes: 8 listed, 3 actually useful
+        Useful (Connected): 7448, 50897, 62046
+        Not useful yet -- fix the data or get it back online: 1057 (Written Off), 24222 (Abandoned), 24900 (Abandoned), 25082 (Abandoned), 26163 (Abandoned)
   GU  Guam (9 connected)
       Probes: 25 listed, 11 actually useful
         Useful (Connected): 329, 6923, 7385, 7662, 23039, 60689, 60703, 62689, 64953, 65337, 1012513
