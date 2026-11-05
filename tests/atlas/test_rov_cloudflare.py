@@ -131,3 +131,73 @@ def test_path_divergence():
     assert rov.path_divergence([1, 2, 3], [1, 2]) is None  # a prefix, not a split
     assert rov.path_divergence([1, 2, 3], [1, 5]) == {"after": 1, "valid_next": 2, "invalid_next": 5}
     assert rov.path_divergence([], [1]) is None
+
+
+# --- Exit carrier (owner, 2026-11-05) -------------------------------------
+# SPC probe 60575 (FJ, AS141695) is dual-homed: its gateway sends some weeks'
+# traces via TFL (AS4638), others via Digicel Fiji (AS45355). The ROV verdict
+# describes whichever carrier that week's trace used, so a carrier switch read
+# as a verdict change (10-20 not_filtered via TFL, 10-27 filtered@AS45355 via
+# Digicel, 11-03 not_filtered via TFL). AS paths below are from the real traces:
+# TFL 231764558/231765120, Digicel 228282907/228284148.
+TFL_VALID = [141695, 4638, 45349, 4826, 13335]
+TFL_INVALID = [141695, 4638, 45349, 7474, 13335]
+DIGICEL_VALID = [141695, 45355, 13335]
+DIGICEL_INVALID = [141695, 45355]
+SPC = {"FJ": [{"id": 60575, "status": "Connected", "asn_v4": 141695}]}
+
+
+def _spc_snap(verdict, date):
+    return rov.build_snapshot(SPC, {4: {60575: verdict}}, {4: [1, 2]}, {}, datetime.fromisoformat(date + "T15:00+00:00"))
+
+
+def _tfl():
+    return rov.classify_probe(_trace(60575, V4_VALID, True), _trace(60575, V4_INVALID, True),
+                              TFL_VALID, TFL_INVALID, own_asn=141695)
+
+
+def _digicel():
+    return rov.classify_probe(_trace(60575, V4_VALID, True), _trace(60575, V4_INVALID, False),
+                              DIGICEL_VALID, DIGICEL_INVALID, own_asn=141695)
+
+
+def test_exit_asn_is_the_first_network_past_the_probes_own():
+    assert (_tfl()["label"], _tfl()["exit_asn"]) == ("not_filtered", 4638)
+    assert (_digicel()["label"], _digicel()["drop_asn"], _digicel()["exit_asn"]) == ("filtered", 45355, 45355)
+    # Own space dark (first public hop already upstream): the first ASN is the exit.
+    dark_own = rov.classify_probe(_trace(1, V4_VALID, True), _trace(1, V4_INVALID, True),
+                                  [4638, 13335], [4638, 13335], own_asn=141695)
+    assert dark_own["exit_asn"] == 4638
+
+
+def test_classify_measurements_passes_the_probes_own_asn():
+    traces = [_trace(60575, V4_VALID, True), _trace(60575, V4_INVALID, False)]
+    paths = {V4_VALID: DIGICEL_VALID, V4_INVALID: DIGICEL_INVALID}
+    verdicts = rov.classify_measurements(traces, 4, {60575: {"cc": "FJ", "asn": 141695}},
+                                         path_of=lambda t: paths[t["target"]])
+    assert verdicts[60575]["exit_asn"] == 45355
+
+
+def test_a_carrier_switch_is_not_a_verdict_change():
+    previous = _spc_snap(_tfl(), "2026-10-20")
+    current = _spc_snap(_digicel(), "2026-10-27")
+    assert rov.diff_snapshots(previous, current) == []
+
+
+def test_verdict_is_compared_with_the_last_week_on_the_same_carrier():
+    current = _spc_snap(_digicel(), "2026-11-10")
+    tfl_week = _spc_snap(_tfl(), "2026-11-03")
+    same = _spc_snap(_digicel(), "2026-10-27")
+    assert rov.diff_snapshots(tfl_week, current, older=[same]) == []
+
+    digicel_carried = rov.classify_probe(_trace(60575, V4_VALID, True), _trace(60575, V4_INVALID, True),
+                                         DIGICEL_VALID, [141695, 45355, 13335], own_asn=141695)
+    was_open = _spc_snap(digicel_carried, "2026-10-27")
+    assert rov.diff_snapshots(tfl_week, current, older=[was_open]) == [
+        "probe 60575 (FJ) v4: not_filtered -> filtered (vs 2026-10-27, same exit AS45355)"
+    ]
+
+
+def test_report_names_the_exit_carrier():
+    report = rov.render_report(_spc_snap(_digicel(), "2026-10-27"), [])
+    assert "filtered@AS45355 via AS45355" in report

@@ -22,6 +22,14 @@ Per probe and address family, one of three labels:
   (`auto_classify.KNOWN_PROXY_ASNS`) -- that tests the proxy, not the
   probe's own network.
 
+`exit_asn` is the first network past the probe's own ASN (the carrier the
+trace left by). A dual-homed probe can change carrier from week to week --
+SPC 60575 (FJ, AS141695) alternates TFL AS4638 / Digicel Fiji AS45355, so
+its verdict flipped 10-20 -> 10-27 -> 11-03 with no policy change anywhere
+(owner, 2026-11-05). `diff_snapshots` therefore compares a verdict only with
+the last week that left by the same carrier; a carrier switch alone is not
+reported as a change.
+
 `diverged` records where the valid and invalid AS paths first differ
 (e.g. PG 50365: valid via AS4826, invalid via AS7474). A network that
 drops the invalid route can push its customer's invalid traffic onto a
@@ -123,17 +131,26 @@ def path_divergence(valid_path: list[int], invalid_path: list[int]) -> dict | No
     return None
 
 
+def exit_asn(path: list[int], own_asn: int | None) -> int | None:
+    """The first network on `path` that isn't the probe's own: the carrier the trace left by."""
+    return next((asn for asn in path if asn != own_asn), None)
+
+
 def classify_probe(
     valid: dict | None,
     invalid: dict | None,
     valid_path: list[int],
     invalid_path: list[int],
+    own_asn: int | None = None,
 ) -> dict:
     """One probe's verdict for one family, from its valid and invalid traces and their AS paths."""
-    verdict: dict[str, Any] = {"label": INCONCLUSIVE, "drop_asn": None, "reason": None, "diverged": None}
+    verdict: dict[str, Any] = {
+        "label": INCONCLUSIVE, "drop_asn": None, "reason": None, "diverged": None, "exit_asn": None,
+    }
     if valid is None or invalid is None:
         return {**verdict, "reason": "no result for one of the pair"}
     path = valid_path or invalid_path
+    verdict["exit_asn"] = exit_asn(path, own_asn)
     first = path[0] if path else None
     if first in KNOWN_PROXY_ASNS:
         return {**verdict, "reason": f"path starts at proxy AS{first} ({KNOWN_PROXY_ASNS[first]})"}
@@ -164,7 +181,8 @@ def classify_measurements(
         pair = by_probe.get(probe_id, {})
         valid, invalid = pair.get("valid"), pair.get("invalid")
         verdicts[probe_id] = classify_probe(
-            valid, invalid, path_of(valid) if valid else [], path_of(invalid) if invalid else []
+            valid, invalid, path_of(valid) if valid else [], path_of(invalid) if invalid else [],
+            own_asn=probes[probe_id].get("asn"),
         )
     return verdicts
 
@@ -202,20 +220,49 @@ def build_snapshot(
     }
 
 
-def diff_snapshots(previous: dict | None, current: dict) -> list[str]:
+def _baseline(snapshots: list[dict], pid: str, af: str, now_: dict) -> tuple[dict, str | None] | None:
+    """The verdict to compare `now_` with, and the snapshot date to cite (None = the previous week).
+
+    Same carrier: the newest earlier verdict that left by `now_`'s exit ASN. If either side has no
+    exit recorded (snapshots before 2026-11-05, or a path with no public hop), the previous week's.
+    """
+    was = snapshots[0]["probes"].get(pid, {}).get(af)
+    exit_now = now_.get("exit_asn")
+    if exit_now is None or (was and was.get("exit_asn") is None):
+        return (was, None) if was and was["label"] != INCONCLUSIVE else None
+    for i, snap in enumerate(snapshots):
+        entry = snap["probes"].get(pid, {}).get(af)
+        if entry and entry["label"] != INCONCLUSIVE and entry.get("exit_asn") == exit_now:
+            return entry, (snap["date"] if i else None)
+    return None
+
+
+def diff_snapshots(previous: dict | None, current: dict, older: list[dict] | tuple = ()) -> list[str]:
+    """Verdict changes per probe and family, each compared with the last week on the same carrier.
+
+    `older` holds the snapshots before `previous`, newest first; the carrier search looks through them
+    when `previous` left by a different exit ASN.
+    """
     if previous is None:
         return ["First snapshot -- nothing to compare against."]
+    snapshots = [previous, *older]
     changes = []
     for pid, now_entry in current["probes"].items():
-        before = previous["probes"].get(pid, {})
         for af in ("v4", "v6"):
-            was, now_ = before.get(af), now_entry.get(af)
-            if not was or not now_ or INCONCLUSIVE in (was["label"], now_["label"]):
+            now_ = now_entry.get(af)
+            if not now_ or now_["label"] == INCONCLUSIVE:
                 continue
+            found = _baseline(snapshots, pid, af, now_)
+            if found is None:
+                continue
+            was, date = found
+            since = f" (vs {date}, same exit AS{now_['exit_asn']})" if date else ""
             if was["label"] != now_["label"]:
-                changes.append(f"probe {pid} ({now_entry['cc']}) {af}: {was['label']} -> {now_['label']}")
+                changes.append(f"probe {pid} ({now_entry['cc']}) {af}: {was['label']} -> {now_['label']}{since}")
             elif now_["label"] == FILTERED and was["drop_asn"] != now_["drop_asn"]:
-                changes.append(f"probe {pid} ({now_entry['cc']}) {af}: drop point AS{was['drop_asn']} -> AS{now_['drop_asn']}")
+                changes.append(
+                    f"probe {pid} ({now_entry['cc']}) {af}: drop point AS{was['drop_asn']} -> AS{now_['drop_asn']}{since}"
+                )
     return changes
 
 
@@ -226,6 +273,8 @@ def _cell(verdict: dict | None) -> str:
         cell = f"filtered@AS{verdict['drop_asn']}" if verdict["drop_asn"] else "filtered@local"
     else:
         cell = verdict["label"]
+    if verdict.get("exit_asn"):
+        cell += f" via AS{verdict['exit_asn']}"
     d = verdict.get("diverged")
     if d:
         cell += f" (split: valid AS{d['valid_next']} / invalid AS{d['invalid_next']})"
@@ -241,6 +290,7 @@ def render_report(snapshot: dict, changes: list[str]) -> str:
         "(it, or its upstream, dropped the invalid route). filtered@local = died before the first public hop.",
         "Cloudflare is anycast, so a short path only speaks for the probe's own network.",
         "(split: ...) = valid and invalid traces left via different upstreams -- a sign one of them drops the invalid route.",
+        "via ASx = the carrier the trace left by; a verdict is compared with the last week via the same carrier.",
         f"Measurements: {snapshot['measurement_ids']}",
         "",
         "Changes since last snapshot:",
@@ -264,11 +314,16 @@ def render_report(snapshot: dict, changes: list[str]) -> str:
     return "\n".join(lines) + "\n"
 
 
-def load_last_snapshot(path: Path = HISTORY_PATH) -> dict | None:
+def load_snapshots(path: Path = HISTORY_PATH) -> list[dict]:
+    """Every recorded snapshot, newest first."""
     if not path.exists():
-        return None
-    lines = [line for line in path.read_text().splitlines() if line.strip()]
-    return json.loads(lines[-1]) if lines else None
+        return []
+    return [json.loads(line) for line in reversed(path.read_text().splitlines()) if line.strip()]
+
+
+def load_last_snapshot(path: Path = HISTORY_PATH) -> dict | None:
+    snapshots = load_snapshots(path)
+    return snapshots[0] if snapshots else None
 
 
 def run_weekly_test(fire: bool, now: datetime | None = None) -> dict | None:
@@ -293,7 +348,9 @@ def run_weekly_test(fire: bool, now: datetime | None = None) -> dict | None:
     for af, ids in measurement_ids.items():
         verdicts[af] = classify_measurements(refetch_parsed(ids), af, plan[af])
     snapshot = build_snapshot(listing, verdicts, measurement_ids, target_status, now)
-    report = render_report(snapshot, diff_snapshots(load_last_snapshot(), snapshot))
+    history = load_snapshots()
+    changes = diff_snapshots(history[0], snapshot, older=history[1:]) if history else diff_snapshots(None, snapshot)
+    report = render_report(snapshot, changes)
     logger.info("Cloudflare ROV test:\n%s", report)
     HISTORY_PATH.parent.mkdir(parents=True, exist_ok=True)
     with HISTORY_PATH.open("a") as f:
