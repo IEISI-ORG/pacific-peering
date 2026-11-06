@@ -14,7 +14,8 @@ each session:
   (`0 1 * * 0`). Free APIs only (APNIC/RIS/PeeringDB/IRR/probe-registry), no Atlas credits,
   no LLM. Regenerates the corridor backlog and the AS dependency graph (`outputs/viz/as_graph.svg`)
   against fresh data, runs the monthly WHOIS leasing-marker check (`pacific-peering-leasing-check`, self-scheduling; new
-  flags to `escalations.md`), and commits+pushes `corridor_backlog.md`/`outputs/runs/*`/`escalations.md` if anything changed. Per the
+  flags to `escalations.md`), rebuilds the transit router convergence report
+  (`pacific-peering-convergence` -> `outputs/reports/convergence.txt`, cached traces only), and commits+pushes `corridor_backlog.md`/`outputs/runs/*`/`escalations.md` if anything changed. Per the
   project owner: not expected to need to run more often than this.
 - **Nightly corridor testing** — `scripts/nightly_corridor_testing.sh`, Mon–Sat 1am
   (`0 1 * * 1-6`, deliberately skips Sunday so it never races the discovery refresh).

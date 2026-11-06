@@ -1,0 +1,655 @@
+Transit router convergence (report-only; nothing in findings.db changed)
+Routers on networks outside the project's scope (fishbowl.json), wherever they sit: some are
+physically in the region (Tata qhar1/qhar2.pv4-piti and HE core1.gum1 are in Guam).
+Latest trace: 2026-11-05. Traces read: 3050. Thresholds: >= 3 source economies, >= 3 target economies.
+Counts are economy pairs (probe economy -> target economy) among tested corridors, not traffic.
+MPLS cores hide routers, so convergence inside them is undercounted. Interfaces are grouped
+into routers by PTR name; routers with no PTR, or an address-style PTR, stay separate addresses.
+
+SHARED TRANSIT ROUTERS: 67
+(one router carrying corridors between several unrelated Pacific economies)
+
+  54 pairs  core1.lax2.he.net  [AS6939 Hurricane Electric LLC]
+      8 sources: CK,GU,MP,NR,NU,PF,TV,VU   17 targets: AS,FJ,FM,GU,KI,MH,NC,NR,PF,PG,PW,SB,TO,TV,VU,WF,WS
+      5 interface(s): 184.104.189.162, 184.104.194.220, 184.104.195.1, 184.105.223.226, 184.105.65.96   20 probe(s)   seen 2026-09-13..2026-11-04
+  48 pairs  core3.syd1.he.net  [AS6939 Hurricane Electric LLC]
+      9 sources: CK,GU,MP,NR,NU,PF,PW,TV,VU   14 targets: AS,FJ,FM,GU,MH,NC,NR,PF,PG,SB,TO,VU,WF,WS
+      3 interface(s): 184.104.192.252, 184.104.194.234, 65.19.142.245   18 probe(s)   seen 2026-09-13..2026-11-05
+  39 pairs  core2.hnl1.he.net  [AS6939 Hurricane Electric LLC]
+      5 sources: CK,GU,NU,PF,VU   16 targets: AS,FJ,FM,GU,KI,MP,NC,NR,PF,PG,PW,SB,TO,TV,VU,WS
+      1 interface(s): 184.104.194.221   11 probe(s)   seen 2026-09-13..2026-11-04
+  38 pairs  core3.lax1.he.net  [AS6939 Hurricane Electric LLC]
+      8 sources: CK,GU,MP,NR,NU,PF,TV,VU   15 targets: AS,FJ,FM,GU,MH,NC,NR,PF,PG,SB,TO,TV,VU,WF,WS
+      2 interface(s): 184.104.189.163, 72.52.92.161   16 probe(s)   seen 2026-09-13..2026-11-05
+  35 pairs  core1.sjc1.he.net  [AS6939 Hurricane Electric LLC]
+      9 sources: CK,GU,MP,NC,NR,NU,PF,TV,VU   14 targets: AS,FJ,FM,GU,MH,NC,NR,PF,PG,SB,TO,VU,WF,WS
+      3 interface(s): 184.104.194.233, 184.104.196.33, 72.52.92.135   19 probe(s)   seen 2026-09-13..2026-11-05
+  34 pairs  core1.sjc2.he.net  [AS6939 Hurricane Electric LLC]
+      9 sources: CK,GU,MP,NC,NR,NU,PF,TV,VU   13 targets: AS,FJ,FM,GU,MH,NC,NR,PF,PG,SB,TO,VU,WS
+      3 interface(s): 184.104.196.34, 72.52.92.134, 72.52.92.160   19 probe(s)   seen 2026-09-13..2026-11-05
+  27 pairs  qhar1.pv4-piti.as6453.net  [AS6453 TATA Communications (America) Inc]
+      15 sources: CK,FJ,FM,GU,MH,MP,NC,NR,NU,PF,PG,PW,TO,TV,VU   3 targets: KI,MH,NR
+      2 interface(s): 180.87.180.33, 180.87.60.178   29 probe(s)   seen 2026-09-14..2026-11-05
+  26 pairs  core2.tyo1.he.net  [AS6939 Hurricane Electric LLC]
+      7 sources: FJ,GU,MP,NC,NR,TV,VU   13 targets: AS,FJ,GU,MH,NR,PF,PG,SB,TO,TV,VU,WF,WS
+      3 interface(s): 184.104.196.69, 184.104.199.9, 184.104.208.73   15 probe(s)   seen 2026-09-13..2026-11-02
+  26 pairs  cr8-lax2.ip4.gtt.net  [AS3257 GTT Communications Inc.]
+      9 sources: CK,GU,MP,NC,NU,PF,TO,TV,VU   12 targets: AS,CK,FJ,FM,KI,MH,NR,NU,PF,TO,VU,WF
+      3 interface(s): 209.120.142.149, 89.149.181.142, 89.149.183.38   25 probe(s)   seen 2026-09-14..2026-11-04
+  25 pairs  sydp-core04.telstraglobal.net  [AS4637 Telstra International Limited]
+      8 sources: FM,GU,MP,NC,NR,PF,PW,VU   13 targets: AS,CK,FJ,KI,MH,NR,PF,PG,SB,TO,VU,WF,WS
+      5 interface(s): 202.84.140.222, 202.84.141.26, 202.84.143.69, 202.84.222.134, 202.84.222.85   19 probe(s)   seen 2026-09-13..2026-11-05
+  24 pairs  ccr42.lax01.atlas.cogentco.com  [AS174 Cogent Communications]
+      10 sources: CK,FM,GU,NR,NU,PF,PG,PW,TO,VU   8 targets: AS,FJ,PG,PW,SB,TO,WF,WS
+      5 interface(s): 154.54.169.2, 154.54.25.149, 154.54.3.69, 154.54.5.174, 154.54.87.69   18 probe(s)   seen 2026-09-14..2026-11-05
+  24 pairs  tcore2.lvw-losangeles.as6453.net  [AS6453 TATA Communications (America) Inc]
+      11 sources: CK,FJ,GU,MP,NC,NR,NU,PF,PG,TV,VU   8 targets: AS,FJ,KI,MH,NR,NU,TO,WF
+      3 interface(s): 207.45.218.210, 207.45.219.129, 64.86.252.73   24 probe(s)   seen 2026-09-16..2026-11-04
+  22 pairs  core1.pdx3.he.net  [AS6939 Hurricane Electric LLC]
+      12 sources: CK,FJ,FM,GU,MP,NC,NR,NU,PF,PW,TV,VU   9 targets: FJ,GU,KI,NR,PG,PW,SB,TO,WS
+      3 interface(s): 184.104.188.77, 184.104.192.114, 184.104.195.46   25 probe(s)   seen 2026-09-13..2026-11-02
+  22 pairs  core1.sea1.he.net  [AS6939 Hurricane Electric LLC]
+      9 sources: FJ,FM,GU,MP,NC,NR,PW,TV,VU   10 targets: AS,FJ,GU,NR,PG,PW,SB,TO,WF,WS
+      4 interface(s): 184.104.195.45, 184.104.196.37, 184.105.213.117, 184.105.64.137   16 probe(s)   seen 2026-09-13..2026-11-02
+  20 pairs  ccr82.sjc13.atlas.cogentco.com  [AS174 Cogent Communications]
+      9 sources: CK,FM,GU,NR,NU,PF,PG,PW,TO   6 targets: AS,FJ,MH,PW,TO,WS
+      4 interface(s): 154.54.168.253, 154.54.169.1, 154.54.169.65, 154.54.95.213   17 probe(s)   seen 2026-09-14..2026-11-05
+  19 pairs  core3.pdx1.he.net  [AS6939 Hurricane Electric LLC]
+      11 sources: CK,FJ,FM,GU,MP,NC,NU,PF,PW,TV,VU   9 targets: FJ,GU,KI,NR,PG,PW,SB,TO,WS
+      4 interface(s): 184.104.188.76, 184.104.196.36, 184.105.213.125, 184.105.64.138   22 probe(s)   seen 2026-09-15..2026-11-02
+  19 pairs  sydp10.telstraglobal.net  [AS4637 Telstra International Limited]
+      8 sources: FM,GU,MP,NC,NR,PF,PG,PW   6 targets: FJ,PG,SB,TO,VU,WS
+      2 interface(s): 202.84.222.82, 202.84.222.86   19 probe(s)   seen 2026-09-13..2026-11-05
+  18 pairs  qhar2.pv4-piti.as6453.net  [AS6453 TATA Communications (America) Inc]
+      11 sources: CK,FJ,GU,MP,NC,NR,NU,PF,PG,TV,VU   3 targets: KI,MH,NR
+      1 interface(s): 180.87.9.2   22 probe(s)   seen 2026-09-16..2026-11-04
+  18 pairs  tcore3.lvw-losangeles.as6453.net  [AS6453 TATA Communications (America) Inc]
+      11 sources: CK,FJ,GU,MP,NC,NR,NU,PF,PG,TV,VU   3 targets: KI,MH,NR
+      1 interface(s): 64.86.252.141   22 probe(s)   seen 2026-09-16..2026-11-04
+  17 pairs  ccr22.sfo01.atlas.cogentco.com  [AS174 Cogent Communications]
+      10 sources: CK,FM,GU,NC,NR,NU,PF,PG,PW,TO   6 targets: AS,FJ,NR,PW,TO,WS
+      5 interface(s): 154.54.168.254, 154.54.28.205, 154.54.43.13, 154.54.88.185, 154.54.89.142   18 probe(s)   seen 2026-09-14..2026-11-05
+  17 pairs  ccr51.pdx02.atlas.cogentco.com  [AS174 Cogent Communications]
+      10 sources: CK,FJ,FM,GU,NC,NR,NU,PF,PW,TO   4 targets: AS,NR,TO,WS
+      3 interface(s): 154.54.164.22, 154.54.46.162, 154.54.47.230   21 probe(s)   seen 2026-09-14..2026-11-05
+  17 pairs  ccr81.tyo01.atlas.cogentco.com  [AS174 Cogent Communications]
+      6 sources: FM,GU,MP,NC,PF,PW   12 targets: AS,CK,FJ,KI,MH,NR,NU,PF,PW,SB,TO,WF
+      4 interface(s): 154.18.1.166, 154.54.172.201, 154.54.89.185, 154.54.91.125   11 probe(s)   seen 2026-09-16..2026-11-05
+  17 pairs  core1.gum1.he.net  [AS6939 Hurricane Electric LLC]
+      6 sources: CK,GU,MP,NR,NU,PF   12 targets: AS,FJ,GU,KI,MH,MP,NC,NR,PG,SB,TO,WS
+      2 interface(s): 184.105.223.250, 64.71.131.185   11 probe(s)   seen 2026-09-13..2026-11-03
+  15 pairs  core1.hnl1.he.net  [AS6939 Hurricane Electric LLC]
+      4 sources: GU,MP,NR,NU   14 targets: AS,FJ,GU,KI,MH,MP,NC,NR,PF,PG,SB,TO,WF,WS
+      2 interface(s): 184.104.193.51, 184.105.223.249   8 probe(s)   seen 2026-09-13..2026-11-04
+  15 pairs  core1.tyo1.he.net  [AS6939 Hurricane Electric LLC]
+      6 sources: CK,GU,MP,NU,PF,TV   7 targets: GU,MH,NR,PF,PW,TV,VU
+      5 interface(s): 184.104.193.227, 184.104.195.2, 184.104.196.68, 184.105.65.97, 210.173.176.106   14 probe(s)   seen 2026-09-14..2026-11-03
+  14 pairs  45.127.173.29  [AS132528 DIGICEL (AUS) PTY LTD]
+      9 sources: CK,FJ,GU,NC,NU,PF,TO,TV,VU   4 targets: FJ,TO,VU,WS
+      1 interface(s): 45.127.173.29   18 probe(s)   seen 2026-09-13..2026-11-02
+  14 pairs  ccr21.pdx01.atlas.cogentco.com  [AS174 Cogent Communications]
+      8 sources: FJ,FM,GU,NC,NR,NU,PF,PW   4 targets: AS,NR,TO,WS
+      3 interface(s): 154.54.164.21, 154.54.26.165, 154.54.43.158   13 probe(s)   seen 2026-09-14..2026-11-05
+  14 pairs  ccr21.sfo01.atlas.cogentco.com  [AS174 Cogent Communications]
+      7 sources: FJ,FM,GU,NC,NR,NU,PW   5 targets: AS,FJ,NR,TO,WS
+      4 interface(s): 154.54.28.197, 154.54.40.42, 154.54.43.157, 154.54.43.9   12 probe(s)   seen 2026-09-14..2026-11-05
+  14 pairs  ccr22.pdx01.atlas.cogentco.com  [AS174 Cogent Communications]
+      9 sources: CK,FM,GU,NC,NR,NU,PF,PW,TO   4 targets: AS,NR,TO,WS
+      3 interface(s): 154.54.28.189, 154.54.46.161, 154.54.89.141   17 probe(s)   seen 2026-09-14..2026-11-05
+  14 pairs  core3.tyo1.he.net  [AS6939 Hurricane Electric LLC]
+      3 sources: GU,MP,NR   7 targets: AS,FJ,PG,SB,TO,WF,WS
+      2 interface(s): 184.104.193.226, 184.104.199.10   4 probe(s)   seen 2026-09-13..2026-11-02
+  14 pairs  cr10-lax2.ip4.gtt.net  [AS3257 GTT Communications Inc.]
+      7 sources: CK,GU,MP,NU,PF,TV,VU   8 targets: AS,CK,FJ,KI,MH,NR,PF,TO
+      2 interface(s): 89.149.130.25, 89.149.184.237   17 probe(s)   seen 2026-09-14..2026-11-05
+  14 pairs  tcore1.tv2-tokyo.as6453.net  [AS6453 TATA Communications (America) Inc]
+      8 sources: FM,GU,MH,MP,NC,PG,PW,TO   3 targets: KI,MH,NR
+      1 interface(s): 209.58.61.40   16 probe(s)   seen 2026-09-14..2026-11-05
+  12 pairs  ccr41.lax01.atlas.cogentco.com  [AS174 Cogent Communications]
+      7 sources: FJ,FM,GU,NR,NU,PG,PW   4 targets: AS,TO,WF,WS
+      3 interface(s): 154.54.27.117, 154.54.40.158, 154.54.42.101   9 probe(s)   seen 2026-09-14..2026-11-05
+  12 pairs  ccr81.sjc13.atlas.cogentco.com  [AS174 Cogent Communications]
+      6 sources: FJ,FM,GU,NR,NU,PG   6 targets: AS,FJ,NU,TO,WF,WS
+      3 interface(s): 154.54.40.157, 154.54.40.41, 154.54.88.229   9 probe(s)   seen 2026-09-14..2026-11-05
+  12 pairs  cor01.syd11.nsw.vocus.network  [AS4826 Vocus Connect International Backbone]
+      3 sources: NC,PG,VU   10 targets: AS,FM,KI,NC,NR,PG,PW,TV,WF,WS
+      2 interface(s): 114.31.192.114, 114.31.192.64   5 probe(s)   seen 2026-09-18..2026-11-05
+  12 pairs  cor01.syd14.nsw.vocus.network  [AS4826 Vocus Connect International Backbone]
+      3 sources: NC,PG,VU   10 targets: FJ,FM,GU,KI,MH,NR,NU,PG,PW,WF
+      2 interface(s): 114.31.192.78, 114.31.192.98   3 probe(s)   seen 2026-09-14..2026-11-04
+  12 pairs  qcore1.tv2-tokyo.as6453.net  [AS6453 TATA Communications (America) Inc]
+      8 sources: FM,GU,MH,MP,NC,PG,PW,TO   4 targets: FJ,KI,MH,NR
+      3 interface(s): 180.87.180.57, 209.58.61.34, 209.58.61.96   11 probe(s)   seen 2026-09-16..2026-11-05
+  12 pairs  sydp-core03.telstraglobal.net  [AS4637 Telstra International Limited]
+      4 sources: FM,GU,NR,VU   8 targets: FJ,FM,KI,PG,SB,TO,VU,WS
+      2 interface(s): 202.84.138.89, 202.84.222.81   5 probe(s)   seen 2026-09-13..2026-11-03
+  12 pairs  tlot-core02.telstraglobal.net  [AS4637 Telstra International Limited]
+      5 sources: GU,MP,NR,PF,PW   5 targets: FJ,PG,SB,TO,VU
+      3 interface(s): 202.40.149.178, 202.84.143.25, 202.84.249.1   8 probe(s)   seen 2026-09-13..2026-11-05
+  11 pairs  62.115.126.248  [AS1299 Arelion (fka. Telia Carrier)]
+      3 sources: GU,MP,NR   9 targets: AS,FJ,KI,MH,NU,PF,SB,WF,WS
+      1 interface(s): 62.115.126.248   4 probe(s)   seen 2026-10-08..2026-11-02
+  11 pairs  chw-edge903.sydney.telstra.net  [AS1221 Telstra Limited]
+      7 sources: FM,GU,NR,PG,PW,TO,VU   6 targets: FJ,NR,PG,TO,VU,WS
+      4 interface(s): 110.145.171.149, 203.50.11.175, 203.50.11.177, 203.54.250.61   12 probe(s)   seen 2026-09-19..2026-11-05
+  10 pairs  lax-b3-link.ip.twelve99.net  [AS1299 Arelion (fka. Telia Carrier)]
+      3 sources: GU,MP,NR   9 targets: AS,FJ,KI,MH,NU,PF,SB,WF,WS
+      1 interface(s): 213.248.87.50   3 probe(s)   seen 2026-10-08..2026-11-02
+   9 pairs  agr51.syd01.atlas.cogentco.com  [AS174 Cogent Communications]
+      6 sources: FM,GU,NR,NU,PW,TO   3 targets: AS,TO,WS
+      1 interface(s): 154.54.47.18   9 probe(s)   seen 2026-09-14..2026-11-04
+   9 pairs  ccr71.syd01.atlas.cogentco.com  [AS174 Cogent Communications]
+      6 sources: FM,GU,NR,NU,PW,TO   3 targets: AS,TO,WS
+      2 interface(s): 154.54.29.222, 154.54.47.229   9 probe(s)   seen 2026-09-14..2026-11-04
+   9 pairs  eqnx-core02.telstraglobal.net  [AS4637 Telstra International Limited]
+      3 sources: NC,PW,VU   9 targets: AS,CK,MH,NR,PF,SB,TO,VU,WF
+      3 interface(s): 202.84.141.25, 202.84.247.18, 202.84.251.61   7 probe(s)   seen 2026-09-14..2026-11-05
+   9 pairs  hkck-core01.telstraglobal.net  [AS4637 Telstra International Limited]
+      3 sources: FM,GU,NR   6 targets: FJ,PG,SB,TO,VU,WS
+      1 interface(s): 202.84.157.38   3 probe(s)   seen 2026-09-16..2026-11-03
+   9 pairs  twi4246393.lnk.telstra.net  [AS1221 Telstra Limited]
+      7 sources: FM,GU,NR,PG,PW,TO,VU   4 targets: FJ,NR,TO,WS
+      1 interface(s): 138.217.219.202   11 probe(s)   seen 2026-09-20..2026-11-05
+   8 pairs  core2.akl1.he.net  [AS6939 Hurricane Electric LLC]
+      7 sources: CK,GU,NC,NU,PF,TV,VU   3 targets: KI,NR,PW
+      2 interface(s): 184.104.192.115, 184.104.192.253   17 probe(s)   seen dates unknown
+   8 pairs  gu-gnc-rt1-----vlan780.au-gssyd-rt1.oneqode.net  [AS140627 OneQode]
+      3 sources: GU,MP,NR   4 targets: FJ,PG,SB,WS
+      1 interface(s): 103.151.64.7   8 probe(s)   seen 2026-09-16..2026-11-03
+   7 pairs  103.112.0.226  [AS140627 OneQode]
+      3 sources: GU,MP,NR   3 targets: FJ,SB,WS
+      1 interface(s): 103.112.0.226   7 probe(s)   seen 2026-09-15..2026-11-03
+   7 pairs  ccr41.sjc03.atlas.cogentco.com  [AS174 Cogent Communications]
+      3 sources: NC,PG,PW   7 targets: AS,FJ,MH,NR,NU,SB,TO
+      5 interface(s): 154.54.169.38, 154.54.169.66, 154.54.43.10, 154.54.43.14, 154.54.86.137   5 probe(s)   seen 2026-09-20..2026-10-25
+   7 pairs  ty-eqxty2-bb4.globalsecurelayer.com  [AS7578 Global Secure Layer]
+      3 sources: FM,GU,PW   4 targets: FJ,KI,TV,WS
+      3 interface(s): 206.148.24.210, 206.148.27.34, 206.148.27.66   9 probe(s)   seen 2026-09-14..2026-10-27
+   6 pairs  210.57.5.11  [AS4637 Telstra International Limited]
+      5 sources: FM,GU,MP,NR,PW   3 targets: FJ,TO,WS
+      1 interface(s): 210.57.5.11   9 probe(s)   seen 2026-09-14..2026-10-25
+   6 pairs  oxf-gw30.sydney.telstra.net  [AS1221 Telstra Limited]
+      3 sources: GU,PG,VU   4 targets: FJ,SB,TO,VU
+      2 interface(s): 203.50.13.93, 203.50.6.106   3 probe(s)   seen 2026-09-14..2026-11-05
+   6 pairs  r22.sydnau05.au.bb.gin.ntt.net  [AS2914 NTT America]
+      3 sources: FJ,GU,VU   6 targets: AS,FJ,MH,NU,PW,VU
+      3 interface(s): 129.250.2.133, 129.250.2.225, 129.250.2.78   4 probe(s)   seen 2026-09-16..2026-10-27
+   6 pairs  stl-core30.sydney.telstra.net  [AS1221 Telstra Limited]
+      5 sources: FM,GU,PG,PW,VU   3 targets: PG,TO,VU
+      3 interface(s): 203.50.12.132, 203.50.6.109, 203.50.6.117   10 probe(s)   seen 2026-09-19..2026-11-05
+   6 pairs  sydp-core03.sydney.telstraglobal.net  [AS4637 Telstra International Limited]
+      3 sources: FM,GU,MP   4 targets: FJ,SB,VU,WS
+      1 interface(s): 202.84.141.146   7 probe(s)   seen 2026-09-15..2026-10-27
+   5 pairs  ccr41.lax05.atlas.cogentco.com  [AS174 Cogent Communications]
+      3 sources: FM,PG,PW   3 targets: FJ,SB,WF
+      2 interface(s): 154.54.27.118, 154.54.3.70   4 probe(s)   seen 2026-09-20..2026-11-04
+   5 pairs  pad-gw30.sydney.telstra.net  [AS1221 Telstra Limited]
+      4 sources: FM,GU,PW,VU   3 targets: KI,TO,VU
+      2 interface(s): 203.50.13.85, 203.50.6.102   7 probe(s)   seen 2026-09-19..2026-11-05
+   5 pairs  pe1.brwy.nsw.aarnet.net.au  [AS7575 Australian Academic and Research Network (AARNet)]
+      3 sources: FM,GU,TO   4 targets: AS,FJ,TO,WS
+      2 interface(s): 113.197.15.13, 113.197.15.5   5 probe(s)   seen 2026-09-20..2026-11-05
+   5 pairs  qcore2.lvw-losangeles.as6453.net  [AS6453 TATA Communications (America) Inc]
+      5 sources: CK,GU,NR,NU,PF   3 targets: MH,NU,TO
+      2 interface(s): 207.45.219.128, 64.86.197.98   10 probe(s)   seen 2026-09-16..2026-11-04
+   5 pairs  qcore2.tv2-tokyo.as6453.net  [AS6453 TATA Communications (America) Inc]
+      3 sources: FM,MH,PG   4 targets: FJ,KI,MH,NR
+      2 interface(s): 120.29.217.9, 180.87.168.207   3 probe(s)   seen 2026-10-11..2026-11-04
+   5 pairs  tata.tyo01.atlas.cogentco.com  [AS174 Cogent Communications]
+      3 sources: GU,NC,PW   3 targets: KI,MH,NR
+      1 interface(s): 154.54.140.90   6 probe(s)   seen 2026-09-27..2026-11-05
+   4 pairs  62.115.140.229  [AS1299 Arelion (fka. Telia Carrier)]
+      3 sources: MP,NR,PF   3 targets: FJ,WF,WS
+      1 interface(s): 62.115.140.229   3 probe(s)   seen 2026-10-08..2026-10-27
+   4 pairs  gtt.tyo01.atlas.cogentco.com  [AS174 Cogent Communications]
+      3 sources: GU,MP,PW   3 targets: CK,NU,PF
+      1 interface(s): 154.54.140.6   5 probe(s)   seen 2026-09-16..2026-09-27
+   3 pairs  101.203.88.74  [AS6939 Hurricane Electric LLC]
+      3 sources: FM,GU,PW   3 targets: GU,PG,TO
+      1 interface(s): 101.203.88.74   4 probe(s)   seen 2026-09-27..2026-10-29
+   3 pairs  4.79.136.34  [AS3356 Lumen (Level 3)]
+      3 sources: FJ,GU,TV   3 targets: GU,MP,NR
+      1 interface(s): 4.79.136.34   4 probe(s)   seen 2026-09-19..2026-10-25
+
+TARGET ACCESS ROUTERS: 143
+(>= 3 sources but < 3 target economies: mostly a target's own upstream)
+
+  15 pairs  pe1.a.suv.aarnet.net.au  [AS7575 Australian Academic and Research Network (AARNet)]
+      15 sources: CK,FJ,FM,GU,KI,MH,MP,NC,NR,NU,PF,PG,PW,TV,VU   1 targets: FJ
+      1 interface(s): 113.197.15.213   37 probe(s)   seen 2026-09-16..2026-11-04
+  13 pairs  81.52.166.62  [AS5511 Orange S.A.]
+      13 sources: CK,FM,GU,MP,NC,NR,NU,PF,PG,PW,TO,TV,VU   1 targets: WF
+      1 interface(s): 81.52.166.62   27 probe(s)   seen 2026-09-14..2026-11-05
+  13 pairs  aarnie.usp.ac.fj  [AS7575 Australian Academic and Research Network (AARNet)]
+      13 sources: CK,FJ,FM,GU,KI,MH,MP,NR,NU,PF,PG,PW,TV   1 targets: FJ
+      1 interface(s): 202.158.204.194   30 probe(s)   seen 2026-09-16..2026-11-04
+  11 pairs  cr1-fdcp.bb.as11404.net  [AS11404 Astound (fka. Wave Broadband)]
+      11 sources: CK,GU,MP,NC,NR,NU,PF,PG,TO,TV,VU   1 targets: AS
+      1 interface(s): 174.127.150.87   18 probe(s)   seen 2026-09-16..2026-11-04
+  11 pairs  cr2-fdcp.bb.as11404.net  [AS11404 Astound (fka. Wave Broadband)]
+      11 sources: CK,GU,MP,NC,NR,NU,PF,PG,TO,TV,VU   1 targets: AS
+      1 interface(s): 174.127.138.44   18 probe(s)   seen 2026-09-16..2026-11-04
+  11 pairs  cr3-stack.bb.as11404.net  [AS11404 Astound (fka. Wave Broadband)]
+      11 sources: CK,GU,MP,NC,NR,NU,PF,PG,TO,TV,VU   1 targets: AS
+      2 interface(s): 174.127.136.155, 174.127.149.80   18 probe(s)   seen 2026-09-16..2026-11-04
+  10 pairs  216.243.25.207  [AS11404 Astound (fka. Wave Broadband)]
+      10 sources: CK,GU,MP,NC,NR,PF,PG,TO,TV,VU   1 targets: AS
+      1 interface(s): 216.243.25.207   17 probe(s)   seen 2026-09-16..2026-10-18
+  10 pairs  81.52.188.158  [AS5511 Orange S.A.]
+      10 sources: CK,FM,GU,MP,NR,NU,PF,TO,TV,VU   1 targets: WF
+      1 interface(s): 81.52.188.158   17 probe(s)   seen 2026-09-14..2026-11-05
+   8 pairs  206.224.66.59  [AS14593 SpaceX Starlink]
+      8 sources: GU,NC,NR,NU,PF,PG,TO,VU   1 targets: KI
+      1 interface(s): 206.224.66.59   13 probe(s)   seen 2026-09-18..2026-10-08
+   8 pairs  209.120.142.150  [AS3257 GTT Communications Inc.]
+      8 sources: GU,MP,NC,PG,PW,TO,TV,VU   2 targets: NU,PF
+      1 interface(s): 209.120.142.150   19 probe(s)   seen 2026-09-15..2026-10-04
+   8 pairs  38.142.108.162  [AS174 Cogent Communications]
+      8 sources: CK,FJ,FM,GU,NC,NU,PF,PW   1 targets: AS
+      1 interface(s): 38.142.108.162   20 probe(s)   seen 2026-09-14..2026-11-05
+   7 pairs  154.18.97.50  [AS174 Cogent Communications]
+      5 sources: FM,GU,NR,PW,TO   2 targets: AS,WS
+      1 interface(s): 154.18.97.50   8 probe(s)   seen 2026-09-14..2026-11-04
+   7 pairs  206.224.66.27  [AS14593 SpaceX Starlink]
+      7 sources: CK,GU,NC,NU,PF,PW,VU   1 targets: KI
+      1 interface(s): 206.224.66.27   10 probe(s)   seen 2026-09-30..2026-09-30
+   6 pairs  134.159.92.30  [AS4637 Telstra International Limited]
+      6 sources: GU,MP,NC,NR,PF,PG   2 targets: FJ,VU
+      1 interface(s): 134.159.92.30   14 probe(s)   seen 2026-09-13..2026-11-05
+   6 pairs  149.19.108.188  [AS14593 SpaceX Starlink]
+      6 sources: CK,GU,NC,NU,PF,VU   1 targets: KI
+      1 interface(s): 149.19.108.188   13 probe(s)   seen 2026-09-30..2026-09-30
+   6 pairs  206.224.66.45  [AS14593 SpaceX Starlink]
+      6 sources: CK,GU,NC,PF,PG,TO   1 targets: KI
+      1 interface(s): 206.224.66.45   8 probe(s)   seen 2026-09-15..2026-09-30
+   6 pairs  206.224.66.47  [AS14593 SpaceX Starlink]
+      6 sources: GU,NC,NU,PF,PG,VU   2 targets: KI,NR
+      1 interface(s): 206.224.66.47   8 probe(s)   seen 2026-09-15..2026-10-28
+   6 pairs  206.224.69.123  [AS14593 SpaceX Starlink]
+      6 sources: CK,GU,NC,NU,PF,VU   1 targets: KI
+      1 interface(s): 206.224.69.123   9 probe(s)   seen 2026-09-18..2026-09-30
+   6 pairs  209.120.142.174  [AS3257 GTT Communications Inc.]
+      4 sources: GU,MP,TV,VU   2 targets: CK,PF
+      1 interface(s): 209.120.142.174   9 probe(s)   seen 2026-09-14..2026-11-05
+   6 pairs  72.234.202.81  [AS36149 Hawaiian Telcom Services Company]
+      6 sources: CK,NC,NU,PF,TV,VU   1 targets: NR
+      1 interface(s): 72.234.202.81   14 probe(s)   seen 2026-09-20..2026-09-27
+   6 pairs  72.234.202.82  [AS36149 Hawaiian Telcom Services Company]
+      6 sources: CK,NC,NU,PF,TV,VU   1 targets: NR
+      1 interface(s): 72.234.202.82   14 probe(s)   seen 2026-09-20..2026-09-27
+   6 pairs  hawaiian-telcom-inc.e0-38.core3.sjc2.he.net  [AS6939 Hurricane Electric LLC]
+      6 sources: CK,NC,NU,PF,TV,VU   1 targets: NR
+      1 interface(s): 72.52.108.227   14 probe(s)   seen 2026-09-20..2026-09-27
+   6 pairs  pe1.mcqp.nsw.aarnet.net.au  [AS7575 Australian Academic and Research Network (AARNet)]
+      6 sources: CK,FM,GU,NU,PF,PW   1 targets: FJ
+      2 interface(s): 113.197.15.136, 113.197.15.4   15 probe(s)   seen 2026-09-16..2026-11-04
+   5 pairs  101.203.74.94  [AS4648 Spark New Zealand]
+      5 sources: FM,GU,KI,MP,NR   1 targets: FJ
+      1 interface(s): 101.203.74.94   12 probe(s)   seen 2026-09-20..2026-10-27
+   5 pairs  103.73.110.38  [AS132528 DIGICEL (AUS) PTY LTD]
+      5 sources: FM,NR,NU,TO,VU   1 targets: WS
+      1 interface(s): 103.73.110.38   8 probe(s)   seen 2026-09-16..2026-11-02
+   5 pairs  149.19.108.190  [AS14593 SpaceX Starlink]
+      5 sources: CK,GU,NC,NU,PF   1 targets: KI
+      1 interface(s): 149.19.108.190   13 probe(s)   seen 2026-09-18..2026-09-18
+   5 pairs  149.19.109.4  [AS14593 SpaceX Starlink]
+      5 sources: CK,GU,NC,NU,PF   1 targets: KI
+      1 interface(s): 149.19.109.4   6 probe(s)   seen dates unknown
+   5 pairs  184.104.208.74  [AS6939 Hurricane Electric LLC]
+      5 sources: FJ,GU,NC,TV,VU   2 targets: GU,NR
+      1 interface(s): 184.104.208.74   10 probe(s)   seen 2026-09-19..2026-11-02
+   5 pairs  206.224.66.23  [AS14593 SpaceX Starlink]
+      5 sources: GU,NC,NR,PF,PW   1 targets: KI
+      1 interface(s): 206.224.66.23   7 probe(s)   seen 2026-10-08..2026-10-08
+   5 pairs  206.224.66.29  [AS14593 SpaceX Starlink]
+      4 sources: NC,PG,TO,VU   2 targets: KI,NR
+      1 interface(s): 206.224.66.29   5 probe(s)   seen 2026-09-30..2026-10-28
+   5 pairs  206.224.66.51  [AS14593 SpaceX Starlink]
+      5 sources: FM,GU,NC,PF,PW   1 targets: KI
+      1 interface(s): 206.224.66.51   9 probe(s)   seen 2026-09-14..2026-09-30
+   5 pairs  206.224.66.53  [AS14593 SpaceX Starlink]
+      5 sources: CK,NC,PF,PG,VU   1 targets: KI
+      1 interface(s): 206.224.66.53   10 probe(s)   seen dates unknown
+   5 pairs  206.224.66.55  [AS14593 SpaceX Starlink]
+      5 sources: GU,NC,NU,PF,TV   1 targets: KI
+      1 interface(s): 206.224.66.55   7 probe(s)   seen 2026-09-15..2026-09-30
+   5 pairs  206.224.69.106  [AS14593 SpaceX Starlink]
+      5 sources: GU,NC,NU,PF,VU   1 targets: KI
+      1 interface(s): 206.224.69.106   6 probe(s)   seen 2026-09-30..2026-09-30
+   5 pairs  206.224.69.110  [AS14593 SpaceX Starlink]
+      5 sources: CK,GU,NC,NU,VU   1 targets: KI
+      1 interface(s): 206.224.69.110   7 probe(s)   seen 2026-09-30..2026-09-30
+   5 pairs  206.224.69.127  [AS14593 SpaceX Starlink]
+      5 sources: CK,GU,NC,NU,VU   1 targets: KI
+      1 interface(s): 206.224.69.127   7 probe(s)   seen 2026-09-18..2026-09-30
+   5 pairs  210.176.152.242  [AS4637 Telstra International Limited]
+      5 sources: FM,GU,PF,PG,PW   1 targets: SB
+      1 interface(s): 210.176.152.242   9 probe(s)   seen 2026-09-14..2026-11-05
+   5 pairs  38.104.108.130  [AS174 Cogent Communications]
+      5 sources: FM,NC,NR,NU,TO   1 targets: AS
+      1 interface(s): 38.104.108.130   8 probe(s)   seen 2026-10-26..2026-11-05
+   5 pairs  38.120.183.3  [AS174 Cogent Communications]
+      5 sources: CK,GU,NU,PF,PW   1 targets: FJ
+      1 interface(s): 38.120.183.3   7 probe(s)   seen 2026-09-14..2026-10-30
+   5 pairs  4.71.33.14  [AS3356 Lumen (Level 3)]
+      5 sources: CK,NU,PF,PG,TV   1 targets: FM
+      1 interface(s): 4.71.33.14   7 probe(s)   seen 2026-10-11..2026-10-11
+   5 pairs  64.86.26.15  [AS6453 TATA Communications (America) Inc]
+      4 sources: NC,PG,TV,VU   2 targets: MH,NR
+      1 interface(s): 64.86.26.15   6 probe(s)   seen 2026-09-16..2026-11-04
+   5 pairs  agr61.sjc14.atlas.cogentco.com  [AS174 Cogent Communications]
+      5 sources: CK,GU,NU,PF,PW   1 targets: FJ
+      1 interface(s): 154.24.49.254   7 probe(s)   seen 2026-09-14..2026-10-30
+   5 pairs  ccr71.gum01.atlas.cogentco.com  [AS174 Cogent Communications]
+      5 sources: FM,GU,PF,PG,VU   2 targets: PW,TO
+      2 interface(s): 154.54.5.173, 154.54.91.126   6 probe(s)   seen 2026-09-14..2026-10-25
+   5 pairs  core1.pdx-pittock.or.bb.as11404.net  [AS11404 Astound (fka. Wave Broadband)]
+      5 sources: GU,NC,PG,TV,VU   1 targets: AS
+      1 interface(s): 192.175.30.31   8 probe(s)   seen 2026-09-16..2026-11-04
+   5 pairs  core2.pdx-pittock.or.bb.as11404.net  [AS11404 Astound (fka. Wave Broadband)]
+      5 sources: GU,NC,PG,TV,VU   1 targets: AS
+      1 interface(s): 174.127.151.65   7 probe(s)   seen 2026-09-16..2026-11-04
+   5 pairs  cr3-sea-b.bb.as11404.net  [AS11404 Astound (fka. Wave Broadband)]
+      5 sources: CK,GU,MP,NU,PF   1 targets: AS
+      2 interface(s): 174.127.138.50, 65.50.198.63   8 probe(s)   seen 2026-09-16..2026-10-26
+   5 pairs  cr4-11greatoaks.bb.as11404.net  [AS11404 Astound (fka. Wave Broadband)]
+      5 sources: GU,NC,PG,TV,VU   1 targets: AS
+      2 interface(s): 192.175.30.217, 192.175.30.222   8 probe(s)   seen 2026-09-16..2026-11-04
+   5 pairs  cr4-pdx.bb.as11404.net  [AS11404 Astound (fka. Wave Broadband)]
+      5 sources: GU,NC,PG,TV,VU   1 targets: AS
+      2 interface(s): 174.127.149.91, 174.127.151.44   8 probe(s)   seen 2026-09-16..2026-11-04
+   5 pairs  cr4-stack.bb.as11404.net  [AS11404 Astound (fka. Wave Broadband)]
+      5 sources: GU,NC,PG,TV,VU   1 targets: AS
+      1 interface(s): 174.127.148.91   8 probe(s)   seen 2026-09-16..2026-11-04
+   5 pairs  pe04.syd01.nexthop.net.au  [AS9507 NextHop Pty Ltd]
+      5 sources: GU,MP,NU,TV,VU   1 targets: CK
+      1 interface(s): 103.66.132.105   10 probe(s)   seen 2026-09-15..2026-09-16
+   5 pairs  png-dataco-limited.e0-11.switch1.syd1.he.net  [AS6939 Hurricane Electric LLC]
+      5 sources: CK,NU,PF,PW,TV   1 targets: PG
+      1 interface(s): 64.71.151.201   5 probe(s)   seen 2026-09-27..2026-11-05
+   5 pairs  rcr71.sjc14.atlas.cogentco.com  [AS174 Cogent Communications]
+      5 sources: CK,GU,NU,PF,PW   1 targets: FJ
+      2 interface(s): 154.54.88.230, 154.54.95.214   7 probe(s)   seen 2026-09-14..2026-10-30
+   5 pairs  rt-01.eic.hkg.net.apernet.io  [AS38008 Aperture Science Limited]
+      4 sources: NR,NU,PG,TO   2 targets: NR,SB
+      1 interface(s): 103.152.35.1   4 probe(s)   seen 2026-09-17..2026-11-02
+   4 pairs  101.203.88.24  [AS38195 Superloop]
+      3 sources: GU,MP,PW   2 targets: NC,VU
+      1 interface(s): 101.203.88.24   4 probe(s)   seen 2026-09-16..2026-11-01
+   4 pairs  103.107.196.7  [AS137409 GSL Networks Pty LTD]
+      3 sources: FM,GU,PW   2 targets: KI,TV
+      1 interface(s): 103.107.196.7   8 probe(s)   seen 2026-09-14..2026-09-15
+   4 pairs  114.23.35.195  [AS56030 Voyager Internet Ltd.]
+      4 sources: FM,GU,NR,TO   1 targets: WS
+      1 interface(s): 114.23.35.195   6 probe(s)   seen 2026-09-17..2026-10-30
+   4 pairs  124.254.71.10  [AS4826 Vocus Connect International Backbone]
+      3 sources: NC,PG,VU   2 targets: KI,NR
+      1 interface(s): 124.254.71.10   7 probe(s)   seen 2026-09-18..2026-10-28
+   4 pairs  149.19.109.10  [AS14593 SpaceX Starlink]
+      4 sources: CK,NC,NU,VU   1 targets: KI
+      1 interface(s): 149.19.109.10   7 probe(s)   seen 2026-09-30..2026-09-30
+   4 pairs  154.18.44.2  [AS174 Cogent Communications]
+      4 sources: GU,PF,PG,VU   1 targets: PW
+      1 interface(s): 154.18.44.2   5 probe(s)   seen 2026-09-14..2026-09-20
+   4 pairs  173.205.37.78  [AS3257 GTT Communications Inc.]
+      3 sources: CK,NU,PF   2 targets: CK,FJ
+      1 interface(s): 173.205.37.78   5 probe(s)   seen dates unknown
+   4 pairs  193.251.249.81  [AS5511 Orange S.A.]
+      4 sources: CK,FM,NU,PF   1 targets: WF
+      1 interface(s): 193.251.249.81   8 probe(s)   seen 2026-09-20..2026-11-04
+   4 pairs  206.224.66.57  [AS14593 SpaceX Starlink]
+      4 sources: CK,GU,PW,VU   1 targets: KI
+      1 interface(s): 206.224.66.57   7 probe(s)   seen 2026-09-15..2026-09-15
+   4 pairs  206.224.69.108  [AS14593 SpaceX Starlink]
+      4 sources: GU,NC,PF,VU   1 targets: KI
+      1 interface(s): 206.224.69.108   5 probe(s)   seen 2026-09-30..2026-09-30
+   4 pairs  206.224.69.112  [AS14593 SpaceX Starlink]
+      4 sources: CK,GU,NC,VU   1 targets: KI
+      1 interface(s): 206.224.69.112   4 probe(s)   seen dates unknown
+   4 pairs  206.224.69.125  [AS14593 SpaceX Starlink]
+      4 sources: GU,NC,PF,VU   1 targets: KI
+      1 interface(s): 206.224.69.125   6 probe(s)   seen 2026-09-18..2026-09-30
+   4 pairs  206.224.69.98  [AS14593 SpaceX Starlink]
+      4 sources: CK,NC,NU,PF   1 targets: KI
+      1 interface(s): 206.224.69.98   8 probe(s)   seen 2026-09-18..2026-09-18
+   4 pairs  43.243.21.120  [AS14593 SpaceX Starlink]
+      4 sources: CK,GU,NU,PF   1 targets: KI
+      1 interface(s): 43.243.21.120   8 probe(s)   seen dates unknown
+   4 pairs  43.243.22.94  [AS14593 SpaceX Starlink]
+      4 sources: CK,GU,NU,PF   1 targets: KI
+      1 interface(s): 43.243.22.94   5 probe(s)   seen dates unknown
+   4 pairs  64.71.131.186  [AS6939 Hurricane Electric LLC]
+      3 sources: CK,NU,PF   2 targets: MP,NR
+      1 interface(s): 64.71.131.186   5 probe(s)   seen 2026-10-25..2026-10-25
+   4 pairs  64.86.26.36  [AS6453 TATA Communications (America) Inc]
+      4 sources: NC,PG,TV,VU   2 targets: MH,NR
+      1 interface(s): 64.86.26.36   4 probe(s)   seen 2026-09-16..2026-11-04
+   4 pairs  aarnet.as7575.any2ix.coresite.com  [AS7575 Australian Academic and Research Network (AARNet)]
+      4 sources: CK,GU,NU,PF   1 targets: FJ
+      1 interface(s): 206.72.210.64   10 probe(s)   seen 2026-09-16..2026-11-04
+   4 pairs  as14593.akl.edgeix.net  [AS14593 SpaceX Starlink]
+      4 sources: CK,GU,NU,PF   1 targets: KI
+      1 interface(s): 103.180.190.46   8 probe(s)   seen dates unknown
+   4 pairs  as7575.syd.edgeix.net.au  [AS7575 Australian Academic and Research Network (AARNet)]
+      4 sources: GU,KI,MP,NR   1 targets: FJ
+      1 interface(s): 202.77.88.26   10 probe(s)   seen 2026-09-16..2026-11-03
+   4 pairs  bdr01.syd07.nsw.vocus.network  [AS4826 Vocus Connect International Backbone]
+      3 sources: NC,PG,VU   2 targets: KI,NR
+      2 interface(s): 114.31.192.103, 114.31.192.117   7 probe(s)   seen 2026-09-18..2026-10-28
+   4 pairs  ccr81.sea08.atlas.cogentco.com  [AS174 Cogent Communications]
+      3 sources: FM,GU,PF   2 targets: AS,FJ
+      2 interface(s): 154.54.160.237, 154.54.82.253   3 probe(s)   seen 2026-09-14..2026-11-03
+   4 pairs  corerrouter1-xe-0-2-0.wgtn.xtreme.net.nz  [AS18400 Xtreme Networks Limited]
+      4 sources: FM,GU,NR,TO   1 targets: WS
+      1 interface(s): 203.171.32.160   6 probe(s)   seen 2026-09-17..2026-10-30
+   4 pairs  cr2-sea-a.bb.as11404.net  [AS11404 Astound (fka. Wave Broadband)]
+      4 sources: CK,GU,NU,PF   1 targets: AS
+      1 interface(s): 174.127.149.136   7 probe(s)   seen 2026-09-16..2026-10-26
+   4 pairs  cr3-lax1.ip4.gtt.net  [AS3257 GTT Communications Inc.]
+      4 sources: CK,FM,NU,PF   1 targets: WF
+      2 interface(s): 89.149.181.102, 89.149.187.114   9 probe(s)   seen 2026-09-20..2026-11-04
+   4 pairs  cr3-lax2.ip4.gtt.net  [AS3257 GTT Communications Inc.]
+      3 sources: CK,NU,PF   2 targets: CK,FJ
+      2 interface(s): 89.149.141.105, 89.149.141.125   5 probe(s)   seen dates unknown
+   4 pairs  cr3-pdx.bb.as11404.net  [AS11404 Astound (fka. Wave Broadband)]
+      4 sources: NC,PG,TV,VU   1 targets: AS
+      1 interface(s): 174.127.151.94   4 probe(s)   seen 2026-09-27..2026-10-29
+   4 pairs  cr3-sea-a.bb.as11404.net  [AS11404 Astound (fka. Wave Broadband)]
+      4 sources: CK,GU,NU,PF   1 targets: AS
+      1 interface(s): 65.50.198.66   4 probe(s)   seen 2026-09-16..2026-10-26
+   4 pairs  cr9-lax2.ip4.gtt.net  [AS3257 GTT Communications Inc.]
+      4 sources: CK,GU,NU,PF   2 targets: FM,NU
+      3 interface(s): 198.47.103.177, 89.149.143.161, 89.149.186.105   7 probe(s)   seen 2026-09-15..2026-10-11
+   4 pairs  e4-35.syd-eqxsy5-bb3.globalsecurelayer.com  [AS7578 Global Secure Layer]
+      3 sources: FM,GU,PW   2 targets: KI,TV
+      1 interface(s): 206.148.24.29   8 probe(s)   seen 2026-09-14..2026-09-15
+   4 pairs  e49.guam-rti-cr1.globalsecurelayer.com  [AS7578 Global Secure Layer]
+      3 sources: FM,GU,PW   2 targets: KI,TV
+      1 interface(s): 206.148.24.30   8 probe(s)   seen 2026-09-14..2026-09-15
+   4 pairs  e52.syd-eqxsy5-bb7.globalsecurelayer.com  [AS7578 Global Secure Layer]
+      3 sources: FM,GU,PW   2 targets: KI,TV
+      1 interface(s): 206.148.24.194   8 probe(s)   seen 2026-09-14..2026-09-15
+   4 pairs  equinix.tfl.com.fj  [AS7474 SingTel Optus Pty Ltd]
+      4 sources: CK,NR,NU,PF   1 targets: FJ
+      1 interface(s): 61.88.116.130   6 probe(s)   seen 2026-10-08..2026-10-08
+   4 pairs  oxf-gw31.sydney.telstra.net  [AS1221 Telstra Limited]
+      3 sources: FM,GU,VU   2 targets: TO,VU
+      2 interface(s): 203.50.13.97, 203.50.6.101   4 probe(s)   seen 2026-09-20..2026-10-28
+   4 pairs  per-ndcp1-cr4.globalsecurelayer.com  [AS7578 Global Secure Layer]
+      3 sources: FM,GU,PW   2 targets: KI,TV
+      1 interface(s): 223.165.7.192   8 probe(s)   seen 2026-09-14..2026-09-15
+   4 pairs  per-ndcp2-bb7.globalsecurelayer.com  [AS7578 Global Secure Layer]
+      3 sources: FM,GU,PW   2 targets: KI,TV
+      1 interface(s): 206.148.24.221   8 probe(s)   seen 2026-09-14..2026-09-15
+   4 pairs  qcore1.eql-losangeles.as6453.net  [AS6453 TATA Communications (America) Inc]
+      3 sources: FJ,GU,MP   2 targets: MH,NR
+      2 interface(s): 207.45.208.164, 207.45.208.48   5 probe(s)   seen 2026-09-16..2026-11-03
+   4 pairs  qcore1.lvw-losangeles.as6453.net  [AS6453 TATA Communications (America) Inc]
+      3 sources: NC,TV,VU   2 targets: MH,NR
+      1 interface(s): 207.45.217.153   4 probe(s)   seen 2026-09-16..2026-11-03
+   4 pairs  ty-eqxty8-cr7.globalsecurelayer.com  [AS7578 Global Secure Layer]
+      3 sources: FM,GU,PW   2 targets: KI,TV
+      1 interface(s): 206.148.24.174   8 probe(s)   seen 2026-09-14..2026-09-15
+   3 pairs  101.203.88.62  [AS13335 Cloudflare]
+      3 sources: FM,GU,PW   1 targets: PG
+      1 interface(s): 101.203.88.62   4 probe(s)   seen 2026-10-27..2026-10-27
+   3 pairs  120.88.74.158  [AS7594 On Q]
+      3 sources: NC,NU,TO   1 targets: TO
+      1 interface(s): 120.88.74.158   5 probe(s)   seen 2026-10-11..2026-10-18
+   3 pairs  125.63.12.158  [AS38195 Superloop]
+      3 sources: GU,MP,PW   1 targets: NC
+      1 interface(s): 125.63.12.158   4 probe(s)   seen 2026-09-16..2026-10-29
+   3 pairs  141.101.72.105  [AS13335 Cloudflare]
+      3 sources: GU,MP,NR   1 targets: PG
+      1 interface(s): 141.101.72.105   7 probe(s)   seen 2026-10-27..2026-10-27
+   3 pairs  149.19.109.6  [AS14593 SpaceX Starlink]
+      3 sources: GU,NC,PF   1 targets: KI
+      1 interface(s): 149.19.109.6   4 probe(s)   seen 2026-09-30..2026-09-30
+   3 pairs  149.19.109.8  [AS14593 SpaceX Starlink]
+      3 sources: GU,NC,PF   1 targets: KI
+      1 interface(s): 149.19.109.8   6 probe(s)   seen dates unknown
+   3 pairs  172.69.54.70  [AS14789 Cloudflare]
+      3 sources: CK,NU,PF   1 targets: PG
+      1 interface(s): 172.69.54.70   8 probe(s)   seen 2026-10-27..2026-10-27
+   3 pairs  172.69.54.71  [AS14789 Cloudflare]
+      3 sources: CK,NU,PF   1 targets: PG
+      1 interface(s): 172.69.54.71   7 probe(s)   seen 2026-10-27..2026-10-27
+   3 pairs  172.69.54.72  [AS14789 Cloudflare]
+      3 sources: CK,NU,PF   1 targets: PG
+      1 interface(s): 172.69.54.72   8 probe(s)   seen 2026-10-27..2026-10-27
+   3 pairs  172.69.54.73  [AS14789 Cloudflare]
+      3 sources: CK,NU,PF   1 targets: PG
+      1 interface(s): 172.69.54.73   8 probe(s)   seen 2026-10-27..2026-10-27
+   3 pairs  180.87.60.189  [AS6453 TATA Communications (America) Inc]
+      3 sources: FM,GU,NU   1 targets: KI
+      1 interface(s): 180.87.60.189   5 probe(s)   seen 2026-10-27..2026-10-27
+   3 pairs  198.47.103.178  [AS3257 GTT Communications Inc.]
+      3 sources: CK,NU,PF   1 targets: FM
+      1 interface(s): 198.47.103.178   4 probe(s)   seen 2026-10-11..2026-10-11
+   3 pairs  202.167.227.222  [AS15830 Equinix]
+      3 sources: NU,PW,VU   1 targets: VU
+      1 interface(s): 202.167.227.222   4 probe(s)   seen 2026-09-19..2026-11-01
+   3 pairs  202.84.148.69  [AS4637 Telstra International Limited]
+      3 sources: GU,MP,TO   2 targets: FM,VU
+      1 interface(s): 202.84.148.69   4 probe(s)   seen 2026-09-15..2026-10-11
+   3 pairs  206.224.64.61  [AS14593 SpaceX Starlink]
+      3 sources: FM,GU,PW   1 targets: KI
+      1 interface(s): 206.224.64.61   7 probe(s)   seen 2026-09-14..2026-09-15
+   3 pairs  206.224.66.21  [AS14593 SpaceX Starlink]
+      3 sources: GU,NC,PF   1 targets: KI
+      1 interface(s): 206.224.66.21   5 probe(s)   seen dates unknown
+   3 pairs  206.224.66.31  [AS14593 SpaceX Starlink]
+      3 sources: NC,PG,TV   1 targets: KI
+      1 interface(s): 206.224.66.31   3 probe(s)   seen 2026-09-30..2026-09-30
+   3 pairs  206.224.66.35  [AS14593 SpaceX Starlink]
+      3 sources: PG,TO,VU   1 targets: KI
+      1 interface(s): 206.224.66.35   3 probe(s)   seen dates unknown
+   3 pairs  206.224.66.49  [AS14593 SpaceX Starlink]
+      3 sources: FM,GU,TV   1 targets: KI
+      1 interface(s): 206.224.66.49   8 probe(s)   seen 2026-09-14..2026-09-15
+   3 pairs  206.224.69.100  [AS14593 SpaceX Starlink]
+      3 sources: GU,NC,PF   1 targets: KI
+      1 interface(s): 206.224.69.100   5 probe(s)   seen 2026-09-18..2026-09-18
+   3 pairs  206.224.69.102  [AS14593 SpaceX Starlink]
+      3 sources: GU,NC,PF   1 targets: KI
+      1 interface(s): 206.224.69.102   4 probe(s)   seen 2026-09-18..2026-09-18
+   3 pairs  206.224.69.115  [AS14593 SpaceX Starlink]
+      3 sources: GU,NU,PF   1 targets: KI
+      1 interface(s): 206.224.69.115   4 probe(s)   seen dates unknown
+   3 pairs  206.224.69.129  [AS14593 SpaceX Starlink]
+      3 sources: GU,NC,VU   1 targets: KI
+      1 interface(s): 206.224.69.129   3 probe(s)   seen dates unknown
+   3 pairs  206.224.72.28  [AS14593 SpaceX Starlink]
+      3 sources: FM,GU,PW   1 targets: KI
+      1 interface(s): 206.224.72.28   4 probe(s)   seen 2026-09-14..2026-09-15
+   3 pairs  206.224.72.33  [AS14593 SpaceX Starlink]
+      3 sources: FM,GU,PW   2 targets: KI,TV
+      1 interface(s): 206.224.72.33   5 probe(s)   seen 2026-09-14..2026-09-15
+   3 pairs  206.224.72.37  [AS14593 SpaceX Starlink]
+      3 sources: FM,GU,PW   1 targets: KI
+      1 interface(s): 206.224.72.37   7 probe(s)   seen 2026-09-14..2026-09-15
+   3 pairs  210.57.122.97  [AS4637 Telstra International Limited]
+      3 sources: NC,TO,VU   1 targets: FM
+      1 interface(s): 210.57.122.97   6 probe(s)   seen 2026-09-13..2026-10-11
+   3 pairs  210.57.5.98  [AS4637 Telstra International Limited]
+      3 sources: GU,PF,PW   1 targets: PG
+      1 interface(s): 210.57.5.98   3 probe(s)   seen 2026-09-16..2026-11-01
+   3 pairs  216.66.41.150  [AS6939 Hurricane Electric LLC]
+      3 sources: GU,MP,TV   1 targets: WF
+      1 interface(s): 216.66.41.150   5 probe(s)   seen 2026-09-16..2026-11-05
+   3 pairs  4.69.219.45  [AS3356 Lumen (Level 3)]
+      3 sources: CK,FJ,PF   2 targets: FM,NR
+      1 interface(s): 4.69.219.45   3 probe(s)   seen 2026-10-05..2026-10-11
+   3 pairs  45.127.172.201  [AS15830 Equinix]
+      3 sources: NU,TV,VU   1 targets: VU
+      1 interface(s): 45.127.172.201   4 probe(s)   seen 2026-09-19..2026-11-03
+   3 pairs  45.127.172.46  [AS7575 Australian Academic and Research Network (AARNet)]
+      3 sources: FJ,NC,TV   1 targets: FJ
+      1 interface(s): 45.127.172.46   7 probe(s)   seen 2026-09-19..2026-11-03
+   3 pairs  59.154.142.44  [AS7474 SingTel Optus Pty Ltd]
+      3 sources: CK,NR,PF   1 targets: FJ
+      1 interface(s): 59.154.142.44   4 probe(s)   seen 2026-10-08..2026-10-08
+   3 pairs  65.19.142.246  [AS6939 Hurricane Electric LLC]
+      3 sources: GU,MP,PF   1 targets: FJ
+      1 interface(s): 65.19.142.246   6 probe(s)   seen 2026-09-15..2026-09-15
+   3 pairs  69.174.9.190  [AS3257 GTT Communications Inc.]
+      3 sources: CK,NU,PF   1 targets: AS
+      1 interface(s): 69.174.9.190   5 probe(s)   seen 2026-10-11..2026-10-26
+   3 pairs  a00.sydnau06.au.bb.gin.ntt.net  [AS2914 NTT America]
+      3 sources: FJ,GU,PG   2 targets: FJ,VU
+      2 interface(s): 129.250.4.28, 129.250.9.238   3 probe(s)   seen 2026-09-16..2026-10-27
+   3 pairs  a03.lsanca07.us.bb.gin.ntt.net  [AS2914 NTT America]
+      3 sources: FJ,TO,VU   2 targets: AS,PW
+      2 interface(s): 129.250.3.245, 129.250.3.91   3 probe(s)   seen 2026-09-27..2026-10-29
+   3 pairs  as30081.syd.edgeix.net.au  [AS13335 Cloudflare]
+      3 sources: GU,KI,TO   1 targets: PG
+      1 interface(s): 202.77.88.76   3 probe(s)   seen 2026-10-27..2026-10-27
+   3 pairs  as7575.sydney.megaport.com  [AS7575 Australian Academic and Research Network (AARNet)]
+      3 sources: FJ,TV,VU   1 targets: FJ
+      1 interface(s): 103.26.68.160   3 probe(s)   seen 2026-10-16..2026-11-02
+   3 pairs  cloudflare.as13335.any2ix.coresite.com  [AS13335 Cloudflare]
+      3 sources: GU,MP,NR   1 targets: PG
+      1 interface(s): 206.72.211.63   7 probe(s)   seen 2026-10-27..2026-10-27
+   3 pairs  core2.ash1.he.net  [AS6939 Hurricane Electric LLC]
+      3 sources: GU,MP,TV   1 targets: WF
+      4 interface(s): 184.104.188.182, 184.104.188.35, 184.104.188.46, 184.104.193.216   5 probe(s)   seen 2026-09-16..2026-11-05
+   3 pairs  cr1-kirkham.bb.as11404.net  [AS11404 Astound (fka. Wave Broadband)]
+      3 sources: CK,MP,PF   1 targets: AS
+      1 interface(s): 174.127.138.48   4 probe(s)   seen 2026-09-16..2026-10-25
+   3 pairs  cr1-sjo-p200.bb.spectrumnet.us  [AS11404 Astound (fka. Wave Broadband)]
+      3 sources: NC,PG,VU   1 targets: AS
+      1 interface(s): 206.223.116.182   6 probe(s)   seen 2026-09-16..2026-10-29
+   3 pairs  cr5-sea2.ip4.gtt.net  [AS3257 GTT Communications Inc.]
+      3 sources: CK,NU,PF   1 targets: AS
+      1 interface(s): 89.149.130.34   5 probe(s)   seen 2026-10-11..2026-10-26
+   3 pairs  francetelecom.lax05.atlas.cogentco.com  [AS174 Cogent Communications]
+      3 sources: FM,PG,PW   1 targets: WF
+      1 interface(s): 154.54.11.190   4 probe(s)   seen 2026-09-20..2026-10-25
+   3 pairs  gtt-ic-398758.ip.twelve99-cust.net  [AS1299 Arelion (fka. Telia Carrier)]
+      3 sources: GU,MP,TO   2 targets: NU,PF
+      1 interface(s): 62.115.212.201   3 probe(s)   seen 2026-10-11..2026-10-18
+   3 pairs  gu-gnc-rt1-----vlan769.us-la2-rt1.oneqode.net  [AS140627 OneQode]
+      3 sources: GU,MP,NR   1 targets: FJ
+      1 interface(s): 103.151.64.29   8 probe(s)   seen 2026-10-25..2026-10-27
+   3 pairs  kacific.com  [AS135409 Kacific Broadband Satellites Pte Ltd]
+      3 sources: NC,NU,TO   1 targets: TO
+      1 interface(s): 103.103.61.19   5 probe(s)   seen 2026-10-11..2026-10-18
+   3 pairs  lax-csla2-bb5.globalsecurelayer.com  [AS7578 Global Secure Layer]
+      3 sources: FM,GU,KI   1 targets: FJ
+      2 interface(s): 206.148.24.3, 206.148.25.90   4 probe(s)   seen 2026-09-20..2026-10-27
+   3 pairs  pad-gw31.sydney.telstra.net  [AS1221 Telstra Limited]
+      3 sources: FM,GU,VU   2 targets: KI,TO
+      1 interface(s): 203.50.13.89   4 probe(s)   seen 2026-09-20..2026-11-04
+   3 pairs  tnzusa-ic-316538.ip.twelve99-cust.net  [AS1299 Arelion (fka. Telia Carrier)]
+      3 sources: NR,PG,PW   2 targets: TV,WS
+      1 interface(s): 62.115.145.205   3 probe(s)   seen 2026-10-08..2026-10-08
+
+Source-side routers (not listed): 80
+
+LEGAL NOTICE
+Public data, public sources. Everything in this report is derived from publicly available data: public RIPE Atlas measurement results, RIPE RIS routing data (via RIPEstat), APNIC delegation statistics, WHOIS records from the regional Internet registries, PeeringDB, Internet Routing Registry route objects, bgp.tools and Cloudflare Radar. No private or confidential information is used.
+Observations, not judgements. Findings describe network paths as measured at a point in time, from the probes that were available. They are observations about routing, not statements about any operator's conduct, intent or compliance, and routing can change at any time.
+Router details. Router names, addresses and locations in this report are only what public data shows: what routers return to an ordinary traceroute, which anyone can run from anywhere, their public reverse-DNS names, and the public sources listed above. If a router's name, address, owner or location is wrong or out of date, it does not hurt to open an issue on GitHub (see Corrections and disputes below) to help us fix the data.
+No warranty. This report is provided as is, without warranty of any kind, including as to accuracy, completeness or fitness for any purpose. The author accepts no liability for any loss arising from its use or from reliance on it.
+Corrections and disputes. The only process for correcting or disputing anything in this report is to open an issue on GitHub: https://github.com/IEISI-ORG/pacific-peering/issues/new. Please name the finding or section, include the measurement ID where there is one, and give your evidence. Issues are reviewed, and where the evidence supports a correction the report is updated in its next build.
+Licence. This report and its data are licensed under Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0). Commercial use requires a separate licence from the author; see the LICENSE file in the repository.

@@ -1,6 +1,6 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-11-06T04:50:27.471887+00:00                  
+                 Generated: 2026-11-06T05:07:40.845837+00:00                  
 ==============================================================================
 FOUND A BUG? Bugs very likely remain in both the code and the data.
 Please open an issue: https://github.com/IEISI-ORG/pacific-peering/issues/new
@@ -225,7 +225,7 @@ Measurements: {'v4': [231764558, 231765120], 'v6': [231767127, 231767920]}. Deta
 
 IPV6 COVERAGE (adoption signal only -- no IPv6 testing yet)
 ==============================================================================
-45 of 162 in-scope ASNs have >=1 RIS-observed IPv6-originated prefix. 8 of 37 connected Atlas probes work over IPv6 (3 more are IPv6-capable but tagged as not working). Adoption tracking only -- this project deliberately isn't testing IPv6 corridors yet; queued until adoption has advanced further (see TODO below).
+45 of 162 in-scope ASNs have >=1 RIS-observed IPv6-originated prefix. 0 of 37 connected Atlas probes work over IPv6 (0 more are IPv6-capable but tagged as not working). Adoption tracking only -- this project deliberately isn't testing IPv6 corridors yet; queued until adoption has advanced further (see TODO below).
 CC   Name                      ASNs  w/ IPv6
 ------------------------------------------------------------------------------
 AS   American Samoa               2        1
@@ -1341,6 +1341,8 @@ LEGAL NOTICE
 Public data, public sources. Everything in this report is derived from publicly available data: public RIPE Atlas measurement results, RIPE RIS routing data (via RIPEstat), APNIC delegation statistics, WHOIS records from the regional Internet registries, PeeringDB, Internet Routing Registry route objects, bgp.tools and Cloudflare Radar. No private or confidential information is used.
 
 Observations, not judgements. Findings describe network paths as measured at a point in time, from the probes that were available. They are observations about routing, not statements about any operator's conduct, intent or compliance, and routing can change at any time.
+
+Router details. Router names, addresses and locations in this report are only what public data shows: what routers return to an ordinary traceroute, which anyone can run from anywhere, their public reverse-DNS names, and the public sources listed above. If a router's name, address, owner or location is wrong or out of date, it does not hurt to open an issue on GitHub (see Corrections and disputes below) to help us fix the data.
 
 No warranty. This report is provided as is, without warranty of any kind, including as to accuracy, completeness or fitness for any purpose. The author accepts no liability for any loss arising from its use or from reliance on it.
 

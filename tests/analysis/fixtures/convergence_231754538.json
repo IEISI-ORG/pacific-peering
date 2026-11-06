@@ -1,0 +1,271 @@
+[
+  {
+    "measurement_id": 231754538,
+    "probe_id": 329,
+    "target": "38.101.165.1",
+    "hops": [
+      {
+        "hop": 1,
+        "addresses": [
+          "202.128.5.149"
+        ],
+        "min_rtt_ms": 15.899
+      },
+      {
+        "hop": 2,
+        "addresses": [
+          "202.128.28.32"
+        ],
+        "min_rtt_ms": 1.895
+      },
+      {
+        "hop": 3,
+        "addresses": [
+          "198.81.233.93"
+        ],
+        "min_rtt_ms": 2.0
+      },
+      {
+        "hop": 4,
+        "addresses": [
+          "202.128.5.120"
+        ],
+        "min_rtt_ms": 30.755
+      },
+      {
+        "hop": 5,
+        "addresses": [
+          "198.81.233.102"
+        ],
+        "min_rtt_ms": 30.818
+      },
+      {
+        "hop": 6,
+        "addresses": [
+          "210.173.173.81"
+        ],
+        "min_rtt_ms": 31.335
+      },
+      {
+        "hop": 7,
+        "addresses": [
+          "58.138.112.108"
+        ],
+        "min_rtt_ms": 32.136
+      },
+      {
+        "hop": 8,
+        "addresses": [
+          "58.138.88.226"
+        ],
+        "min_rtt_ms": 118.221
+      },
+      {
+        "hop": 9,
+        "addresses": [],
+        "min_rtt_ms": null
+      },
+      {
+        "hop": 10,
+        "addresses": [
+          "154.54.160.237"
+        ],
+        "min_rtt_ms": 119.968
+      },
+      {
+        "hop": 11,
+        "addresses": [
+          "154.54.26.165"
+        ],
+        "min_rtt_ms": 121.894
+      },
+      {
+        "hop": 12,
+        "addresses": [
+          "154.54.164.22"
+        ],
+        "min_rtt_ms": 122.59
+      },
+      {
+        "hop": 13,
+        "addresses": [
+          "38.142.108.162"
+        ],
+        "min_rtt_ms": 207.254
+      },
+      {
+        "hop": 14,
+        "addresses": [],
+        "min_rtt_ms": null
+      },
+      {
+        "hop": 15,
+        "addresses": [],
+        "min_rtt_ms": null
+      },
+      {
+        "hop": 16,
+        "addresses": [],
+        "min_rtt_ms": null
+      },
+      {
+        "hop": 17,
+        "addresses": [],
+        "min_rtt_ms": null
+      },
+      {
+        "hop": 18,
+        "addresses": [],
+        "min_rtt_ms": null
+      },
+      {
+        "hop": 255,
+        "addresses": [],
+        "min_rtt_ms": null
+      }
+    ]
+  },
+  {
+    "measurement_id": 231754538,
+    "probe_id": 64953,
+    "target": "38.101.165.1",
+    "hops": [
+      {
+        "hop": 1,
+        "addresses": [
+          "192.168.100.2"
+        ],
+        "min_rtt_ms": 0.595
+      },
+      {
+        "hop": 2,
+        "addresses": [
+          "192.168.0.1"
+        ],
+        "min_rtt_ms": 1.577
+      },
+      {
+        "hop": 3,
+        "addresses": [],
+        "min_rtt_ms": null
+      },
+      {
+        "hop": 4,
+        "addresses": [
+          "202.128.2.86"
+        ],
+        "min_rtt_ms": 17.478
+      },
+      {
+        "hop": 5,
+        "addresses": [
+          "202.128.28.32"
+        ],
+        "min_rtt_ms": 10.098
+      },
+      {
+        "hop": 6,
+        "addresses": [
+          "198.81.233.93"
+        ],
+        "min_rtt_ms": 9.404
+      },
+      {
+        "hop": 7,
+        "addresses": [
+          "202.128.5.120"
+        ],
+        "min_rtt_ms": 39.259
+      },
+      {
+        "hop": 8,
+        "addresses": [
+          "198.81.233.102"
+        ],
+        "min_rtt_ms": 39.183
+      },
+      {
+        "hop": 9,
+        "addresses": [
+          "210.173.173.81"
+        ],
+        "min_rtt_ms": 38.641
+      },
+      {
+        "hop": 10,
+        "addresses": [],
+        "min_rtt_ms": null
+      },
+      {
+        "hop": 11,
+        "addresses": [
+          "58.138.88.234"
+        ],
+        "min_rtt_ms": 139.375
+      },
+      {
+        "hop": 12,
+        "addresses": [],
+        "min_rtt_ms": null
+      },
+      {
+        "hop": 13,
+        "addresses": [
+          "154.54.43.13"
+        ],
+        "min_rtt_ms": 139.985
+      },
+      {
+        "hop": 14,
+        "addresses": [
+          "154.54.89.141"
+        ],
+        "min_rtt_ms": 144.393
+      },
+      {
+        "hop": 15,
+        "addresses": [
+          "154.54.46.162"
+        ],
+        "min_rtt_ms": 139.161
+      },
+      {
+        "hop": 16,
+        "addresses": [
+          "38.142.108.162"
+        ],
+        "min_rtt_ms": 235.285
+      },
+      {
+        "hop": 17,
+        "addresses": [],
+        "min_rtt_ms": null
+      },
+      {
+        "hop": 18,
+        "addresses": [],
+        "min_rtt_ms": null
+      },
+      {
+        "hop": 19,
+        "addresses": [],
+        "min_rtt_ms": null
+      },
+      {
+        "hop": 20,
+        "addresses": [],
+        "min_rtt_ms": null
+      },
+      {
+        "hop": 21,
+        "addresses": [],
+        "min_rtt_ms": null
+      },
+      {
+        "hop": 255,
+        "addresses": [],
+        "min_rtt_ms": null
+      }
+    ]
+  }
+]

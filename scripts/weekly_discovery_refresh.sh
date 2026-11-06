@@ -51,6 +51,11 @@ echo "=== weekly discovery refresh: $(date -u +%Y-%m-%dT%H:%M:%SZ) ==="
 # a full WHOIS scan monthly, plus any newly added ASN, otherwise nothing.
 # Free (RIPEstat WHOIS only). New flags go to escalations.md.
 "$UV" run pacific-peering-leasing-check || echo "Leasing-marker check failed (see above); continuing."
+# Router convergence report (analysis/convergence.py, owner 2026-11-06):
+# off-region routers shared by >= 3 source and >= 3 target economies, from
+# the cached traces. No Atlas credits; bgp.tools table + PTR lookups only.
+# Writes outputs/reports/convergence.txt (tracked below via outputs/reports).
+"$UV" run pacific-peering-convergence || echo "Convergence report failed (see above); continuing."
 # README "Findings so far" counts (reports/readme_findings.py): regenerates
 # only the marked block from findings.db + the IXP registry, after the
 # pipeline and ASPA recheck above have updated both. Leaves README.md

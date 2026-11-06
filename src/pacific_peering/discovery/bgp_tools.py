@@ -125,6 +125,14 @@ def fetch_asn_names(
     return result
 
 
+def ensure_table(cache_path: Path = DEFAULT_TABLE_CACHE, refresh: bool = False) -> Path:
+    """Re-download the global table dump only once the cache is older than bgp.tools' 2h window."""
+    if refresh or _is_stale(cache_path, _TABLE_MAX_AGE_SECONDS):
+        logger.info("Fetching fresh bgp.tools global table dump to %s (~70MB)", cache_path)
+        _download("https://bgp.tools/table.jsonl", cache_path)
+    return cache_path
+
+
 def fetch_prefix_visibility(
     asns: list[int],
     cache_path: Path = DEFAULT_TABLE_CACHE,
@@ -146,9 +154,7 @@ def fetch_prefix_visibility(
         "hits" is bgp.tools' own visibility count for that origination,
         useful for filtering out low-visibility/noise announcements.
     """
-    if refresh or _is_stale(cache_path, _TABLE_MAX_AGE_SECONDS):
-        logger.info("Fetching fresh bgp.tools global table dump to %s (~70MB)", cache_path)
-        _download("https://bgp.tools/table.jsonl", cache_path)
+    ensure_table(cache_path, refresh=refresh)
 
     wanted = set(asns)
     result: dict[int, list[dict]] = {asn: [] for asn in wanted}

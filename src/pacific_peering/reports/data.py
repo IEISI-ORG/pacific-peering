@@ -146,6 +146,13 @@ LEGAL_NOTICE: tuple[tuple[str, str], ...] = (
      "Findings describe network paths as measured at a point in time, from the probes that were "
      "available. They are observations about routing, not statements about any operator's conduct, "
      "intent or compliance, and routing can change at any time."),
+    # Owner, 2026-11-06, added with the router convergence report.
+    ("Router details",
+     "Router names, addresses and locations in this report are only what public data shows: what "
+     "routers return to an ordinary traceroute, which anyone can run from anywhere, their public "
+     "reverse-DNS names, and the public sources listed above. If a router's name, address, owner "
+     "or location is wrong or out of date, it does not hurt to open an issue on GitHub (see "
+     "Corrections and disputes below) to help us fix the data."),
     ("No warranty",
      "This report is provided as is, without warranty of any kind, including as to accuracy, "
      "completeness or fitness for any purpose. The author accepts no liability for any loss "
