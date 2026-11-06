@@ -48,6 +48,14 @@ from pacific_peering.analysis.feasibility import DEFAULT_ATLAS_PARSED_DIR
 from pacific_peering.analysis.fishbowl import DEFAULT_SUMMARY_PATH
 from pacific_peering.analysis.ip_resolution_cache import IpResolutionCache
 from pacific_peering.analysis.router_location import PtrResolver, reverse_dns
+from pacific_peering.analysis.ris_upstreams import (  # noqa: F401 -- re-exported for callers and tests
+    DEPENDENCY,
+    PREFERRED_PATH,
+    SINGLE_UPSTREAM,
+    UNKNOWN,
+    ris_verdict,
+    upstream_chain,
+)
 from pacific_peering.discovery import bgp_tools
 from pacific_peering.discovery.prefix_asn_overrides import find_prefix_override
 from pacific_peering.reports.data import LEGAL_NOTICE
@@ -149,20 +157,13 @@ def _is_global(address: str) -> bool:
         return False
 
 
-def collect(
-    traces: Iterable[tuple[dict, str | None]],
-    probe_cc: dict[int, str],
-    asn_of: AsnLookup,
-    in_scope: dict[int, str],
-    ptr: PtrResolver,
-) -> list[Router]:
-    """Group the off-region hops of `(trace, iso_date)` pairs into routers.
+def _name_filter(traces: list[tuple[dict, str | None]], ptr: PtrResolver) -> PtrResolver:
+    """`ptr`, but returning None for placeholder PTRs.
 
     A raw PTR that more than one address carries is a placeholder
     (`unknown.telstraglobal.net`, `ip4.gtt.net`), not a router name: real
     interfaces get their own names. Those addresses stay separate.
     """
-    traces = list(traces)
     holders: dict[str, set[str]] = defaultdict(set)
     for trace, _ in traces:
         for hop in trace.get("hops", []):
@@ -175,32 +176,145 @@ def collect(
         name = ptr(address)
         return None if name and name.rstrip(".").lower() in placeholders else name
 
+    return name_of
+
+
+def _routers_on(trace: dict, asn_of: AsnLookup, in_scope: dict[int, str], name_of: PtrResolver):
+    """Yield (asn, router key, address) for each off-region hop of one trace."""
+    for hop in trace.get("hops", []):
+        for address in hop.get("addresses", []):
+            if not _is_global(address):
+                continue
+            asn = asn_of(address)
+            if asn is None or asn in in_scope:
+                continue
+            yield asn, device_key(address, name_of(address)), address
+
+
+def collect(
+    traces: Iterable[tuple[dict, str | None]],
+    probe_cc: dict[int, str],
+    asn_of: AsnLookup,
+    in_scope: dict[int, str],
+    ptr: PtrResolver,
+) -> list[Router]:
+    """Group the off-region hops of `(trace, iso_date)` pairs into routers."""
+    traces = list(traces)
+    name_of = _name_filter(traces, ptr)
     acc: dict[tuple[int, str], dict] = {}
     for trace, day in traces:
         source = probe_cc.get(trace["probe_id"])
         target = in_scope.get(asn_of(trace["target"]))
         if not source or not target:
             continue
-        for hop in trace.get("hops", []):
-            for address in hop.get("addresses", []):
-                if not _is_global(address):
-                    continue
-                asn = asn_of(address)
-                if asn is None or asn in in_scope:
-                    continue
-                k = (asn, device_key(address, name_of(address)))
-                r = acc.setdefault(k, {"addresses": set(), "pairs": set(), "probes": set(), "days": set()})
-                r["addresses"].add(address)
-                r["pairs"].add((source, target))
-                r["probes"].add(trace["probe_id"])
-                if day:
-                    r["days"].add(day)
+        for asn, key, address in _routers_on(trace, asn_of, in_scope, name_of):
+            r = acc.setdefault((asn, key), {"addresses": set(), "pairs": set(), "probes": set(), "days": set()})
+            r["addresses"].add(address)
+            r["pairs"].add((source, target))
+            r["probes"].add(trace["probe_id"])
+            if day:
+                r["days"].add(day)
     return [
         Router(key=key, asn=asn, addresses=frozenset(r["addresses"]), pairs=frozenset(r["pairs"]),
                probes=frozenset(r["probes"]), first_seen=min(r["days"], default=None),
                last_seen=max(r["days"], default=None))
         for (asn, key), r in acc.items()
     ]
+
+
+# --- Always-crossed routers and the RIS upstream check (owner, 2026-11-06) ------
+#
+# A router every trace of an economy pair crossed is a dependency only if BGP
+# has no way around it. RIS `neighbors` (fishbowl.json) say which networks
+# routes to the source or target are learned through -- the inbound
+# direction -- while a trace shows the outbound path, so a single upstream
+# that isn't the router's own network is information, not a contradiction
+# (NU AS55885 -> AS55943 -> GTT only in RIS, yet NU traces cross HE hnl1).
+
+MIN_PAIR_TRACES = 3
+MIN_ALWAYS_PAIRS = 3  # routers listed in the always-crossed section
+
+
+@dataclass(frozen=True)
+class AlwaysCrossed:
+    """One router that every trace of one economy pair crossed, with the RIS reading."""
+
+    key: str
+    asn: int
+    pair: tuple[str, str]
+    traces: int
+    probes: int
+    verdict: str
+    detail: str
+
+
+def always_crossed(
+    traces: Iterable[tuple[dict, str | None]],
+    probes: dict[int, tuple[str, int | None]],
+    asn_of: AsnLookup,
+    in_scope: dict[int, str],
+    ptr: PtrResolver,
+    fishbowl: dict,
+) -> list[AlwaysCrossed]:
+    """Routers on every trace of an economy pair with >= MIN_PAIR_TRACES traces.
+
+    `probes` maps probe id -> (economy, ASN). Domestic pairs count too: an
+    off-region router on every trace between two networks in one economy
+    is the same-country detour this project looks for.
+    """
+    traces = list(traces)
+    name_of = _name_filter(traces, ptr)
+    per_pair: dict[tuple[str, str], dict] = defaultdict(
+        lambda: {"n": 0, "probes": set(), "src": set(), "tgt": set(), "routers": defaultdict(int)})
+    for trace, _ in traces:
+        source, source_asn = probes.get(trace["probe_id"], (None, None))
+        target_asn = asn_of(trace["target"])
+        target = in_scope.get(target_asn)
+        if not source or not target:
+            continue
+        p = per_pair[(source, target)]
+        p["n"] += 1
+        p["probes"].add(trace["probe_id"])
+        if source_asn:
+            p["src"].add(source_asn)
+        p["tgt"].add(target_asn)
+        for asn, key in {(a, k) for a, k, _ in _routers_on(trace, asn_of, in_scope, name_of)}:
+            p["routers"][(asn, key)] += 1
+    out = []
+    for pair, p in sorted(per_pair.items()):
+        if p["n"] < MIN_PAIR_TRACES:
+            continue
+        for (asn, key), seen in sorted(p["routers"].items(), key=lambda kv: kv[0][1]):
+            if seen == p["n"]:
+                verdict, detail = ris_verdict(asn, p["src"], p["tgt"], fishbowl)
+                out.append(AlwaysCrossed(key=key, asn=asn, pair=pair, traces=p["n"], probes=len(p["probes"]),
+                                         verdict=verdict, detail=detail))
+    return out
+
+
+def _always_section(rows: Iterable[AlwaysCrossed], asn_names: dict[int, str]) -> list[str]:
+    by_router: dict[tuple[int, str], list[AlwaysCrossed]] = defaultdict(list)
+    for r in rows:
+        by_router[(r.asn, r.key)].append(r)
+    listed = sorted(((k, v) for k, v in by_router.items() if len(v) >= MIN_ALWAYS_PAIRS),
+                    key=lambda kv: (-len(kv[1]), kv[0][1]))
+    out = [
+        f"ALWAYS-CROSSED ROUTERS: {len(listed)}",
+        f"(every trace of an economy pair with >= {MIN_PAIR_TRACES} traces crossed the router; routers with",
+        f">= {MIN_ALWAYS_PAIRS} such pairs. 'Every trace' means no other path was observed, not that none",
+        "exists. RIS check: dependency = a side's only upstream in RIS is the router's network;",
+        "single upstream = a side has one upstream in RIS, but a different network; preferred path = both",
+        "sides multi-homed in RIS, so BGP has alternatives. RIS shows how routes reach a network",
+        "(inbound); a trace shows the outbound path.)",
+        "",
+    ]
+    for (asn, key), rs in listed:
+        out.append(f"  {key}  [{_owner(asn, asn_names)}]  {len(rs)} pairs")
+        for r in sorted(rs, key=lambda r: r.pair):
+            out.append(f"      {r.pair[0]}>{r.pair[1]:3} {r.traces:3d} traces/{r.probes} probe(s)  "
+                       f"{r.verdict.replace('_', ' ')}: {r.detail}")
+    out.append("")
+    return out
 
 
 def category(router: Router) -> str | None:
@@ -216,9 +330,13 @@ def category(router: Router) -> str | None:
     return None
 
 
+def _owner(asn: int, names: dict[int, str]) -> str:
+    return f"AS{asn} {names.get(asn, '')}".rstrip()
+
+
 def _line(r: Router, names: dict[int, str]) -> str:
     seen = f"{r.first_seen}..{r.last_seen}" if r.first_seen else "dates unknown"
-    owner = f"AS{r.asn} {names.get(r.asn, '')}".rstrip()
+    owner = _owner(r.asn, names)
     return (
         f"{len(r.pairs):4d} pairs  {r.key}  [{owner}]\n"
         f"      {len(r.sources)} sources: {','.join(sorted(r.sources))}   "
@@ -228,7 +346,10 @@ def _line(r: Router, names: dict[int, str]) -> str:
     )
 
 
-def render(routers: list[Router], asn_names: dict[int, str], traces_read: int) -> str:
+def render(
+    routers: list[Router], asn_names: dict[int, str], traces_read: int,
+    always: Iterable[AlwaysCrossed] = (),
+) -> str:
     by_cat: dict[str | None, list[Router]] = defaultdict(list)
     for r in routers:
         by_cat[category(r)].append(r)
@@ -259,6 +380,7 @@ def render(routers: list[Router], asn_names: dict[int, str], traces_read: int) -
         "",
         f"Source-side routers (not listed): {len(by_cat[SOURCE_SIDE])}",
         "",
+        *_always_section(always, asn_names),
         "LEGAL NOTICE",
         *(f"{heading}. {body}" for heading, body in LEGAL_NOTICE),
     ]
@@ -352,6 +474,7 @@ def main() -> None:
     in_scope = {int(k): v["economy"]["cc"] for k, v in fishbowl.items()}
     listing = json.loads(DEFAULT_PROBE_LISTING.read_text())
     probe_cc = {p["id"]: cc for cc, probes in listing.items() for p in probes}
+    probe_info = {p["id"]: (cc, p.get("asn_v4")) for cc, probes in listing.items() for p in probes}
 
     bgp_tools.ensure_table()
     asn_of = build_asn_lookup(_all_addresses(traces), IpResolutionCache.load(), bgp_tools.DEFAULT_TABLE_CACHE)
@@ -363,8 +486,9 @@ def main() -> None:
     PTR_CACHE_PATH.write_text(json.dumps(ptr_cache, indent=1, sort_keys=True))
 
     routers = collect(traces, probe_cc, asn_of, in_scope, names.get)
+    always = always_crossed(traces, probe_info, asn_of, in_scope, names.get, fishbowl)
     asn_names = {i.asn: i.name for i in bgp_tools.fetch_asn_names().values()} if routers else {}
-    REPORT_PATH.write_text(render(routers, asn_names, traces_read=len(traces)))
+    REPORT_PATH.write_text(render(routers, asn_names, traces_read=len(traces), always=always))
     shared = sum(1 for r in routers if category(r) == SHARED_TRANSIT)
     logger.info("Wrote %s (%d routers, %d shared transit)", REPORT_PATH, len(routers), shared)
 

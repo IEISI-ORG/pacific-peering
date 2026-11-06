@@ -209,3 +209,102 @@ def test_a_miss_is_retried_once_in_the_same_run():
     answers = iter([None, "be1.core1.hub.example.net"])
     names = conv.resolve_ptrs(["9.9.9.1"], lambda a: next(answers), {}, today="2026-11-06")
     assert names == {"9.9.9.1": "be1.core1.hub.example.net"}
+
+
+# --- always-crossed routers + RIS upstream check --------------------------------
+
+FISHBOWL = {
+    "55885": {"economy": {"cc": "NU"}, "neighbors": {"55943": 1646}},
+    "55943": {"economy": {"cc": "PF"}, "neighbors": {"3257": 1644, "286": 5}},  # 286 is noise (<2%)
+    "45879": {"economy": {"cc": "WF"}, "neighbors": {"5511": 1647}},
+    "10131": {"economy": {"cc": "CK"}, "neighbors": {"55943": 1130, "45177": 259, "12684": 226}},
+    "17993": {"economy": {"cc": "WS"}, "neighbors": {"174": 1111, "6939": 145, "35280": 11}},
+    "9751": {"economy": {"cc": "AS"}, "neighbors": {}},
+    "17480": {"economy": {"cc": "NC"}, "neighbors": {"18200": 1600}},
+    "18200": {"economy": {"cc": "NC"}, "neighbors": {"5511": 900, "4637": 700}},
+}
+
+
+def test_upstream_chain_follows_single_upstreams_through_in_scope_networks():
+    assert conv.upstream_chain(55885, FISHBOWL) == [55943, 3257]
+
+
+def test_upstream_chain_is_empty_for_a_multi_homed_network():
+    assert conv.upstream_chain(10131, FISHBOWL) == []
+    assert conv.upstream_chain(17993, FISHBOWL) == []  # 35280 at 11/1267 is under 2%, 6939 isn't
+
+
+def test_upstream_chain_is_none_without_ris_data():
+    assert conv.upstream_chain(9751, FISHBOWL) is None
+    assert conv.upstream_chain(64512, FISHBOWL) is None
+
+
+def test_verdict_is_dependency_when_a_sides_only_upstream_is_the_routers_network():
+    code, detail = conv.ris_verdict(5511, source_asns={10131}, target_asns={45879}, fishbowl=FISHBOWL)
+    assert code == conv.DEPENDENCY
+    assert "AS45879 -> AS5511" in detail
+
+
+def test_verdict_is_single_upstream_when_the_only_upstream_is_another_network():
+    code, detail = conv.ris_verdict(6939, source_asns={55885}, target_asns={17993}, fishbowl=FISHBOWL)
+    assert code == conv.SINGLE_UPSTREAM
+    assert "AS55885 -> AS55943 -> AS3257" in detail
+
+
+def test_verdict_is_preferred_path_when_both_sides_are_multi_homed():
+    code, _ = conv.ris_verdict(6939, source_asns={10131}, target_asns={17993}, fishbowl=FISHBOWL)
+    assert code == conv.PREFERRED_PATH
+
+
+def test_verdict_is_unknown_without_ris_data_for_a_side():
+    code, _ = conv.ris_verdict(6939, source_asns={10131}, target_asns={9751}, fishbowl=FISHBOWL)
+    assert code == conv.UNKNOWN
+
+
+def _ac_inputs():
+    in_scope = {int(k): v["economy"]["cc"] for k, v in FISHBOWL.items()}
+    asn = {"9.9.9.1": 5511, "9.9.9.2": 6939, "t.wf": 45879, "t.ws": 17993}
+    probes = {1: ("CK", 10131), 2: ("CK", 10131), 3: ("CK", 10131)}
+    return in_scope, asn, probes
+
+
+def test_router_on_every_trace_of_a_pair_is_always_crossed():
+    in_scope, asn, probes = _ac_inputs()
+    traces = [(_trace(p, "t.wf", "9.9.9.1"), None) for p in (1, 2, 3)]
+    (row,) = conv.always_crossed(traces, probes, _asn_of(asn), in_scope, PTR, FISHBOWL)
+    assert (row.pair, row.key, row.asn, row.traces, row.probes) == (("CK", "WF"), "core1.hub.example.net", 5511, 3, 3)
+    assert row.verdict == conv.DEPENDENCY
+
+
+def test_a_pair_with_one_trace_avoiding_the_router_is_not_always_crossed():
+    in_scope, asn, probes = _ac_inputs()
+    traces = [(_trace(1, "t.ws", "9.9.9.2"), None), (_trace(2, "t.ws", "9.9.9.2"), None),
+              (_trace(3, "t.ws", "8.8.8.8"), None)]
+    asn["8.8.8.8"] = 15169
+    assert conv.always_crossed(traces, probes, _asn_of(asn), in_scope, PTR, FISHBOWL) == []
+
+
+def test_a_pair_needs_three_traces():
+    in_scope, asn, probes = _ac_inputs()
+    traces = [(_trace(p, "t.wf", "9.9.9.1"), None) for p in (1, 2)]
+    assert conv.always_crossed(traces, probes, _asn_of(asn), in_scope, PTR, FISHBOWL) == []
+
+
+def test_render_lists_always_crossed_routers_with_three_or_more_pairs():
+    rows = [conv.AlwaysCrossed(key="core2.hnl1.he.net", asn=6939, pair=(s, t), traces=4, probes=1,
+                               verdict=conv.PREFERRED_PATH, detail="both sides multi-homed in RIS")
+            for s, t in (("CK", "KI"), ("NU", "GU"), ("PF", "WS"))]
+    rows.append(conv.AlwaysCrossed(key="lonely.example.net", asn=1, pair=("FJ", "TO"), traces=3, probes=1,
+                                   verdict=conv.UNKNOWN, detail="no RIS data"))
+    text = conv.render([], {6939: "Hurricane Electric"}, traces_read=0, always=rows)
+    assert "ALWAYS-CROSSED ROUTERS: 1" in text
+    assert "core2.hnl1.he.net" in text and "CK>KI" in text and "preferred path" in text
+    assert "lonely.example.net" not in text
+    assert text.index("ALWAYS-CROSSED") < text.index("LEGAL NOTICE")
+
+
+def test_one_in_region_upstream_that_is_multi_homed_is_a_preferred_path():
+    """NC AS17480 -> OPT-NC AS18200 only, but OPT-NC has two off-region upstreams (2026-11-06)."""
+    code, detail = conv.ris_verdict(6939, source_asns={10131}, target_asns={17480}, fishbowl=FISHBOWL)
+    assert code == conv.PREFERRED_PATH
+    assert "AS17480 -> AS18200" in detail
