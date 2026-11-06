@@ -556,3 +556,21 @@ Corridors `auto_classify.py`'s mechanical rules couldn't confidently resolve on 
 - flagged: 2026-11-03T15:19:37.858045+00:00
 - resolved: 2026-11-06 -- ordinary (owner): all three probes hand off to AARNet at the same Any2 LA address, 206.72.210.64 (aarnet.as7575.any2ix.coresite.com, 101-104ms). Probes 30712 and 53098 get there via HE hnl1 -> lax2. Probe 52614's HE leg is dark (private 172.18.0.84 at 53ms, then *). After LA all three go 113.197.15.136 (now et-1-0-2.pe1.mcqp.nsw, Sydney, 233-238ms) -> pe1.a.suv (270-274ms) -> USP 202.158.204.194, then dark (the unused 144.120.0.1, see NOC-150312). The "Sydney" hub on 52614/53098 is AARNet's own LA -> Sydney -> Suva backhaul after the handoff, the same path rather than a different exit city. The picker chose Sydney only because those probes' lax2 hop didn't answer. Finding #70 (Any2West, Los Angeles) stands. The LA -> Sydney leg is MPLS-hidden inside AS7575 (no hops between Any2 LA and mcqp).
 
+## AS139759 (FM) -> AS38800 (WS)
+- measurement: 233692457
+- reason: unrecognized routing loop
+- detail: probe 50897: loop involving address 202.87.208.244, not in known_anomalies.py
+- flagged: 2026-11-06T15:17:04.619079+00:00
+
+## AS139759 (FM) -> AS38800 (WS)
+- measurement: 233692457
+- reason: unrecognized routing loop
+- detail: probe 62046: loop involving address 202.87.208.244, not in known_anomalies.py
+- flagged: 2026-11-06T15:17:04.619079+00:00
+
+## AS139759 (FM) -> AS38800 (WS)
+- measurement: 233692457
+- reason: unrecognized routing loop
+- detail: probe 7448: loop involving address 202.87.208.244, not in known_anomalies.py
+- flagged: 2026-11-06T15:17:04.619079+00:00
+
