@@ -1,6 +1,6 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-11-05T15:17:15.482346+00:00                  
+                 Generated: 2026-11-06T04:50:27.471887+00:00                  
 ==============================================================================
 FOUND A BUG? Bugs very likely remain in both the code and the data.
 Please open an issue: https://github.com/IEISI-ORG/pacific-peering/issues/new
@@ -113,11 +113,11 @@ Sydney             115    61%       26 Melanesia, Micronesia, Polynesia
     Dependent economies: AS, FJ, KI, MH, NC, NR, PG, PW, SB, TO, VU, WS
 Los Angeles         42    22%       11 Melanesia, Micronesia, Polynesia
     Dependent economies: AS, FJ, FM, GU, KI, MH, NR, PF, SB, VU, WF
-Tokyo               23    12%        9 Melanesia, Micronesia, Polynesia
+Tokyo               22    12%        9 Melanesia, Micronesia, Polynesia
     Dependent economies: AS, FJ, GU, KI, MH, NC, NR, PW, SB, VU, WF
 San Jose             5     3%        1 Polynesia
     Dependent economies: AS
-Portland             3     2%        2 Polynesia
+Portland             4     2%        2 Polynesia
     Dependent economies: AS, WS
 Honolulu             1     1%        1 Polynesia
     Dependent economies: AS
@@ -225,7 +225,7 @@ Measurements: {'v4': [231764558, 231765120], 'v6': [231767127, 231767920]}. Deta
 
 IPV6 COVERAGE (adoption signal only -- no IPv6 testing yet)
 ==============================================================================
-45 of 162 in-scope ASNs have >=1 RIS-observed IPv6-originated prefix. 8 of 37 connected Atlas probes work over IPv6 (4 more are IPv6-capable but tagged as not working). Adoption tracking only -- this project deliberately isn't testing IPv6 corridors yet; queued until adoption has advanced further (see TODO below).
+45 of 162 in-scope ASNs have >=1 RIS-observed IPv6-originated prefix. 8 of 37 connected Atlas probes work over IPv6 (3 more are IPv6-capable but tagged as not working). Adoption tracking only -- this project deliberately isn't testing IPv6 corridors yet; queued until adoption has advanced further (see TODO below).
 CC   Name                      ASNs  w/ IPv6
 ------------------------------------------------------------------------------
 AS   American Samoa               2        1
@@ -466,7 +466,7 @@ FJ -> AS (AS9751): detours via AS11404 (Wave Broadband) -- international transit
 FM -> AS (AS9751): detours via AS3356 (Level 3/Lumen), then AS11404 (Wave Broadband) -- international transit (San Jose)
     RIS observation count: 267  [measurement 212142987]
     Eleventh confirmation of AS11404<->AS9751 (after GU, MP, VU, PG, TV, FJ, NC, and others). `AS139759 -> AS9246 (Teleguam/GTA) -> AS3356 (Level 3/Lumen, new intermediate) -> AS11404 -> AS9751`, RIS agrees exactly (267) on all 3 probes. `has_routing_loop` False.
-GU -> AS (AS9751): detours via AS174 (Cogent Communications), via AS2497 (IIJ, Japan) -- international transit (Tokyo)
+GU -> AS (AS9751): detours via AS174 (Cogent Communications), via AS2497 (IIJ, Japan) -- international transit (Portland)
     RIS observation count: 1055  [measurement 211371732]
     Guam Cablevision (AS3605) -> American Samoa (AS9751) -- pulled from the corridor backlog's top pick: a fresh GU<->AS economy pair. American Samoa itself has zero connected Atlas probes (unchanged all session), so this is the only direction this corridor can currently be tested from. Both probes fully contiguous end-to-end: AS3605 -> AS2497 (IIJ, Japan) -> AS174 (Cogent Communications) -> AS9751. Upstream of the target is AS174, RIS-agreeing with an *exact* match (1,055) -- checked directly against AS9751's full neighbor list (`{174: 1055, 3356: 333, 11404: 267}`): AS174 is its single largest relationship, not a minor one. **This is now the *third* instance of the identical AS3605 -> Tokyo (AS2497/IIJ) -> Cogent shape this session** (after AS17893/Palau and AS9241/FINTEL Fiji) -- no longer just a one-off pattern but a real, repeated signature of how this specific Guam carrier routes to multiple different Pacific destinations: via Japan and global Tier-1 transit, not any regional path, regardless of which island it's reaching.
 MP -> AS (AS9751): detours via AS11404 (Wave Broadband) -- international transit (Honolulu)
