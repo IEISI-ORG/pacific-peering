@@ -30,8 +30,9 @@ nothing assumed.
 from __future__ import annotations
 
 import re
-import socket
 from dataclasses import dataclass
+
+from pacific_peering.analysis.ptr_lookup import reverse_dns
 
 
 @dataclass(frozen=True)
@@ -230,8 +231,5 @@ def geolocate_hop(ip: str) -> HopLocation | None:
     the hostname doesn't match any curated pattern -- both are genuine
     "we don't know" results, not errors to paper over.
     """
-    try:
-        hostname = socket.gethostbyaddr(ip)[0]
-    except (socket.herror, socket.gaierror, OSError):
-        return None
-    return resolve_hostname(hostname)
+    hostname = reverse_dns(ip)  # unbound, rate-capped; see ptr_lookup (2026-11-06)
+    return resolve_hostname(hostname) if hostname else None

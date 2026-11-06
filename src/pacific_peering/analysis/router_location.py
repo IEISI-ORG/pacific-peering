@@ -23,16 +23,14 @@ human to add, never filed as a locationless detour.
 
 from __future__ import annotations
 
-import functools
 import ipaddress
 import logging
-import socket
-import threading
 from collections.abc import Callable
 from dataclasses import dataclass
 
 from pacific_peering.analysis.feasibility import great_circle_km, min_feasible_rtt_ms
 from pacific_peering.analysis.hop_geolocation import resolve_hostname
+from pacific_peering.analysis.ptr_lookup import reverse_dns  # unbound, rate-capped, shared (2026-11-06)
 from pacific_peering.discovery.economy_coordinates import ECONOMY_LATLON, ECONOMY_SPREAD_KM, EXTERNAL_HUB_LATLON
 
 logger = logging.getLogger(__name__)
@@ -44,12 +42,6 @@ HUB_IN_REGION = "in_region"  # placed off-region by its hostname, but BGP puts t
 HUB_NO_OWNER = "no_owner"  # BGP gives the address no single origin ASN, so the guard above can't clear it
 
 PtrResolver = Callable[[str], "str | None"]
-
-PTR_TIMEOUT_S = 2.0
-"""Longest one PTR lookup may take before it counts as no PTR (2026-10-12: an
-uncapped serial sweep of ~800 hops took ~13 minutes, mostly addresses with no
-reverse zone running out the resolver's retries)."""
-
 
 @dataclass(frozen=True)
 class RouterHub:
@@ -70,30 +62,6 @@ class RouterHub:
             f"router hub: hop {self.hop} {self.address} {self.hostname} -> {self.city}, "
             f"{self.min_rtt_ms}ms ({floor}, {self.verdict})"
         )
-
-
-@functools.lru_cache(maxsize=4096)
-def reverse_dns(address: str) -> str | None:
-    """PTR lookup capped at `PTR_TIMEOUT_S`; None on failure or timeout.
-
-    Cached: a nightly batch meets the same backbone routers again and again.
-    `gethostbyaddr` has no timeout of its own, so it runs on a daemon thread
-    that is abandoned (never joined again) once the cap passes; a daemon
-    thread can't hold the batch open at exit, and a pool would queue new
-    lookups behind hung ones.
-    """
-    found: list[str] = []
-
-    def _lookup() -> None:
-        try:
-            found.append(socket.gethostbyaddr(address)[0])
-        except OSError:
-            pass
-
-    worker = threading.Thread(target=_lookup, name=f"ptr-{address}", daemon=True)
-    worker.start()
-    worker.join(PTR_TIMEOUT_S)
-    return found[0] if found else None
 
 
 def _is_global(address: str) -> bool:

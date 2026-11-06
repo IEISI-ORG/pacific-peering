@@ -8,9 +8,6 @@ rule missed it.
 
 from __future__ import annotations
 
-import socket
-import threading
-import time
 
 from pacific_peering.analysis import router_location as rl
 
@@ -109,39 +106,4 @@ def test_source_without_coordinates_means_no_hub():
     assert rl.find_router_hub(MP_TO_TRACE, "XX", _resolver({"64.86.252.73": TATA_LA})) is None
 
 
-def test_reverse_dns_returns_none_on_lookup_failure(monkeypatch):
-    def _fail(address):
-        raise socket.herror(1, "Unknown host")
-
-    rl.reverse_dns.cache_clear()
-    monkeypatch.setattr(rl.socket, "gethostbyaddr", _fail)
-    assert rl.reverse_dns("192.0.2.1") is None
-    rl.reverse_dns.cache_clear()
-
-
-def test_reverse_dns_returns_the_ptr_name(monkeypatch):
-    rl.reverse_dns.cache_clear()
-    monkeypatch.setattr(rl.socket, "gethostbyaddr", lambda address: (TATA_LA, [], [address]))
-    try:
-        assert rl.reverse_dns("64.86.252.73") == TATA_LA
-    finally:
-        rl.reverse_dns.cache_clear()
-
-
-def test_reverse_dns_gives_up_after_the_cap(monkeypatch):
-    release = threading.Event()
-
-    def _hang(address):
-        release.wait(5)
-        return ("late.example.net", [], [address])
-
-    rl.reverse_dns.cache_clear()
-    monkeypatch.setattr(rl, "PTR_TIMEOUT_S", 0.05)
-    monkeypatch.setattr(rl.socket, "gethostbyaddr", _hang)
-    start = time.monotonic()
-    try:
-        assert rl.reverse_dns("192.0.2.2") is None
-        assert time.monotonic() - start < 1.0
-    finally:
-        release.set()
-        rl.reverse_dns.cache_clear()
+# reverse_dns itself (unbound, rate cap, failure handling) is tested in test_ptr_lookup.py.

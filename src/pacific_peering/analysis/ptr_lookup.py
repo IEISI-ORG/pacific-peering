@@ -2,10 +2,10 @@
 
 2026-11-06 (sysadm hand-off): the first convergence runs sent ~4,600
 in-addr.arpa lookups in three minutes through glibc to Pi-hole on ::1, from
-16 unthrottled `gethostbyaddr` workers plus a retry pass. Pi-hole limits each
+16 unthrottled glibc reverse-lookup workers plus a retry pass. Pi-hole limits each
 client to 1000 queries/min, and every process on lab shares the ::1 identity,
 so it REFUSED all of lab's DNS (github.com, api.anthropic.com, cloudflared,
-the heartbeat) for ~4 minutes. Those REFUSED answers came back as "no PTR"
+the heartbeat), twice: ~15:04-15:08 and ~15:13-15:16 AEST. Those REFUSED answers came back as "no PTR"
 and split routers between runs, the 967-vs-1003 drift first put down to load.
 
 So bulk lookups here:
@@ -15,10 +15,18 @@ So bulk lookups here:
 - keep failures apart from "no PTR": NXDOMAIN or no answer is a definitive
   no-PTR and is cached like a name; REFUSED, SERVFAIL and timeouts raise
   `PtrLookupFailed`, are never cached, are retried once, and are reported.
+
+`reverse_dns` is the one-at-a-time form every other caller uses (owner via
+sysadm, 2026-11-06): `router_location.reverse_dns` (nightly auto_classify
+router-hub check, router_detour_sweep) is this function, and
+`hop_geolocation.geolocate_hop` calls it. All of them share one process-wide
+`_SHARED_LIMITER`, so concurrent nightly workers stay under the cap together.
+`tests/test_no_system_resolver_ptr.py` keeps glibc reverse lookups out of src/.
 """
 
 from __future__ import annotations
 
+import functools
 import logging
 import threading
 import time
@@ -92,6 +100,38 @@ def unbound_lookup(resolver: dns.resolver.Resolver | None = None) -> Callable[[s
     return lookup
 
 
+_SHARED_LIMITER = RateLimiter(MAX_LOOKUPS_PER_S)
+_shared: Callable[[str], str | None] | None = None
+
+
+def _shared_lookup() -> Callable[[str], str | None]:
+    global _shared
+    if _shared is None:
+        _shared = unbound_lookup()
+    return _shared
+
+
+@functools.lru_cache(maxsize=4096)
+def _cached_ptr(address: str) -> str | None:
+    """Raises PtrLookupFailed on failure -- lru_cache never caches an exception, so failures aren't kept."""
+    _SHARED_LIMITER.acquire()
+    return _shared_lookup()(address)
+
+
+def reverse_dns(address: str) -> str | None:
+    """PTR name for one address, None for no PTR or after two failed tries (logged, not cached)."""
+    for _ in (1, 2):
+        try:
+            return _cached_ptr(address)
+        except PtrLookupFailed:
+            continue
+    logger.warning("PTR lookup for %s failed twice; treating as unknown for now", address)
+    return None
+
+
+reverse_dns.cache_clear = _cached_ptr.cache_clear  # type: ignore[attr-defined]
+
+
 def resolve_ptrs(
     addresses: Iterable[str],
     lookup: Callable[[str], str | None],
@@ -108,7 +148,7 @@ def resolve_ptrs(
     limiter, then keep any older cached name and are returned in the failed
     set. `cache` is updated in place, with names and no-PTR answers only.
     """
-    limiter = limiter if limiter is not None else RateLimiter(MAX_LOOKUPS_PER_S)
+    limiter = limiter if limiter is not None else _SHARED_LIMITER
     cutoff = (datetime.fromisoformat(today) - timedelta(days=CACHE_MAX_AGE_DAYS)).date().isoformat()
     addresses = list(addresses)
     names: dict[str, str | None] = {}

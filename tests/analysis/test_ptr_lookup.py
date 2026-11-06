@@ -148,3 +148,76 @@ def test_unbound_refused_servfail_and_timeout_are_failures(exc):
 def test_default_resolver_targets_local_unbound_not_resolv_conf():
     r = pl.make_unbound_resolver()
     assert r.nameservers == ["127.0.0.1"] and r.port == 5335
+
+
+# --- shared reverse_dns: the one per-name lookup every caller uses --------------
+# (router_location.reverse_dns for the nightly auto_classify router-hub check and
+# router_detour_sweep; hop_geolocation.geolocate_hop). Owner via sysadm, 2026-11-06.
+
+@pytest.fixture
+def shared(monkeypatch):
+    answers: dict = {}
+    calls: list = []
+    limiter = _CountingLimiter()
+
+    def lookup(address):
+        calls.append(address)
+        a = answers.get(address)
+        if isinstance(a, list):  # a queue of outcomes
+            a = a.pop(0)
+        if isinstance(a, Exception):
+            raise a
+        return a
+
+    monkeypatch.setattr(pl, "_SHARED_LIMITER", limiter)
+    monkeypatch.setattr(pl, "_shared_lookup", lambda: lookup)
+    pl.reverse_dns.cache_clear()
+    yield answers, calls, limiter
+    pl.reverse_dns.cache_clear()
+
+
+def test_reverse_dns_returns_the_name_through_the_shared_limiter(shared):
+    answers, calls, limiter = shared
+    answers["64.86.252.73"] = "ix-xe-2-1-4-0.tcore2.lvw-losangeles.as6453.net"
+    assert pl.reverse_dns("64.86.252.73") == "ix-xe-2-1-4-0.tcore2.lvw-losangeles.as6453.net"
+    assert limiter.calls == 1
+
+
+def test_reverse_dns_caches_names_and_no_ptr_answers(shared):
+    answers, calls, _ = shared
+    answers["9.9.9.1"] = "be1.core1.hub.example.net"
+    for _ in range(3):
+        pl.reverse_dns("9.9.9.1")
+        assert pl.reverse_dns("192.0.2.1") is None  # NXDOMAIN
+    assert calls == ["9.9.9.1", "192.0.2.1"]
+
+
+def test_reverse_dns_retries_a_failure_once(shared):
+    answers, calls, limiter = shared
+    answers["9.9.9.1"] = [pl.PtrLookupFailed("x"), "be1.core1.hub.example.net"]
+    assert pl.reverse_dns("9.9.9.1") == "be1.core1.hub.example.net"
+    assert limiter.calls == 2
+
+
+def test_reverse_dns_never_caches_a_failure(shared):
+    answers, calls, _ = shared
+    answers["9.9.9.1"] = [pl.PtrLookupFailed("x"), pl.PtrLookupFailed("x"), "be1.core1.hub.example.net"]
+    assert pl.reverse_dns("9.9.9.1") is None  # two failures: give up for now
+    assert pl.reverse_dns("9.9.9.1") == "be1.core1.hub.example.net"  # asked again, not cached as None
+
+
+def test_resolve_ptrs_defaults_to_the_shared_limiter(monkeypatch):
+    limiter = _CountingLimiter()
+    monkeypatch.setattr(pl, "_SHARED_LIMITER", limiter)
+    pl.resolve_ptrs(["9.9.9.1"], lambda a: None, {}, today=TODAY)
+    assert limiter.calls == 1
+
+
+def test_router_location_and_hop_geolocation_use_the_shared_lookup(shared):
+    from pacific_peering.analysis import hop_geolocation, router_location
+
+    assert router_location.reverse_dns is pl.reverse_dns
+    answers, _, _ = shared
+    answers["64.86.252.73"] = "ix-xe-2-1-4-0.tcore2.lvw-losangeles.as6453.net"
+    loc = hop_geolocation.geolocate_hop("64.86.252.73")
+    assert loc is not None and loc.city == "Los Angeles"
