@@ -97,7 +97,8 @@ None of the five shows a route into AS24439 that avoids Tata.
   (#58 on 2026-11-02, #33 on 2026-11-06) each hub is the Tata city before Piti. Two labels don't
   match the current traces: **#77 MP (Sydney)**, where MP traces reach Piti from Tata Los Angeles
   or Tokyo, and **#84 VU (Tokyo)**, where all 11 VU traces reach Piti from Tata Los Angeles.
-  Not changed; owner's call.
+  Both relabelled to Los Angeles (owner, 2026-11-06): MP has entered Piti from Tata Los Angeles
+  on every trace since 2026-09-21 (5 in a row), and VU on all 11.
 - **FM -> NR also depends on Tata Piti** in the convergence report: target AS152706 -> AS6453
   only in RIS. AS152706 is the forged-path ASN in the open APNIC report (2026-10-27). Noted
   only.

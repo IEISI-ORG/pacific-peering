@@ -1,6 +1,6 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-11-06T05:07:40.845837+00:00                  
+                 Generated: 2026-11-06T06:10:42.222184+00:00                  
 ==============================================================================
 FOUND A BUG? Bugs very likely remain in both the code and the data.
 Please open an issue: https://github.com/IEISI-ORG/pacific-peering/issues/new
@@ -109,11 +109,11 @@ The mirror image of the regional hubs above: the real external cities where conf
 
 City           Entries  Share Carriers Subregions reached            
 ------------------------------------------------------------------------------
-Sydney             115    61%       26 Melanesia, Micronesia, Polynesia
-    Dependent economies: AS, FJ, KI, MH, NC, NR, PG, PW, SB, TO, VU, WS
-Los Angeles         42    22%       11 Melanesia, Micronesia, Polynesia
+Sydney             114    60%       25 Melanesia, Micronesia, Polynesia
+    Dependent economies: AS, FJ, KI, NC, NR, PG, PW, SB, TO, VU, WS
+Los Angeles         44    23%       11 Melanesia, Micronesia, Polynesia
     Dependent economies: AS, FJ, FM, GU, KI, MH, NR, PF, SB, VU, WF
-Tokyo               22    12%        9 Melanesia, Micronesia, Polynesia
+Tokyo               21    11%        9 Melanesia, Micronesia, Polynesia
     Dependent economies: AS, FJ, GU, KI, MH, NC, NR, PW, SB, VU, WF
 San Jose             5     3%        1 Polynesia
     Dependent economies: AS
@@ -225,7 +225,7 @@ Measurements: {'v4': [231764558, 231765120], 'v6': [231767127, 231767920]}. Deta
 
 IPV6 COVERAGE (adoption signal only -- no IPv6 testing yet)
 ==============================================================================
-45 of 162 in-scope ASNs have >=1 RIS-observed IPv6-originated prefix. 0 of 37 connected Atlas probes work over IPv6 (0 more are IPv6-capable but tagged as not working). Adoption tracking only -- this project deliberately isn't testing IPv6 corridors yet; queued until adoption has advanced further (see TODO below).
+45 of 162 in-scope ASNs have >=1 RIS-observed IPv6-originated prefix. 8 of 37 connected Atlas probes work over IPv6 (3 more are IPv6-capable but tagged as not working). Adoption tracking only -- this project deliberately isn't testing IPv6 corridors yet; queued until adoption has advanced further (see TODO below).
 CC   Name                      ASNs  w/ IPv6
 ------------------------------------------------------------------------------
 AS   American Samoa               2        1
@@ -616,7 +616,7 @@ FM -> MH (AS24439): detours via AS4637 (Telstra Global), then AS6453 (Tata Commu
 GU -> MH (AS24439): detours via AS6453 (Tata Communications), via AS2497 (IIJ, Japan) -- international transit (Tokyo)
     RIS observation count: 997  [measurement 211465536]
     Guam Cablevision (AS3605) -> Marshall Islands NTA ISP (AS24439) -- pulled from the corridor backlog, immediately after excluding AS24013 (see task_plan.md: DNS.SB, a global anycast resolver opportunistically registered under a Solomon Islands country code, confirmed and excluded rather than tested as a corridor). Checked AS24439's own holder name directly before testing, given the session's established caution around Marshall-Islands-registered ASNs specifically (several already confirmed as offshore shell companies in `supplementary_asns.py`): "NTAMAR-AS-AP - MARSHALL ISLANDS NTA ISP AS" -- NTA is the Marshall Islands' actual National Telecommunications Authority, a real incumbent operator, not a shell; its target IP also resolves inside real APNIC space (103.202.149.0/24), unlike AS24013's RIPE-region anycast block. No anomaly here, proceeded normally. Both probes: AS3605 -> AS2497 (IIJ, Japan) -> AS6453 (Tata Communications) -- the target ASN itself never resolved (ordinary ICMP filtering near the destination, the established pattern for this situation), so RIS is checked against the last ASN the traceroute did reach, per this project's inbound-style validation method. RIS agrees with an *exact* match (997) -- checked directly against AS24439's full neighbor list: AS6453 is its *only* RIS-observed neighbor at all (997 of 997 total observations), a complete, exclusive relationship, not a partial one. Another instance of AS3605 reaching a Pacific destination via Tokyo and global Tier-1 transit rather than any regional path -- this session's fourth distinct Tier-1 carrier seen filling this exact role for AS3605 (Cogent, Telstra domestic+international, and now Tata).
-MP -> MH (AS24439): detours via AS174 (Cogent Communications), via AS6453 (Tata Communications) -- international transit (Sydney)
+MP -> MH (AS24439): detours via AS174 (Cogent Communications), via AS6453 (Tata Communications) -- international transit (Los Angeles)
     RIS observation count: 997  [measurement 211567329]
     PTI Pacifica (AS7131, CNMI) -> Marshall Islands NTA ISP (AS24439) -- a fresh MP<->MH pair, landing on the existing GU(AS3605)->MH `ConfirmedDetour` adjacency (AS6453<->AS24439), now a second independent confirmation from a different source economy. All 3 probes: AS7131 -> AS174 (Cogent Communications) -> AS6453 (Tata Communications) -- the target itself never resolved (ordinary ICMP filtering near the destination, the established pattern), so RIS is checked against the last reached ASN. RIS agrees with an *exact* match (997), identical to the original finding -- checked directly: AS6453 is still AS24439's *only* RIS-observed neighbor at all. A **different** path into Tata than the original (which went via AS2497/IIJ and Tokyo) -- this one via Cogent directly, no Tokyo hop. `has_routing_loop` flagged 2 of 3 probes `True` on a first pass -- checked directly before trusting it, per the now-established process from the AS17828 case: both 'repeats' are near-destination addresses (`180.87.180.33`, `209.58.61.40` -- inside Tata's own transit space, not the literal target) replying at consecutive hops with stable, non-climbing RTT, the same ordinary noise pattern, not a real loop.
 NC -> MH (AS24439): detours via AS38195 (Superloop), via AS174 (Cogent) and AS6453 (Tata Communications) -- international transit (Los Angeles)
@@ -637,7 +637,7 @@ PW -> MH (AS24439): detours via AS174 (Cogent Communications), via AS6453 (Tata 
 TV -> MH (AS24439): detours via AS6939 (Hurricane Electric), via AS6453 (Tata Communications) -- international transit (Los Angeles)
     RIS observation count: 997  [measurement 212059716]
     Tuvalu (AS23917) -> Marshall Islands NTA ISP (AS24439) -- a fresh TV<->MH pair, an eighth independent confirmation of the AS6453(Tata)<->AS24439 adjacency (after GU, MP, VU, PF, CK, PG, PW): `AS23917 -> AS9241 (FINTEL) -> AS6939 (Hurricane Electric) -> AS6453`, target never resolved, RIS-agreeing with the identical exact match (997). **Geolocated with `hop_geolocation` from the start**: the same Tata chain already confirmed for GU/MP/VU/PF/CK/PG -- `lvw-losangeles.as6453.net` -> `pv4-piti.as6453.net` (twice) -- Los Angeles, then Piti, Guam. Kept `detour_hub` as Los Angeles, matching this measurement's own evidence (unlike the PW entry, whose real touchpoint was genuinely Tokyo instead).
-VU -> MH (AS24439): detours via AS7473 (Singtel), via AS6453 (Tata Communications) -- international transit (Tokyo)
+VU -> MH (AS24439): detours via AS7473 (Singtel), via AS6453 (Tata Communications) -- international transit (Los Angeles)
     RIS observation count: 997  [measurement 211627606]
     Telecom Vanuatu (AS9249) -> Marshall Islands NTA ISP (AS24439) -- a fresh VU<->MH pair, a third independent confirmation of the AS6453(Tata)<->AS24439 adjacency (after the original GU entry via IIJ/Tokyo and the MP entry via Cogent). Both probes: AS9249 -> AS38442 (Vodafone Fiji) -> AS7473 (Singapore Telecommunications Ltd) -> AS6453 -- the target itself never resolved (ordinary ICMP filtering near the destination), so RIS is checked against the last reached ASN. RIS agrees with an *exact* match (997), identical to both prior instances -- AS6453 remains AS24439's *only* RIS-observed neighbor. A genuinely new intermediate carrier (Singtel) for this adjacency, not previously seen. No IXP crossing this time (`ixp_crossings` empty for both probes) -- checked Singtel's real PeeringDB facility list before picking a hub: genuine presence at Equinix Tokyo, no Sydney presence, so kept `detour_hub` as Tokyo, matching the original entry rather than the Cogent-sourced second one's Sydney choice.
 NU -> PG (AS38009): detours via AS6939 (Hurricane Electric) (Sydney)
