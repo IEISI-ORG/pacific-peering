@@ -182,35 +182,6 @@ def test_a_ptr_shared_by_several_addresses_is_a_placeholder_not_a_router():
     assert keys == {"202.84.222.93", "202.40.149.30"}
 
 
-# --- PTR cache: a lookup that times out this run must not split a router -------
-
-def test_cached_ptr_name_is_reused_when_the_live_lookup_fails():
-    cache = {"9.9.9.1": {"name": "be1.core1.hub.example.net", "checked": "2026-11-01"}}
-    names = conv.resolve_ptrs(["9.9.9.1"], lambda a: None, cache, today="2026-11-06")
-    assert names == {"9.9.9.1": "be1.core1.hub.example.net"}
-
-
-def test_fresh_cached_name_is_not_looked_up_again():
-    cache = {"9.9.9.1": {"name": "be1.core1.hub.example.net", "checked": "2026-11-01"}}
-    calls = []
-    conv.resolve_ptrs(["9.9.9.1"], lambda a: calls.append(a), cache, today="2026-11-06")
-    assert calls == []
-
-
-def test_stale_or_missing_names_are_looked_up_and_cached():
-    cache = {"9.9.9.1": {"name": "old.example.net", "checked": "2026-09-01"}}
-    live = {"9.9.9.1": "be1.core1.hub.example.net", "9.9.9.2": "be2.core1.hub.example.net"}.get
-    names = conv.resolve_ptrs(["9.9.9.1", "9.9.9.2"], live, cache, today="2026-11-06")
-    assert names == {"9.9.9.1": "be1.core1.hub.example.net", "9.9.9.2": "be2.core1.hub.example.net"}
-    assert cache["9.9.9.2"] == {"name": "be2.core1.hub.example.net", "checked": "2026-11-06"}
-
-
-def test_a_miss_is_retried_once_in_the_same_run():
-    answers = iter([None, "be1.core1.hub.example.net"])
-    names = conv.resolve_ptrs(["9.9.9.1"], lambda a: next(answers), {}, today="2026-11-06")
-    assert names == {"9.9.9.1": "be1.core1.hub.example.net"}
-
-
 # --- always-crossed routers + RIS upstream check --------------------------------
 
 FISHBOWL = {
@@ -308,3 +279,14 @@ def test_one_in_region_upstream_that_is_multi_homed_is_a_preferred_path():
     code, detail = conv.ris_verdict(6939, source_asns={10131}, target_asns={17480}, fishbowl=FISHBOWL)
     assert code == conv.PREFERRED_PATH
     assert "AS17480 -> AS18200" in detail
+
+
+def test_render_warns_when_ptr_lookups_failed_and_is_silent_when_none_did():
+    assert "PTR lookups failed" not in conv.render([], {}, traces_read=0)
+    text = conv.render([], {}, traces_read=0, ptr_failures=7)
+    assert "PTR lookups failed this run: 7" in text
+
+
+def test_convergence_no_longer_does_its_own_ptr_lookups():
+    assert not hasattr(conv, "resolve_ptrs")
+    assert not hasattr(conv, "reverse_dns")

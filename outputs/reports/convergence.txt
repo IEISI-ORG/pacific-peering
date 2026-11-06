@@ -5,6 +5,8 @@ Latest trace: 2026-11-05. Traces read: 3050. Thresholds: >= 3 source economies, 
 Counts are economy pairs (probe economy -> target economy) among tested corridors, not traffic.
 MPLS cores hide routers, so convergence inside them is undercounted. Interfaces are grouped
 into routers by PTR name; routers with no PTR, or an address-style PTR, stay separate addresses.
+WARNING: PTR lookups failed this run: 42 (retried next run; those interfaces
+may be split from their routers below).
 
 SHARED TRANSIT ROUTERS: 68
 (one router carrying corridors between several unrelated Pacific economies)

@@ -39,15 +39,15 @@ import logging
 import re
 from collections import defaultdict
 from collections.abc import Callable, Iterable
-from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timezone
 from pathlib import Path
 
 from pacific_peering.analysis.feasibility import DEFAULT_ATLAS_PARSED_DIR
 from pacific_peering.analysis.fishbowl import DEFAULT_SUMMARY_PATH
 from pacific_peering.analysis.ip_resolution_cache import IpResolutionCache
-from pacific_peering.analysis.router_location import PtrResolver, reverse_dns
+from pacific_peering.analysis.ptr_lookup import resolve_ptrs as _resolve_ptrs
+from pacific_peering.analysis.ptr_lookup import unbound_lookup
 from pacific_peering.analysis.ris_upstreams import (  # noqa: F401 -- re-exported for callers and tests
     DEPENDENCY,
     PREFERRED_PATH,
@@ -65,8 +65,7 @@ logger = logging.getLogger(__name__)
 REPORT_PATH = Path("outputs/reports/convergence.txt")
 DEFAULT_ATLAS_RAW_DIR = Path("data/atlas/raw")
 DEFAULT_PROBE_LISTING = Path("data/atlas/probe_listing.json")
-PTR_CACHE_PATH = Path("data/analysis/ptr_cache.json")  # gitignored with the rest of data/
-PTR_CACHE_MAX_AGE_DAYS = 30
+PTR_CACHE_PATH = Path("data/analysis/ptr_cache.json")  # gitignored with the rest of data/; see ptr_lookup
 
 MIN_SOURCE_ECONOMIES = 3
 MIN_TARGET_ECONOMIES = 3
@@ -76,6 +75,7 @@ TARGET_ACCESS = "target_access"
 SOURCE_SIDE = "source_side"
 
 AsnLookup = Callable[[str], "int | None"]
+PtrResolver = Callable[[str], "str | None"]
 
 # A leading label that names an interface, not a router: be2378, ae-15, xe-0-0-0,
 # et-1-0-2, port-channel4, 100ge0-0-0-4, ve101, i-90, fastethernet0-0, ...
@@ -348,7 +348,7 @@ def _line(r: Router, names: dict[int, str]) -> str:
 
 def render(
     routers: list[Router], asn_names: dict[int, str], traces_read: int,
-    always: Iterable[AlwaysCrossed] = (),
+    always: Iterable[AlwaysCrossed] = (), ptr_failures: int = 0,
 ) -> str:
     by_cat: dict[str | None, list[Router]] = defaultdict(list)
     for r in routers:
@@ -366,6 +366,8 @@ def render(
         "Counts are economy pairs (probe economy -> target economy) among tested corridors, not traffic.",
         "MPLS cores hide routers, so convergence inside them is undercounted. Interfaces are grouped",
         "into routers by PTR name; routers with no PTR, or an address-style PTR, stay separate addresses.",
+        *([f"WARNING: PTR lookups failed this run: {ptr_failures} (retried next run; those interfaces",
+           "may be split from their routers below)."] if ptr_failures else []),
         "",
         f"SHARED TRANSIT ROUTERS: {len(by_cat[SHARED_TRANSIT])}",
         "(one router carrying corridors between several unrelated Pacific economies)",
@@ -385,39 +387,6 @@ def render(
         *(f"{heading}. {body}" for heading, body in LEGAL_NOTICE),
     ]
     return "\n".join(out) + "\n"
-
-
-def resolve_ptrs(
-    addresses: Iterable[str], resolver: PtrResolver, cache: dict[str, dict], today: str, workers: int = 16
-) -> dict[str, str | None]:
-    """PTR names for `addresses`, reusing `cache` entries younger than `PTR_CACHE_MAX_AGE_DAYS`.
-
-    Live lookups time out under load (2s cap), and a miss splits a router
-    into separate addresses, so without the cache two runs over the same
-    traces disagree (967 vs 1003 routers, 2026-11-06). Misses are retried
-    once with fewer workers; a name found earlier is kept if the live lookup
-    fails. Only names are cached: a miss is looked up again next run.
-    `cache` is updated in place.
-    """
-    cutoff = (datetime.fromisoformat(today) - timedelta(days=PTR_CACHE_MAX_AGE_DAYS)).date().isoformat()
-    addresses = list(addresses)
-    names: dict[str, str | None] = {}
-    due = [a for a in addresses if not (a in cache and cache[a]["checked"] >= cutoff)]
-    for a in addresses:
-        if a not in due:
-            names[a] = cache[a]["name"]
-    for pool_size, batch in ((workers, due), (max(1, workers // 4), None)):
-        batch = batch if batch is not None else [a for a in due if not names.get(a)]
-        if not batch:
-            continue
-        with ThreadPoolExecutor(max_workers=pool_size) as pool:
-            for a, name in zip(batch, pool.map(resolver, batch)):
-                if name:
-                    names[a] = name
-                    cache[a] = {"name": name, "checked": today}
-                elif not names.get(a):
-                    names[a] = cache.get(a, {}).get("name")
-    return names
 
 
 def _trace_dates(raw_dir: Path, measurement_id: int) -> dict[int, str]:
@@ -482,13 +451,18 @@ def main() -> None:
     off_region = sorted({a for a in _all_addresses(traces) if (n := asn_of(a)) is not None and n not in in_scope})
     logger.info("%d traces, %d off-region addresses; looking up PTRs", len(traces), len(off_region))
     ptr_cache = json.loads(PTR_CACHE_PATH.read_text()) if PTR_CACHE_PATH.exists() else {}
-    names = resolve_ptrs(off_region, reverse_dns, ptr_cache, today=datetime.now(timezone.utc).date().isoformat())
+    # Rate-capped, straight to unbound (never lab's Pi-hole): see ptr_lookup's docstring.
+    names, failed = _resolve_ptrs(off_region, unbound_lookup(), ptr_cache,
+                                  today=datetime.now(timezone.utc).date().isoformat())
     PTR_CACHE_PATH.write_text(json.dumps(ptr_cache, indent=1, sort_keys=True))
+    if failed:
+        logger.warning("%d PTR lookups failed (not cached; retried next run)", len(failed))
 
     routers = collect(traces, probe_cc, asn_of, in_scope, names.get)
     always = always_crossed(traces, probe_info, asn_of, in_scope, names.get, fishbowl)
     asn_names = {i.asn: i.name for i in bgp_tools.fetch_asn_names().values()} if routers else {}
-    REPORT_PATH.write_text(render(routers, asn_names, traces_read=len(traces), always=always))
+    REPORT_PATH.write_text(render(routers, asn_names, traces_read=len(traces), always=always,
+                                   ptr_failures=len(failed)))
     shared = sum(1 for r in routers if category(r) == SHARED_TRANSIT)
     logger.info("Wrote %s (%d routers, %d shared transit)", REPORT_PATH, len(routers), shared)
 
