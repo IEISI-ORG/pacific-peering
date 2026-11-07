@@ -204,7 +204,8 @@ def collect(
     acc: dict[tuple[int, str], dict] = {}
     for trace, day in traces:
         source = probe_cc.get(trace["probe_id"])
-        target = in_scope.get(asn_of(trace["target"]))
+        target_asn = asn_of(trace["target"])
+        target = in_scope.get(target_asn) if target_asn is not None else None
         if not source or not target:
             continue
         for asn, key, address in _routers_on(trace, asn_of, in_scope, name_of):
@@ -269,7 +270,7 @@ def always_crossed(
     for trace, _ in traces:
         source, source_asn = probes.get(trace["probe_id"], (None, None))
         target_asn = asn_of(trace["target"])
-        target = in_scope.get(target_asn)
+        target = in_scope.get(target_asn) if target_asn is not None else None
         if not source or not target:
             continue
         p = per_pair[(source, target)]
@@ -402,7 +403,7 @@ def _trace_dates(raw_dir: Path, measurement_id: int) -> dict[int, str]:
 
 
 def load_traces(parsed_dir: Path, raw_dir: Path) -> list[tuple[dict, str | None]]:
-    out = []
+    out: list[tuple[dict, str | None]] = []
     for path in sorted(parsed_dir.glob("*.json")):
         traces = json.loads(path.read_text())
         dates = _trace_dates(raw_dir, int(path.stem)) if path.stem.isdigit() else {}

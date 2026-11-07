@@ -71,8 +71,8 @@ def ris_verdict(router_asn: int, source_asns: set[int], target_asns: set[int], f
              for side, chains in sides.items()}
     for side, chains in sides.items():
         if chains and all(exits[side][a] == router_asn for a in chains):
-            return DEPENDENCY, "; ".join(f"{side} {_chain_text(a, c)} only in RIS" for a, c in chains.items())
-    single = [f"{side} {_chain_text(a, c)} only in RIS, not AS{router_asn}"
+            return DEPENDENCY, "; ".join(f"{side} {_chain_text(a, c or [])} only in RIS" for a, c in chains.items())
+    single = [f"{side} {_chain_text(a, c or [])} only in RIS, not AS{router_asn}"
               for side, chains in sides.items() if chains and all(exits[side][a] for a in chains)
               for a, c in chains.items()]
     if single:
