@@ -788,7 +788,7 @@ class PeeringDbEconomySummary:
 
 @dataclass(frozen=True)
 class AspaEconomySummary:
-    """One economy's ASPA (RFC 9582) adoption progress.
+    """One economy's ASPA (draft-ietf-sidrops-aspa-profile) adoption progress.
 
     `asns_with_aspa` is how many of this economy's own in-scope ASNs
     currently publish an ASPA record at all (via Cloudflare Radar --

@@ -1,6 +1,6 @@
 """Cloudflare Radar's RPKI ASPA data -- a stronger corroboration source
 than RIS neighbor-observation for confirming upstream-provider
-relationships. An ASPA record (RFC 9582) is the AS holder's own
+relationships. An ASPA record (draft-ietf-sidrops-aspa-profile) is the AS holder's own
 cryptographically-signed statement of which ASNs are its legitimate
 providers, not something inferred from observed BGP paths the way this
 project's existing RIS neighbor-list checks are -- absence from RIS just

@@ -95,7 +95,7 @@ CREATE TABLE IF NOT EXISTS findings (
     detour_hub TEXT,               -- confirmed_detour only
     probe_agreement TEXT,          -- candidate_peering only, e.g. "3/3 probes"
     legacy_note TEXT,              -- verbatim pre-migration narrative, if any
-    -- ASPA (RFC 9582) recheck state -- see analysis/cloudflare_radar
+    -- ASPA (draft-ietf-sidrops-aspa-profile) recheck state -- see analysis/cloudflare_radar
     -- lookup and auto_classify.recheck_aspa_candidates(). aspa_checked_at
     -- NULL means never checked, not "checked and found nothing": ASPA
     -- adoption is still early, so a target with no record today may

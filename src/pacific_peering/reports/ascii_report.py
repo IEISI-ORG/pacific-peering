@@ -325,7 +325,7 @@ def render_ascii_report(data: ReportData) -> str:
     # abandoned org is weaker evidence than a maintained one) -- deferred,
     # not in this pass.
 
-    lines.append(_section("ASPA PROGRESS (RFC 9582 upstream-authorization adoption)"))
+    lines.append(_section("ASPA PROGRESS (draft-ietf-sidrops-aspa-profile, upstream-authorization adoption)"))
     lines.append(
         f"{data.aspa_asns_with_record} of {data.total_asns} in-scope ASNs now publish an "
         f"ASPA record ({data.aspa_global_total_records} total across the whole internet, "

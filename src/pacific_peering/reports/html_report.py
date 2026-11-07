@@ -645,7 +645,7 @@ def render_html_report(data: ReportData, viz_dir: Path | None = Path("../viz")) 
          abandoned org is weaker evidence than a maintained one) -- deferred,
          not in this pass. -->
 
-    <h2>ASPA progress (RFC 9582 upstream-authorization adoption)</h2>
+    <h2>ASPA progress (draft-ietf-sidrops-aspa-profile, upstream-authorization adoption)</h2>
     <p class="section-intro">
         <strong>{data.aspa_asns_with_record} of {data.total_asns}</strong> in-scope ASNs
         now publish an ASPA record ({data.aspa_global_total_records} total across the

@@ -1,6 +1,6 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-11-06T15:51:34.137548+00:00                  
+                 Generated: 2026-11-07T02:19:21.811594+00:00                  
 ==============================================================================
 FOUND A BUG? Bugs very likely remain in both the code and the data.
 Please open an issue: https://github.com/IEISI-ORG/pacific-peering/issues/new
@@ -169,7 +169,7 @@ TO   Tonga                        5       3            0       1
 VU   Vanuatu                     11       5            1       2
 WS   Samoa                       10       3            1       2
 
-ASPA PROGRESS (RFC 9582 upstream-authorization adoption)
+ASPA PROGRESS (draft-ietf-sidrops-aspa-profile, upstream-authorization adoption)
 ==============================================================================
 22 of 162 in-scope ASNs now publish an ASPA record (4011 total across the whole internet, per Cloudflare Radar). Adoption is still early -- absence means 'not published yet', not 'no real upstream'. Per-economy: how many of its own ASNs publish a record, and the distinct upstream ASNs those records declare, split by whether the declared provider is itself an in-scope Pacific ASN or an external carrier.
 CC   Name                      ASNs  w/ ASPA  Upstr in-FB  Upstr ext
@@ -225,7 +225,7 @@ Measurements: {'v4': [231764558, 231765120], 'v6': [231767127, 231767920]}. Deta
 
 IPV6 COVERAGE (adoption signal only -- no IPv6 testing yet)
 ==============================================================================
-45 of 162 in-scope ASNs have >=1 RIS-observed IPv6-originated prefix. 8 of 37 connected Atlas probes work over IPv6 (3 more are IPv6-capable but tagged as not working). Adoption tracking only -- this project deliberately isn't testing IPv6 corridors yet; queued until adoption has advanced further (see TODO below).
+45 of 162 in-scope ASNs have >=1 RIS-observed IPv6-originated prefix. 9 of 37 connected Atlas probes work over IPv6 (3 more are IPv6-capable but tagged as not working). Adoption tracking only -- this project deliberately isn't testing IPv6 corridors yet; queued until adoption has advanced further (see TODO below).
 CC   Name                      ASNs  w/ IPv6
 ------------------------------------------------------------------------------
 AS   American Samoa               2        1
@@ -1122,7 +1122,7 @@ AS3605 (Guam Cablevision, GU) -> AS140504 (Digicel Nauru Corporation, NR)
 
 ---
 
-**ASPA-confirmed 2026-10-10T15:02:18.497818+00:00**: AS140504's own published ASPA record (RFC 9582, via Cloudflare Radar) lists AS3605 among its authorized providers [3605, 12684, 45355, 132528] -- a cryptographically-signed statement from the target itself, promoted from candidate_peering on that basis rather than RIS agreement.
+**ASPA-confirmed 2026-10-10T15:02:18.497818+00:00**: AS140504's own published ASPA record (draft-ietf-sidrops-aspa-profile, via Cloudflare Radar) lists AS3605 among its authorized providers [3605, 12684, 45355, 132528] -- a cryptographically-signed statement from the target itself, promoted from candidate_peering on that basis rather than RIS agreement.
 AS18200 (Office des Postes et Telecommunications New-Caledonia, NC) -> AS140718 (ENGIE PACIFIQUE INFORMATIQUE, NC)
     RIS observation count: 331  [measurement 213200718, vantage: NC]
     measurement 213200718 (from NC); chain: AS56089 -> AS18200; RIS count 331; RIS agrees. measurement 213200718 (from NC); chain: AS45345 -> AS18200; RIS count 331; RIS agrees. measurement 213200718 (from NC); chain: AS45345 -> AS18200; RIS count 331; RIS agrees. measurement 213460824 (from NC); chain: AS56089 -> AS18200; RIS count 331; RIS agrees. measurement 213460824 (from NC); chain: AS45345 -> AS18200; RIS count 331; RIS agrees. measurement 213460824 (from NC); chain: AS45345 -> AS18200; RIS count 331; RIS agrees. measurement 229798099 (from NC); chain: AS45345 -> AS18200; RIS count 276; RIS agrees. measurement 229798099 (from NC); chain: AS45345 -> AS18200; RIS count 276; RIS agrees. measurement 229798099 (from NC); chain: AS45345 -> AS18200; RIS count 276; RIS agrees.

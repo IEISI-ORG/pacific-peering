@@ -1258,7 +1258,7 @@ def recheck_aspa_candidates(
                 note = (
                     "\n\n---\n\n"
                     f"**ASPA-confirmed {checked_at}**: AS{finding.target_asn}'s own "
-                    f"published ASPA record (RFC 9582, via Cloudflare Radar) lists "
+                    f"published ASPA record (draft-ietf-sidrops-aspa-profile, via Cloudflare Radar) lists "
                     f"AS{finding.source_asn} among its authorized providers "
                     f"{providers} -- a cryptographically-signed statement from the "
                     f"target itself, promoted from candidate_peering on that basis "
