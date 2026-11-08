@@ -72,6 +72,11 @@ EXCLUDED_TARGET_PREFIXES: dict[str, str] = {
         "Sydney-Tonga minimum, on 3 networks (measurement 230614528); AS132831's 103.134.118.0/24 is local "
         "(owner, 2026-11-02)"
     ),
+    "210.79.16.0/20": (
+        "AS45411 APCS: APNIC registers this block as AU wholesale space (APCSNET, Bonville NSW), so a "
+        "corridor into it would not measure PNG; AS45411's 103.153.158.0/23 is the PG-registered block "
+        "(owner, 2026-11-09)"
+    ),
 }
 
 
