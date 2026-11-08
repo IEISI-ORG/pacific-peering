@@ -112,16 +112,20 @@ SUPPLEMENTARY_ASNS: tuple[SupplementaryAsn, ...] = (
         rir="APNIC",
         source_url="https://rdap.apnic.net/autnum/45411",
         note=(
-            "Owner's direction, 2026-11-09. Unlike the other entries, the holder is "
-            "Australian (Bonville NSW) and most of the network is too: 210.79.16.0/20 "
+            "Owner's direction, 2026-11-09. The holder is registered in Australia "
+            "(Bonville NSW), but the network spans PNG and Sydney. RIS's strongest "
+            "neighbour is AS17828 (PNG DataCo), with AS132786 (PG) downstream. "
+            "PeeringDB lists ports at PNG Neutral IX POM and Lae, plus MegaIX Sydney "
+            "and Equinix SY1/SY2 (record last updated 2022). It originates "
+            "103.153.158.0/23, which APNIC registers to Asia Pacific Communication "
+            "Specialist (PNG) Ltd, whose own AS140935 originates nothing in RIS; "
+            "RIS paths to that block arrive mainly through AS17828. 210.79.16.0/20 "
             "is AU wholesale space, kept out of traceroute targets by "
-            "atlas.targets.EXCLUDED_TARGET_PREFIXES. It is here because RIS shows it "
-            "originating 103.153.158.0/23, which APNIC registers to Asia Pacific "
-            "Communication Specialist (PNG) Ltd, whose own AS140935 originates "
-            "nothing in RIS. Caveat: listing the whole ASN makes any AS45411 hop "
-            "count as in-region, including Australian ones. No cached trace crossed "
-            "AS45411 when this was added (0 of 1715 raw measurement files), so "
-            "re-check before trusting a finding whose path includes it."
+            "atlas.targets.EXCLUDED_TARGET_PREFIXES. Caveat: listing the whole ASN "
+            "makes any AS45411 hop count as in-region, including its Sydney ones. "
+            "No cached trace crossed AS45411 when this was added (0 of 1715 raw "
+            "measurement files), so re-check before trusting a finding whose path "
+            "includes it."
         ),
     ),
 )
