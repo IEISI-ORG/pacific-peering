@@ -574,3 +574,33 @@ Corridors `auto_classify.py`'s mechanical rules couldn't confidently resolve on 
 - detail: probe 7448: loop involving address 202.87.208.244, not in known_anomalies.py
 - flagged: 2026-11-06T15:17:04.619079+00:00
 
+## AS17893 (PW) -> AS3605 (GU)
+- measurement: 234920970
+- reason: local IXP crossing with implausibly high latency
+- detail: probe 7455: hop 3 crosses GU-IX (in-fishbowl) at 19.28ms, 19.0ms more than the hop before it (minimum over it and later hops), above the 10.0ms local-fiber threshold -- either this hop isn't genuinely local despite the registry, or there's an unexpected detour/backhaul before reaching it; needs a human look, not a guess
+- flagged: 2026-11-09T15:04:19.669371+00:00
+
+## AS139759 (FM) -> AS17893 (PW)
+- measurement: 234926407
+- reason: local IXP crossing with implausibly high latency
+- detail: probe 50897: hop 7 crosses Guam IX (in-fishbowl) at 40.258ms, 18.6ms more than the hop before it (minimum over it and later hops), above the 10.0ms local-fiber threshold -- either this hop isn't genuinely local despite the registry, or there's an unexpected detour/backhaul before reaching it; needs a human look, not a guess
+- flagged: 2026-11-09T15:10:58.793229+00:00
+
+## AS139759 (FM) -> AS17893 (PW)
+- measurement: 234926407
+- reason: local IXP crossing with implausibly high latency
+- detail: probe 62046: hop 8 crosses Guam IX (in-fishbowl) at 40.626ms, 18.1ms more than the hop before it (minimum over it and later hops), above the 10.0ms local-fiber threshold -- either this hop isn't genuinely local despite the registry, or there's an unexpected detour/backhaul before reaching it; needs a human look, not a guess
+- flagged: 2026-11-09T15:10:58.793229+00:00
+
+## AS139759 (FM) -> AS17893 (PW)
+- measurement: 234926407
+- reason: local IXP crossing with implausibly high latency
+- detail: probe 7448: hop 5 crosses Guam IX (in-fishbowl) at 38.649ms, 18.8ms more than the hop before it (minimum over it and later hops), above the 10.0ms local-fiber threshold -- either this hop isn't genuinely local despite the registry, or there's an unexpected detour/backhaul before reaching it; needs a human look, not a guess
+- flagged: 2026-11-09T15:10:58.793229+00:00
+
+## AS17893 (PW) -> AS55722 (NR)
+- measurement: 234928910
+- reason: local IXP crossing with implausibly high latency
+- detail: probe 7455: hop 3 crosses Guam IX (in-fishbowl) at 54.483ms, 54.3ms more than the hop before it (minimum over it and later hops), above the 10.0ms local-fiber threshold -- either this hop isn't genuinely local despite the registry, or there's an unexpected detour/backhaul before reaching it; needs a human look, not a guess
+- flagged: 2026-11-09T15:13:44.994601+00:00
+
