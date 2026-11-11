@@ -1,5 +1,5 @@
 {
- "at": "2026-11-10T15:00:41.692912+00:00",
+ "at": "2026-11-11T15:00:57.052535+00:00",
  "pending_trace": [
   1087,
   32810
@@ -168,7 +168,7 @@
    "status": "Connected"
   },
   "62046": {
-   "asn_v4": 14593,
+   "asn_v4": 139759,
    "asn_v6": null,
    "cc": "FM",
    "status": "Connected"
@@ -192,7 +192,7 @@
    "status": "Connected"
   },
   "64391": {
-   "asn_v4": 55885,
+   "asn_v4": 14593,
    "asn_v6": null,
    "cc": "NU",
    "status": "Connected"

@@ -664,3 +664,15 @@ Corridors `auto_classify.py`'s mechanical rules couldn't confidently resolve on 
 - detail: probe 329: router hub: hop 11 154.54.28.189 be9852.ccr22.pdx01.atlas.cogentco.com -> Portland, 116.416ms (floor 90.97ms, ok); probe 64953: router hub: hop 13 154.54.43.13 be3670.ccr22.sfo01.atlas.cogentco.com -> San Francisco, 142.284ms (floor 92.95ms, ok) -- probes leave the region through different cities; needs a human read, not a detour
 - flagged: 2026-11-10T15:13:42.455940+00:00
 
+
+## Probe 62046 (FM, AS139759) -- metadata changed
+- reason: probe watch (atlas/probe_watch.py)
+- detail: asn_v4 14593 -> 139759; egress trace: AS139759 (measurement 236238083)
+- action: owner review -- check the path before trusting this probe's next results, or changing any exclusion
+- flagged: 2026-11-11T15:00:57.052535+00:00
+
+## Probe 64391 (NU, AS14593) -- metadata changed
+- reason: probe watch (atlas/probe_watch.py)
+- detail: asn_v4 55885 -> 14593; egress trace: AS55885 (measurement 236238083)
+- action: owner review -- check the path before trusting this probe's next results, or changing any exclusion
+- flagged: 2026-11-11T15:00:57.052535+00:00
