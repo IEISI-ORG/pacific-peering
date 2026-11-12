@@ -303,3 +303,32 @@ def test_a_client_error_is_not_retried(monkeypatch):
     else:
         raise AssertionError("expected the 404 to raise")
     assert len(calls) == 1
+
+
+# --- The probe's own source address is kept (2026-11-13) ---
+# Niue probe 64391 sits on public addresses, so its own gateway is the first
+# resolved ASN on every path; `src_addr` lets rule 0 see past it.
+
+RAW_64391 = {
+    "msm_id": 236238083, "prb_id": 64391, "dst_addr": "1.1.1.1",
+    "src_addr": "49.156.50.5", "from": "14.1.76.105",
+    "result": [{"hop": 1, "result": [{"from": "49.156.50.254", "rtt": 0.4}]}],
+}
+
+
+def test_parse_keeps_the_probes_own_source_address():
+    (result,) = client.parse_traceroute_results([RAW_64391])
+    assert result.source_address == "49.156.50.5"  # src_addr, not `from` (the control-plane address)
+
+
+def test_parsed_cache_records_the_source_address(monkeypatch, tmp_path):
+    import json
+
+    from pacific_peering.atlas import smoketest
+
+    monkeypatch.setattr(smoketest, "DEFAULT_RAW_DIR", tmp_path / "raw")
+    monkeypatch.setattr(smoketest, "DEFAULT_PARSED_DIR", tmp_path / "parsed")
+    smoketest.persist_results(236238083, [RAW_64391])
+
+    (parsed,) = json.loads((tmp_path / "parsed" / "236238083.json").read_text())
+    assert parsed["source_address"] == "49.156.50.5"

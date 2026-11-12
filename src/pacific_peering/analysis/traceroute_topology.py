@@ -231,6 +231,30 @@ def resolve_traceroute_hops(
     return resolved
 
 
+def source_lan_asn(
+    traceroute: dict,
+    cache_path: Path = DEFAULT_CACHE_PATH,
+    ixp_registry_path: Path = DEFAULT_REGISTRY_PATH,
+    persist: bool = True,
+) -> int | None:
+    """ASN of the probe's own interface address, when that address is public.
+
+    A probe on public addresses (Niue 64391: 49.156.50.5, AS55885) shows its
+    own LAN gateway as the first resolved ASN of every path, which can hide
+    a failover to another uplink right behind it (2026-11-11, Starlink).
+    None for a private address, or a trace parsed before `source_address`
+    was kept (2026-11-13).
+    """
+    address = traceroute.get("source_address")
+    if not address or _is_private_address(address):
+        return None
+    (resolved,) = resolve_traceroute_hops(
+        [{"hop": 0, "addresses": [address]}],
+        cache_path=cache_path, ixp_registry_path=ixp_registry_path, persist=persist,
+    )
+    return resolved.asns[0] if len(resolved.asns) == 1 else None
+
+
 @dataclass(frozen=True)
 class AsHop:
     """One ASN in a resolved AS-level path, with its resolution provenance."""
@@ -438,6 +462,7 @@ def analyze_measurement(
         per_probe.append(
             {
                 "probe_id": traceroute["probe_id"],
+                "source_lan_asn": source_lan_asn(traceroute),
                 "as_sequence": as_sequence_json,
                 "ixp_crossings": ixp_crossings,
                 **agreement,

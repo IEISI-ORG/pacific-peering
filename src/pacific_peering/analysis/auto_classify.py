@@ -214,6 +214,29 @@ KNOWN_PROXY_ASNS: dict[int, str] = {53813: "Zscaler", 23959: "Owl Limited (VPN)"
 NON_LOCAL_FIRST_HOP_ASNS: dict[int, str] = {**KNOWN_PROXY_ASNS, 14593: "Starlink (satellite egress)"}
 
 
+def egress_guard_asn(as_sequence: list[int], source_lan_asn: int | None) -> int | None:
+    """The ASN rule 0 checks: the path's first ASN, unless a non-local one hides behind the probe's own LAN.
+
+    A probe on public addresses (Niue 64391, AS55885) resolves its own LAN
+    gateway first, so a failover to Starlink shows as [55885, 14593, ...]
+    (236238083, 2026-11-11). When the path starts in the probe's own LAN ASN
+    and the next network is non-local, that next network is returned.
+    Otherwise the first ASN, so probes on private LANs are unaffected.
+    """
+    if not as_sequence:
+        return None
+    first = as_sequence[0]
+    if source_lan_asn is not None and first == source_lan_asn:
+        following = next((asn for asn in as_sequence[1:] if asn != first), None)
+        if following in NON_LOCAL_FIRST_HOP_ASNS:
+            return following
+    return first
+
+
+def _probe_egress_asn(probe: dict) -> int | None:
+    return egress_guard_asn([e["asn"] for e in probe.get("as_sequence", [])], probe.get("source_lan_asn"))
+
+
 @dataclass
 class _Escalation:
     """Something the mechanical rules couldn't confidently resolve -- surfaced
@@ -306,7 +329,7 @@ def _is_decisive(probe: dict, target_asn: int) -> bool:
     "any resolved upstream" test treated as signal and never retried.
     """
     as_sequence = probe.get("as_sequence", [])
-    if as_sequence and as_sequence[0]["asn"] in NON_LOCAL_FIRST_HOP_ASNS:
+    if _probe_egress_asn(probe) in NON_LOCAL_FIRST_HOP_ASNS:
         return True
     if target_asn in {e["asn"] for e in as_sequence}:
         return True
@@ -661,8 +684,7 @@ def _classify_corridor(
     proxy_corrupted: dict[int, str] = {}
     clean_probes: list[dict] = []
     for probe in triangulation["probes"]:
-        as_sequence = probe.get("as_sequence", [])
-        first_asn = as_sequence[0]["asn"] if as_sequence else None
+        first_asn = _probe_egress_asn(probe)  # past the probe's own public LAN, if any
         proxy_name = NON_LOCAL_FIRST_HOP_ASNS.get(first_asn) if first_asn is not None else None
         if proxy_name is not None:
             proxy_corrupted[probe["probe_id"]] = proxy_name

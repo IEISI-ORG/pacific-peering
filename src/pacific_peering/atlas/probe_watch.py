@@ -39,8 +39,8 @@ from pathlib import Path
 
 import requests
 
-from pacific_peering.analysis.auto_classify import KNOWN_PROXY_ASNS, NON_LOCAL_FIRST_HOP_ASNS
-from pacific_peering.analysis.traceroute_topology import extract_as_sequence, resolve_traceroute_hops
+from pacific_peering.analysis.auto_classify import KNOWN_PROXY_ASNS, NON_LOCAL_FIRST_HOP_ASNS, egress_guard_asn
+from pacific_peering.analysis.traceroute_topology import extract_as_sequence, resolve_traceroute_hops, source_lan_asn
 from pacific_peering.atlas.client import PROBE_PROTOCOL_OVERRIDES
 from pacific_peering.atlas.probes import load_probe_listing
 from pacific_peering.atlas.smoketest import refetch_parsed
@@ -116,9 +116,14 @@ def egress_watch_probes(current: dict[str, dict]) -> set[int]:
 
 
 def first_egress_asn(trace: dict) -> int | None:
-    """First resolved public ASN on the path (private hops are skipped by the resolver)."""
+    """First resolved public ASN on the path (private hops are skipped by the resolver).
+
+    For a probe on public addresses, a non-local network right after its own
+    LAN is reported instead (`auto_classify.egress_guard_asn`): Niue 64391's
+    Starlink failover read as AS55885 here on 2026-11-11.
+    """
     sequence = extract_as_sequence(resolve_traceroute_hops(trace["hops"]))
-    return sequence[0].asn if sequence else None
+    return egress_guard_asn([e.asn for e in sequence], source_lan_asn(trace))
 
 
 def describe_egress(asn: int | None) -> str:

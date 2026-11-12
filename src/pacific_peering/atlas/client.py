@@ -70,6 +70,9 @@ class TracerouteResult:
     probe_id: int
     target: str
     hops: tuple[TracerouteHop, ...]
+    # The probe's own interface address (Atlas `src_addr`), not `from` (its
+    # control-plane address, which can sit on another uplink: FM 62046).
+    source_address: str | None = None
 
 
 # Probes whose site filters ICMP traceroute but passes another protocol.
@@ -402,6 +405,7 @@ def parse_traceroute_results(raw_results: list[dict]) -> list[TracerouteResult]:
                 probe_id=result["prb_id"],
                 target=result.get("dst_addr") or result.get("dst_name", ""),
                 hops=tuple(hops),
+                source_address=result.get("src_addr"),
             )
         )
     return parsed

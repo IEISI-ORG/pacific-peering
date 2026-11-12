@@ -25,7 +25,7 @@ from typing import Any
 from pathlib import Path
 
 from pacific_peering.analysis import store as _store
-from pacific_peering.analysis.auto_classify import NON_LOCAL_FIRST_HOP_ASNS
+from pacific_peering.analysis.auto_classify import NON_LOCAL_FIRST_HOP_ASNS, egress_guard_asn
 from pacific_peering.analysis.feasibility import (
     DEFAULT_ATLAS_PARSED_DIR,
     DEFAULT_OUTPUT_DIR,
@@ -37,7 +37,11 @@ from pacific_peering.analysis.feasibility import (
     claim_verdict,
 )
 from pacific_peering.analysis.ixp_lan_registry import DEFAULT_REGISTRY_PATH, load_ixp_lan_registry
-from pacific_peering.analysis.traceroute_topology import extract_as_sequence, resolve_traceroute_hops
+from pacific_peering.analysis.traceroute_topology import (
+    extract_as_sequence,
+    resolve_traceroute_hops,
+    source_lan_asn,
+)
 from pacific_peering.atlas.probes import load_probe_listing
 from pacific_peering.discovery.economy_coordinates import ECONOMY_LATLON, ECONOMY_SPREAD_KM, EXTERNAL_HUB_LATLON
 
@@ -47,6 +51,11 @@ REPORT_PATH = Path("outputs/reports/feasibility_sweep.txt")
 DETAIL_PATH = DEFAULT_OUTPUT_DIR / "sweep.json"
 _CHECKS = ("hub", "target_via_hub")
 
+
+def _non_local_egress(trace: dict, sequence: list) -> bool:
+    """Classification's rule-0 guard: Starlink/proxy egress, also behind a probe's own public LAN."""
+    asn = egress_guard_asn([e.asn for e in sequence], source_lan_asn(trace, persist=False))
+    return asn in NON_LOCAL_FIRST_HOP_ASNS
 
 def finding_verdict(probe_results: list[dict]) -> str:
     """Across all measurements' claim probes: ok / impossible / mixed, or unchecked."""
@@ -83,7 +92,7 @@ def sweep(parsed_dir: Path = DEFAULT_ATLAS_PARSED_DIR) -> list[dict]:
                     cc = probe_cc.get(trace["probe_id"], corrob.vantage_point_cc)
                     resolved = resolve_traceroute_hops(trace["hops"], persist=False)
                     sequence = extract_as_sequence(resolved)
-                    if cc not in ECONOMY_LATLON or (sequence and sequence[0].asn in NON_LOCAL_FIRST_HOP_ASNS):
+                    if cc not in ECONOMY_LATLON or _non_local_egress(trace, sequence):
                         continue  # same guard as classification: Starlink/proxy egress isn't the economy's path
                     check = check_detour_trace(
                         trace, resolved, ECONOMY_LATLON[cc],
