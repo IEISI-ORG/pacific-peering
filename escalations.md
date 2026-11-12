@@ -676,9 +676,11 @@ Corridors `auto_classify.py`'s mechanical rules couldn't confidently resolve on 
 - detail: asn_v4 55885 -> 14593; egress trace: AS55885 (measurement 236238083)
 - action: owner review -- check the path before trusting this probe's next results, or changing any exclusion
 - flagged: 2026-11-11T15:00:57.052535+00:00
+- resolved: 2026-11-13 -- real Starlink failover, and the egress line above is wrong: the trace left via Starlink. Atlas connection events show 64391 connecting from Starlink 14.1.76.0/23 on 2026-11-11 06:10-17:35Z, then Telecom Niue again. 236238083 went 49.156.50.254 (the site's own gateway, AS55885) -> 14.1.76.1 (Starlink, 50ms) -> Cloudflare; the probe sits on public Telecom Niue space, so its gateway was read as the egress. No corridor or ROV trace ran from it in the window (92 of 93 cached traces left from 49.156.50.5 via Telecom Niue). Rule 0, probe watch and the feasibility sweep now see past a probe's own public LAN (`auto_classify.egress_guard_asn`).
 
 ## Probe 64391 (NU, AS55885) -- metadata changed
 - reason: probe watch (atlas/probe_watch.py)
 - detail: asn_v4 14593 -> 55885; egress trace: AS55885 (measurement 236862652)
 - action: owner review -- check the path before trusting this probe's next results, or changing any exclusion
 - flagged: 2026-11-12T15:00:57.602446+00:00
+- resolved: 2026-11-13 -- back on Telecom Niue since 2026-11-11T17:35Z (Atlas connection events); this egress trace and the 2026-11-12 ROV traces leave via AS55885. See the entry above.
