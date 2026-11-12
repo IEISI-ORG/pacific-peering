@@ -676,3 +676,9 @@ Corridors `auto_classify.py`'s mechanical rules couldn't confidently resolve on 
 - detail: asn_v4 55885 -> 14593; egress trace: AS55885 (measurement 236238083)
 - action: owner review -- check the path before trusting this probe's next results, or changing any exclusion
 - flagged: 2026-11-11T15:00:57.052535+00:00
+
+## Probe 64391 (NU, AS55885) -- metadata changed
+- reason: probe watch (atlas/probe_watch.py)
+- detail: asn_v4 14593 -> 55885; egress trace: AS55885 (measurement 236862652)
+- action: owner review -- check the path before trusting this probe's next results, or changing any exclusion
+- flagged: 2026-11-12T15:00:57.602446+00:00
