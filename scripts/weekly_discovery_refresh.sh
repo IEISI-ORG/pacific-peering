@@ -89,9 +89,6 @@ if [ -n "$(git status --porcelain -- "${TRACK_PATHS[@]}")" ]; then
 chore(pipeline): weekly discovery refresh ($(date -u +%Y-%m-%dT%H:%M:%SZ))
 
 Unattended system cron, no LLM involved -- see scripts/weekly_discovery_refresh.sh.
-
-Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>
-Claude-Session: https://claude.ai/code/session_01Vh4Lba9QazDQiRvaW5zTor
 EOF
 )"
     git push

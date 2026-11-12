@@ -150,9 +150,6 @@ feat(analysis): nightly corridor testing batch ($(date -u +%Y-%m-%dT%H:%M:%SZ))
 
 Unattended system cron, no LLM involved -- see scripts/nightly_corridor_testing.sh
 and analysis/auto_classify.py's run_batch().
-
-Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>
-Claude-Session: https://claude.ai/code/session_01Vh4Lba9QazDQiRvaW5zTor
 EOF
 )"
     git push
