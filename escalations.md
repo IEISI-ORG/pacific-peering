@@ -670,6 +670,7 @@ Corridors `auto_classify.py`'s mechanical rules couldn't confidently resolve on 
 - detail: asn_v4 14593 -> 139759; egress trace: AS139759 (measurement 236238083)
 - action: owner review -- check the path before trusting this probe's next results, or changing any exclusion
 - flagged: 2026-11-11T15:00:57.052535+00:00
+- resolved: 2026-11-13 -- back on AS139759 (FSM Telecom) after leaving via Starlink since 2026-10-20; egress trace 236238083 and the 2026-11-12 ROV traces leave via AS139759. Per the owner's 2026-10-21 decision (option a), `PROBE_ASN_OVERRIDES` and rule 0 stay as they are and the probe rejoins FM corridors.
 
 ## Probe 64391 (NU, AS14593) -- metadata changed
 - reason: probe watch (atlas/probe_watch.py)
