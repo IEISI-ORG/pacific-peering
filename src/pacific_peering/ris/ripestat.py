@@ -285,7 +285,7 @@ class RpkiStatus:
     status: str  # RIPEstat's value: "valid", "invalid", "invalid_asn", "invalid_length", "unknown"; "unresolved" if no route
 
 
-def fetch_rpki_status(ip: str, timeout: float = _DEFAULT_TIMEOUT) -> RpkiStatus:
+def fetch_rpki_status(ip: str, timeout: float = _DEFAULT_TIMEOUT, max_retries: int = 2) -> RpkiStatus:
     """Look up the covering route for `ip` and its RPKI validation state.
 
     Two RIPEstat calls: `prefix-overview` for the announced prefix and its
@@ -294,24 +294,34 @@ def fetch_rpki_status(ip: str, timeout: float = _DEFAULT_TIMEOUT) -> RpkiStatus:
     deliberately valid/invalid test prefixes are still in the expected state
     before spending credits on traceroutes toward them. Raises on network
     errors -- unlike `resolve_ip_to_asns`, a caller gating a measurement on
-    this must not mistake "lookup failed" for an answer.
+    this must not mistake "lookup failed" for an answer. Each call is retried
+    `max_retries` times first (2026-11-12: a single 500 on prefix-overview
+    stopped the 2026-11-11 ROV test; the same URL answered an hour later).
     """
-    overview = requests.get(
-        f"{RIPESTAT_BASE_URL}/prefix-overview/data.json", params={"resource": ip}, timeout=timeout
-    )
-    overview.raise_for_status()
-    data = overview.json()["data"]
+    data = _get_data_with_retries("prefix-overview", {"resource": ip}, timeout, max_retries)
     asns = [a["asn"] for a in data.get("asns", [])]
     prefix = data.get("resource") if asns else None
     if not asns or not prefix:
         return RpkiStatus(prefix=None, origin_asn=None, status="unresolved")
-    validation = requests.get(
-        f"{RIPESTAT_BASE_URL}/rpki-validation/data.json",
-        params={"resource": asns[0], "prefix": prefix},
-        timeout=timeout,
+    validation = _get_data_with_retries(
+        "rpki-validation", {"resource": asns[0], "prefix": prefix}, timeout, max_retries
     )
-    validation.raise_for_status()
-    return RpkiStatus(prefix=prefix, origin_asn=int(asns[0]), status=validation.json()["data"]["status"])
+    return RpkiStatus(prefix=prefix, origin_asn=int(asns[0]), status=validation["status"])
+
+
+def _get_data_with_retries(call: str, params: dict, timeout: float, max_retries: int) -> dict:
+    """GET a RIPEstat data call's `data` object, retrying network/HTTP errors, then raising."""
+    for attempt in range(max_retries + 1):
+        try:
+            response = requests.get(f"{RIPESTAT_BASE_URL}/{call}/data.json", params=params, timeout=timeout)
+            response.raise_for_status()
+            return response.json()["data"]
+        except requests.exceptions.RequestException:
+            if attempt == max_retries:
+                raise
+            logger.warning("RIPEstat %s for %s failed, retrying (attempt %d/%d)", call, params, attempt + 1, max_retries)
+            time.sleep(2 + 3 * attempt)
+    raise AssertionError("unreachable")
 
 
 def fetch_whois(prefix: str, timeout: float = _DEFAULT_TIMEOUT, max_retries: int = 2) -> dict:

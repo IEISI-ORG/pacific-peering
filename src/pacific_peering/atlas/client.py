@@ -20,6 +20,8 @@ logger = logging.getLogger(__name__)
 
 ATLAS_BASE_URL = "https://atlas.ripe.net/api/v2"
 _DEFAULT_TIMEOUT = 30.0
+_GET_RETRIES = 2  # transient-failure retries on status/results GETs
+_GET_RETRY_DELAY = 10.0  # seconds, multiplied by the attempt number
 _TERMINAL_STATUSES = (
     "Stopped", "Forced to stop", "No suitable probes", "Failed", "Archived",
 )
@@ -226,20 +228,42 @@ def create_ping_measurement(
     return measurement_id
 
 
+def _is_transient(exc: requests.RequestException) -> bool:
+    """True for failures worth retrying: timeouts, dropped connections, 5xx and 429."""
+    if isinstance(exc, requests.HTTPError):
+        status = exc.response.status_code if exc.response is not None else None
+        return status is None or status >= 500 or status == 429
+    return True
+
+
+def _get_json(url: str, timeout: float, max_retries: int = _GET_RETRIES) -> Any:
+    """GET `url` and return its JSON, retrying transient failures, then raising.
+
+    Atlas status and results reads are idempotent. Added 2026-11-12: the ROV
+    re-run died on one 30 s ReadTimeout polling 236756255, which it had just
+    created (Atlas was answering in ~22 s).
+    """
+    for attempt in range(max_retries + 1):
+        try:
+            response = requests.get(url, timeout=timeout)
+            response.raise_for_status()
+            return response.json()
+        except requests.RequestException as exc:
+            if attempt == max_retries or not _is_transient(exc):
+                raise
+            logger.warning("Atlas GET %s failed (%s); retry %d/%d", url, exc, attempt + 1, max_retries)
+            time.sleep(_GET_RETRY_DELAY * (attempt + 1))
+    raise AssertionError("unreachable")
+
+
 def fetch_measurement_status(measurement_id: int, timeout: float = _DEFAULT_TIMEOUT) -> str:
     """Return a measurement's current status name (e.g. 'Ongoing', 'Stopped')."""
-    response = requests.get(f"{ATLAS_BASE_URL}/measurements/{measurement_id}/", timeout=timeout)
-    response.raise_for_status()
-    return response.json()["status"]["name"]
+    return _get_json(f"{ATLAS_BASE_URL}/measurements/{measurement_id}/", timeout)["status"]["name"]
 
 
 def fetch_raw_results(measurement_id: int, timeout: float = _DEFAULT_TIMEOUT) -> list[dict]:
     """Fetch raw JSON results for a measurement."""
-    response = requests.get(
-        f"{ATLAS_BASE_URL}/measurements/{measurement_id}/results/", timeout=timeout
-    )
-    response.raise_for_status()
-    return response.json()
+    return _get_json(f"{ATLAS_BASE_URL}/measurements/{measurement_id}/results/", timeout)
 
 
 def wait_for_results(

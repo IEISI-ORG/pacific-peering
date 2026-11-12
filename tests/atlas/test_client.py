@@ -224,3 +224,82 @@ def test_create_traceroute_keeps_icmp_when_probes_are_mixed(monkeypatch):
     client.create_traceroute_measurement("country", "TO", "1.1.1.1", "d", 2, api_key="k")
 
     assert [p["definitions"][0]["protocol"] for p in posted] == ["ICMP", "ICMP"]
+
+
+# --- Transient-failure retries on Atlas GETs (2026-11-12) ---
+# The weekly ROV re-run created 236756255, then its first status poll hit a
+# 30 s ReadTimeout (Atlas was answering in ~22 s) and the whole run died.
+# Status and results GETs are idempotent, so transient failures are retried.
+
+
+class _JsonResponse:
+    def __init__(self, payload, status_code=200):
+        self._payload, self.status_code = payload, status_code
+
+    def raise_for_status(self):
+        if self.status_code >= 400:
+            raise requests.HTTPError(f"{self.status_code} error", response=self)
+
+    def json(self):
+        return self._payload
+
+
+def _scripted_get(monkeypatch, outcomes):
+    """Patch requests.get to raise or return each outcome in turn; returns the call log."""
+    calls = []
+    outcomes = iter(outcomes)
+
+    def _get(url, timeout=None, **kwargs):
+        calls.append(url)
+        outcome = next(outcomes)
+        if isinstance(outcome, Exception):
+            raise outcome
+        return outcome
+
+    monkeypatch.setattr(client.requests, "get", _get)
+    monkeypatch.setattr(client.time, "sleep", lambda seconds: None)
+    return calls
+
+
+def test_status_poll_retries_a_read_timeout(monkeypatch):
+    calls = _scripted_get(monkeypatch, [
+        requests.exceptions.ReadTimeout("Read timed out. (read timeout=30.0)"),
+        _JsonResponse({"status": {"name": "Ongoing"}}),
+    ])
+
+    assert client.fetch_measurement_status(236756255) == "Ongoing"
+    assert len(calls) == 2
+
+
+def test_status_poll_raises_once_retries_are_exhausted(monkeypatch):
+    calls = _scripted_get(monkeypatch, [requests.exceptions.ReadTimeout("timed out")] * 3)
+
+    try:
+        client.fetch_measurement_status(236756255)
+    except requests.exceptions.ReadTimeout:
+        pass
+    else:
+        raise AssertionError("expected ReadTimeout after the last retry")
+    assert len(calls) == 3  # first try + 2 retries
+
+
+def test_results_fetch_retries_a_server_error(monkeypatch):
+    calls = _scripted_get(monkeypatch, [
+        _JsonResponse({}, status_code=502),
+        _JsonResponse([{"prb_id": 7018}]),
+    ])
+
+    assert client.fetch_raw_results(236756255) == [{"prb_id": 7018}]
+    assert len(calls) == 2
+
+
+def test_a_client_error_is_not_retried(monkeypatch):
+    calls = _scripted_get(monkeypatch, [_JsonResponse({}, status_code=404)])
+
+    try:
+        client.fetch_measurement_status(1)
+    except requests.HTTPError:
+        pass
+    else:
+        raise AssertionError("expected the 404 to raise")
+    assert len(calls) == 1
