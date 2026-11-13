@@ -685,3 +685,9 @@ Corridors `auto_classify.py`'s mechanical rules couldn't confidently resolve on 
 - action: owner review -- check the path before trusting this probe's next results, or changing any exclusion
 - flagged: 2026-11-12T15:00:57.602446+00:00
 - resolved: 2026-11-13 -- back on Telecom Niue since 2026-11-11T17:35Z (Atlas connection events); this egress trace and the 2026-11-12 ROV traces leave via AS55885. See the entry above.
+
+## Public site -- Workers build failed for 7ab16b9 (nightly batch 2026-11-13)
+- reason: unattended daily check -- site deploy failed, so the public site did not get the 2026-11-13 nightly batch
+- detail: Workers build 843efabf-8e8e-4594-9bb1-a14137440875 (2026-11-13T15:26:40Z, commit 7ab16b9) ran `python3 src/pacific_peering/reports/site.py` successfully (index.html, 2 charts, 5 text reports) and uploaded 3 assets, then `npx wrangler deploy` (wrangler 4.161.0) failed at 15:27:54Z: "A request to the Cloudflare API (/accounts/.../workers/scripts/pacific-peering/versions) failed. An unknown error has occurred. [code: 10013]". The two builds before it (889db4a, ad7dc2d, 2026-11-12) succeeded. The site answers 200 and still shows generated 2026-11-12T15:35:32Z.
+- proposed correction: none in the repo. Code 10013 is a Cloudflare-side unknown error and the build step itself passed, so it looks transient: retry the build in the dashboard, or let the next push rebuild. If the next build fails the same way, look at the wrangler version (npx pulled 4.161.0 unpinned).
+- flagged: 2026-11-13T21:30:00+00:00
