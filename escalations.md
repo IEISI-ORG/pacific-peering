@@ -692,3 +692,15 @@ Corridors `auto_classify.py`'s mechanical rules couldn't confidently resolve on 
 - proposed correction: none in the repo. Code 10013 is a Cloudflare-side unknown error and the build step itself passed, so it looks transient: retry the build in the dashboard, or let the next push rebuild. If the next build fails the same way, look at the wrangler version (npx pulled 4.161.0 unpinned).
 - flagged: 2026-11-13T21:30:00+00:00
 - resolved: 2026-11-14 -- transient. The next push (5ba306c) rebuilt and deployed at 21:31:32Z with wrangler 4.162.0; the live site now shows generated 2026-11-13T15:26:34Z, the 7ab16b9 batch. No repo change. Pin wrangler only if a 10013 failure recurs.
+
+## AS45411 (PG) -- 210.79.16.0/21 leased or foreign-registered space
+- reason: leasing-marker check (discovery/leasing_check.py)
+- detail: registered_abroad: RIR record country AU, not PG
+- action: sweep the prefix for live hosts and ping them from AU and home-economy probes; then owner review (acknowledge, exclude the prefix as a target, or exclude the ASN)
+- flagged: 2026-11-14T15:04:31.867025+00:00
+
+## AS45411 (PG) -- 210.79.16.0/24 leased or foreign-registered space
+- reason: leasing-marker check (discovery/leasing_check.py)
+- detail: registered_abroad: RIR record country AU, not PG
+- action: sweep the prefix for live hosts and ping them from AU and home-economy probes; then owner review (acknowledge, exclude the prefix as a target, or exclude the ASN)
+- flagged: 2026-11-14T15:04:31.867025+00:00

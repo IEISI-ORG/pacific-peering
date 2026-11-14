@@ -1,52 +1,52 @@
 Transit router convergence (report-only; nothing in findings.db changed)
 Routers on networks outside the project's scope (fishbowl.json), wherever they sit: some are
 physically in the region (Tata qhar1/qhar2.pv4-piti and HE core1.gum1 are in Guam).
-Latest trace: 2026-11-06. Traces read: 3109. Thresholds: >= 3 source economies, >= 3 target economies.
+Latest trace: 2026-11-13. Traces read: 3463. Thresholds: >= 3 source economies, >= 3 target economies.
 Counts are economy pairs (probe economy -> target economy) among tested corridors, not traffic.
 MPLS cores hide routers, so convergence inside them is undercounted. Interfaces are grouped
 into routers by PTR name; routers with no PTR, or an address-style PTR, stay separate addresses.
 WARNING: PTR lookups failed this run: 42 (retried next run; those interfaces
 may be split from their routers below).
 
-SHARED TRANSIT ROUTERS: 68
+SHARED TRANSIT ROUTERS: 72
 (one router carrying corridors between several unrelated Pacific economies)
 
   54 pairs  core1.lax2.he.net  [AS6939 Hurricane Electric LLC]
       8 sources: CK,GU,MP,NR,NU,PF,TV,VU   17 targets: AS,FJ,FM,GU,KI,MH,NC,NR,PF,PG,PW,SB,TO,TV,VU,WF,WS
-      5 interface(s): 184.104.189.162, 184.104.194.220, 184.104.195.1, 184.105.223.226, 184.105.65.96   20 probe(s)   seen 2026-09-13..2026-11-06
+      5 interface(s): 184.104.189.162, 184.104.194.220, 184.104.195.1, 184.105.223.226, 184.105.65.96   21 probe(s)   seen 2026-09-13..2026-11-13
   48 pairs  core3.syd1.he.net  [AS6939 Hurricane Electric LLC]
       9 sources: CK,GU,MP,NR,NU,PF,PW,TV,VU   14 targets: AS,FJ,FM,GU,MH,NC,NR,PF,PG,SB,TO,VU,WF,WS
-      3 interface(s): 184.104.192.252, 184.104.194.234, 65.19.142.245   18 probe(s)   seen 2026-09-13..2026-11-05
+      3 interface(s): 184.104.192.252, 184.104.194.234, 65.19.142.245   18 probe(s)   seen 2026-09-13..2026-11-13
   39 pairs  core2.hnl1.he.net  [AS6939 Hurricane Electric LLC]
       5 sources: CK,GU,NU,PF,VU   16 targets: AS,FJ,FM,GU,KI,MP,NC,NR,PF,PG,PW,SB,TO,TV,VU,WS
-      1 interface(s): 184.104.194.221   11 probe(s)   seen 2026-09-13..2026-11-06
-  38 pairs  core3.lax1.he.net  [AS6939 Hurricane Electric LLC]
+      1 interface(s): 184.104.194.221   11 probe(s)   seen 2026-09-13..2026-11-13
+  39 pairs  core3.lax1.he.net  [AS6939 Hurricane Electric LLC]
       8 sources: CK,GU,MP,NR,NU,PF,TV,VU   15 targets: AS,FJ,FM,GU,MH,NC,NR,PF,PG,SB,TO,TV,VU,WF,WS
-      2 interface(s): 184.104.189.163, 72.52.92.161   16 probe(s)   seen 2026-09-13..2026-11-05
-  35 pairs  core1.sjc1.he.net  [AS6939 Hurricane Electric LLC]
+      2 interface(s): 184.104.189.163, 72.52.92.161   16 probe(s)   seen 2026-09-13..2026-11-13
+  36 pairs  core1.sjc1.he.net  [AS6939 Hurricane Electric LLC]
       9 sources: CK,GU,MP,NC,NR,NU,PF,TV,VU   14 targets: AS,FJ,FM,GU,MH,NC,NR,PF,PG,SB,TO,VU,WF,WS
-      3 interface(s): 184.104.194.233, 184.104.196.33, 72.52.92.135   19 probe(s)   seen 2026-09-13..2026-11-05
-  34 pairs  core1.sjc2.he.net  [AS6939 Hurricane Electric LLC]
+      3 interface(s): 184.104.194.233, 184.104.196.33, 72.52.92.135   19 probe(s)   seen 2026-09-13..2026-11-13
+  35 pairs  core1.sjc2.he.net  [AS6939 Hurricane Electric LLC]
       9 sources: CK,GU,MP,NC,NR,NU,PF,TV,VU   13 targets: AS,FJ,FM,GU,MH,NC,NR,PF,PG,SB,TO,VU,WS
-      3 interface(s): 184.104.196.34, 72.52.92.134, 72.52.92.160   19 probe(s)   seen 2026-09-13..2026-11-05
+      3 interface(s): 184.104.196.34, 72.52.92.134, 72.52.92.160   19 probe(s)   seen 2026-09-13..2026-11-13
   27 pairs  qhar1.pv4-piti.as6453.net  [AS6453 TATA Communications (America) Inc]
       15 sources: CK,FJ,FM,GU,MH,MP,NC,NR,NU,PF,PG,PW,TO,TV,VU   3 targets: KI,MH,NR
-      2 interface(s): 180.87.180.33, 180.87.60.178   29 probe(s)   seen 2026-09-14..2026-11-06
+      2 interface(s): 180.87.180.33, 180.87.60.178   29 probe(s)   seen 2026-09-14..2026-11-13
   26 pairs  core2.tyo1.he.net  [AS6939 Hurricane Electric LLC]
       7 sources: FJ,GU,MP,NC,NR,TV,VU   13 targets: AS,FJ,GU,MH,NR,PF,PG,SB,TO,TV,VU,WF,WS
       3 interface(s): 184.104.196.69, 184.104.199.9, 184.104.208.73   15 probe(s)   seen 2026-09-13..2026-11-02
   26 pairs  cr8-lax2.ip4.gtt.net  [AS3257 GTT Communications Inc.]
-      9 sources: CK,GU,MP,NC,NU,PF,TO,TV,VU   12 targets: AS,CK,FJ,FM,KI,MH,NR,NU,PF,TO,VU,WF
-      3 interface(s): 209.120.142.149, 89.149.181.142, 89.149.183.38   25 probe(s)   seen 2026-09-14..2026-11-06
+      9 sources: CK,GU,MP,NC,NU,PF,TO,TV,VU   12 targets: AS,FJ,FM,KI,MH,NC,NR,NU,PF,TO,VU,WF
+      3 interface(s): 209.120.142.149, 89.149.181.142, 89.149.183.38   25 probe(s)   seen 2026-09-14..2026-11-11
+  25 pairs  ccr42.lax01.atlas.cogentco.com  [AS174 Cogent Communications]
+      10 sources: CK,FM,GU,NR,NU,PF,PG,PW,TO,VU   9 targets: AS,FJ,NC,PG,PW,SB,TO,WF,WS
+      5 interface(s): 154.54.169.2, 154.54.25.149, 154.54.3.69, 154.54.5.174, 154.54.87.69   18 probe(s)   seen 2026-09-14..2026-11-13
   25 pairs  sydp-core04.telstraglobal.net  [AS4637 Telstra International Limited]
       8 sources: FM,GU,MP,NC,NR,PF,PW,VU   13 targets: AS,CK,FJ,KI,MH,NR,PF,PG,SB,TO,VU,WF,WS
-      5 interface(s): 202.84.140.222, 202.84.141.26, 202.84.143.69, 202.84.222.134, 202.84.222.85   19 probe(s)   seen 2026-09-13..2026-11-06
-  24 pairs  ccr42.lax01.atlas.cogentco.com  [AS174 Cogent Communications]
-      10 sources: CK,FM,GU,NR,NU,PF,PG,PW,TO,VU   8 targets: AS,FJ,PG,PW,SB,TO,WF,WS
-      5 interface(s): 154.54.169.2, 154.54.25.149, 154.54.3.69, 154.54.5.174, 154.54.87.69   18 probe(s)   seen 2026-09-14..2026-11-06
+      5 interface(s): 202.84.140.222, 202.84.141.26, 202.84.143.69, 202.84.222.134, 202.84.222.85   19 probe(s)   seen 2026-09-13..2026-11-13
   24 pairs  tcore2.lvw-losangeles.as6453.net  [AS6453 TATA Communications (America) Inc]
       11 sources: CK,FJ,GU,MP,NC,NR,NU,PF,PG,TV,VU   8 targets: AS,FJ,KI,MH,NR,NU,TO,WF
-      3 interface(s): 207.45.218.210, 207.45.219.129, 64.86.252.73   24 probe(s)   seen 2026-09-16..2026-11-04
+      3 interface(s): 207.45.218.210, 207.45.219.129, 64.86.252.73   24 probe(s)   seen 2026-09-16..2026-11-09
   22 pairs  core1.pdx3.he.net  [AS6939 Hurricane Electric LLC]
       12 sources: CK,FJ,FM,GU,MP,NC,NR,NU,PF,PW,TV,VU   9 targets: FJ,GU,KI,NR,PG,PW,SB,TO,WS
       3 interface(s): 184.104.188.77, 184.104.192.114, 184.104.195.46   26 probe(s)   seen 2026-09-13..2026-11-06
@@ -55,85 +55,88 @@ SHARED TRANSIT ROUTERS: 68
       4 interface(s): 184.104.195.45, 184.104.196.37, 184.105.213.117, 184.105.64.137   17 probe(s)   seen 2026-09-13..2026-11-06
   20 pairs  ccr82.sjc13.atlas.cogentco.com  [AS174 Cogent Communications]
       9 sources: CK,FM,GU,NR,NU,PF,PG,PW,TO   6 targets: AS,FJ,MH,PW,TO,WS
-      4 interface(s): 154.54.168.253, 154.54.169.1, 154.54.169.65, 154.54.95.213   17 probe(s)   seen 2026-09-14..2026-11-06
+      4 interface(s): 154.54.168.253, 154.54.169.1, 154.54.169.65, 154.54.95.213   17 probe(s)   seen 2026-09-14..2026-11-12
+  19 pairs  core1.gum1.he.net  [AS6939 Hurricane Electric LLC]
+      6 sources: CK,GU,MP,NR,NU,PF   13 targets: AS,FJ,GU,KI,MH,MP,NC,NR,PG,SB,TO,VU,WS
+      2 interface(s): 184.105.223.250, 64.71.131.185   13 probe(s)   seen 2026-09-13..2026-11-13
   19 pairs  core3.pdx1.he.net  [AS6939 Hurricane Electric LLC]
       11 sources: CK,FJ,FM,GU,MP,NC,NU,PF,PW,TV,VU   9 targets: FJ,GU,KI,NR,PG,PW,SB,TO,WS
       4 interface(s): 184.104.188.76, 184.104.196.36, 184.105.213.125, 184.105.64.138   23 probe(s)   seen 2026-09-15..2026-11-06
   19 pairs  sydp10.telstraglobal.net  [AS4637 Telstra International Limited]
       8 sources: FM,GU,MP,NC,NR,PF,PG,PW   6 targets: FJ,PG,SB,TO,VU,WS
-      2 interface(s): 202.84.222.82, 202.84.222.86   19 probe(s)   seen 2026-09-13..2026-11-06
+      2 interface(s): 202.84.222.82, 202.84.222.86   19 probe(s)   seen 2026-09-13..2026-11-13
+  18 pairs  ccr22.sfo01.atlas.cogentco.com  [AS174 Cogent Communications]
+      10 sources: CK,FM,GU,NC,NR,NU,PF,PG,PW,TO   7 targets: AS,FJ,NC,NR,PW,TO,WS
+      6 interface(s): 154.54.168.254, 154.54.28.205, 154.54.43.13, 154.54.5.154, 154.54.88.185, 154.54.89.142   18 probe(s)   seen 2026-09-14..2026-11-12
+  18 pairs  ccr51.pdx02.atlas.cogentco.com  [AS174 Cogent Communications]
+      10 sources: CK,FJ,FM,GU,NC,NR,NU,PF,PW,TO   5 targets: AS,NC,NR,TO,WS
+      3 interface(s): 154.54.164.22, 154.54.46.162, 154.54.47.230   21 probe(s)   seen 2026-09-14..2026-11-12
+  18 pairs  core1.hnl1.he.net  [AS6939 Hurricane Electric LLC]
+      4 sources: GU,MP,NR,NU   15 targets: AS,FJ,GU,KI,MH,MP,NC,NR,PF,PG,SB,TO,VU,WF,WS
+      2 interface(s): 184.104.193.51, 184.105.223.249   9 probe(s)   seen 2026-09-13..2026-11-13
   18 pairs  qhar2.pv4-piti.as6453.net  [AS6453 TATA Communications (America) Inc]
       11 sources: CK,FJ,GU,MP,NC,NR,NU,PF,PG,TV,VU   3 targets: KI,MH,NR
-      1 interface(s): 180.87.9.2   22 probe(s)   seen 2026-09-16..2026-11-04
+      1 interface(s): 180.87.9.2   22 probe(s)   seen 2026-09-16..2026-11-09
   18 pairs  tcore3.lvw-losangeles.as6453.net  [AS6453 TATA Communications (America) Inc]
       11 sources: CK,FJ,GU,MP,NC,NR,NU,PF,PG,TV,VU   3 targets: KI,MH,NR
-      1 interface(s): 64.86.252.141   22 probe(s)   seen 2026-09-16..2026-11-04
-  17 pairs  ccr22.sfo01.atlas.cogentco.com  [AS174 Cogent Communications]
-      10 sources: CK,FM,GU,NC,NR,NU,PF,PG,PW,TO   6 targets: AS,FJ,NR,PW,TO,WS
-      5 interface(s): 154.54.168.254, 154.54.28.205, 154.54.43.13, 154.54.88.185, 154.54.89.142   18 probe(s)   seen 2026-09-14..2026-11-06
-  17 pairs  ccr51.pdx02.atlas.cogentco.com  [AS174 Cogent Communications]
-      10 sources: CK,FJ,FM,GU,NC,NR,NU,PF,PW,TO   4 targets: AS,NR,TO,WS
-      3 interface(s): 154.54.164.22, 154.54.46.162, 154.54.47.230   21 probe(s)   seen 2026-09-14..2026-11-06
+      1 interface(s): 64.86.252.141   22 probe(s)   seen 2026-09-16..2026-11-09
   17 pairs  ccr81.tyo01.atlas.cogentco.com  [AS174 Cogent Communications]
       6 sources: FM,GU,MP,NC,PF,PW   12 targets: AS,CK,FJ,KI,MH,NR,NU,PF,PW,SB,TO,WF
-      4 interface(s): 154.18.1.166, 154.54.172.201, 154.54.89.185, 154.54.91.125   11 probe(s)   seen 2026-09-16..2026-11-06
-  17 pairs  core1.gum1.he.net  [AS6939 Hurricane Electric LLC]
-      6 sources: CK,GU,MP,NR,NU,PF   12 targets: AS,FJ,GU,KI,MH,MP,NC,NR,PG,SB,TO,WS
-      2 interface(s): 184.105.223.250, 64.71.131.185   11 probe(s)   seen 2026-09-13..2026-11-06
-  15 pairs  core1.hnl1.he.net  [AS6939 Hurricane Electric LLC]
-      4 sources: GU,MP,NR,NU   14 targets: AS,FJ,GU,KI,MH,MP,NC,NR,PF,PG,SB,TO,WF,WS
-      2 interface(s): 184.104.193.51, 184.105.223.249   8 probe(s)   seen 2026-09-13..2026-11-06
+      4 interface(s): 154.18.1.166, 154.54.172.201, 154.54.89.185, 154.54.91.125   11 probe(s)   seen 2026-09-16..2026-11-13
+  15 pairs  ccr22.pdx01.atlas.cogentco.com  [AS174 Cogent Communications]
+      9 sources: CK,FM,GU,NC,NR,NU,PF,PW,TO   5 targets: AS,NC,NR,TO,WS
+      3 interface(s): 154.54.28.189, 154.54.46.161, 154.54.89.141   17 probe(s)   seen 2026-09-14..2026-11-12
   15 pairs  core1.tyo1.he.net  [AS6939 Hurricane Electric LLC]
       6 sources: CK,GU,MP,NU,PF,TV   7 targets: GU,MH,NR,PF,PW,TV,VU
-      5 interface(s): 184.104.193.227, 184.104.195.2, 184.104.196.68, 184.105.65.97, 210.173.176.106   14 probe(s)   seen 2026-09-14..2026-11-03
+      5 interface(s): 184.104.193.227, 184.104.195.2, 184.104.196.68, 184.105.65.97, 210.173.176.106   14 probe(s)   seen 2026-09-14..2026-11-13
+  15 pairs  cr10-lax2.ip4.gtt.net  [AS3257 GTT Communications Inc.]
+      7 sources: CK,GU,MP,NU,PF,TV,VU   9 targets: AS,CK,FJ,KI,MH,NC,NR,PF,TO
+      2 interface(s): 89.149.130.25, 89.149.184.237   17 probe(s)   seen 2026-09-14..2026-11-11
   14 pairs  132528.syd.equinix.com  [AS132528 DIGICEL (AUS) PTY LTD]
       9 sources: CK,FJ,GU,NC,NU,PF,TO,TV,VU   4 targets: FJ,TO,VU,WS
-      1 interface(s): 45.127.173.29   18 probe(s)   seen 2026-09-13..2026-11-02
+      1 interface(s): 45.127.173.29   18 probe(s)   seen 2026-09-13..2026-11-12
   14 pairs  ccr21.pdx01.atlas.cogentco.com  [AS174 Cogent Communications]
       8 sources: FJ,FM,GU,NC,NR,NU,PF,PW   4 targets: AS,NR,TO,WS
-      3 interface(s): 154.54.164.21, 154.54.26.165, 154.54.43.158   13 probe(s)   seen 2026-09-14..2026-11-06
+      3 interface(s): 154.54.164.21, 154.54.26.165, 154.54.43.158   13 probe(s)   seen 2026-09-14..2026-11-08
   14 pairs  ccr21.sfo01.atlas.cogentco.com  [AS174 Cogent Communications]
       7 sources: FJ,FM,GU,NC,NR,NU,PW   5 targets: AS,FJ,NR,TO,WS
-      4 interface(s): 154.54.28.197, 154.54.40.42, 154.54.43.157, 154.54.43.9   12 probe(s)   seen 2026-09-14..2026-11-06
-  14 pairs  ccr22.pdx01.atlas.cogentco.com  [AS174 Cogent Communications]
-      9 sources: CK,FM,GU,NC,NR,NU,PF,PW,TO   4 targets: AS,NR,TO,WS
-      3 interface(s): 154.54.28.189, 154.54.46.161, 154.54.89.141   17 probe(s)   seen 2026-09-14..2026-11-06
+      5 interface(s): 154.54.1.210, 154.54.28.197, 154.54.40.42, 154.54.43.157, 154.54.43.9   12 probe(s)   seen 2026-09-14..2026-11-12
   14 pairs  core3.tyo1.he.net  [AS6939 Hurricane Electric LLC]
       3 sources: GU,MP,NR   7 targets: AS,FJ,PG,SB,TO,WF,WS
       2 interface(s): 184.104.193.226, 184.104.199.10   4 probe(s)   seen 2026-09-13..2026-11-02
-  14 pairs  cr10-lax2.ip4.gtt.net  [AS3257 GTT Communications Inc.]
-      7 sources: CK,GU,MP,NU,PF,TV,VU   8 targets: AS,CK,FJ,KI,MH,NR,PF,TO
-      2 interface(s): 89.149.130.25, 89.149.184.237   17 probe(s)   seen 2026-09-14..2026-11-06
   14 pairs  tcore1.tv2-tokyo.as6453.net  [AS6453 TATA Communications (America) Inc]
       8 sources: FM,GU,MH,MP,NC,PG,PW,TO   3 targets: KI,MH,NR
-      1 interface(s): 209.58.61.40   16 probe(s)   seen 2026-09-14..2026-11-06
+      1 interface(s): 209.58.61.40   16 probe(s)   seen 2026-09-14..2026-11-13
+  13 pairs  cor01.syd14.nsw.vocus.network  [AS4826 Vocus Connect International Backbone]
+      3 sources: NC,PG,VU   11 targets: FJ,FM,GU,KI,MH,NC,NR,NU,PG,PW,WF
+      2 interface(s): 114.31.192.78, 114.31.192.98   3 probe(s)   seen 2026-09-14..2026-11-11
   12 pairs  ccr41.lax01.atlas.cogentco.com  [AS174 Cogent Communications]
       7 sources: FJ,FM,GU,NR,NU,PG,PW   4 targets: AS,TO,WF,WS
-      3 interface(s): 154.54.27.117, 154.54.40.158, 154.54.42.101   9 probe(s)   seen 2026-09-14..2026-11-06
+      3 interface(s): 154.54.27.117, 154.54.40.158, 154.54.42.101   9 probe(s)   seen 2026-09-14..2026-11-08
   12 pairs  ccr81.sjc13.atlas.cogentco.com  [AS174 Cogent Communications]
       6 sources: FJ,FM,GU,NR,NU,PG   6 targets: AS,FJ,NU,TO,WF,WS
-      3 interface(s): 154.54.40.157, 154.54.40.41, 154.54.88.229   9 probe(s)   seen 2026-09-14..2026-11-06
+      3 interface(s): 154.54.40.157, 154.54.40.41, 154.54.88.229   9 probe(s)   seen 2026-09-14..2026-11-12
   12 pairs  cor01.syd11.nsw.vocus.network  [AS4826 Vocus Connect International Backbone]
       3 sources: NC,PG,VU   10 targets: AS,FM,KI,NC,NR,PG,PW,TV,WF,WS
-      2 interface(s): 114.31.192.114, 114.31.192.64   5 probe(s)   seen 2026-09-18..2026-11-05
-  12 pairs  cor01.syd14.nsw.vocus.network  [AS4826 Vocus Connect International Backbone]
-      3 sources: NC,PG,VU   10 targets: FJ,FM,GU,KI,MH,NR,NU,PG,PW,WF
-      2 interface(s): 114.31.192.78, 114.31.192.98   3 probe(s)   seen 2026-09-14..2026-11-04
+      2 interface(s): 114.31.192.114, 114.31.192.64   5 probe(s)   seen 2026-09-18..2026-11-11
   12 pairs  qcore1.tv2-tokyo.as6453.net  [AS6453 TATA Communications (America) Inc]
       8 sources: FM,GU,MH,MP,NC,PG,PW,TO   4 targets: FJ,KI,MH,NR
-      3 interface(s): 180.87.180.57, 209.58.61.34, 209.58.61.96   11 probe(s)   seen 2026-09-16..2026-11-06
+      3 interface(s): 180.87.180.57, 209.58.61.34, 209.58.61.96   11 probe(s)   seen 2026-09-16..2026-11-13
   12 pairs  sydp-core03.telstraglobal.net  [AS4637 Telstra International Limited]
       4 sources: FM,GU,NR,VU   8 targets: FJ,FM,KI,PG,SB,TO,VU,WS
       2 interface(s): 202.84.138.89, 202.84.222.81   5 probe(s)   seen 2026-09-13..2026-11-03
   12 pairs  tlot-core02.telstraglobal.net  [AS4637 Telstra International Limited]
       5 sources: GU,MP,NR,PF,PW   5 targets: FJ,PG,SB,TO,VU
-      3 interface(s): 202.40.149.178, 202.84.143.25, 202.84.249.1   8 probe(s)   seen 2026-09-13..2026-11-05
+      3 interface(s): 202.40.149.178, 202.84.143.25, 202.84.249.1   10 probe(s)   seen 2026-09-13..2026-11-13
   11 pairs  62.115.126.248  [AS1299 Arelion (fka. Telia Carrier)]
       3 sources: GU,MP,NR   9 targets: AS,FJ,KI,MH,NU,PF,SB,WF,WS
       1 interface(s): 62.115.126.248   4 probe(s)   seen 2026-10-08..2026-11-02
   11 pairs  ccr41.lax04.atlas.cogentco.com  [AS174 Cogent Communications]
       3 sources: FM,GU,PW   7 targets: AS,FJ,PG,SB,TO,WF,WS
-      4 interface(s): 154.54.10.197, 154.54.164.209, 154.54.25.150, 38.104.82.153   5 probe(s)   seen 2026-09-14..2026-11-06
+      4 interface(s): 154.54.10.197, 154.54.164.209, 154.54.25.150, 38.104.82.153   5 probe(s)   seen 2026-09-14..2026-11-13
+  11 pairs  ccr71.syd01.atlas.cogentco.com  [AS174 Cogent Communications]
+      7 sources: CK,FM,GU,NR,NU,PW,TO   4 targets: AS,NC,TO,WS
+      2 interface(s): 154.54.29.222, 154.54.47.229   10 probe(s)   seen 2026-09-14..2026-11-11
   11 pairs  chw-edge903.sydney.telstra.net  [AS1221 Telstra Limited]
       7 sources: FM,GU,NR,PG,PW,TO,VU   6 targets: FJ,NR,PG,TO,VU,WS
       4 interface(s): 110.145.171.149, 203.50.11.175, 203.50.11.177, 203.54.250.61   12 probe(s)   seen 2026-09-19..2026-11-06
@@ -142,13 +145,10 @@ SHARED TRANSIT ROUTERS: 68
       1 interface(s): 213.248.87.50   3 probe(s)   seen 2026-10-08..2026-11-02
    9 pairs  agr51.syd01.atlas.cogentco.com  [AS174 Cogent Communications]
       6 sources: FM,GU,NR,NU,PW,TO   3 targets: AS,TO,WS
-      1 interface(s): 154.54.47.18   9 probe(s)   seen 2026-09-14..2026-11-06
-   9 pairs  ccr71.syd01.atlas.cogentco.com  [AS174 Cogent Communications]
-      6 sources: FM,GU,NR,NU,PW,TO   3 targets: AS,TO,WS
-      2 interface(s): 154.54.29.222, 154.54.47.229   9 probe(s)   seen 2026-09-14..2026-11-06
+      1 interface(s): 154.54.47.18   9 probe(s)   seen 2026-09-14..2026-11-10
    9 pairs  eqnx-core02.telstraglobal.net  [AS4637 Telstra International Limited]
       3 sources: NC,PW,VU   9 targets: AS,CK,MH,NR,PF,SB,TO,VU,WF
-      3 interface(s): 202.84.141.25, 202.84.247.18, 202.84.251.61   7 probe(s)   seen 2026-09-14..2026-11-05
+      3 interface(s): 202.84.141.25, 202.84.247.18, 202.84.251.61   7 probe(s)   seen 2026-09-14..2026-11-10
    9 pairs  hkck-core01.telstraglobal.net  [AS4637 Telstra International Limited]
       3 sources: FM,GU,NR   6 targets: FJ,PG,SB,TO,VU,WS
       1 interface(s): 202.84.157.38   3 probe(s)   seen 2026-09-16..2026-11-03
@@ -176,6 +176,9 @@ SHARED TRANSIT ROUTERS: 68
    6 pairs  210.57.5.11  [AS4637 Telstra International Limited]
       5 sources: FM,GU,MP,NR,PW   3 targets: FJ,TO,WS
       1 interface(s): 210.57.5.11   9 probe(s)   seen 2026-09-14..2026-11-06
+   6 pairs  ccr82.sea08.atlas.cogentco.com  [AS174 Cogent Communications]
+      3 sources: FM,GU,TO   4 targets: AS,FJ,PW,WS
+      2 interface(s): 154.54.160.241, 154.54.92.221   4 probe(s)   seen 2026-09-14..2026-11-12
    6 pairs  r22.sydnau05.au.bb.gin.ntt.net  [AS2914 NTT America]
       3 sources: FJ,GU,VU   6 targets: AS,FJ,MH,NU,PW,VU
       3 interface(s): 129.250.2.133, 129.250.2.225, 129.250.2.78   4 probe(s)   seen 2026-09-16..2026-10-27
@@ -185,6 +188,9 @@ SHARED TRANSIT ROUTERS: 68
    6 pairs  sydp-core03.sydney.telstraglobal.net  [AS4637 Telstra International Limited]
       3 sources: FM,GU,MP   4 targets: FJ,SB,VU,WS
       1 interface(s): 202.84.141.146   7 probe(s)   seen 2026-09-15..2026-11-06
+   5 pairs  64.71.131.186  [AS6939 Hurricane Electric LLC]
+      4 sources: CK,GU,NU,PF   3 targets: GU,MP,NR
+      1 interface(s): 64.71.131.186   6 probe(s)   seen 2026-10-25..2026-11-11
    5 pairs  ccr41.lax05.atlas.cogentco.com  [AS174 Cogent Communications]
       3 sources: FM,PG,PW   3 targets: FJ,SB,WF
       2 interface(s): 154.54.27.118, 154.54.3.70   5 probe(s)   seen 2026-09-20..2026-11-06
@@ -193,16 +199,22 @@ SHARED TRANSIT ROUTERS: 68
       2 interface(s): 203.50.13.85, 203.50.6.102   7 probe(s)   seen 2026-09-19..2026-11-06
    5 pairs  pe1.brwy.nsw.aarnet.net.au  [AS7575 Australian Academic and Research Network (AARNet)]
       3 sources: FM,GU,TO   4 targets: AS,FJ,TO,WS
-      2 interface(s): 113.197.15.13, 113.197.15.5   5 probe(s)   seen 2026-09-20..2026-11-05
+      2 interface(s): 113.197.15.13, 113.197.15.5   5 probe(s)   seen 2026-09-20..2026-11-12
+   5 pairs  qcore1.lvw-losangeles.as6453.net  [AS6453 TATA Communications (America) Inc]
+      4 sources: GU,NC,TV,VU   3 targets: KI,MH,NR
+      2 interface(s): 207.45.217.153, 64.86.197.56   5 probe(s)   seen 2026-09-16..2026-11-09
    5 pairs  qcore2.lvw-losangeles.as6453.net  [AS6453 TATA Communications (America) Inc]
       5 sources: CK,GU,NR,NU,PF   3 targets: MH,NU,TO
       2 interface(s): 207.45.219.128, 64.86.197.98   10 probe(s)   seen 2026-09-16..2026-11-04
    5 pairs  qcore2.tv2-tokyo.as6453.net  [AS6453 TATA Communications (America) Inc]
       3 sources: FM,MH,PG   4 targets: FJ,KI,MH,NR
       2 interface(s): 120.29.217.9, 180.87.168.207   3 probe(s)   seen 2026-10-11..2026-11-04
+   5 pairs  r26.lsanca07.us.bb.gin.ntt.net  [AS2914 NTT America]
+      3 sources: FJ,TO,VU   4 targets: AS,MH,NU,PW
+      2 interface(s): 129.250.2.52, 129.250.3.130   4 probe(s)   seen 2026-09-27..2026-11-12
    5 pairs  tata.tyo01.atlas.cogentco.com  [AS174 Cogent Communications]
       3 sources: GU,NC,PW   3 targets: KI,MH,NR
-      1 interface(s): 154.54.140.90   6 probe(s)   seen 2026-09-27..2026-11-06
+      1 interface(s): 154.54.140.90   6 probe(s)   seen 2026-09-27..2026-11-13
    4 pairs  62.115.140.229  [AS1299 Arelion (fka. Telia Carrier)]
       3 sources: MP,NR,PF   3 targets: FJ,WF,WS
       1 interface(s): 62.115.140.229   3 probe(s)   seen 2026-10-08..2026-10-27
@@ -211,12 +223,12 @@ SHARED TRANSIT ROUTERS: 68
       1 interface(s): 154.54.140.6   5 probe(s)   seen 2026-09-16..2026-09-27
    3 pairs  101.203.88.74  [AS6939 Hurricane Electric LLC]
       3 sources: FM,GU,PW   3 targets: GU,PG,TO
-      1 interface(s): 101.203.88.74   5 probe(s)   seen 2026-09-27..2026-11-06
+      1 interface(s): 101.203.88.74   5 probe(s)   seen 2026-09-27..2026-11-11
    3 pairs  gte-pacific.ear3.losangeles1.level3.net  [AS3356 Lumen (Level 3)]
       3 sources: FJ,GU,TV   3 targets: GU,MP,NR
       1 interface(s): 4.79.136.34   4 probe(s)   seen 2026-09-19..2026-10-25
 
-TARGET ACCESS ROUTERS: 144
+TARGET ACCESS ROUTERS: 140
 (>= 3 sources but < 3 target economies: mostly a target's own upstream)
 
   15 pairs  pe1.a.suv.aarnet.net.au  [AS7575 Australian Academic and Research Network (AARNet)]
@@ -224,25 +236,25 @@ TARGET ACCESS ROUTERS: 144
       1 interface(s): 113.197.15.213   37 probe(s)   seen 2026-09-16..2026-11-04
   13 pairs  81.52.166.62  [AS5511 Orange S.A.]
       13 sources: CK,FM,GU,MP,NC,NR,NU,PF,PG,PW,TO,TV,VU   1 targets: WF
-      1 interface(s): 81.52.166.62   27 probe(s)   seen 2026-09-14..2026-11-06
+      1 interface(s): 81.52.166.62   27 probe(s)   seen 2026-09-14..2026-11-08
   13 pairs  aarnie.usp.ac.fj  [AS7575 Australian Academic and Research Network (AARNet)]
       13 sources: CK,FJ,FM,GU,KI,MH,MP,NR,NU,PF,PG,PW,TV   1 targets: FJ
       1 interface(s): 202.158.204.194   30 probe(s)   seen 2026-09-16..2026-11-04
   11 pairs  cr1-fdcp.bb.as11404.net  [AS11404 Astound (fka. Wave Broadband)]
       11 sources: CK,GU,MP,NC,NR,NU,PF,PG,TO,TV,VU   1 targets: AS
-      1 interface(s): 174.127.150.87   18 probe(s)   seen 2026-09-16..2026-11-06
+      1 interface(s): 174.127.150.87   18 probe(s)   seen 2026-09-16..2026-11-11
   11 pairs  cr2-fdcp.bb.as11404.net  [AS11404 Astound (fka. Wave Broadband)]
       11 sources: CK,GU,MP,NC,NR,NU,PF,PG,TO,TV,VU   1 targets: AS
-      1 interface(s): 174.127.138.44   18 probe(s)   seen 2026-09-16..2026-11-06
+      1 interface(s): 174.127.138.44   18 probe(s)   seen 2026-09-16..2026-11-11
   11 pairs  cr3-stack.bb.as11404.net  [AS11404 Astound (fka. Wave Broadband)]
       11 sources: CK,GU,MP,NC,NR,NU,PF,PG,TO,TV,VU   1 targets: AS
-      2 interface(s): 174.127.136.155, 174.127.149.80   18 probe(s)   seen 2026-09-16..2026-11-06
+      2 interface(s): 174.127.136.155, 174.127.149.80   18 probe(s)   seen 2026-09-16..2026-11-11
   10 pairs  216.243.25.207  [AS11404 Astound (fka. Wave Broadband)]
       10 sources: CK,GU,MP,NC,NR,PF,PG,TO,TV,VU   1 targets: AS
       1 interface(s): 216.243.25.207   17 probe(s)   seen 2026-09-16..2026-10-18
   10 pairs  81.52.188.158  [AS5511 Orange S.A.]
       10 sources: CK,FM,GU,MP,NR,NU,PF,TO,TV,VU   1 targets: WF
-      1 interface(s): 81.52.188.158   19 probe(s)   seen 2026-09-14..2026-11-06
+      1 interface(s): 81.52.188.158   19 probe(s)   seen 2026-09-14..2026-11-08
    8 pairs  206.224.66.59  [AS14593 SpaceX Starlink]
       8 sources: GU,NC,NR,NU,PF,PG,TO,VU   1 targets: KI
       1 interface(s): 206.224.66.59   13 probe(s)   seen 2026-09-18..2026-10-08
@@ -251,28 +263,31 @@ TARGET ACCESS ROUTERS: 144
       1 interface(s): 209.120.142.150   19 probe(s)   seen 2026-09-15..2026-10-04
    8 pairs  38.142.108.162  [AS174 Cogent Communications]
       8 sources: CK,FJ,FM,GU,NC,NU,PF,PW   1 targets: AS
-      1 interface(s): 38.142.108.162   20 probe(s)   seen 2026-09-14..2026-11-05
+      1 interface(s): 38.142.108.162   20 probe(s)   seen 2026-09-14..2026-11-12
+   8 pairs  core1.pdx-pittock.or.bb.as11404.net  [AS11404 Astound (fka. Wave Broadband)]
+      8 sources: CK,GU,NC,NU,PF,PG,TV,VU   1 targets: AS
+      1 interface(s): 192.175.30.31   13 probe(s)   seen 2026-09-16..2026-11-11
+   8 pairs  cr4-11greatoaks.bb.as11404.net  [AS11404 Astound (fka. Wave Broadband)]
+      8 sources: CK,GU,NC,NU,PF,PG,TV,VU   1 targets: AS
+      2 interface(s): 192.175.30.217, 192.175.30.222   13 probe(s)   seen 2026-09-16..2026-11-11
+   8 pairs  cr4-pdx.bb.as11404.net  [AS11404 Astound (fka. Wave Broadband)]
+      8 sources: CK,GU,NC,NU,PF,PG,TV,VU   1 targets: AS
+      2 interface(s): 174.127.149.91, 174.127.151.44   13 probe(s)   seen 2026-09-16..2026-11-11
+   8 pairs  cr4-stack.bb.as11404.net  [AS11404 Astound (fka. Wave Broadband)]
+      8 sources: CK,GU,NC,NU,PF,PG,TV,VU   1 targets: AS
+      1 interface(s): 174.127.148.91   13 probe(s)   seen 2026-09-16..2026-11-11
    7 pairs  154.18.97.50  [AS174 Cogent Communications]
       5 sources: FM,GU,NR,PW,TO   2 targets: AS,WS
-      1 interface(s): 154.18.97.50   8 probe(s)   seen 2026-09-14..2026-11-06
+      1 interface(s): 154.18.97.50   8 probe(s)   seen 2026-09-14..2026-11-10
    7 pairs  206.224.66.27  [AS14593 SpaceX Starlink]
       7 sources: CK,GU,NC,NU,PF,PW,VU   1 targets: KI
       1 interface(s): 206.224.66.27   10 probe(s)   seen 2026-09-30..2026-09-30
-   7 pairs  core1.pdx-pittock.or.bb.as11404.net  [AS11404 Astound (fka. Wave Broadband)]
-      7 sources: CK,GU,NC,PF,PG,TV,VU   1 targets: AS
-      1 interface(s): 192.175.30.31   12 probe(s)   seen 2026-09-16..2026-11-06
-   7 pairs  cr4-11greatoaks.bb.as11404.net  [AS11404 Astound (fka. Wave Broadband)]
-      7 sources: CK,GU,NC,PF,PG,TV,VU   1 targets: AS
-      2 interface(s): 192.175.30.217, 192.175.30.222   12 probe(s)   seen 2026-09-16..2026-11-06
-   7 pairs  cr4-pdx.bb.as11404.net  [AS11404 Astound (fka. Wave Broadband)]
-      7 sources: CK,GU,NC,PF,PG,TV,VU   1 targets: AS
-      2 interface(s): 174.127.149.91, 174.127.151.44   12 probe(s)   seen 2026-09-16..2026-11-06
-   7 pairs  cr4-stack.bb.as11404.net  [AS11404 Astound (fka. Wave Broadband)]
-      7 sources: CK,GU,NC,PF,PG,TV,VU   1 targets: AS
-      1 interface(s): 174.127.148.91   12 probe(s)   seen 2026-09-16..2026-11-06
+   7 pairs  core2.pdx-pittock.or.bb.as11404.net  [AS11404 Astound (fka. Wave Broadband)]
+      7 sources: GU,NC,NU,PF,PG,TV,VU   1 targets: AS
+      1 interface(s): 174.127.151.65   9 probe(s)   seen 2026-09-16..2026-11-08
    6 pairs  134.159.92.30  [AS4637 Telstra International Limited]
       6 sources: GU,MP,NC,NR,PF,PG   2 targets: FJ,VU
-      1 interface(s): 134.159.92.30   14 probe(s)   seen 2026-09-13..2026-11-05
+      1 interface(s): 134.159.92.30   14 probe(s)   seen 2026-09-13..2026-11-13
    6 pairs  149.19.108.188  [AS14593 SpaceX Starlink]
       6 sources: CK,GU,NC,NU,PF,VU   1 targets: KI
       1 interface(s): 149.19.108.188   13 probe(s)   seen 2026-09-30..2026-09-30
@@ -294,12 +309,9 @@ TARGET ACCESS ROUTERS: 144
    6 pairs  72.234.202.82  [AS36149 Hawaiian Telcom Services Company]
       6 sources: CK,NC,NU,PF,TV,VU   1 targets: NR
       1 interface(s): 72.234.202.82   14 probe(s)   seen 2026-09-20..2026-09-27
-   6 pairs  core2.pdx-pittock.or.bb.as11404.net  [AS11404 Astound (fka. Wave Broadband)]
-      6 sources: GU,NC,PF,PG,TV,VU   1 targets: AS
-      1 interface(s): 174.127.151.65   8 probe(s)   seen 2026-09-16..2026-11-06
    6 pairs  cr3-pdx.bb.as11404.net  [AS11404 Astound (fka. Wave Broadband)]
       6 sources: CK,NC,PF,PG,TV,VU   1 targets: AS
-      1 interface(s): 174.127.151.94   7 probe(s)   seen 2026-09-27..2026-11-06
+      1 interface(s): 174.127.151.94   7 probe(s)   seen 2026-09-27..2026-11-11
    6 pairs  hawaiian-telcom-inc.e0-38.core3.sjc2.he.net  [AS6939 Hurricane Electric LLC]
       6 sources: CK,NC,NU,PF,TV,VU   1 targets: NR
       1 interface(s): 72.52.108.227   14 probe(s)   seen 2026-09-20..2026-09-27
@@ -311,7 +323,7 @@ TARGET ACCESS ROUTERS: 144
       1 interface(s): 101.203.74.94   12 probe(s)   seen 2026-09-20..2026-10-27
    5 pairs  103.73.110.38  [AS132528 DIGICEL (AUS) PTY LTD]
       5 sources: FM,NR,NU,TO,VU   1 targets: WS
-      1 interface(s): 103.73.110.38   8 probe(s)   seen 2026-09-16..2026-11-06
+      1 interface(s): 103.73.110.38   8 probe(s)   seen 2026-09-16..2026-11-12
    5 pairs  149.19.108.190  [AS14593 SpaceX Starlink]
       5 sources: CK,GU,NC,NU,PF   1 targets: KI
       1 interface(s): 149.19.108.190   13 probe(s)   seen 2026-09-18..2026-09-18
@@ -347,34 +359,31 @@ TARGET ACCESS ROUTERS: 144
       1 interface(s): 206.224.69.127   7 probe(s)   seen 2026-09-18..2026-09-30
    5 pairs  210.176.152.242  [AS4637 Telstra International Limited]
       5 sources: FM,GU,PF,PG,PW   1 targets: SB
-      1 interface(s): 210.176.152.242   9 probe(s)   seen 2026-09-14..2026-11-06
+      1 interface(s): 210.176.152.242   9 probe(s)   seen 2026-09-14..2026-11-10
    5 pairs  38.104.108.130  [AS174 Cogent Communications]
       5 sources: FM,NC,NR,NU,TO   1 targets: AS
-      1 interface(s): 38.104.108.130   8 probe(s)   seen 2026-10-26..2026-11-05
+      1 interface(s): 38.104.108.130   8 probe(s)   seen 2026-10-26..2026-11-12
    5 pairs  38.120.183.3  [AS174 Cogent Communications]
       5 sources: CK,GU,NU,PF,PW   1 targets: FJ
-      1 interface(s): 38.120.183.3   7 probe(s)   seen 2026-09-14..2026-11-06
+      1 interface(s): 38.120.183.3   7 probe(s)   seen 2026-09-14..2026-11-12
    5 pairs  64.86.26.15  [AS6453 TATA Communications (America) Inc]
       4 sources: NC,PG,TV,VU   2 targets: MH,NR
       1 interface(s): 64.86.26.15   6 probe(s)   seen 2026-09-16..2026-11-04
    5 pairs  agr61.sjc14.atlas.cogentco.com  [AS174 Cogent Communications]
       5 sources: CK,GU,NU,PF,PW   1 targets: FJ
-      1 interface(s): 154.24.49.254   7 probe(s)   seen 2026-09-14..2026-11-06
+      1 interface(s): 154.24.49.254   7 probe(s)   seen 2026-09-14..2026-11-12
    5 pairs  ccr71.gum01.atlas.cogentco.com  [AS174 Cogent Communications]
       5 sources: FM,GU,PF,PG,VU   2 targets: PW,TO
       2 interface(s): 154.54.5.173, 154.54.91.126   6 probe(s)   seen 2026-09-14..2026-10-25
    5 pairs  cr3-sea-b.bb.as11404.net  [AS11404 Astound (fka. Wave Broadband)]
       5 sources: CK,GU,MP,NU,PF   1 targets: AS
       2 interface(s): 174.127.138.50, 65.50.198.63   8 probe(s)   seen 2026-09-16..2026-10-26
-   5 pairs  pe04.syd01.nexthop.net.au  [AS9507 NextHop Pty Ltd]
-      5 sources: GU,MP,NU,TV,VU   1 targets: CK
-      1 interface(s): 103.66.132.105   10 probe(s)   seen 2026-09-15..2026-09-16
    5 pairs  png-dataco-limited.e0-11.switch1.syd1.he.net  [AS6939 Hurricane Electric LLC]
       5 sources: CK,NU,PF,PW,TV   1 targets: PG
-      1 interface(s): 64.71.151.201   5 probe(s)   seen 2026-09-27..2026-11-05
+      1 interface(s): 64.71.151.201   5 probe(s)   seen 2026-09-27..2026-11-08
    5 pairs  rcr71.sjc14.atlas.cogentco.com  [AS174 Cogent Communications]
       5 sources: CK,GU,NU,PF,PW   1 targets: FJ
-      2 interface(s): 154.54.88.230, 154.54.95.214   7 probe(s)   seen 2026-09-14..2026-11-06
+      2 interface(s): 154.54.88.230, 154.54.95.214   7 probe(s)   seen 2026-09-14..2026-11-12
    5 pairs  rt-01.eic.hkg.net.apernet.io  [AS38008 Aperture Science Limited]
       4 sources: NR,NU,PG,TO   2 targets: NR,SB
       1 interface(s): 103.152.35.1   4 probe(s)   seen 2026-09-17..2026-11-02
@@ -383,13 +392,13 @@ TARGET ACCESS ROUTERS: 144
       1 interface(s): 4.71.33.14   7 probe(s)   seen 2026-10-11..2026-10-11
    4 pairs  101.203.88.24  [AS38195 Superloop]
       3 sources: GU,MP,PW   2 targets: NC,VU
-      1 interface(s): 101.203.88.24   4 probe(s)   seen 2026-09-16..2026-11-01
+      1 interface(s): 101.203.88.24   4 probe(s)   seen 2026-09-16..2026-11-13
    4 pairs  103.107.196.7  [AS137409 GSL Networks Pty LTD]
       3 sources: FM,GU,PW   2 targets: KI,TV
       1 interface(s): 103.107.196.7   8 probe(s)   seen 2026-09-14..2026-09-15
    4 pairs  114.23.35.195  [AS56030 Voyager Internet Ltd.]
       4 sources: FM,GU,NR,TO   1 targets: WS
-      1 interface(s): 114.23.35.195   6 probe(s)   seen 2026-09-17..2026-10-30
+      1 interface(s): 114.23.35.195   6 probe(s)   seen 2026-09-17..2026-11-13
    4 pairs  124.254.71.10  [AS4826 Vocus Connect International Backbone]
       3 sources: NC,PG,VU   2 targets: KI,NR
       1 interface(s): 124.254.71.10   7 probe(s)   seen 2026-09-18..2026-10-28
@@ -399,12 +408,9 @@ TARGET ACCESS ROUTERS: 144
    4 pairs  154.18.44.2  [AS174 Cogent Communications]
       4 sources: GU,PF,PG,VU   1 targets: PW
       1 interface(s): 154.18.44.2   5 probe(s)   seen 2026-09-14..2026-09-20
-   4 pairs  173.205.37.78  [AS3257 GTT Communications Inc.]
-      3 sources: CK,NU,PF   2 targets: CK,FJ
-      1 interface(s): 173.205.37.78   5 probe(s)   seen dates unknown
    4 pairs  193.251.249.81  [AS5511 Orange S.A.]
       4 sources: CK,FM,NU,PF   1 targets: WF
-      1 interface(s): 193.251.249.81   8 probe(s)   seen 2026-09-20..2026-11-04
+      1 interface(s): 193.251.249.81   8 probe(s)   seen 2026-09-20..2026-11-08
    4 pairs  206.224.66.57  [AS14593 SpaceX Starlink]
       4 sources: CK,GU,PW,VU   1 targets: KI
       1 interface(s): 206.224.66.57   7 probe(s)   seen 2026-09-15..2026-09-15
@@ -420,9 +426,6 @@ TARGET ACCESS ROUTERS: 144
    4 pairs  206.224.69.98  [AS14593 SpaceX Starlink]
       4 sources: CK,NC,NU,PF   1 targets: KI
       1 interface(s): 206.224.69.98   8 probe(s)   seen 2026-09-18..2026-09-18
-   4 pairs  64.71.131.186  [AS6939 Hurricane Electric LLC]
-      3 sources: CK,NU,PF   2 targets: MP,NR
-      1 interface(s): 64.71.131.186   5 probe(s)   seen 2026-10-25..2026-11-06
    4 pairs  64.86.26.36  [AS6453 TATA Communications (America) Inc]
       4 sources: NC,PG,TV,VU   2 targets: MH,NR
       1 interface(s): 64.86.26.36   4 probe(s)   seen 2026-09-16..2026-11-04
@@ -446,19 +449,16 @@ TARGET ACCESS ROUTERS: 144
       2 interface(s): 114.31.192.103, 114.31.192.117   7 probe(s)   seen 2026-09-18..2026-10-28
    4 pairs  ccr81.sea08.atlas.cogentco.com  [AS174 Cogent Communications]
       3 sources: FM,GU,PF   2 targets: AS,FJ
-      2 interface(s): 154.54.160.237, 154.54.82.253   3 probe(s)   seen 2026-09-14..2026-11-03
+      2 interface(s): 154.54.160.237, 154.54.82.253   3 probe(s)   seen 2026-09-14..2026-11-12
    4 pairs  corerrouter1-xe-0-2-0.wgtn.xtreme.net.nz  [AS18400 Xtreme Networks Limited]
       4 sources: FM,GU,NR,TO   1 targets: WS
-      1 interface(s): 203.171.32.160   6 probe(s)   seen 2026-09-17..2026-10-30
+      1 interface(s): 203.171.32.160   6 probe(s)   seen 2026-09-17..2026-11-13
    4 pairs  cr2-sea-a.bb.as11404.net  [AS11404 Astound (fka. Wave Broadband)]
       4 sources: CK,GU,NU,PF   1 targets: AS
       1 interface(s): 174.127.149.136   7 probe(s)   seen 2026-09-16..2026-10-26
    4 pairs  cr3-lax1.ip4.gtt.net  [AS3257 GTT Communications Inc.]
       4 sources: CK,FM,NU,PF   1 targets: WF
-      2 interface(s): 89.149.181.102, 89.149.187.114   9 probe(s)   seen 2026-09-20..2026-11-04
-   4 pairs  cr3-lax2.ip4.gtt.net  [AS3257 GTT Communications Inc.]
-      3 sources: CK,NU,PF   2 targets: CK,FJ
-      2 interface(s): 89.149.141.105, 89.149.141.125   5 probe(s)   seen dates unknown
+      2 interface(s): 89.149.181.102, 89.149.187.114   9 probe(s)   seen 2026-09-20..2026-11-08
    4 pairs  cr3-sea-a.bb.as11404.net  [AS11404 Astound (fka. Wave Broadband)]
       4 sources: CK,GU,NU,PF   1 targets: AS
       1 interface(s): 65.50.198.66   4 probe(s)   seen 2026-09-16..2026-10-26
@@ -476,7 +476,7 @@ TARGET ACCESS ROUTERS: 144
       1 interface(s): 206.148.24.194   8 probe(s)   seen 2026-09-14..2026-09-15
    4 pairs  edge01.qst.vygr.net  [AS56030 Voyager Internet Ltd.]
       4 sources: FM,GU,NR,TO   1 targets: WS
-      2 interface(s): 43.240.33.3, 43.240.33.7   6 probe(s)   seen 2026-09-17..2026-10-30
+      2 interface(s): 43.240.33.3, 43.240.33.7   6 probe(s)   seen 2026-09-17..2026-11-13
    4 pairs  equinix.tfl.com.fj  [AS7474 SingTel Optus Pty Ltd]
       4 sources: CK,NR,NU,PF   1 targets: FJ
       1 interface(s): 61.88.116.130   6 probe(s)   seen 2026-10-08..2026-10-08
@@ -492,9 +492,6 @@ TARGET ACCESS ROUTERS: 144
    4 pairs  qcore1.eql-losangeles.as6453.net  [AS6453 TATA Communications (America) Inc]
       3 sources: FJ,GU,MP   2 targets: MH,NR
       2 interface(s): 207.45.208.164, 207.45.208.48   5 probe(s)   seen 2026-09-16..2026-11-03
-   4 pairs  qcore1.lvw-losangeles.as6453.net  [AS6453 TATA Communications (America) Inc]
-      3 sources: NC,TV,VU   2 targets: MH,NR
-      1 interface(s): 207.45.217.153   4 probe(s)   seen 2026-09-16..2026-11-03
    4 pairs  ty-eqxty8-cr7.globalsecurelayer.com  [AS7578 Global Secure Layer]
       3 sources: FM,GU,PW   2 targets: KI,TV
       1 interface(s): 206.148.24.174   8 probe(s)   seen 2026-09-14..2026-09-15
@@ -518,28 +515,19 @@ TARGET ACCESS ROUTERS: 144
       1 interface(s): 149.19.109.8   6 probe(s)   seen dates unknown
    3 pairs  15830-sy1-ix.equinix.com  [AS15830 Equinix]
       3 sources: NU,TV,VU   1 targets: VU
-      1 interface(s): 45.127.172.201   4 probe(s)   seen 2026-09-19..2026-11-03
-   3 pairs  172.69.54.70  [AS14789 Cloudflare]
-      3 sources: CK,NU,PF   1 targets: PG
-      1 interface(s): 172.69.54.70   8 probe(s)   seen 2026-10-27..2026-10-27
-   3 pairs  172.69.54.71  [AS14789 Cloudflare]
-      3 sources: CK,NU,PF   1 targets: PG
-      1 interface(s): 172.69.54.71   7 probe(s)   seen 2026-10-27..2026-10-27
-   3 pairs  172.69.54.72  [AS14789 Cloudflare]
-      3 sources: CK,NU,PF   1 targets: PG
-      1 interface(s): 172.69.54.72   8 probe(s)   seen 2026-10-27..2026-10-27
-   3 pairs  172.69.54.73  [AS14789 Cloudflare]
-      3 sources: CK,NU,PF   1 targets: PG
-      1 interface(s): 172.69.54.73   8 probe(s)   seen 2026-10-27..2026-10-27
+      1 interface(s): 45.127.172.201   4 probe(s)   seen 2026-09-19..2026-11-11
+   3 pairs  173.205.37.78  [AS3257 GTT Communications Inc.]
+      3 sources: CK,NU,PF   1 targets: FJ
+      1 interface(s): 173.205.37.78   5 probe(s)   seen dates unknown
    3 pairs  180.87.60.189  [AS6453 TATA Communications (America) Inc]
       3 sources: FM,GU,NU   1 targets: KI
-      1 interface(s): 180.87.60.189   5 probe(s)   seen 2026-10-27..2026-10-27
+      1 interface(s): 180.87.60.189   6 probe(s)   seen 2026-10-27..2026-11-09
    3 pairs  198.47.103.178  [AS3257 GTT Communications Inc.]
       3 sources: CK,NU,PF   1 targets: FM
       1 interface(s): 198.47.103.178   4 probe(s)   seen 2026-10-11..2026-10-11
    3 pairs  202.167.227.222  [AS15830 Equinix]
       3 sources: NU,PW,VU   1 targets: VU
-      1 interface(s): 202.167.227.222   4 probe(s)   seen 2026-09-19..2026-11-01
+      1 interface(s): 202.167.227.222   4 probe(s)   seen 2026-09-19..2026-11-13
    3 pairs  202.84.148.69  [AS4637 Telstra International Limited]
       3 sources: GU,MP,TO   2 targets: FM,VU
       1 interface(s): 202.84.148.69   4 probe(s)   seen 2026-09-15..2026-10-11
@@ -584,7 +572,7 @@ TARGET ACCESS ROUTERS: 144
       1 interface(s): 210.57.122.97   6 probe(s)   seen 2026-09-13..2026-10-11
    3 pairs  210.57.5.98  [AS4637 Telstra International Limited]
       3 sources: GU,PF,PW   1 targets: PG
-      1 interface(s): 210.57.5.98   3 probe(s)   seen 2026-09-16..2026-11-01
+      1 interface(s): 210.57.5.98   3 probe(s)   seen 2026-09-16..2026-11-13
    3 pairs  216.66.41.150  [AS6939 Hurricane Electric LLC]
       3 sources: GU,MP,TV   1 targets: WF
       1 interface(s): 216.66.41.150   5 probe(s)   seen 2026-09-16..2026-11-05
@@ -597,6 +585,9 @@ TARGET ACCESS ROUTERS: 144
    3 pairs  65.19.142.246  [AS6939 Hurricane Electric LLC]
       3 sources: GU,MP,PF   1 targets: FJ
       1 interface(s): 65.19.142.246   6 probe(s)   seen 2026-09-15..2026-09-15
+   3 pairs  69.174.9.186  [AS3257 GTT Communications Inc.]
+      3 sources: CK,NU,PF   1 targets: AS
+      1 interface(s): 69.174.9.186   5 probe(s)   seen 2026-11-06..2026-11-08
    3 pairs  69.174.9.190  [AS3257 GTT Communications Inc.]
       3 sources: CK,NU,PF   1 targets: AS
       1 interface(s): 69.174.9.190   5 probe(s)   seen 2026-10-11..2026-10-26
@@ -608,7 +599,7 @@ TARGET ACCESS ROUTERS: 144
       2 interface(s): 129.250.4.28, 129.250.9.238   3 probe(s)   seen 2026-09-16..2026-10-27
    3 pairs  a03.lsanca07.us.bb.gin.ntt.net  [AS2914 NTT America]
       3 sources: FJ,TO,VU   2 targets: AS,PW
-      2 interface(s): 129.250.3.245, 129.250.3.91   3 probe(s)   seen 2026-09-27..2026-10-29
+      2 interface(s): 129.250.3.245, 129.250.3.91   3 probe(s)   seen 2026-09-27..2026-11-12
    3 pairs  as30081.syd.edgeix.net.au  [AS13335 Cloudflare]
       3 sources: GU,KI,TO   1 targets: PG
       1 interface(s): 202.77.88.76   3 probe(s)   seen 2026-10-27..2026-10-27
@@ -626,10 +617,16 @@ TARGET ACCESS ROUTERS: 144
       1 interface(s): 174.127.138.48   4 probe(s)   seen 2026-09-16..2026-10-25
    3 pairs  cr1-sjo-p200.bb.spectrumnet.us  [AS11404 Astound (fka. Wave Broadband)]
       3 sources: NC,PG,VU   1 targets: AS
-      1 interface(s): 206.223.116.182   6 probe(s)   seen 2026-09-16..2026-10-29
+      1 interface(s): 206.223.116.182   6 probe(s)   seen 2026-09-16..2026-11-11
+   3 pairs  cr3-lax2.ip4.gtt.net  [AS3257 GTT Communications Inc.]
+      3 sources: CK,NU,PF   1 targets: FJ
+      2 interface(s): 89.149.141.105, 89.149.141.125   5 probe(s)   seen dates unknown
    3 pairs  cr5-sea2.ip4.gtt.net  [AS3257 GTT Communications Inc.]
       3 sources: CK,NU,PF   1 targets: AS
       1 interface(s): 89.149.130.34   5 probe(s)   seen 2026-10-11..2026-10-26
+   3 pairs  cr6-sjc1.ip4.gtt.net  [AS3257 GTT Communications Inc.]
+      3 sources: CK,NU,PF   1 targets: AS
+      1 interface(s): 89.149.180.134   5 probe(s)   seen 2026-11-06..2026-11-08
    3 pairs  francetelecom.lax05.atlas.cogentco.com  [AS174 Cogent Communications]
       3 sources: FM,PG,PW   1 targets: WF
       1 interface(s): 154.54.11.190   5 probe(s)   seen 2026-09-20..2026-11-06
@@ -648,13 +645,16 @@ TARGET ACCESS ROUTERS: 144
    3 pairs  pad-gw31.sydney.telstra.net  [AS1221 Telstra Limited]
       3 sources: FM,GU,VU   2 targets: KI,TO
       1 interface(s): 203.50.13.89   4 probe(s)   seen 2026-09-20..2026-11-04
+   3 pairs  telstra.as4637.any2ix.coresite.com  [AS4637 Telstra International Limited]
+      3 sources: GU,NR,PF   2 targets: FJ,VU
+      1 interface(s): 206.72.210.65   4 probe(s)   seen 2026-09-13..2026-11-13
    3 pairs  tnzusa-ic-316538.ip.twelve99-cust.net  [AS1299 Arelion (fka. Telia Carrier)]
       3 sources: NR,PG,PW   2 targets: TV,WS
       1 interface(s): 62.115.145.205   3 probe(s)   seen 2026-10-08..2026-10-08
 
-Source-side routers (not listed): 78
+Source-side routers (not listed): 79
 
-ALWAYS-CROSSED ROUTERS: 30
+ALWAYS-CROSSED ROUTERS: 31
 (every trace of an economy pair with >= 3 traces crossed the router; routers with
 >= 3 such pairs. 'Every trace' means no other path was observed, not that none
 exists. RIS check: dependency = a side's only upstream in RIS is the router's network;
@@ -662,145 +662,162 @@ single upstream = a side has one upstream in RIS, but a different network; prefe
 sides multi-homed in RIS, so BGP has alternatives. RIS shows how routes reach a network
 (inbound); a trace shows the outbound path.)
 
-  core2.hnl1.he.net  [AS6939 Hurricane Electric LLC]  15 pairs
+  core2.hnl1.he.net  [AS6939 Hurricane Electric LLC]  14 pairs
       CK>KI    3 traces/1 probe(s)  preferred path: both sides multi-homed in RIS; target AS132486 -> AS154100, then multi-homed; target AS134783 -> AS154100, then multi-homed
-      CK>NC    3 traces/1 probe(s)  preferred path: both sides multi-homed in RIS; target AS17480 -> AS18200, then multi-homed
       CK>NR    5 traces/1 probe(s)  preferred path: both sides multi-homed in RIS; target AS140504 -> AS3605, then multi-homed
-      CK>PW    3 traces/1 probe(s)  preferred path: both sides multi-homed in RIS
-      CK>SB    3 traces/1 probe(s)  preferred path: both sides multi-homed in RIS; target AS45891 -> AS139609, then multi-homed
-      CK>TO    3 traces/1 probe(s)  preferred path: both sides multi-homed in RIS; target AS38198 -> AS45355, then multi-homed
-      CK>WS    3 traces/1 probe(s)  preferred path: both sides multi-homed in RIS
-      NU>GU    4 traces/1 probe(s)  single upstream: source AS55885 -> AS55943 -> AS3257 only in RIS, not AS6939
-      NU>NC    6 traces/1 probe(s)  single upstream: source AS55885 -> AS55943 -> AS3257 only in RIS, not AS6939
-      NU>SB   14 traces/1 probe(s)  single upstream: source AS55885 -> AS55943 -> AS3257 only in RIS, not AS6939
-      NU>WS    5 traces/1 probe(s)  single upstream: source AS55885 -> AS55943 -> AS3257 only in RIS, not AS6939
+      CK>PW    4 traces/1 probe(s)  preferred path: both sides multi-homed in RIS
+      CK>SB    4 traces/1 probe(s)  preferred path: both sides multi-homed in RIS; target AS45891 -> AS139609, then multi-homed
+      CK>TO    4 traces/1 probe(s)  preferred path: both sides multi-homed in RIS; target AS38198 -> AS45355, then multi-homed
+      CK>WS    4 traces/1 probe(s)  preferred path: both sides multi-homed in RIS
+      NU>GU    6 traces/1 probe(s)  single upstream: source AS55885 -> AS55943 -> AS3257 only in RIS, not AS6939
+      NU>NC    8 traces/1 probe(s)  single upstream: source AS55885 -> AS55943 -> AS3257 only in RIS, not AS6939
+      NU>SB   19 traces/1 probe(s)  single upstream: source AS55885 -> AS55943 -> AS3257 only in RIS, not AS6939
+      NU>WS    7 traces/1 probe(s)  single upstream: source AS55885 -> AS55943 -> AS3257 only in RIS, not AS6939
       PF>KI    9 traces/5 probe(s)  single upstream: source AS9471 -> AS55943 -> AS3257 only in RIS, not AS6939
-      PF>NC    9 traces/6 probe(s)  single upstream: source AS9471 -> AS55943 -> AS3257 only in RIS, not AS6939
+      PF>NC   12 traces/6 probe(s)  single upstream: source AS9471 -> AS55943 -> AS3257 only in RIS, not AS6939
       PF>TV    3 traces/3 probe(s)  single upstream: source AS9471 -> AS55943 -> AS3257 only in RIS, not AS6939
-      PF>WS    9 traces/6 probe(s)  single upstream: source AS9471 -> AS55943 -> AS3257 only in RIS, not AS6939
-  core1.sjc1.he.net  [AS6939 Hurricane Electric LLC]  13 pairs
-      CK>NC    3 traces/1 probe(s)  preferred path: both sides multi-homed in RIS; target AS17480 -> AS18200, then multi-homed
-      CK>SB    3 traces/1 probe(s)  preferred path: both sides multi-homed in RIS; target AS45891 -> AS139609, then multi-homed
-      CK>TO    3 traces/1 probe(s)  preferred path: both sides multi-homed in RIS; target AS38198 -> AS45355, then multi-homed
-      CK>WS    3 traces/1 probe(s)  preferred path: both sides multi-homed in RIS
-      NU>NC    6 traces/1 probe(s)  single upstream: source AS55885 -> AS55943 -> AS3257 only in RIS, not AS6939
-      NU>WS    5 traces/1 probe(s)  single upstream: source AS55885 -> AS55943 -> AS3257 only in RIS, not AS6939
-      PF>NC    9 traces/6 probe(s)  single upstream: source AS9471 -> AS55943 -> AS3257 only in RIS, not AS6939
-      PF>TO    9 traces/6 probe(s)  single upstream: source AS9471 -> AS55943 -> AS3257 only in RIS, not AS6939
-      PF>WS    9 traces/6 probe(s)  single upstream: source AS9471 -> AS55943 -> AS3257 only in RIS, not AS6939
-      TV>AS    6 traces/1 probe(s)  preferred path: both sides multi-homed in RIS; source AS23917 -> AS9241, then multi-homed
-      TV>FM    6 traces/1 probe(s)  preferred path: both sides multi-homed in RIS; source AS23917 -> AS9241, then multi-homed; target AS45193 -> AS139759 -> AS10130, then multi-homed; target AS38875 -> AS10130, then multi-homed
-      TV>MH    6 traces/1 probe(s)  single upstream: target AS24439 -> AS6453 only in RIS, not AS6939
-      TV>WF    4 traces/1 probe(s)  single upstream: target AS45879 -> AS5511 only in RIS, not AS6939
-  202.137.111.77  [AS4826 Vocus Connect International Backbone]  12 pairs
-      PG>AS    3 traces/1 probe(s)  preferred path: both sides multi-homed in RIS
+      PF>WS   12 traces/6 probe(s)  single upstream: source AS9471 -> AS55943 -> AS3257 only in RIS, not AS6939
+  202.137.111.77  [AS4826 Vocus Connect International Backbone]  13 pairs
+      PG>AS    4 traces/1 probe(s)  preferred path: both sides multi-homed in RIS
       PG>FJ   12 traces/1 probe(s)  preferred path: both sides multi-homed in RIS; target AS24390 -> AS7575, then multi-homed; target AS136921 -> AS7575, then multi-homed; target AS154229 -> AS4638 -> AS45349, then multi-homed; target AS4638 -> AS45349, then multi-homed
       PG>FM    8 traces/1 probe(s)  preferred path: both sides multi-homed in RIS; target AS45193 -> AS139759 -> AS10130, then multi-homed; target AS38875 -> AS10130, then multi-homed
       PG>KI    3 traces/1 probe(s)  preferred path: both sides multi-homed in RIS; target AS132486 -> AS154100, then multi-homed; target AS134783 -> AS154100, then multi-homed
       PG>MH    7 traces/1 probe(s)  single upstream: target AS24439 -> AS6453 only in RIS, not AS4826
-      PG>NC    3 traces/1 probe(s)  preferred path: both sides multi-homed in RIS; target AS17480 -> AS18200, then multi-homed
-      PG>NR    6 traces/1 probe(s)  preferred path: both sides multi-homed in RIS; target AS140504 -> AS3605, then multi-homed; target AS141368 -> AS55722, then multi-homed; target AS152706 -> AS6453, then multi-homed
+      PG>NC    4 traces/1 probe(s)  preferred path: both sides multi-homed in RIS; target AS17480 -> AS18200, then multi-homed
+      PG>NR    7 traces/1 probe(s)  preferred path: both sides multi-homed in RIS; target AS140504 -> AS3605, then multi-homed; target AS141368 -> AS55722, then multi-homed; target AS152706 -> AS6453, then multi-homed
       PG>PW    3 traces/1 probe(s)  preferred path: both sides multi-homed in RIS; target AS133897 -> AS3605, then multi-homed
       PG>SB    8 traces/1 probe(s)  preferred path: both sides multi-homed in RIS; target AS45891 -> AS139609, then multi-homed
       PG>TO    8 traces/1 probe(s)  preferred path: both sides multi-homed in RIS; target AS38198 -> AS45355, then multi-homed
       PG>VU   10 traces/1 probe(s)  preferred path: both sides multi-homed in RIS; target AS9249 -> AS38442, then multi-homed
       PG>WF    7 traces/1 probe(s)  single upstream: target AS45879 -> AS5511 only in RIS, not AS4826
-  core1.lax2.he.net  [AS6939 Hurricane Electric LLC]  9 pairs
-      CK>KI    3 traces/1 probe(s)  preferred path: both sides multi-homed in RIS; target AS132486 -> AS154100, then multi-homed; target AS134783 -> AS154100, then multi-homed
-      CK>NC    3 traces/1 probe(s)  preferred path: both sides multi-homed in RIS; target AS17480 -> AS18200, then multi-homed
-      CK>SB    3 traces/1 probe(s)  preferred path: both sides multi-homed in RIS; target AS45891 -> AS139609, then multi-homed
-      CK>TO    3 traces/1 probe(s)  preferred path: both sides multi-homed in RIS; target AS38198 -> AS45355, then multi-homed
-      CK>WS    3 traces/1 probe(s)  preferred path: both sides multi-homed in RIS
-      PF>KI    9 traces/5 probe(s)  single upstream: source AS9471 -> AS55943 -> AS3257 only in RIS, not AS6939
-      PF>TO    9 traces/6 probe(s)  single upstream: source AS9471 -> AS55943 -> AS3257 only in RIS, not AS6939
-      PF>TV    3 traces/3 probe(s)  single upstream: source AS9471 -> AS55943 -> AS3257 only in RIS, not AS6939
-      PF>WS    9 traces/6 probe(s)  single upstream: source AS9471 -> AS55943 -> AS3257 only in RIS, not AS6939
-  core1.sjc2.he.net  [AS6939 Hurricane Electric LLC]  9 pairs
-      CK>NC    3 traces/1 probe(s)  preferred path: both sides multi-homed in RIS; target AS17480 -> AS18200, then multi-homed
-      CK>SB    3 traces/1 probe(s)  preferred path: both sides multi-homed in RIS; target AS45891 -> AS139609, then multi-homed
-      CK>TO    3 traces/1 probe(s)  preferred path: both sides multi-homed in RIS; target AS38198 -> AS45355, then multi-homed
-      CK>WS    3 traces/1 probe(s)  preferred path: both sides multi-homed in RIS
-      NU>WS    5 traces/1 probe(s)  single upstream: source AS55885 -> AS55943 -> AS3257 only in RIS, not AS6939
-      PF>NC    9 traces/6 probe(s)  single upstream: source AS9471 -> AS55943 -> AS3257 only in RIS, not AS6939
-      PF>TO    9 traces/6 probe(s)  single upstream: source AS9471 -> AS55943 -> AS3257 only in RIS, not AS6939
+      PG>WS    4 traces/1 probe(s)  preferred path: both sides multi-homed in RIS
+  core1.sjc1.he.net  [AS6939 Hurricane Electric LLC]  12 pairs
+      CK>SB    4 traces/1 probe(s)  preferred path: both sides multi-homed in RIS; target AS45891 -> AS139609, then multi-homed
+      CK>TO    4 traces/1 probe(s)  preferred path: both sides multi-homed in RIS; target AS38198 -> AS45355, then multi-homed
+      CK>WS    4 traces/1 probe(s)  preferred path: both sides multi-homed in RIS
+      NU>NC    8 traces/1 probe(s)  single upstream: source AS55885 -> AS55943 -> AS3257 only in RIS, not AS6939
+      NU>WS    7 traces/1 probe(s)  single upstream: source AS55885 -> AS55943 -> AS3257 only in RIS, not AS6939
+      PF>NC   12 traces/6 probe(s)  single upstream: source AS9471 -> AS55943 -> AS3257 only in RIS, not AS6939
+      PF>TO   12 traces/6 probe(s)  single upstream: source AS9471 -> AS55943 -> AS3257 only in RIS, not AS6939
+      PF>WS   12 traces/6 probe(s)  single upstream: source AS9471 -> AS55943 -> AS3257 only in RIS, not AS6939
+      TV>AS    6 traces/1 probe(s)  preferred path: both sides multi-homed in RIS; source AS23917 -> AS9241, then multi-homed
       TV>FM    6 traces/1 probe(s)  preferred path: both sides multi-homed in RIS; source AS23917 -> AS9241, then multi-homed; target AS45193 -> AS139759 -> AS10130, then multi-homed; target AS38875 -> AS10130, then multi-homed
       TV>MH    6 traces/1 probe(s)  single upstream: target AS24439 -> AS6453 only in RIS, not AS6939
-  core3.lax1.he.net  [AS6939 Hurricane Electric LLC]  9 pairs
-      CK>NC    3 traces/1 probe(s)  preferred path: both sides multi-homed in RIS; target AS17480 -> AS18200, then multi-homed
-      CK>SB    3 traces/1 probe(s)  preferred path: both sides multi-homed in RIS; target AS45891 -> AS139609, then multi-homed
-      CK>TO    3 traces/1 probe(s)  preferred path: both sides multi-homed in RIS; target AS38198 -> AS45355, then multi-homed
-      CK>WS    3 traces/1 probe(s)  preferred path: both sides multi-homed in RIS
-      NU>NC    6 traces/1 probe(s)  single upstream: source AS55885 -> AS55943 -> AS3257 only in RIS, not AS6939
-      NU>WS    5 traces/1 probe(s)  single upstream: source AS55885 -> AS55943 -> AS3257 only in RIS, not AS6939
-      PF>NC    9 traces/6 probe(s)  single upstream: source AS9471 -> AS55943 -> AS3257 only in RIS, not AS6939
-      PF>TO    9 traces/6 probe(s)  single upstream: source AS9471 -> AS55943 -> AS3257 only in RIS, not AS6939
-      PF>TV    3 traces/3 probe(s)  single upstream: source AS9471 -> AS55943 -> AS3257 only in RIS, not AS6939
-  core3.syd1.he.net  [AS6939 Hurricane Electric LLC]  9 pairs
-      CK>NC    3 traces/1 probe(s)  preferred path: both sides multi-homed in RIS; target AS17480 -> AS18200, then multi-homed
-      CK>SB    3 traces/1 probe(s)  preferred path: both sides multi-homed in RIS; target AS45891 -> AS139609, then multi-homed
-      CK>TO    3 traces/1 probe(s)  preferred path: both sides multi-homed in RIS; target AS38198 -> AS45355, then multi-homed
-      CK>WS    3 traces/1 probe(s)  preferred path: both sides multi-homed in RIS
-      MP>WS    3 traces/1 probe(s)  preferred path: both sides multi-homed in RIS
-      NU>NC    6 traces/1 probe(s)  single upstream: source AS55885 -> AS55943 -> AS3257 only in RIS, not AS6939
-      NU>WS    5 traces/1 probe(s)  single upstream: source AS55885 -> AS55943 -> AS3257 only in RIS, not AS6939
-      PF>NC    9 traces/6 probe(s)  single upstream: source AS9471 -> AS55943 -> AS3257 only in RIS, not AS6939
-      PF>WS    9 traces/6 probe(s)  single upstream: source AS9471 -> AS55943 -> AS3257 only in RIS, not AS6939
-  qhar1.pv4-piti.as6453.net  [AS6453 TATA Communications (America) Inc]  9 pairs
+      TV>WF    4 traces/1 probe(s)  single upstream: target AS45879 -> AS5511 only in RIS, not AS6939
+  qhar1.pv4-piti.as6453.net  [AS6453 TATA Communications (America) Inc]  10 pairs
       CK>MH    5 traces/1 probe(s)  dependency: target AS24439 -> AS6453 only in RIS
       FM>MH    6 traces/3 probe(s)  dependency: target AS24439 -> AS6453 only in RIS
       FM>NR    6 traces/3 probe(s)  dependency: target AS152706 -> AS6453 only in RIS
       NC>MH   15 traces/3 probe(s)  dependency: target AS24439 -> AS6453 only in RIS
+      NU>MH    3 traces/1 probe(s)  dependency: target AS24439 -> AS6453 only in RIS
       PF>MH   24 traces/5 probe(s)  dependency: target AS24439 -> AS6453 only in RIS
       PG>MH    7 traces/1 probe(s)  dependency: target AS24439 -> AS6453 only in RIS
       PW>MH    6 traces/1 probe(s)  dependency: target AS24439 -> AS6453 only in RIS
       TV>MH    6 traces/1 probe(s)  dependency: target AS24439 -> AS6453 only in RIS
       VU>MH   11 traces/2 probe(s)  dependency: target AS24439 -> AS6453 only in RIS
+  core1.sjc2.he.net  [AS6939 Hurricane Electric LLC]  8 pairs
+      CK>SB    4 traces/1 probe(s)  preferred path: both sides multi-homed in RIS; target AS45891 -> AS139609, then multi-homed
+      CK>TO    4 traces/1 probe(s)  preferred path: both sides multi-homed in RIS; target AS38198 -> AS45355, then multi-homed
+      CK>WS    4 traces/1 probe(s)  preferred path: both sides multi-homed in RIS
+      NU>WS    7 traces/1 probe(s)  single upstream: source AS55885 -> AS55943 -> AS3257 only in RIS, not AS6939
+      PF>NC   12 traces/6 probe(s)  single upstream: source AS9471 -> AS55943 -> AS3257 only in RIS, not AS6939
+      PF>TO   12 traces/6 probe(s)  single upstream: source AS9471 -> AS55943 -> AS3257 only in RIS, not AS6939
+      TV>FM    6 traces/1 probe(s)  preferred path: both sides multi-homed in RIS; source AS23917 -> AS9241, then multi-homed; target AS45193 -> AS139759 -> AS10130, then multi-homed; target AS38875 -> AS10130, then multi-homed
+      TV>MH    6 traces/1 probe(s)  single upstream: target AS24439 -> AS6453 only in RIS, not AS6939
+  core3.lax1.he.net  [AS6939 Hurricane Electric LLC]  8 pairs
+      CK>SB    4 traces/1 probe(s)  preferred path: both sides multi-homed in RIS; target AS45891 -> AS139609, then multi-homed
+      CK>TO    4 traces/1 probe(s)  preferred path: both sides multi-homed in RIS; target AS38198 -> AS45355, then multi-homed
+      CK>WS    4 traces/1 probe(s)  preferred path: both sides multi-homed in RIS
+      NU>NC    8 traces/1 probe(s)  single upstream: source AS55885 -> AS55943 -> AS3257 only in RIS, not AS6939
+      NU>WS    7 traces/1 probe(s)  single upstream: source AS55885 -> AS55943 -> AS3257 only in RIS, not AS6939
+      PF>NC   12 traces/6 probe(s)  single upstream: source AS9471 -> AS55943 -> AS3257 only in RIS, not AS6939
+      PF>TO   12 traces/6 probe(s)  single upstream: source AS9471 -> AS55943 -> AS3257 only in RIS, not AS6939
+      PF>TV    3 traces/3 probe(s)  single upstream: source AS9471 -> AS55943 -> AS3257 only in RIS, not AS6939
+  core3.syd1.he.net  [AS6939 Hurricane Electric LLC]  8 pairs
+      CK>SB    4 traces/1 probe(s)  preferred path: both sides multi-homed in RIS; target AS45891 -> AS139609, then multi-homed
+      CK>TO    4 traces/1 probe(s)  preferred path: both sides multi-homed in RIS; target AS38198 -> AS45355, then multi-homed
+      CK>WS    4 traces/1 probe(s)  preferred path: both sides multi-homed in RIS
+      MP>WS    4 traces/1 probe(s)  preferred path: both sides multi-homed in RIS
+      NU>NC    8 traces/1 probe(s)  single upstream: source AS55885 -> AS55943 -> AS3257 only in RIS, not AS6939
+      NU>WS    7 traces/1 probe(s)  single upstream: source AS55885 -> AS55943 -> AS3257 only in RIS, not AS6939
+      PF>NC   12 traces/6 probe(s)  single upstream: source AS9471 -> AS55943 -> AS3257 only in RIS, not AS6939
+      PF>WS   12 traces/6 probe(s)  single upstream: source AS9471 -> AS55943 -> AS3257 only in RIS, not AS6939
+  core1.lax2.he.net  [AS6939 Hurricane Electric LLC]  7 pairs
+      CK>KI    3 traces/1 probe(s)  preferred path: both sides multi-homed in RIS; target AS132486 -> AS154100, then multi-homed; target AS134783 -> AS154100, then multi-homed
+      CK>TO    4 traces/1 probe(s)  preferred path: both sides multi-homed in RIS; target AS38198 -> AS45355, then multi-homed
+      CK>WS    4 traces/1 probe(s)  preferred path: both sides multi-homed in RIS
+      PF>KI    9 traces/5 probe(s)  single upstream: source AS9471 -> AS55943 -> AS3257 only in RIS, not AS6939
+      PF>TO   12 traces/6 probe(s)  single upstream: source AS9471 -> AS55943 -> AS3257 only in RIS, not AS6939
+      PF>TV    3 traces/3 probe(s)  single upstream: source AS9471 -> AS55943 -> AS3257 only in RIS, not AS6939
+      PF>WS   12 traces/6 probe(s)  single upstream: source AS9471 -> AS55943 -> AS3257 only in RIS, not AS6939
+  cr8-lax2.ip4.gtt.net  [AS3257 GTT Communications Inc.]  7 pairs
+      CK>MH    5 traces/1 probe(s)  single upstream: target AS24439 -> AS6453 only in RIS, not AS3257
+      CK>WF    5 traces/1 probe(s)  single upstream: target AS45879 -> AS5511 only in RIS, not AS3257
+      GU>NU    8 traces/8 probe(s)  dependency: target AS55885 -> AS55943 -> AS3257 only in RIS
+      NC>NU    4 traces/4 probe(s)  dependency: target AS55885 -> AS55943 -> AS3257 only in RIS
+      NU>MH    3 traces/1 probe(s)  dependency: source AS55885 -> AS55943 -> AS3257 only in RIS
+      NU>WF    3 traces/1 probe(s)  dependency: source AS55885 -> AS55943 -> AS3257 only in RIS
+      PF>MH   24 traces/5 probe(s)  dependency: source AS9471 -> AS55943 -> AS3257 only in RIS
+  81.52.166.62  [AS5511 Orange S.A.]  6 pairs
+      CK>WF    5 traces/1 probe(s)  dependency: target AS45879 -> AS5511 only in RIS
+      FM>WF    6 traces/3 probe(s)  dependency: target AS45879 -> AS5511 only in RIS
+      NC>WF   12 traces/3 probe(s)  dependency: target AS45879 -> AS5511 only in RIS
+      NU>WF    3 traces/1 probe(s)  dependency: target AS45879 -> AS5511 only in RIS
+      PG>WF    7 traces/1 probe(s)  dependency: target AS45879 -> AS5511 only in RIS
+      PW>WF    7 traces/1 probe(s)  dependency: target AS45879 -> AS5511 only in RIS
   2001.bdr03-ipt-4edenpar-syd.au.as38195.net  [AS38195 Superloop]  5 pairs
       NC>FM   18 traces/3 probe(s)  preferred path: both sides multi-homed in RIS; source AS45345 -> AS18200, then multi-homed; target AS45193 -> AS139759 -> AS10130, then multi-homed; target AS38875 -> AS10130, then multi-homed
       NC>GU    3 traces/3 probe(s)  preferred path: both sides multi-homed in RIS; source AS45345 -> AS18200, then multi-homed
       NC>MH   15 traces/3 probe(s)  single upstream: target AS24439 -> AS6453 only in RIS, not AS38195
       NC>NU    4 traces/4 probe(s)  single upstream: target AS55885 -> AS55943 -> AS3257 only in RIS, not AS38195
       NC>WF   12 traces/3 probe(s)  single upstream: target AS45879 -> AS5511 only in RIS, not AS38195
-  81.52.166.62  [AS5511 Orange S.A.]  5 pairs
-      CK>WF    5 traces/1 probe(s)  dependency: target AS45879 -> AS5511 only in RIS
-      FM>WF    6 traces/3 probe(s)  dependency: target AS45879 -> AS5511 only in RIS
-      NC>WF   12 traces/3 probe(s)  dependency: target AS45879 -> AS5511 only in RIS
-      PG>WF    7 traces/1 probe(s)  dependency: target AS45879 -> AS5511 only in RIS
-      PW>WF    7 traces/1 probe(s)  dependency: target AS45879 -> AS5511 only in RIS
   bb1.a.suv.aarnet.net.au  [AS7575 Australian Academic and Research Network (AARNet)]  5 pairs
-      TO>AS    7 traces/1 probe(s)  dependency: source AS24390 -> AS7575 only in RIS
+      TO>AS    8 traces/1 probe(s)  dependency: source AS24390 -> AS7575 only in RIS
       TO>FM    6 traces/1 probe(s)  dependency: source AS24390 -> AS7575 only in RIS
-      TO>SB   18 traces/1 probe(s)  dependency: source AS24390 -> AS7575 only in RIS
+      TO>SB   25 traces/1 probe(s)  dependency: source AS24390 -> AS7575 only in RIS
       TO>TO    7 traces/1 probe(s)  dependency: source AS24390 -> AS7575 only in RIS
-      TO>WS   11 traces/1 probe(s)  dependency: source AS24390 -> AS7575 only in RIS
-  cr8-lax2.ip4.gtt.net  [AS3257 GTT Communications Inc.]  5 pairs
+      TO>WS   16 traces/1 probe(s)  dependency: source AS24390 -> AS7575 only in RIS
+  cr10-lax2.ip4.gtt.net  [AS3257 GTT Communications Inc.]  5 pairs
       CK>MH    5 traces/1 probe(s)  single upstream: target AS24439 -> AS6453 only in RIS, not AS3257
-      CK>WF    5 traces/1 probe(s)  single upstream: target AS45879 -> AS5511 only in RIS, not AS3257
-      GU>NU    8 traces/8 probe(s)  dependency: target AS55885 -> AS55943 -> AS3257 only in RIS
-      NC>NU    4 traces/4 probe(s)  dependency: target AS55885 -> AS55943 -> AS3257 only in RIS
+      GU>CK    4 traces/4 probe(s)  preferred path: both sides multi-homed in RIS
+      NU>MH    3 traces/1 probe(s)  dependency: source AS55885 -> AS55943 -> AS3257 only in RIS
       PF>MH   24 traces/5 probe(s)  dependency: source AS9471 -> AS55943 -> AS3257 only in RIS
-  cr1-fdcp.bb.as11404.net  [AS11404 Astound (fka. Wave Broadband)]  4 pairs
-      MP>AS    3 traces/1 probe(s)  preferred path: both sides multi-homed in RIS
-      PG>AS    3 traces/1 probe(s)  preferred path: both sides multi-homed in RIS
-      TV>AS    6 traces/1 probe(s)  preferred path: both sides multi-homed in RIS; source AS23917 -> AS9241, then multi-homed
-      VU>AS    3 traces/1 probe(s)  preferred path: both sides multi-homed in RIS; source AS9249 -> AS38442, then multi-homed
-  cr2-fdcp.bb.as11404.net  [AS11404 Astound (fka. Wave Broadband)]  4 pairs
-      MP>AS    3 traces/1 probe(s)  preferred path: both sides multi-homed in RIS
-      PG>AS    3 traces/1 probe(s)  preferred path: both sides multi-homed in RIS
-      TV>AS    6 traces/1 probe(s)  preferred path: both sides multi-homed in RIS; source AS23917 -> AS9241, then multi-homed
-      VU>AS    3 traces/1 probe(s)  preferred path: both sides multi-homed in RIS; source AS9249 -> AS38442, then multi-homed
-  pe1.bkvl.nsw.aarnet.net.au  [AS7575 Australian Academic and Research Network (AARNet)]  4 pairs
-      TO>FM    6 traces/1 probe(s)  dependency: source AS24390 -> AS7575 only in RIS
-      TO>SB   18 traces/1 probe(s)  dependency: source AS24390 -> AS7575 only in RIS
-      TO>TO    7 traces/1 probe(s)  dependency: source AS24390 -> AS7575 only in RIS
-      TO>WS   11 traces/1 probe(s)  dependency: source AS24390 -> AS7575 only in RIS
-  qhar2.pv4-piti.as6453.net  [AS6453 TATA Communications (America) Inc]  4 pairs
+      TV>PF    4 traces/1 probe(s)  dependency: target AS55943 -> AS3257 only in RIS
+  qhar2.pv4-piti.as6453.net  [AS6453 TATA Communications (America) Inc]  5 pairs
       CK>MH    5 traces/1 probe(s)  dependency: target AS24439 -> AS6453 only in RIS
+      NU>MH    3 traces/1 probe(s)  dependency: target AS24439 -> AS6453 only in RIS
       PF>MH   24 traces/5 probe(s)  dependency: target AS24439 -> AS6453 only in RIS
       TV>MH    6 traces/1 probe(s)  dependency: target AS24439 -> AS6453 only in RIS
       VU>MH   11 traces/2 probe(s)  dependency: target AS24439 -> AS6453 only in RIS
+  tcore2.lvw-losangeles.as6453.net  [AS6453 TATA Communications (America) Inc]  5 pairs
+      CK>MH    5 traces/1 probe(s)  dependency: target AS24439 -> AS6453 only in RIS
+      NU>MH    3 traces/1 probe(s)  dependency: target AS24439 -> AS6453 only in RIS
+      PF>MH   24 traces/5 probe(s)  dependency: target AS24439 -> AS6453 only in RIS
+      TV>MH    6 traces/1 probe(s)  dependency: target AS24439 -> AS6453 only in RIS
+      VU>MH   11 traces/2 probe(s)  dependency: target AS24439 -> AS6453 only in RIS
+  tcore3.lvw-losangeles.as6453.net  [AS6453 TATA Communications (America) Inc]  5 pairs
+      CK>MH    5 traces/1 probe(s)  dependency: target AS24439 -> AS6453 only in RIS
+      NU>MH    3 traces/1 probe(s)  dependency: target AS24439 -> AS6453 only in RIS
+      PF>MH   24 traces/5 probe(s)  dependency: target AS24439 -> AS6453 only in RIS
+      TV>MH    6 traces/1 probe(s)  dependency: target AS24439 -> AS6453 only in RIS
+      VU>MH   11 traces/2 probe(s)  dependency: target AS24439 -> AS6453 only in RIS
+  cr1-fdcp.bb.as11404.net  [AS11404 Astound (fka. Wave Broadband)]  4 pairs
+      MP>AS    3 traces/1 probe(s)  preferred path: both sides multi-homed in RIS
+      PG>AS    4 traces/1 probe(s)  preferred path: both sides multi-homed in RIS
+      TV>AS    6 traces/1 probe(s)  preferred path: both sides multi-homed in RIS; source AS23917 -> AS9241, then multi-homed
+      VU>AS    4 traces/1 probe(s)  preferred path: both sides multi-homed in RIS; source AS9249 -> AS38442, then multi-homed
+  cr2-fdcp.bb.as11404.net  [AS11404 Astound (fka. Wave Broadband)]  4 pairs
+      MP>AS    3 traces/1 probe(s)  preferred path: both sides multi-homed in RIS
+      PG>AS    4 traces/1 probe(s)  preferred path: both sides multi-homed in RIS
+      TV>AS    6 traces/1 probe(s)  preferred path: both sides multi-homed in RIS; source AS23917 -> AS9241, then multi-homed
+      VU>AS    4 traces/1 probe(s)  preferred path: both sides multi-homed in RIS; source AS9249 -> AS38442, then multi-homed
+  pe1.bkvl.nsw.aarnet.net.au  [AS7575 Australian Academic and Research Network (AARNet)]  4 pairs
+      TO>FM    6 traces/1 probe(s)  dependency: source AS24390 -> AS7575 only in RIS
+      TO>SB   25 traces/1 probe(s)  dependency: source AS24390 -> AS7575 only in RIS
+      TO>TO    7 traces/1 probe(s)  dependency: source AS24390 -> AS7575 only in RIS
+      TO>WS   16 traces/1 probe(s)  dependency: source AS24390 -> AS7575 only in RIS
   sydp10.telstraglobal.net  [AS4637 Telstra International Limited]  4 pairs
-      FM>SB   27 traces/3 probe(s)  unknown: no RIS upstream data for AS14593
+      FM>SB   27 traces/3 probe(s)  preferred path: both sides multi-homed in RIS; source AS139759 -> AS10130, then multi-homed; target AS45891 -> AS139609, then multi-homed; target AS132468 -> AS139609, then multi-homed
       PG>SB    8 traces/1 probe(s)  preferred path: both sides multi-homed in RIS; target AS45891 -> AS139609, then multi-homed
       PG>VU   10 traces/1 probe(s)  preferred path: both sides multi-homed in RIS; target AS9249 -> AS38442, then multi-homed
       PW>SB    6 traces/1 probe(s)  preferred path: both sides multi-homed in RIS; target AS45891 -> AS139609, then multi-homed
@@ -809,55 +826,45 @@ sides multi-homed in RIS, so BGP has alternatives. RIS shows how routes reach a 
       FM>NR    6 traces/3 probe(s)  dependency: target AS152706 -> AS6453 only in RIS
       NC>MH   15 traces/3 probe(s)  dependency: target AS24439 -> AS6453 only in RIS
       PW>MH    6 traces/1 probe(s)  dependency: target AS24439 -> AS6453 only in RIS
-  tcore2.lvw-losangeles.as6453.net  [AS6453 TATA Communications (America) Inc]  4 pairs
-      CK>MH    5 traces/1 probe(s)  dependency: target AS24439 -> AS6453 only in RIS
-      PF>MH   24 traces/5 probe(s)  dependency: target AS24439 -> AS6453 only in RIS
-      TV>MH    6 traces/1 probe(s)  dependency: target AS24439 -> AS6453 only in RIS
-      VU>MH   11 traces/2 probe(s)  dependency: target AS24439 -> AS6453 only in RIS
-  tcore3.lvw-losangeles.as6453.net  [AS6453 TATA Communications (America) Inc]  4 pairs
-      CK>MH    5 traces/1 probe(s)  dependency: target AS24439 -> AS6453 only in RIS
-      PF>MH   24 traces/5 probe(s)  dependency: target AS24439 -> AS6453 only in RIS
-      TV>MH    6 traces/1 probe(s)  dependency: target AS24439 -> AS6453 only in RIS
-      VU>MH   11 traces/2 probe(s)  dependency: target AS24439 -> AS6453 only in RIS
-  101.203.88.24  [AS38195 Superloop]  3 pairs
-      GU>NC    4 traces/2 probe(s)  preferred path: both sides multi-homed in RIS; target AS17480 -> AS18200, then multi-homed
-      PW>NC    3 traces/1 probe(s)  preferred path: both sides multi-homed in RIS; target AS17480 -> AS18200, then multi-homed
-      PW>VU    4 traces/1 probe(s)  single upstream: target AS45935 -> AS45495 -> AS15830 only in RIS, not AS38195; target AS45495 -> AS15830 only in RIS, not AS38195
   132528.syd.equinix.com  [AS132528 DIGICEL (AUS) PTY LTD]  3 pairs
-      CK>TO    3 traces/1 probe(s)  preferred path: both sides multi-homed in RIS; target AS38198 -> AS45355, then multi-homed
-      PF>TO    9 traces/6 probe(s)  single upstream: source AS9471 -> AS55943 -> AS3257 only in RIS, not AS132528
+      CK>TO    4 traces/1 probe(s)  preferred path: both sides multi-homed in RIS; target AS38198 -> AS45355, then multi-homed
+      PF>TO   12 traces/6 probe(s)  single upstream: source AS9471 -> AS55943 -> AS3257 only in RIS, not AS132528
       TV>TO    3 traces/1 probe(s)  preferred path: both sides multi-homed in RIS; source AS23917 -> AS9241, then multi-homed; target AS38198 -> AS45355, then multi-homed
+  209.120.142.174  [AS3257 GTT Communications Inc.]  3 pairs
+      GU>CK    4 traces/4 probe(s)  preferred path: both sides multi-homed in RIS
+      MP>PF    8 traces/1 probe(s)  dependency: target AS55943 -> AS3257 only in RIS
+      TV>PF    4 traces/1 probe(s)  dependency: target AS55943 -> AS3257 only in RIS
+  81.52.188.158  [AS5511 Orange S.A.]  3 pairs
+      CK>WF    5 traces/1 probe(s)  dependency: target AS45879 -> AS5511 only in RIS
+      NU>WF    3 traces/1 probe(s)  dependency: target AS45879 -> AS5511 only in RIS
+      TV>WF    4 traces/1 probe(s)  dependency: target AS45879 -> AS5511 only in RIS
   alx-edge411.sydney.telstra.net  [AS1221 Telstra Limited]  3 pairs
       PG>SB    8 traces/1 probe(s)  preferred path: both sides multi-homed in RIS; target AS45891 -> AS139609, then multi-homed
       PG>TO    8 traces/1 probe(s)  preferred path: both sides multi-homed in RIS; target AS38198 -> AS45355, then multi-homed
       PG>VU   10 traces/1 probe(s)  preferred path: both sides multi-homed in RIS; target AS9249 -> AS38442, then multi-homed
   core1.pdx-pittock.or.bb.as11404.net  [AS11404 Astound (fka. Wave Broadband)]  3 pairs
-      PG>AS    3 traces/1 probe(s)  preferred path: both sides multi-homed in RIS
+      PG>AS    4 traces/1 probe(s)  preferred path: both sides multi-homed in RIS
       TV>AS    6 traces/1 probe(s)  preferred path: both sides multi-homed in RIS; source AS23917 -> AS9241, then multi-homed
-      VU>AS    3 traces/1 probe(s)  preferred path: both sides multi-homed in RIS; source AS9249 -> AS38442, then multi-homed
-  cr10-lax2.ip4.gtt.net  [AS3257 GTT Communications Inc.]  3 pairs
-      CK>MH    5 traces/1 probe(s)  single upstream: target AS24439 -> AS6453 only in RIS, not AS3257
-      PF>MH   24 traces/5 probe(s)  dependency: source AS9471 -> AS55943 -> AS3257 only in RIS
-      TV>PF    4 traces/1 probe(s)  dependency: target AS55943 -> AS3257 only in RIS
+      VU>AS    4 traces/1 probe(s)  preferred path: both sides multi-homed in RIS; source AS9249 -> AS38442, then multi-homed
   cr3-stack.bb.as11404.net  [AS11404 Astound (fka. Wave Broadband)]  3 pairs
-      PG>AS    3 traces/1 probe(s)  preferred path: both sides multi-homed in RIS
+      PG>AS    4 traces/1 probe(s)  preferred path: both sides multi-homed in RIS
       TV>AS    6 traces/1 probe(s)  preferred path: both sides multi-homed in RIS; source AS23917 -> AS9241, then multi-homed
-      VU>AS    3 traces/1 probe(s)  preferred path: both sides multi-homed in RIS; source AS9249 -> AS38442, then multi-homed
+      VU>AS    4 traces/1 probe(s)  preferred path: both sides multi-homed in RIS; source AS9249 -> AS38442, then multi-homed
   cr4-pdx.bb.as11404.net  [AS11404 Astound (fka. Wave Broadband)]  3 pairs
-      PG>AS    3 traces/1 probe(s)  preferred path: both sides multi-homed in RIS
+      PG>AS    4 traces/1 probe(s)  preferred path: both sides multi-homed in RIS
       TV>AS    6 traces/1 probe(s)  preferred path: both sides multi-homed in RIS; source AS23917 -> AS9241, then multi-homed
-      VU>AS    3 traces/1 probe(s)  preferred path: both sides multi-homed in RIS; source AS9249 -> AS38442, then multi-homed
+      VU>AS    4 traces/1 probe(s)  preferred path: both sides multi-homed in RIS; source AS9249 -> AS38442, then multi-homed
   cr4-stack.bb.as11404.net  [AS11404 Astound (fka. Wave Broadband)]  3 pairs
-      PG>AS    3 traces/1 probe(s)  preferred path: both sides multi-homed in RIS
+      PG>AS    4 traces/1 probe(s)  preferred path: both sides multi-homed in RIS
       TV>AS    6 traces/1 probe(s)  preferred path: both sides multi-homed in RIS; source AS23917 -> AS9241, then multi-homed
-      VU>AS    3 traces/1 probe(s)  preferred path: both sides multi-homed in RIS; source AS9249 -> AS38442, then multi-homed
+      VU>AS    4 traces/1 probe(s)  preferred path: both sides multi-homed in RIS; source AS9249 -> AS38442, then multi-homed
   hay-core30.sydney.telstra.net  [AS1221 Telstra Limited]  3 pairs
       PG>SB    8 traces/1 probe(s)  preferred path: both sides multi-homed in RIS; target AS45891 -> AS139609, then multi-homed
       PG>TO    8 traces/1 probe(s)  preferred path: both sides multi-homed in RIS; target AS38198 -> AS45355, then multi-homed
       PG>VU   10 traces/1 probe(s)  preferred path: both sides multi-homed in RIS; target AS9249 -> AS38442, then multi-homed
   sydp-core04.telstraglobal.net  [AS4637 Telstra International Limited]  3 pairs
       PW>SB    6 traces/1 probe(s)  preferred path: both sides multi-homed in RIS; target AS45891 -> AS139609, then multi-homed
-      VU>AS    3 traces/1 probe(s)  preferred path: both sides multi-homed in RIS; source AS9249 -> AS38442, then multi-homed
+      VU>AS    4 traces/1 probe(s)  preferred path: both sides multi-homed in RIS; source AS9249 -> AS38442, then multi-homed
       VU>WF   12 traces/2 probe(s)  single upstream: target AS45879 -> AS5511 only in RIS, not AS4637
 
 LEGAL NOTICE
