@@ -128,6 +128,18 @@ def test_reverification_through_the_filed_hub_corroborates_the_existing_detour(e
     assert _rows(env, "SELECT finding_id FROM corroborations") == [(fid,)]
 
 
+def test_detour_whose_last_hub_is_the_filed_one_corroborates(env):
+    """Owner's rule (#33/#58): the hub is the last city outside the region. Tata LA at hop 8
+    is where the path leaves; hop 12 is named Sydney, so a Sydney-filed detour is corroborated
+    (46 of 118 first-city mismatches on 2026-11-16 were this case)."""
+    fid = _existing_detour(env, "Sydney")
+    env["ptr"] = {"64.86.252.73": TATA_LA, "202.84.143.25": "xe-0-0-2.pe1.bkvl.nsw.aarnet.net.au"}
+    env["resolved"][12] = (4637,)
+    result = auto_classify.classify_corridor(_candidate(reverify_finding_id=fid), regenerate=False)
+    assert (result.outcome, result.finding_id) == ("confirmed_detour", fid)
+    assert _rows(env, "SELECT finding_id FROM corroborations") == [(fid,)]
+
+
 @pytest.mark.parametrize("reverify", [True, False], ids=["reverification", "new_corridor_run"])
 def test_detour_through_another_hub_escalates_instead_of_corroborating(env, reverify):
     """Owner, 2026-11-16 (#51): a run leaving via a different city than the filed hub is

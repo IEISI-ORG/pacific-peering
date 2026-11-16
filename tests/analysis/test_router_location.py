@@ -55,13 +55,39 @@ def test_hostname_too_fast_for_its_city():
     assert (hub.hop, hub.city, hub.verdict) == (4, "Los Angeles", rl.HUB_TOO_FAST)
 
 
-def test_only_the_first_located_hop_is_judged():
+def test_a_too_fast_hop_is_not_rescued_by_a_later_genuine_one():
     # Too-fast hop 4 is not rescued by the genuine LA hop 8.
     hub = rl.find_router_hub(
         MP_TO_TRACE, "MP",
         _resolver({"103.57.234.108": "be1.ccr41.lax01.atlas.cogentco.com", "64.86.252.73": TATA_LA}),
     )
     assert (hub.hop, hub.verdict) == (4, rl.HUB_TOO_FAST)
+
+
+AARNET_SYDNEY = "xe-0-0-2.pe1.bkvl.nsw.aarnet.net.au"  # real name, last hub of #109's traces (224429298)
+
+
+def test_the_last_located_hop_is_the_hub():
+    # Owner's rule (#58 2026-11-02, #33 2026-11-06): the hub is the last city outside the
+    # region. Tata LA at hop 8 is only where the path picks up; hop 13 (170.5ms) is named Sydney.
+    hub = rl.find_router_hub(
+        MP_TO_TRACE | {"hops": MP_TO_TRACE["hops"] + [
+            {"hop": 13, "addresses": ["202.84.143.69"], "min_rtt_ms": 170.517}]},
+        "MP", _resolver({"64.86.252.73": TATA_LA, "202.84.143.69": AARNET_SYDNEY}),
+    )
+    assert (hub.hop, hub.address, hub.city, hub.verdict) == (13, "202.84.143.69", "Sydney", rl.HUB_OK)
+
+
+def test_a_too_fast_hop_after_a_genuine_one_is_still_reported():
+    # A later impossible name (LA at 40ms from Saipan, floor 94.63ms) must not hide behind
+    # an earlier plausible hop (Tokyo at 30ms, floor 22.1ms).
+    trace = {"probe_id": 65653, "hops": [
+        {"hop": 5, "addresses": ["64.86.252.73"], "min_rtt_ms": 30.0},
+        {"hop": 6, "addresses": ["202.84.143.25"], "min_rtt_ms": 40.0},
+    ]}
+    hub = rl.find_router_hub(trace, "MP", _resolver({
+        "64.86.252.73": "if-ae-51-2.tcore1.tv2-tokyo.as6453.net", "202.84.143.25": "be1.ccr41.lax01.atlas.cogentco.com"}))
+    assert (hub.hop, hub.city, hub.verdict) == (6, "Los Angeles", rl.HUB_TOO_FAST)
 
 
 def test_unmapped_city_has_no_floor():

@@ -72,7 +72,12 @@ def _is_global(address: str) -> bool:
 
 
 def find_router_hub(trace: dict, source_cc: str, resolver: PtrResolver = reverse_dns) -> RouterHub | None:
-    """The first hop of `trace` whose hostname places it outside the region, judged against the fibre floor.
+    """The last hop of `trace` whose hostname places it outside the region, judged against the fibre floor.
+
+    The hub is the last city outside the region, not where the path first leaves it
+    (owner: #58 2026-11-02, #33 2026-11-06). A hop whose name is too fast for its
+    city is returned at once, wherever it sits: an impossible name is never hidden
+    behind a plausible one.
 
     `trace` is one entry of `data/atlas/parsed/<msm>.json`. Returns None when the
     source economy has no coordinates, or no single-address public hop with an
@@ -80,6 +85,7 @@ def find_router_hub(trace: dict, source_cc: str, resolver: PtrResolver = reverse
     """
     if source_cc not in ECONOMY_LATLON:
         return None
+    last: RouterHub | None = None
     for h in trace.get("hops", []):
         addresses = h.get("addresses", [])
         rtt = h.get("min_rtt_ms")
@@ -102,5 +108,8 @@ def find_router_hub(trace: dict, source_cc: str, resolver: PtrResolver = reverse
             )
             floor_ms = round(min_feasible_rtt_ms(km), 2)
             verdict = HUB_OK if rtt >= floor_ms else HUB_TOO_FAST
-        return RouterHub(trace["probe_id"], h["hop"], address, hostname, location.city, rtt, floor_ms, verdict)
+        last = RouterHub(trace["probe_id"], h["hop"], address, hostname, location.city, rtt, floor_ms, verdict)
+        if verdict == HUB_TOO_FAST:
+            return last
+    return last
     return None
