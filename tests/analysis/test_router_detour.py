@@ -111,17 +111,85 @@ def test_router_hub_files_a_detour_via_los_angeles(env):
     assert "hop 8 64.86.252.73" in note and "121.458ms" in note and "floor 94.63ms" in note
 
 
-def test_reverification_corroborates_the_existing_detour(env):
+def _existing_detour(env, hub):
     conn = env["db"]()
     fid = store.create_finding(conn, kind=store.KIND_CONFIRMED_DETOUR, source_cc="MP", source_asn=7131,
-                               target_cc="TO", target_asn=38198, detour_hub="Sydney",
+                               target_cc="TO", target_asn=38198, detour_hub=hub,
                                detour_ix_name="AS6939 + AS132528 -- international transit")
     conn.close()
+    return fid
+
+
+def test_reverification_through_the_filed_hub_corroborates_the_existing_detour(env):
+    fid = _existing_detour(env, "Los Angeles")
     env["ptr"] = {"64.86.252.73": TATA_LA}
     result = auto_classify.classify_corridor(_candidate(reverify_finding_id=fid), regenerate=False)
     assert (result.outcome, result.finding_id) == ("confirmed_detour", fid)
-    assert _rows(env, "SELECT id, detour_hub FROM findings") == [(fid, "Sydney")]  # hub not overwritten
     assert _rows(env, "SELECT finding_id FROM corroborations") == [(fid,)]
+
+
+@pytest.mark.parametrize("reverify", [True, False], ids=["reverification", "new_corridor_run"])
+def test_detour_through_another_hub_escalates_instead_of_corroborating(env, reverify):
+    """Owner, 2026-11-16 (#51): a run leaving via a different city than the filed hub is
+    escalated for a human relabel (as #77/#84 were on 2026-11-06), never added as evidence.
+    #51 is filed as Sydney; 231073937 (Portland) and 238217235 (Los Angeles) corroborated it."""
+    fid = _existing_detour(env, "Sydney")
+    env["ptr"] = {"64.86.252.73": TATA_LA}
+    result = auto_classify.classify_corridor(
+        _candidate(reverify_finding_id=fid if reverify else None), regenerate=False)
+    assert result.outcome == "escalated"
+    assert _rows(env, "SELECT id, detour_hub FROM findings") == [(fid, "Sydney")]
+    assert _rows(env, "SELECT finding_id FROM corroborations") == []
+    (escalation,) = [e for e in result.escalations if e.reason == "detour hub differs from the filed finding"]
+    assert f"#{fid}" in escalation.detail and "Sydney" in escalation.detail and "Los Angeles" in escalation.detail
+    assert TATA_LA in escalation.detail
+
+
+# 238217235 (MP probe 65653 -> PG AS17828 103.20.76.1, 2026-11-15), the real trace: it leaves
+# via HE Los Angeles at 237.9ms and goes dark inside AS6939; nothing in PNG answers.
+DEAD_END_MSM = 238217235
+DEAD_END_HOPS = [
+    {"hop": 1, "addresses": ["192.168.1.1"], "min_rtt_ms": 1.123},
+    {"hop": 2, "addresses": ["10.170.7.1"], "min_rtt_ms": 77.473},
+    {"hop": 3, "addresses": ["103.57.234.255"], "min_rtt_ms": 5.192},
+    {"hop": 4, "addresses": ["103.57.233.1"], "min_rtt_ms": 8.139},
+    {"hop": 5, "addresses": [], "min_rtt_ms": None},
+    {"hop": 6, "addresses": ["10.25.37.22"], "min_rtt_ms": 8.054},
+    {"hop": 7, "addresses": ["8.3.127.1"], "min_rtt_ms": 8.421},
+    {"hop": 8, "addresses": [], "min_rtt_ms": None},
+    {"hop": 9, "addresses": ["64.71.131.185"], "min_rtt_ms": 9.558},
+    {"hop": 10, "addresses": [], "min_rtt_ms": None},
+    {"hop": 11, "addresses": [], "min_rtt_ms": None},
+    {"hop": 12, "addresses": [], "min_rtt_ms": None},
+    {"hop": 13, "addresses": ["184.104.189.163"], "min_rtt_ms": 237.879},
+    {"hop": 14, "addresses": [], "min_rtt_ms": None},
+    {"hop": 15, "addresses": [], "min_rtt_ms": None},
+    {"hop": 16, "addresses": ["184.104.194.234"], "min_rtt_ms": 246.216},
+    {"hop": 17, "addresses": [], "min_rtt_ms": None},
+    {"hop": 255, "addresses": [], "min_rtt_ms": None},
+]
+
+
+def test_router_hub_on_a_trace_that_never_reaches_the_target_is_inconclusive(env, monkeypatch):
+    """Owner, 2026-11-16: a trace that leaves via an off-region router but goes dark before
+    the target AS is inconclusive (no hop data), not detour evidence."""
+    monkeypatch.setattr(auto_classify, "_fire_measurement", lambda c, ip: DEAD_END_MSM)
+    (env["parsed_dir"] / f"{DEAD_END_MSM}.json").write_text(json.dumps(
+        [{"measurement_id": DEAD_END_MSM, "probe_id": 65653, "target": "103.20.76.1", "hops": DEAD_END_HOPS}]))
+    env["triangulation"] = {"measurement_id": DEAD_END_MSM, "target_asn": 17828, "probes": [{
+        "probe_id": 65653,
+        "as_sequence": [{"asn": 7131, "resolution_source": "ris", "contiguous_with_previous": True},
+                        {"asn": 6939, "resolution_source": "ris", "contiguous_with_previous": True}],
+        "ixp_crossings": [], "traceroute_upstream_asn": 6939, "ris_agrees": True,
+        "contiguous": False, "ris_observation_count": 1293}]}
+    env["resolved"] = {13: (6939,), 16: (6939,)}
+    env["ptr"] = {"184.104.189.163": "be48.core3.lax1.he.net"}
+    candidate = CorridorCandidate(source_asn=7131, source_cc="MP", source_name="PTI Pacifica Inc.",
+                                  target_asn=17828, target_cc="PG", target_name="DataCo", rationale="test")
+    result = auto_classify.classify_corridor(candidate, regenerate=False)
+    assert result.outcome == "inconclusive"
+    assert _rows(env, "SELECT id FROM findings") == []
+    assert _rows(env, "SELECT id FROM corroborations") == []
 
 
 def test_too_fast_hostname_escalates_and_keeps_local_transit(env):
@@ -249,6 +317,19 @@ def test_router_detour_also_corroborates_the_existing_local_transit_edge(env):
     result = auto_classify.classify_corridor(_candidate(), regenerate=False)
     assert result.outcome == "confirmed_detour"
     assert sorted(_rows(env, "SELECT finding_id FROM corroborations")) == sorted([(result.finding_id,), (lt,)])
+
+
+def test_hub_mismatch_still_corroborates_the_existing_local_transit_edge(env):
+    # The edge is its own evidence on the trace; only the detour's hub is in question.
+    detour = _existing_detour(env, "Sydney")
+    conn = env["db"]()
+    lt = store.create_finding(conn, kind=store.KIND_CONFIRMED_LOCAL_TRANSIT, source_cc="FJ", source_asn=45355,
+                              target_cc="TO", target_asn=38198)
+    conn.close()
+    env["ptr"] = {"64.86.252.73": TATA_LA}
+    result = auto_classify.classify_corridor(_candidate(reverify_finding_id=detour), regenerate=False)
+    assert result.outcome == "escalated"
+    assert _rows(env, "SELECT finding_id FROM corroborations") == [(lt,)]
 
 
 def test_router_detour_never_creates_a_local_transit_finding(env):

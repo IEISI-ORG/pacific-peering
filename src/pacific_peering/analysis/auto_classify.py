@@ -815,6 +815,11 @@ def _classify_corridor(
     in_region_asns: dict[int, list[int]] = {}  # probe -> fishbowl ASNs BGP gives its hub router's address
     if detour_pick is None:
         for probe in clean_probes:
+            if candidate.target_asn not in {e["asn"] for e in probe.get("as_sequence", [])}:
+                # Owner, 2026-11-16 (#51, 238217235): a trace that leaves via an
+                # off-region router but goes dark before the target AS is no hop
+                # data, so inconclusive -- not detour evidence.
+                continue
             trace = {"probe_id": probe["probe_id"], "hops": hops_by_probe.get(probe["probe_id"], [])}
             hub = find_router_hub(trace, candidate.source_cc, resolver=reverse_dns)
             if hub is None:
@@ -961,6 +966,17 @@ def _classify_corridor(
                 note_extra=(notes or {}).get(probe["probe_id"]),
             )
 
+    def _refresh_local_transit_edge(conn: sqlite3.Connection) -> None:
+        """A router-located detour (no IXP) and a local-transit edge can sit on the
+        same trace (221439393: #92 and #295). Refresh an edge already on file so it
+        doesn't age out; never create one from a detour run."""
+        if detour_pick is None or detour_pick[0] is not None or local_transit_pick is None:
+            return
+        upstream_asn = local_transit_pick["traceroute_upstream_asn"]
+        edge = _store.find_existing(conn, _store.KIND_CONFIRMED_LOCAL_TRANSIT, upstream_asn, candidate.target_asn)
+        if edge is not None:
+            _corroborate(conn, edge.id, [p for p in clean_probes if p.get("traceroute_upstream_asn") == upstream_asn])
+
     def _finalize() -> ClassifyResult:
         conn = _store.connect()
         try:
@@ -982,22 +998,28 @@ def _classify_corridor(
                         detour_ix_name=ix_name,
                         detour_hub=hub_city,
                     )
+                elif finding.detour_hub != hub_city:
+                    # Owner, 2026-11-16 (#51): a run through another city is a relabel
+                    # question for a human (as #77/#84 were on 2026-11-06), never
+                    # evidence for the filed hub.
+                    escalations.append(_Escalation(
+                        candidate=candidate,
+                        measurement_id=measurement_id,
+                        reason="detour hub differs from the filed finding",
+                        detail=(
+                            f"finding #{finding.id} is filed via {finding.detour_hub}; this run left the "
+                            f"region via {hub_city} ({ix_name}) -- not corroborated; relabel, keep, "
+                            "or retest is the owner's call"
+                        ),
+                    ))
+                    _refresh_local_transit_edge(conn)
+                    mark_corridor_tested(candidate.source_asn, candidate.target_asn)
+                    _write_escalations(escalations)
+                    return ClassifyResult(candidate, "escalated", None, escalations)
                 else:
                     finding_id = finding.id
                 _corroborate(conn, finding_id, clean_probes, {pid: h.note() for pid, h in router_hubs.items()})
-                if detour_pick[0] is None and local_transit_pick is not None:
-                    # A router-located detour (no IXP) and a local-transit edge can sit on
-                    # the same trace (221439393: #92 and #295). Refresh an edge already on
-                    # file so it doesn't age out; never create one from a detour run.
-                    upstream_asn = local_transit_pick["traceroute_upstream_asn"]
-                    edge = _store.find_existing(
-                        conn, _store.KIND_CONFIRMED_LOCAL_TRANSIT, upstream_asn, candidate.target_asn
-                    )
-                    if edge is not None:
-                        _corroborate(
-                            conn, edge.id,
-                            [p for p in clean_probes if p.get("traceroute_upstream_asn") == upstream_asn],
-                        )
+                _refresh_local_transit_edge(conn)
                 mark_corridor_tested(candidate.source_asn, candidate.target_asn)
                 if regenerate:
                     _regenerate_artifacts()
