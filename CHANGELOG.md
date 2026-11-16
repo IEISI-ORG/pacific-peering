@@ -6,6 +6,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ## [Unreleased]
 
 ### Added
+- `docs/kacific_per_prefix_upstreams.md`: Kacific (AS135409) finding. Of 153 IPv4 prefixes checked (Kacific's 26 plus its 10 RIS customers'), 45 reach the internet through Kacific, and each enters through one regional upstream group (OneQode AU, PLDT/HGC PH, Mora/Indosat ID, SG.GS SG, PTCL/Nexlinx PK); only 103.70.66.0/23 is split. Niue (AS10025) enters only via OneQode Sydney; the two-reply RTT pattern toward 202.59.4.1 (#326-#328) explained as gateway then GEO round trip (inference). Report-only, Kacific only (owner, 2026-11-16).
 - AS21996 (Guamcell, GU), AS10025 (IUSN Foundation, NU) and AS45411 (APCS, PG) join `supplementary_asns.py` on the owner's direction (2026-11-09). None is labelled with its Pacific economy in APNIC's delegated stats. AS45411's Australian 210.79.16.0/20 is added to `EXCLUDED_TARGET_PREFIXES`, so tests trace only to its PG-registered 103.153.158.0/23. The registry goes from 162 to 165 ASNs at the next weekly refresh.
 
 ### Fixed
