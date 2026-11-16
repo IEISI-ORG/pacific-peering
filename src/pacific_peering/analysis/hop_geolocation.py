@@ -227,6 +227,36 @@ _KNOWN_PATTERNS: tuple[tuple[re.Pattern[str], HopLocation], ...] = (
             ),
         ),
     ),
+    (
+        re.compile(r"(?:^|[.\-])syd[op]\d*(?:[.\-].*)?\.telstraglobal\.net$", re.I),
+        HopLocation(
+            city="Sydney",
+            economy_cc=None,
+            matched_pattern="telstraglobal sydo/sydp",
+            evidence_note=(
+                "Telstra Global's Sydney site codes (owner, 2026-11-17). PG probe "
+                "50365 reaches sydo-core04/sydo10/sydp10 at ~39ms, 0.1-0.4ms after "
+                "Telstra's own oxf-gw30.sydney.telstra.net (211789443, 224429318). "
+                "Four-letter site codes don't match the 'syd' pattern's segment "
+                "boundary; scoped to telstraglobal.net."
+            ),
+        ),
+    ),
+    (
+        re.compile(r"(?:^|[.\-])hk(?:th|ck|mi)\d*(?:[.\-].*)?\.telstraglobal\.net$", re.I),
+        HopLocation(
+            city="Hong Kong",
+            economy_cc=None,
+            matched_pattern="telstraglobal hkth/hkck/hkmi",
+            evidence_note=(
+                "Telstra Global's Hong Kong site codes (owner, 2026-11-17). GU probe "
+                "65337 reaches hkck-core01 at 58.6ms, 0.1ms after "
+                "telstra4-lacp-100g.hkix.net (212458784); on 213187876 hkth12, "
+                "hkmi01 and hkck-core01 (165.6-166.8ms) come just before "
+                "iij3-10g.hkix.net. Scoped to telstraglobal.net."
+            ),
+        ),
+    ),
 )
 
 

@@ -69,4 +69,5 @@ EXTERNAL_HUB_LATLON: dict[str, tuple[float, float]] = {
     "Los Angeles": (34.0522, -118.2437),
     "Portland": (45.5152, -122.6784),
     "San Francisco": (37.7749, -122.4194),
+    "Hong Kong": (22.3193, 114.1694),  # owner, 2026-11-17: OneQode hk-mgi, Telstra Global hkth/hkck/hkmi
 }

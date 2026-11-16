@@ -17,6 +17,7 @@ from pacific_peering.analysis import auto_classify, store
 from pacific_peering.analysis.corridor_backlog import CorridorCandidate
 from pacific_peering.analysis.ixp_lan_registry import IxpLanEntry
 from pacific_peering.analysis.traceroute_topology import HopResolution
+from pacific_peering.discovery.economy_coordinates import EXTERNAL_HUB_LATLON
 
 MSM = 900000002
 TATA_LA = "ix-xe-2-1-4-0.tcore2.lvw-losangeles.as6453.net"
@@ -212,7 +213,9 @@ def test_too_fast_hostname_escalates_and_keeps_local_transit(env):
     assert "hop 4 103.57.234.108" in result.escalations[0].detail
 
 
-def test_unmapped_city_escalates(env):
+def test_unmapped_city_escalates(env, monkeypatch):
+    # Hong Kong has coordinates since 2026-11-17; drop them to exercise the unmapped path.
+    monkeypatch.delitem(EXTERNAL_HUB_LATLON, "Hong Kong")
     env["ptr"] = {"64.86.252.73": "hk-mgi-rt1.oneqode.net"}
     result = auto_classify.classify_corridor(_candidate(), regenerate=False)
     assert result.outcome == "confirmed_local_transit"

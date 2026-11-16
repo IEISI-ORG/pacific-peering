@@ -10,6 +10,7 @@ from __future__ import annotations
 
 
 from pacific_peering.analysis import router_location as rl
+from pacific_peering.discovery.economy_coordinates import EXTERNAL_HUB_LATLON
 
 TATA_LA = "ix-xe-2-1-4-0.tcore2.lvw-losangeles.as6453.net"
 
@@ -90,8 +91,10 @@ def test_a_too_fast_hop_after_a_genuine_one_is_still_reported():
     assert (hub.hop, hub.city, hub.verdict) == (6, "Los Angeles", rl.HUB_TOO_FAST)
 
 
-def test_unmapped_city_has_no_floor():
-    # OneQode Hong Kong (hk-mgi, 211527961): no EXTERNAL_HUB_LATLON entry.
+def test_unmapped_city_has_no_floor(monkeypatch):
+    # Every city in the pattern table has coordinates (Hong Kong since 2026-11-17), so drop
+    # one to exercise the unmapped path. OneQode Hong Kong (hk-mgi, 211527961).
+    monkeypatch.delitem(EXTERNAL_HUB_LATLON, "Hong Kong")
     trace = {"probe_id": 65653, "hops": [{"hop": 6, "addresses": ["103.151.64.21"], "min_rtt_ms": 95.0}]}
     hub = rl.find_router_hub(trace, "MP", _resolver({"103.151.64.21": "hk-mgi-rt1.oneqode.net"}))
     assert (hub.city, hub.floor_ms, hub.verdict) == ("Hong Kong", None, rl.HUB_UNMAPPED)
@@ -104,6 +107,15 @@ def test_san_francisco_is_mapped():
     trace = {"probe_id": 64953, "hops": [{"hop": 13, "addresses": ["154.54.43.9"], "min_rtt_ms": 141.218}]}
     hub = rl.find_router_hub(trace, "GU", _resolver({"154.54.43.9": "be3669.ccr21.sfo01.atlas.cogentco.com"}))
     assert (hub.city, hub.floor_ms, hub.verdict) == ("San Francisco", 92.95, rl.HUB_OK)
+
+
+def test_hong_kong_is_mapped():
+    # 212458784 probe 65337 (GU): Telstra Global hkck at 58.626ms, 0.1ms after HKIX.
+    # Guam -> Hong Kong 3324km less GU's 50km spread: floor 33.27ms (owner, 2026-11-17).
+    trace = {"probe_id": 65337, "hops": [{"hop": 9, "addresses": ["202.84.157.38"], "min_rtt_ms": 58.626}]}
+    hub = rl.find_router_hub(trace, "GU", _resolver({"202.84.157.38": "i-96.hkck-core01.telstraglobal.net"}))
+    assert hub is not None
+    assert (hub.city, hub.floor_ms, hub.verdict) == ("Hong Kong", 33.27, rl.HUB_OK)
 
 
 def test_in_region_hostname_is_skipped():

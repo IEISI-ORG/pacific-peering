@@ -47,3 +47,45 @@ def test_plain_router_names_are_unchanged():
     assert resolve_hostname("hk-mgi-rt1.oneqode.net").city == "Hong Kong"
     assert resolve_hostname("gu-gnc-rt1.oneqode.net").economy_cc == "GU"
     assert resolve_hostname("ix-xe-2-1-4-0.tcore2.lvw-losangeles.as6453.net").city == "Los Angeles"
+
+
+# Telstra Global (AS4637) names its routers by four-letter site code, not IATA code, and
+# 'syd' alone doesn't match 'sydo'/'sydp' at a segment boundary. Real names, each next to
+# a router whose city is not in doubt (2026-11-17):
+#   sydo/sydp: PG probe 50365 reaches them at ~39ms, 0.1-0.4ms after Telstra's
+#     oxf-gw30.sydney.telstra.net (211789443, 224429318).
+#   hkck: GU probe 65337 at 58.626ms, 0.1ms after telstra4-lacp-100g.hkix.net (212458784).
+#   hkth/hkmi: VU probe 1008536/64783 on 213187876, hkth12 165.6ms, hkmi01 166.3ms,
+#     hkck 166.8ms, then iij3-10g.hkix.net 171.6ms.
+TELSTRA_SYDNEY = (
+    "bundle-ether1.sydo-core04.telstraglobal.net",
+    "i-91.sydo10.telstraglobal.net",
+    "i-91.sydp10.telstraglobal.net",
+    "i-10201.sydp-core04.telstraglobal.net",
+    "Bundle-Ether10157.sydp-core03.sydney.telstraglobal.net",
+)
+TELSTRA_HONG_KONG = (
+    "i-91.hkth-core02.telstraglobal.net",
+    "i-0-5-0-5.hkth12.telstraglobal.net",
+    "i-96.hkck-core01.telstraglobal.net",
+    "i-92.hkmi01.telstraglobal.net",
+)
+
+
+def test_telstra_global_sydney_site_codes():
+    for name in TELSTRA_SYDNEY:
+        loc = resolve_hostname(name)
+        assert loc is not None, name
+        assert (loc.city, loc.economy_cc) == ("Sydney", None), name
+
+
+def test_telstra_global_hong_kong_site_codes():
+    for name in TELSTRA_HONG_KONG:
+        loc = resolve_hostname(name)
+        assert loc is not None, name
+        assert (loc.city, loc.economy_cc) == ("Hong Kong", None), name
+
+
+def test_telstra_site_codes_only_count_on_telstra_global_names():
+    assert resolve_hostname("sydo-core04.example.net") is None
+    assert resolve_hostname("i-91.hkth-core02.example.net") is None
