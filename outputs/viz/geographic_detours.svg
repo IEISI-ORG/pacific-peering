@@ -1915,13 +1915,13 @@ L 300.209949 336.407219
    </g>
    <g id="line2d_222">
     <path d="M 124.726998 195.898299 
-L 98.16301 97.229049 
+L 611.011887 89.842754 
 L 300.209949 336.407219 
 " clip-path="url(#pa76a8657c3)" style="fill: none; stroke: #d03b3b; stroke-width: 1.8; stroke-linecap: square"/>
    </g>
    <g id="line2d_223">
     <path d="M 360.83403 340.464348 
-L 158.368327 406.302363 
+L 611.011887 89.842754 
 L 300.209949 336.407219 
 " clip-path="url(#pa76a8657c3)" style="fill: none; stroke: #d03b3b; stroke-width: 1.8; stroke-linecap: square"/>
    </g>
@@ -1939,7 +1939,7 @@ L 124.726998 195.898299
    </g>
    <g id="line2d_226">
     <path d="M 124.726998 195.898299 
-L 158.368327 406.302363 
+L 629.984453 104.446463 
 L 247.499696 334.624197 
 " clip-path="url(#pa76a8657c3)" style="fill: none; stroke: #d03b3b; stroke-width: 1.8; stroke-linecap: square"/>
    </g>
@@ -2125,7 +2125,7 @@ L 71.984453 222.447628
    </g>
    <g id="line2d_257">
     <path d="M 466.880599 333.785129 
-L 158.368327 406.302363 
+L 629.984453 104.446463 
 L 71.984453 222.447628 
 " clip-path="url(#pa76a8657c3)" style="fill: none; stroke: #d03b3b; stroke-width: 1.8; stroke-linecap: square"/>
    </g>
@@ -2215,19 +2215,19 @@ L 356.754194 319.225862
    </g>
    <g id="line2d_272">
     <path d="M 240.202556 258.216048 
-L 629.984453 104.446463 
+L 606.886216 53.502363 
 L 356.754194 319.225862 
 " clip-path="url(#pa76a8657c3)" style="fill: none; stroke: #d03b3b; stroke-width: 1.8; stroke-linecap: square"/>
    </g>
    <g id="line2d_273">
     <path d="M 360.83403 340.464348 
-L 158.368327 406.302363 
+L 606.886216 53.502363 
 L 356.754194 319.225862 
 " clip-path="url(#pa76a8657c3)" style="fill: none; stroke: #d03b3b; stroke-width: 1.8; stroke-linecap: square"/>
    </g>
    <g id="line2d_274">
     <path d="M 333.335634 349.90565 
-L 158.368327 406.302363 
+L 606.886216 53.502363 
 L 356.754194 319.225862 
 " clip-path="url(#pa76a8657c3)" style="fill: none; stroke: #d03b3b; stroke-width: 1.8; stroke-linecap: square"/>
    </g>
@@ -2347,7 +2347,7 @@ L 137.383188 297.752278
    </g>
    <g id="line2d_294">
     <path d="M 71.984453 222.447628 
-L 158.368327 406.302363 
+L 629.984453 104.446463 
 L 137.383188 297.752278 
 " clip-path="url(#pa76a8657c3)" style="fill: none; stroke: #d03b3b; stroke-width: 1.8; stroke-linecap: square"/>
    </g>
@@ -2377,7 +2377,7 @@ L 333.335634 349.90565
    </g>
    <g id="line2d_299">
     <path d="M 124.726998 195.898299 
-L 158.368327 406.302363 
+L 629.984453 104.446463 
 L 333.335634 349.90565 
 " clip-path="url(#pa76a8657c3)" style="fill: none; stroke: #d03b3b; stroke-width: 1.8; stroke-linecap: square"/>
    </g>
@@ -2413,7 +2413,7 @@ L 333.335634 349.90565
    </g>
    <g id="line2d_305">
     <path d="M 71.984453 222.447628 
-L 158.368327 406.302363 
+L 629.984453 104.446463 
 L 333.335634 349.90565 
 " clip-path="url(#pa76a8657c3)" style="fill: none; stroke: #d03b3b; stroke-width: 1.8; stroke-linecap: square"/>
    </g>
@@ -2455,7 +2455,7 @@ L 333.335634 349.90565
    </g>
    <g id="line2d_312">
     <path d="M 240.202556 258.216048 
-L 606.886216 53.502363 
+L 158.368327 406.302363 
 L 351.288891 317.337069 
 " clip-path="url(#pa76a8657c3)" style="fill: none; stroke: #d03b3b; stroke-width: 1.8; stroke-linecap: square"/>
    </g>
@@ -2509,7 +2509,7 @@ L 194.576416 225.051497
    </g>
    <g id="line2d_321">
     <path d="M 300.209949 336.407219 
-L 629.984453 104.446463 
+L 158.368327 406.302363 
 L 194.576416 225.051497 
 " clip-path="url(#pa76a8657c3)" style="fill: none; stroke: #d03b3b; stroke-width: 1.8; stroke-linecap: square"/>
    </g>
@@ -2809,7 +2809,7 @@ L 333.335634 349.90565
    </g>
    <g id="line2d_371">
     <path d="M 360.83403 340.464348 
-L 629.984453 104.446463 
+L 611.011887 89.842754 
 L 247.499696 334.624197 
 " clip-path="url(#pa76a8657c3)" style="fill: none; stroke: #d03b3b; stroke-width: 1.8; stroke-linecap: square"/>
    </g>
@@ -3013,7 +3013,7 @@ L 240.202556 258.216048
    </g>
    <g id="line2d_405">
     <path d="M 247.499696 334.624197 
-L 98.16301 97.229049 
+L 629.984453 104.446463 
 L 240.202556 258.216048 
 " clip-path="url(#pa76a8657c3)" style="fill: none; stroke: #d03b3b; stroke-width: 1.8; stroke-linecap: square"/>
    </g>
