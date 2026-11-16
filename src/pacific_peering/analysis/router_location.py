@@ -1,4 +1,4 @@
-"""Locate a traceroute's first off-region router from its own hostname, checked against physics.
+"""Locate a traceroute's last off-region router from its own hostname, checked against physics.
 
 Per the project owner (2026-10-12): a corridor can leave the region without
 crossing any IXP. 221439393 (MP -> TO, reverification of #92) went Saipan ->
@@ -14,9 +14,10 @@ source economy to the named city (`feasibility.min_feasible_rtt_ms`, with the
 source economy's spread taken off so it stays a lower bound), or the hostname
 can't be telling the truth about where the router is.
 
-Only the first located off-region hop of a trace is judged, so a later hop
-never rescues a too-fast one. ECMP hops (more than one address) are skipped:
-their `min_rtt_ms` may belong to a different router. A city with no
+The last located off-region hop of a trace is the hub (owner: #58, #33), but a
+too-fast hop anywhere is returned at once, so a later hop never rescues it.
+ECMP hops (more than one address) are skipped: their `min_rtt_ms` may belong
+to a different router. A city with no
 `EXTERNAL_HUB_LATLON` entry has no floor and is reported as unmapped, for a
 human to add, never filed as a locationless detour.
 """
@@ -45,7 +46,7 @@ PtrResolver = Callable[[str], "str | None"]
 
 @dataclass(frozen=True)
 class RouterHub:
-    """The first hop of one probe's trace that its hostname places outside the region."""
+    """The hop of one probe's trace judged as its off-region hub (see `find_router_hub`)."""
 
     probe_id: int
     hop: int
@@ -112,4 +113,3 @@ def find_router_hub(trace: dict, source_cc: str, resolver: PtrResolver = reverse
         if verdict == HUB_TOO_FAST:
             return last
     return last
-    return None

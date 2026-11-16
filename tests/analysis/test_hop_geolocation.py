@@ -1,0 +1,49 @@
+"""Tests for hop_geolocation.resolve_hostname: a router's location from its own PTR name.
+
+OneQode names an interface `<router at the far end>-----<VLAN>.<router it is on>`.
+The two ends of Vlan780, one link between Guam and Sydney, show it (PTRs as of
+2026-11-06): 103.151.64.6 is `au-gssyd-rt1-----Vlan780.gu-gnc-rt1` and 103.151.64.7
+is `gu-gnc-rt1-----Vlan780.au-gssyd-rt1`. Guam probes reach .7 at ~70ms, one hop
+after OneQode Guam at 0.2-0.5ms, and the next hop is an EdgeIX Sydney or IX Australia
+NSW LAN address within 1ms (223636622, 213458029). Owner, 2026-11-16: locate these
+names by the router after the dot, not the first token.
+"""
+
+from __future__ import annotations
+
+from pacific_peering.analysis.hop_geolocation import resolve_hostname
+
+GUAM_END = "au-gssyd-rt1-----Vlan780.gu-gnc-rt1.oneqode.net"  # 103.151.64.6
+SYDNEY_END = "gu-gnc-rt1-----Vlan780.au-gssyd-rt1.oneqode.net"  # 103.151.64.7
+
+
+def test_oneqode_interface_is_located_by_the_router_it_is_on():
+    loc = resolve_hostname(SYDNEY_END)
+    assert loc is not None
+    assert (loc.city, loc.economy_cc) == ("Sydney", None)
+
+
+def test_the_guam_end_of_the_same_link_stays_in_guam():
+    loc = resolve_hostname(GUAM_END)
+    assert loc is not None
+    assert (loc.city, loc.economy_cc) == ("Guam", "GU")
+
+
+def test_oneqode_hong_kong_interface_facing_guam_is_hong_kong():
+    # 103.151.64.207 on 211527961: 45-52ms from Saipan, one hop after OneQode Guam
+    # (103.112.0.226, 2-10ms), then Telstra Global hkth (Hong Kong).
+    loc = resolve_hostname("gu-gnc-rt1-----Vlan756.hk-mgi-rt1.oneqode.net")
+    assert loc is not None
+    assert loc.city == "Hong Kong"
+
+
+def test_the_far_end_token_alone_never_locates_an_interface():
+    # jp-cc1 and us-la2 have no confirmed pattern yet: unknown, not Guam.
+    assert resolve_hostname("gu-gnc-rt1-----Vlan750.jp-cc1-rt2.oneqode.net") is None
+    assert resolve_hostname("gu-gnc-rt1-----Vlan769.us-la2-rt1.oneqode.net") is None
+
+
+def test_plain_router_names_are_unchanged():
+    assert resolve_hostname("hk-mgi-rt1.oneqode.net").city == "Hong Kong"
+    assert resolve_hostname("gu-gnc-rt1.oneqode.net").economy_cc == "GU"
+    assert resolve_hostname("ix-xe-2-1-4-0.tcore2.lvw-losangeles.as6453.net").city == "Los Angeles"

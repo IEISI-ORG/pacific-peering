@@ -21,10 +21,11 @@ treatment.
 
 Matching a hop to an entry here is evidence-based, not automatic:
 a hop counts as hitting a facility below only when its PTR record (or
-other direct evidence) matches the `hostname_pattern`, the way the
-original OneQode/Guam case was confirmed via
-`gu-gnc-rt1-----Vlan756.hk-mgi-rt1.oneqode.net` matching OneQode's own
-PeeringDB-listed "RTI Guam GNC" facility.
+other direct evidence) matches the `hostname_pattern` on the router the
+address is on (see `hop_geolocation._router_name`: OneQode interface names
+lead with the router at the far end of the link), the way the OneQode/Guam
+case is confirmed via `jp-cc1-rt2-----Vlan750.gu-gnc-rt1.oneqode.net`
+matching OneQode's own PeeringDB-listed "RTI Guam GNC" facility.
 """
 
 from __future__ import annotations
@@ -52,12 +53,16 @@ REGIONAL_CARRIER_FACILITIES: tuple[RegionalCarrierFacility, ...] = (
         economy_cc="GU",
         hostname_pattern="gu-gnc",
         evidence_note=(
-            "Confirmed via the MP(AS7131)->FJ(AS4638) traceroute (measurement "
-            "211527961): the hop at 103.151.64.207 has PTR record "
-            "'gu-gnc-rt1-----Vlan756.hk-mgi-rt1.oneqode.net' -- a router "
-            "explicitly named for Guam GNC, matching OneQode's own "
-            "PeeringDB-listed facility (net_id 23196) of the same name, "
-            "linked onward via a named VLAN to OneQode's Hong Kong router. "
+            "Confirmed via the GU->AS140627 traceroute (measurement 218411496, "
+            "#272): Guam probes 7662 and 23039 cross BBIX Tokyo at ~29ms and "
+            "come back to 103.151.64.204 'jp-cc1-rt2-----Vlan750.gu-gnc-rt1"
+            ".oneqode.net' at 58ms -- an interface on the router named for "
+            "Guam GNC, matching OneQode's own PeeringDB-listed facility "
+            "(net_id 23196) of the same name; Guam and Saipan probes also "
+            "reach OneQode at 103.112.0.226 in 0.5-2ms. Until 2026-11-16 this "
+            "note cited 211527961's 103.151.64.207 'gu-gnc-rt1-----Vlan756"
+            ".hk-mgi-rt1', but OneQode names the far end first: that address "
+            "is on the Hong Kong router (45-52ms from Saipan). "
             "OneQode also holds a second real Guam facility (Tata's Piti "
             "Cable Landing Station) not yet matched to a specific confirmed "
             "hop -- add a second entry here if/when a traceroute hits it."

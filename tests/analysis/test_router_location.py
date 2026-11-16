@@ -107,10 +107,27 @@ def test_san_francisco_is_mapped():
 
 
 def test_in_region_hostname_is_skipped():
-    # 219060211: OneQode's router name carries a Guam token; Guam is in scope, so not a hub.
-    trace = {"probe_id": 6923, "hops": [{"hop": 2, "addresses": ["103.151.64.7"], "min_rtt_ms": 70.4}]}
-    resolve = _resolver({"103.151.64.7": "gu-gnc-rt1-----Vlan780.au-gssyd-rt1.oneqode.net"})
+    # 103.151.64.6 sits on OneQode's Guam router (`<far end>-----<vlan>.gu-gnc-rt1`);
+    # Guam is in scope, so not a hub.
+    trace = {"probe_id": 50365, "hops": [{"hop": 5, "addresses": ["103.151.64.6"], "min_rtt_ms": 108.051}]}
+    resolve = _resolver({"103.151.64.6": "au-gssyd-rt1-----Vlan780.gu-gnc-rt1.oneqode.net"})
     assert rl.find_router_hub(trace, "GU", resolve) is None
+
+
+def test_oneqode_sydney_interface_from_guam_is_a_hub():
+    # 223636622 probe 6923 (OneQode Guam): 0.229ms to the Guam router, then 103.151.64.7,
+    # named for au-gssyd-rt1 (the router after the dot), at 70.375ms. Owner, 2026-11-16:
+    # that is OneQode's Sydney router, not Guam. (The next hop, EdgeIX Sydney at 70.847ms,
+    # is left unresolved here so only the OneQode name is judged.)
+    trace = {"probe_id": 6923, "hops": [
+        {"hop": 1, "addresses": ["103.151.64.30"], "min_rtt_ms": 0.229},
+        {"hop": 2, "addresses": ["103.151.64.7"], "min_rtt_ms": 70.375},
+        {"hop": 3, "addresses": ["202.77.88.26"], "min_rtt_ms": 70.847},
+    ]}
+    hub = rl.find_router_hub(trace, "GU", _resolver({"103.151.64.7": "gu-gnc-rt1-----Vlan780.au-gssyd-rt1.oneqode.net"}))
+    assert hub is not None
+    assert (hub.hop, hub.city, hub.verdict) == (2, "Sydney", rl.HUB_OK)
+    assert hub.floor_ms is not None and hub.floor_ms < 70.375
 
 
 def test_private_ecmp_and_rttless_hops_are_never_looked_up():

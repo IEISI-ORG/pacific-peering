@@ -189,9 +189,29 @@ _KNOWN_PATTERNS: tuple[tuple[re.Pattern[str], HopLocation], ...] = (
             economy_cc="GU",
             matched_pattern="gu-gnc",
             evidence_note=(
-                "Confirmed via OneQode (gu-gnc-rt1, measurement 211527961, "
-                "MP->AS4638), matching OneQode's PeeringDB-listed 'RTI Guam "
-                "GNC' facility exactly -- see analysis.regional_carrier_facilities."
+                "OneQode's Guam router, matching its PeeringDB-listed 'RTI Guam "
+                "GNC' facility -- see analysis.regional_carrier_facilities. "
+                "Confirmed on 218411496 (GU->AS140627, #272): Guam probes 7662 "
+                "and 23039 reach 'jp-cc1-rt2-----Vlan750.gu-gnc-rt1' at 58ms "
+                "after BBIX Tokyo at 29ms, i.e. back in Guam on the Tokyo-facing "
+                "interface. (211527961's 'gu-gnc-rt1-----Vlan756.hk-mgi-rt1', "
+                "cited here until 2026-11-16, is on the Hong Kong router.)"
+            ),
+        ),
+    ),
+    (
+        re.compile(r"(?:^|[.\-])au-gssyd(?:[.\-]|$)", re.I),
+        HopLocation(
+            city="Sydney",
+            economy_cc=None,
+            matched_pattern="au-gssyd",
+            evidence_note=(
+                "OneQode's Global Switch Sydney router (owner, 2026-11-16). "
+                "103.151.64.7 'gu-gnc-rt1-----Vlan780.au-gssyd-rt1' answers Guam "
+                "probes at ~70ms, one hop after OneQode Guam at 0.2-0.5ms, and "
+                "the next hop is EdgeIX Sydney or IX Australia NSW within 1ms "
+                "(223636622, 213458029). 'gssyd' doesn't match the 'syd' "
+                "pattern's segment boundary, hence its own entry."
             ),
         ),
     ),
@@ -210,16 +230,32 @@ _KNOWN_PATTERNS: tuple[tuple[re.Pattern[str], HopLocation], ...] = (
 )
 
 
+# OneQode names an interface `<router at the far end>-----<VLAN>.<router it is on>`:
+# the two ends of one Guam-Sydney link are `au-gssyd-rt1-----Vlan780.gu-gnc-rt1` and
+# `gu-gnc-rt1-----Vlan780.au-gssyd-rt1` (103.151.64.6/.7). Only the router after the
+# dot says where the address is (owner, 2026-11-16).
+_ONEQODE_INTERFACE = re.compile(r"^[^.]*-----[^.]*\.(?P<router>[^.]+\.oneqode\.net)$", re.I)
+
+
+def _router_name(hostname: str) -> str:
+    """The part of `hostname` that names the router the address is on."""
+    match = _ONEQODE_INTERFACE.match(hostname)
+    return match.group("router") if match else hostname
+
+
 def resolve_hostname(hostname: str) -> HopLocation | None:
     """Match a router hostname against the curated pattern table.
 
     Returns `None` rather than guessing when no known pattern matches --
     an unrecognized hostname is real information (this project hasn't
     seen this carrier's naming convention yet), not something to paper
-    over with a carrier-level facility guess.
+    over with a carrier-level facility guess. A name that also carries
+    the far end of its link (OneQode's interface names) is matched on
+    its own router only.
     """
+    name = _router_name(hostname)
     for pattern, location in _KNOWN_PATTERNS:
-        if pattern.search(hostname):
+        if pattern.search(name):
             return location
     return None
 
