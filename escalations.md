@@ -720,3 +720,33 @@ Corridors `auto_classify.py`'s mechanical rules couldn't confidently resolve on 
 - proposed correction: treat 238217235 as inconclusive (dark gap before the target) and remove it as a corroboration of #51; check whether collecting a parked measurement skips the dead-end / alternate-prefix retry that the on-time path applies.
 - flagged: 2026-11-15T21:36:00Z
 - note (2026-11-16, owner session): not the parked path. RIS agrees AS7131 -> AS6939, so the probe was decisive and no retry would run on time either. Rule 2 found HE Los Angeles (be48.core3.lax1.he.net, 237.9 ms) and `_finalize` corroborated #51 (Sydney) without comparing hubs; 231073937 (HE Portland, 11-02) did the same. Fixed going forward (mismatch escalates; dead-end router hub is inconclusive). The two existing #51 rows (231073937, 238217235) stay until the owner rules on the 113 mismatched rows; see task_plan.md 2026-11-16.
+
+## Probe 23039 (GU, AS9246) -- metadata changed
+- reason: probe watch (atlas/probe_watch.py)
+- detail: asn_v4 17456 -> 9246; egress trace: AS9246 (measurement 238724161)
+- action: owner review -- check the path before trusting this probe's next results, or changing any exclusion
+- flagged: 2026-11-16T15:00:58.730720+00:00
+## AS10131 (CK) -> AS140504 (NR)
+- measurement: 238725343
+- reason: detour hub differs from the filed finding
+- detail: finding #159 is filed via Los Angeles; this run left the region via Tokyo (JPNAP Tokyo) -- not corroborated; relabel, keep, or retest is the owner's call
+- flagged: 2026-11-16T15:07:11.845403+00:00
+
+## AS23917 (TV) -> AS9246 (GU)
+- measurement: 238725340
+- reason: detour hub differs from the filed finding
+- detail: finding #24 is filed via Los Angeles; this run left the region via Tokyo (BBIX Tokyo) -- not corroborated; relabel, keep, or retest is the owner's call
+- flagged: 2026-11-16T15:07:14.071346+00:00
+
+## AS55722 (NR) -> AS137890 (FJ)
+- measurement: 238726884
+- reason: router in a hub city with no coordinates
+- detail: probe 1018134: router hub: hop 5 103.151.64.207 gu-gnc-rt1-----Vlan756.hk-mgi-rt1.oneqode.net -> Hong Kong, 79.213ms (no hub coordinates, unmapped)
+- flagged: 2026-11-16T15:10:22.530066+00:00
+
+## AS7131 (GU) -> AS24390 (FJ)
+- measurement: 238730380
+- reason: unrecognized routing loop
+- detail: probe 60689: loop involving address 113.197.15.213, not in known_anomalies.py
+- flagged: 2026-11-16T15:13:41.188875+00:00
+
