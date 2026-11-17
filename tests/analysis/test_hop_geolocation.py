@@ -89,3 +89,44 @@ def test_telstra_global_hong_kong_site_codes():
 def test_telstra_site_codes_only_count_on_telstra_global_names():
     assert resolve_hostname("sydo-core04.example.net") is None
     assert resolve_hostname("i-91.hkth-core02.example.net") is None
+
+
+# Telstra's domestic network puts the city in the name (`<if>.<site>-<role>.sydney.telstra.net`).
+# Every Sydney name in the PTR cache sits within ~1ms of a router already placed in Sydney
+# (2026-11-17): VU probe 64783 on 211648499, i-91.sydp-core04 51.6ms then pad-gw30 50.9ms;
+# PG probe 50365 on 221438711, hay-core30 38.3ms then sydo-core04 39.7ms; TO probe 11691
+# on 212106578, AARNet bdr1.mcqd.nsw 109.9ms then chw-edge903 109.3ms.
+TELSTRA_DOMESTIC_SYDNEY = (
+    "bundle-ether2.oxf-gw30.sydney.telstra.net",
+    "bundle-ether1.pad-gw30.sydney.telstra.net",
+    "ae19.alx-edge411.sydney.telstra.net",
+    "Bundle-Ether1111-567.chw-edge903.sydney.telstra.net",
+    "bundle-ether50.hay-core30.sydney.telstra.net",
+)
+
+# HKIX LAN names (`<member><n>-<port>.hkix.net`). GU probe 65337 on 212458784:
+# telstra4-lacp-100g 58.7ms, then Telstra Global hkck-core01 58.6ms. VU probe 1008536 on
+# 213187876: hkmi01 166.3ms, iij3-10g 171.6ms, then IIJ hkg002bb01 170.6ms.
+HKIX = ("telstra4-lacp-100g.hkix.net", "iij3-10g.hkix.net")
+
+
+def test_telstra_domestic_sydney_names():
+    for name in TELSTRA_DOMESTIC_SYDNEY:
+        loc = resolve_hostname(name)
+        assert loc is not None, name
+        assert (loc.city, loc.economy_cc) == ("Sydney", None), name
+
+
+def test_hkix_lan_names_are_hong_kong():
+    for name in HKIX:
+        loc = resolve_hostname(name)
+        assert loc is not None, name
+        assert (loc.city, loc.economy_cc) == ("Hong Kong", None), name
+
+
+def test_telstra_domestic_city_word_only_counts_on_telstra_net():
+    # Customer link names carry no city; other cities have no hub coordinates yet.
+    assert resolve_hostname("twi4246393.lnk.telstra.net") is None
+    assert resolve_hostname("bundle-ether1.win-edge903.melbourne.telstra.net") is None
+    assert resolve_hostname("core1.sydney.example.net") is None
+    assert resolve_hostname("telstra4-lacp-100g.hkix.net.example.com") is None

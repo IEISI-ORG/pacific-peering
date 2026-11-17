@@ -257,6 +257,37 @@ _KNOWN_PATTERNS: tuple[tuple[re.Pattern[str], HopLocation], ...] = (
             ),
         ),
     ),
+    (
+        re.compile(r"\.sydney\.telstra\.net$", re.I),
+        HopLocation(
+            city="Sydney",
+            economy_cc=None,
+            matched_pattern="telstra.net sydney",
+            evidence_note=(
+                "Telstra's domestic network names the city (owner, 2026-11-17). "
+                "Every cached *.sydney.telstra.net hop sits within ~1ms of a router "
+                "already placed in Sydney: VU 64783 sydp-core04 51.6ms -> pad-gw30 "
+                "50.9ms (211648499); PG 50365 hay-core30 38.3ms -> sydo-core04 39.7ms "
+                "(221438711); TO 11691 AARNet mcqd 109.9ms -> chw-edge903 109.3ms "
+                "(212106578). Other telstra.net cities are seen only from non-Pacific "
+                "probes and have no hub coordinates, so they are not mapped."
+            ),
+        ),
+    ),
+    (
+        re.compile(r"\.hkix\.net$", re.I),
+        HopLocation(
+            city="Hong Kong",
+            economy_cc=None,
+            matched_pattern="hkix.net",
+            evidence_note=(
+                "HKIX member-port names (owner, 2026-11-17). GU 65337 reaches "
+                "telstra4-lacp-100g at 58.7ms, then Telstra Global hkck-core01 at "
+                "58.6ms (212458784); VU 1008536 has hkmi01 166.3ms, iij3-10g 171.6ms, "
+                "then IIJ hkg002bb01 170.6ms (213187876)."
+            ),
+        ),
+    ),
 )
 
 
