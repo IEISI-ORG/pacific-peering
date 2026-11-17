@@ -79,7 +79,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
 <body>
 <div class="wrap">
     <h1>Pacific Peering — Regional Routing Report</h1>
-    <div class="meta">Generated 2026-11-17T01:14:38.250626+00:00</div>
+    <div class="meta">Generated 2026-11-17T04:38:13.032314+00:00</div>
 
     <div class="feedback-box"><strong>Found a bug?</strong> This report is generated
         automatically, and bugs very likely remain in both the code and the data. If
@@ -402,18 +402,18 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <th>Dependent economies</th></tr></thead>
         <tbody><tr>
             <td>Sydney</td>
-            <td>112</td>
-            <td>59%</td>
+            <td>114</td>
+            <td>60%</td>
             <td>26</td>
             <td>Melanesia, Micronesia, Polynesia</td>
             <td>AS, FJ, FM, KI, NC, NR, NU, PG, SB, TO, VU, WS</td>
         </tr><tr>
             <td>Los Angeles</td>
-            <td>45</td>
-            <td>24%</td>
+            <td>43</td>
+            <td>23%</td>
             <td>10</td>
             <td>Melanesia, Micronesia, Polynesia</td>
-            <td>FJ, FM, GU, KI, MH, NR, PF, PW, SB, TO, WF</td>
+            <td>FJ, FM, GU, KI, MH, NR, PF, PW, SB, WF</td>
         </tr><tr>
             <td>Tokyo</td>
             <td>19</td>
@@ -1050,7 +1050,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
         </div><div class="detour-card">
             <div class="headline">GU -&gt; TO
                 (AS38198): detours via AS3356 (Level 3/Lumen) + AS4637 (Telstra Global) + AS45355 (Digicel Fiji) -- international transit
-                (Los Angeles)</div>
+                (Sydney)</div>
             <div>RIS observation count: 1321
                 &middot; measurement 211478036</div>
             <details class="note"><summary>Guam Cablevision (AS3605) -&gt; Digicel Tonga (AS38198) -- a fresh GU&lt;-&gt;TO economy pair…</summary>Guam Cablevision (AS3605) -&gt; Digicel Tonga (AS38198) -- a fresh GU&lt;-&gt;TO economy pair. Sixth occurrence of the slow-scheduling pattern (recognized, resolved on a longer poll as before). Both probes: AS3605 -&gt; AS3356 (Level 3/Lumen) -&gt; AS4637 (Telstra Global) -&gt; AS45355 (Digicel Fiji) -&gt; AS38198. Upstream of the target is AS45355, RIS-agreeing with an *exact* match (1,321) -- checked against AS38198&#x27;s full neighbor list: AS45355 is its *only* RIS-observed neighbor at all. **Checked the traceroute&#x27;s tail carefully before writing this up as routine, since it read as more silence than usual**: both probes actually reach a real, BGP-confirmed AS38198 address (`202.43.12.5`) one hop after the last AS45355 hop, separated by exactly one ordinary silent boundary hop (the same routine pattern seen throughout this session) -- a solid, confirmed crossing into the target&#x27;s own network, not a gap. Only *after* that does the traceroute go fully silent trying to reach the specific queried address (`202.43.12.1`) itself, all the way to the final hop -- read as the destination address itself not responding to traceroute probes at all (common for security-hardened endpoints), not evidence against the already-confirmed AS45355&lt;-&gt;AS38198 adjacency, which sits before that silent stretch, not inside it. **Worth noting in its own right**: Digicel Fiji serving as the real upstream for Digicel Tonga -- both are regional subsidiaries of the same corporate parent (Digicel Group). Reads as intra-corporate regional transit, the same shape as the Wallis &amp; Futuna -&gt; Orange S.A. relationship, rather than arm&#x27;s-length peering between unrelated carriers, though this traceroute alone doesn&#x27;t distinguish corporate-internal routing from an ordinary customer-transit contract between the two.</details>
@@ -1096,7 +1096,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
         </div><div class="detour-card">
             <div class="headline">PW -&gt; TO
                 (AS38198): detours via AS174 (Cogent Communications), via AS1299 (Telia) and AS4637 (Telstra Global) -- international transit
-                (Los Angeles)</div>
+                (Sydney)</div>
             <div>RIS observation count: 1321
                 &middot; measurement 212022541</div>
             <details class="note"><summary>Palau NCC (AS17893) -&gt; Digicel Tonga (AS38198) -- a fresh PW&lt;-&gt;TO pair, a seventh independent confirmation of the AS45355(Digicel Fiji)&lt;-&gt;AS38198 adjacency…</summary>Palau NCC (AS17893) -&gt; Digicel Tonga (AS38198) -- a fresh PW&lt;-&gt;TO pair, a seventh independent confirmation of the AS45355(Digicel Fiji)&lt;-&gt;AS38198 adjacency (after GU, MP, VU, PF, CK, PG) -- still AS38198&#x27;s only RIS-observed neighbor of consequence. `AS17893 -&gt; AS174 (Cogent) -&gt; AS1299 (Telia) -&gt; AS4637 (Telstra Global) -&gt; AS45355`, target technically reached (the same real, BGP-confirmed AS38198 address `202.43.12.5` one hop after the last AS45355 hop), separated by the usual routine silent boundary hop rather than a real gap. RIS-agreeing with the identical *exact* match (1,321). **Telia is a genuinely new intermediate carrier for this adjacency** (after Level 3/Lumen, Vocus Connect, Telstra domestic, Hurricane Electric, and SES ASTRA on prior entries). Telstra Global&#x27;s own hop confirms Sydney directly (`i-1053.sydp-core04.telstraglobal.net`), extra confirmation alongside the five prior entries&#x27; `detour_hub`.</details>

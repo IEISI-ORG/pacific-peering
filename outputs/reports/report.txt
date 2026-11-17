@@ -1,6 +1,6 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-11-17T01:14:37.136685+00:00                  
+                 Generated: 2026-11-17T04:38:11.818090+00:00                  
 ==============================================================================
 FOUND A BUG? Bugs very likely remain in both the code and the data.
 Please open an issue: https://github.com/IEISI-ORG/pacific-peering/issues/new
@@ -109,10 +109,10 @@ The mirror image of the regional hubs above: the real external cities where conf
 
 City           Entries  Share Carriers Subregions reached            
 ------------------------------------------------------------------------------
-Sydney             112    59%       26 Melanesia, Micronesia, Polynesia
+Sydney             114    60%       26 Melanesia, Micronesia, Polynesia
     Dependent economies: AS, FJ, FM, KI, NC, NR, NU, PG, SB, TO, VU, WS
-Los Angeles         45    24%       10 Melanesia, Micronesia, Polynesia
-    Dependent economies: FJ, FM, GU, KI, MH, NR, PF, PW, SB, TO, WF
+Los Angeles         43    23%       10 Melanesia, Micronesia, Polynesia
+    Dependent economies: FJ, FM, GU, KI, MH, NR, PF, PW, SB, WF
 Tokyo               19    10%        9 Melanesia, Micronesia, Polynesia
     Dependent economies: AS, GU, KI, MH, NC, NR, PW, SB, VU, WF
 San Jose             8     4%        2 Melanesia, Polynesia
@@ -663,7 +663,7 @@ FJ -> TO (AS38198): detours via AS132528 (Digicel Australia/Telstra-operated bac
 FM -> TO (AS38198): detours via AS4637 (Telstra Global), then AS45355 (Digicel Fiji) (Sydney)
     RIS observation count: 1321  [measurement 212142991]
     Eleventh confirmation of AS45355(Digicel Fiji)<->AS38198. `AS139759 -> AS9246 -> AS4637 -> AS45355 -> AS38198`, RIS agrees exactly (1,321). `has_routing_loop` False.
-GU -> TO (AS38198): detours via AS3356 (Level 3/Lumen) + AS4637 (Telstra Global) + AS45355 (Digicel Fiji) -- international transit (Los Angeles)
+GU -> TO (AS38198): detours via AS3356 (Level 3/Lumen) + AS4637 (Telstra Global) + AS45355 (Digicel Fiji) -- international transit (Sydney)
     RIS observation count: 1321  [measurement 211478036]
     Guam Cablevision (AS3605) -> Digicel Tonga (AS38198) -- a fresh GU<->TO economy pair. Sixth occurrence of the slow-scheduling pattern (recognized, resolved on a longer poll as before). Both probes: AS3605 -> AS3356 (Level 3/Lumen) -> AS4637 (Telstra Global) -> AS45355 (Digicel Fiji) -> AS38198. Upstream of the target is AS45355, RIS-agreeing with an *exact* match (1,321) -- checked against AS38198's full neighbor list: AS45355 is its *only* RIS-observed neighbor at all. **Checked the traceroute's tail carefully before writing this up as routine, since it read as more silence than usual**: both probes actually reach a real, BGP-confirmed AS38198 address (`202.43.12.5`) one hop after the last AS45355 hop, separated by exactly one ordinary silent boundary hop (the same routine pattern seen throughout this session) -- a solid, confirmed crossing into the target's own network, not a gap. Only *after* that does the traceroute go fully silent trying to reach the specific queried address (`202.43.12.1`) itself, all the way to the final hop -- read as the destination address itself not responding to traceroute probes at all (common for security-hardened endpoints), not evidence against the already-confirmed AS45355<->AS38198 adjacency, which sits before that silent stretch, not inside it. **Worth noting in its own right**: Digicel Fiji serving as the real upstream for Digicel Tonga -- both are regional subsidiaries of the same corporate parent (Digicel Group). Reads as intra-corporate regional transit, the same shape as the Wallis & Futuna -> Orange S.A. relationship, rather than arm's-length peering between unrelated carriers, though this traceroute alone doesn't distinguish corporate-internal routing from an ordinary customer-transit contract between the two.
 MP -> TO (AS38198): detours via AS6939 (Hurricane Electric) + AS132528 (Digicel Australia/Telstra-operated backbone) -- international transit (Sydney)
@@ -685,7 +685,7 @@ PF -> TO (AS38198): detours via Equinix Sydney (AS132528, Digicel Australia/Tels
 PG -> TO (AS38198): detours via AS1221 (Telstra domestic) -- international transit (Sydney)
     RIS observation count: 1321  [measurement 211962193]
     PNG DataCo (AS17828) -> Digicel Tonga (AS38198) -- a fresh PG<->TO pair, a sixth independent confirmation of the AS45355(Digicel Fiji)<->AS38198 adjacency (after GU, MP, VU, PF, CK). `AS17828 -> AS4826 (Vocus Connect) -> AS1221 (Telstra domestic) -> AS45355`, target technically reached at the end of the chain but with a real unresolved gap before AS38198 itself. RIS-agreeing with the identical *exact* match (1,321). **Notably no AS132528 this time** -- every prior confirmation of this adjacency crossed AS132528 (Digicel Australia/Telstra backbone) at Equinix Sydney; this one reaches AS45355 via Telstra's domestic ASN directly, a genuinely different real path to the same ultimate carrier relationship. No IXP crossing observed.
-PW -> TO (AS38198): detours via AS174 (Cogent Communications), via AS1299 (Telia) and AS4637 (Telstra Global) -- international transit (Los Angeles)
+PW -> TO (AS38198): detours via AS174 (Cogent Communications), via AS1299 (Telia) and AS4637 (Telstra Global) -- international transit (Sydney)
     RIS observation count: 1321  [measurement 212022541]
     Palau NCC (AS17893) -> Digicel Tonga (AS38198) -- a fresh PW<->TO pair, a seventh independent confirmation of the AS45355(Digicel Fiji)<->AS38198 adjacency (after GU, MP, VU, PF, CK, PG) -- still AS38198's only RIS-observed neighbor of consequence. `AS17893 -> AS174 (Cogent) -> AS1299 (Telia) -> AS4637 (Telstra Global) -> AS45355`, target technically reached (the same real, BGP-confirmed AS38198 address `202.43.12.5` one hop after the last AS45355 hop), separated by the usual routine silent boundary hop rather than a real gap. RIS-agreeing with the identical *exact* match (1,321). **Telia is a genuinely new intermediate carrier for this adjacency** (after Level 3/Lumen, Vocus Connect, Telstra domestic, Hurricane Electric, and SES ASTRA on prior entries). Telstra Global's own hop confirms Sydney directly (`i-1053.sydp-core04.telstraglobal.net`), extra confirmation alongside the five prior entries' `detour_hub`.
 TV -> TO (AS38198): detours via AS6939 (Hurricane Electric), via AS132528 (Digicel Australia/Telstra-operated backbone) -- international transit (Sydney)
