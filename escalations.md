@@ -750,3 +750,15 @@ Corridors `auto_classify.py`'s mechanical rules couldn't confidently resolve on 
 - detail: probe 60689: loop involving address 113.197.15.213, not in known_anomalies.py
 - flagged: 2026-11-16T15:13:41.188875+00:00
 
+## AS55722 (NR) -> AS142245 (FJ)
+- measurement: 239432778
+- reason: detour hub differs from the filed finding
+- detail: finding #321 is filed via Los Angeles; this run left the region via Sydney (100ge0-0-0-4.core3.syd1.he.net (router in Sydney, no IXP crossing)) -- not corroborated; relabel, keep, or retest is the owner's call
+- flagged: 2026-11-17T15:07:08.515069+00:00
+
+## AS55722 (NR) -> AS142245 (FJ)
+- measurement: 239434797
+- reason: detour hub differs from the filed finding
+- detail: finding #321 is filed via Los Angeles; this run left the region via Sydney (100ge0-0-0-4.core3.syd1.he.net (router in Sydney, no IXP crossing)) -- not corroborated; relabel, keep, or retest is the owner's call
+- flagged: 2026-11-17T15:10:13.667050+00:00
+

@@ -95,10 +95,10 @@ ADEQUATE -- 2+ connected probes (6/20):
         Useful (Connected): 7018, 33674, 61210, 63050
         Not useful yet -- fix the data or get it back online: 301 (Abandoned), 1089 (Abandoned), 6162 (Written Off), 15626 (Abandoned), 17007 (Abandoned), 17164 (Abandoned), 21812 (Abandoned), 22638 (Abandoned), 22662 (Written Off), 22663 (Never Connected), 22665 (Abandoned), 22669 (Abandoned), 22701 (Abandoned), 22821 (Abandoned), 24235 (Abandoned), 33962 (Never Connected), 33984 (Abandoned), 1005847 (Abandoned), 1008625 (Disconnected)
       Local IXP: CAN'L IX (NOUMEA) -- members: AS17480, AS45345, AS131248, AS134405, AS149520
-  PF  French Polynesia (6 connected)
-      Probes: 10 listed, 6 actually useful
-        Useful (Connected): 23002, 30712, 53098, 54473, 1001562, 1014350
-        Not useful yet -- fix the data or get it back online: 22737 (Abandoned), 52614 (Disconnected), 52814 (Abandoned), 55400 (Abandoned)
+  PF  French Polynesia (7 connected)
+      Probes: 10 listed, 7 actually useful
+        Useful (Connected): 23002, 30712, 52614, 53098, 54473, 1001562, 1014350
+        Not useful yet -- fix the data or get it back online: 22737 (Abandoned), 52814 (Abandoned), 55400 (Abandoned)
   TO  Tonga (2 connected)
       Probes: 7 listed, 2 actually useful
         Useful (Connected): 11691, 1018023
