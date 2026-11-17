@@ -79,7 +79,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
 <body>
 <div class="wrap">
     <h1>Pacific Peering — Regional Routing Report</h1>
-    <div class="meta">Generated 2026-11-16T15:32:39.841608+00:00</div>
+    <div class="meta">Generated 2026-11-17T01:14:38.250626+00:00</div>
 
     <div class="feedback-box"><strong>Found a bug?</strong> This report is generated
         automatically, and bugs very likely remain in both the code and the data. If
@@ -402,18 +402,18 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <th>Dependent economies</th></tr></thead>
         <tbody><tr>
             <td>Sydney</td>
-            <td>110</td>
-            <td>58%</td>
+            <td>112</td>
+            <td>59%</td>
             <td>26</td>
             <td>Melanesia, Micronesia, Polynesia</td>
             <td>AS, FJ, FM, KI, NC, NR, NU, PG, SB, TO, VU, WS</td>
         </tr><tr>
             <td>Los Angeles</td>
-            <td>47</td>
-            <td>25%</td>
-            <td>11</td>
+            <td>45</td>
+            <td>24%</td>
+            <td>10</td>
             <td>Melanesia, Micronesia, Polynesia</td>
-            <td>FJ, FM, GU, KI, MH, NR, PF, PG, PW, SB, TO, VU, WF</td>
+            <td>FJ, FM, GU, KI, MH, NR, PF, PW, SB, TO, WF</td>
         </tr><tr>
             <td>Tokyo</td>
             <td>19</td>
@@ -539,7 +539,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
         </div><div class="detour-card">
             <div class="headline">GU -&gt; VU
                 (AS9249): detours via Level 3/Lumen (AS3356) + AS4637 (Telstra Global) -- international transit
-                (Los Angeles)</div>
+                (Sydney)</div>
             <div>RIS observation count: 1346
                 &middot; measurement 211334940</div>
             <details class="note"><summary>Guam Cablevision (AS3605) -&gt; Telecom Vanuatu (AS9249) -- pulled from the corridor backlog&#x27;s top pick: a genuinely untested GU&lt;-&gt;VU economy pair…</summary>Guam Cablevision (AS3605) -&gt; Telecom Vanuatu (AS9249) -- pulled from the corridor backlog&#x27;s top pick: a genuinely untested GU&lt;-&gt;VU economy pair. Both probes: AS3605 -&gt; AS3356 (Level 3/Lumen) -&gt; AS4637 (Telstra Global) -&gt; AS38442 (Vodafone Fiji) -&gt; AS9249. Upstream of the target is AS38442, RIS-agreeing with an *exact* match (1,346) -- this project&#x27;s very first confirmed finding, now independently reinforced a **sixth** time, from a sixth distinct source network (after AS18200/OPT NC, AS45345/Nautile, AS56089/OFFRATEL, AS24390/USP, and AS17828/PNG DataCo). The final AS38442-&gt;AS9249 leg shows a single silent (non-responding) hop immediately before the target on both probes -- checked directly, not assumed: the same ordinary ICMP-filtering-right-at-the-destination pattern already seen in essentially every measurement that has ever targeted AS9249 this session, not a new or unusual gap. No IXP crossing this time (`ixp_crossings` empty) -- plain Tier-1 transit (Level 3/Lumen then Telstra Global), the same no-named-exchange shape as the AS17828-&gt;AS9249 and AS3605-&gt;AS9241 entries. Six independent, differently-sourced measurements landing on one identical adjacency, all with exact observation-count matches, is about as strong a single fact as this project has produced.</details>
@@ -1015,7 +1015,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
         </div><div class="detour-card">
             <div class="headline">PW -&gt; PG
                 (AS38009): detours via AS6939 (Hurricane Electric) -- international transit
-                (Los Angeles)</div>
+                (Sydney)</div>
             <div>RIS observation count: 1875
                 &middot; measurement 212019977</div>
             <details class="note"><summary>Palau NCC (AS17893) -&gt; Telikom PNG Satellite Tier 1 AS (AS38009) -- a fresh PW&lt;-&gt;PG pair, and **the first-ever confirmation of this specific target** (no prior…</summary>Palau NCC (AS17893) -&gt; Telikom PNG Satellite Tier 1 AS (AS38009) -- a fresh PW&lt;-&gt;PG pair, and **the first-ever confirmation of this specific target** (no prior entry for AS38009 in any dataclass). `AS17893 -&gt; AS6939 (Hurricane Electric) -&gt; AS17828 (PNG DataCo)`, target itself never resolved, but RIS confirms AS17828 directly against AS38009 with an *exact* match (1,875) -- a genuinely new finding: PNG DataCo (already confirmed as this project&#x27;s usual PG-side target/source) is also the confirmed domestic upstream handing off to Telikom PNG&#x27;s satellite AS, a second, distinct PNG-based ASN. **Geolocated with `hop_geolocation`**: the Hurricane Electric hops resolve to Seattle (`core1.sea1.he.net`), Portland (`core1.pdx3.he.net`), then Sydney (`core1.syd1.he.net`), immediately followed by `png-dataco-limited.e0-11.switch1.syd1.he.net` -- PNG DataCo&#x27;s own named HE switch port in Sydney. Kept `detour_hub` as Sydney to match this direct, unambiguous PTR evidence. Note: `ixp_crossings` also flagged an earlier hop (`101.203.88.74`) as a BBIX Tokyo/AS6939 PeeringDB netixlan match; given it sits geographically incoherent with the immediately following Seattle/Portland/Sydney chain, and per this session&#x27;s established discipline of trusting real hop-level hostname evidence over an incidental subnet match, treated as likely a coincidental address-range overlap rather than a genuine Tokyo touchpoint -- not used to set `detour_hub`.</details>
@@ -2757,7 +2757,7 @@ NU(AS55885) -&gt; AS150403: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS139609 -&
     <h2>ASPA progress (draft-ietf-sidrops-aspa-profile, upstream-authorization adoption)</h2>
     <p class="section-intro">
         <strong>22 of 165</strong> in-scope ASNs
-        now publish an ASPA record (4110 total across the
+        now publish an ASPA record (4137 total across the
         whole internet, per Cloudflare Radar). Adoption is still early &mdash; absence
         means "not published yet," not "no real upstream." Per economy: how many of its
         own ASNs publish a record, and the distinct upstream ASNs those records declare,
@@ -2848,7 +2848,7 @@ NU(AS55885) -&gt; AS150403: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS139609 -&
         yet, queued until adoption has advanced further.
         <strong>45 of 165</strong> in-scope ASNs
         have at least one RIS-observed IPv6-originated prefix.
-        <strong>6 of 36</strong> connected
+        <strong>7 of 36</strong> connected
         Atlas probes work over IPv6 (5 more are
         IPv6-capable but tagged as not working).
     </p>
