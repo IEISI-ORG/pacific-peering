@@ -384,6 +384,7 @@ Corridors `auto_classify.py`'s mechanical rules couldn't confidently resolve on 
 - reason: local IXP crossing with implausibly high latency
 - detail: probe 7455: hop 3 crosses Guam IX (in-fishbowl) at 54.533ms, above the 10.0ms local-fiber threshold -- either this hop isn't genuinely local despite the registry, or there's an unexpected detour/backhaul before reaching it; needs a human look, not a guess
 - flagged: 2026-10-27T15:16:30.067296+00:00
+- resolved: 2026-11-19T09:18+10:00 -- ordinary: remote member port, not a detour (temp/escalation_reviews_2026-11-19/review_ixp_latency.md 4.4). 103.142.153.24 is CenPac AS55722's Guam IX port on a router in Nauru (cr1/cr2.core.cenpac.net.nr 0.03ms behind it); Koror-Guam 19ms + Guam-Nauru 35.5ms = 54.5ms. The check now allows both cable legs (fbbb5e8) and clears it.
 
 ## AS55885 (NU) -> AS55885 (NU)
 - measurement: 228278355
@@ -561,48 +562,56 @@ Corridors `auto_classify.py`'s mechanical rules couldn't confidently resolve on 
 - reason: unrecognized routing loop
 - detail: probe 50897: loop involving address 202.87.208.244, not in known_anomalies.py
 - flagged: 2026-11-06T15:17:04.619079+00:00
+- resolved: 2026-11-19T09:18+10:00 -- transient (temp/escalation_reviews_2026-11-19/review_routing_loops.md 3): a real two-router loop inside Digicel Samoa (AS38800), 202.87.208.244 (gi0-0-0.rgwict01.digicelsamoa.ws) <-> .246, hops 16-32, flat RTT, all three FM probes on one shared path, seen once. It has cleared: 234378989 (11-08), 235636840 (11-10) and 236866386 (11-12) pass .246 -> 182.50.169.217 and reach the target. Not added to known_anomalies.py, so a recurrence escalates again.
 
 ## AS139759 (FM) -> AS38800 (WS)
 - measurement: 233692457
 - reason: unrecognized routing loop
 - detail: probe 62046: loop involving address 202.87.208.244, not in known_anomalies.py
 - flagged: 2026-11-06T15:17:04.619079+00:00
+- resolved: 2026-11-19T09:18+10:00 -- transient (temp/escalation_reviews_2026-11-19/review_routing_loops.md 3): a real two-router loop inside Digicel Samoa (AS38800), 202.87.208.244 (gi0-0-0.rgwict01.digicelsamoa.ws) <-> .246, hops 16-32, flat RTT, all three FM probes on one shared path, seen once. It has cleared: 234378989 (11-08), 235636840 (11-10) and 236866386 (11-12) pass .246 -> 182.50.169.217 and reach the target. Not added to known_anomalies.py, so a recurrence escalates again.
 
 ## AS139759 (FM) -> AS38800 (WS)
 - measurement: 233692457
 - reason: unrecognized routing loop
 - detail: probe 7448: loop involving address 202.87.208.244, not in known_anomalies.py
 - flagged: 2026-11-06T15:17:04.619079+00:00
+- resolved: 2026-11-19T09:18+10:00 -- transient (temp/escalation_reviews_2026-11-19/review_routing_loops.md 3): a real two-router loop inside Digicel Samoa (AS38800), 202.87.208.244 (gi0-0-0.rgwict01.digicelsamoa.ws) <-> .246, hops 16-32, flat RTT, all three FM probes on one shared path, seen once. It has cleared: 234378989 (11-08), 235636840 (11-10) and 236866386 (11-12) pass .246 -> 182.50.169.217 and reach the target. Not added to known_anomalies.py, so a recurrence escalates again.
 
 ## AS17893 (PW) -> AS3605 (GU)
 - measurement: 234920970
 - reason: local IXP crossing with implausibly high latency
 - detail: probe 7455: hop 3 crosses GU-IX (in-fishbowl) at 19.28ms, 19.0ms more than the hop before it (minimum over it and later hops), above the 10.0ms local-fiber threshold -- either this hop isn't genuinely local despite the registry, or there's an unexpected detour/backhaul before reaching it; needs a human look, not a guess
 - flagged: 2026-11-09T15:04:19.669371+00:00
+- resolved: 2026-11-19T09:18+10:00 -- ordinary: the PW -> GU-IX cable leg (temp/escalation_reviews_2026-11-19/review_ixp_latency.md 4.1). PNCC's Koror border router hands straight to docomo.gw8.gu-ix.net; the 19.0ms step is the Palau-Guam cable (floor 12.9ms), as in 228276691 (resolved 2026-11-02). The check now allows the probe's cable leg (fbbb5e8) and clears it.
 
 ## AS139759 (FM) -> AS17893 (PW)
 - measurement: 234926407
 - reason: local IXP crossing with implausibly high latency
 - detail: probe 50897: hop 7 crosses Guam IX (in-fishbowl) at 40.258ms, 18.6ms more than the hop before it (minimum over it and later hops), above the 10.0ms local-fiber threshold -- either this hop isn't genuinely local despite the registry, or there's an unexpected detour/backhaul before reaching it; needs a human look, not a guess
 - flagged: 2026-11-09T15:10:58.793229+00:00
+- resolved: 2026-11-19T09:18+10:00 -- ordinary: FM -> Guam cable leg, then PNCC's remote Guam IX port .18 in Koror (temp/escalation_reviews_2026-11-19/review_ixp_latency.md 4.3; anchoring mesh 86005050 shows the same 19.7 + 18.9ms). Same as 228276160 (resolved 2026-11-02). The check now allows the remote member's cable leg (fbbb5e8) and clears it.
 
 ## AS139759 (FM) -> AS17893 (PW)
 - measurement: 234926407
 - reason: local IXP crossing with implausibly high latency
 - detail: probe 62046: hop 8 crosses Guam IX (in-fishbowl) at 40.626ms, 18.1ms more than the hop before it (minimum over it and later hops), above the 10.0ms local-fiber threshold -- either this hop isn't genuinely local despite the registry, or there's an unexpected detour/backhaul before reaching it; needs a human look, not a guess
 - flagged: 2026-11-09T15:10:58.793229+00:00
+- resolved: 2026-11-19T09:18+10:00 -- ordinary: FM -> Guam cable leg, then PNCC's remote Guam IX port .18 in Koror (temp/escalation_reviews_2026-11-19/review_ixp_latency.md 4.3; anchoring mesh 86005050 shows the same 19.7 + 18.9ms). Same as 228276160 (resolved 2026-11-02). The check now allows the remote member's cable leg (fbbb5e8) and clears it.
 
 ## AS139759 (FM) -> AS17893 (PW)
 - measurement: 234926407
 - reason: local IXP crossing with implausibly high latency
 - detail: probe 7448: hop 5 crosses Guam IX (in-fishbowl) at 38.649ms, 18.8ms more than the hop before it (minimum over it and later hops), above the 10.0ms local-fiber threshold -- either this hop isn't genuinely local despite the registry, or there's an unexpected detour/backhaul before reaching it; needs a human look, not a guess
 - flagged: 2026-11-09T15:10:58.793229+00:00
+- resolved: 2026-11-19T09:18+10:00 -- ordinary: FM -> Guam cable leg, then PNCC's remote Guam IX port .18 in Koror (temp/escalation_reviews_2026-11-19/review_ixp_latency.md 4.3; anchoring mesh 86005050 shows the same 19.7 + 18.9ms). Same as 228276160 (resolved 2026-11-02). The check now allows the remote member's cable leg (fbbb5e8) and clears it.
 
 ## AS17893 (PW) -> AS55722 (NR)
 - measurement: 234928910
 - reason: local IXP crossing with implausibly high latency
 - detail: probe 7455: hop 3 crosses Guam IX (in-fishbowl) at 54.483ms, 54.3ms more than the hop before it (minimum over it and later hops), above the 10.0ms local-fiber threshold -- either this hop isn't genuinely local despite the registry, or there's an unexpected detour/backhaul before reaching it; needs a human look, not a guess
 - flagged: 2026-11-09T15:13:44.994601+00:00
+- resolved: 2026-11-19T09:18+10:00 -- ordinary: remote member port, not a detour (temp/escalation_reviews_2026-11-19/review_ixp_latency.md 4.4). 103.142.153.24 is CenPac AS55722's Guam IX port on a router in Nauru (cr1/cr2.core.cenpac.net.nr 0.03ms behind it); Koror-Guam 19ms + Guam-Nauru 35.5ms = 54.5ms. The check now allows both cable legs (fbbb5e8) and clears it.
 
 ## AS45345 (NC) -> AS4638 (FJ)
 - measurement: 235633070
@@ -627,36 +636,42 @@ Corridors `auto_classify.py`'s mechanical rules couldn't confidently resolve on 
 - reason: local IXP crossing with implausibly high latency
 - detail: probe 1012513: hop 2 crosses Guam IX (in-fishbowl) at 18.961ms, 18.9ms more than the hop before it (minimum over it and later hops), above the 10.0ms local-fiber threshold -- either this hop isn't genuinely local despite the registry, or there's an unexpected detour/backhaul before reaching it; needs a human look, not a guess
 - flagged: 2026-11-10T15:10:09.990299+00:00
+- resolved: 2026-11-19T09:18+10:00 -- ordinary: remote member port, not a detour (temp/escalation_reviews_2026-11-19/review_ixp_latency.md 4.2-4.3). 103.142.153.18 is PNCC AS17893's Guam IX port on a router in Koror, reached over an L2 circuit on the Palau-Guam cable; anchoring mesh 86005050 / 79954801 put the whole Guam-Koror round trip (19.1ms) on .18. The check now allows a remote member's cable leg (fbbb5e8) and clears it.
 
 ## AS152735 (GU) -> AS17893 (PW)
 - measurement: 235634536
 - reason: local IXP crossing with implausibly high latency
 - detail: probe 60703: hop 3 crosses Guam IX (in-fishbowl) at 19.494ms, 18.9ms more than the hop before it (minimum over it and later hops), above the 10.0ms local-fiber threshold -- either this hop isn't genuinely local despite the registry, or there's an unexpected detour/backhaul before reaching it; needs a human look, not a guess
 - flagged: 2026-11-10T15:10:09.990299+00:00
+- resolved: 2026-11-19T09:18+10:00 -- ordinary: remote member port, not a detour (temp/escalation_reviews_2026-11-19/review_ixp_latency.md 4.2-4.3). 103.142.153.18 is PNCC AS17893's Guam IX port on a router in Koror, reached over an L2 circuit on the Palau-Guam cable; anchoring mesh 86005050 / 79954801 put the whole Guam-Koror round trip (19.1ms) on .18. The check now allows a remote member's cable leg (fbbb5e8) and clears it.
 
 ## AS152735 (GU) -> AS17893 (PW)
 - measurement: 235634536
 - reason: local IXP crossing with implausibly high latency
 - detail: probe 7385: hop 2 crosses Guam IX (in-fishbowl) at 19.05ms, 18.7ms more than the hop before it (minimum over it and later hops), above the 10.0ms local-fiber threshold -- either this hop isn't genuinely local despite the registry, or there's an unexpected detour/backhaul before reaching it; needs a human look, not a guess
 - flagged: 2026-11-10T15:10:09.990299+00:00
+- resolved: 2026-11-19T09:18+10:00 -- ordinary: remote member port, not a detour (temp/escalation_reviews_2026-11-19/review_ixp_latency.md 4.2-4.3). 103.142.153.18 is PNCC AS17893's Guam IX port on a router in Koror, reached over an L2 circuit on the Palau-Guam cable; anchoring mesh 86005050 / 79954801 put the whole Guam-Koror round trip (19.1ms) on .18. The check now allows a remote member's cable leg (fbbb5e8) and clears it.
 
 ## AS152735 (GU) -> AS17893 (PW)
 - measurement: 235635618
 - reason: local IXP crossing with implausibly high latency
 - detail: probe 1012513: hop 2 crosses Guam IX (in-fishbowl) at 18.98ms, 18.9ms more than the hop before it (minimum over it and later hops), above the 10.0ms local-fiber threshold -- either this hop isn't genuinely local despite the registry, or there's an unexpected detour/backhaul before reaching it; needs a human look, not a guess
 - flagged: 2026-11-10T15:13:28.582639+00:00
+- resolved: 2026-11-19T09:18+10:00 -- ordinary: remote member port, not a detour (temp/escalation_reviews_2026-11-19/review_ixp_latency.md 4.2-4.3). 103.142.153.18 is PNCC AS17893's Guam IX port on a router in Koror, reached over an L2 circuit on the Palau-Guam cable; anchoring mesh 86005050 / 79954801 put the whole Guam-Koror round trip (19.1ms) on .18. The check now allows a remote member's cable leg (fbbb5e8) and clears it. Duplicate run of 235634536 (#54's retest).
 
 ## AS152735 (GU) -> AS17893 (PW)
 - measurement: 235635618
 - reason: local IXP crossing with implausibly high latency
 - detail: probe 60703: hop 3 crosses Guam IX (in-fishbowl) at 19.515ms, 18.8ms more than the hop before it (minimum over it and later hops), above the 10.0ms local-fiber threshold -- either this hop isn't genuinely local despite the registry, or there's an unexpected detour/backhaul before reaching it; needs a human look, not a guess
 - flagged: 2026-11-10T15:13:28.582639+00:00
+- resolved: 2026-11-19T09:18+10:00 -- ordinary: remote member port, not a detour (temp/escalation_reviews_2026-11-19/review_ixp_latency.md 4.2-4.3). 103.142.153.18 is PNCC AS17893's Guam IX port on a router in Koror, reached over an L2 circuit on the Palau-Guam cable; anchoring mesh 86005050 / 79954801 put the whole Guam-Koror round trip (19.1ms) on .18. The check now allows a remote member's cable leg (fbbb5e8) and clears it. Duplicate run of 235634536 (#54's retest).
 
 ## AS152735 (GU) -> AS17893 (PW)
 - measurement: 235635618
 - reason: local IXP crossing with implausibly high latency
 - detail: probe 7385: hop 2 crosses Guam IX (in-fishbowl) at 18.944ms, 18.8ms more than the hop before it (minimum over it and later hops), above the 10.0ms local-fiber threshold -- either this hop isn't genuinely local despite the registry, or there's an unexpected detour/backhaul before reaching it; needs a human look, not a guess
 - flagged: 2026-11-10T15:13:28.582639+00:00
+- resolved: 2026-11-19T09:18+10:00 -- ordinary: remote member port, not a detour (temp/escalation_reviews_2026-11-19/review_ixp_latency.md 4.2-4.3). 103.142.153.18 is PNCC AS17893's Guam IX port on a router in Koror, reached over an L2 circuit on the Palau-Guam cable; anchoring mesh 86005050 / 79954801 put the whole Guam-Koror round trip (19.1ms) on .18. The check now allows a remote member's cable leg (fbbb5e8) and clears it. Duplicate run of 235634536 (#54's retest).
 
 ## AS3605 (GU) -> AS17993 (WS)
 - measurement: 235635673
@@ -749,18 +764,21 @@ Corridors `auto_classify.py`'s mechanical rules couldn't confidently resolve on 
 - reason: unrecognized routing loop
 - detail: probe 60689: loop involving address 113.197.15.213, not in known_anomalies.py
 - flagged: 2026-11-16T15:13:41.188875+00:00
+- resolved: 2026-11-19T09:18+10:00 -- duplicate of the 2026-11-03 entry for this corridor (NOC-150312), which stays open (temp/escalation_reviews_2026-11-19/review_routing_loops.md 2.4). Same loop, unchanged: .213 (10) -> .194 (11) -> 113.197.15.136 label 830 (12) -> .213 (13) -> .194 (14), then dark; 6 of 6 second-pass replies.
 
 ## AS55722 (NR) -> AS142245 (FJ)
 - measurement: 239432778
 - reason: detour hub differs from the filed finding
 - detail: finding #321 is filed via Los Angeles; this run left the region via Sydney (100ge0-0-0-4.core3.syd1.he.net (router in Sydney, no IXP crossing)) -- not corroborated; relabel, keep, or retest is the owner's call
 - flagged: 2026-11-17T15:07:08.515069+00:00
+- resolved: 2026-11-19T09:18+10:00 -- relabelled: finding #321's detour_hub is now Sydney (temp/escalation_reviews_2026-11-19/review_hub_mismatch.md 2.3). The Los Angeles label was the first off-region router, from before the 11-16 last-city fix. All three runs (231754568, 239432778, 239434797) end at core3.syd1.he.net (274-317ms, floor 40.39ms) and reach 198.15.17.1. Rehearsed on a DB copy: with Sydney all three corroborate, with Los Angeles all three escalate.
 
 ## AS55722 (NR) -> AS142245 (FJ)
 - measurement: 239434797
 - reason: detour hub differs from the filed finding
 - detail: finding #321 is filed via Los Angeles; this run left the region via Sydney (100ge0-0-0-4.core3.syd1.he.net (router in Sydney, no IXP crossing)) -- not corroborated; relabel, keep, or retest is the owner's call
 - flagged: 2026-11-17T15:10:13.667050+00:00
+- resolved: 2026-11-19T09:18+10:00 -- relabelled: finding #321's detour_hub is now Sydney (temp/escalation_reviews_2026-11-19/review_hub_mismatch.md 2.3). The Los Angeles label was the first off-region router, from before the 11-16 last-city fix. All three runs (231754568, 239432778, 239434797) end at core3.syd1.he.net (274-317ms, floor 40.39ms) and reach 198.15.17.1. Rehearsed on a DB copy: with Sydney all three corroborate, with Los Angeles all three escalate.
 
 ## AS45345 (NC) -> AS45193 (FM)
 - measurement: 240073513
