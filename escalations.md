@@ -762,3 +762,27 @@ Corridors `auto_classify.py`'s mechanical rules couldn't confidently resolve on 
 - detail: finding #321 is filed via Los Angeles; this run left the region via Sydney (100ge0-0-0-4.core3.syd1.he.net (router in Sydney, no IXP crossing)) -- not corroborated; relabel, keep, or retest is the owner's call
 - flagged: 2026-11-17T15:10:13.667050+00:00
 
+## AS45345 (NC) -> AS45193 (FM)
+- measurement: 240073513
+- reason: router address has no single BGP owner
+- detail: probe 33674: router hub: hop 7 103.200.13.168 HundredGigE0-0-1-2.921.bdr01-ipt-624sgran-lax.us.as38195.net -> Los Angeles, 211.915ms (floor 96.77ms, no_owner) -- BGP gives no single origin for the address (lookup failed, unannounced, or multi-origin), so the hostname can't be checked against its network; needs a human look, not a detour
+- flagged: 2026-11-18T15:10:19.547097+00:00
+
+## AS45345 (NC) -> AS45193 (FM)
+- measurement: 240073513
+- reason: router address has no single BGP owner
+- detail: probe 63050: router hub: hop 7 103.200.13.168 HundredGigE0-0-1-2.921.bdr01-ipt-624sgran-lax.us.as38195.net -> Los Angeles, 212.842ms (floor 96.77ms, no_owner) -- BGP gives no single origin for the address (lookup failed, unannounced, or multi-origin), so the hostname can't be checked against its network; needs a human look, not a detour
+- flagged: 2026-11-18T15:10:19.547097+00:00
+
+## AS45345 (NC) -> AS45193 (FM)
+- measurement: 240073513
+- reason: router address has no single BGP owner
+- detail: probe 7018: router hub: hop 7 103.200.13.168 HundredGigE0-0-1-2.921.bdr01-ipt-624sgran-lax.us.as38195.net -> Los Angeles, 190.441ms (floor 96.77ms, no_owner) -- BGP gives no single origin for the address (lookup failed, unannounced, or multi-origin), so the hostname can't be checked against its network; needs a human look, not a detour
+- flagged: 2026-11-18T15:10:19.547097+00:00
+
+## AS45345 (NC) -> AS23657 (AS)
+- measurement: 240078520
+- reason: detour hub differs from the filed finding
+- detail: finding #66 is filed via Sydney; this run left the region via Portland (be2378.ccr51.pdx02.atlas.cogentco.com (router in Portland, no IXP crossing)) -- not corroborated; relabel, keep, or retest is the owner's call
+- flagged: 2026-11-18T15:16:47.531604+00:00
+
