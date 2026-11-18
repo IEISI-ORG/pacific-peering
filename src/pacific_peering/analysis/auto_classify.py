@@ -113,6 +113,8 @@ from pacific_peering.analysis.feasibility import (
     check_detour_trace,
     claim_probes,
     claim_verdict,
+    great_circle_km,
+    min_feasible_rtt_ms,
     probe_verdict,
 )
 from pacific_peering.analysis.ixp_lan_registry import (
@@ -182,6 +184,10 @@ _ASPA_RECHECK_MAX_AGE_DAYS = 30  # project owner's own cadence choice
 # slow", not "this exchange is secretly a detour" -- worth checking the
 # hop position and the other probes' readings for the same target before
 # concluding anything about the exchange itself.
+#
+# Since 2026-11-19 the 10ms is the local-fibre part of a larger allowance:
+# cable legs to a remote member's router and from the probe's economy are
+# added on top (see `_local_ixp_check`).
 LOCAL_IXP_LATENCY_THRESHOLD_MS = 10.0
 
 # ASNs known to be corporate proxy/VPN egress points, not real network
@@ -287,6 +293,64 @@ def _local_ixp_excess_ms(ixp_hop: int, hops: list[dict]) -> float | None:
     if not after:
         return None
     return min(after) - (before[-1] if before else 0.0)
+
+
+# Cable paths in this region run 1.2x-1.5x the great-circle floor (review_ixp_latency.md
+# section 2, 2026-11-19). An upper allowance, so plain floors, never spread-reduced ones.
+LOCAL_IXP_CABLE_STRETCH = 1.5
+
+
+def _economy_floor_ms(a: str | None, b: str | None) -> float:
+    """Plain great-circle fibre floor between two economies; 0 if either is unknown or they match."""
+    if a is None or b is None or a == b or a not in ECONOMY_LATLON or b not in ECONOMY_LATLON:
+        return 0.0
+    return min_feasible_rtt_ms(great_circle_km(*ECONOMY_LATLON[a], *ECONOMY_LATLON[b]))
+
+
+@dataclass(frozen=True)
+class _LocalIxpFlag:
+    """An in-fishbowl crossing slower than its allowance; the legs go in the escalation text."""
+
+    excess_ms: float | None
+    leg_in_ms: float
+    leg_out_ms: float
+
+    @property
+    def allowance_ms(self) -> float:
+        return LOCAL_IXP_LATENCY_THRESHOLD_MS + self.leg_in_ms + self.leg_out_ms
+
+
+def _local_ixp_check(
+    crossing: dict, hops: list[dict], probe_cc: str | None, ixp_cc: str | None, asn_to_cc: dict[int, str],
+) -> _LocalIxpFlag | None:
+    """Flag an in-fishbowl crossing whose excess beats 10ms + leg_in + leg_out, else None.
+
+    Owner, 2026-11-19 (review_ixp_latency.md, option B). The flat 10ms assumed
+    probe, exchange and member router share a metro, so remote member ports
+    (PNCC's Guam IX .18 in Koror, CenPac's .24 in Nauru) and cable legs into
+    the exchange flagged every rotation.
+    - leg_out: stretch x floor(exchange economy -> home economy of the port's
+      member ASN). Zero when the member is local or unknown.
+    - leg_in: stretch x floor(probe economy -> exchange economy), less the RTT
+      of the last answering hop before the exchange, never below 0. A cable
+      leg already paid before the exchange earns nothing twice; that is what
+      keeps NC -> TFL at Fiji-IXP flagged (FINTEL at 16ms, reply via Sydney).
+    An exchange hop at 10ms or less is never flagged; an excess that can't be
+    computed still is.
+    """
+    rtt = crossing.get("min_rtt_ms")
+    if rtt is None or rtt <= LOCAL_IXP_LATENCY_THRESHOLD_MS:
+        return None
+    ixp_hop = crossing.get("hop", -1)
+    excess = _local_ixp_excess_ms(ixp_hop, hops)
+    before = [h["min_rtt_ms"] for h in hops if h.get("hop", -1) < ixp_hop and h.get("min_rtt_ms") is not None]
+    member_cc = next((asn_to_cc[a] for a in crossing.get("member_asns", []) if a in asn_to_cc), None)
+    leg_in = max(0.0, LOCAL_IXP_CABLE_STRETCH * _economy_floor_ms(probe_cc, ixp_cc) - (before[-1] if before else 0.0))
+    leg_out = LOCAL_IXP_CABLE_STRETCH * _economy_floor_ms(ixp_cc, member_cc)
+    flag = _LocalIxpFlag(excess, leg_in, leg_out)
+    if excess is not None and excess <= flag.allowance_ms:
+        return None
+    return flag
 
 
 def _local_ixp_crossing_name(probe: dict) -> str | None:
@@ -781,13 +845,13 @@ def _classify_corridor(
                 if hub_city in EXTERNAL_HUB_LATLON:
                     detour_pick = detour_pick or (crossing, crossing.get("name", "?"), hub_city)
             elif in_fishbowl is True:
-                rtt = crossing.get("min_rtt_ms")
-                if rtt is not None and rtt > LOCAL_IXP_LATENCY_THRESHOLD_MS:
-                    excess = _local_ixp_excess_ms(crossing.get("hop", -1), hops_by_probe.get(probe["probe_id"], []))
-                    if excess is None or excess > LOCAL_IXP_LATENCY_THRESHOLD_MS:
-                        high_latency_local_crossings.append(
-                            {**crossing, "probe_id": probe["probe_id"], "excess_ms": excess}
-                        )
+                entry = ixp_registry.get(crossing.get("ix_id"))
+                flag = _local_ixp_check(
+                    crossing, hops_by_probe.get(probe["probe_id"], []), candidate.source_cc,
+                    entry.country if entry else None, asn_to_cc,
+                )
+                if flag is not None:
+                    high_latency_local_crossings.append({**crossing, "probe_id": probe["probe_id"], "flag": flag})
 
         upstream_asn = probe.get("traceroute_upstream_asn")
         if upstream_asn is None:
@@ -903,10 +967,12 @@ def _classify_corridor(
                     f"probe {crossing['probe_id']}: hop {crossing['hop']} crosses "
                     f"{crossing.get('name', '?')} (in-fishbowl) at {crossing['min_rtt_ms']}ms"
                     + (
-                        f", {crossing['excess_ms']:.1f}ms more than the hop before it (minimum over it and later hops)"
-                        if crossing.get("excess_ms") is not None else ""
+                        f", {crossing['flag'].excess_ms:.1f}ms more than the hop before it (minimum over it and later hops)"
+                        if crossing["flag"].excess_ms is not None else ""
                     )
-                    + f", above the {LOCAL_IXP_LATENCY_THRESHOLD_MS}ms local-fiber threshold -- "
+                    + f", above the {crossing['flag'].allowance_ms:.1f}ms allowed "
+                    f"({LOCAL_IXP_LATENCY_THRESHOLD_MS}ms local fibre + {crossing['flag'].leg_in_ms:.1f}ms "
+                    f"cable leg in + {crossing['flag'].leg_out_ms:.1f}ms to the port member's economy) -- "
                     "either this hop isn't genuinely local despite the registry, or there's "
                     "an unexpected detour/backhaul before reaching it; needs a human look, "
                     "not a guess"
