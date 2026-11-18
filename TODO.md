@@ -149,8 +149,12 @@ Addresses are in the private contact notes, not here.
 - [ ] **Digicel Vanuatu, AS132429 (VU): "Request: hosting a RIPE Atlas probe
   on Digicel Vanuatu (AS132429)" (10-21) was rejected by the RDAP group,
   which only accepts internal senders (5.7.133).** The route is Mark Duffell
-  (Digicel-wide note sent 10-22), and he hasn't replied yet. Chase him if
-  nothing arrives.
+  (Digicel-wide note sent 10-22). Mark was off with flu, then on holiday, and
+  asked on 11-17 for the contacts we already had. Owner's reply went 11-18
+  01:08Z: Henry Ulunisau (FJ), the FIJIIPADMINS/Nauru/VU role mailboxes and
+  their status, three Digicel names from the PITA PIW-26 list, no connected
+  probe on any Digicel ASN, and the RPKI question below. Waiting on Mark for
+  named contacts per operation.
 - [ ] **Blue Sky, AS23657 (AS): the RDAP admin Cc on "Re: [pacnog] Re: We
   need more RIPE ATLAS PROBES across the Pacific" (10-21, the follow-up to
   Alo Anesi) was blocked (5.7.1).** Alo's own copy was delivered, but he
