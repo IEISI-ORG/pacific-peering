@@ -150,7 +150,9 @@ _KNOWN_PATTERNS: tuple[tuple[re.Pattern[str], HopLocation], ...] = (
             matched_pattern="nsw",
             evidence_note=(
                 "Confirmed via AARNet (et-3-0-2.pe1.alxd.nsw.aarnet.net.au, "
-                "measurement 212013476, PW->AS24390) -- AARNet spells out the "
+                "measurement 212013476, PW->AS24390; AARNet renamed the same "
+                "address, 113.197.15.136, et-1-0-2.pe1.mcqp.nsw on "
+                "2026-11-05) -- AARNet spells out the "
                 "Australian state (New South Wales, i.e. Sydney metro) rather "
                 "than using an IATA code, hence a separate pattern from "
                 "Cogent's/Telia's 'syd'/'lax' convention. The same hop also "
