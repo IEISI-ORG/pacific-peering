@@ -130,3 +130,48 @@ def test_telstra_domestic_city_word_only_counts_on_telstra_net():
     assert resolve_hostname("bundle-ether1.win-edge903.melbourne.telstra.net") is None
     assert resolve_hostname("core1.sydney.example.net") is None
     assert resolve_hostname("telstra4-lacp-100g.hkix.net.example.com") is None
+
+
+# AARNet's Los Angeles border router is `bdr1.laxc.us`; the `lax\d*` pattern needs a segment
+# boundary after the digits, so `laxc` never matched (owner, 2026-11-19). TO probe 11691 on
+# 240076669: AARNet Sydney 46.7ms, `et-0-0-0.bdr1.laxc.us.aarnet.net.au` (113.197.15.137)
+# 179.8ms, then the Any2West LAN address 206.72.210.133 at 179.7ms.
+AARNET_LOS_ANGELES = "et-0-0-0.bdr1.laxc.us.aarnet.net.au"
+
+# Hurricane Electric's Tokyo routers are `core<n>.tyo<n>.he.net` (owner, 2026-11-19). NR probe
+# 1018134 reaches ve101.core2.tyo1 at 75ms, one hop after Guam at 36ms (231076198);
+# be15.core1.tyo1 sits directly before the BBIX Tokyo (213456317) and JPNAP Tokyo (231751013)
+# LAN addresses. All nine tyo1 names in the PTR cache (2026-11-19):
+HE_TOKYO = (
+    "ve101.core2.tyo1.he.net",
+    "be15.core1.tyo1.he.net",
+    "be3.core1.tyo1.he.net",
+    "be47.core1.tyo1.he.net",
+    "be48.core1.tyo1.he.net",
+    "port-channel1.core3.tyo1.he.net",
+    "port-channel9.core2.tyo1.he.net",
+    "port-channel16.core2.tyo1.he.net",
+    "gigabitethernet2-8.core1.tyo1.he.net",
+)
+
+
+def test_aarnet_laxc_is_los_angeles():
+    loc = resolve_hostname(AARNET_LOS_ANGELES)
+    assert loc is not None
+    assert (loc.city, loc.economy_cc) == ("Los Angeles", None)
+
+
+def test_he_tyo_routers_are_tokyo():
+    for name in HE_TOKYO:
+        loc = resolve_hostname(name)
+        assert loc is not None, name
+        assert (loc.city, loc.economy_cc) == ("Tokyo", None), name
+
+
+def test_laxc_and_tyo_only_count_on_their_own_carriers():
+    # Other carriers' tyo names (Cogent tyo01, GTT cr4-tyo1) are not yet checked against a hop.
+    assert resolve_hostname("be2915.ccr81.tyo01.atlas.cogentco.com") is None
+    assert resolve_hostname("ae6.cr4-tyo1.ip4.gtt.net") is None
+    assert resolve_hostname("core1.tyo1.he.net.example.com") is None
+    assert resolve_hostname("xe-0.bdr1.laxc.example.net") is None
+    assert resolve_hostname("et-0-0-0.bdr1.laxc.aarnet.net.au") is None

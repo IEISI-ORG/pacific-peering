@@ -288,6 +288,37 @@ _KNOWN_PATTERNS: tuple[tuple[re.Pattern[str], HopLocation], ...] = (
             ),
         ),
     ),
+    (
+        re.compile(r"\.laxc\.us\.aarnet\.net\.au$", re.I),
+        HopLocation(
+            city="Los Angeles",
+            economy_cc=None,
+            matched_pattern="aarnet laxc",
+            evidence_note=(
+                "AARNet's Los Angeles border router (owner, 2026-11-19). TO probe "
+                "11691 reaches et-0-0-0.bdr1.laxc.us at 179.8ms, 133ms after AARNet "
+                "Sydney (46.7ms), and the next hop is the Any2West LAN address "
+                "206.72.210.133 at 179.7ms (240076669; same on 224429298, 233085885). "
+                "The 'lax' pattern needs a boundary after the digits, so 'laxc' "
+                "never matched; scoped to aarnet.net.au."
+            ),
+        ),
+    ),
+    (
+        re.compile(r"\.tyo\d+\.he\.net$", re.I),
+        HopLocation(
+            city="Tokyo",
+            economy_cc=None,
+            matched_pattern="he.net tyo",
+            evidence_note=(
+                "Hurricane Electric's Tokyo routers (owner, 2026-11-19). NR probe "
+                "1018134 reaches ve101.core2.tyo1 at 75ms, one hop after Guam at "
+                "36ms (231076198); be15.core1.tyo1 sits directly before the BBIX "
+                "Tokyo (213456317) and JPNAP Tokyo (231751013) LAN addresses. "
+                "Scoped to he.net; other carriers' tyo names are not yet checked."
+            ),
+        ),
+    ),
 )
 
 
