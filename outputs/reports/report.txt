@@ -1,6 +1,6 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-11-18T15:19:49.553056+00:00                  
+                 Generated: 2026-11-18T23:16:49.430675+00:00                  
 ==============================================================================
 FOUND A BUG? Bugs very likely remain in both the code and the data.
 Please open an issue: https://github.com/IEISI-ORG/pacific-peering/issues/new
@@ -109,9 +109,9 @@ The mirror image of the regional hubs above: the real external cities where conf
 
 City           Entries  Share Carriers Subregions reached            
 ------------------------------------------------------------------------------
-Sydney             114    60%       26 Melanesia, Micronesia, Polynesia
-    Dependent economies: AS, FJ, FM, KI, NC, NR, NU, PG, SB, TO, VU, WS
-Los Angeles         43    23%       10 Melanesia, Micronesia, Polynesia
+Sydney             114    60%       25 Melanesia, Micronesia, Polynesia
+    Dependent economies: AS, FJ, KI, NC, NR, NU, PG, SB, TO, VU, WS
+Los Angeles         43    23%        9 Melanesia, Micronesia, Polynesia
     Dependent economies: FJ, FM, GU, KI, MH, NR, PF, PW, SB, WF
 Tokyo               19    10%        9 Melanesia, Micronesia, Polynesia
     Dependent economies: AS, GU, KI, MH, NC, NR, PW, SB, VU, WF
@@ -731,7 +731,7 @@ NU -> FM (AS38875): detours via be5.core1.lax2.he.net (router in Los Angeles, no
 CK -> FM (AS45193): detours via Any2West (Los Angeles)
     RIS observation count: 1681  [measurement 211749873]
     Cook Islands (AS10131) -> a third FSM Telecommunications Corporation sibling ASN (AS45193) -- a fresh CK<->FM pair, a second independent confirmation of the direct AS139759<->AS45193 adjacency (after the PF entry). Only 1 of 3 requested probes returned; checked `participant_count` directly (1, not 3) -- the same genuine single-probe pattern as every other AS10131-sourced measurement this session. Result: `AS10131 -> AS9471 (ONATI) -> AS6939 (Hurricane Electric) -> AS9246 (Teleguam Holdings/GTA) -> AS139759 -> AS45193`, fully contiguous -- the literal target resolves directly again, RIS-agreeing with the identical *exact* match (1,681). Crosses **Any2West** directly (`ixp_crossings` confirms it) -- the same exchange as the PF entry, and the same ONATI-transit shape seen on every AS10131-sourced corridor this tranche cycle.
-FJ -> FM (AS45193): detours via Any2West (Sydney)
+FJ -> FM (AS45193): detours via Any2West (Los Angeles)
     RIS observation count: 1681  [measurement 212097709]
     University of the South Pacific (AS24390, Fiji) -> a fourth FSM Telecommunications Corporation sibling ASN (AS45193) -- a fresh FJ<->FM pair, a fifth independent confirmation of the direct AS139759<->AS45193 adjacency (after PF, CK, PG, TV). `AS24390 -> AS7575 (AARNet) -> AS9246 (Teleguam Holdings/GTA) -> AS139759 -> AS45193`, fully contiguous -- the literal target resolves directly again, RIS-agreeing with the identical exact match (1,681). Crosses Any2West directly, the same exchange as every prior confirmation. Notable: this same tranche's prior corridor (FJ->AS38875, FSM's other sibling) landed on the identical AS9246->AS139759 chain but stayed unconfirmed (candidate only), the same structural distinction already documented for the TV-sourced pair. `has_routing_loop` correctly returned `False`.
 NC -> FM (AS45193): detours via Any2West (Los Angeles)
@@ -951,7 +951,7 @@ PG -> NR (AS141368): detours via IX Australia Sydney (NSW-IX) (Sydney)
 NR -> FJ (AS141470): detours via be5.core1.lax2.he.net (router in Los Angeles, no IXP crossing) (Los Angeles)
     RIS observation count: 1059  [measurement 231753743]
     measurement 231753743 (from NR); chain: AS55722 -> AS7131 -> AS6939 -> AS4637 -> AS38442; RIS count 1059; RIS agrees.
-NR -> FJ (AS142245): detours via be5.core1.lax2.he.net (router in Los Angeles, no IXP crossing) (Los Angeles)
+NR -> FJ (AS142245): detours via be5.core1.lax2.he.net (router in Los Angeles, no IXP crossing) (Sydney)
     RIS observation count: 330  [measurement 231754568]
     measurement 231754568 (from NR); chain: AS55722 -> AS7131 -> AS6939 -> AS45355 -> AS142245; RIS count 330; RIS agrees.
 NU -> SB (AS142279): detours via AS6939 (Hurricane Electric), then AS139609 (SISCC) (Sydney)
