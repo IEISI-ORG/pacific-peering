@@ -9,6 +9,7 @@ real `IXP_OVERRIDES` entry, so a typo in that data fails here too.
 from __future__ import annotations
 
 import ipaddress
+import json
 import logging
 
 import pytest
@@ -266,7 +267,111 @@ def test_finding_276_trace_reaches_vodafone_contiguously_from_tfl(
     assert sequence[-1].contiguous_with_previous is True
 
 
+def test_unannounced_superloop_la_router_resolves_to_as38195(cache, monkeypatch):
+    # 240073513 (NC -> FM, 2026-11-18): hop 7, Superloop's Los Angeles border
+    # router, sits in 103.200.13.0/24, which no RIS peer sees. Fails if the
+    # override is missing, so the router-hub guard gets no owner for it.
+    monkeypatch.setattr(traceroute_topology, "resolve_ip_to_asns", _no_lookup)
+    monkeypatch.setattr(traceroute_topology, "resolve_ip_via_netixlan", _no_lookup)
+    cache.set("103.200.13.168", None, None, None)
+
+    asn, source, ctx = traceroute_topology._resolve_address(
+        "103.200.13.168", cache, REGISTRY
+    )
+
+    assert (asn, source, ctx) == (38195, "prefix_override", None)
+
+
+def test_superloop_override_stays_inside_its_own_24(cache, monkeypatch):
+    # 103.200.14.0/24 is announced by AS38195; BGP still answers for it.
+    monkeypatch.setattr(traceroute_topology, "resolve_ip_to_asns", lambda ip: [38195])
+
+    asn, source, _ctx = traceroute_topology._resolve_address(
+        "103.200.14.1", cache, REGISTRY
+    )
+
+    assert (asn, source) == (38195, "bgp")
+
+
 @pytest.mark.parametrize("override", PREFIX_ASN_OVERRIDES, ids=lambda o: o.prefix)
 def test_prefix_overrides_are_valid_networks(override):
     # Catches a mistyped prefix (host bits set, bad syntax).
     ipaddress.ip_network(override.prefix)
+
+
+# --- Owner, 2026-11-19 (F1, option 2): an override never vouches for an adjacency by itself ------
+# With 103.200.13.0/24 -> AS38195, the unannounced Superloop LA routers stop being a gap, so a
+# trace AS38195 -> [103.200.13.x] -> AS3605 reads as a contiguous AS38195 -> AS3605 step. RIS has
+# never seen that adjacency (task_plan.md, 211259107, September). A step that is contiguous only
+# because of an override counts as contiguous only when RIS agrees.
+
+from pacific_peering.analysis.traceroute_topology import (  # noqa: E402
+    HopResolution,
+    check_neighbor_agreement,
+    extract_as_sequence,
+)
+
+
+def _hop(n, asn, source, address=None):
+    return HopResolution(hop=n, addresses=(address or f"192.0.2.{n}",), asns=(asn,), resolution_source=source)
+
+
+# Real addresses: Superloop's LA routers (guarded override) and TFL's core (not guarded).
+_SUPERLOOP_LA = ("103.200.13.67", "103.200.13.168")
+_TFL_CORE = "202.137.178.55"
+
+
+def test_only_the_superloop_override_needs_ris_for_adjacency():
+    # TFL's core override (owner, 2026-10-18, with the #276 relabel) makes Fiji-IXP chains
+    # contiguous for candidate peerings #276/#279/#296/#313, which RIS by definition hasn't seen.
+    flags = {o.prefix: o.needs_ris_for_adjacency for o in PREFIX_ASN_OVERRIDES}
+    assert flags == {"202.137.178.0/24": False, "103.200.13.0/24": True}
+
+
+def test_a_step_bridged_by_guarded_override_hops_is_marked():
+    sequence = extract_as_sequence([
+        _hop(4, 38195, "bgp"), _hop(6, 38195, "prefix_override", _SUPERLOOP_LA[0]),
+        _hop(7, 38195, "prefix_override", _SUPERLOOP_LA[1]), _hop(8, 3605, "peeringdb_netixlan"),
+    ])
+    assert [(e.asn, e.contiguous_with_previous, e.contiguous_via_override) for e in sequence] == [
+        (38195, True, False), (3605, True, True)]
+
+
+def test_a_step_into_a_guarded_override_entry_is_marked():
+    sequence = extract_as_sequence([
+        _hop(1, 18200, "bgp"), _hop(2, 38195, "prefix_override", _SUPERLOOP_LA[1]), _hop(3, 3605, "bgp")])
+    assert [e.contiguous_via_override for e in sequence] == [False, True, True]
+
+
+def test_the_tfl_core_override_still_vouches_for_its_steps():
+    sequence = extract_as_sequence([
+        _hop(1, 45349, "ixp_override"), _hop(2, 45349, "prefix_override", _TFL_CORE), _hop(3, 38442, "bgp")])
+    assert [(e.contiguous_with_previous, e.contiguous_via_override) for e in sequence] == [(True, False)] * 2
+
+
+def test_a_step_with_no_override_hop_is_not_marked():
+    sequence = extract_as_sequence([_hop(4, 38195, "bgp"), _hop(5, 38195, "bgp"), _hop(8, 3605, "bgp")])
+    assert [e.contiguous_via_override for e in sequence] == [False, False]
+
+
+def _fishbowl(tmp_path, neighbours_of_3605):
+    path = tmp_path / "fishbowl.json"
+    path.write_text(json.dumps({"3605": {"neighbors": {str(a): 10 for a in neighbours_of_3605}}}))
+    return path
+
+
+_BRIDGED = [_hop(4, 38195, "bgp"), _hop(7, 38195, "prefix_override", _SUPERLOOP_LA[1]),
+            _hop(8, 3605, "peeringdb_netixlan")]
+
+
+def test_an_override_bridged_step_ris_does_not_know_is_not_contiguous(tmp_path):
+    result = check_neighbor_agreement(extract_as_sequence(_BRIDGED), 3605, _fishbowl(tmp_path, [9246]))
+    assert result["contiguous"] is False
+    assert result["override_step_unconfirmed"] is True
+    assert "prefix-override hops" in result["note"]
+
+
+def test_an_override_bridged_step_ris_agrees_with_stays_contiguous(tmp_path):
+    result = check_neighbor_agreement(extract_as_sequence(_BRIDGED), 3605, _fishbowl(tmp_path, [38195]))
+    assert result["contiguous"] is True
+    assert result.get("override_step_unconfirmed", False) is False

@@ -31,6 +31,11 @@ class PrefixAsnOverride:
     holder: str
     evidence: str
     verified: str  # ISO date the entry was last checked
+    # True: a step that is contiguous only through this prefix's hops counts as an adjacency
+    # only when RIS agrees (`traceroute_topology.check_neighbor_agreement`). The entry says
+    # whose routers the space is, not who they hand traffic to. Owner, 2026-11-19 (F1 option 2),
+    # for Superloop; TFL's core keeps False (owner accepted its steps with the #276 relabel).
+    needs_ris_for_adjacency: bool = False
 
 
 PREFIX_ASN_OVERRIDES: tuple[PrefixAsnOverride, ...] = (
@@ -49,6 +54,28 @@ PREFIX_ASN_OVERRIDES: tuple[PrefixAsnOverride, ...] = (
             "(2026-10-18, with the #276 relabel)."
         ),
         verified="2026-10-18",
+    ),
+    PrefixAsnOverride(
+        prefix="103.200.13.0/24",
+        asn=38195,
+        holder="Superloop (Australia) Pty Ltd",
+        evidence=(
+            "Not announced in BGP (RIPEstat routing-status, 2026-11-19: 0 of 320 RIS peers, "
+            "no less-specific). WHOIS: 103.200.12.0 - 103.200.15.0 (103.200.12.0/22), netname "
+            "SUPERLOOP-AU, 'SUPERLOOP (AUSTRALIA) PTY LTD', AU; AS38195 announces only "
+            "103.200.14.0/24 and 103.200.15.0/24 of the /22. RADB route object 103.200.13.0/24, "
+            "origin AS38195. RIS routing history: AS38195 originated 103.200.13.0/24 from "
+            "2016-10-02 to 2021-05-20, the last BGP origin seen. In traces the neighbouring hops "
+            "are Superloop (125.63.12.157, announced by AS38195) and the Any2West LAN. "
+            "103.200.13.168 is HundredGigE0-0-1-2.921.bdr01-ipt-624sgran-lax.us.as38195.net, "
+            "Superloop's Los Angeles border router (240073513, NC -> FM, 2026-11-18: three "
+            "'router address has no single BGP owner' escalations). Added at the owner's "
+            "request, 2026-11-19 (F1 of the escalation review)."
+        ),
+        verified="2026-11-19",
+        # 211259107 (NC -> GU AS3605): the override alone makes AS38195 -> AS3605 contiguous,
+        # an adjacency RIS has never seen; kept out of the findings in September.
+        needs_ris_for_adjacency=True,
     ),
 )
 

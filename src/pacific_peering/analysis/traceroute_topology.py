@@ -262,6 +262,11 @@ class AsHop:
     asn: int
     resolution_source: str
     contiguous_with_previous: bool  # False if 1+ unresolved hops sit between this and the prior entry
+    # True when the step from the prior entry is contiguous only because of hops resolved by a
+    # prefix override marked `needs_ris_for_adjacency` (`discovery.prefix_asn_overrides`): without
+    # them it would be a gap or not exist. `check_neighbor_agreement` then needs RIS to agree
+    # (owner, 2026-11-19, F1 option 2).
+    contiguous_via_override: bool = False
 
 
 def extract_as_sequence(resolved_hops: list[HopResolution]) -> list[AsHop]:
@@ -289,6 +294,7 @@ def extract_as_sequence(resolved_hops: list[HopResolution]) -> list[AsHop]:
     """
     sequence: list[AsHop] = []
     gap_pending = False
+    override_since_entry = False  # a guarded prefix-override hop since the last entry's first hop
     for hop in resolved_hops:
         if hop.resolution_source == "private":
             continue  # transparent: can't carry ASN info in either direction, not a gap
@@ -296,16 +302,25 @@ def extract_as_sequence(resolved_hops: list[HopResolution]) -> list[AsHop]:
             gap_pending = True
             continue
         asn = hop.asns[0]
+        is_override = hop.resolution_source == "prefix_override" and any(
+            (override := find_prefix_override(address)) is not None and override.needs_ris_for_adjacency
+            for address in hop.addresses
+        )
         if sequence and sequence[-1].asn == asn:
-            continue  # same-AS repeat hop; not a new entry, doesn't clear/set gap state
+            # Same-AS repeat hop; not a new entry, doesn't clear/set gap state. Read as a
+            # gap without the override, so the next step leans on it.
+            override_since_entry = override_since_entry or is_override
+            continue
         sequence.append(
             AsHop(
                 asn=asn,
                 resolution_source=hop.resolution_source or "unknown",
                 contiguous_with_previous=not gap_pending,
+                contiguous_via_override=bool(sequence) and not gap_pending and (override_since_entry or is_override),
             )
         )
         gap_pending = False
+        override_since_entry = is_override
     return sequence
 
 
@@ -416,7 +431,18 @@ def check_neighbor_agreement(
         "ris_agrees": agrees,
         "ris_observation_count": ris_count,
     }
-    if not target_entry.contiguous_with_previous:
+    if target_entry.contiguous_with_previous and target_entry.contiguous_via_override and not agrees:
+        # Owner, 2026-11-19 (F1 option 2): a guarded prefix override names whose routers an
+        # unannounced address belongs to, not who they hand traffic to. Without the override
+        # this step is a gap, and RIS hasn't seen it, so it stays one (211259107: AS38195 ->
+        # AS3605 through Superloop's unannounced LA routers, kept out in September).
+        result["contiguous"] = False
+        result["override_step_unconfirmed"] = True
+        result["note"] = (
+            "the step into the target is contiguous only through prefix-override hops, and RIS "
+            "has not seen the adjacency; treated as a gap"
+        )
+    elif not target_entry.contiguous_with_previous:
         result["note"] = (
             "one or more unresolved hops sit between this ASN and the target; "
             "true adjacency is not confirmed by the traceroute alone"

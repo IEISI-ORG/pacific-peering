@@ -941,6 +941,15 @@ def _classify_corridor(
                 # off-region router but goes dark before the target AS is no hop
                 # data, so inconclusive -- not detour evidence.
                 continue
+            if probe.get("override_step_unconfirmed"):
+                # Owner, 2026-11-19 (F1 option 2): its step into the target is contiguous
+                # only through prefix-override hops and RIS hasn't seen it, so the trace
+                # doesn't show how it reached the target (211259107, NC -> AS3605).
+                logger.info(
+                    "AS%d -> AS%d: probe %d left out of the router-hub rule, %s",
+                    candidate.source_asn, candidate.target_asn, probe["probe_id"], probe.get("note", ""),
+                )
+                continue
             trace = {"probe_id": probe["probe_id"], "hops": hops_by_probe.get(probe["probe_id"], [])}
             hub = find_router_hub(trace, candidate.source_cc, resolver=reverse_dns)
             if hub is None:

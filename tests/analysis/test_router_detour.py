@@ -13,8 +13,9 @@ import sqlite3
 
 import pytest
 
-from pacific_peering.analysis import auto_classify, store
+from pacific_peering.analysis import auto_classify, store, traceroute_topology
 from pacific_peering.analysis.corridor_backlog import CorridorCandidate
+from pacific_peering.analysis.ip_resolution_cache import IpResolutionCache
 from pacific_peering.analysis.ixp_lan_registry import IxpLanEntry
 from pacific_peering.analysis.traceroute_topology import HopResolution
 from pacific_peering.discovery.economy_coordinates import EXTERNAL_HUB_LATLON
@@ -411,3 +412,146 @@ def test_router_with_no_single_bgp_owner_escalates_instead_of_filing(env, asns):
     assert [e.reason for e in result.escalations] == ["router address has no single BGP owner"]
     assert "hop 8 64.86.252.73" in result.escalations[0].detail
     assert _rows(env, "SELECT kind FROM findings") == [("confirmed_local_transit",)]
+
+
+# --- 2026-11-19 owner ruling (F1): Superloop's unannounced Los Angeles router --------------------
+
+# 240073513 (NC AS45345 -> FM AS45193, 2026-11-18), probe 7018, hops 4-8 as cached in
+# data/atlas/parsed. Hop 7 is Superloop's border router at 624 S Grand Ave, Los Angeles, in
+# 103.200.13.0/24, which no RIS peer sees; hop 8 is the Any2West LAN in the same building.
+SUPERLOOP_MSM = 240073513
+SUPERLOOP_LAX = "HundredGigE0-0-1-2.921.bdr01-ipt-624sgran-lax.us.as38195.net"
+SUPERLOOP_HOPS = [
+    {"hop": 4, "addresses": ["125.63.12.157"], "min_rtt_ms": 24.916},
+    {"hop": 5, "addresses": ["125.63.12.157"], "min_rtt_ms": 24.96},
+    {"hop": 6, "addresses": ["103.200.13.67"], "min_rtt_ms": 192.596},
+    {"hop": 7, "addresses": ["103.200.13.168"], "min_rtt_ms": 190.441},
+    {"hop": 8, "addresses": ["206.72.210.133"], "min_rtt_ms": 236.402},
+]
+SUPERLOOP_PTR = {
+    "125.63.12.157": "Bundle-Ether42.2001.bdr03-ipt-4edenpar-syd.au.as38195.net",
+    "103.200.13.67": "Bundle-Ether42.221.bdr03-ipt-47bourke-syd.au.as38195.net",
+    "103.200.13.168": SUPERLOOP_LAX,
+    "206.72.210.133": "teleguam-holdings.as9246.any2ix.coresite.com",
+}
+SUPERLOOP_BGP = {"125.63.12.157": [38195]}  # 103.200.13.0/24 is unannounced; 206.72.210.133 is IXP LAN
+ANY2WEST = IxpLanEntry(ix_id=142, name="Any2West", city="Los Angeles and Silicon Valley", country="US",
+                       in_fishbowl=False, prefixes=("206.72.210.0/23",))
+
+
+def test_superloop_la_router_files_the_detour_via_los_angeles(env, monkeypatch, tmp_path):
+    """Owner, 2026-11-19 (F1): with 103.200.13.0/24 -> AS38195 as a prefix override, the LA
+    router has a single owner, so 240073513 reads Los Angeles (#110's hub) instead of
+    escalating "router address has no single BGP owner" on every NC run through Superloop."""
+    monkeypatch.setattr(auto_classify, "_load_asn_to_cc", lambda path=None: {
+        45345: "NC", 18200: "NC", 9246: "GU", 139759: "FM", 45193: "FM"})
+    monkeypatch.setattr(auto_classify, "_fire_measurement", lambda c, ip: SUPERLOOP_MSM)
+    (env["parsed_dir"] / f"{SUPERLOOP_MSM}.json").write_text(json.dumps([{
+        "measurement_id": SUPERLOOP_MSM, "probe_id": 7018, "target": "103.39.252.1", "hops": SUPERLOOP_HOPS}]))
+    env["registry"] = {142: ANY2WEST}
+    env["triangulation"] = {"measurement_id": SUPERLOOP_MSM, "target_asn": 45193, "probes": [{
+        "probe_id": 7018,
+        "as_sequence": [{"asn": a, "resolution_source": "bgp", "contiguous_with_previous": True}
+                        for a in (45345, 18200, 38195, 9246, 139759, 45193)],
+        "ixp_crossings": [{"hop": 8, "member_asns": [9246], "min_rtt_ms": 236.402, "ix_id": 142,
+                           "name": "Any2West", "in_fishbowl": False}],
+        "traceroute_upstream_asn": 139759, "ris_agrees": True, "contiguous": True,
+        "ris_observation_count": 1659}]}
+    env["ptr"] = SUPERLOOP_PTR
+    # The real resolver (so the prefix override is what gives hop 7 its owner), BGP frozen.
+    cache = IpResolutionCache(path=tmp_path / "cache.json", entries={})
+    monkeypatch.setattr(traceroute_topology.IpResolutionCache, "load", lambda path: cache)
+    monkeypatch.setattr(traceroute_topology, "resolve_ip_to_asns", lambda ip: SUPERLOOP_BGP.get(ip, []))
+    monkeypatch.setattr(traceroute_topology, "resolve_ip_via_netixlan",
+                        lambda ip: 9246 if ip == "206.72.210.133" else None)
+    monkeypatch.setattr(auto_classify, "resolve_traceroute_hops", lambda hops, persist=False: (
+        traceroute_topology.resolve_traceroute_hops(hops, ixp_registry_path=tmp_path / "none.json", persist=False)))
+    candidate = CorridorCandidate(source_asn=45345, source_cc="NC", source_name="New Caledonia", target_asn=45193,
+                                  target_cc="FM", target_name="FSM Telecom", rationale="test")
+
+    result = auto_classify.classify_corridor(candidate, regenerate=False)
+
+    assert "router address has no single BGP owner" not in [e.reason for e in result.escalations]
+    assert result.outcome == "confirmed_detour"
+    assert _rows(env, "SELECT kind, detour_hub, detour_ix_name FROM findings WHERE kind = 'confirmed_detour'") == [
+        ("confirmed_detour", "Los Angeles", f"{SUPERLOOP_LAX} (router in Los Angeles, no IXP crossing)")]
+
+
+# --- F1 option 2 (owner, 2026-11-19): the override never files an adjacency RIS hasn't seen --------
+# 211259107 (NC AS45345 -> GU AS3605, September), probe 7018, as cached in data/atlas/parsed:
+# Superloop Sydney -> the unannounced LA routers -> Any2West LAN (AS3605's port) -> Guam. RIS has
+# never seen AS38195 next to AS3605, and the September decision (task_plan.md, "deliberately NOT
+# forced into a dataclass") kept this run out of the findings. With the override alone, the LA
+# router gets an owner and the run would file NC -> AS3605 via Los Angeles; without PTRs it would
+# file a candidate peering AS38195 -> AS3605. The guard keeps it inconclusive.
+NC_GU_MSM = 211259107
+NC_GU_HOPS = [
+    {"hop": 1, "addresses": ["103.2.186.221"], "min_rtt_ms": 0.567},
+    {"hop": 2, "addresses": ["202.87.128.198"], "min_rtt_ms": 0.493},
+    {"hop": 3, "addresses": ["202.87.128.197"], "min_rtt_ms": 1.255},
+    {"hop": 4, "addresses": ["125.63.12.157"], "min_rtt_ms": 23.841},
+    {"hop": 5, "addresses": ["125.63.12.157"], "min_rtt_ms": 25.43},
+    {"hop": 6, "addresses": ["103.200.13.67"], "min_rtt_ms": 172.165},
+    {"hop": 7, "addresses": ["103.200.13.168"], "min_rtt_ms": 169.448},
+    {"hop": 8, "addresses": ["206.72.210.236"], "min_rtt_ms": 190.584},
+    {"hop": 9, "addresses": ["198.81.233.24"], "min_rtt_ms": 278.919},
+    {"hop": 10, "addresses": ["202.128.5.115"], "min_rtt_ms": 300.172},
+    {"hop": 11, "addresses": ["198.81.233.92"], "min_rtt_ms": 278.783},
+    {"hop": 12, "addresses": ["202.128.28.33"], "min_rtt_ms": 303.115},
+    {"hop": 13, "addresses": ["182.173.224.1"], "min_rtt_ms": 278.637},
+]
+NC_GU_BGP = {"103.2.186.221": [45345], "202.87.128.198": [18200], "202.87.128.197": [18200],
+             "125.63.12.157": [38195], "198.81.233.24": [3605], "202.128.5.115": [3605],
+             "198.81.233.92": [3605], "202.128.28.33": [3605], "182.173.224.1": [3605]}
+
+
+def _run_nc_gu(env, monkeypatch, tmp_path, ptr, neighbours_of_3605):
+    """classify_corridor over 211259107 probe 7018 with the real resolver and triangulation."""
+    monkeypatch.setattr(auto_classify, "_load_asn_to_cc", lambda path=None: {
+        45345: "NC", 18200: "NC", 3605: "GU", 9246: "GU"})
+    monkeypatch.setattr(auto_classify, "_fire_measurement", lambda c, ip: NC_GU_MSM)
+    (env["parsed_dir"] / f"{NC_GU_MSM}.json").write_text(json.dumps([{
+        "measurement_id": NC_GU_MSM, "probe_id": 7018, "target": "182.173.224.1", "hops": NC_GU_HOPS}]))
+    env["ptr"] = ptr
+    cache = IpResolutionCache(path=tmp_path / "cache.json", entries={})
+    monkeypatch.setattr(traceroute_topology.IpResolutionCache, "load", lambda path: cache)
+    monkeypatch.setattr(traceroute_topology, "resolve_ip_to_asns", lambda ip: NC_GU_BGP.get(ip, []))
+    monkeypatch.setattr(traceroute_topology, "resolve_ip_via_netixlan",
+                        lambda ip: 3605 if ip == "206.72.210.236" else None)
+    real_resolve = traceroute_topology.resolve_traceroute_hops
+
+    def _resolve(hops, persist=False, **kwargs):
+        return real_resolve(hops, ixp_registry_path=tmp_path / "none.json", persist=False)
+
+    monkeypatch.setattr(traceroute_topology, "resolve_traceroute_hops", _resolve)
+    monkeypatch.setattr(auto_classify, "resolve_traceroute_hops", _resolve)
+    fishbowl = tmp_path / "fishbowl.json"
+    fishbowl.write_text(json.dumps({"3605": {"neighbors": {str(a): 10 for a in neighbours_of_3605}}}))
+    monkeypatch.setattr(auto_classify, "analyze_measurement", lambda mid, asn: traceroute_topology.analyze_measurement(
+        mid, asn, atlas_parsed_dir=env["parsed_dir"], fishbowl_path=fishbowl, output_dir=tmp_path / "tri"))
+    candidate = CorridorCandidate(source_asn=45345, source_cc="NC", source_name="Nautile", target_asn=3605,
+                                  target_cc="GU", target_name="GTA", rationale="test")
+    return auto_classify.classify_corridor(candidate, regenerate=False)
+
+
+_NC_GU_PTR = {"125.63.12.157": SUPERLOOP_PTR["125.63.12.157"], "103.200.13.67": SUPERLOOP_PTR["103.200.13.67"],
+              "103.200.13.168": SUPERLOOP_LAX}
+
+
+def test_override_bridged_step_ris_has_not_seen_files_no_detour(env, monkeypatch, tmp_path):
+    result = _run_nc_gu(env, monkeypatch, tmp_path, _NC_GU_PTR, neighbours_of_3605=[9246])
+    assert result.outcome == "inconclusive"
+    assert _rows(env, "SELECT kind FROM findings") == []
+
+
+def test_override_bridged_step_ris_has_not_seen_files_no_candidate_peering(env, monkeypatch, tmp_path):
+    result = _run_nc_gu(env, monkeypatch, tmp_path, {}, neighbours_of_3605=[9246])
+    assert result.outcome == "inconclusive"
+    assert _rows(env, "SELECT kind FROM findings") == []
+
+
+def test_override_bridged_step_ris_agrees_with_still_files(env, monkeypatch, tmp_path):
+    # Control: the guard is about RIS agreement, not about overrides as such.
+    result = _run_nc_gu(env, monkeypatch, tmp_path, _NC_GU_PTR, neighbours_of_3605=[38195])
+    assert result.outcome == "confirmed_detour"
+    assert _rows(env, "SELECT kind, detour_hub FROM findings") == [("confirmed_detour", "Los Angeles")]
