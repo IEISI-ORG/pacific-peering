@@ -141,7 +141,7 @@ AARNET_LOS_ANGELES = "et-0-0-0.bdr1.laxc.us.aarnet.net.au"
 # Hurricane Electric's Tokyo routers are `core<n>.tyo<n>.he.net` (owner, 2026-11-19). NR probe
 # 1018134 reaches ve101.core2.tyo1 at 75ms, one hop after Guam at 36ms (231076198);
 # be15.core1.tyo1 sits directly before the BBIX Tokyo (213456317) and JPNAP Tokyo (231751013)
-# LAN addresses. All nine tyo1 names in the PTR cache (2026-11-19):
+# LAN addresses. All ten tyo1 names in the PTR cache (2026-11-19):
 HE_TOKYO = (
     "ve101.core2.tyo1.he.net",
     "be15.core1.tyo1.he.net",
@@ -152,6 +152,7 @@ HE_TOKYO = (
     "port-channel9.core2.tyo1.he.net",
     "port-channel16.core2.tyo1.he.net",
     "gigabitethernet2-8.core1.tyo1.he.net",
+    "port-channel10.core3.tyo1.he.net",
 )
 
 
