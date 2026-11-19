@@ -79,7 +79,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
 <body>
 <div class="wrap">
     <h1>Pacific Peering — Regional Routing Report</h1>
-    <div class="meta">Generated 2026-11-19T03:25:57.330166+00:00</div>
+    <div class="meta">Generated 2026-11-19T04:06:32.301546+00:00</div>
 
     <div class="feedback-box"><strong>Found a bug?</strong> This report is generated
         automatically, and bugs very likely remain in both the code and the data. If
@@ -868,21 +868,21 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
 **2026-11-19: detour hub relabelled Sydney -&gt; Portland** (owner&#x27;s ruling: &quot;relabel #66 and #65 to Portland, pin 38.134.236.1&quot;). Routing into AS23657 is fixed per prefix (temp/as23657_routing_2026-11-19/report.md). The 202.4.47.0/24 path (APNIC `ws-bs-47`, Samoa-registered, announced only to Vodafone Samoa) enters at Sydney via Vodafone Samoa (AS17993); that is the path traced to 202.4.47.1 on 09-16 (212119894) and 10-18 (224430028), through Equinix Sydney as described above. Blue Sky&#x27;s own space (38.134.236.0/22, 67.218.48.0/20, 202.70.112.0/20) enters at Portland via Cogent `pdx02` (or HE `pdx3`), Cogent port 38.104.108.130 and Blue Sky router 67.218.63.217. Every run to 38.134.236.1 leaves the region there: OPT-NC -&gt; Superloop Sydney -&gt; Cogent `sfo01`, `pdx01`, `be2378.ccr51.pdx02` (~192ms, floor 99.33ms) -&gt; 38.104.108.130 -&gt; 67.218.63.217 -&gt; target at ~283ms. Runs: 233087028 (11-05; probes 7018/33674, while 63050 is dark after Superloop Sydney and answers from the target at 283.6ms), 240078520 (11-18, all 3 probes), and study runs 240298607 and 240318863 (probes 7018 and 61210). The 10-18 Equinix Sydney run is not counted as a conflict, because it traced the other prefix. Reverification is pinned to 38.134.236.1 (`atlas.targets.PINNED_TARGET_IPS`). detour_ix_name was &quot;Equinix Sydney&quot;.</details>
         </div><div class="detour-card">
             <div class="headline">NR -&gt; AS
-                (AS23657): detours via lax-b3-link.ip.twelve99.net (router in Los Angeles, no IXP crossing)
+                (AS23657): detours via be2378.ccr51.pdx02.atlas.cogentco.com (router in Portland, no IXP crossing)
                 (Portland)</div>
             <div>RIS observation count: 1330
                 &middot; measurement 231075765</div>
             <details class="note"><summary>measurement 231075765 (from NR); chain: AS55722 -&gt; AS7131 -&gt; AS1299 -&gt; AS174 -&gt; AS23657; RIS count 1330; RIS agrees…</summary>measurement 231075765 (from NR); chain: AS55722 -&gt; AS7131 -&gt; AS1299 -&gt; AS174 -&gt; AS23657; RIS count 1330; RIS agrees. measurement 238217874 (from NR); chain: AS55722 -&gt; AS7131 -&gt; AS1299 -&gt; AS174 -&gt; AS23657; RIS count 1323; RIS agrees. measurement 238218647 (from NR); chain: AS55722 -&gt; AS7131 -&gt; AS1299 -&gt; AS174 -&gt; AS23657; RIS count 1323; RIS agrees.</details>
         </div><div class="detour-card">
             <div class="headline">NU -&gt; AS
-                (AS23657): detours via AS17993 (Vodafone Samoa)
+                (AS23657): detours via be2378.ccr51.pdx02.atlas.cogentco.com (router in Portland, no IXP crossing)
                 (Portland)</div>
             <div>RIS observation count: 329
                 &middot; measurement 212141095</div>
             <details class="note"><summary>Third confirmation of AS17993&lt;-&gt;AS23657 (after NC, FM)…</summary>Third confirmation of AS17993&lt;-&gt;AS23657 (after NC, FM). `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS17993 -&gt; AS23657`, RIS agrees exactly (329). `has_routing_loop` False.</details>
         </div><div class="detour-card">
             <div class="headline">TO -&gt; AS
-                (AS23657): detours via Equinix Sydney
+                (AS23657): detours via be2467.ccr51.pdx02.atlas.cogentco.com (router in Portland, no IXP crossing)
                 (Portland)</div>
             <div>RIS observation count: 329
                 &middot; measurement 213458807</div>
@@ -3019,7 +3019,7 @@ NU(AS55885) -&gt; AS150403: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS139609 -&
             <td>Equinix Sydney</td><td>Sydney</td>
             <td>AU</td><td><span class="bool-false">out-of-fishbowl</span></td>
             <td>9</td>
-            <td>36</td>
+            <td>35</td>
             <td>CK, FJ, NC, PF, PG, TO, WS</td>
         </tr><tr>
             <td>Fiji-IXP</td><td>Suva</td>

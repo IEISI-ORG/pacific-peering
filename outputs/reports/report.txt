@@ -1,6 +1,6 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-11-19T03:25:56.184107+00:00                  
+                 Generated: 2026-11-19T04:06:30.425782+00:00                  
 ==============================================================================
 FOUND A BUG? Bugs very likely remain in both the code and the data.
 Please open an issue: https://github.com/IEISI-ORG/pacific-peering/issues/new
@@ -257,7 +257,7 @@ EdgeIX - Auckland            Auckland         NZ   False              1        0
 Equinix Los Angeles          Los Angeles      US   False              1        0  PF
 Equinix San Jose             San Jose         US   False              1        3  GU
 Equinix Singapore            Singapore        SG   False              1        0  GU
-Equinix Sydney               Sydney           AU   False              9       36  CK, FJ, NC, PF, PG, TO, WS
+Equinix Sydney               Sydney           AU   False              9       35  CK, FJ, NC, PF, PG, TO, WS
 Fiji-IXP                     Suva             FJ   True               3        6  FJ
 GOREX                        Piti             GU   True               1        0  GU
 GU-IX                        Guam             GU   True               1        1  GU
@@ -588,13 +588,13 @@ NC -> AS (AS23657): detours via be2378.ccr51.pdx02.atlas.cogentco.com (router in
 ---
 
 **2026-11-19: detour hub relabelled Sydney -> Portland** (owner's ruling: "relabel #66 and #65 to Portland, pin 38.134.236.1"). Routing into AS23657 is fixed per prefix (temp/as23657_routing_2026-11-19/report.md). The 202.4.47.0/24 path (APNIC `ws-bs-47`, Samoa-registered, announced only to Vodafone Samoa) enters at Sydney via Vodafone Samoa (AS17993); that is the path traced to 202.4.47.1 on 09-16 (212119894) and 10-18 (224430028), through Equinix Sydney as described above. Blue Sky's own space (38.134.236.0/22, 67.218.48.0/20, 202.70.112.0/20) enters at Portland via Cogent `pdx02` (or HE `pdx3`), Cogent port 38.104.108.130 and Blue Sky router 67.218.63.217. Every run to 38.134.236.1 leaves the region there: OPT-NC -> Superloop Sydney -> Cogent `sfo01`, `pdx01`, `be2378.ccr51.pdx02` (~192ms, floor 99.33ms) -> 38.104.108.130 -> 67.218.63.217 -> target at ~283ms. Runs: 233087028 (11-05; probes 7018/33674, while 63050 is dark after Superloop Sydney and answers from the target at 283.6ms), 240078520 (11-18, all 3 probes), and study runs 240298607 and 240318863 (probes 7018 and 61210). The 10-18 Equinix Sydney run is not counted as a conflict, because it traced the other prefix. Reverification is pinned to 38.134.236.1 (`atlas.targets.PINNED_TARGET_IPS`). detour_ix_name was "Equinix Sydney".
-NR -> AS (AS23657): detours via lax-b3-link.ip.twelve99.net (router in Los Angeles, no IXP crossing) (Portland)
+NR -> AS (AS23657): detours via be2378.ccr51.pdx02.atlas.cogentco.com (router in Portland, no IXP crossing) (Portland)
     RIS observation count: 1330  [measurement 231075765]
     measurement 231075765 (from NR); chain: AS55722 -> AS7131 -> AS1299 -> AS174 -> AS23657; RIS count 1330; RIS agrees. measurement 238217874 (from NR); chain: AS55722 -> AS7131 -> AS1299 -> AS174 -> AS23657; RIS count 1323; RIS agrees. measurement 238218647 (from NR); chain: AS55722 -> AS7131 -> AS1299 -> AS174 -> AS23657; RIS count 1323; RIS agrees.
-NU -> AS (AS23657): detours via AS17993 (Vodafone Samoa) (Portland)
+NU -> AS (AS23657): detours via be2378.ccr51.pdx02.atlas.cogentco.com (router in Portland, no IXP crossing) (Portland)
     RIS observation count: 329  [measurement 212141095]
     Third confirmation of AS17993<->AS23657 (after NC, FM). `AS55885 -> AS9471 -> AS6939 -> AS17993 -> AS23657`, RIS agrees exactly (329). `has_routing_loop` False.
-TO -> AS (AS23657): detours via Equinix Sydney (Portland)
+TO -> AS (AS23657): detours via be2467.ccr51.pdx02.atlas.cogentco.com (router in Portland, no IXP crossing) (Portland)
     RIS observation count: 329  [measurement 213458807]
     measurement 213458807 (from TO); chain: AS24390 -> AS7575 -> AS17993 -> AS23657; RIS count 329; RIS agrees. measurement 229251872 (from TO); chain: AS24390 -> AS7575 -> AS2914 -> AS174 -> AS23657; RIS count 1118; RIS agrees. measurement 236863495 (from TO); chain: AS24390 -> AS7575 -> AS2914 -> AS174 -> AS23657; RIS count 1324; RIS agrees.
 CK -> FJ (AS24390): detours via Any2West (Los Angeles)
