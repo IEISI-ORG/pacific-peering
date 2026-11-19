@@ -1,6 +1,6 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-11-18T23:16:49.430675+00:00                  
+                 Generated: 2026-11-19T03:25:56.184107+00:00                  
 ==============================================================================
 FOUND A BUG? Bugs very likely remain in both the code and the data.
 Please open an issue: https://github.com/IEISI-ORG/pacific-peering/issues/new
@@ -109,20 +109,20 @@ The mirror image of the regional hubs above: the real external cities where conf
 
 City           Entries  Share Carriers Subregions reached            
 ------------------------------------------------------------------------------
-Sydney             114    60%       25 Melanesia, Micronesia, Polynesia
+Sydney             112    59%       25 Melanesia, Micronesia, Polynesia
     Dependent economies: AS, FJ, KI, NC, NR, NU, PG, SB, TO, VU, WS
 Los Angeles         43    23%        9 Melanesia, Micronesia, Polynesia
     Dependent economies: FJ, FM, GU, KI, MH, NR, PF, PW, SB, WF
 Tokyo               19    10%        9 Melanesia, Micronesia, Polynesia
     Dependent economies: AS, GU, KI, MH, NC, NR, PW, SB, VU, WF
+Portland             8     4%        2 Polynesia
+    Dependent economies: AS
 San Jose             8     4%        2 Melanesia, Polynesia
     Dependent economies: AS, FJ, VU
-Portland             6     3%        2 Polynesia
-    Dependent economies: AS
 Honolulu             1     1%        1 Polynesia
     Dependent economies: AS
 
-Just the top 3 cities above account for 92% of every confirmed detour this project has recorded -- almost the entire region's out-of-fishbowl traffic funnels through three physical places.
+Just the top 3 cities above account for 91% of every confirmed detour this project has recorded -- almost the entire region's out-of-fishbowl traffic funnels through three physical places.
 
 FINDINGS: SATELLITE OPERATOR PATHWAYS
 ==============================================================================
@@ -257,7 +257,7 @@ EdgeIX - Auckland            Auckland         NZ   False              1        0
 Equinix Los Angeles          Los Angeles      US   False              1        0  PF
 Equinix San Jose             San Jose         US   False              1        3  GU
 Equinix Singapore            Singapore        SG   False              1        0  GU
-Equinix Sydney               Sydney           AU   False              9       37  CK, FJ, NC, PF, PG, TO, WS
+Equinix Sydney               Sydney           AU   False              9       36  CK, FJ, NC, PF, PG, TO, WS
 Fiji-IXP                     Suva             FJ   True               3        6  FJ
 GOREX                        Piti             GU   True               1        0  GU
 GU-IX                        Guam             GU   True               1        1  GU
@@ -574,12 +574,20 @@ TV -> WS (AS17993): detours via Equinix Sydney (Sydney)
 NU -> NC (AS18200): detours via AS6939 (Hurricane Electric) (Sydney)
     RIS observation count: 135  [measurement 212141085]
     **First-ever confirmation with OPT-NC (AS18200) itself as the target** -- every prior appearance had it as the immediate-upstream carrier for other NC-sourced corridors (e.g. the whole NC/FM/GU bulk clear-out batch). `AS55885 -> AS9471 -> AS6939 -> AS18200`, RIS agrees exactly (135). `has_routing_loop` False.
-FM -> AS (AS23657): detours via AS17993 (Vodafone Samoa) -- international transit (Sydney)
+FM -> AS (AS23657): detours via be2378.ccr51.pdx02.atlas.cogentco.com (router in Portland, no IXP crossing) (Portland)
     RIS observation count: 329  [measurement 212142989]
     Second confirmation of AS17993<->AS23657 (after NC's first-ever). `AS139759 -> AS9246 -> AS4637 -> AS1299 -> AS174 -> AS17993 -> AS23657`, fully contiguous, RIS agrees exactly (329). `has_routing_loop` False.
-NC -> AS (AS23657): detours via Equinix Sydney (Sydney)
+
+---
+
+**2026-11-19: detour hub relabelled Sydney -> Portland** (owner's ruling: "relabel #66 and #65 to Portland, pin 38.134.236.1"). Routing into AS23657 is fixed per prefix (temp/as23657_routing_2026-11-19/report.md). The 202.4.47.0/24 path (APNIC `ws-bs-47`, Samoa-registered, announced only to Vodafone Samoa) enters at Sydney via Vodafone Samoa (AS17993); that is the path traced on 10-18 (224430627, to 202.4.47.1) and on 09-16 (212142989, target not recorded, same Cogent `agr51.syd01` exit and stop at 67.218.61.145): AS9246 -> Cogent US -> Cogent `agr51.syd01` -> Vodafone Samoa. Blue Sky's own space (38.134.236.0/22, 67.218.48.0/20, 202.70.112.0/20) enters at Portland via Cogent `pdx02` (or HE `pdx3`), Cogent port 38.104.108.130 and Blue Sky router 67.218.63.217. Every run to 38.134.236.1 leaves the region there: AS9246 -> Cogent `lax04` -> `be2378`/`be2467.ccr51.pdx02` (157.9-160.2ms, floor 71.21ms) -> 38.104.108.130 -> 67.218.63.217 -> target at ~249ms. Runs: 233088743 (11-05, all 3 probes) and study runs 240298607 and 240318863 (probe 7448). The earlier "Sydney then Portland" difference was the traced prefix changing. Reverification is pinned to 38.134.236.1 (`atlas.targets.PINNED_TARGET_IPS`). detour_ix_name was "AS17993 (Vodafone Samoa) -- international transit".
+NC -> AS (AS23657): detours via be2378.ccr51.pdx02.atlas.cogentco.com (router in Portland, no IXP crossing) (Portland)
     RIS observation count: 329  [measurement 212119894]
     New Caledonia (AS45345) -> Blue Sky Communications (AS23657) [name corrected 2026-10-22: originally labelled American Samoa Telecommunications Authority, which is AS9751] -- **the first-ever confirmation of the AS17993(Vodafone Samoa)<->AS23657 adjacency**, no prior entry for this target ASN existed anywhere in the project. Fully contiguous on all 3 probes: `AS45345 -> AS18200 (OPT-NC) -> AS17993 (Vodafone Samoa) -> AS23657`, RIS-agreeing with the identical exact match (329) -- checked AS23657's full RIS neighbor list directly: `{174 (Cogent): 11905, 6939 (Hurricane Electric): 1422, 17993 (Vodafone Samoa): 329}`, an exact match to what this traceroute found, and a genuinely real in-region relationship (Samoa's own carrier serving American Samoa) rather than a global transit giant. Crosses **Equinix Sydney** directly (`ixp_crossings` confirms it, member AS17993, both hops 4 and 5 land inside the registered LAN prefix -- `45.127.172.0/22`, this project's own `ixp_lan_registry` entry for ix_id 94). **`has_routing_loop` correctly flagged `True` on all 3 probes** -- hops 4 and 5 both resolve to the identical address `45.127.173.64`, inside that same registered Equinix Sydney LAN prefix -- an ordinary IXP-fabric router answering twice at consecutive TTLs (same class of harmless artifact as this project's prior silent-IXP-boundary dead ends, just manifesting as a repeated address instead of silence, confirmed independently via PeeringDB (peeringdb.com/ix/94) rather than assumed). Not a newly-discovered loop-prone network -- the same, already-registered Equinix Sydney fabric this project crosses constantly elsewhere.
+
+---
+
+**2026-11-19: detour hub relabelled Sydney -> Portland** (owner's ruling: "relabel #66 and #65 to Portland, pin 38.134.236.1"). Routing into AS23657 is fixed per prefix (temp/as23657_routing_2026-11-19/report.md). The 202.4.47.0/24 path (APNIC `ws-bs-47`, Samoa-registered, announced only to Vodafone Samoa) enters at Sydney via Vodafone Samoa (AS17993); that is the path traced to 202.4.47.1 on 09-16 (212119894) and 10-18 (224430028), through Equinix Sydney as described above. Blue Sky's own space (38.134.236.0/22, 67.218.48.0/20, 202.70.112.0/20) enters at Portland via Cogent `pdx02` (or HE `pdx3`), Cogent port 38.104.108.130 and Blue Sky router 67.218.63.217. Every run to 38.134.236.1 leaves the region there: OPT-NC -> Superloop Sydney -> Cogent `sfo01`, `pdx01`, `be2378.ccr51.pdx02` (~192ms, floor 99.33ms) -> 38.104.108.130 -> 67.218.63.217 -> target at ~283ms. Runs: 233087028 (11-05; probes 7018/33674, while 63050 is dark after Superloop Sydney and answers from the target at 283.6ms), 240078520 (11-18, all 3 probes), and study runs 240298607 and 240318863 (probes 7018 and 61210). The 10-18 Equinix Sydney run is not counted as a conflict, because it traced the other prefix. Reverification is pinned to 38.134.236.1 (`atlas.targets.PINNED_TARGET_IPS`). detour_ix_name was "Equinix Sydney".
 NR -> AS (AS23657): detours via lax-b3-link.ip.twelve99.net (router in Los Angeles, no IXP crossing) (Portland)
     RIS observation count: 1330  [measurement 231075765]
     measurement 231075765 (from NR); chain: AS55722 -> AS7131 -> AS1299 -> AS174 -> AS23657; RIS count 1330; RIS agrees. measurement 238217874 (from NR); chain: AS55722 -> AS7131 -> AS1299 -> AS174 -> AS23657; RIS count 1323; RIS agrees. measurement 238218647 (from NR); chain: AS55722 -> AS7131 -> AS1299 -> AS174 -> AS23657; RIS count 1323; RIS agrees.

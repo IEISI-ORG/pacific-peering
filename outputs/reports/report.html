@@ -79,7 +79,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
 <body>
 <div class="wrap">
     <h1>Pacific Peering — Regional Routing Report</h1>
-    <div class="meta">Generated 2026-11-18T23:16:50.547425+00:00</div>
+    <div class="meta">Generated 2026-11-19T03:25:57.330166+00:00</div>
 
     <div class="feedback-box"><strong>Found a bug?</strong> This report is generated
         automatically, and bugs very likely remain in both the code and the data. If
@@ -402,8 +402,8 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <th>Dependent economies</th></tr></thead>
         <tbody><tr>
             <td>Sydney</td>
-            <td>114</td>
-            <td>60%</td>
+            <td>112</td>
+            <td>59%</td>
             <td>25</td>
             <td>Melanesia, Micronesia, Polynesia</td>
             <td>AS, FJ, KI, NC, NR, NU, PG, SB, TO, VU, WS</td>
@@ -422,19 +422,19 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <td>Melanesia, Micronesia, Polynesia</td>
             <td>AS, GU, KI, MH, NC, NR, PW, SB, VU, WF</td>
         </tr><tr>
+            <td>Portland</td>
+            <td>8</td>
+            <td>4%</td>
+            <td>2</td>
+            <td>Polynesia</td>
+            <td>AS</td>
+        </tr><tr>
             <td>San Jose</td>
             <td>8</td>
             <td>4%</td>
             <td>2</td>
             <td>Melanesia, Polynesia</td>
             <td>AS, FJ, VU</td>
-        </tr><tr>
-            <td>Portland</td>
-            <td>6</td>
-            <td>3%</td>
-            <td>2</td>
-            <td>Polynesia</td>
-            <td>AS</td>
         </tr><tr>
             <td>Honolulu</td>
             <td>1</td>
@@ -445,7 +445,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
         </tr></tbody>
     </table>
     <div class="callout">Just the top 3 cities above account for
-        <strong>92%</strong> of every confirmed detour
+        <strong>91%</strong> of every confirmed detour
         this project has recorded &mdash; almost the entire region's
         out-of-fishbowl traffic funnels through three physical places.</div>
 
@@ -846,18 +846,26 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <details class="note"><summary>**First-ever confirmation with OPT-NC (AS18200) itself as the target** -- every prior appearance had it as the immediate-upstream carrier for other NC-sourced…</summary>**First-ever confirmation with OPT-NC (AS18200) itself as the target** -- every prior appearance had it as the immediate-upstream carrier for other NC-sourced corridors (e.g. the whole NC/FM/GU bulk clear-out batch). `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS18200`, RIS agrees exactly (135). `has_routing_loop` False.</details>
         </div><div class="detour-card">
             <div class="headline">FM -&gt; AS
-                (AS23657): detours via AS17993 (Vodafone Samoa) -- international transit
-                (Sydney)</div>
+                (AS23657): detours via be2378.ccr51.pdx02.atlas.cogentco.com (router in Portland, no IXP crossing)
+                (Portland)</div>
             <div>RIS observation count: 329
                 &middot; measurement 212142989</div>
-            <details class="note"><summary>Second confirmation of AS17993&lt;-&gt;AS23657 (after NC&#x27;s first-ever)…</summary>Second confirmation of AS17993&lt;-&gt;AS23657 (after NC&#x27;s first-ever). `AS139759 -&gt; AS9246 -&gt; AS4637 -&gt; AS1299 -&gt; AS174 -&gt; AS17993 -&gt; AS23657`, fully contiguous, RIS agrees exactly (329). `has_routing_loop` False.</details>
+            <details class="note"><summary>Second confirmation of AS17993&lt;-&gt;AS23657 (after NC&#x27;s first-ever)…</summary>Second confirmation of AS17993&lt;-&gt;AS23657 (after NC&#x27;s first-ever). `AS139759 -&gt; AS9246 -&gt; AS4637 -&gt; AS1299 -&gt; AS174 -&gt; AS17993 -&gt; AS23657`, fully contiguous, RIS agrees exactly (329). `has_routing_loop` False.
+
+---
+
+**2026-11-19: detour hub relabelled Sydney -&gt; Portland** (owner&#x27;s ruling: &quot;relabel #66 and #65 to Portland, pin 38.134.236.1&quot;). Routing into AS23657 is fixed per prefix (temp/as23657_routing_2026-11-19/report.md). The 202.4.47.0/24 path (APNIC `ws-bs-47`, Samoa-registered, announced only to Vodafone Samoa) enters at Sydney via Vodafone Samoa (AS17993); that is the path traced on 10-18 (224430627, to 202.4.47.1) and on 09-16 (212142989, target not recorded, same Cogent `agr51.syd01` exit and stop at 67.218.61.145): AS9246 -&gt; Cogent US -&gt; Cogent `agr51.syd01` -&gt; Vodafone Samoa. Blue Sky&#x27;s own space (38.134.236.0/22, 67.218.48.0/20, 202.70.112.0/20) enters at Portland via Cogent `pdx02` (or HE `pdx3`), Cogent port 38.104.108.130 and Blue Sky router 67.218.63.217. Every run to 38.134.236.1 leaves the region there: AS9246 -&gt; Cogent `lax04` -&gt; `be2378`/`be2467.ccr51.pdx02` (157.9-160.2ms, floor 71.21ms) -&gt; 38.104.108.130 -&gt; 67.218.63.217 -&gt; target at ~249ms. Runs: 233088743 (11-05, all 3 probes) and study runs 240298607 and 240318863 (probe 7448). The earlier &quot;Sydney then Portland&quot; difference was the traced prefix changing. Reverification is pinned to 38.134.236.1 (`atlas.targets.PINNED_TARGET_IPS`). detour_ix_name was &quot;AS17993 (Vodafone Samoa) -- international transit&quot;.</details>
         </div><div class="detour-card">
             <div class="headline">NC -&gt; AS
-                (AS23657): detours via Equinix Sydney
-                (Sydney)</div>
+                (AS23657): detours via be2378.ccr51.pdx02.atlas.cogentco.com (router in Portland, no IXP crossing)
+                (Portland)</div>
             <div>RIS observation count: 329
                 &middot; measurement 212119894</div>
-            <details class="note"><summary>New Caledonia (AS45345) -&gt; Blue Sky Communications (AS23657) [name corrected 2026-10-22: originally labelled American Samoa Telecommunications Authority, which…</summary>New Caledonia (AS45345) -&gt; Blue Sky Communications (AS23657) [name corrected 2026-10-22: originally labelled American Samoa Telecommunications Authority, which is AS9751] -- **the first-ever confirmation of the AS17993(Vodafone Samoa)&lt;-&gt;AS23657 adjacency**, no prior entry for this target ASN existed anywhere in the project. Fully contiguous on all 3 probes: `AS45345 -&gt; AS18200 (OPT-NC) -&gt; AS17993 (Vodafone Samoa) -&gt; AS23657`, RIS-agreeing with the identical exact match (329) -- checked AS23657&#x27;s full RIS neighbor list directly: `{174 (Cogent): 11905, 6939 (Hurricane Electric): 1422, 17993 (Vodafone Samoa): 329}`, an exact match to what this traceroute found, and a genuinely real in-region relationship (Samoa&#x27;s own carrier serving American Samoa) rather than a global transit giant. Crosses **Equinix Sydney** directly (`ixp_crossings` confirms it, member AS17993, both hops 4 and 5 land inside the registered LAN prefix -- `45.127.172.0/22`, this project&#x27;s own `ixp_lan_registry` entry for ix_id 94). **`has_routing_loop` correctly flagged `True` on all 3 probes** -- hops 4 and 5 both resolve to the identical address `45.127.173.64`, inside that same registered Equinix Sydney LAN prefix -- an ordinary IXP-fabric router answering twice at consecutive TTLs (same class of harmless artifact as this project&#x27;s prior silent-IXP-boundary dead ends, just manifesting as a repeated address instead of silence, confirmed independently via PeeringDB (peeringdb.com/ix/94) rather than assumed). Not a newly-discovered loop-prone network -- the same, already-registered Equinix Sydney fabric this project crosses constantly elsewhere.</details>
+            <details class="note"><summary>New Caledonia (AS45345) -&gt; Blue Sky Communications (AS23657) [name corrected 2026-10-22: originally labelled American Samoa Telecommunications Authority, which…</summary>New Caledonia (AS45345) -&gt; Blue Sky Communications (AS23657) [name corrected 2026-10-22: originally labelled American Samoa Telecommunications Authority, which is AS9751] -- **the first-ever confirmation of the AS17993(Vodafone Samoa)&lt;-&gt;AS23657 adjacency**, no prior entry for this target ASN existed anywhere in the project. Fully contiguous on all 3 probes: `AS45345 -&gt; AS18200 (OPT-NC) -&gt; AS17993 (Vodafone Samoa) -&gt; AS23657`, RIS-agreeing with the identical exact match (329) -- checked AS23657&#x27;s full RIS neighbor list directly: `{174 (Cogent): 11905, 6939 (Hurricane Electric): 1422, 17993 (Vodafone Samoa): 329}`, an exact match to what this traceroute found, and a genuinely real in-region relationship (Samoa&#x27;s own carrier serving American Samoa) rather than a global transit giant. Crosses **Equinix Sydney** directly (`ixp_crossings` confirms it, member AS17993, both hops 4 and 5 land inside the registered LAN prefix -- `45.127.172.0/22`, this project&#x27;s own `ixp_lan_registry` entry for ix_id 94). **`has_routing_loop` correctly flagged `True` on all 3 probes** -- hops 4 and 5 both resolve to the identical address `45.127.173.64`, inside that same registered Equinix Sydney LAN prefix -- an ordinary IXP-fabric router answering twice at consecutive TTLs (same class of harmless artifact as this project&#x27;s prior silent-IXP-boundary dead ends, just manifesting as a repeated address instead of silence, confirmed independently via PeeringDB (peeringdb.com/ix/94) rather than assumed). Not a newly-discovered loop-prone network -- the same, already-registered Equinix Sydney fabric this project crosses constantly elsewhere.
+
+---
+
+**2026-11-19: detour hub relabelled Sydney -&gt; Portland** (owner&#x27;s ruling: &quot;relabel #66 and #65 to Portland, pin 38.134.236.1&quot;). Routing into AS23657 is fixed per prefix (temp/as23657_routing_2026-11-19/report.md). The 202.4.47.0/24 path (APNIC `ws-bs-47`, Samoa-registered, announced only to Vodafone Samoa) enters at Sydney via Vodafone Samoa (AS17993); that is the path traced to 202.4.47.1 on 09-16 (212119894) and 10-18 (224430028), through Equinix Sydney as described above. Blue Sky&#x27;s own space (38.134.236.0/22, 67.218.48.0/20, 202.70.112.0/20) enters at Portland via Cogent `pdx02` (or HE `pdx3`), Cogent port 38.104.108.130 and Blue Sky router 67.218.63.217. Every run to 38.134.236.1 leaves the region there: OPT-NC -&gt; Superloop Sydney -&gt; Cogent `sfo01`, `pdx01`, `be2378.ccr51.pdx02` (~192ms, floor 99.33ms) -&gt; 38.104.108.130 -&gt; 67.218.63.217 -&gt; target at ~283ms. Runs: 233087028 (11-05; probes 7018/33674, while 63050 is dark after Superloop Sydney and answers from the target at 283.6ms), 240078520 (11-18, all 3 probes), and study runs 240298607 and 240318863 (probes 7018 and 61210). The 10-18 Equinix Sydney run is not counted as a conflict, because it traced the other prefix. Reverification is pinned to 38.134.236.1 (`atlas.targets.PINNED_TARGET_IPS`). detour_ix_name was &quot;Equinix Sydney&quot;.</details>
         </div><div class="detour-card">
             <div class="headline">NR -&gt; AS
                 (AS23657): detours via lax-b3-link.ip.twelve99.net (router in Los Angeles, no IXP crossing)
@@ -3011,7 +3019,7 @@ NU(AS55885) -&gt; AS150403: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS139609 -&
             <td>Equinix Sydney</td><td>Sydney</td>
             <td>AU</td><td><span class="bool-false">out-of-fishbowl</span></td>
             <td>9</td>
-            <td>37</td>
+            <td>36</td>
             <td>CK, FJ, NC, PF, PG, TO, WS</td>
         </tr><tr>
             <td>Fiji-IXP</td><td>Suva</td>
