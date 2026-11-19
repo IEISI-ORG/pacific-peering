@@ -159,18 +159,30 @@ def test_pinned_asn_returns_its_pin(tmp_path):
     assert targets.pick_target_ip(23657, cache) == "38.134.236.1"
 
 
+AS23657_RETRY_LIST = ["38.134.236.1", "67.218.49.1", "202.70.115.1"]
+
+
 def test_pin_wins_over_an_earlier_sorted_prefix(tmp_path):
     # The 10-18 cache shape: 202.4.47.0/24 sorts before 38.134.236.0/22.
     cache = _cache(tmp_path, 23657, ["202.4.47.0/24", "38.134.236.0/22", "67.218.48.0/20"])
     assert targets.pick_target_ip(23657, cache) == "38.134.236.1"
-    # The other prefixes stay behind it as alternates, each once.
-    assert targets.list_target_ips(23657, cache) == ["38.134.236.1", "202.4.47.1", "67.218.48.1"]
+    # A pinned ASN retries only its pinned fallbacks, never the cached ".1"s:
+    # 202.4.47.1 enters at Sydney and 67.218.48.1 is a border router that
+    # replies via Sydney (owner, 2026-11-19).
+    assert targets.list_target_ips(23657, cache) == AS23657_RETRY_LIST
 
 
 def test_pin_wins_when_the_cache_lacks_its_prefix(tmp_path):
     cache = _cache(tmp_path, 23657, ["202.4.47.0/24", "67.218.48.0/20"])
     assert targets.pick_target_ip(23657, cache) == "38.134.236.1"
-    assert targets.list_target_ips(23657, cache) == ["38.134.236.1", "202.4.47.1", "67.218.48.1"]
+    assert targets.list_target_ips(23657, cache) == AS23657_RETRY_LIST
+
+
+def test_pinned_retry_list_never_includes_the_sydney_paths(tmp_path):
+    cache = _cache(tmp_path, 23657, ["202.4.47.0/24", "38.134.236.0/22", "67.218.48.0/20"])
+    retry = targets.list_target_ips(23657, cache)
+    assert "202.4.47.1" not in retry
+    assert "67.218.48.1" not in retry
 
 
 def test_unpinned_asn_keeps_first_sorted_prefix(tmp_path):
@@ -181,7 +193,9 @@ def test_unpinned_asn_keeps_first_sorted_prefix(tmp_path):
 
 
 def test_pinned_ip_lies_inside_the_owner_asn_prefix():
-    # Guards a typo in the mapping: 38.134.236.1 is inside 38.134.236.0/22.
+    # Guards a typo in the mapping: every pinned address is in Blue Sky's own space.
     import ipaddress
 
-    assert ipaddress.ip_address(targets.PINNED_TARGET_IPS[23657]) in ipaddress.ip_network("38.134.236.0/22")
+    blue_sky = [ipaddress.ip_network(p) for p in ("38.134.236.0/22", "67.218.48.0/20", "202.70.112.0/20")]
+    for ip in targets.PINNED_TARGET_IPS[23657]:
+        assert any(ipaddress.ip_address(ip) in net for net in blue_sky), ip

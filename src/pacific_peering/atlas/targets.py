@@ -83,19 +83,22 @@ EXCLUDED_TARGET_PREFIXES: dict[str, str] = {
 
 # Per-ASN target addresses that override the first-sorted-prefix pick, so a
 # finding's retests keep tracing the same address when the weekly RIS refresh
-# reorders or drops prefixes. One line per ASN; the pin goes first in
-# `list_target_ips`, so the nightly reverification fires it, and the cached
-# prefixes follow as alternates.
-PINNED_TARGET_IPS: dict[int, str] = {
+# reorders or drops prefixes. One line per ASN: the first address is the target,
+# the rest are its retry alternates, and together they replace the cached
+# prefixes in `list_target_ips` (a cached ".1" can be a router or a prefix that
+# takes a different path, which would read as a false hub change).
+PINNED_TARGET_IPS: dict[int, tuple[str, ...]] = {
     # AS23657 Blue Sky (AS): owner's ruling 2026-11-19, "relabel #66 and #65 to
     # Portland, pin 38.134.236.1"; study temp/as23657_routing_2026-11-19/report.md.
     # Routing is fixed per prefix: Blue Sky's own space (38.134.236.0/22,
     # 67.218.48.0/20, 202.70.112.0/20) enters at Portland, but the Samoa-registered
     # 202.4.47.0/24 enters at Sydney via Vodafone Samoa (AS17993) and has no
     # responding host. The picker moved from 202.4.47.1 to 38.134.236.1 between
-    # 10-18 and 11-05 when the RIS cache changed. Fallbacks with the same path,
-    # if this host stops answering: 67.218.49.1, 202.70.115.1.
-    23657: "38.134.236.1",
+    # 10-18 and 11-05 when the RIS cache changed. Retry alternates (owner,
+    # 2026-11-19, "fix the retry list to 67.218.49.1 and 202.70.115.1"): hosts
+    # on the same Portland path; not 67.218.48.1, a border router that replies
+    # via Sydney.
+    23657: ("38.134.236.1", "67.218.49.1", "202.70.115.1"),
 }
 
 
@@ -131,8 +134,8 @@ def list_target_ips(asn: int, cache_dir: Path = DEFAULT_CACHE_DIR, include_exclu
 
     Prefixes in `EXCLUDED_TARGET_PREFIXES` (and more-specifics inside them)
     are left out unless `include_excluded` is set. An ASN in
-    `PINNED_TARGET_IPS` gets its pinned address first, whether or not the
-    cache lists its prefix; the cached addresses follow as alternates.
+    `PINNED_TARGET_IPS` gets its pinned addresses only (target first, then
+    its retry alternates), whether or not the cache lists their prefixes.
 
     Raises:
         FileNotFoundError: If `asn` has no cached RIS data (run
@@ -158,8 +161,9 @@ def list_target_ips(asn: int, cache_dir: Path = DEFAULT_CACHE_DIR, include_exclu
     # starting at the same address both yield the same ".1" (e.g. AS10131's
     # 202.65.32.1 twice), which would make a "retry an alternate prefix" hit
     # the identical address again.
-    pinned = [PINNED_TARGET_IPS[asn]] if asn in PINNED_TARGET_IPS else []
-    return list(dict.fromkeys(pinned + [
+    if asn in PINNED_TARGET_IPS:
+        return list(dict.fromkeys(PINNED_TARGET_IPS[asn]))
+    return list(dict.fromkeys([
         str(ipaddress.ip_network(prefix, strict=False).network_address + 1)
         for prefix in prefixes
     ]))
