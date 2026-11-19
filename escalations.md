@@ -827,3 +827,15 @@ Corridors `auto_classify.py`'s mechanical rules couldn't confidently resolve on 
 - detail: finding #303 is filed via Sydney; this run left the region via Los Angeles (et-0-0-0.bdr1.laxc.us.aarnet.net.au (router in Los Angeles, no IXP crossing)) -- not corroborated; relabel, keep, or retest is the owner's call
 - flagged: 2026-11-19T03:14:28.207281+00:00
 
+## AS45345 (NC) -> AS152706 (NR)
+- measurement: 240684326
+- reason: detour hub differs from the filed finding
+- detail: finding #172 is filed via Los Angeles; this run left the region via Tokyo (if-ae-51-2.tcore1.tv2-tokyo.as6453.net (router in Tokyo, no IXP crossing)) -- not corroborated; relabel, keep, or retest is the owner's call
+- flagged: 2026-11-19T15:13:29.119481+00:00
+
+## AS139759 (FM) -> AS38201 (TO)
+- measurement: 240687613
+- reason: detour hub differs from the filed finding
+- detail: finding #101 is filed via Sydney; this run left the region via Tokyo (BBIX Tokyo) -- not corroborated; relabel, keep, or retest is the owner's call
+- flagged: 2026-11-19T15:20:21.785375+00:00
+
