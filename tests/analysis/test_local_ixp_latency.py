@@ -207,3 +207,11 @@ def test_missing_member_asns_is_safe():
     flag = _local_ixp_check(crossing, _GU_LOCAL_PORT_BACKHAUL, "GU", "GU")
     assert flag is not None
     assert flag.leg_out_ms == 0.0
+
+
+def test_an_exchange_missing_from_the_registry_keeps_the_flat_10ms():
+    # No registry entry means no exchange economy: neither leg can be measured, even for a
+    # confirmed remote port.
+    flag = _local_ixp_check(_crossing(2, 30.0, 17893), _GU_LOCAL_PORT_BACKHAUL, "GU", None)
+    assert flag is not None
+    assert flag.allowance_ms == LOCAL_IXP_LATENCY_THRESHOLD_MS

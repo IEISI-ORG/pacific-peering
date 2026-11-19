@@ -289,10 +289,18 @@ def _local_ixp_excess_ms(ixp_hop: int, hops: list[dict]) -> float | None:
     if not any(h.get("hop") == ixp_hop for h in hops):
         return None
     after = [h["min_rtt_ms"] for h in hops if h.get("hop", -1) >= ixp_hop and h.get("min_rtt_ms") is not None]
-    before = [h["min_rtt_ms"] for h in hops if h.get("hop", -1) < ixp_hop and h.get("min_rtt_ms") is not None]
     if not after:
         return None
-    return min(after) - (before[-1] if before else 0.0)
+    return min(after) - _rtt_before_ms(ixp_hop, hops)
+
+
+def _rtt_before_ms(ixp_hop: int, hops: list[dict]) -> float:
+    """RTT of the last answering hop before the exchange hop; 0 if none.
+
+    One definition for both the excess and leg_in, so they always measure from the same hop.
+    """
+    before = [h["min_rtt_ms"] for h in hops if h.get("hop", -1) < ixp_hop and h.get("min_rtt_ms") is not None]
+    return before[-1] if before else 0.0
 
 
 # Cable paths in this region run 1.2x-1.5x the great-circle floor (review_ixp_latency.md
@@ -372,13 +380,34 @@ def _local_ixp_check(
         return None
     ixp_hop = crossing.get("hop", -1)
     excess = _local_ixp_excess_ms(ixp_hop, hops)
-    before = [h["min_rtt_ms"] for h in hops if h.get("hop", -1) < ixp_hop and h.get("min_rtt_ms") is not None]
-    leg_in = max(0.0, LOCAL_IXP_CABLE_STRETCH * _economy_floor_ms(probe_cc, ixp_cc) - (before[-1] if before else 0.0))
+    leg_in = max(0.0, LOCAL_IXP_CABLE_STRETCH * _economy_floor_ms(probe_cc, ixp_cc) - _rtt_before_ms(ixp_hop, hops))
     leg_out = _remote_port_leg_out_ms(crossing, ixp_cc)
     flag = _LocalIxpFlag(excess, leg_in, leg_out)
     if excess is not None and excess <= flag.allowance_ms:
         return None
     return flag
+
+
+def _local_ixp_flag_text(flag: _LocalIxpFlag) -> str:
+    """The excess-vs-allowance clause of a latency escalation.
+
+    When the excess can't be computed (the exchange hop isn't in the parsed trace), say so
+    rather than call the hop's own reply "above" an allowance meant for the excess
+    (code review of fbbb5e8, 2026-11-19).
+    """
+    legs = (
+        f"({LOCAL_IXP_LATENCY_THRESHOLD_MS}ms local fibre + {flag.leg_in_ms:.1f}ms "
+        f"cable leg in + {flag.leg_out_ms:.1f}ms to a confirmed remote port)"
+    )
+    if flag.excess_ms is None:
+        return (
+            "excess could not be computed (exchange hop not in the parsed trace); "
+            f"the allowance would be {flag.allowance_ms:.1f}ms {legs}"
+        )
+    return (
+        f"{flag.excess_ms:.1f}ms more than the hop before it (minimum over it and later hops), "
+        f"above the {flag.allowance_ms:.1f}ms allowed {legs}"
+    )
 
 
 def _local_ixp_crossing_name(probe: dict) -> str | None:
@@ -993,15 +1022,9 @@ def _classify_corridor(
                 reason="local IXP crossing with implausibly high latency",
                 detail=(
                     f"probe {crossing['probe_id']}: hop {crossing['hop']} crosses "
-                    f"{crossing.get('name', '?')} (in-fishbowl) at {crossing['min_rtt_ms']}ms"
-                    + (
-                        f", {crossing['flag'].excess_ms:.1f}ms more than the hop before it (minimum over it and later hops)"
-                        if crossing["flag"].excess_ms is not None else ""
-                    )
-                    + f", above the {crossing['flag'].allowance_ms:.1f}ms allowed "
-                    f"({LOCAL_IXP_LATENCY_THRESHOLD_MS}ms local fibre + {crossing['flag'].leg_in_ms:.1f}ms "
-                    f"cable leg in + {crossing['flag'].leg_out_ms:.1f}ms to a confirmed remote port) -- "
-                    "either this hop isn't genuinely local despite the registry, or there's "
+                    f"{crossing.get('name', '?')} (in-fishbowl) at {crossing['min_rtt_ms']}ms, "
+                    + _local_ixp_flag_text(crossing["flag"])
+                    + " -- either this hop isn't genuinely local despite the registry, or there's "
                     "an unexpected detour/backhaul before reaching it; needs a human look, "
                     "not a guess"
                 ),
