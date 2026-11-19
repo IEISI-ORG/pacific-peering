@@ -14,8 +14,9 @@ probe, exchange and member router all sit in one metro. Remote member ports
 (PNCC's Guam IX .18 on a router in Koror, CenPac's .24 in Nauru) and cable
 legs into the exchange flagged every rotation. The allowance is now
 10ms + leg_in + leg_out at stretch 1.5 on plain great-circle floors:
-leg_out to the port member's home economy, leg_in from the probe's economy
-to the exchange's, less what the hop before the exchange already paid.
+leg_in from the probe's economy to the exchange's, less what the hop before
+the exchange already paid; leg_out only for ports confirmed remote
+(REMOTE_IXP_PORTS; code review of fbbb5e8, owner 2026-11-19).
 """
 
 from __future__ import annotations
@@ -23,7 +24,9 @@ from __future__ import annotations
 import pytest
 
 from pacific_peering.analysis.auto_classify import (
+    LOCAL_IXP_CABLE_STRETCH,
     LOCAL_IXP_LATENCY_THRESHOLD_MS,
+    _economy_floor_ms,
     _local_ixp_check,
     _local_ixp_excess_ms,
 )
@@ -77,12 +80,11 @@ def test_unknown_hop_falls_back_to_none():
 
 # --- The two-leg allowance (owner, 2026-11-19) ----------------------------------------------
 
-# Home economies of the port members in these fixtures, as in asn_registry.json.
-_ASN_TO_CC = {17893: "PW", 55722: "NR", 45349: "FJ", 45355: "FJ", 3605: "GU"}
+GUAM_IX, FIJI_IXP = 4494, 3085  # PeeringDB ix_id
 
 
-def _crossing(hop: int, rtt: float, *member_asns: int) -> dict:
-    return {"hop": hop, "min_rtt_ms": rtt, "member_asns": list(member_asns), "in_fishbowl": True}
+def _crossing(hop: int, rtt: float, *member_asns: int, ix_id: int = GUAM_IX) -> dict:
+    return {"hop": hop, "min_rtt_ms": rtt, "member_asns": list(member_asns), "ix_id": ix_id, "in_fishbowl": True}
 
 
 # 235634536, probe 7385 (GU -> PW): PNCC AS17893's Guam IX port .18 at 19.05ms. The router is
@@ -109,19 +111,19 @@ _NC_TO_TFL_PORT = _hops((1, 0.432), (2, 0.436), (3, 1.414), (4, None), (5, None)
     # FM -> Guam leg already paid before the exchange, then PNCC's remote port.
     (_FM_TO_PNCC_PORT, _crossing(5, 38.649, 17893), "FM", "GU"),
     # Fiji-IXP .20 just after the NC -> FJ cable (228736784).
-    (_FIJI_IXP_AFTER_CABLE, _crossing(8, 16.45, 45355), "NC", "FJ"),
+    (_FIJI_IXP_AFTER_CABLE, _crossing(8, 16.45, 45355, ix_id=FIJI_IXP), "NC", "FJ"),
 ])
 def test_remote_ports_and_cable_legs_are_not_flagged(hops, crossing, probe_cc, ixp_cc):
-    assert _local_ixp_check(crossing, hops, probe_cc, ixp_cc, _ASN_TO_CC) is None
+    assert _local_ixp_check(crossing, hops, probe_cc, ixp_cc) is None
 
 
 @pytest.mark.parametrize("hops, crossing, excess, allowance", [
     # leg_in = 1.5 x 13.33 (NC -> FJ) - 16.007 (FINTEL) ~ 4.0; leg_out 0 (TFL is in Fiji).
-    (_NC_TO_TFL_PORT, _crossing(8, 39.157, 45349), 38.52 - 16.007, 14.0),
-    (_FIJI_IXP_TFL_STEP, _crossing(8, 40.32, 45349), 39.024 - 15.994, 14.0),
+    (_NC_TO_TFL_PORT, _crossing(8, 39.157, 45349, ix_id=FIJI_IXP), 38.52 - 16.007, 14.0),
+    (_FIJI_IXP_TFL_STEP, _crossing(8, 40.32, 45349, ix_id=FIJI_IXP), 39.024 - 15.994, 14.0),
 ])
 def test_the_tfl_return_via_sydney_is_still_flagged(hops, crossing, excess, allowance):
-    flag = _local_ixp_check(crossing, hops, "NC", "FJ", _ASN_TO_CC)
+    flag = _local_ixp_check(crossing, hops, "NC", "FJ")
     assert flag is not None
     assert flag.excess_ms == pytest.approx(excess)
     assert flag.leg_out_ms == 0.0
@@ -132,13 +134,13 @@ def test_leg_in_is_only_what_the_hops_before_the_exchange_have_not_paid():
     # Same NC -> FJ cable, but the hop before the exchange is the probe's LAN at 1ms:
     # the allowance now carries most of the 20ms cable leg.
     hops = _hops((1, 1.0), (2, 23.0), (3, 23.1))
-    flag_or_none = _local_ixp_check(_crossing(2, 23.0, 45349), hops, "NC", "FJ", _ASN_TO_CC)
+    flag_or_none = _local_ixp_check(_crossing(2, 23.0, 45349), hops, "NC", "FJ")
     assert flag_or_none is None
 
 
 def test_a_local_member_and_a_local_probe_keep_the_flat_10ms():
     hops = _hops((1, 0.5), (2, 12.0), (3, 12.1))
-    flag = _local_ixp_check(_crossing(2, 12.0, 45349), hops, "FJ", "FJ", _ASN_TO_CC)
+    flag = _local_ixp_check(_crossing(2, 12.0, 45349), hops, "FJ", "FJ")
     assert flag is not None
     assert (flag.leg_in_ms, flag.leg_out_ms) == (0.0, 0.0)
     assert flag.allowance_ms == LOCAL_IXP_LATENCY_THRESHOLD_MS
@@ -146,17 +148,62 @@ def test_a_local_member_and_a_local_probe_keep_the_flat_10ms():
 
 def test_an_unknown_member_or_probe_economy_adds_no_allowance():
     hops = _hops((1, 0.5), (2, 12.0), (3, 12.1))
-    flag = _local_ixp_check(_crossing(2, 12.0, 64500), hops, None, "GU", _ASN_TO_CC)
+    flag = _local_ixp_check(_crossing(2, 12.0, 64500), hops, None, "GU")
     assert flag is not None
     assert flag.allowance_ms == LOCAL_IXP_LATENCY_THRESHOLD_MS
 
 
 def test_an_exchange_hop_under_10ms_is_never_flagged():
     hops = _hops((1, 0.5), (2, 9.0))
-    assert _local_ixp_check(_crossing(2, 9.0), hops, "FJ", "FJ", _ASN_TO_CC) is None
+    assert _local_ixp_check(_crossing(2, 9.0), hops, "FJ", "FJ") is None
 
 
 def test_an_uncomputable_excess_still_flags():
-    flag = _local_ixp_check(_crossing(99, 30.0, 45349), _GUAM_IX_REMOTE_PORT, "FJ", "FJ", _ASN_TO_CC)
+    flag = _local_ixp_check(_crossing(99, 30.0, 45349), _GUAM_IX_REMOTE_PORT, "FJ", "FJ")
     assert flag is not None
     assert flag.excess_ms is None
+
+
+# --- leg_out only for ports confirmed remote (code review of fbbb5e8, owner 2026-11-19) -------
+# FSMTC (AS10130, registered FM) has its Guam IX port on a router in Guam: its cached crossings
+# add -5.4 to 2.9ms (228276710, 228277589, 234924588, 234926289). A home-economy leg_out gave it
+# 24.6ms of slack, enough to hide a backhaul. Only PNCC .18 (Koror) and CenPac .24 (Nauru) are
+# known remote ports.
+_GU_LOCAL_PORT_BACKHAUL = _hops((1, 0.5), (2, 30.0), (3, 30.1))
+
+
+def test_a_local_port_of_a_member_from_another_economy_gets_no_leg_out():
+    flag = _local_ixp_check(_crossing(2, 30.0, 10130), _GU_LOCAL_PORT_BACKHAUL, "GU", "GU")
+    assert flag is not None
+    assert flag.leg_out_ms == 0.0
+    assert flag.allowance_ms == LOCAL_IXP_LATENCY_THRESHOLD_MS
+
+
+@pytest.mark.parametrize("members", [(3605, 10130), (10130, 3605), (6939, 10130), (17893, 10130)])
+def test_member_order_does_not_decide_the_leg_out(members):
+    # member_asns is sorted by ASN number, not by who owns the port: any member that is not a
+    # confirmed remote port means no leg_out.
+    flag = _local_ixp_check(_crossing(2, 30.0, *members), _GU_LOCAL_PORT_BACKHAUL, "GU", "GU")
+    assert flag is not None
+    assert flag.leg_out_ms == 0.0
+
+
+def test_two_remote_members_get_the_shorter_leg():
+    flag = _local_ixp_check(_crossing(2, 120.0, 17893, 55722), _hops((1, 0.5), (2, 120.0), (3, 120.1)),
+                            "GU", "GU")
+    assert flag is not None
+    assert flag.leg_out_ms == pytest.approx(LOCAL_IXP_CABLE_STRETCH * _economy_floor_ms("GU", "PW"))
+
+
+def test_a_remote_port_is_tied_to_its_exchange():
+    # PNCC's port is remote at Guam IX; the same ASN at another exchange gets no leg_out.
+    flag = _local_ixp_check(_crossing(2, 30.0, 17893, ix_id=FIJI_IXP), _GU_LOCAL_PORT_BACKHAUL, "FJ", "FJ")
+    assert flag is not None
+    assert flag.leg_out_ms == 0.0
+
+
+def test_missing_member_asns_is_safe():
+    crossing = {**_crossing(2, 30.0), "member_asns": None}
+    flag = _local_ixp_check(crossing, _GU_LOCAL_PORT_BACKHAUL, "GU", "GU")
+    assert flag is not None
+    assert flag.leg_out_ms == 0.0

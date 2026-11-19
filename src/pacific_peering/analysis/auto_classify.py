@@ -299,6 +299,18 @@ def _local_ixp_excess_ms(ixp_hop: int, hops: list[dict]) -> float | None:
 # section 2, 2026-11-19). An upper allowance, so plain floors, never spread-reduced ones.
 LOCAL_IXP_CABLE_STRETCH = 1.5
 
+# Exchange ports whose router sits in another economy, with owner-confirmed evidence only.
+# (PeeringDB ix_id, member ASN) -> economy of the router behind the port. Only these get a
+# leg_out: a member's home economy alone says nothing about where its port is (FSMTC, AS10130,
+# registered FM, has a Guam IX port on a router in Guam; code review of fbbb5e8, owner 2026-11-19).
+REMOTE_IXP_PORTS: dict[tuple[int, int], str] = {
+    # PNCC Guam IX .18: router in Koror (anchoring mesh 86005050: Guam anchor -> .18 18.90ms ->
+    # Koror anchor 19.10ms).
+    (4494, 17893): "PW",
+    # CenPac Guam IX .24: router in Nauru (234928910: 54.483ms, CenPac core 0.005-0.03ms behind it).
+    (4494, 55722): "NR",
+}
+
 
 def _economy_floor_ms(a: str | None, b: str | None) -> float:
     """Plain great-circle fibre floor between two economies; 0 if either is unknown or they match."""
@@ -320,8 +332,24 @@ class _LocalIxpFlag:
         return LOCAL_IXP_LATENCY_THRESHOLD_MS + self.leg_in_ms + self.leg_out_ms
 
 
+def _remote_port_leg_out_ms(crossing: dict, ixp_cc: str | None) -> float:
+    """stretch x floor(exchange economy -> remote router economy), for confirmed remote ports only.
+
+    Zero unless every member on the hop is in REMOTE_IXP_PORTS for this exchange; with several
+    remote members, the shortest leg. `member_asns` is sorted by ASN number, not by who owns
+    the port, so no single member is trusted over another.
+    """
+    ix_id = crossing.get("ix_id")
+    if ix_id is None:
+        return 0.0
+    remote_ccs = [REMOTE_IXP_PORTS.get((ix_id, asn)) for asn in crossing.get("member_asns") or []]
+    if not remote_ccs or None in remote_ccs:
+        return 0.0
+    return min(LOCAL_IXP_CABLE_STRETCH * _economy_floor_ms(ixp_cc, cc) for cc in remote_ccs)
+
+
 def _local_ixp_check(
-    crossing: dict, hops: list[dict], probe_cc: str | None, ixp_cc: str | None, asn_to_cc: dict[int, str],
+    crossing: dict, hops: list[dict], probe_cc: str | None, ixp_cc: str | None,
 ) -> _LocalIxpFlag | None:
     """Flag an in-fishbowl crossing whose excess beats 10ms + leg_in + leg_out, else None.
 
@@ -329,8 +357,9 @@ def _local_ixp_check(
     probe, exchange and member router share a metro, so remote member ports
     (PNCC's Guam IX .18 in Koror, CenPac's .24 in Nauru) and cable legs into
     the exchange flagged every rotation.
-    - leg_out: stretch x floor(exchange economy -> home economy of the port's
-      member ASN). Zero when the member is local or unknown.
+    - leg_out: stretch x floor(exchange economy -> economy of the router behind
+      the port), only for ports in REMOTE_IXP_PORTS (code review of fbbb5e8,
+      owner 2026-11-19). Zero for every other port.
     - leg_in: stretch x floor(probe economy -> exchange economy), less the RTT
       of the last answering hop before the exchange, never below 0. A cable
       leg already paid before the exchange earns nothing twice; that is what
@@ -344,9 +373,8 @@ def _local_ixp_check(
     ixp_hop = crossing.get("hop", -1)
     excess = _local_ixp_excess_ms(ixp_hop, hops)
     before = [h["min_rtt_ms"] for h in hops if h.get("hop", -1) < ixp_hop and h.get("min_rtt_ms") is not None]
-    member_cc = next((asn_to_cc[a] for a in crossing.get("member_asns", []) if a in asn_to_cc), None)
     leg_in = max(0.0, LOCAL_IXP_CABLE_STRETCH * _economy_floor_ms(probe_cc, ixp_cc) - (before[-1] if before else 0.0))
-    leg_out = LOCAL_IXP_CABLE_STRETCH * _economy_floor_ms(ixp_cc, member_cc)
+    leg_out = _remote_port_leg_out_ms(crossing, ixp_cc)
     flag = _LocalIxpFlag(excess, leg_in, leg_out)
     if excess is not None and excess <= flag.allowance_ms:
         return None
@@ -848,7 +876,7 @@ def _classify_corridor(
                 entry = ixp_registry.get(crossing.get("ix_id"))
                 flag = _local_ixp_check(
                     crossing, hops_by_probe.get(probe["probe_id"], []), candidate.source_cc,
-                    entry.country if entry else None, asn_to_cc,
+                    entry.country if entry else None,
                 )
                 if flag is not None:
                     high_latency_local_crossings.append({**crossing, "probe_id": probe["probe_id"], "flag": flag})
@@ -972,7 +1000,7 @@ def _classify_corridor(
                     )
                     + f", above the {crossing['flag'].allowance_ms:.1f}ms allowed "
                     f"({LOCAL_IXP_LATENCY_THRESHOLD_MS}ms local fibre + {crossing['flag'].leg_in_ms:.1f}ms "
-                    f"cable leg in + {crossing['flag'].leg_out_ms:.1f}ms to the port member's economy) -- "
+                    f"cable leg in + {crossing['flag'].leg_out_ms:.1f}ms to a confirmed remote port) -- "
                     "either this hop isn't genuinely local despite the registry, or there's "
                     "an unexpected detour/backhaul before reaching it; needs a human look, "
                     "not a guess"
