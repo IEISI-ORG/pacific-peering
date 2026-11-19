@@ -803,6 +803,7 @@ Corridors `auto_classify.py`'s mechanical rules couldn't confidently resolve on 
 - reason: detour hub differs from the filed finding
 - detail: finding #66 is filed via Sydney; this run left the region via Portland (be2378.ccr51.pdx02.atlas.cogentco.com (router in Portland, no IXP crossing)) -- not corroborated; relabel, keep, or retest is the owner's call
 - flagged: 2026-11-18T15:16:47.531604+00:00
+- resolved: 2026-11-19T13:26+10:00 -- relabelled: finding #66's detour_hub is now Portland (owner's ruling 2026-11-19: "relabel #66 and #65 to Portland, pin 38.134.236.1"; temp/as23657_routing_2026-11-19/report.md, temp/escalation_reviews_2026-11-19/review_hub_mismatch.md 2.4). Routing into AS23657 is fixed per prefix: 202.4.47.0/24 (traced 09-16 and 10-18) enters at Sydney via Vodafone Samoa (AS17993), and Blue Sky's own space, including 38.134.236.0/22, enters at Portland. Every 38.134.236.1 run (233087028, 240078520, 240298607, 240318863) exits via Cogent pdx02 -> 67.218.63.217, ~192ms against a 99.33ms floor (probe 63050 is dark after Sydney on 233087028). Rehearsed on a DB copy: with Portland this run corroborates on all 3 probes, with Sydney it escalates. Reverification is now pinned to 38.134.236.1 (6ef8ec3).
 
 ## AS9471 (PF) -> AS17893 (PW)
 - measurement: 240372348
