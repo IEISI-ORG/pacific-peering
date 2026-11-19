@@ -146,3 +146,42 @@ def test_toko_sydney_hosted_prefix_is_not_a_target(tmp_path):
     # Tonga floor); 103.134.118.0/24 tests local (owner, 2026-11-02).
     cache = _cache(tmp_path, 132831, ["103.124.187.0/24", "103.134.118.0/24", "103.36.146.0/24", "103.54.78.0/24"])
     assert targets.list_target_ips(132831, cache) == ["103.124.187.1", "103.134.118.1", "103.54.78.1"]
+
+
+# --- per-ASN pinned target addresses -----------------------------------------
+# AS23657 (Blue Sky): the 10-18 picker took 202.4.47.1 (202.4.47.0/24 sorted
+# first), which enters at Sydney via Vodafone Samoa; Blue Sky's own space
+# enters at Portland. Pinned to 38.134.236.1 (owner, 2026-11-19).
+
+
+def test_pinned_asn_returns_its_pin(tmp_path):
+    cache = _cache(tmp_path, 23657, ["38.134.236.0/22", "67.218.48.0/20", "67.218.49.0/24"])
+    assert targets.pick_target_ip(23657, cache) == "38.134.236.1"
+
+
+def test_pin_wins_over_an_earlier_sorted_prefix(tmp_path):
+    # The 10-18 cache shape: 202.4.47.0/24 sorts before 38.134.236.0/22.
+    cache = _cache(tmp_path, 23657, ["202.4.47.0/24", "38.134.236.0/22", "67.218.48.0/20"])
+    assert targets.pick_target_ip(23657, cache) == "38.134.236.1"
+    # The other prefixes stay behind it as alternates, each once.
+    assert targets.list_target_ips(23657, cache) == ["38.134.236.1", "202.4.47.1", "67.218.48.1"]
+
+
+def test_pin_wins_when_the_cache_lacks_its_prefix(tmp_path):
+    cache = _cache(tmp_path, 23657, ["202.4.47.0/24", "67.218.48.0/20"])
+    assert targets.pick_target_ip(23657, cache) == "38.134.236.1"
+    assert targets.list_target_ips(23657, cache) == ["38.134.236.1", "202.4.47.1", "67.218.48.1"]
+
+
+def test_unpinned_asn_keeps_first_sorted_prefix(tmp_path):
+    assert 10131 not in targets.PINNED_TARGET_IPS
+    cache = _cache(tmp_path, 10131, ["202.65.46.0/24", "202.65.32.0/24"])
+    assert targets.pick_target_ip(10131, cache) == "202.65.32.1"
+    assert targets.list_target_ips(10131, cache) == ["202.65.32.1", "202.65.46.1"]
+
+
+def test_pinned_ip_lies_inside_the_owner_asn_prefix():
+    # Guards a typo in the mapping: 38.134.236.1 is inside 38.134.236.0/22.
+    import ipaddress
+
+    assert ipaddress.ip_address(targets.PINNED_TARGET_IPS[23657]) in ipaddress.ip_network("38.134.236.0/22")
