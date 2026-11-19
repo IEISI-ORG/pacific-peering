@@ -1,6 +1,6 @@
 # Escalation fixes from the 2026-11-19 reviews: plan
 
-Status: **plan only, nothing implemented.** Each step waits for the owner's go-ahead.
+Status: **done 2026-11-19** (owner: "go P1 and P2, F1 option 2"): P1 `52c627a`, P2 `e968614` and `c5153c9`, F1 with the guard `343ac2c`. The F1 guard is per override (`needs_ris_for_adjacency`), not global; see task_plan.md.
 
 This plan covers only the obvious fixes: clear, low-risk and backed by evidence. Anything that changes a filed finding or needs a judgement call is listed under "Rulings owed" and is not planned here.
 
