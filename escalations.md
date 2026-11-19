@@ -678,6 +678,7 @@ Corridors `auto_classify.py`'s mechanical rules couldn't confidently resolve on 
 - reason: router hubs in several cities
 - detail: probe 329: router hub: hop 11 154.54.28.189 be9852.ccr22.pdx01.atlas.cogentco.com -> Portland, 116.416ms (floor 90.97ms, ok); probe 64953: router hub: hop 13 154.54.43.13 be3670.ccr22.sfo01.atlas.cogentco.com -> San Francisco, 142.284ms (floor 92.95ms, ok) -- probes leave the region through different cities; needs a human read, not a detour
 - flagged: 2026-11-10T15:13:42.455940+00:00
+- resolved: 2026-11-19T15:05+10:00 -- duplicate of the 228737735 entry the owner resolved on 11-02 (owner ruling 2026-11-19; temp/escalation_reviews_2026-11-19/review_remaining.md 2.2). Portland and San Francisco are only where each probe enters Cogent: probe 329 goes IIJ Seattle -> Cogent sea08 -> pdx01 -> pdx02, probe 64953 IIJ San Jose -> Cogent sfo01 -> pdx01 -> pdx02; both then cross to ccr71.syd01 -> agr51.syd01 (249-273ms) -> 154.18.97.50 -> Vodafone Samoa and reach 110.5.112.1. With current code (last-city rule) find_router_hub returns be3578.agr51.syd01.atlas.cogentco.com, Sydney, on both probes (250.6 and 271.5ms, floor 52.62ms), one city, matching #58's filed hub. No retest needed.
 
 
 ## Probe 62046 (FM, AS139759) -- metadata changed
@@ -713,12 +714,14 @@ Corridors `auto_classify.py`'s mechanical rules couldn't confidently resolve on 
 - detail: registered_abroad: RIR record country AU, not PG
 - action: sweep the prefix for live hosts and ping them from AU and home-economy probes; then owner review (acknowledge, exclude the prefix as a target, or exclude the ASN)
 - flagged: 2026-11-14T15:04:31.867025+00:00
+- resolved: 2026-11-19T15:05+10:00 -- acknowledged (owner ruling 2026-11-19; temp/escalation_reviews_2026-11-19/review_remaining.md 2.3). The /21 sits inside 210.79.16.0/20, netname APCSNET, country AU (RIPEstat WHOIS 11-19), which the owner put in atlas.targets.EXCLUDED_TARGET_PREFIXES on 2026-11-09 when adding AS45411 (it spans PNG and Sydney). leasing_check.ACKNOWLEDGED now holds (45411, "210.79.16.0/20"), and an entry covers its more-specifics for the same ASN (0c38ccf), so the other prefixes AS45411 announces inside the /20 will not escalate one by one.
 
 ## AS45411 (PG) -- 210.79.16.0/24 leased or foreign-registered space
 - reason: leasing-marker check (discovery/leasing_check.py)
 - detail: registered_abroad: RIR record country AU, not PG
 - action: sweep the prefix for live hosts and ping them from AU and home-economy probes; then owner review (acknowledge, exclude the prefix as a target, or exclude the ASN)
 - flagged: 2026-11-14T15:04:31.867025+00:00
+- resolved: 2026-11-19T15:05+10:00 -- acknowledged with the /21 above (owner ruling 2026-11-19; temp/escalation_reviews_2026-11-19/review_remaining.md 2.3): inside APCSNET 210.79.16.0/20 (AU), target-excluded since 2026-11-09; covered by the (45411, "210.79.16.0/20") entry in leasing_check.ACKNOWLEDGED (0c38ccf).
 
 ## Finding #328 (AS7594 "??" -> NU AS10025) -- candidate_peering rests on private hops; target 202.59.4.1 answers twice
 - measurement: 238217921, 238217237, 238217136
@@ -727,6 +730,7 @@ Corridors `auto_classify.py`'s mechanical rules couldn't confidently resolve on 
 - proposed correction: hold or drop #328 (no evidence of a direct AS7594-AS10025 adjacency). Owner to say whether the short-RTT reply from 202.59.4.1 counts as reaching Niue for #326/#327, or whether the corridor's RTT should be taken from the ~620 ms reply. Worth a look before the IUSN probe comes online, since it will show the Niue side directly.
 - flagged: 2026-11-15T21:36:00Z
 - note (2026-11-16, owner session): RIS per-prefix upstreams show all of AS10025's space (202.59.4.0/22 + /24s) enters Kacific only via AS7594 OneQode (Sydney), so the private hops after 120.88.74.158 are Kacific's Sydney/Broken Hill-side gateway path. The first 202.59.4.1 reply lands ~19 ms past the Sydney hop in both traces, which fits a gateway roughly Broken Hill's distance away answering for the address; the ~620 ms reply is the GEO round trip to Niue (inference, see task_plan.md 2026-11-16).
+- resolved: 2026-11-19T15:05+10:00 -- explained (owner ruling 2026-11-19; temp/escalation_reviews_2026-11-19/review_remaining.md 2.4). The short "202.59.4.1" reply (76-byte replies at 75-112ms, TTL 51-53) is an ICMP time-exceeded message from a router 2-3 hops before the host, not the target answering: the probes sent 48-byte echo requests, and the echo reply from the host comes back at 48 bytes, one GEO round trip later, at 617-640ms (TTL 48-51, two to three hops further). Across all cached raw files no other destination ever replied at size 76. #328 is the #326/#327 corridor (AS7594 -> Kacific AS135409 -> AS10025) with Kacific hidden behind RFC 1918 hops, not a direct AS7594-AS10025 adjacency; the corridor RTT is the echo reply. The owner's hold/drop decision on finding #328 is still open; finding #328 is unchanged.
 
 ## Finding #51 (MP AS7131 -> PG AS17828) -- late-collected trace that dies inside AS6939 was counted as a confirmed_detour corroboration
 - measurement: 238217235
@@ -735,12 +739,14 @@ Corridors `auto_classify.py`'s mechanical rules couldn't confidently resolve on 
 - proposed correction: treat 238217235 as inconclusive (dark gap before the target) and remove it as a corroboration of #51; check whether collecting a parked measurement skips the dead-end / alternate-prefix retry that the on-time path applies.
 - flagged: 2026-11-15T21:36:00Z
 - note (2026-11-16, owner session): not the parked path. RIS agrees AS7131 -> AS6939, so the probe was decisive and no retry would run on time either. Rule 2 found HE Los Angeles (be48.core3.lax1.he.net, 237.9 ms) and `_finalize` corroborated #51 (Sydney) without comparing hubs; 231073937 (HE Portland, 11-02) did the same. Fixed going forward (mismatch escalates; dead-end router hub is inconclusive). The two existing #51 rows (231073937, 238217235) stay until the owner rules on the 113 mismatched rows; see task_plan.md 2026-11-16.
+- resolved: 2026-11-19T15:05+10:00 -- fixed going forward (owner ruling 2026-11-19; temp/escalation_reviews_2026-11-19/review_remaining.md 2.5). The cause, a router hub accepted on a trace that never reaches the target and no comparison with the filed hub, was fixed in c05e089: such a trace is now inconclusive and a cross-city run escalates. Both disputed runs (231073937, 238217235) end at HE core3.syd1 and then go dark, with no AS17828 hop. Corroboration rows 918 and 1343 stay, pending the owner's 113-row decision; #51's real evidence is 211552535 (09-16) and 218707446 (10-04).
 
 ## Probe 23039 (GU, AS9246) -- metadata changed
 - reason: probe watch (atlas/probe_watch.py)
 - detail: asn_v4 17456 -> 9246; egress trace: AS9246 (measurement 238724161)
 - action: owner review -- check the path before trusting this probe's next results, or changing any exclusion
 - flagged: 2026-11-16T15:00:58.730720+00:00
+- resolved: 2026-11-19T15:05+10:00 -- ordinary uplink change, path local (owner ruling 2026-11-19; temp/escalation_reviews_2026-11-19/review_remaining.md 2.6). The dual-homed site's default uplink moved from PDS (AS17456) back to GTA (AS9246) between 11-15 15:07Z (corridor run 238216216 still left via PDS 199.127.237.13) and 11-16 00:02Z (Atlas: Connected since 00:02:06Z, 114.142.217.210). Egress 238724161 runs GTA core <1ms -> GTA Tokyo 114.142.196.28/.155 29.4ms -> BBIX Tokyo -> Cloudflare -> 1.1.1.1 at 29.6ms; no PDS hop, no proxy. The probe's Cloudflare ROV label follows the uplink (rov_cloudflare_history.jsonl: filtered whenever the invalid trace left via PDS, 09-24, 09-29 and 10-20 to 11-12; not filtered when it left via GTA, 10-06's invalid trace, 10-13 and 11-17), so the 11-17 Guam ROV change is the uplink, not a policy change. AS17456 now has no connected probe.
 ## AS10131 (CK) -> AS140504 (NR)
 - measurement: 238725343
 - reason: detour hub differs from the filed finding
@@ -758,6 +764,7 @@ Corridors `auto_classify.py`'s mechanical rules couldn't confidently resolve on 
 - reason: router in a hub city with no coordinates
 - detail: probe 1018134: router hub: hop 5 103.151.64.207 gu-gnc-rt1-----Vlan756.hk-mgi-rt1.oneqode.net -> Hong Kong, 79.213ms (no hub coordinates, unmapped)
 - flagged: 2026-11-16T15:10:22.530066+00:00
+- resolved: 2026-11-19T15:05+10:00 -- cleared by e0e4e1f (owner ruling 2026-11-19; temp/escalation_reviews_2026-11-19/review_remaining.md 2.7): the 11-17 Hong Kong coordinates and Telstra Global sydp/hkck patterns. With current code find_router_hub picks i-90.sydp10.telstraglobal.net, Sydney, 250.7ms (floor 40.39ms, ok); Hong Kong is an intermediate city, Sydney the last off-region one, and the target 103.116.156.1 is reached. The run corroborated #290 (local transit), which stands; a new NR -> FJ AS137890 detour via Sydney is expected on #290's next reverification from Nauru.
 
 ## AS7131 (GU) -> AS24390 (FJ)
 - measurement: 238730380
@@ -785,18 +792,21 @@ Corridors `auto_classify.py`'s mechanical rules couldn't confidently resolve on 
 - reason: router address has no single BGP owner
 - detail: probe 33674: router hub: hop 7 103.200.13.168 HundredGigE0-0-1-2.921.bdr01-ipt-624sgran-lax.us.as38195.net -> Los Angeles, 211.915ms (floor 96.77ms, no_owner) -- BGP gives no single origin for the address (lookup failed, unannounced, or multi-origin), so the hostname can't be checked against its network; needs a human look, not a detour
 - flagged: 2026-11-18T15:10:19.547097+00:00
+- resolved: 2026-11-19T15:05+10:00 -- ordinary (owner ruling 2026-11-19; temp/escalation_reviews_2026-11-19/review_remaining.md 2.8). 103.200.13.168 (HundredGigE0-0-1-2.921.bdr01-ipt-624sgran-lax.us.as38195.net) is Superloop's Los Angeles border router at 624 S Grand Ave, in Superloop's allocated but unannounced 103.200.13.0/24 (WHOIS SUPERLOOP-AU inside 103.200.12.0/22; RADB route object origin AS38195; RIS: AS38195 originated it 2016-10-02 to 2021-05-20, 0 of 320 peers see it today). Its 190-213ms clears the 96.77ms floor; the next hop is the Any2West LAN (206.72.210.133) in the same building, the hop before it Superloop Sydney. Path and hub agree with #110 (Los Angeles, Any2West). The prefix override 103.200.13.0/24 -> AS38195 (F1) is pending: its rehearsal over the 48 cached corridor runs through 103.200.13.x found a change beyond clearing these flags (NC AS45345 -> GU AS3605, 211259107, would file a new detour via Los Angeles, and with no router hub a candidate_peering AS38195 -> AS3605), so it was not committed and goes back to the owner (patch in temp/escalation_reviews_2026-11-19/f1_superloop_override.patch). Until then NC runs through this router will keep raising this escalation.
 
 ## AS45345 (NC) -> AS45193 (FM)
 - measurement: 240073513
 - reason: router address has no single BGP owner
 - detail: probe 63050: router hub: hop 7 103.200.13.168 HundredGigE0-0-1-2.921.bdr01-ipt-624sgran-lax.us.as38195.net -> Los Angeles, 212.842ms (floor 96.77ms, no_owner) -- BGP gives no single origin for the address (lookup failed, unannounced, or multi-origin), so the hostname can't be checked against its network; needs a human look, not a detour
 - flagged: 2026-11-18T15:10:19.547097+00:00
+- resolved: 2026-11-19T15:05+10:00 -- ordinary (owner ruling 2026-11-19; temp/escalation_reviews_2026-11-19/review_remaining.md 2.8). 103.200.13.168 (HundredGigE0-0-1-2.921.bdr01-ipt-624sgran-lax.us.as38195.net) is Superloop's Los Angeles border router at 624 S Grand Ave, in Superloop's allocated but unannounced 103.200.13.0/24 (WHOIS SUPERLOOP-AU inside 103.200.12.0/22; RADB route object origin AS38195; RIS: AS38195 originated it 2016-10-02 to 2021-05-20, 0 of 320 peers see it today). Its 190-213ms clears the 96.77ms floor; the next hop is the Any2West LAN (206.72.210.133) in the same building, the hop before it Superloop Sydney. Path and hub agree with #110 (Los Angeles, Any2West). The prefix override 103.200.13.0/24 -> AS38195 (F1) is pending: its rehearsal over the 48 cached corridor runs through 103.200.13.x found a change beyond clearing these flags (NC AS45345 -> GU AS3605, 211259107, would file a new detour via Los Angeles, and with no router hub a candidate_peering AS38195 -> AS3605), so it was not committed and goes back to the owner (patch in temp/escalation_reviews_2026-11-19/f1_superloop_override.patch). Until then NC runs through this router will keep raising this escalation.
 
 ## AS45345 (NC) -> AS45193 (FM)
 - measurement: 240073513
 - reason: router address has no single BGP owner
 - detail: probe 7018: router hub: hop 7 103.200.13.168 HundredGigE0-0-1-2.921.bdr01-ipt-624sgran-lax.us.as38195.net -> Los Angeles, 190.441ms (floor 96.77ms, no_owner) -- BGP gives no single origin for the address (lookup failed, unannounced, or multi-origin), so the hostname can't be checked against its network; needs a human look, not a detour
 - flagged: 2026-11-18T15:10:19.547097+00:00
+- resolved: 2026-11-19T15:05+10:00 -- ordinary (owner ruling 2026-11-19; temp/escalation_reviews_2026-11-19/review_remaining.md 2.8). 103.200.13.168 (HundredGigE0-0-1-2.921.bdr01-ipt-624sgran-lax.us.as38195.net) is Superloop's Los Angeles border router at 624 S Grand Ave, in Superloop's allocated but unannounced 103.200.13.0/24 (WHOIS SUPERLOOP-AU inside 103.200.12.0/22; RADB route object origin AS38195; RIS: AS38195 originated it 2016-10-02 to 2021-05-20, 0 of 320 peers see it today). Its 190-213ms clears the 96.77ms floor; the next hop is the Any2West LAN (206.72.210.133) in the same building, the hop before it Superloop Sydney. Path and hub agree with #110 (Los Angeles, Any2West). The prefix override 103.200.13.0/24 -> AS38195 (F1) is pending: its rehearsal over the 48 cached corridor runs through 103.200.13.x found a change beyond clearing these flags (NC AS45345 -> GU AS3605, 211259107, would file a new detour via Los Angeles, and with no router hub a candidate_peering AS38195 -> AS3605), so it was not committed and goes back to the owner (patch in temp/escalation_reviews_2026-11-19/f1_superloop_override.patch). Until then NC runs through this router will keep raising this escalation.
 
 ## AS45345 (NC) -> AS23657 (AS)
 - measurement: 240078520
