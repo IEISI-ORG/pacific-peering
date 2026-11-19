@@ -804,3 +804,15 @@ Corridors `auto_classify.py`'s mechanical rules couldn't confidently resolve on 
 - detail: finding #66 is filed via Sydney; this run left the region via Portland (be2378.ccr51.pdx02.atlas.cogentco.com (router in Portland, no IXP crossing)) -- not corroborated; relabel, keep, or retest is the owner's call
 - flagged: 2026-11-18T15:16:47.531604+00:00
 
+## AS9471 (PF) -> AS17893 (PW)
+- measurement: 240372348
+- reason: detour hub differs from the filed finding
+- detail: finding #55 is filed via Los Angeles; this run left the region via Tokyo (be15.core1.tyo1.he.net (router in Tokyo, no IXP crossing)) -- not corroborated; relabel, keep, or retest is the owner's call
+- flagged: 2026-11-19T03:11:11.352121+00:00
+
+## AS24390 (TO) -> AS140504 (NR)
+- measurement: 240373634
+- reason: detour hub differs from the filed finding
+- detail: finding #303 is filed via Sydney; this run left the region via Los Angeles (et-0-0-0.bdr1.laxc.us.aarnet.net.au (router in Los Angeles, no IXP crossing)) -- not corroborated; relabel, keep, or retest is the owner's call
+- flagged: 2026-11-19T03:14:28.207281+00:00
+
