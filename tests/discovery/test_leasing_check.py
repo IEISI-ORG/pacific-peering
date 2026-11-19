@@ -151,3 +151,47 @@ def test_scan_adds_the_last_holder_to_a_no_delegation_marker(monkeypatch):
     (marker,) = lc._scan([(9249, "VU", "103.16.15.0/24")])["103.16.15.0/24"]["markers"]
     assert marker["kind"] == "no_delegation"
     assert "SPIM-AP (VU) until 2026-04-26" in marker["detail"]
+
+
+# --- 2026-11-19 owner ruling (F2): an acknowledged block covers its more-specifics ----------
+# AS45411 (APCS, PG/Sydney) announces many prefixes inside 210.79.16.0/20, which APNIC
+# registers AU (APCSNET) and atlas.targets has excluded since 2026-11-09. Each one used to
+# raise its own registered_abroad escalation as it entered the RIS cache (11-14: /21, /24).
+_APCS_MORE_SPECIFICS = ("210.79.16.0/21", "210.79.16.0/24", "210.79.30.0/23")
+
+
+def _abroad(asn, prefixes, cc="PG"):
+    return {p: {"asn": asn, "cc": cc, "markers": [{"kind": "registered_abroad", "detail": "AU"}]} for p in prefixes}
+
+
+def test_acknowledged_block_covers_its_more_specifics_for_the_same_asn():
+    assert lc._flag_keys(_abroad(45411, _APCS_MORE_SPECIFICS)) == set()
+    assert lc.new_flags([], _abroad(45411, _APCS_MORE_SPECIFICS)) == []
+
+
+def test_acknowledged_block_does_not_cover_another_asn():
+    assert lc._flag_keys(_abroad(64500, _APCS_MORE_SPECIFICS)) == {
+        (64500, p, "registered_abroad") for p in _APCS_MORE_SPECIFICS}
+
+
+def test_acknowledged_block_does_not_cover_a_prefix_outside_it():
+    # 210.79.32.0/24 is next to the /20, not inside it.
+    assert lc._flag_keys(_abroad(45411, ("210.79.32.0/24", "210.79.0.0/19"))) == {
+        (45411, "210.79.32.0/24", "registered_abroad"), (45411, "210.79.0.0/19", "registered_abroad")}
+
+
+def test_exact_acknowledged_entries_still_work():
+    assert lc._flag_keys(_abroad(132468, ("103.188.182.0/23",), cc="CK")) == set()
+
+
+def test_report_and_summary_use_the_covering_acknowledgement():
+    results = _abroad(45411, ("210.79.16.0/24",))
+    history = [{"mode": "full", "complete": True, "run_at": "2026-11-19T00:00:00+00:00", "results": results}]
+    (entry,) = lc.latest_flagged(history)["entries"]
+    assert entry["verdict"] == lc.ACKNOWLEDGED[(45411, "210.79.16.0/20")]
+    report = lc.render_report({"run_at": "2026-11-19T00:00:00+00:00", "mode": "full", "asns": [45411],
+                               "results": results}, [])
+    unreviewed = report.split("Flagged, not yet reviewed")[1].split("Reviewed (ACKNOWLEDGED")[0]
+    reviewed = report.split("Reviewed (ACKNOWLEDGED")[1].split("Geofeeds")[0]
+    assert "210.79.16.0/24" not in unreviewed and "(none)" in unreviewed
+    assert "AS45411 210.79.16.0/20" in reviewed

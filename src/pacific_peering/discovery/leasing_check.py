@@ -82,7 +82,10 @@ SHARED_REGISTRATIONS: dict[str, frozenset[str]] = {
 }
 US_ASSOCIATED = frozenset(cc for cc, ok in SHARED_REGISTRATIONS.items() if "US" in ok)
 
-# (ASN, prefix) already reviewed by the owner: reported, never escalated.
+# (ASN, prefix) already reviewed by the owner: reported, never escalated. An entry
+# also covers every more-specific prefix of its block for the same ASN
+# (`acknowledgement`; owner, 2026-11-19), so a reviewed block isn't re-escalated
+# one /24 at a time as its more-specifics enter the RIS cache.
 ACKNOWLEDGED: dict[tuple[int, str], str] = {
     (58460, "154.197.42.0/24"): "Larus/Cloud Innovation-leased AFRINIC space for Digicel PNG; "
     "nearest from PG (102ms), measurement 217769793 -- used in PNG (2026-10-01)",
@@ -104,6 +107,12 @@ ACKNOWLEDGED: dict[tuple[int, str], str] = {
     "atlas.targets.EXCLUDED_TARGET_PREFIXES (owner, 2026-11-02)",
     (9249, "103.16.15.0/24"): "SPIM (VU) assignment with AS132548, both reclaimed by APNIC 2026-04-26 (WHOWAS), "
     "now reserved; TVL has originated it since 2013 -- recorded, no action (owner, 2026-11-02)",
+    # APNIC registers the whole /20 as AU (APCSNET, "Wholesale Internet Provider"); AS45411
+    # spans PNG and Sydney, and the block has been in atlas.targets.EXCLUDED_TARGET_PREFIXES
+    # since 2026-11-09. Covers the /21 and /24 flagged 2026-11-14 and the other
+    # more-specifics RIS shows AS45411 announcing inside it (owner, 2026-11-19).
+    (45411, "210.79.16.0/20"): "APCSNET AU wholesale space; in atlas.targets.EXCLUDED_TARGET_PREFIXES "
+    "(owner, 2026-11-09); AS45411 spans PNG and Sydney -- covers its more-specifics (owner, 2026-11-19)",
 }
 
 ESCALATED_KINDS = ("broker", "registered_abroad", "foreign_registry", "no_delegation")
@@ -233,12 +242,35 @@ def _scan(targets: list[tuple[int, str, str]]) -> dict[str, dict]:
         return dict(pool.map(one, targets))
 
 
+def _covering_entries(asn: int, prefix: str) -> list[tuple[int, str]]:
+    """`ACKNOWLEDGED` keys for `asn` whose block equals or contains `prefix`, most specific first."""
+    try:
+        net = ipaddress.ip_network(prefix, strict=False)
+    except ValueError:
+        return [(asn, prefix)] if (asn, prefix) in ACKNOWLEDGED else []
+    keys = []
+    for a, p in ACKNOWLEDGED:
+        if a != asn:
+            continue
+        block = ipaddress.ip_network(p, strict=False)
+        if block.version == net.version and net.subnet_of(block):  # type: ignore[arg-type]
+            keys.append((a, p))
+    return sorted(keys, key=lambda k: -ipaddress.ip_network(k[1], strict=False).prefixlen)
+
+
+def acknowledgement(asn: int, prefix: str) -> str | None:
+    """The owner's note for (`asn`, `prefix`): its own entry, or the most specific
+    entry for the same ASN whose block contains it; None if not reviewed."""
+    keys = _covering_entries(asn, prefix)
+    return ACKNOWLEDGED[keys[0]] if keys else None
+
+
 def _flag_keys(results: dict[str, dict]) -> set[tuple[int, str, str]]:
     return {
         (r["asn"], prefix, m["kind"])
         for prefix, r in results.items()
         for m in r.get("markers", [])
-        if m["kind"] in ESCALATED_KINDS and (r["asn"], prefix) not in ACKNOWLEDGED
+        if m["kind"] in ESCALATED_KINDS and acknowledgement(r["asn"], prefix) is None
     }
 
 
@@ -257,7 +289,7 @@ def latest_flagged(history: list[dict]) -> dict | None:
         if flagged:
             entries.append({"asn": r["asn"], "cc": r["cc"], "prefix": prefix,
                             "markers": [f"{m['kind']}: {m['detail']}" for m in flagged],
-                            "verdict": ACKNOWLEDGED.get((r["asn"], prefix))})
+                            "verdict": acknowledgement(r["asn"], prefix)})
     geofeeds = sum(any(m["kind"] == "geofeed" for m in r.get("markers", [])) for r in run["results"].values())
     return {"run_at": run["run_at"], "prefixes_checked": len(run["results"]),
             "geofeed_prefixes": geofeeds, "entries": entries}
@@ -309,9 +341,10 @@ def render_report(snapshot: dict, fresh: list[tuple[int, str, str]]) -> str:
     res = snapshot["results"]
     flagged = lambda r, p, m: m["kind"] in ESCALATED_KINDS  # noqa: E731
     errors = sorted(p for p, r in res.items() if "error" in r)
+    used = {key for p, r in res.items() if "asn" in r for key in _covering_entries(r["asn"], p)}
     acked = [
         f"  AS{asn} {prefix}: {note}" for (asn, prefix), note in sorted(ACKNOWLEDGED.items())
-        if prefix in res
+        if (asn, prefix) in used
     ]
     lines = [
         f"Leasing-marker check -- {snapshot['run_at'][:10]} ({snapshot['mode']} run)",
@@ -326,7 +359,7 @@ def render_report(snapshot: dict, fresh: list[tuple[int, str, str]]) -> str:
         f"New flags this run: {', '.join(f'AS{a} {p} ({k})' for a, p, k in fresh) or 'none'}",
         "",
         "Flagged, not yet reviewed (escalated when first seen):",
-        *(_lines(res, lambda r, p, m: flagged(r, p, m) and (r["asn"], p) not in ACKNOWLEDGED) or ["  (none)"]),
+        *(_lines(res, lambda r, p, m: flagged(r, p, m) and acknowledgement(r["asn"], p) is None) or ["  (none)"]),
         "",
         "Reviewed (ACKNOWLEDGED in leasing_check.py; not escalated):",
         *(acked or ["  (none)"]),
