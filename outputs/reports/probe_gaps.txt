@@ -145,7 +145,7 @@ PATHWAY COVERAGE (20 economies) -- same table as the main report's Pathway Cover
   VU  Vanuatu (Melanesia) -- 11 ASN(s), 5 listed / 1 active probe(s) on a tracked ASN, 1 untested pathway(s)
   FM  Micronesia, Federated States of (Micronesia) -- 6 ASN(s), 6 listed / 3 active probe(s) on a tracked ASN, 0 untested pathway(s)
   GU  Guam (Micronesia) -- 11 ASN(s), 14 listed / 6 active probe(s) on a tracked ASN, 0 untested pathway(s)
-  NC  New Caledonia (Melanesia) -- 17 ASN(s), 19 listed / 4 active probe(s) on a tracked ASN, 0 untested pathway(s)
+  NC  New Caledonia (Melanesia) -- 17 ASN(s), 18 listed / 4 active probe(s) on a tracked ASN, 0 untested pathway(s)
 
   Note: this section's "listed"/"active" counts only probes hosted on one of this project's own tracked in-scope ASNs -- a different, stricter question than the ZERO/FRAGILE/ADEQUATE breakdown above, which counts any physically-connected probe in the country. A country can show >=1 active above and 0 here (e.g. a probe hosted on a Starlink ASN, or on an ASN registered to a different country) -- that's expected, not a data-quality problem.
 
