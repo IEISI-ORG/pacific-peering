@@ -1,6 +1,6 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-11-20T15:39:26.809479+00:00                  
+                 Generated: 2026-11-21T15:04:44.746184+00:00                  
 ==============================================================================
 FOUND A BUG? Bugs very likely remain in both the code and the data.
 Please open an issue: https://github.com/IEISI-ORG/pacific-peering/issues/new
@@ -19,8 +19,8 @@ PATHWAYS (every corridor with a filed finding, of any kind):
 Economies in scope:            20
 ASNs in scope:                  165
 ASNs with >=1 RIS neighbor:     122
-ASNs with >=1 IXP membership:   36
-ASNs with >=1 facility presence:20
+ASNs with >=1 IXP membership:   38
+ASNs with >=1 facility presence:22
 IXP LAN registry: 10 in-fishbowl, 13 out-of-fishbowl, 0 unconfirmed
 
 ECONOMIES
@@ -31,7 +31,7 @@ AS   American Samoa                   Polynesia        2     2     1     0
 CK   Cook Islands                     Polynesia        2     1     1     0
 FJ   Fiji                             Melanesia       21    16     3     1
 FM   Micronesia, Federated States of  Micronesia       6     5     1     1
-GU   Guam                             Micronesia      11     8     5     5
+GU   Guam                             Micronesia      11     8     6     6
 KI   Kiribati                         Micronesia       6     3     0     0
 MH   Marshall Islands                 Micronesia       1     1     0     0
 MP   Northern Mariana Islands         Micronesia       2     2     1     1
@@ -39,7 +39,7 @@ NC   New Caledonia                    Melanesia       17    13     6     4
 NR   Nauru                            Micronesia       5     4     1     1
 NU   Niue                             Polynesia        2     2     0     0
 PF   French Polynesia                 Polynesia        6     5     1     1
-PG   Papua New Guinea                 Melanesia       41    28     9     3
+PG   Papua New Guinea                 Melanesia       41    28    10     4
 PW   Palau                            Micronesia       3     3     1     1
 SB   Solomon Islands                  Melanesia       10     9     1     0
 TO   Tonga                            Polynesia        5     4     1     0
@@ -150,19 +150,19 @@ Per-operator evidence summary, computed fresh from the current finding dataclass
 
 PEERINGDB DATA QUALITY
 ==============================================================================
-72 of 165 in-scope ASNs have a PeeringDB net record at all. 'Zero facilities'/'zero IXP memberships' elsewhere in this report can mean either of two very different things: this ASN was never on PeeringDB to begin with, or it IS registered and simply declared nothing. The two columns below are counted against ASNs that ARE on PeeringDB, not against every in-scope ASN, so they show the real gap, not a re-blend of the two. Known concrete cases: AS12684 (SES Astra) and AS3549 (the former Global Crossing backbone ASN) are both real, traceroute-confirmed carriers with zero PeeringDB facilities -- this is PeeringDB's own coverage gap, not a measurement gap in this project's findings.
+73 of 165 in-scope ASNs have a PeeringDB net record at all. 'Zero facilities'/'zero IXP memberships' elsewhere in this report can mean either of two very different things: this ASN was never on PeeringDB to begin with, or it IS registered and simply declared nothing. The two columns below are counted against ASNs that ARE on PeeringDB, not against every in-scope ASN, so they show the real gap, not a re-blend of the two. Known concrete cases: AS12684 (SES Astra) and AS3549 (the former Global Crossing backbone ASN) are both real, traceroute-confirmed carriers with zero PeeringDB facilities -- this is PeeringDB's own coverage gap, not a measurement gap in this project's findings.
 CC   Name                      ASNs  On PDB  w/ Facility  w/ IXP
 ------------------------------------------------------------------------------
 AS   American Samoa               2       1            0       1
 CK   Cook Islands                 2       1            0       1
 FJ   Fiji                        21      15            1       3
 FM   Micronesia, Federated St     6       6            1       1
-GU   Guam                        11       6            5       5
+GU   Guam                        11       6            6       6
 MP   Northern Mariana Islands     2       1            1       1
 NC   New Caledonia               17      11            4       6
 NR   Nauru                        5       3            1       1
 PF   French Polynesia             6       3            1       1
-PG   Papua New Guinea            41      11            3       9
+PG   Papua New Guinea            41      12            4      10
 PW   Palau                        3       1            1       1
 SB   Solomon Islands             10       2            0       1
 TO   Tonga                        5       3            0       1
@@ -223,7 +223,7 @@ Measurements: {'v4': [239450294, 239451034], 'v6': [239454311, 239455027]}. Deta
 
 IPV6 COVERAGE (adoption signal only -- no IPv6 testing yet)
 ==============================================================================
-45 of 165 in-scope ASNs have >=1 RIS-observed IPv6-originated prefix. 6 of 37 connected Atlas probes work over IPv6 (5 more are IPv6-capable but tagged as not working). Adoption tracking only -- this project deliberately isn't testing IPv6 corridors yet; queued until adoption has advanced further (see TODO below).
+45 of 165 in-scope ASNs have >=1 RIS-observed IPv6-originated prefix. 6 of 37 connected Atlas probes work over IPv6 (6 more are IPv6-capable but tagged as not working). Adoption tracking only -- this project deliberately isn't testing IPv6 corridors yet; queued until adoption has advanced further (see TODO below).
 CC   Name                      ASNs  w/ IPv6
 ------------------------------------------------------------------------------
 AS   American Samoa               2        1
@@ -252,24 +252,24 @@ Name                         City             CC   In fishbowl  Members Verified
 Any2West                     Los Angeles and  US   False              4       11  GU, MP, PF
 BBIX Tokyo                   Tokyo            JP   False              4        8  GU, MP, PW
 CAN'L IX                     NOUMEA           NC   True               5        1  NC
-DRF IX                       Honolulu         US   False              2        0  AS, PF
+DRF IX                       Honolulu         US   False              3        0  AS, GU, PF
 EdgeIX - Auckland            Auckland         NZ   False              1        0  WS
 Equinix Los Angeles          Los Angeles      US   False              1        0  PF
-Equinix San Jose             San Jose         US   False              1        3  GU
+Equinix San Jose             San Jose         US   False              0        3  
 Equinix Singapore            Singapore        SG   False              1        0  GU
 Equinix Sydney               Sydney           AU   False              9       36  CK, FJ, NC, PF, PG, TO, WS
 Fiji-IXP                     Suva             FJ   True               3        6  FJ
 GOREX                        Piti             GU   True               1        0  GU
 GU-IX                        Guam             GU   True               1        1  GU
-Guam IX                      Tamuning         GU   True               5        4  FM, GU, MP, NR, PW
+Guam IX                      Tamuning         GU   True               7        4  FM, GU, MP, NR, PW
 IX Australia Sydney (NSW-IX) Sydney           AU   False              1        8  SB
 JPIX TOKYO                   Tokyo            JP   False              1        0  GU
 JPNAP Tokyo                  Tokyo            JP   False              1        0  GU
-MARIIX                       Mangilao         GU   True               5        5  GU, MP
-MegaIX Sydney                Sydney           AU   False              6       17  FJ, NC, PG, SB
+MARIIX                       Mangilao         GU   True               6        5  GU, MP
+MegaIX Sydney                Sydney           AU   False              7       17  FJ, NC, PG, SB
 PNG Neutral IX Hagen         Mt Hagen         PG   True               1        0  PG
-PNG Neutral IX Lae           Lae              PG   True               2        0  PG
-PNG Neutral IX POM           Port Moresby     PG   True               9        0  PG
+PNG Neutral IX Lae           Lae              PG   True               3        0  PG
+PNG Neutral IX POM           Port Moresby     PG   True              10        0  PG
 SIX Seattle                  Seattle          US   False              1        0  GU
 VIX.VU                       Port Vila        VU   True               2        3  VU
 
