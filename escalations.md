@@ -839,3 +839,10 @@ Corridors `auto_classify.py`'s mechanical rules couldn't confidently resolve on 
 - detail: finding #101 is filed via Sydney; this run left the region via Tokyo (BBIX Tokyo) -- not corroborated; relabel, keep, or retest is the owner's call
 - flagged: 2026-11-19T15:20:21.785375+00:00
 
+## Probe 50365 (PG, AS17828) Disconnected -- PG reverifications fail with Atlas 400
+- measurement: none created (both Atlas create calls returned 400)
+- reason: unattended daily check -- the 2026-11-22T15:00Z nightly batch logged two tracebacks for AS17828 (PG) -> AS17993 (WS), reverifications of findings #302 (confirmed_detour) and #7 (candidate_peering)
+- detail: Atlas shows probe 50365 (AS17828, Port Moresby, PG's only probe used in corridor tests) Disconnected since 2026-11-22T07:54:35Z, tagged "unstable-connection". With no connected PG probe, auto_classify fell back to "sourcing by country" (PG), and create_traceroute_measurement got `400 Client Error: Bad Request` from https://atlas.ripe.net/api/v2/measurements/ (logs/cron.log ~line 44155 and 44193). The corridor is left untested, so it will be retried, and probably fail the same way, each night until the probe reconnects. No credits were spent. No probe-watch escalation for 50365 exists yet.
+- proposed correction: none to the data. When 50365 reconnects, fire one regression trace from it before trusting the PG corridors again (regression-test-on-probe-change rule). Code question for the owner: should the country-fallback path skip, or log one clean line, when the economy has no connected probe, instead of raising on Atlas's 400?
+- flagged: 2026-11-22T21:40:00Z
+
