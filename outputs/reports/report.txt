@@ -1,6 +1,6 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-11-21T15:04:44.746184+00:00                  
+                 Generated: 2026-11-22T15:45:37.199212+00:00                  
 ==============================================================================
 FOUND A BUG? Bugs very likely remain in both the code and the data.
 Please open an issue: https://github.com/IEISI-ORG/pacific-peering/issues/new
@@ -171,7 +171,7 @@ WS   Samoa                       10       3            1       2
 
 ASPA PROGRESS (draft-ietf-sidrops-aspa-profile, upstream-authorization adoption)
 ==============================================================================
-22 of 165 in-scope ASNs now publish an ASPA record (4253 total across the whole internet, per Cloudflare Radar). Adoption is still early -- absence means 'not published yet', not 'no real upstream'. Per-economy: how many of its own ASNs publish a record, and the distinct upstream ASNs those records declare, split by whether the declared provider is itself an in-scope Pacific ASN or an external carrier.
+22 of 165 in-scope ASNs now publish an ASPA record (4266 total across the whole internet, per Cloudflare Radar). Adoption is still early -- absence means 'not published yet', not 'no real upstream'. Per-economy: how many of its own ASNs publish a record, and the distinct upstream ASNs those records declare, split by whether the declared provider is itself an in-scope Pacific ASN or an external carrier.
 CC   Name                      ASNs  w/ ASPA  Upstr in-FB  Upstr ext
 ------------------------------------------------------------------------------
 CK   Cook Islands                 2        1            0          3
@@ -223,7 +223,7 @@ Measurements: {'v4': [239450294, 239451034], 'v6': [239454311, 239455027]}. Deta
 
 IPV6 COVERAGE (adoption signal only -- no IPv6 testing yet)
 ==============================================================================
-45 of 165 in-scope ASNs have >=1 RIS-observed IPv6-originated prefix. 6 of 37 connected Atlas probes work over IPv6 (6 more are IPv6-capable but tagged as not working). Adoption tracking only -- this project deliberately isn't testing IPv6 corridors yet; queued until adoption has advanced further (see TODO below).
+45 of 165 in-scope ASNs have >=1 RIS-observed IPv6-originated prefix. 6 of 37 connected Atlas probes work over IPv6 (5 more are IPv6-capable but tagged as not working). Adoption tracking only -- this project deliberately isn't testing IPv6 corridors yet; queued until adoption has advanced further (see TODO below).
 CC   Name                      ASNs  w/ IPv6
 ------------------------------------------------------------------------------
 AS   American Samoa               2        1
@@ -297,7 +297,7 @@ PG   Papua New Guinea                 Melanesia       41      10       1        
 VU   Vanuatu                          Melanesia       11       5       1         1
 FM   Micronesia, Federated States of  Micronesia       6       6       3         0
 GU   Guam                             Micronesia      11      14       6         0
-NC   New Caledonia                    Melanesia       17      18       4         0
+NC   New Caledonia                    Melanesia       17      19       4         0
 
 APPENDIX: LOW DATA QUALITY ISSUES (7 known, resolved)
 ==============================================================================
