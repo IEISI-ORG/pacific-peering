@@ -846,3 +846,21 @@ Corridors `auto_classify.py`'s mechanical rules couldn't confidently resolve on 
 - proposed correction: none to the data. When 50365 reconnects, fire one regression trace from it before trusting the PG corridors again (regression-test-on-probe-change rule). Code question for the owner: should the country-fallback path skip, or log one clean line, when the economy has no connected probe, instead of raising on Atlas's 400?
 - flagged: 2026-11-22T21:40:00Z
 
+## AS45345 (NC) -> AS4638 (FJ)
+- measurement: 242767108
+- reason: local IXP crossing with implausibly high latency
+- detail: probe 33674: hop 8 crosses Fiji-IXP (in-fishbowl) at 39.16ms, 23.2ms more than the hop before it (minimum over it and later hops), above the 14.0ms allowed (10.0ms local fibre + 4.0ms cable leg in + 0.0ms to a confirmed remote port) -- either this hop isn't genuinely local despite the registry, or there's an unexpected detour/backhaul before reaching it; needs a human look, not a guess
+- flagged: 2026-11-23T15:13:40.847413+00:00
+
+## AS45345 (NC) -> AS4638 (FJ)
+- measurement: 242767108
+- reason: local IXP crossing with implausibly high latency
+- detail: probe 63050: hop 8 crosses Fiji-IXP (in-fishbowl) at 39.986ms, 23.2ms more than the hop before it (minimum over it and later hops), above the 13.2ms allowed (10.0ms local fibre + 3.2ms cable leg in + 0.0ms to a confirmed remote port) -- either this hop isn't genuinely local despite the registry, or there's an unexpected detour/backhaul before reaching it; needs a human look, not a guess
+- flagged: 2026-11-23T15:13:40.847413+00:00
+
+## AS45345 (NC) -> AS4638 (FJ)
+- measurement: 242767108
+- reason: local IXP crossing with implausibly high latency
+- detail: probe 7018: hop 8 crosses Fiji-IXP (in-fishbowl) at 39.219ms, 23.3ms more than the hop before it (minimum over it and later hops), above the 14.1ms allowed (10.0ms local fibre + 4.1ms cable leg in + 0.0ms to a confirmed remote port) -- either this hop isn't genuinely local despite the registry, or there's an unexpected detour/backhaul before reaching it; needs a human look, not a guess
+- flagged: 2026-11-23T15:13:40.847413+00:00
+
