@@ -3901,3 +3901,12 @@ target, none faster than fibre. Domestic Honiara traces reach AS139277, AS142279
 SATSOL to Our Telekom (AS45891) goes dark after SISCC. AS132462 is reached at 157 ms via AS4637/AS38008, consistent
 with its existing escalation (Bemobile SI space announced from HK). Inbound from NC goes via MegaIX Sydney, and from
 GU/PF via Sydney at about 275-285 ms. Next run: Wednesday 2026-11-25.
+
+**Follow-up (owner, 2026-11-23): SB -> NU 596 ms, and a satellite tag.** The Honiara -> AS10025 (IUSN) trace at
+596.4 ms is Kacific GEO, not a routing anomaly: Lumen and OneQode Sydney at 38 ms, `kacific.com` 103.103.61.19 at
+38.9 ms, then six dark hops to `r1.niue.nu`. The satellite leg (target minus Kacific hop) is 557.5 ms, against
+559.7 ms (TV probe 7588) and 560.8 ms (MP probe 65653) in the finding #328 escalation; the GEO light-speed floor is
+about 499 ms (Kacific-1 at 150E, gateway near Sydney assumed). Already explained in that escalation (owner ruling
+2026-11-19), so nothing filed; the #328 hold/drop ruling is still open. The report now ends such a path with
+`| satellite <operator> (<orbit>)` (commit e20e47d); the operator list moved to `analysis/satellite_operators.py`.
+Limit: the tag needs an answering hop inside the satellite AS.
