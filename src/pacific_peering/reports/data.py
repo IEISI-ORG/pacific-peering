@@ -36,6 +36,7 @@ from pacific_peering.analysis.corridor_backlog import _tested_economy_pairs_from
 from pacific_peering.analysis.data_quality_issues import DATA_QUALITY_ISSUES, DataQualityIssue
 from pacific_peering.analysis.fishbowl import DEFAULT_SUMMARY_PATH
 from pacific_peering.analysis.ixp_lan_registry import DEFAULT_REGISTRY_PATH
+from pacific_peering.analysis.satellite_operators import SATELLITE_OPERATORS
 from pacific_peering.analysis.traceroute_topology import DEFAULT_TRIANGULATION_DIR
 from pacific_peering.atlas.asn_probes import load_asn_probe_registry
 from pacific_peering.atlas.probes import asn_listed_registry, load_probe_listing
@@ -495,18 +496,6 @@ def _compute_external_hubs(
     return tuple(sorted(hubs, key=lambda h: (-h.entry_count, h.name)))
 
 
-# Satellite operators with a real, PeeringDB-registered presence this
-# project has checked for -- a small, stable set, hand-curated same as
-# `regional_carrier_facilities.py`, since there's no reliable automatic
-# signal to detect "this ASN is a satellite operator" from RIS/PeeringDB
-# data alone.
-_SATELLITE_OPERATORS: dict[int, str] = {
-    14593: "SpaceX Starlink",
-    12684: "SES ASTRA S.A.",
-    135409: "Kacific Broadband Satellites",
-}
-
-
 @dataclass(frozen=True)
 class SatellitePathway:
     """One satellite operator's reach into the in-scope Pacific economies.
@@ -583,7 +572,8 @@ def _compute_satellite_pathways(
     conflated in whatever consumes this data.
     """
     pathways = []
-    for sat_asn, sat_name in _SATELLITE_OPERATORS.items():
+    for sat_asn, operator in SATELLITE_OPERATORS.items():
+        sat_name = operator.name
         ris_ccs: set[str] = set()
         for asn_str, entry in fishbowl.items():
             if str(sat_asn) in entry.get("neighbors", {}):

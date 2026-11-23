@@ -277,6 +277,18 @@ def test_report_sections_and_out_of_region_ixp():
     assert "Faster than fibre allows" in report and "  (none)" in report
 
 
+def test_report_tags_satellite_operators_on_the_path():
+    # Shape of the 2026-11-23 SB -> NU AS10025 trace: Sydney via Lumen and OneQode, then Kacific GEO to Niue.
+    niue = _trace("SB", 132468, "NU", 10025, True, [3356, 7594, 135409, 10025])
+    cable = _trace("SB", 132468, "FJ", 4638, True, [132468, 4638])
+
+    report = sb_report.render_report(_snapshot([niue, cable]), [], {132468: "SB", 10025: "NU", 4638: "FJ"})
+
+    assert "AS3356 AS7594 AS135409 AS10025(NU) | satellite Kacific Broadband Satellites (GEO)" in report
+    assert report.count("| satellite ") == 1
+    assert "geostationary operator" in report
+
+
 @pytest.fixture
 def run_calls(monkeypatch):
     calls: list[str] = []

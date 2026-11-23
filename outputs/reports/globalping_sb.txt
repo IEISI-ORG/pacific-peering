@@ -2,6 +2,7 @@ Globalping Solomon Islands corridors -- 2026-11-23
 Auto-generated weekly (Wednesday) by `pacific-peering-globalping-sb` (globalping/sb_corridors.py).
 Report only: Globalping traces are not RIPE Atlas findings and file nothing. Probe locations are
 Globalping's IP geolocation; Globalping probes have no stable IDs, so each is named by network and city.
+"satellite ... (GEO)" marks a path through a geostationary operator: that hop alone adds about 0.5 s.
 121 measurements, 165 Globalping tests, 165 traces, 81 reached the target, 0 probe results not finished.
 
 Probe groups (economy, network, city, probe count):
@@ -130,7 +131,7 @@ Outbound (SB -> other Pacific economies): 112 traces
   SB AS132468  Honiara        -> NR AS140504  103.20.124.1    dark after 202.128.5.115 (173.4 ms)  AS4637 AS3605(GU)
   SB AS132468  Honiara        -> NR AS141368  203.98.226.1    dark after 103.26.68.236 (40.9 ms)   AS139609(SB) AS6939 | IX MegaIX Sydney (out of region) 40.9 ms
   SB AS132468  Honiara        -> NR AS152706  103.36.150.1    reached 264.4 ms                     AS4637 AS6453 AS152706(NR)
-  SB AS132468  Honiara        -> NU AS10025   202.59.4.1      reached 596.4 ms                     AS3356 AS7594 AS135409 AS10025(NU)
+  SB AS132468  Honiara        -> NU AS10025   202.59.4.1      reached 596.4 ms                     AS3356 AS7594 AS135409 AS10025(NU) | satellite Kacific Broadband Satellites (GEO)
   SB AS132468  Honiara        -> NU AS55885   49.156.48.1     dark after 202.84.251.62 (173.9 ms)  AS139609(SB) AS4637
   SB AS132468  Honiara        -> PF AS9471    50.21.80.1      dark after 202.84.251.62 (173.8 ms)  AS4637
   SB AS132468  Honiara        -> PF AS55943   103.254.232.1   dark after 202.84.251.62 (173.9 ms)  AS4637

@@ -6,6 +6,8 @@ import json
 from collections import defaultdict
 from pathlib import Path
 
+from pacific_peering.analysis.satellite_operators import SATELLITE_OPERATORS
+
 SB = "SB"
 
 
@@ -76,10 +78,17 @@ def _ixp(crossing: dict) -> str:
     return text
 
 
+def _satellites(trace: dict) -> str:
+    """' | satellite <operator> (<orbit>)' for each satellite operator on the AS path, in path order."""
+    seen = dict.fromkeys(a for a in trace["as_path"] if a in SATELLITE_OPERATORS)
+    return "".join(f" | satellite {SATELLITE_OPERATORS[a].name} ({SATELLITE_OPERATORS[a].orbit})" for a in seen)
+
+
 def _path(trace: dict, asn_to_cc: dict[int, str]) -> str:
-    """AS path with in-scope ASNs labelled by economy (unlabelled = outside the region), then IXP crossings."""
+    """AS path with in-scope ASNs labelled by economy (unlabelled = outside the region),
+    then IXP crossings, then any satellite operator on the path."""
     asns = " ".join(f"AS{a}({asn_to_cc[a]})" if a in asn_to_cc else f"AS{a}" for a in trace["as_path"])
-    return (asns or "-") + "".join(_ixp(x) for x in trace["ixps"])
+    return (asns or "-") + "".join(_ixp(x) for x in trace["ixps"]) + _satellites(trace)
 
 
 def _status(trace: dict) -> str:
@@ -115,6 +124,7 @@ def render_report(snapshot: dict, changes: list[str], asn_to_cc: dict[int, str])
         "Auto-generated weekly (Wednesday) by `pacific-peering-globalping-sb` (globalping/sb_corridors.py).",
         "Report only: Globalping traces are not RIPE Atlas findings and file nothing. Probe locations are",
         "Globalping's IP geolocation; Globalping probes have no stable IDs, so each is named by network and city.",
+        "\"satellite ... (GEO)\" marks a path through a geostationary operator: that hop alone adds about 0.5 s.",
         f"{len(snapshot['measurement_ids'])} measurements, {snapshot['tests']} Globalping tests, "
         f"{len(traces)} traces, {reached} reached the target, {unfinished} probe results not finished.",
         "",
