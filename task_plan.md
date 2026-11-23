@@ -3865,3 +3865,39 @@ The headless session runs in `dontAsk` mode with a tool allowlist (no Atlas comm
 - **2026-11-20 — PacNOG 38 deck: convergence slides to the 15 Nov report, Guam ROV note (owner: "let's update the deck").** Deck https://claude.ai/artifact/KB36fBnhwnrjE9oK7GiTrs, service version 32. Source: `outputs/reports/convergence.txt` at e8a2bb1 (traces to 13 Nov, 3,463 traces; the 42 failed PTR lookups are the same count as the 6 Nov run the old slides used). Shared transit routers 68 -> 72; busiest four 54/48/39/38 -> 54/48/39/39 (core3.lax1); footer 3,463 traces to 13 Nov. Always-crossed: hnl1 15 -> 14, Vocus 12 -> 13 (now second), sjc1 13 -> 12, Tata qhar1 9 -> 10, Orange 5 -> 6, AARNet 5, GTT cr8-lax2 3 -> 5. The old GTT figure counted only its dependency pairs (3 of 5); now 5 of 7, still Niue and French Polynesia, and the footer says shaded rows count no-alternative pairs only. ROV note: Guam 2 of 11 from 20 Oct to 12 Nov, 1 of 11 on 17 Nov; the change is probe 23039's uplink (filtered via PDS, not via GTA), not a ROV policy change. Logistics from mail: talk Mon 23 Nov 11:20 MHT = 09:20 AEST, 20 min + Q&A; connection test Sat 21 Nov (07:00, 09:00 or 12:30 AEST, invite not yet received 20 Nov 16:46). Drive PDF/PPTX for Fred are still the 8 Nov export.
   - **Sent (owner, 2026-11-20):** Fred has the 20 Nov slides (deck service version 32), replacing the 8 Nov Drive export. The promise of final slides before Monday is met.
   - **Connection test set (Fred, 2026-11-20 21:50Z):** Sat 21 Nov 14:30-15:15 AEST (16:30 Majuro), Zoho, with Jose Santiago, Alana Maddison and Joshua Bien (NTA, at the venue). The owner has answered Fred. Monday's "1120am" slot (zone unstated, read as Majuro = 09:20 AEST) may move: Fred will discuss Monday timeslots at the test and update the agenda, which is still unpublished (pacnog.org/pacnog38/agenda.html 404 on 20 Nov).
+
+## Globalping Solomon Islands step (owner, 2026-11-23)
+
+**Goal:** a weekly (Wednesday), report-only Globalping traceroute step for Solomon Islands corridors, using every
+Globalping probe in the in-scope economies, recorded apart from Atlas findings. Owner: "yes, add the Globalping step
+for SB corridors", "use all Globalping probes" = all in-scope Pacific probes (chosen over worldwide inbound), weekly
+Wednesday (chosen over nightly).
+
+**Why:** Atlas had 0 connected SB probes on 2026-11-23. Globalping's SATSOL AS132468 Honiara probe was verified that
+day (MTR to 1.1.1.1: private hops, SISCC AS139609 at 0.5 ms, IX Australia NSW at 38 ms).
+
+**Plan**
+- [x] 1. `globalping/client.py`: probe list, create measurement, poll until finished. Unauthenticated (50 probes per
+      measurement, 250 tests/hour). Generic User-Agent.
+- [x] 2. `globalping/sb_corridors.py`: find in-scope probes from `/v1/probes` (registry economies). Outbound: each SB
+      probe group traces every in-scope target ASN (`list_target_ips`, so pins and excluded prefixes apply).
+      Inbound: all non-SB Pacific probes trace each SB target ASN. ICMP, same as Atlas. A test budget (default 240)
+      stops the run before the hourly limit; a 429 stops it too.
+- [x] 3. Convert hops to the parsed-Atlas shape and reuse `resolve_traceroute_hops`/`extract_as_sequence`. Per
+      corridor: reached or dark-after, AS path with economy labels, IXP crossings. Flag any probe that beats the
+      fibre floor (`min_feasible_rtt_ms`) to an off-economy target: its Globalping location is doubtful.
+- [x] 4. Outputs: `outputs/reports/globalping_sb.txt` + `globalping_sb_history.jsonl`; raw results in
+      `data/globalping/raw/`. Dry run by default, `--fire` to measure (tests/test_cli_fire_flags.py rule).
+- [x] 5. Tests (mocked HTTP), CLI entry point, Wednesday block in `scripts/nightly_corridor_testing.sh`.
+- [x] 6. One live `--fire` run, check the report, docs (CLAUDE.md, CHANGELOG.md), commit + push.
+
+**Not doing:** filing findings or escalations from Globalping results; worldwide probes; an API key.
+
+**Errors encountered:** Globalping rejects a global `limit` alongside per-location limits (HTTP 400,
+"locations[0].limit is not allowed when a global limit is set"); the client sends per-location limits only.
+
+**Status (2026-11-23):** done. First live run: 5 probe groups (1 SB), 121 measurements, 165 traces, 81 reached the
+target, none faster than fibre. Domestic Honiara traces reach AS139277, AS142279, AS150403 and AS139609 in 0.5-1.4 ms.
+SATSOL to Our Telekom (AS45891) goes dark after SISCC. AS132462 is reached at 157 ms via AS4637/AS38008, consistent
+with its existing escalation (Bemobile SI space announced from HK). Inbound from NC goes via MegaIX Sydney, and from
+GU/PF via Sydney at about 275-285 ms. Next run: Wednesday 2026-11-25.

@@ -40,6 +40,10 @@ each session:
   Also Wednesdays: the Cloudflare ROV test (`pacific-peering-rov-cloudflare --fire`, 4 measurements),
   tracing Cloudflare's RPKI-valid/invalid test prefixes from every connected probe to see where
   invalid traces die (`outputs/reports/rov_cloudflare.txt` + `rov_cloudflare_history.jsonl`).
+  Also Wednesdays: Globalping Solomon Islands corridors (`pacific-peering-globalping-sb --fire`, about 165
+  Globalping tests, no Atlas credits). Atlas has no connected SB probe, so every Globalping probe in the in-scope
+  economies traces SB corridors (`outputs/reports/globalping_sb.txt` + `globalping_sb_history.jsonl`). Report
+  only, never findings.
   After the batch it drains the fleet-trace queue (`pacific-peering-fleet-trace --run-queued`): any
   target queued with `--enqueue IP --asn N --reason ...` is traced once from every connected probe
   and reported to `outputs/reports/fleet_traces.txt` (report only; usually the queue is empty).

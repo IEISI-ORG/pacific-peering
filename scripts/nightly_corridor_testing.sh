@@ -127,6 +127,14 @@ if [ "$_dow" = "3" ]; then
     # and skips firing if they've changed. Same failure tolerance as above.
     echo "$(date +%A): weekly Cloudflare ROV test."
     "$UV" run pacific-peering-rov-cloudflare --fire || echo "Cloudflare ROV test failed (see above); continuing."
+    # Globalping Solomon Islands corridors (owner, 2026-11-23): Atlas has no
+    # connected SB probe, Globalping's SATSOL Honiara probe is verified. Every
+    # Globalping probe in the in-scope economies traces SB corridors: SB probes
+    # to every target ASN, the rest to each SB target ASN (~165 Globalping
+    # tests, unauthenticated limit 250/hour; no Atlas credits). Writes
+    # outputs/reports/globalping_sb* only -- report only, never findings.
+    echo "$(date +%A): weekly Globalping SB corridors."
+    "$UV" run pacific-peering-globalping-sb --fire || echo "Globalping SB step failed (see above); continuing."
     # report.txt/html carry an ROV section (after ASPA) read from the history
     # file just written; the batch above only regenerates them on nights it
     # tests something, so rebuild them here or the section lags a week.
