@@ -341,6 +341,7 @@ Corridors `auto_classify.py`'s mechanical rules couldn't confidently resolve on 
 - detail: Cloudflare Radar (2026-10-27T05:03Z): IP entity 103.21.248.1 geolocates to Hong Kong (ASN location SB) -- independent of our Atlas latency; pfx2as single origin AS132462, 72/78 peers, RPKI Unknown; no MOAS; only relationship AS45904 (provider and peer, aspa_validated false); no ASPA object; upstream share AS139609 1.00 to 08-06, intermittent to 10-07, 0 since, 'OTHER' 1.00 from 08-08; no hijack or leak events in 52w (origin unchanged, so origin-based detection misses it).
 - detail: press search (2026-10-27): no public announcement of a bmobile SI sale, closure or network exit. Latest found: KCH expression-of-interest sale notice (Island Sun, 2020-11-11, no buyer or outcome reported); PNG Telikom/bmobile merger into Telikom Ltd (2021-22, SI unit's fate not reported); SATSOL interconnection with bmobile SI (May 2025); a 2026 travel guide still lists bmobile as one of two SB mobile operators (weak evidence). So the retail operation may still exist -- the routing evidence says its AS132462/103.21.248.0/22 has been taken over, not that the company has gone.
 - reported: 2026-10-27T05:00:58Z to APNIC (Dave Phelan, dave.phelan@apnic.net) from terry@ieisi.org, thread 1a17bb8c4babafa5; awaiting reply
+- detail: 2026-10-28 23:40Z Dave Phelan acknowledged ("I will have a dig and chat with the services team"); nothing since as of 2026-11-24. RIPEstat 2026-11-23: 103.21.248.0/22 still origin AS132462, 321/322 RIS peers, all 326 bgp-state paths end `38008 45904 132462`; 103.36.150.0/23 RIB paths all via AS6453 (forged path still not winning). Owner decisions on AS132462 exclusion and finding #15 don't depend on APNIC's answer.
 
 ## AS152706 (NR) -- intermittent forged-origin path via AS38008/AS45904 for Neotel's 103.36.150.0/23
 - reason: interactive daily check -- AS152706 sits in the same ALTDB AS-OPTIONS set as AS132462
@@ -351,6 +352,7 @@ Corridors `auto_classify.py`'s mechanical rules couldn't confidently resolve on 
 - flagged: 2026-10-27T04:57:01Z
 - detail: Cloudflare Radar (2026-10-27T05:03Z): Neotel publishes ASPA (customer AS152706, providers [AS6453] only), so `... 45904 152706` is ASPA-invalid -- the likely reason the forged path churns in updates but never wins in RIB snapshots. Radar lists 6453->152706 provider-customer aspa_validated true and 45904->152706 provider-customer aspa_validated false; pfx2as RPKI Valid, 71/78 peers; no MOAS; no hijack events in 52w.
 - reported: 2026-10-27T05:00:58Z to APNIC (Dave Phelan, dave.phelan@apnic.net) from terry@ieisi.org, thread 1a17bb8c4babafa5; awaiting reply
+- detail: 2026-10-28 23:40Z Dave Phelan acknowledged ("I will have a dig and chat with the services team"); nothing since as of 2026-11-24. RIPEstat 2026-11-23: 103.21.248.0/22 still origin AS132462, 321/322 RIS peers, all 326 bgp-state paths end `38008 45904 132462`; 103.36.150.0/23 RIB paths all via AS6453 (forged path still not winning). Owner decisions on AS132462 exclusion and finding #15 don't depend on APNIC's answer.
 
 ## Finding #15 (PG AS38008 -> SB AS132462) -- AS38008 mislabelled as Telikom PNG
 - measurement: 212143004, 212158110, 213459523, 220513022
@@ -399,6 +401,7 @@ Corridors `auto_classify.py`'s mechanical rules couldn't confidently resolve on 
 - detail: probe 33674: hop 8 crosses Fiji-IXP (in-fishbowl) at 40.32ms, above the 10.0ms local-fiber threshold -- either this hop isn't genuinely local despite the registry, or there's an unexpected detour/backhaul before reaching it; needs a human look, not a guess
 - flagged: 2026-10-28T15:03:59.475869+00:00
 - detail: 2026-11-02 -- still open: TFL's Fiji-IXP port .30 and core 202.137.178.55 sit ~23ms above FINTEL's 16ms cable hop, while Digicel's .20 on the same forward path adds <1ms. Hypothesis: TFL's return path to OPT-NC space is the long one. Reverse trace 230608167 (SPC 60575 -> Nautile 103.2.187.254, 17.5ms) left via Digicel Fiji (202.129.230.121, AS45355), not TFL, so TFL's return path is untested; it needs a probe on AS4638 (the TFL anchor, or a software probe meanwhile). The new latency rule (`820480f`) still flags it (+22.5-23.0ms).
+- detail: 2026-11-24 -- kept as the single open item for this corridor (owner: collapse the duplicates). Measurements so far: 228735988 (10-28), 235633070 (11-10), 242767108 (11-23), each on probes 33674/63050/7018, always hop 8 at Fiji-IXP +22.5-23.3ms over the hop before. Explained by the 2026-11-19 review: forward path is local (FINTEL cable hop, then Fiji-IXP), TFL's return path to OPT-NC space goes via Sydney (anchoring 31472919). The leg-aware check (`fbbb5e8`, 10ms + cable leg in + remote-port allowance, 13.2-14.1ms here) still flags it, so each reverification of this pair adds 3 more entries; resolve them against this one. Remaining action: a probe on AS4638 (TFL anchor, or a software probe meanwhile) to measure the return path directly.
 
 ## AS45345 (NC) -> AS4638 (FJ)
 - measurement: 228735988
@@ -406,6 +409,7 @@ Corridors `auto_classify.py`'s mechanical rules couldn't confidently resolve on 
 - detail: probe 63050: hop 8 crosses Fiji-IXP (in-fishbowl) at 39.95ms, above the 10.0ms local-fiber threshold -- either this hop isn't genuinely local despite the registry, or there's an unexpected detour/backhaul before reaching it; needs a human look, not a guess
 - flagged: 2026-10-28T15:03:59.475869+00:00
 - detail: 2026-11-02 -- still open: TFL's Fiji-IXP port .30 and core 202.137.178.55 sit ~23ms above FINTEL's 16ms cable hop, while Digicel's .20 on the same forward path adds <1ms. Hypothesis: TFL's return path to OPT-NC space is the long one. Reverse trace 230608167 (SPC 60575 -> Nautile 103.2.187.254, 17.5ms) left via Digicel Fiji (202.129.230.121, AS45355), not TFL, so TFL's return path is untested; it needs a probe on AS4638 (the TFL anchor, or a software probe meanwhile). The new latency rule (`820480f`) still flags it (+22.5-23.0ms).
+- resolved: 2026-11-24 -- duplicate (owner: collapse the duplicates); tracked in the open AS45345 -> AS4638 entry for measurement 228735988 / probe 33674. Cause per the 2026-11-19 review: local forward path, return via Sydney.
 
 ## AS45345 (NC) -> AS4638 (FJ)
 - measurement: 228735988
@@ -413,6 +417,7 @@ Corridors `auto_classify.py`'s mechanical rules couldn't confidently resolve on 
 - detail: probe 7018: hop 8 crosses Fiji-IXP (in-fishbowl) at 39.082ms, above the 10.0ms local-fiber threshold -- either this hop isn't genuinely local despite the registry, or there's an unexpected detour/backhaul before reaching it; needs a human look, not a guess
 - flagged: 2026-10-28T15:03:59.475869+00:00
 - detail: 2026-11-02 -- still open: TFL's Fiji-IXP port .30 and core 202.137.178.55 sit ~23ms above FINTEL's 16ms cable hop, while Digicel's .20 on the same forward path adds <1ms. Hypothesis: TFL's return path to OPT-NC space is the long one. Reverse trace 230608167 (SPC 60575 -> Nautile 103.2.187.254, 17.5ms) left via Digicel Fiji (202.129.230.121, AS45355), not TFL, so TFL's return path is untested; it needs a probe on AS4638 (the TFL anchor, or a software probe meanwhile). The new latency rule (`820480f`) still flags it (+22.5-23.0ms).
+- resolved: 2026-11-24 -- duplicate (owner: collapse the duplicates); tracked in the open AS45345 -> AS4638 entry for measurement 228735988 / probe 33674. Cause per the 2026-11-19 review: local forward path, return via Sydney.
 
 ## AS152735 (GU) -> AS17893 (PW)
 - measurement: 228736794
@@ -542,6 +547,7 @@ Corridors `auto_classify.py`'s mechanical rules couldn't confidently resolve on 
 - detail: 2026-11-05 14:12Z AARNet second reply (Fernando): 113.197.15.192 is fij-suva-pe1 itself; pe2's own trace goes 113.197.15.192 -> .194 in under 1ms, so pe2->pe1 stays in Suva (our Alexandria reading was wrong). PTR correction: 113.197.15.136 is et-1-0-2.pe1.mcqp.nsw.aarnet.net.au (Macquarie Park, Sydney), not alxd; AARNet fixed the PTR (dig confirms 2026-11-06). Still Sydney, so the `nsw` geolocation pattern and the PW->FJ finding (212013476) are unaffected. AARNet's reading: USP has no discard route for 144.120.0.0/16, so unused addresses follow USP's default back to AARNet. Open gap: if the returned packet entered pe1/pe2 via inet.0 it would go straight back to .194 in Suva; the observed .194 -> mcqp (Sydney) -> pe1.a.suv cycle implies USP's default (or the AARNet side it lands on) reaches Sydney first. Edwin (USP) has not answered; the discard route is USP's fix.
 - detail: 2026-11-06 MPLS read (owner: "AARNet are using MPLS"). In 232195299, hop 12 (113.197.15.136, mcqp) quotes an RFC 4950 label stack: label 830, S=1, TTL=1. Fernando's own Sydney trace shows the same label 830 at ae425.pe1.mcqp, with pe1.a.suv as the next hop. So the packet USP sent back was inside AARNet's Sydney->Suva LSP at Macquarie Park, and the hops between USP and mcqp are hidden by MPLS. On the forward pass the probe enters AARNet at EdgeIX Sydney (202.77.88.26, as7575.syd.edgeix, hop 9) and the next visible hop is pe1.a.suv, so that Sydney->Suva leg is hidden too. This contradicts "any loop would stay within Fiji": wherever USP's default enters AARNet, it is carried to Sydney before coming back to Suva. Open question for AARNet: what FEC/service label 830 is, and which PE, interface and routing instance (inet.0 or a VRF) traffic from USP on .194/.198 enters.
 - detail: 2026-11-06 01:13Z follow-up sent on NOC-150312 (tcsweetser -> noc@aarnet.edu.au): label 830 evidence, asked Fernando what label 830 on pe1.mcqp maps to and which PE/interface/routing instance USP's returned traffic enters. Edwin (USP) discard-route question still open. Awaiting answers.
+- detail: 2026-11-23 00:06Z AARNet closed NOC-150312 (Fernando): 144.120.0.0/16 routed correctly on their side, no AARNet changes in the period, USP is sending the packets back, fix is a discard (null) route for the /16 on USP's border; follow up with USP directly. Edwin Sandys (USP, Cc'd on the ticket) has not answered. Open for the owner: write to USP directly, add .213/.194 to known_anomalies, or leave open.
 
 ## AS3605 (GU) -> AS9751 (AS)
 - measurement: 231754538
@@ -618,18 +624,21 @@ Corridors `auto_classify.py`'s mechanical rules couldn't confidently resolve on 
 - reason: local IXP crossing with implausibly high latency
 - detail: probe 33674: hop 8 crosses Fiji-IXP (in-fishbowl) at 39.306ms, 22.5ms more than the hop before it (minimum over it and later hops), above the 10.0ms local-fiber threshold -- either this hop isn't genuinely local despite the registry, or there's an unexpected detour/backhaul before reaching it; needs a human look, not a guess
 - flagged: 2026-11-10T15:07:14.259301+00:00
+- resolved: 2026-11-24 -- duplicate (owner: collapse the duplicates); tracked in the open AS45345 -> AS4638 entry for measurement 228735988 / probe 33674. Cause per the 2026-11-19 review: local forward path, return via Sydney.
 
 ## AS45345 (NC) -> AS4638 (FJ)
 - measurement: 235633070
 - reason: local IXP crossing with implausibly high latency
 - detail: probe 63050: hop 8 crosses Fiji-IXP (in-fishbowl) at 40.359ms, 22.6ms more than the hop before it (minimum over it and later hops), above the 10.0ms local-fiber threshold -- either this hop isn't genuinely local despite the registry, or there's an unexpected detour/backhaul before reaching it; needs a human look, not a guess
 - flagged: 2026-11-10T15:07:14.259301+00:00
+- resolved: 2026-11-24 -- duplicate (owner: collapse the duplicates); tracked in the open AS45345 -> AS4638 entry for measurement 228735988 / probe 33674. Cause per the 2026-11-19 review: local forward path, return via Sydney.
 
 ## AS45345 (NC) -> AS4638 (FJ)
 - measurement: 235633070
 - reason: local IXP crossing with implausibly high latency
 - detail: probe 7018: hop 8 crosses Fiji-IXP (in-fishbowl) at 39.157ms, 22.5ms more than the hop before it (minimum over it and later hops), above the 10.0ms local-fiber threshold -- either this hop isn't genuinely local despite the registry, or there's an unexpected detour/backhaul before reaching it; needs a human look, not a guess
 - flagged: 2026-11-10T15:07:14.259301+00:00
+- resolved: 2026-11-24 -- duplicate (owner: collapse the duplicates); tracked in the open AS45345 -> AS4638 entry for measurement 228735988 / probe 33674. Cause per the 2026-11-19 review: local forward path, return via Sydney.
 
 ## AS152735 (GU) -> AS17893 (PW)
 - measurement: 235634536
@@ -758,6 +767,7 @@ Corridors `auto_classify.py`'s mechanical rules couldn't confidently resolve on 
 - reason: detour hub differs from the filed finding
 - detail: finding #24 is filed via Los Angeles; this run left the region via Tokyo (BBIX Tokyo) -- not corroborated; relabel, keep, or retest is the owner's call
 - flagged: 2026-11-16T15:07:14.071346+00:00
+- resolved: 2026-11-24 -- keep Los Angeles (owner, per the 2026-11-19 hub-mismatch review): Hurricane Electric carries TV -> GU via LA on some runs and via Tokyo on others (231751014 11-03 and 221440874 10-11 corroborated LA); a single Tokyo run is HE variation, not a path change. No data changed.
 
 ## AS55722 (NR) -> AS137890 (FJ)
 - measurement: 238726884
@@ -838,6 +848,7 @@ Corridors `auto_classify.py`'s mechanical rules couldn't confidently resolve on 
 - reason: detour hub differs from the filed finding
 - detail: finding #101 is filed via Sydney; this run left the region via Tokyo (BBIX Tokyo) -- not corroborated; relabel, keep, or retest is the owner's call
 - flagged: 2026-11-19T15:20:21.785375+00:00
+- detail: 2026-11-24 trace reading (cached raw, no new measurement). Not just a hub relabel: the whole path has changed. Filed via Kacific (legacy chain `AS139759 -> AS9246 -> AS4637 -> AS3356 -> AS7594 -> AS135409`, Sydney). All 3 probes (50897, 62046, 7448) now go GTA Guam -> 114.142.196.155 (GTA Tokyo-link core, Guam RTT ~49-51ms) -> BBIX Tokyo 101.203.88.74 (HE, 51-54ms) -> be1.core1.sea1.he.net (145-150ms) -> core1.pdx3.he.net (145-149ms) -> 216.218.213.73 (HE space, 241-244ms) -> 103.245.162.22 (AS132579 Tonga Cable, same RTT) -> 202.134.30.206 / 103.239.160.241 (AS38201, 284-288ms), then dark. Chain `AS139759 -> AS9246 -> AS6939 -> AS132579 -> AS38201`, RIS agrees (1508 observations); Kacific and Telstra no longer appear. 'Tokyo' is the IXP rule's first crossing; the last located off-region city is Portland (open first-crossing vs last-city question). The +95ms Portland -> HE/Tonga Cable handoff step is below the ~123ms Portland-Sydney fibre floor, so the handoff isn't in Sydney; not placed further. Owner's call, tied to first-crossing vs last-city.
 
 ## Probe 50365 (PG, AS17828) Disconnected -- PG reverifications fail with Atlas 400
 - measurement: none created (both Atlas create calls returned 400)
@@ -851,16 +862,19 @@ Corridors `auto_classify.py`'s mechanical rules couldn't confidently resolve on 
 - reason: local IXP crossing with implausibly high latency
 - detail: probe 33674: hop 8 crosses Fiji-IXP (in-fishbowl) at 39.16ms, 23.2ms more than the hop before it (minimum over it and later hops), above the 14.0ms allowed (10.0ms local fibre + 4.0ms cable leg in + 0.0ms to a confirmed remote port) -- either this hop isn't genuinely local despite the registry, or there's an unexpected detour/backhaul before reaching it; needs a human look, not a guess
 - flagged: 2026-11-23T15:13:40.847413+00:00
+- resolved: 2026-11-24 -- duplicate (owner: collapse the duplicates); tracked in the open AS45345 -> AS4638 entry for measurement 228735988 / probe 33674. Cause per the 2026-11-19 review: local forward path, return via Sydney.
 
 ## AS45345 (NC) -> AS4638 (FJ)
 - measurement: 242767108
 - reason: local IXP crossing with implausibly high latency
 - detail: probe 63050: hop 8 crosses Fiji-IXP (in-fishbowl) at 39.986ms, 23.2ms more than the hop before it (minimum over it and later hops), above the 13.2ms allowed (10.0ms local fibre + 3.2ms cable leg in + 0.0ms to a confirmed remote port) -- either this hop isn't genuinely local despite the registry, or there's an unexpected detour/backhaul before reaching it; needs a human look, not a guess
 - flagged: 2026-11-23T15:13:40.847413+00:00
+- resolved: 2026-11-24 -- duplicate (owner: collapse the duplicates); tracked in the open AS45345 -> AS4638 entry for measurement 228735988 / probe 33674. Cause per the 2026-11-19 review: local forward path, return via Sydney.
 
 ## AS45345 (NC) -> AS4638 (FJ)
 - measurement: 242767108
 - reason: local IXP crossing with implausibly high latency
 - detail: probe 7018: hop 8 crosses Fiji-IXP (in-fishbowl) at 39.219ms, 23.3ms more than the hop before it (minimum over it and later hops), above the 14.1ms allowed (10.0ms local fibre + 4.1ms cable leg in + 0.0ms to a confirmed remote port) -- either this hop isn't genuinely local despite the registry, or there's an unexpected detour/backhaul before reaching it; needs a human look, not a guess
 - flagged: 2026-11-23T15:13:40.847413+00:00
+- resolved: 2026-11-24 -- duplicate (owner: collapse the duplicates); tracked in the open AS45345 -> AS4638 entry for measurement 228735988 / probe 33674. Cause per the 2026-11-19 review: local forward path, return via Sydney.
 

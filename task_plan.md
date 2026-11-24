@@ -3910,3 +3910,22 @@ about 499 ms (Kacific-1 at 150E, gateway near Sydney assumed). Already explained
 2026-11-19), so nothing filed; the #328 hold/drop ruling is still open. The report now ends such a path with
 `| satellite <operator> (<orbit>)` (commit e20e47d); the operator list moved to `analysis/satellite_operators.py`.
 Limit: the tag needs an answering hop inside the satellite AS.
+
+## Escalation housekeeping (owner, 2026-11-24)
+
+Review on 11-23 (read-only), then four edits (owner: "do the housekeeping, all four"). `escalations.md` only, 14 lines
+added, none removed; unresolved 21 -> 12 (`daily_facts.escalation_summary` agrees).
+- **NOC-150312:** AARNet closed the ticket 2026-11-23 00:06Z (no change their side; USP needs a discard route for
+  144.120.0.0/16; follow up with USP directly). Edwin (USP) still silent. Entry stays open for the owner's call: write
+  to USP, add .213/.194 to known_anomalies, or leave it.
+- **AS132462 / AS152706:** Dave Phelan's 10-28 acknowledgement recorded; nothing since. RIPEstat 11-23: all 326
+  bgp-state paths to 103.21.248.0/22 still end `38008 45904 132462`; Neotel's RIB paths all via AS6453.
+- **#24** resolved: keep Los Angeles (HE switches between LA and Tokyo).
+- **NC -> TFL Fiji-IXP latency:** 9 open entries (228735988, 235633070, 242767108 x 3 probes each) collapsed to one
+  open item (228735988 / probe 33674); 8 resolved as duplicates. The leg-aware check (`fbbb5e8`) still flags this
+  pair, so each reverification adds 3 more entries until AS4638 has a probe.
+- **#101 FM -> TO:** trace reading added. The Kacific/Sydney path has gone; it now runs GTA -> BBIX Tokyo -> HE
+  Seattle/Portland -> Tonga Cable AS132579 -> TCC (RIS agrees). Last located city Portland; tied to the open
+  first-crossing vs last-city question.
+- **Probe 50365 (PG):** reconnected 11-23 05:41Z; last night's regression traces 242763309/242763920 both returned
+  confirmed_detour for AS17828 -> AS17993. Its escalation is left open for the owner to close.
