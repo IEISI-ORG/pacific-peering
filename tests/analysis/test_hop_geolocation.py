@@ -176,3 +176,27 @@ def test_laxc_and_tyo_only_count_on_their_own_carriers():
     assert resolve_hostname("core1.tyo1.he.net.example.com") is None
     assert resolve_hostname("xe-0.bdr1.laxc.example.net") is None
     assert resolve_hostname("et-0-0-0.bdr1.laxc.aarnet.net.au") is None
+
+
+# Hurricane Electric's Honolulu routers are `core<n>.hnl<n>.he.net` (owner, 2026-11-24, on #309).
+# Guam probe 60703 reaches 10ge0-5.core1.gum1 at 2ms, 100ge0-0-0-2.core1.hnl1 at 68ms (Guam-Honolulu
+# floor ~61ms), then be5.core1.lax2 at 129ms (212241945); NU probe 64391 goes port-channel4.core2.hnl1
+# 127ms -> 100ge0-36.core1.gum1 194ms (233688533). All three hnl1 names in the PTR cache (2026-11-24):
+HE_HONOLULU = (
+    "100ge0-0-0-2.core1.hnl1.he.net",
+    "port-channel4.core2.hnl1.he.net",
+    "be47.core1.hnl1.he.net",
+)
+
+
+def test_he_hnl_routers_are_honolulu():
+    for name in HE_HONOLULU:
+        loc = resolve_hostname(name)
+        assert loc is not None, name
+        assert (loc.city, loc.economy_cc) == ("Honolulu", None), name
+
+
+def test_hnl_only_counts_on_hurricane_electric():
+    # Level3's hnl1-ar3 (one measurement, 211510435) is not yet checked against a hop.
+    assert resolve_hostname("hnl1-ar3-ae21-0.3549.level3.net") is None
+    assert resolve_hostname("core1.hnl1.he.net.example.com") is None
