@@ -79,7 +79,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
 <body>
 <div class="wrap">
     <h1>Pacific Peering — Regional Routing Report</h1>
-    <div class="meta">Generated 2026-11-24T06:31:03.706569+00:00</div>
+    <div class="meta">Generated 2026-11-24T07:26:43.200737+00:00</div>
 
     <div class="feedback-box"><strong>Found a bug?</strong> This report is generated
         automatically, and bugs very likely remain in both the code and the data. If
@@ -402,7 +402,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <th>Dependent economies</th></tr></thead>
         <tbody><tr>
             <td>Sydney</td>
-            <td>112</td>
+            <td>113</td>
             <td>59%</td>
             <td>25</td>
             <td>Melanesia, Micronesia, Polynesia</td>
@@ -416,11 +416,11 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <td>FJ, FM, GU, KI, MH, NR, PF, PW, WF</td>
         </tr><tr>
             <td>Tokyo</td>
-            <td>19</td>
-            <td>10%</td>
-            <td>9</td>
+            <td>18</td>
+            <td>9%</td>
+            <td>8</td>
             <td>Melanesia, Micronesia, Polynesia</td>
-            <td>AS, GU, KI, MH, NC, NR, PW, SB, VU, WF</td>
+            <td>AS, GU, KI, MH, NC, NR, PW, SB, WF</td>
         </tr><tr>
             <td>Portland</td>
             <td>9</td>
@@ -1464,8 +1464,8 @@ Twelfth confirmation of AS139609(SISCC)&lt;-&gt;AS45891. `AS55885 -&gt; AS9471 -
             <details class="note"><summary>Second confirmation of AS45495&lt;-&gt;AS45935 (Wantok Network, after PW&#x27;s first-ever)…</summary>Second confirmation of AS45495&lt;-&gt;AS45935 (Wantok Network, after PW&#x27;s first-ever). `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS15830 -&gt; AS45495 -&gt; AS45935`, RIS agrees exactly (1,664). `has_routing_loop` False.</details>
         </div><div class="detour-card">
             <div class="headline">PW -&gt; VU
-                (AS45935): detours via BBIX Tokyo
-                (Tokyo)</div>
+                (AS45935): detours via BBIX Tokyo, then Bundle-Ether42.221.bdr03-ipt-47bourke-syd.au.as38195.net (router in Sydney)
+                (Sydney)</div>
             <div>RIS observation count: 1664
                 &middot; measurement 212033156</div>
             <details class="note"><summary>Palau NCC (AS17893) -&gt; Wantok Network Limited (AS45935) -- **first-ever confirmation of this target ASN**, and a genuinely new finding: the target itself…</summary>Palau NCC (AS17893) -&gt; Wantok Network Limited (AS45935) -- **first-ever confirmation of this target ASN**, and a genuinely new finding: the target itself answered directly (`103.36.144.1`), fully contiguous the whole way: `AS17893 -&gt; AS38195 (BBIX Tokyo) -&gt; AS15830 (Equinix) -&gt; AS45495 (Interchange Ltd) -&gt; AS45935`. AS45495 is the same ASN this session&#x27;s earlier PW-&gt;AS45495 measurement left inconclusive (dead end right after the same BBIX Tokyo/Equinix fabric touch, per the project owner&#x27;s own guidance that an IXP-fabric dead end is ordinary, not evidence of anything) -- this measurement resolves what that one couldn&#x27;t: AS45495 (Interchange, Vanuatu) is confirmed as AS45935&#x27;s (Wantok, also Vanuatu) real domestic upstream, RIS-agreeing with the identical exact match (1,664). Both ends of that specific leg are in-fishbowl Vanuatu carriers, but reaching it from Palau still crosses real external infrastructure first (BBIX Tokyo, `ixp_crossings` confirms it via a genuine IXP-LAN address match, ix_id 126 -- not a carrier guess), so this is filed as a detour, same as the OPT NC&lt;-&gt;AS17480 pattern already on record.</details>
@@ -2965,7 +2965,7 @@ NU(AS55885) -&gt; AS150403: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS139609 -&
             <td>BBIX Tokyo</td><td>Tokyo</td>
             <td>JP</td><td><span class="bool-false">out-of-fishbowl</span></td>
             <td>4</td>
-            <td>8</td>
+            <td>7</td>
             <td>GU, MP, PW</td>
         </tr><tr>
             <td>CAN&#x27;L IX</td><td>NOUMEA</td>

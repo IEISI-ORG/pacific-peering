@@ -31,9 +31,9 @@ The database holds 286 findings, backed by 945 RIPE Atlas traceroute measurement
 
 | Detour hub | Detours |
 |---|---|
-| Sydney | 112 |
+| Sydney | 113 |
 | Los Angeles | 42 |
-| Tokyo | 19 |
+| Tokyo | 18 |
 | Portland | 9 |
 | San Jose | 8 |
 | Honolulu | 1 |

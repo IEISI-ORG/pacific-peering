@@ -1,6 +1,6 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-11-24T06:30:55.073008+00:00                  
+                 Generated: 2026-11-24T07:26:42.100336+00:00                  
 ==============================================================================
 FOUND A BUG? Bugs very likely remain in both the code and the data.
 Please open an issue: https://github.com/IEISI-ORG/pacific-peering/issues/new
@@ -109,12 +109,12 @@ The mirror image of the regional hubs above: the real external cities where conf
 
 City           Entries  Share Carriers Subregions reached            
 ------------------------------------------------------------------------------
-Sydney             112    59%       25 Melanesia, Micronesia, Polynesia
+Sydney             113    59%       25 Melanesia, Micronesia, Polynesia
     Dependent economies: AS, CK, FJ, KI, NC, NR, NU, PG, SB, TO, VU, WS
 Los Angeles         42    22%        9 Melanesia, Micronesia, Polynesia
     Dependent economies: FJ, FM, GU, KI, MH, NR, PF, PW, WF
-Tokyo               19    10%        9 Melanesia, Micronesia, Polynesia
-    Dependent economies: AS, GU, KI, MH, NC, NR, PW, SB, VU, WF
+Tokyo               18     9%        8 Melanesia, Micronesia, Polynesia
+    Dependent economies: AS, GU, KI, MH, NC, NR, PW, SB, WF
 Portland             9     5%        3 Polynesia
     Dependent economies: AS, TO
 San Jose             8     4%        2 Melanesia, Polynesia
@@ -250,7 +250,7 @@ IXPS (registered exchanges, this project's confirmed classification)
 Name                         City             CC   In fishbowl  Members Verified  Economies
 ------------------------------------------------------------------------------
 Any2West                     Los Angeles and  US   False              4       11  GU, MP, PF
-BBIX Tokyo                   Tokyo            JP   False              4        8  GU, MP, PW
+BBIX Tokyo                   Tokyo            JP   False              4        7  GU, MP, PW
 CAN'L IX                     NOUMEA           NC   True               5        1  NC
 DRF IX                       Honolulu         US   False              3        0  AS, GU, PF
 EdgeIX - Auckland            Auckland         NZ   False              1        0  WS
@@ -851,7 +851,7 @@ VU -> SB (AS45891): detours via MegaIX Sydney (Sydney)
 NU -> VU (AS45935): detours via Equinix Sydney (Sydney)
     RIS observation count: 1664  [measurement 212158092]
     Second confirmation of AS45495<->AS45935 (Wantok Network, after PW's first-ever). `AS55885 -> AS9471 -> AS6939 -> AS15830 -> AS45495 -> AS45935`, RIS agrees exactly (1,664). `has_routing_loop` False.
-PW -> VU (AS45935): detours via BBIX Tokyo (Tokyo)
+PW -> VU (AS45935): detours via BBIX Tokyo, then Bundle-Ether42.221.bdr03-ipt-47bourke-syd.au.as38195.net (router in Sydney) (Sydney)
     RIS observation count: 1664  [measurement 212033156]
     Palau NCC (AS17893) -> Wantok Network Limited (AS45935) -- **first-ever confirmation of this target ASN**, and a genuinely new finding: the target itself answered directly (`103.36.144.1`), fully contiguous the whole way: `AS17893 -> AS38195 (BBIX Tokyo) -> AS15830 (Equinix) -> AS45495 (Interchange Ltd) -> AS45935`. AS45495 is the same ASN this session's earlier PW->AS45495 measurement left inconclusive (dead end right after the same BBIX Tokyo/Equinix fabric touch, per the project owner's own guidance that an IXP-fabric dead end is ordinary, not evidence of anything) -- this measurement resolves what that one couldn't: AS45495 (Interchange, Vanuatu) is confirmed as AS45935's (Wantok, also Vanuatu) real domestic upstream, RIS-agreeing with the identical exact match (1,664). Both ends of that specific leg are in-fishbowl Vanuatu carriers, but reaching it from Palau still crosses real external infrastructure first (BBIX Tokyo, `ixp_crossings` confirms it via a genuine IXP-LAN address match, ix_id 126 -- not a carrier guess), so this is filed as a detour, same as the OPT NC<->AS17480 pattern already on record.
 FJ -> NR (AS55722): detours via MegaIX Sydney (Sydney)

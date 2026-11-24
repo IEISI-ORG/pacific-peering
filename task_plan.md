@@ -3972,3 +3972,16 @@ added, none removed; unresolved 21 -> 12 (`daily_facts.escalation_summary` agree
   Sydney -> Portland via AS11404 `cr4-pdx`, fits Hawaiki at Pago Pago) and #47 (Tokyo -> Sydney) already
   escalating; location-pattern gaps the review found: HE `hnl\d` (Honolulu, after lax2 on #309) and AS11404
   `cr4-stack`/`cr2-fdcp`.
+
+## #143 relabelled to Sydney; #309 held (owner, 2026-11-24: "relabel #143 to Sydney and #309 to Los Angeles")
+
+- **#143 PW -> AS45935 (VU), Tokyo -> Sydney.** Rehearsed on a DB copy with the new last-city code: all 4 runs
+  (212033156 09-16, 216157170 09-27, 230524804 11-01, 237476515 11-13) corroborate via Superloop
+  `bdr03-ipt-*-syd` after BBIX Tokyo (148-151ms, floor 42.74ms); Tokyo control escalates all 4. detour_ix_name
+  now names the path. Dump diff 1 row. Backup `data/analysis/findings.db.bak-20261124-pre-143-relabel`.
+- **#309 GU -> AS152735 not relabelled (relabel test fails; owner asked).** 229248161 (10-29, probe 23039): BBIX
+  Tokyo -> HE `tyo1` -> target at 29.7ms (Tokyo out and a direct return, feasible); last city Tokyo, corroborates
+  the filed Tokyo. 236239545/236240492 (both 11-11): BBIX Tokyo -> HE `lax2` 125ms -> HE `hnl1` 125ms -> MARIIX
+  `he.ix.mariix.net` -> target 123ms. Los Angeles has one date only and 10-29 disagrees, and on 11-11 the last
+  city outside the region is Honolulu, not LA: `hnl1` matches no location pattern, so the code stops at lax2.
+  Rehearsal: with LA, 10-29 escalates and both 11-11 runs corroborate; with Tokyo, the reverse.
