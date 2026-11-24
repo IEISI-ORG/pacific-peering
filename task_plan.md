@@ -3943,4 +3943,5 @@ added, none removed; unresolved 21 -> 12 (`daily_facts.escalation_summary` agree
   after the report; who made them is unknown.
 - **APNIC reminder** drafted in terry@ieisi.org, threaded under Dave Phelan's 10-28 reply (plain text, signature off),
   with these updates and two questions (who arranged the SISCC /24s; any current Bemobile contact or review).
-  Framed as a worked case for Dave's PacNOG 38 routing security training. Not sent.
+  Framed as a worked case for Dave's PacNOG 38 routing security training. Sent by the owner 2026-11-24T05:58Z
+  (message 1a20c227825fc1d9); awaiting reply.
