@@ -3993,3 +3993,9 @@ added, none removed; unresolved 21 -> 12 (`daily_facts.escalation_summary` agree
   reverification attempt (confirmed_local_transit). The AS17456 -> AS152735 step has no RIS sighting, so probe
   23039's direct hop wasn't filed as peering (the run's outcome came from probe 329). **Owner's call:** retire
   #309, or keep it and retest on another date first.
+- **#309 kept; retest on another date (owner, 2026-11-25: "keep #309, retest it on another date").** No pinned
+  retest fired. The 11-24 attempt stamped #309's last check at 2026-11-24T07:41Z, so the nightly rotation (24 of
+  286 findings per night, oldest first) ranks it 272nd and should stage it in about 11 batch nights, around
+  2026-12-07..09. When that run is in: if probe 23039 (AS17456) again reaches 103.142.152.1 locally, put
+  retirement of #309 to the owner (two dates, before/after example of Guam traffic that now stays on-island);
+  if the Tokyo detour is back, the 11-24 result was a temporary change and #309 stands.
