@@ -79,7 +79,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
 <body>
 <div class="wrap">
     <h1>Pacific Peering — Regional Routing Report</h1>
-    <div class="meta">Generated 2026-11-23T15:20:39.051114+00:00</div>
+    <div class="meta">Generated 2026-11-24T05:32:07.792701+00:00</div>
 
     <div class="feedback-box"><strong>Found a bug?</strong> This report is generated
         automatically, and bugs very likely remain in both the code and the data. If
@@ -95,18 +95,18 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
     </div>
 
     <div class="stat-row">
-        <div class="stat-tile"><div class="value">288</div><div class="label">Pathways found (total)</div></div>
-        <div class="stat-tile"><div class="value">96</div><div class="label">Internal (never leave the fish bowl)</div></div>
-        <div class="stat-tile red-box"><div class="value">192</div>
+        <div class="stat-tile"><div class="value">286</div><div class="label">Pathways found (total)</div></div>
+        <div class="stat-tile"><div class="value">95</div><div class="label">Internal (never leave the fish bowl)</div></div>
+        <div class="stat-tile red-box"><div class="value">191</div>
             <div class="label">External / Leaves the region</div></div>
     </div>
     <p class="section-intro">Full corridor-by-corridor detail for all
-        288 pathways above is further down this report
+        286 pathways above is further down this report
         (Confirmed sub-optimal routes / Confirmed local transit / Candidate
         peering), collapsed by default so it doesn't dominate the page &mdash;
         click any of those section headings to expand.</p>
 
-    <div class="stat-row"><div class="stat-tile"><div class="value">20</div><div class="label">Economies in scope</div></div><div class="stat-tile"><div class="value">165</div><div class="label">ASNs in scope</div></div><div class="stat-tile"><div class="value">122</div><div class="label">ASNs w/ RIS neighbor</div></div><div class="stat-tile"><div class="value">38</div><div class="label">ASNs w/ IXP membership</div></div><div class="stat-tile"><div class="value">22</div><div class="label">ASNs w/ facility presence</div></div><div class="stat-tile"><div class="value">10/13</div><div class="label">IXPs in/out of fishbowl</div></div></div>
+    <div class="stat-row"><div class="stat-tile"><div class="value">20</div><div class="label">Economies in scope</div></div><div class="stat-tile"><div class="value">164</div><div class="label">ASNs in scope</div></div><div class="stat-tile"><div class="value">120</div><div class="label">ASNs w/ RIS neighbor</div></div><div class="stat-tile"><div class="value">38</div><div class="label">ASNs w/ IXP membership</div></div><div class="stat-tile"><div class="value">22</div><div class="label">ASNs w/ facility presence</div></div><div class="stat-tile"><div class="value">10/13</div><div class="label">IXPs in/out of fishbowl</div></div></div>
 
     <h2>Economies</h2>
     <table>
@@ -215,7 +215,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
                 </span>SB</td>
             <td>Solomon Islands</td>
             <td>Melanesia</td>
-            <td>10</td><td>9</td>
+            <td>9</td><td>8</td>
             <td>1</td><td>0</td>
         </tr><tr>
             <td><span class="subregion-dot" style="background:#eb6834">
@@ -229,7 +229,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
                 </span>TV</td>
             <td>Tuvalu</td>
             <td>Polynesia</td>
-            <td>3</td><td>1</td>
+            <td>3</td><td>0</td>
             <td>0</td><td>0</td>
         </tr><tr>
             <td><span class="subregion-dot" style="background:#2a78d6">
@@ -409,11 +409,11 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <td>AS, CK, FJ, KI, NC, NR, NU, PG, SB, TO, VU, WS</td>
         </tr><tr>
             <td>Los Angeles</td>
-            <td>43</td>
+            <td>42</td>
             <td>22%</td>
             <td>9</td>
             <td>Melanesia, Micronesia, Polynesia</td>
-            <td>FJ, FM, GU, KI, MH, NR, PF, PW, SB, WF</td>
+            <td>FJ, FM, GU, KI, MH, NR, PF, PW, WF</td>
         </tr><tr>
             <td>Tokyo</td>
             <td>19</td>
@@ -493,7 +493,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
 
     <details class="section-toggle">
         <summary>Confirmed sub-optimal routes (RIS + Atlas both agree)
-            <span class="count">(192)</span></summary>
+            <span class="count">(191)</span></summary>
         <div class="detour-card">
             <div class="headline">NC -&gt; FJ
                 (AS4638): detours via MegaIX Sydney
@@ -1533,13 +1533,6 @@ Twelfth confirmation of AS139609(SISCC)&lt;-&gt;AS45891. `AS55885 -&gt; AS9471 -
                 &middot; measurement 212158107</div>
             <details class="note"><summary>**First-ever confirmation for this target**: AS45355(Digicel Fiji)&lt;-&gt;AS132429, directly RIS-confirmed (1,316 of 1,316 observations -- AS45355 is its *only*…</summary>**First-ever confirmation for this target**: AS45355(Digicel Fiji)&lt;-&gt;AS132429, directly RIS-confirmed (1,316 of 1,316 observations -- AS45355 is its *only* RIS-observed neighbor). `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS132528 -&gt; AS45355`, RIS agrees exactly (1,316). `has_routing_loop` False.</details>
         </div><div class="detour-card">
-            <div class="headline">NR -&gt; SB
-                (AS132462): detours via lax-b3-link.ip.twelve99.net (router in Los Angeles, no IXP crossing)
-                (Los Angeles)</div>
-            <div>RIS observation count: 0
-                &middot; measurement 231078895</div>
-            <details class="note"><summary>measurement 231078895 (from NR); chain: AS55722 -&gt; AS7131 -&gt; AS1299 -&gt; AS3356 -&gt; AS38008 -&gt; AS132462; RIS disagrees…</summary>measurement 231078895 (from NR); chain: AS55722 -&gt; AS7131 -&gt; AS1299 -&gt; AS3356 -&gt; AS38008 -&gt; AS132462; RIS disagrees. measurement 238221412 (from NR); chain: AS55722 -&gt; AS7131 -&gt; AS6939 -&gt; AS3356 -&gt; AS38008 -&gt; AS132462; RIS disagrees.</details>
-        </div><div class="detour-card">
             <div class="headline">FM -&gt; SB
                 (AS132468): detours via AS4637 (Telstra Global), then AS139609 (SISCC)
                 (Sydney)</div>
@@ -2297,7 +2290,7 @@ Twelfth confirmation of AS139609(SISCC)&lt;-&gt;AS45891. `AS55885 -&gt; AS9471 -
 
     <details class="section-toggle">
         <summary>Candidate peering (strong traceroute signal, RIS disagrees &mdash; unconfirmed)
-            <span class="count">(43)</span></summary>
+            <span class="count">(42)</span></summary>
         <div class="candidate-card">
             <div class="headline">AS7131 (PTI Pacifica Inc.,
                 MP) -&gt; AS3605
@@ -2583,18 +2576,6 @@ NU(AS55885) -&gt; AS38875: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS9246 -&gt;
                 &middot; vantage point VU</div>
             <details class="note"><summary>measurement 213196017 (from VU); chain: AS9249; RIS disagrees…</summary>measurement 213196017 (from VU); chain: AS9249; RIS disagrees. measurement 213196017 (from VU); chain: AS9249; RIS disagrees. measurement 218279327 (from VU); chain: AS9249 -&gt; AS132429; RIS disagrees.</details>
         </div><div class="candidate-card">
-            <div class="headline">AS38008 (Telikom PNG Satellite Tier 1 AS,
-                PG) -&gt; AS132462
-                (Bemobile Solomon Islands Ltd, SB)</div>
-            <div>Traceroute agreement: 3/3 probes
-                &middot; measurement 212143004
-                &middot; vantage point FM</div>
-            <details class="note"><summary>FM(AS139759) -&gt; AS132462: `AS139759 -&gt; AS9246 -&gt; AS4637 -&gt; AS38008 -&gt; AS132462`, contiguous, but `ris_agrees: false` -- checked AS132462&#x27;s real RIS neighbor…</summary>FM(AS139759) -&gt; AS132462: `AS139759 -&gt; AS9246 -&gt; AS4637 -&gt; AS38008 -&gt; AS132462`, contiguous, but `ris_agrees: false` -- checked AS132462&#x27;s real RIS neighbor list directly: `{140889: 333, 139609: 4}`, AS38008 doesn&#x27;t appear at all. Real signal, not RIS-confirmed on the strict pair. Kept as a candidate. `has_routing_loop` False.
-
----
-
-NU(AS55885) -&gt; AS132462: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS38008 -&gt; AS132462`, same mismatch already found via FM -- real neighbor is AS140889 (333 of 337 observations), not AS38008. Second candidate entry for this target. `has_routing_loop` False.</details>
-        </div><div class="candidate-card">
             <div class="headline">AS3257 (GTT Communications,
                 US) -&gt; AS132797
                 ((Vanuatu ASN), VU)</div>
@@ -2689,7 +2670,7 @@ NU(AS55885) -&gt; AS150403: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS139609 -&
 
     <h2>PeeringDB data quality</h2>
     <p class="section-intro">
-        <strong>73 of 165</strong> in-scope ASNs have a
+        <strong>73 of 164</strong> in-scope ASNs have a
         PeeringDB <code>net</code> record at all. "Zero facilities"/"zero IXP memberships"
         elsewhere in this report can mean either of two very different things: this ASN was
         never on PeeringDB to begin with, or it <em>is</em> registered and simply declared
@@ -2745,7 +2726,7 @@ NU(AS55885) -&gt; AS150403: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS139609 -&
             <td>1</td><td>1</td>
         </tr><tr>
             <td>SB</td><td>Solomon Islands</td>
-            <td>10</td><td>2</td>
+            <td>9</td><td>2</td>
             <td>0</td><td>1</td>
         </tr><tr>
             <td>TO</td><td>Tonga</td>
@@ -2771,8 +2752,8 @@ NU(AS55885) -&gt; AS150403: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS139609 -&
 
     <h2>ASPA progress (draft-ietf-sidrops-aspa-profile, upstream-authorization adoption)</h2>
     <p class="section-intro">
-        <strong>22 of 165</strong> in-scope ASNs
-        now publish an ASPA record (4266 total across the
+        <strong>22 of 164</strong> in-scope ASNs
+        now publish an ASPA record (4298 total across the
         whole internet, per Cloudflare Radar). Adoption is still early &mdash; absence
         means "not published yet," not "no real upstream." Per economy: how many of its
         own ASNs publish a record, and the distinct upstream ASNs those records declare,
@@ -2861,10 +2842,10 @@ NU(AS55885) -&gt; AS150403: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS139609 -&
     <p class="section-intro">
         Adoption signal only &mdash; this project deliberately isn't testing IPv6 corridors
         yet, queued until adoption has advanced further.
-        <strong>45 of 165</strong> in-scope ASNs
+        <strong>45 of 164</strong> in-scope ASNs
         have at least one RIS-observed IPv6-originated prefix.
         <strong>6 of 37</strong> connected
-        Atlas probes work over IPv6 (6 more are
+        Atlas probes work over IPv6 (5 more are
         IPv6-capable but tagged as not working).
     </p>
     <table>
@@ -2907,7 +2888,7 @@ NU(AS55885) -&gt; AS150403: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS139609 -&
             <td>3</td><td>1</td>
         </tr><tr>
             <td>SB</td><td>Solomon Islands</td>
-            <td>10</td><td>2</td>
+            <td>9</td><td>2</td>
         </tr><tr>
             <td>TO</td><td>Tonga</td>
             <td>5</td><td>3</td>
@@ -3145,7 +3126,7 @@ NU(AS55885) -&gt; AS150403: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS139609 -&
         </tr><tr>
             <td>SB</td><td>Solomon Islands</td>
             <td>Melanesia</td>
-            <td>10</td><td>0</td><td>0</td>
+            <td>9</td><td>0</td><td>0</td>
             <td>5</td>
         </tr><tr>
             <td>AS</td><td>American Samoa</td>
@@ -3231,7 +3212,7 @@ NU(AS55885) -&gt; AS150403: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS139609 -&
     </table>
 
     <h2>Appendix: Low data quality issues
-        <span class="count">(7 known, resolved)</span></h2>
+        <span class="count">(8 known, resolved)</span></h2>
     <p class="section-intro">Known problems in this project's underlying sources
         (APNIC delegation, PeeringDB, ASPA, etc.) that have already been found,
         verified, and corrected for elsewhere in the pipeline &mdash; kept visible
@@ -3266,6 +3247,10 @@ NU(AS55885) -&gt; AS150403: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS139609 -&
             <div class="headline">AS152655 (DIGICELPNG-AS-AP (Digicel (PNG) Ltd)) -- registered PG
                 <span class="count">[local company whose announced space is hosted abroad]</span></div>
             <details class="note"><summary>Registered in Papua New Guinea (APNIC inetnum DIGICELPNG-PG) but its only originated prefix, 14.192.75.0/24, terminates on the ground in Australia behind SES…</summary>Registered in Papua New Guinea (APNIC inetnum DIGICELPNG-PG) but its only originated prefix, 14.192.75.0/24, terminates on the ground in Australia behind SES. Every RIS path ends `12684 152655` (318 of 318, 2026-10-27). The 2026-10-25 offshore check flagged 14.192.75.1 at 11.19ms from probe 1013222 (AS31898, western Sydney) and from AS7545 too, against a 27.3ms floor to Port Moresby (measurement 227413970). A 2026-10-27 ping sweep from Brisbane found 24 live hosts, all at 21-22ms; unassigned addresses stay silent. A UDP traceroute runs Megaport IX 103.26.68.225 (13ms) -&gt; SES 148.253.23.174 (21.8ms) -&gt; 14.192.75.1 (22-24ms), with no satellite delay. Cloudflare Radar geolocates 14.192.75.1 to AU. Likely a satellite-service ASN handed off at SES&#x27;s Australian gateway; Digicel PNG&#x27;s main AS58460 is unaffected. No findings targeted it. Excluded at the owner&#x27;s direction (2026-10-27).</details>
+        </div><div class="issue-card">
+            <div class="headline">AS132462 (Bemobile Solomon Islands Ltd) -- registered SB
+                <span class="count">[local company whose announced space is hosted abroad]</span></div>
+            <details class="note"><summary>Registered in the Solomon Islands (APNIC aut-num and 103.21.248.0/22 to Bemobile Solomon Islands Ltd, Point Cruz, Honiara; last modified 2020-07-15; IRT…</summary>Registered in the Solomon Islands (APNIC aut-num and 103.21.248.0/22 to Bemobile Solomon Islands Ltd, Point Cruz, Honiara; last modified 2020-07-15; IRT contact marked invalid; bmobile.com.sb expired 2025-12-03), but the bmobile brand is dead (owner, 2026-11-24) and the space no longer runs in Honiara. SISCC-transited (AS139609) /24s dropped out on 2026-10-07; .248/.249/.251 came back via AS139609 from 2026-10-30 ~01:00Z until withdrawn 2026-11-16 07:54Z (RIS bgp-updates), not seen since. From 2026-08-08 the /22 is upstreamed only in Bangladesh (AS140889 Impex Bd Net, then AS45904 Banglalion from 2026-09-18), and every RIS path ends `38008 45904 132462` (AS38008 Aperture Science, HK): 326 of 326 bgp-state paths on 2026-11-23. The ALTDB AS-OPTIONS set covering it changed the same day the /22 appeared. 103.21.248.1 answers in 2.51ms from probe 1017873 (Alibaba HK) against a 61.1ms floor to Honiara (measurement 227412138), and Cloudflare Radar geolocates it to HK. Either hijacked or sold (owner); not a Solomon Islands network either way. Reported to APNIC 2026-10-27 (acknowledged 10-28, no outcome yet). Excluded at the owner&#x27;s direction (2026-11-24); findings #15 (PG AS38008 -&gt; AS132462, candidate_peering, AS38008 mislabelled as Telikom PNG) and #314 (NR -&gt; AS132462, confirmed_detour) and their corroborations were removed.</details>
         </div>
 
     <h2>Appendix: Quarantined ASNs and findings

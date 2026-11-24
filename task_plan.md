@@ -3929,3 +3929,18 @@ added, none removed; unresolved 21 -> 12 (`daily_facts.escalation_summary` agree
   first-crossing vs last-city question.
 - **Probe 50365 (PG):** reconnected 11-23 05:41Z; last night's regression traces 242763309/242763920 both returned
   confirmed_detour for AS17828 -> AS17993. Its escalation is left open for the owner to close.
+
+## AS132462 excluded; 50365 escalation closed; APNIC reminder drafted (owner, 2026-11-24)
+
+- **Exclusion** (owner: "AS132462 must be excluded now, it's a dead brand"; "upstreamed in Bangladesh, so it's either
+  been hijacked or sold"). `ExcludedAsn(132462, "SB", offshore_hosted)`. Findings #15 and #314 removed with 7
+  corroborations and 3 reverification attempts (backup `data/analysis/findings.db.bak-20261124-pre-as132462`,
+  gitignored). Registry and fishbowl rebuilt (164 ASNs, SB 10 -> 9); export, backlog (unchanged, 0), reports and
+  README regenerated (findings 288 -> 286). 583 tests pass. Escalations 12 -> 8 open.
+- **New in RIS bgp-updates, not seen before:** .248/.249/.251 /24s were announced via SISCC AS139609 (Honiara) from
+  2026-10-30 ~01:00Z until withdrawn 2026-11-16 07:54Z, while the /22 stayed on `38008 45904 132462`. Neotel's forged
+  `38008 45904 152706` has not appeared since 2026-10-26 (the day before the APNIC report). Both changes started soon
+  after the report; who made them is unknown.
+- **APNIC reminder** drafted in terry@ieisi.org, threaded under Dave Phelan's 10-28 reply (plain text, signature off),
+  with these updates and two questions (who arranged the SISCC /24s; any current Bemobile contact or review).
+  Framed as a worked case for Dave's PacNOG 38 routing security training. Not sent.

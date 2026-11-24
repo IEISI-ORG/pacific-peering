@@ -314,6 +314,7 @@ Corridors `auto_classify.py`'s mechanical rules couldn't confidently resolve on 
 - detail: 103.21.248.1: probe 1017873 2.51ms < 61.1ms minimum (measurement 227412138)
 - action: owner review; if confirmed, add to discovery/excluded_asns.py (offshore_hosted)
 - flagged: 2026-10-25T15:42:08.178346+00:00
+- resolved: 2026-11-24 -- AS132462 excluded as offshore_hosted (owner: "it's a dead brand"; "upstreamed in Bangladesh, so it's either been hijacked or sold"); see discovery/excluded_asns.py. Findings #15 and #314 and their 7 corroborations and 3 reverification attempts were removed (backup data/analysis/findings.db.bak-20261124-pre-as132462). Note: RIS bgp-updates show .248/.249/.251 /24s back via SISCC AS139609 from 2026-10-30 ~01:00Z to their withdrawal 2026-11-16 07:54Z; the /22 stayed on `38008 45904 132462` throughout.
 
 ## AS152655 (PG) -- possible offshore-hosted address space
 - reason: offshore-hosting check (atlas/offshore_check.py)
@@ -342,6 +343,7 @@ Corridors `auto_classify.py`'s mechanical rules couldn't confidently resolve on 
 - detail: press search (2026-10-27): no public announcement of a bmobile SI sale, closure or network exit. Latest found: KCH expression-of-interest sale notice (Island Sun, 2020-11-11, no buyer or outcome reported); PNG Telikom/bmobile merger into Telikom Ltd (2021-22, SI unit's fate not reported); SATSOL interconnection with bmobile SI (May 2025); a 2026 travel guide still lists bmobile as one of two SB mobile operators (weak evidence). So the retail operation may still exist -- the routing evidence says its AS132462/103.21.248.0/22 has been taken over, not that the company has gone.
 - reported: 2026-10-27T05:00:58Z to APNIC (Dave Phelan, dave.phelan@apnic.net) from terry@ieisi.org, thread 1a17bb8c4babafa5; awaiting reply
 - detail: 2026-10-28 23:40Z Dave Phelan acknowledged ("I will have a dig and chat with the services team"); nothing since as of 2026-11-24. RIPEstat 2026-11-23: 103.21.248.0/22 still origin AS132462, 321/322 RIS peers, all 326 bgp-state paths end `38008 45904 132462`; 103.36.150.0/23 RIB paths all via AS6453 (forged path still not winning). Owner decisions on AS132462 exclusion and finding #15 don't depend on APNIC's answer.
+- resolved: 2026-11-24 -- AS132462 excluded as offshore_hosted (owner: "it's a dead brand"; "upstreamed in Bangladesh, so it's either been hijacked or sold"); see discovery/excluded_asns.py. Findings #15 and #314 and their 7 corroborations and 3 reverification attempts were removed (backup data/analysis/findings.db.bak-20261124-pre-as132462). Note: RIS bgp-updates show .248/.249/.251 /24s back via SISCC AS139609 from 2026-10-30 ~01:00Z to their withdrawal 2026-11-16 07:54Z; the /22 stayed on `38008 45904 132462` throughout. APNIC reminder drafted 2026-11-24 in terry@ieisi.org (same thread), not sent.
 
 ## AS152706 (NR) -- intermittent forged-origin path via AS38008/AS45904 for Neotel's 103.36.150.0/23
 - reason: interactive daily check -- AS152706 sits in the same ALTDB AS-OPTIONS set as AS132462
@@ -353,6 +355,7 @@ Corridors `auto_classify.py`'s mechanical rules couldn't confidently resolve on 
 - detail: Cloudflare Radar (2026-10-27T05:03Z): Neotel publishes ASPA (customer AS152706, providers [AS6453] only), so `... 45904 152706` is ASPA-invalid -- the likely reason the forged path churns in updates but never wins in RIB snapshots. Radar lists 6453->152706 provider-customer aspa_validated true and 45904->152706 provider-customer aspa_validated false; pfx2as RPKI Valid, 71/78 peers; no MOAS; no hijack events in 52w.
 - reported: 2026-10-27T05:00:58Z to APNIC (Dave Phelan, dave.phelan@apnic.net) from terry@ieisi.org, thread 1a17bb8c4babafa5; awaiting reply
 - detail: 2026-10-28 23:40Z Dave Phelan acknowledged ("I will have a dig and chat with the services team"); nothing since as of 2026-11-24. RIPEstat 2026-11-23: 103.21.248.0/22 still origin AS132462, 321/322 RIS peers, all 326 bgp-state paths end `38008 45904 132462`; 103.36.150.0/23 RIB paths all via AS6453 (forged path still not winning). Owner decisions on AS132462 exclusion and finding #15 don't depend on APNIC's answer.
+- detail: 2026-11-24 RIPEstat bgp-updates: no `38008 45904 152706` announcement since 2026-10-26 (zero 10-27..11-24); all 434 updates 11-17..11-24 via AS6453. Stays open until APNIC answers; reminder drafted 2026-11-24 (terry@ieisi.org thread 1a17bb8c4babafa5), not sent.
 
 ## Finding #15 (PG AS38008 -> SB AS132462) -- AS38008 mislabelled as Telikom PNG
 - measurement: 212143004, 212158110, 213459523, 220513022
@@ -360,6 +363,7 @@ Corridors `auto_classify.py`'s mechanical rules couldn't confidently resolve on 
 - detail: label hand-entered in the 2026-09-16 bulk clear-out (candidate_peering.py:695 and :774). The pair is the HK transit hop of the AS132462 hijack path above, not a PG->SB peering.
 - proposed correction: retire #15 (or relabel upstream_cc HK / Aperture) once the owner decides on AS132462.
 - flagged: 2026-10-27T04:57:01Z
+- resolved: 2026-11-24 -- finding #15 removed with the AS132462 exclusion (owner); the pair was the HK transit hop of the squat path, not a PG -> SB peering.
 ## AS139759 (FM) -> AS17893 (PW)
 - measurement: 228276160
 - reason: local IXP crossing with implausibly high latency
@@ -856,6 +860,7 @@ Corridors `auto_classify.py`'s mechanical rules couldn't confidently resolve on 
 - detail: Atlas shows probe 50365 (AS17828, Port Moresby, PG's only probe used in corridor tests) Disconnected since 2026-11-22T07:54:35Z, tagged "unstable-connection". With no connected PG probe, auto_classify fell back to "sourcing by country" (PG), and create_traceroute_measurement got `400 Client Error: Bad Request` from https://atlas.ripe.net/api/v2/measurements/ (logs/cron.log ~line 44155 and 44193). The corridor is left untested, so it will be retried, and probably fail the same way, each night until the probe reconnects. No credits were spent. No probe-watch escalation for 50365 exists yet.
 - proposed correction: none to the data. When 50365 reconnects, fire one regression trace from it before trusting the PG corridors again (regression-test-on-probe-change rule). Code question for the owner: should the country-fallback path skip, or log one clean line, when the economy has no connected probe, instead of raising on Atlas's 400?
 - flagged: 2026-11-22T21:40:00Z
+- resolved: 2026-11-24 -- probe 50365 reconnected 2026-11-23T05:41:55Z (still tagged system-unstable-connection); the 2026-11-23T15:00Z batch's regression traces 242763309 and 242763920 (50365 -> 110.5.112.1) both returned confirmed_detour for AS17828 -> AS17993, so PG corridors are trusted again (owner: close it). The country-fallback crash on Atlas 400 is still an open code question.
 
 ## AS45345 (NC) -> AS4638 (FJ)
 - measurement: 242767108

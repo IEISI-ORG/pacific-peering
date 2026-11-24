@@ -236,4 +236,35 @@ EXCLUDED_ASNS: tuple[ExcludedAsn, ...] = (
             "owner's direction (2026-10-27)."
         ),
     ),
+    ExcludedAsn(
+        asn=132462,
+        country_cc="SB",
+        name="Bemobile Solomon Islands Ltd",
+        category="offshore_hosted",
+        note=(
+            "Registered in the Solomon Islands (APNIC aut-num and "
+            "103.21.248.0/22 to Bemobile Solomon Islands Ltd, Point Cruz, "
+            "Honiara; last modified 2020-07-15; IRT contact marked invalid; "
+            "bmobile.com.sb expired 2025-12-03), but the bmobile brand is dead "
+            "(owner, 2026-11-24) and the space no longer runs in Honiara. "
+            "SISCC-transited (AS139609) /24s dropped out on 2026-10-07; "
+            ".248/.249/.251 came back via AS139609 from 2026-10-30 ~01:00Z "
+            "until withdrawn 2026-11-16 07:54Z (RIS bgp-updates), not seen "
+            "since. From 2026-08-08 the /22 is upstreamed only in Bangladesh "
+            "(AS140889 "
+            "Impex Bd Net, then AS45904 Banglalion from 2026-09-18), and every "
+            "RIS path ends `38008 45904 132462` (AS38008 Aperture Science, "
+            "HK): 326 of 326 bgp-state paths on 2026-11-23. The ALTDB "
+            "AS-OPTIONS set covering it changed the same day the /22 "
+            "appeared. 103.21.248.1 answers in 2.51ms from probe 1017873 "
+            "(Alibaba HK) against a 61.1ms floor to Honiara (measurement "
+            "227412138), and Cloudflare Radar geolocates it to HK. Either "
+            "hijacked or sold (owner); not a Solomon Islands network either "
+            "way. Reported to APNIC 2026-10-27 (acknowledged 10-28, no outcome "
+            "yet). Excluded at the owner's direction (2026-11-24); findings "
+            "#15 (PG AS38008 -> AS132462, candidate_peering, AS38008 "
+            "mislabelled as Telikom PNG) and #314 (NR -> AS132462, "
+            "confirmed_detour) and their corroborations were removed."
+        ),
+    ),
 )

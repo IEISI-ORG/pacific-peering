@@ -1,6 +1,6 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-11-23T15:20:27.102081+00:00                  
+                 Generated: 2026-11-24T05:32:06.671729+00:00                  
 ==============================================================================
 FOUND A BUG? Bugs very likely remain in both the code and the data.
 Please open an issue: https://github.com/IEISI-ORG/pacific-peering/issues/new
@@ -11,14 +11,14 @@ SUMMARY
 HEADLINE: 57% of the real peering points this region's own networks use sit OUTSIDE the fish bowl (13 of 23)
 
 PATHWAYS (every corridor with a filed finding, of any kind):
-  Total pathways found:                    288
-  Internal (never leave the fish bowl):    96
-  External / Leaves the region:            192
+  Total pathways found:                    286
+  Internal (never leave the fish bowl):    95
+  External / Leaves the region:            191
   (full corridor-by-corridor detail -- every confirmed detour, confirmed local transit, and candidate peering entry -- is in the appendix at the end of this report, not repeated here)
 
 Economies in scope:            20
-ASNs in scope:                  165
-ASNs with >=1 RIS neighbor:     122
+ASNs in scope:                  164
+ASNs with >=1 RIS neighbor:     120
 ASNs with >=1 IXP membership:   38
 ASNs with >=1 facility presence:22
 IXP LAN registry: 10 in-fishbowl, 13 out-of-fishbowl, 0 unconfirmed
@@ -41,9 +41,9 @@ NU   Niue                             Polynesia        2     2     0     0
 PF   French Polynesia                 Polynesia        6     5     1     1
 PG   Papua New Guinea                 Melanesia       41    28    10     4
 PW   Palau                            Micronesia       3     3     1     1
-SB   Solomon Islands                  Melanesia       10     9     1     0
+SB   Solomon Islands                  Melanesia        9     8     1     0
 TO   Tonga                            Polynesia        5     4     1     0
-TV   Tuvalu                           Polynesia        3     1     0     0
+TV   Tuvalu                           Polynesia        3     0     0     0
 VU   Vanuatu                          Melanesia       11     8     2     1
 WF   Wallis and Futuna                Polynesia        1     1     0     0
 WS   Samoa                            Polynesia       10     6     2     1
@@ -111,8 +111,8 @@ City           Entries  Share Carriers Subregions reached
 ------------------------------------------------------------------------------
 Sydney             113    59%       25 Melanesia, Micronesia, Polynesia
     Dependent economies: AS, CK, FJ, KI, NC, NR, NU, PG, SB, TO, VU, WS
-Los Angeles         43    22%        9 Melanesia, Micronesia, Polynesia
-    Dependent economies: FJ, FM, GU, KI, MH, NR, PF, PW, SB, WF
+Los Angeles         42    22%        9 Melanesia, Micronesia, Polynesia
+    Dependent economies: FJ, FM, GU, KI, MH, NR, PF, PW, WF
 Tokyo               19    10%        9 Melanesia, Micronesia, Polynesia
     Dependent economies: AS, GU, KI, MH, NC, NR, PW, SB, VU, WF
 Portland             8     4%        2 Polynesia
@@ -150,7 +150,7 @@ Per-operator evidence summary, computed fresh from the current finding dataclass
 
 PEERINGDB DATA QUALITY
 ==============================================================================
-73 of 165 in-scope ASNs have a PeeringDB net record at all. 'Zero facilities'/'zero IXP memberships' elsewhere in this report can mean either of two very different things: this ASN was never on PeeringDB to begin with, or it IS registered and simply declared nothing. The two columns below are counted against ASNs that ARE on PeeringDB, not against every in-scope ASN, so they show the real gap, not a re-blend of the two. Known concrete cases: AS12684 (SES Astra) and AS3549 (the former Global Crossing backbone ASN) are both real, traceroute-confirmed carriers with zero PeeringDB facilities -- this is PeeringDB's own coverage gap, not a measurement gap in this project's findings.
+73 of 164 in-scope ASNs have a PeeringDB net record at all. 'Zero facilities'/'zero IXP memberships' elsewhere in this report can mean either of two very different things: this ASN was never on PeeringDB to begin with, or it IS registered and simply declared nothing. The two columns below are counted against ASNs that ARE on PeeringDB, not against every in-scope ASN, so they show the real gap, not a re-blend of the two. Known concrete cases: AS12684 (SES Astra) and AS3549 (the former Global Crossing backbone ASN) are both real, traceroute-confirmed carriers with zero PeeringDB facilities -- this is PeeringDB's own coverage gap, not a measurement gap in this project's findings.
 CC   Name                      ASNs  On PDB  w/ Facility  w/ IXP
 ------------------------------------------------------------------------------
 AS   American Samoa               2       1            0       1
@@ -164,14 +164,14 @@ NR   Nauru                        5       3            1       1
 PF   French Polynesia             6       3            1       1
 PG   Papua New Guinea            41      12            4      10
 PW   Palau                        3       1            1       1
-SB   Solomon Islands             10       2            0       1
+SB   Solomon Islands              9       2            0       1
 TO   Tonga                        5       3            0       1
 VU   Vanuatu                     11       5            1       2
 WS   Samoa                       10       3            1       2
 
 ASPA PROGRESS (draft-ietf-sidrops-aspa-profile, upstream-authorization adoption)
 ==============================================================================
-22 of 165 in-scope ASNs now publish an ASPA record (4266 total across the whole internet, per Cloudflare Radar). Adoption is still early -- absence means 'not published yet', not 'no real upstream'. Per-economy: how many of its own ASNs publish a record, and the distinct upstream ASNs those records declare, split by whether the declared provider is itself an in-scope Pacific ASN or an external carrier.
+22 of 164 in-scope ASNs now publish an ASPA record (4298 total across the whole internet, per Cloudflare Radar). Adoption is still early -- absence means 'not published yet', not 'no real upstream'. Per-economy: how many of its own ASNs publish a record, and the distinct upstream ASNs those records declare, split by whether the declared provider is itself an in-scope Pacific ASN or an external carrier.
 CC   Name                      ASNs  w/ ASPA  Upstr in-FB  Upstr ext
 ------------------------------------------------------------------------------
 CK   Cook Islands                 2        1            0          3
@@ -223,7 +223,7 @@ Measurements: {'v4': [239450294, 239451034], 'v6': [239454311, 239455027]}. Deta
 
 IPV6 COVERAGE (adoption signal only -- no IPv6 testing yet)
 ==============================================================================
-45 of 165 in-scope ASNs have >=1 RIS-observed IPv6-originated prefix. 6 of 37 connected Atlas probes work over IPv6 (6 more are IPv6-capable but tagged as not working). Adoption tracking only -- this project deliberately isn't testing IPv6 corridors yet; queued until adoption has advanced further (see TODO below).
+45 of 164 in-scope ASNs have >=1 RIS-observed IPv6-originated prefix. 6 of 37 connected Atlas probes work over IPv6 (5 more are IPv6-capable but tagged as not working). Adoption tracking only -- this project deliberately isn't testing IPv6 corridors yet; queued until adoption has advanced further (see TODO below).
 CC   Name                      ASNs  w/ IPv6
 ------------------------------------------------------------------------------
 AS   American Samoa               2        1
@@ -238,7 +238,7 @@ NR   Nauru                        5        2
 PF   French Polynesia             6        3
 PG   Papua New Guinea            41        2
 PW   Palau                        3        1
-SB   Solomon Islands             10        2
+SB   Solomon Islands              9        2
 TO   Tonga                        5        3
 TV   Tuvalu                       3        1
 VU   Vanuatu                     11        1
@@ -281,7 +281,7 @@ CC   Name                             Subregion     ASNs  Listed  Active  Untest
 KI   Kiribati                         Micronesia       6       0       0        15
 MH   Marshall Islands                 Micronesia       1       4       0         7
 WF   Wallis and Futuna                Polynesia        1       0       0         7
-SB   Solomon Islands                  Melanesia       10       0       0         5
+SB   Solomon Islands                  Melanesia        9       0       0         5
 AS   American Samoa                   Polynesia        2       2       0         4
 WS   Samoa                            Polynesia       10       3       0         4
 MP   Northern Mariana Islands         Micronesia       2       6       3         3
@@ -299,7 +299,7 @@ FM   Micronesia, Federated States of  Micronesia       6       6       3        
 GU   Guam                             Micronesia      11      14       6         0
 NC   New Caledonia                    Melanesia       17      19       4         0
 
-APPENDIX: LOW DATA QUALITY ISSUES (7 known, resolved)
+APPENDIX: LOW DATA QUALITY ISSUES (8 known, resolved)
 ==============================================================================
 Known problems in this project's underlying sources (APNIC delegation, PeeringDB, ASPA, etc.) that have already been found, verified, and corrected for elsewhere in the pipeline -- kept visible here rather than left implicit, so the counts and tables earlier in this report can be trusted without re-deriving why they exclude what they exclude.
 
@@ -323,6 +323,9 @@ AS154410 (MTL-AS-AP (Marshall Telecom Ltd)) -- registered MH  [local company who
 
 AS152655 (DIGICELPNG-AS-AP (Digicel (PNG) Ltd)) -- registered PG  [local company whose announced space is hosted abroad]
     Registered in Papua New Guinea (APNIC inetnum DIGICELPNG-PG) but its only originated prefix, 14.192.75.0/24, terminates on the ground in Australia behind SES. Every RIS path ends `12684 152655` (318 of 318, 2026-10-27). The 2026-10-25 offshore check flagged 14.192.75.1 at 11.19ms from probe 1013222 (AS31898, western Sydney) and from AS7545 too, against a 27.3ms floor to Port Moresby (measurement 227413970). A 2026-10-27 ping sweep from Brisbane found 24 live hosts, all at 21-22ms; unassigned addresses stay silent. A UDP traceroute runs Megaport IX 103.26.68.225 (13ms) -> SES 148.253.23.174 (21.8ms) -> 14.192.75.1 (22-24ms), with no satellite delay. Cloudflare Radar geolocates 14.192.75.1 to AU. Likely a satellite-service ASN handed off at SES's Australian gateway; Digicel PNG's main AS58460 is unaffected. No findings targeted it. Excluded at the owner's direction (2026-10-27).
+
+AS132462 (Bemobile Solomon Islands Ltd) -- registered SB  [local company whose announced space is hosted abroad]
+    Registered in the Solomon Islands (APNIC aut-num and 103.21.248.0/22 to Bemobile Solomon Islands Ltd, Point Cruz, Honiara; last modified 2020-07-15; IRT contact marked invalid; bmobile.com.sb expired 2025-12-03), but the bmobile brand is dead (owner, 2026-11-24) and the space no longer runs in Honiara. SISCC-transited (AS139609) /24s dropped out on 2026-10-07; .248/.249/.251 came back via AS139609 from 2026-10-30 ~01:00Z until withdrawn 2026-11-16 07:54Z (RIS bgp-updates), not seen since. From 2026-08-08 the /22 is upstreamed only in Bangladesh (AS140889 Impex Bd Net, then AS45904 Banglalion from 2026-09-18), and every RIS path ends `38008 45904 132462` (AS38008 Aperture Science, HK): 326 of 326 bgp-state paths on 2026-11-23. The ALTDB AS-OPTIONS set covering it changed the same day the /22 appeared. 103.21.248.1 answers in 2.51ms from probe 1017873 (Alibaba HK) against a 61.1ms floor to Honiara (measurement 227412138), and Cloudflare Radar geolocates it to HK. Either hijacked or sold (owner); not a Solomon Islands network either way. Reported to APNIC 2026-10-27 (acknowledged 10-28, no outcome yet). Excluded at the owner's direction (2026-11-24); findings #15 (PG AS38008 -> AS132462, candidate_peering, AS38008 mislabelled as Telikom PNG) and #314 (NR -> AS132462, confirmed_detour) and their corroborations were removed.
 
 APPENDIX: QUARANTINED ASNs AND FINDINGS (7 -- no proof of routing yet)
 ==============================================================================
@@ -419,7 +422,7 @@ MH      64237 AS14593   Connected     Starlink (AS14593): satellite egress via S
 PF      23002 AS2200    Connected     Renater (AS2200): backhauls straight to metropolitan France (~500ms), never touches Pacific transit
 TO      11691 AS24390   Connected     ASN registered Fiji but probe physically in Tonga (geo-audit): counts as a TO vantage point, not FJ; USP (AS24390, registered FJ): regional academic network via AARNet (Australia), not a local commercial carrier; valid source, path unverified
 
-APPENDIX: FULL CORRIDOR DETAIL (288 pathways -- see the PATHWAYS summary at the top of this report for the plain counts)
+APPENDIX: FULL CORRIDOR DETAIL (286 pathways -- see the PATHWAYS summary at the top of this report for the plain counts)
 ==============================================================================
 
 Confirmed sub-optimal routes (RIS + Atlas both agree)
@@ -878,9 +881,6 @@ VU -> VU (AS132254): detours via Equinix Sydney (Sydney)
 NU -> VU (AS132429): detours via Equinix Sydney (Sydney)
     RIS observation count: 1316  [measurement 212158107]
     **First-ever confirmation for this target**: AS45355(Digicel Fiji)<->AS132429, directly RIS-confirmed (1,316 of 1,316 observations -- AS45355 is its *only* RIS-observed neighbor). `AS55885 -> AS9471 -> AS6939 -> AS132528 -> AS45355`, RIS agrees exactly (1,316). `has_routing_loop` False.
-NR -> SB (AS132462): detours via lax-b3-link.ip.twelve99.net (router in Los Angeles, no IXP crossing) (Los Angeles)
-    RIS observation count: 0  [measurement 231078895]
-    measurement 231078895 (from NR); chain: AS55722 -> AS7131 -> AS1299 -> AS3356 -> AS38008 -> AS132462; RIS disagrees. measurement 238221412 (from NR); chain: AS55722 -> AS7131 -> AS6939 -> AS3356 -> AS38008 -> AS132462; RIS disagrees.
 FM -> SB (AS132468): detours via AS4637 (Telstra Global), then AS139609 (SISCC) (Sydney)
     RIS observation count: 1319  [measurement 212143005]
     **First-ever confirmation for this target**: AS139609(SISCC)<->AS132468 (SATSOL LIMITED), directly RIS-confirmed. `AS139759 -> AS9246 -> AS4637 -> AS139609 -> AS132468`, RIS agrees exactly (1,319). `has_routing_loop` False.
@@ -1309,13 +1309,6 @@ AS9249 (Telecom Vanuatu Limited, VU) -> AS132228 (Vanuatu Government, VU)
 AS9249 (Telecom Vanuatu Limited, VU) -> AS132429 (Digicel Vanuatu LTD, VU)
     Traceroute agreement: 2/2 probes  [measurement 213196017, vantage: VU]
     measurement 213196017 (from VU); chain: AS9249; RIS disagrees. measurement 213196017 (from VU); chain: AS9249; RIS disagrees. measurement 218279327 (from VU); chain: AS9249 -> AS132429; RIS disagrees.
-AS38008 (Telikom PNG Satellite Tier 1 AS, PG) -> AS132462 (Bemobile Solomon Islands Ltd, SB)
-    Traceroute agreement: 3/3 probes  [measurement 212143004, vantage: FM]
-    FM(AS139759) -> AS132462: `AS139759 -> AS9246 -> AS4637 -> AS38008 -> AS132462`, contiguous, but `ris_agrees: false` -- checked AS132462's real RIS neighbor list directly: `{140889: 333, 139609: 4}`, AS38008 doesn't appear at all. Real signal, not RIS-confirmed on the strict pair. Kept as a candidate. `has_routing_loop` False.
-
----
-
-NU(AS55885) -> AS132462: `AS55885 -> AS9471 -> AS6939 -> AS38008 -> AS132462`, same mismatch already found via FM -- real neighbor is AS140889 (333 of 337 observations), not AS38008. Second candidate entry for this target. `has_routing_loop` False.
 AS3257 (GTT Communications, US) -> AS132797 ((Vanuatu ASN), VU)
     Traceroute agreement: 1/1 probe  [measurement 212158118, vantage: NU]
     NU(AS55885) -> AS132797: `AS55885 -> AS9471 -> AS3257 (GTT) -> AS132797`, but `ris_agrees: false` -- checked AS132797's real RIS neighbor list directly: AS133383 is its only real neighbor (331 of 331 observations) -- a domestic Vanuatu adjacency (AS133383 is itself confirmed this same batch as AS45495's real customer), not GTT. Real signal, wrong immediate carrier. `has_routing_loop` False.
