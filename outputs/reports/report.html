@@ -79,7 +79,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
 <body>
 <div class="wrap">
     <h1>Pacific Peering — Regional Routing Report</h1>
-    <div class="meta">Generated 2026-11-24T05:32:07.792701+00:00</div>
+    <div class="meta">Generated 2026-11-24T06:31:03.706569+00:00</div>
 
     <div class="feedback-box"><strong>Found a bug?</strong> This report is generated
         automatically, and bugs very likely remain in both the code and the data. If
@@ -402,7 +402,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <th>Dependent economies</th></tr></thead>
         <tbody><tr>
             <td>Sydney</td>
-            <td>113</td>
+            <td>112</td>
             <td>59%</td>
             <td>25</td>
             <td>Melanesia, Micronesia, Polynesia</td>
@@ -423,11 +423,11 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <td>AS, GU, KI, MH, NC, NR, PW, SB, VU, WF</td>
         </tr><tr>
             <td>Portland</td>
-            <td>8</td>
-            <td>4%</td>
-            <td>2</td>
+            <td>9</td>
+            <td>5%</td>
+            <td>3</td>
             <td>Polynesia</td>
-            <td>AS</td>
+            <td>AS, TO</td>
         </tr><tr>
             <td>San Jose</td>
             <td>8</td>
@@ -1138,8 +1138,8 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <details class="note"><summary>University of the South Pacific (AS24390, Fiji) -&gt; Tonga Communications Internet Network (AS38201, KaliaNet) -- a fresh FJ&lt;-&gt;TO pair, **the first-ever…</summary>University of the South Pacific (AS24390, Fiji) -&gt; Tonga Communications Internet Network (AS38201, KaliaNet) -- a fresh FJ&lt;-&gt;TO pair, **the first-ever confirmation of the AS135409(Kacific)&lt;-&gt;AS38201 adjacency** -- no prior entry for this target ASN exists in this project at all. Fully contiguous: `AS24390 -&gt; AS7575 (AARNet) -&gt; AS7594 (On Q Communications, Australia) -&gt; AS135409 (Kacific)`, target never resolved, RIS-agreeing with the identical exact match (331). AS7594 resolved via `peeringdb_netixlan` but no direct IXP crossing was recorded this time -- checked On Q&#x27;s own real PeeringDB facility list directly instead: genuine presence at Equinix SY3/SY4 and NEXTDC S1, all Sydney, so attributed `detour_hub` as Sydney from the immediately-preceding carrier&#x27;s verified facilities rather than guess. A second satellite operator now confirmed for this project (after Starlink and SES Astra) -- Kacific Broadband Satellites is a genuine Asia-Pacific regional satellite provider, consistent with a small Tongan ISP using satellite backhaul. `has_routing_loop` correctly returned `False`.</details>
         </div><div class="detour-card">
             <div class="headline">FM -&gt; TO
-                (AS38201): detours via AS135409 (Kacific Broadband Satellites) -- satellite operator, international transit
-                (Sydney)</div>
+                (AS38201): detours via BBIX Tokyo, then 100ge0-0-0-18.core1.pdx3.he.net (router in Portland)
+                (Portland)</div>
             <div>RIS observation count: 331
                 &middot; measurement 212142992</div>
             <details class="note"><summary>Third confirmation of AS135409(Kacific)&lt;-&gt;AS38201 (after FJ, NC)…</summary>Third confirmation of AS135409(Kacific)&lt;-&gt;AS38201 (after FJ, NC). `AS139759 -&gt; AS9246 -&gt; AS4637 -&gt; AS3356 -&gt; AS7594 (On Q) -&gt; AS135409`, RIS agrees exactly (331). `has_routing_loop` False.</details>

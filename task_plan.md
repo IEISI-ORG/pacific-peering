@@ -3945,3 +3945,30 @@ added, none removed; unresolved 21 -> 12 (`daily_facts.escalation_summary` agree
   with these updates and two questions (who arranged the SISCC /24s; any current Bemobile contact or review).
   Framed as a worked case for Dave's PacNOG 38 routing security training. Sent by the owner 2026-11-24T05:58Z
   (message 1a20c227825fc1d9); awaiting reply.
+
+## #101 relabelled to Portland; IXP rule uses the last city (owner, 2026-11-24)
+
+- **Path** (8 of 8 AS139759 traces, 227408148 10-25, 233691202 11-06, 240687613 11-19): GTA Guam -> BBIX Tokyo
+  (HE) -> HE sea1 -> HE pdx3 -> Tonga Cable AS132579 -> TCC. Owner pointed to submarinecablemap's Neiafu landing
+  point: Hawaiki (Hillsboro OR, Kapolei, Pago Pago, Neiafu, Sydney, Mangawhai) plus the Tonga Domestic Cable
+  Extension (Neiafu, Pangai, Nuku'alofa). The +95ms step after Portland fits Hillsboro -> Neiafu; my earlier
+  Southern Cross via Fiji guess was wrong. The 10-25 and 11-06 runs had corroborated Sydney only because the
+  hub-differs check started 11-16.
+- **Code** (`fix(classify)` commit): IXP rule takes the last city. Fable review (code-reviewer subagent) found three
+  real gaps in the first version, all fixed test-first: non-placeable routers after the crossing were dropped
+  silently (now escalate with Rule 2's reasons; router search starts after the crossing so a too-fast name before
+  it can't hide a later router); only the first probe was examined (now every probe votes, disagreement escalates
+  "detour hubs in several cities", and every router-city probe feeds feasibility and gets a corroboration note);
+  several crossings on one probe (the last one stands). 601 tests pass.
+- **Replay** (scratch `replay_all.py`, real `classify_corridor` on a DB copy, HEAD worktree as baseline, missing PTRs
+  fetched through `ptr_lookup`): 196 detour findings' latest corroborating runs; 193 unchanged; #27 now
+  corroborates Sydney; #143 (BBIX Tokyo then Superloop Sydney) and #309 (BBIX Tokyo then HE lax2) now escalate
+  "detour hub differs". No run hits the new several-cities escalation. 5 runs error identically on both versions
+  (`AS152093 has no cached originated prefixes`), pre-existing.
+- **Relabel**: #101 `detour_hub` Sydney -> Portland, `detour_ix_name` Kacific text -> the new path (dump diff: 1 row;
+  legacy_note kept). Rehearsed first: Portland corroborates all 3 runs, Sydney control escalates all 3. Backup
+  `data/analysis/findings.db.bak-20261124-pre-101-relabel`. Hub counts Sydney 113 -> 112, Portland 8 -> 9.
+- **Open for the owner:** #143 and #309 relabels (they'll escalate on rotation); #35/#40/#41 (AS9751, San Jose or
+  Sydney -> Portland via AS11404 `cr4-pdx`, fits Hawaiki at Pago Pago) and #47 (Tokyo -> Sydney) already
+  escalating; location-pattern gaps the review found: HE `hnl\d` (Honolulu, after lax2 on #309) and AS11404
+  `cr4-stack`/`cr2-fdcp`.
