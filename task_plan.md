@@ -3985,3 +3985,11 @@ added, none removed; unresolved 21 -> 12 (`daily_facts.escalation_summary` agree
   `he.ix.mariix.net` -> target 123ms. Los Angeles has one date only and 10-29 disagrees, and on 11-11 the last
   city outside the region is Honolulu, not LA: `hnl1` matches no location pattern, so the code stops at lax2.
   Rehearsal: with LA, 10-29 escalates and both 11-11 runs corroborate; with Tokyo, the reverse.
+- **#309 retest (owner: option 1, "add the hnl pattern"), 2026-11-24 07:38Z, 243245785** (GU country sourcing,
+  probes 23039/329/60703 -> 103.142.152.1, pinned target, 1 measurement). **The detour is gone:** probe 23039
+  (AS17456 PDS, the #309 vantage) now goes 10.175.20.1 -> 199.127.237.13 (AS17456) -> target at 0.876ms, where
+  on 11-11 it went BBIX Tokyo -> HE lax2 -> HE hnl1 -> MARIIX at 123ms. Probe 329 (AS3605) reaches it via AS7131
+  at 3.09ms (corroborates local transit #188, MP AS7131 -> AS152735); probe 60703 at 0.906ms. Recorded as #309's
+  reverification attempt (confirmed_local_transit). The AS17456 -> AS152735 step has no RIS sighting, so probe
+  23039's direct hop wasn't filed as peering (the run's outcome came from probe 329). **Owner's call:** retire
+  #309, or keep it and retest on another date first.
