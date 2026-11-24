@@ -10,7 +10,7 @@ ZERO CONNECTED PROBES (4/20) -- cannot source or target a traceroute here at all
         Not useful yet -- fix the data or get it back online: 272 (Written Off), 22834 (Abandoned)
   SB  Solomon Islands [used in a confirmed/candidate finding]
       HOST LEAD: No Atlas probe has ever been registered here (confirmed live, any status). The Pacific Community (SPC) has operated a real national coordination office in Honiara since 2009 (Anthony Saru building, under a formal Host Country Agreement -- Solomon Islands was the first member country to host one) -- the same kind of organization that already hosts a real Atlas probe for this project in Fiji, New Caledonia, and FSM. Not yet contacted about hosting one here; a lead, not a commitment.
-      ASNs: 45891, 132260, 132462, 132468, 134525, 139277, 139609, 142279, 150349, 150403
+      ASNs: 45891, 132260, 132468, 134525, 139277, 139609, 142279, 150349, 150403
   WF  Wallis and Futuna [used in a confirmed/candidate finding]
       ASNs: 45879
   WS  Samoa [used in a confirmed/candidate finding]
@@ -129,7 +129,7 @@ PATHWAY COVERAGE (20 economies) -- same table as the main report's Pathway Cover
   KI  Kiribati (Micronesia) -- 6 ASN(s), 0 listed / 0 active probe(s) on a tracked ASN, 15 untested pathway(s)
   MH  Marshall Islands (Micronesia) -- 1 ASN(s), 4 listed / 0 active probe(s) on a tracked ASN, 7 untested pathway(s)
   WF  Wallis and Futuna (Polynesia) -- 1 ASN(s), 0 listed / 0 active probe(s) on a tracked ASN, 7 untested pathway(s)
-  SB  Solomon Islands (Melanesia) -- 10 ASN(s), 0 listed / 0 active probe(s) on a tracked ASN, 5 untested pathway(s)
+  SB  Solomon Islands (Melanesia) -- 9 ASN(s), 0 listed / 0 active probe(s) on a tracked ASN, 5 untested pathway(s)
   AS  American Samoa (Polynesia) -- 2 ASN(s), 2 listed / 0 active probe(s) on a tracked ASN, 4 untested pathway(s)
   WS  Samoa (Polynesia) -- 10 ASN(s), 3 listed / 0 active probe(s) on a tracked ASN, 4 untested pathway(s)
   MP  Northern Mariana Islands (Micronesia) -- 2 ASN(s), 6 listed / 3 active probe(s) on a tracked ASN, 3 untested pathway(s)
