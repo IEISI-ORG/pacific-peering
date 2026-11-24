@@ -884,7 +884,38 @@ def _classify_corridor(
         target_hop = next((h.hop for h in resolved if h.asns == (target_asn,)), None)
         return None if target_hop is None else hidden_hops_reason(raw, target_hop)
 
+    def _guarded_router_hub(probe: dict, after_hop: int | None = None) -> tuple[RouterHub | None, list[int]]:
+        """`find_router_hub` on this probe's trace (only hops after `after_hop`, if
+        given), with the network guard applied.
+
+        Network guard (owner, 2026-10-21): a PTR is whatever the address's owner
+        says it is. An off-region name on an address BGP gives to a fishbowl
+        network is misnamed, spoofed, or that network's own PoP abroad; a human
+        reads it, it's never filed as a detour by itself. No single origin
+        (lookup failed, unannounced, multi-origin) can't be cleared either: no
+        data is inconclusive (owner, 2026-10-21). Returns the hub and the
+        fishbowl ASNs that own its address (empty unless HUB_IN_REGION).
+        """
+        hops = hops_by_probe.get(probe["probe_id"], [])
+        if after_hop is not None:
+            hops = [h for h in hops if h.get("hop", 0) > after_hop]
+        trace = {"probe_id": probe["probe_id"], "hops": hops}
+        hub = find_router_hub(trace, candidate.source_cc, resolver=reverse_dns)
+        if hub is None or hub.verdict != HUB_OK:
+            return hub, []
+        owners = next(
+            (h.asns for h in resolve_traceroute_hops(trace["hops"], persist=False) if h.hop == hub.hop), ()
+        )
+        fishbowl = sorted({asn for asn in owners if asn in asn_to_cc})
+        if fishbowl:
+            return replace(hub, verdict=HUB_IN_REGION), fishbowl
+        if len(owners) != 1:
+            return replace(hub, verdict=HUB_NO_OWNER), []
+        return hub, []
+
     detour_pick: tuple[dict | None, str, str] | None = None  # (crossing, ix_name, hub_city)
+    # probe -> its last out-of-fishbowl crossing in a hub city, as (crossing, ix_name, hub_city)
+    ixp_hits: dict[int, tuple[dict, str, str]] = {}
     local_transit_pick: dict | None = None
     candidate_picks: list[dict] = []
     tba_ixp_hit = False
@@ -900,7 +931,8 @@ def _classify_corridor(
                 entry = ixp_registry.get(crossing.get("ix_id"))
                 hub_city = entry.city if entry else None
                 if hub_city in EXTERNAL_HUB_LATLON:
-                    detour_pick = detour_pick or (crossing, crossing.get("name", "?"), hub_city)
+                    # Crossings are in path order, so the last one stands.
+                    ixp_hits[probe["probe_id"]] = (crossing, crossing.get("name", "?"), hub_city)
             elif in_fishbowl is True:
                 entry = ixp_registry.get(crossing.get("ix_id"))
                 flag = _local_ixp_check(
@@ -931,10 +963,49 @@ def _classify_corridor(
                     candidate.source_asn, candidate.target_asn, probe["probe_id"], hidden,
                 )
 
-    # Rule 2, no IXP crossed: a router placed off-region by its own hostname.
     router_hubs: dict[int, RouterHub] = {}
     in_region_asns: dict[int, list[int]] = {}  # probe -> fishbowl ASNs BGP gives its hub router's address
-    if detour_pick is None:
+
+    # Rule 1, an out-of-fishbowl IXP crossed. The hub is the last city outside the region
+    # (owner: #58, #33; #101 2026-11-24), so a located router after a probe's last crossing,
+    # on a trace that reaches the target, sets that probe's city. A router there that can't
+    # be placed (too fast, unmapped, failed network guard) leaves the city unknown: that
+    # probe is escalated below with Rule 2's reasons and doesn't vote (Fable review,
+    # 2026-11-24). Probes that disagree escalate, as Rule 2's do (owner, 2026-10-21).
+    ixp_votes: list[tuple[int, tuple[dict, str, str]]] = []
+    for probe in clean_probes:
+        hit = ixp_hits.get(probe["probe_id"])
+        if hit is None:
+            continue
+        crossing, ix_name, ix_city = hit
+        if (
+            crossing.get("hop") is not None
+            and candidate.target_asn in {e["asn"] for e in probe.get("as_sequence", [])}
+            and not probe.get("override_step_unconfirmed")
+        ):
+            hub, fishbowl = _guarded_router_hub(probe, after_hop=crossing["hop"])
+            if hub is not None and hub.verdict != HUB_OK:
+                router_hubs[probe["probe_id"]] = hub
+                if fishbowl:
+                    in_region_asns[probe["probe_id"]] = fishbowl
+                continue
+            if hub is not None and hub.city != ix_city:
+                router_hubs[probe["probe_id"]] = hub
+                hit = (crossing, f"{ix_name}, then {hub.hostname} (router in {hub.city})", hub.city)
+        ixp_votes.append((probe["probe_id"], hit))
+    if len({city for _, (_, _, city) in ixp_votes}) > 1:
+        escalations.append(_Escalation(
+            candidate=candidate,
+            measurement_id=measurement_id,
+            reason="detour hubs in several cities",
+            detail="; ".join(f"probe {pid}: {name} -> {city}" for pid, (_, name, city) in ixp_votes)
+            + " -- probes leave the region through different last cities; needs a human read, not a detour",
+        ))
+    elif ixp_votes:
+        detour_pick = ixp_votes[0][1]
+
+    # Rule 2, no IXP crossed: a router placed off-region by its own hostname.
+    if not ixp_hits:
         for probe in clean_probes:
             if candidate.target_asn not in {e["asn"] for e in probe.get("as_sequence", [])}:
                 # Owner, 2026-11-16 (#51, 238217235): a trace that leaves via an
@@ -950,26 +1021,11 @@ def _classify_corridor(
                     candidate.source_asn, candidate.target_asn, probe["probe_id"], probe.get("note", ""),
                 )
                 continue
-            trace = {"probe_id": probe["probe_id"], "hops": hops_by_probe.get(probe["probe_id"], [])}
-            hub = find_router_hub(trace, candidate.source_cc, resolver=reverse_dns)
+            hub, fishbowl = _guarded_router_hub(probe)
             if hub is None:
                 continue
-            if hub.verdict == HUB_OK:
-                # Network guard (owner, 2026-10-21): a PTR is whatever the address's
-                # owner says it is. An off-region name on an address BGP gives to a
-                # fishbowl network is misnamed, spoofed, or that network's own PoP
-                # abroad; a human reads it, it's never filed as a detour by itself.
-                # No single origin (lookup failed, unannounced, multi-origin) can't
-                # be cleared either: no data is inconclusive (owner, 2026-10-21).
-                owners = next(
-                    (h.asns for h in resolve_traceroute_hops(trace["hops"], persist=False) if h.hop == hub.hop), ()
-                )
-                fishbowl = sorted({asn for asn in owners if asn in asn_to_cc})
-                if fishbowl:
-                    in_region_asns[probe["probe_id"]] = fishbowl
-                    hub = replace(hub, verdict=HUB_IN_REGION)
-                elif len(owners) != 1:
-                    hub = replace(hub, verdict=HUB_NO_OWNER)
+            if fishbowl:
+                in_region_asns[probe["probe_id"]] = fishbowl
             router_hubs[probe["probe_id"]] = hub
         ok = [h for h in router_hubs.values() if h.verdict == HUB_OK]
         if len({h.city for h in ok}) > 1:
@@ -984,33 +1040,35 @@ def _classify_corridor(
             ))
         elif ok:
             detour_pick = (None, f"{ok[0].hostname} (router in {ok[0].city}, no IXP crossing)", ok[0].city)
-        for hub in router_hubs.values():
-            if hub.verdict == HUB_OK:
-                continue
-            if hub.verdict == HUB_IN_REGION:
-                reason = "router hostname off-region but address in a fishbowl network"
-                detail = (
-                    f"probe {hub.probe_id}: {hub.note()}; BGP gives the address to "
-                    + ", ".join(f"AS{a} ({asn_to_cc[a]})" for a in in_region_asns[hub.probe_id])
-                    + " -- a misnamed or spoofed PTR, or that network's own router abroad; "
-                    "needs a human look, not a detour"
-                )
-            elif hub.verdict == HUB_NO_OWNER:
-                reason = "router address has no single BGP owner"
-                detail = (
-                    f"probe {hub.probe_id}: {hub.note()} -- BGP gives no single origin for the address "
-                    "(lookup failed, unannounced, or multi-origin), so the hostname can't be checked "
-                    "against its network; needs a human look, not a detour"
-                )
-            else:
-                reason = (
-                    "router hostname location physically impossible" if hub.verdict == HUB_TOO_FAST
-                    else "router in a hub city with no coordinates"
-                )
-                detail = f"probe {hub.probe_id}: {hub.note()}"
-            escalations.append(_Escalation(
-                candidate=candidate, measurement_id=measurement_id, reason=reason, detail=detail,
-            ))
+
+    # Routers that couldn't be placed, under either rule: a human read, never a detour.
+    for hub in router_hubs.values():
+        if hub.verdict == HUB_OK:
+            continue
+        if hub.verdict == HUB_IN_REGION:
+            reason = "router hostname off-region but address in a fishbowl network"
+            detail = (
+                f"probe {hub.probe_id}: {hub.note()}; BGP gives the address to "
+                + ", ".join(f"AS{a} ({asn_to_cc[a]})" for a in in_region_asns[hub.probe_id])
+                + " -- a misnamed or spoofed PTR, or that network's own router abroad; "
+                "needs a human look, not a detour"
+            )
+        elif hub.verdict == HUB_NO_OWNER:
+            reason = "router address has no single BGP owner"
+            detail = (
+                f"probe {hub.probe_id}: {hub.note()} -- BGP gives no single origin for the address "
+                "(lookup failed, unannounced, or multi-origin), so the hostname can't be checked "
+                "against its network; needs a human look, not a detour"
+            )
+        else:
+            reason = (
+                "router hostname location physically impossible" if hub.verdict == HUB_TOO_FAST
+                else "router in a hub city with no coordinates"
+            )
+            detail = f"probe {hub.probe_id}: {hub.note()}"
+        escalations.append(_Escalation(
+            candidate=candidate, measurement_id=measurement_id, reason=reason, detail=detail,
+        ))
 
     if tba_ixp_hit and detour_pick is None:
         escalations.append(

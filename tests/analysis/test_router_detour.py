@@ -229,16 +229,221 @@ def test_no_ptr_records_leaves_local_transit(env):
     assert (result.outcome, result.escalations) == ("confirmed_local_transit", [])
 
 
-def test_ixp_detour_takes_precedence(env):
+def _sydney_ixp(env, hop=6, rtt=60.0):
     env["registry"] = {94: IxpLanEntry(ix_id=94, name="Equinix Sydney", city="Sydney", country="AU",
                                        in_fishbowl=False, prefixes=("45.127.172.0/22",))}
     env["triangulation"] = _triangulation([{"ix_id": 94, "name": "Equinix Sydney", "in_fishbowl": False,
-                                            "hop": 6, "min_rtt_ms": 60.0}])
-    env["ptr"] = {"64.86.252.73": TATA_LA}
+                                            "hop": hop, "min_rtt_ms": rtt}])
+
+
+def test_ixp_detour_with_no_router_after_it_files_the_ixp_city(env):
+    _sydney_ixp(env)
     result = auto_classify.classify_corridor(_candidate(), regenerate=False)
     assert result.outcome == "confirmed_detour"
     assert _rows(env, "SELECT detour_hub, detour_ix_name FROM findings") == [("Sydney", "Equinix Sydney")]
-    assert env["ptr_calls"] == []
+
+
+# --- 2026-11-24 owner decision (#101): the IXP rule uses the last city too --------------------------
+# #101 (FM -> TO, 240687613): GTA Guam -> BBIX Tokyo (hop 10, 54ms) -> HE sea1 -> HE pdx3 (148ms)
+# -> Tonga Cable over Hawaiki from Hillsboro. The IXP rule filed Tokyo, the first crossing; the
+# hub is the last city outside the region (#33, #58), so a located router after the crossing wins.
+
+
+def test_router_after_the_ixp_crossing_is_the_hub(env):
+    _sydney_ixp(env)
+    env["ptr"] = {"64.86.252.73": TATA_LA}
+    result = auto_classify.classify_corridor(_candidate(), regenerate=False)
+    assert (result.outcome, result.escalations) == ("confirmed_detour", [])
+    assert _rows(env, "SELECT detour_hub, detour_ix_name FROM findings") == [
+        ("Los Angeles", f"Equinix Sydney, then {TATA_LA} (router in Los Angeles)")]
+    (note,) = _rows(env, "SELECT note_extra FROM corroborations")[0]
+    assert "hop 8 64.86.252.73" in note
+
+
+def test_router_before_the_ixp_crossing_leaves_the_ixp_hub(env):
+    _sydney_ixp(env, hop=10, rtt=130.0)
+    env["ptr"] = {"64.86.252.73": TATA_LA}
+    result = auto_classify.classify_corridor(_candidate(), regenerate=False)
+    assert result.outcome == "confirmed_detour"
+    assert _rows(env, "SELECT detour_hub FROM findings") == [("Sydney",)]
+
+
+def test_router_after_the_ixp_on_a_trace_short_of_the_target_leaves_the_ixp_hub(env):
+    # Owner, 2026-11-16 (#51): a router on a trace that goes dark before the target is no hop data.
+    _sydney_ixp(env)
+    env["triangulation"]["probes"][0]["as_sequence"] = [
+        e for e in env["triangulation"]["probes"][0]["as_sequence"] if e["asn"] != 38198]
+    env["ptr"] = {"64.86.252.73": TATA_LA}
+    auto_classify.classify_corridor(_candidate(), regenerate=False)
+    assert _rows(env, "SELECT detour_hub FROM findings WHERE kind = 'confirmed_detour'") == [("Sydney",)]
+
+
+def _detours(env):
+    return _rows(env, "SELECT detour_hub, detour_ix_name FROM findings WHERE kind = 'confirmed_detour'")
+
+
+# Fable review, 2026-11-24: a router after the crossing that can't be placed means the last city
+# is unknown, so it escalates with Rule 2's own reason instead of silently filing the IXP city.
+@pytest.mark.parametrize("asns, reason", [
+    ((45355,), "router hostname off-region but address in a fishbowl network"),
+    ((), "router address has no single BGP owner"),
+    ((6453, 3356), "router address has no single BGP owner"),
+], ids=["fishbowl_owner", "no_owner", "two_origins"])
+def test_router_after_the_ixp_that_fails_the_network_guard_escalates_instead_of_filing(env, asns, reason):
+    _sydney_ixp(env)
+    env["resolved"] = {8: asns}
+    env["ptr"] = {"64.86.252.73": TATA_LA}
+    result = auto_classify.classify_corridor(_candidate(), regenerate=False)
+    assert reason in [e.reason for e in result.escalations]
+    assert _detours(env) == []
+
+
+def test_too_fast_router_after_the_ixp_escalates_instead_of_filing(env):
+    _sydney_ixp(env, hop=2, rtt=5.0)
+    env["ptr"] = {"103.57.234.108": COGENT_LAX, "64.86.252.73": TATA_LA}  # hop 4, 8ms: not LA
+    result = auto_classify.classify_corridor(_candidate(), regenerate=False)
+    assert "router hostname location physically impossible" in [e.reason for e in result.escalations]
+    assert _detours(env) == []
+
+
+def test_unmapped_router_after_the_ixp_escalates_instead_of_filing(env, monkeypatch):
+    monkeypatch.delitem(EXTERNAL_HUB_LATLON, "Hong Kong")
+    _sydney_ixp(env)
+    env["ptr"] = {"64.86.252.73": "hk-mgi-rt1.oneqode.net"}
+    result = auto_classify.classify_corridor(_candidate(), regenerate=False)
+    assert "router in a hub city with no coordinates" in [e.reason for e in result.escalations]
+    assert _detours(env) == []
+
+
+def test_too_fast_router_before_the_ixp_does_not_hide_a_later_router(env):
+    # find_router_hub returns a too-fast hop at once; only the hops after the crossing count here.
+    _sydney_ixp(env)
+    env["ptr"] = {"103.57.234.108": COGENT_LAX, "64.86.252.73": TATA_LA}
+    result = auto_classify.classify_corridor(_candidate(), regenerate=False)
+    assert (result.outcome, result.escalations) == ("confirmed_detour", [])
+    assert _detours(env) == [("Los Angeles", f"Equinix Sydney, then {TATA_LA} (router in Los Angeles)")]
+
+
+def test_override_bridged_probe_keeps_the_ixp_hub(env):
+    _sydney_ixp(env)
+    env["triangulation"]["probes"][0]["override_step_unconfirmed"] = True
+    env["ptr"] = {"64.86.252.73": TATA_LA}
+    auto_classify.classify_corridor(_candidate(), regenerate=False)
+    assert [hub for hub, _ in _detours(env)] == ["Sydney"]
+
+
+def test_last_of_several_ixp_crossings_on_one_probe_sets_the_hub(env):
+    # Sydney IX (hop 6), Tata LA (hop 8), then a Tokyo IX (hop 10): Tokyo is the last city.
+    env["registry"] = {
+        94: IxpLanEntry(ix_id=94, name="Equinix Sydney", city="Sydney", country="AU", in_fishbowl=False,
+                        prefixes=("45.127.172.0/22",)),
+        126: IxpLanEntry(ix_id=126, name="BBIX Tokyo", city="Tokyo", country="JP", in_fishbowl=False,
+                         prefixes=("101.203.88.0/22",)),
+    }
+    env["triangulation"] = _triangulation([
+        {"ix_id": 94, "name": "Equinix Sydney", "in_fishbowl": False, "hop": 6, "min_rtt_ms": 60.0},
+        {"ix_id": 126, "name": "BBIX Tokyo", "in_fishbowl": False, "hop": 10, "min_rtt_ms": 150.0},
+    ])
+    env["ptr"] = {"64.86.252.73": TATA_LA}
+    auto_classify.classify_corridor(_candidate(), regenerate=False)
+    assert _detours(env) == [("Tokyo", "BBIX Tokyo")]
+
+
+def test_router_in_the_ixp_city_leaves_the_ixp_name(env):
+    env["registry"] = {5: IxpLanEntry(ix_id=5, name="Any2West", city="Los Angeles", country="US",
+                                      in_fishbowl=False, prefixes=("206.72.210.0/23",))}
+    env["triangulation"] = _triangulation([{"ix_id": 5, "name": "Any2West", "in_fishbowl": False,
+                                            "hop": 6, "min_rtt_ms": 110.0}])
+    env["ptr"] = {"64.86.252.73": TATA_LA}
+    auto_classify.classify_corridor(_candidate(), regenerate=False)
+    assert _detours(env) == [("Los Angeles", "Any2West")]
+
+
+def _two_probes_via_sydney_ixp(env, hops_b):
+    _two_probe_measurement(env, HOPS, hops_b)
+    env["registry"] = {94: IxpLanEntry(ix_id=94, name="Equinix Sydney", city="Sydney", country="AU",
+                                       in_fishbowl=False, prefixes=("45.127.172.0/22",))}
+    for p in env["triangulation"]["probes"]:
+        p["ixp_crossings"] = [{"ix_id": 94, "name": "Equinix Sydney", "in_fishbowl": False,
+                               "hop": 6, "min_rtt_ms": 60.0}]
+
+
+@pytest.mark.parametrize("swap", [False, True], ids=["router_probe_first", "router_probe_second"])
+def test_probes_leaving_through_different_last_cities_escalate(env, swap):
+    # Probe A: Sydney IX then Tata LA; probe B: Sydney IX, no located router after it.
+    hops_b = [h for h in HOPS if h["hop"] != 8]
+    _two_probes_via_sydney_ixp(env, hops_b)
+    if swap:
+        env["triangulation"]["probes"].reverse()
+    env["ptr"] = {"64.86.252.73": TATA_LA}
+    result = auto_classify.classify_corridor(_candidate(), regenerate=False)
+    (esc,) = [e for e in result.escalations if e.reason == "detour hubs in several cities"]
+    assert "Los Angeles" in esc.detail and "Sydney" in esc.detail
+    assert _detours(env) == []
+
+
+def test_every_probe_via_the_router_city_is_recorded(env):
+    _two_probes_via_sydney_ixp(env, HOPS)
+    env["ptr"] = {"64.86.252.73": TATA_LA}
+    result = auto_classify.classify_corridor(_candidate(), regenerate=False)
+    assert (result.outcome, result.escalations) == ("confirmed_detour", [])
+    notes = [n for (n,) in _rows(env, "SELECT note_extra FROM corroborations")]
+    assert len(notes) == 2 and all(n and "hop 8 64.86.252.73" in n for n in notes)
+
+
+# Frozen real trace: 240687613, probe 7448 (FSMTC, FM) -> 103.239.160.1 (TCC, TO), 2026-11-19.
+FM_TO_HOPS = [
+    {"hop": 1, "addresses": ["119.252.112.65"], "min_rtt_ms": 0.18},
+    {"hop": 3, "addresses": ["119.252.112.181"], "min_rtt_ms": 19.725},
+    {"hop": 5, "addresses": ["114.142.196.164"], "min_rtt_ms": 48.712},
+    {"hop": 7, "addresses": ["114.142.196.155"], "min_rtt_ms": 48.451},
+    {"hop": 8, "addresses": ["101.203.88.74"], "min_rtt_ms": 51.449},
+    {"hop": 9, "addresses": ["184.105.213.117"], "min_rtt_ms": 146.227},
+    {"hop": 10, "addresses": ["184.104.196.36"], "min_rtt_ms": 145.137},
+    {"hop": 11, "addresses": ["184.104.188.77"], "min_rtt_ms": 145.354},
+    {"hop": 12, "addresses": ["216.218.213.73"], "min_rtt_ms": 240.971},
+    {"hop": 13, "addresses": ["103.245.162.22"], "min_rtt_ms": 241.351},
+    {"hop": 16, "addresses": ["202.134.30.206"], "min_rtt_ms": 284.49},
+    {"hop": 17, "addresses": ["103.239.160.241"], "min_rtt_ms": 284.612},
+]
+
+
+def test_finding_101_real_trace_files_portland_after_bbix_tokyo(env, monkeypatch):
+    monkeypatch.setattr(auto_classify, "_load_asn_to_cc",
+                        lambda path=None: {139759: "FM", 9246: "GU", 132579: "TO", 38201: "TO"})
+    (env["parsed_dir"] / f"{MSM}.json").write_text(json.dumps(
+        [{"measurement_id": MSM, "probe_id": 7448, "target": "103.239.160.1", "hops": FM_TO_HOPS}]))
+    env["registry"] = {126: IxpLanEntry(ix_id=126, name="BBIX Tokyo", city="Tokyo", country="JP",
+                                        in_fishbowl=False, prefixes=("101.203.88.0/22",))}
+    env["triangulation"] = {"measurement_id": MSM, "target_asn": 38201, "probes": [{
+        "probe_id": 7448,
+        "as_sequence": [{"asn": a, "resolution_source": "bgp", "contiguous_with_previous": True}
+                        for a in (139759, 9246, 6939, 132579, 38201)],
+        "ixp_crossings": [{"hop": 8, "member_asns": [6939], "min_rtt_ms": 51.449, "ix_id": 126,
+                           "name": "BBIX Tokyo", "in_fishbowl": False}],
+        "traceroute_upstream_asn": 132579, "ris_agrees": True, "contiguous": False,
+        "ris_observation_count": 1504}]}
+    env["resolved"] = {9: (6939,), 10: (6939,), 11: (6939,), 12: (6939,)}
+    env["ptr"] = {"184.105.213.117": "be1.core1.sea1.he.net", "184.104.196.36": "be9.core3.pdx1.he.net",
+                  "184.104.188.77": "be1.core1.pdx3.he.net"}
+    candidate = CorridorCandidate(source_asn=139759, source_cc="FM", source_name="FSMTC", target_asn=38201,
+                                  target_cc="TO", target_name="Tonga Communications Corporation",
+                                  rationale="test")
+    result = auto_classify.classify_corridor(candidate, regenerate=False)
+    assert (result.outcome, result.escalations) == ("confirmed_detour", [])
+    assert _detours(env) == [("Portland", "BBIX Tokyo, then be1.core1.pdx3.he.net (router in Portland)")]
+
+
+@pytest.mark.parametrize("filed, outcome", [("Los Angeles", "confirmed_detour"), ("Sydney", "escalated")])
+def test_reverification_via_an_ixp_then_a_router_is_judged_on_the_router_city(env, filed, outcome):
+    fid = _existing_detour(env, filed)
+    _sydney_ixp(env)
+    env["ptr"] = {"64.86.252.73": TATA_LA}
+    result = auto_classify.classify_corridor(_candidate(reverify_finding_id=fid), regenerate=False)
+    assert result.outcome == outcome
+    if outcome == "escalated":
+        (esc,) = [e for e in result.escalations if e.reason == "detour hub differs from the filed finding"]
+        assert "via Los Angeles (Equinix Sydney, then" in esc.detail
 
 
 # --- 2026-10-21 follow-ups (TODO.md P1): multi-probe measurements ---------------------------------
