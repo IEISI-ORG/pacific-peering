@@ -79,7 +79,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
 <body>
 <div class="wrap">
     <h1>Pacific Peering — Regional Routing Report</h1>
-    <div class="meta">Generated 2026-11-24T15:43:51.227422+00:00</div>
+    <div class="meta">Generated 2026-11-25T15:19:11.449814+00:00</div>
 
     <div class="feedback-box"><strong>Found a bug?</strong> This report is generated
         automatically, and bugs very likely remain in both the code and the data. If
@@ -95,13 +95,13 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
     </div>
 
     <div class="stat-row">
-        <div class="stat-tile"><div class="value">286</div><div class="label">Pathways found (total)</div></div>
+        <div class="stat-tile"><div class="value">287</div><div class="label">Pathways found (total)</div></div>
         <div class="stat-tile"><div class="value">95</div><div class="label">Internal (never leave the fish bowl)</div></div>
-        <div class="stat-tile red-box"><div class="value">191</div>
+        <div class="stat-tile red-box"><div class="value">192</div>
             <div class="label">External / Leaves the region</div></div>
     </div>
     <p class="section-intro">Full corridor-by-corridor detail for all
-        286 pathways above is further down this report
+        287 pathways above is further down this report
         (Confirmed sub-optimal routes / Confirmed local transit / Candidate
         peering), collapsed by default so it doesn't dominate the page &mdash;
         click any of those section headings to expand.</p>
@@ -402,7 +402,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <th>Dependent economies</th></tr></thead>
         <tbody><tr>
             <td>Sydney</td>
-            <td>113</td>
+            <td>114</td>
             <td>59%</td>
             <td>25</td>
             <td>Melanesia, Micronesia, Polynesia</td>
@@ -493,7 +493,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
 
     <details class="section-toggle">
         <summary>Confirmed sub-optimal routes (RIS + Atlas both agree)
-            <span class="count">(191)</span></summary>
+            <span class="count">(192)</span></summary>
         <div class="detour-card">
             <div class="headline">NC -&gt; FJ
                 (AS4638): detours via MegaIX Sydney
@@ -836,7 +836,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
                 (Sydney)</div>
             <div>RIS observation count: 0
                 &middot; measurement 213458474</div>
-            <details class="note"><summary>measurement 213458474 (from TO); chain: AS24390 -&gt; AS7575 -&gt; AS17993; RIS disagrees…</summary>measurement 213458474 (from TO); chain: AS24390 -&gt; AS7575 -&gt; AS17993; RIS disagrees. measurement 229251264 (from TO); chain: AS24390 -&gt; AS7575 -&gt; AS17993; RIS disagrees. measurement 236245344 (from TO); chain: AS24390 -&gt; AS7575 -&gt; AS17993; RIS disagrees.</details>
+            <details class="note"><summary>measurement 213458474 (from TO); chain: AS24390 -&gt; AS7575 -&gt; AS17993; RIS disagrees…</summary>measurement 213458474 (from TO); chain: AS24390 -&gt; AS7575 -&gt; AS17993; RIS disagrees. measurement 229251264 (from TO); chain: AS24390 -&gt; AS7575 -&gt; AS17993; RIS disagrees. measurement 236245344 (from TO); chain: AS24390 -&gt; AS7575 -&gt; AS17993; RIS disagrees. measurement 244175754 (from TO); chain: AS24390 -&gt; AS7575 -&gt; AS17993; RIS disagrees.</details>
         </div><div class="detour-card">
             <div class="headline">TV -&gt; WS
                 (AS17993): detours via Equinix Sydney
@@ -844,6 +844,13 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
             <div>RIS observation count: 150
                 &middot; measurement 212054917</div>
             <details class="note"><summary>Tuvalu (AS23917) -&gt; Vodafone Samoa Limited (AS17993) -- a fresh TV&lt;-&gt;WS pair, a fourth independent confirmation of the AS6939(Hurricane Electric)&lt;-&gt;AS17993…</summary>Tuvalu (AS23917) -&gt; Vodafone Samoa Limited (AS17993) -- a fresh TV&lt;-&gt;WS pair, a fourth independent confirmation of the AS6939(Hurricane Electric)&lt;-&gt;AS17993 adjacency (after MP, PF, CK): `AS23917 -&gt; AS9241 (FINTEL) -&gt; AS6939 -&gt; AS17993`, fully contiguous, RIS-agreeing with the identical exact match (150). Both AS6939 and AS17993 resolve via `peeringdb_netixlan` directly at **Equinix Sydney** (`ixp_crossings` confirms both hops), the same clean, no-gap shape as the AS17480 entry this same tranche -- Tuvalu&#x27;s own path (via FINTEL, then Hurricane Electric) reaching straight into the target&#x27;s registered LAN prefix with no dead end.</details>
+        </div><div class="detour-card">
+            <div class="headline">VU -&gt; WS
+                (AS17993): detours via Equinix Sydney
+                (Sydney)</div>
+            <div>RIS observation count: 0
+                &middot; measurement 244177798</div>
+            <details class="note"><summary>measurement 244177798 (from VU); chain: AS9249 -&gt; AS38442 -&gt; AS17993; RIS disagrees.</summary>measurement 244177798 (from VU); chain: AS9249 -&gt; AS38442 -&gt; AS17993; RIS disagrees.</details>
         </div><div class="detour-card">
             <div class="headline">NU -&gt; NC
                 (AS18200): detours via AS6939 (Hurricane Electric)
@@ -893,7 +900,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
                 (Portland)</div>
             <div>RIS observation count: 329
                 &middot; measurement 213458807</div>
-            <details class="note"><summary>measurement 213458807 (from TO); chain: AS24390 -&gt; AS7575 -&gt; AS17993 -&gt; AS23657; RIS count 329; RIS agrees…</summary>measurement 213458807 (from TO); chain: AS24390 -&gt; AS7575 -&gt; AS17993 -&gt; AS23657; RIS count 329; RIS agrees. measurement 229251872 (from TO); chain: AS24390 -&gt; AS7575 -&gt; AS2914 -&gt; AS174 -&gt; AS23657; RIS count 1118; RIS agrees. measurement 236863495 (from TO); chain: AS24390 -&gt; AS7575 -&gt; AS2914 -&gt; AS174 -&gt; AS23657; RIS count 1324; RIS agrees.</details>
+            <details class="note"><summary>measurement 213458807 (from TO); chain: AS24390 -&gt; AS7575 -&gt; AS17993 -&gt; AS23657; RIS count 329; RIS agrees…</summary>measurement 213458807 (from TO); chain: AS24390 -&gt; AS7575 -&gt; AS17993 -&gt; AS23657; RIS count 329; RIS agrees. measurement 229251872 (from TO); chain: AS24390 -&gt; AS7575 -&gt; AS2914 -&gt; AS174 -&gt; AS23657; RIS count 1118; RIS agrees. measurement 236863495 (from TO); chain: AS24390 -&gt; AS7575 -&gt; AS2914 -&gt; AS174 -&gt; AS23657; RIS count 1324; RIS agrees. measurement 244176982 (from TO); chain: AS24390 -&gt; AS7575 -&gt; AS2914 -&gt; AS174 -&gt; AS23657; RIS count 1324; RIS agrees.</details>
         </div><div class="detour-card">
             <div class="headline">CK -&gt; FJ
                 (AS24390): detours via Any2West
@@ -1170,7 +1177,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
                 (Sydney)</div>
             <div>RIS observation count: 990
                 &middot; measurement 213458965</div>
-            <details class="note"><summary>measurement 213458965 (from TO); chain: AS24390 -&gt; AS7575 -&gt; AS132528 -&gt; AS38800 -&gt; AS38227; RIS count 990; RIS agrees…</summary>measurement 213458965 (from TO); chain: AS24390 -&gt; AS7575 -&gt; AS132528 -&gt; AS38800 -&gt; AS38227; RIS count 990; RIS agrees. measurement 229792926 (from TO); chain: AS24390 -&gt; AS7575 -&gt; AS132528 -&gt; AS38800 -&gt; AS38227; RIS count 828; RIS agrees. measurement 236865016 (from TO); chain: AS24390 -&gt; AS7575 -&gt; AS132528 -&gt; AS38800 -&gt; AS38227; RIS count 981; RIS agrees.</details>
+            <details class="note"><summary>measurement 213458965 (from TO); chain: AS24390 -&gt; AS7575 -&gt; AS132528 -&gt; AS38800 -&gt; AS38227; RIS count 990; RIS agrees…</summary>measurement 213458965 (from TO); chain: AS24390 -&gt; AS7575 -&gt; AS132528 -&gt; AS38800 -&gt; AS38227; RIS count 990; RIS agrees. measurement 229792926 (from TO); chain: AS24390 -&gt; AS7575 -&gt; AS132528 -&gt; AS38800 -&gt; AS38227; RIS count 828; RIS agrees. measurement 236865016 (from TO); chain: AS24390 -&gt; AS7575 -&gt; AS132528 -&gt; AS38800 -&gt; AS38227; RIS count 981; RIS agrees. measurement 244177774 (from TO); chain: AS24390 -&gt; AS7575 -&gt; AS132528 -&gt; AS38800 -&gt; AS38227; RIS count 981; RIS agrees.</details>
         </div><div class="detour-card">
             <div class="headline">NU -&gt; FJ
                 (AS38442): detours via AS6939 (Hurricane Electric)
@@ -1198,7 +1205,7 @@ footer.about h2 { border-bottom: none; margin-top: 0; font-size: 0.95rem; color:
                 (Sydney)</div>
             <div>RIS observation count: 1656
                 &middot; measurement 213459105</div>
-            <details class="note"><summary>measurement 213459105 (from TO); chain: AS24390 -&gt; AS7575 -&gt; AS132528 -&gt; AS38800; RIS count 1656; RIS agrees…</summary>measurement 213459105 (from TO); chain: AS24390 -&gt; AS7575 -&gt; AS132528 -&gt; AS38800; RIS count 1656; RIS agrees. measurement 229794094 (from TO); chain: AS24390 -&gt; AS7575 -&gt; AS132528 -&gt; AS38800; RIS count 1386; RIS agrees. measurement 236866386 (from TO); chain: AS24390 -&gt; AS7575 -&gt; AS132528 -&gt; AS38800; RIS count 1630; RIS agrees.</details>
+            <details class="note"><summary>measurement 213459105 (from TO); chain: AS24390 -&gt; AS7575 -&gt; AS132528 -&gt; AS38800; RIS count 1656; RIS agrees…</summary>measurement 213459105 (from TO); chain: AS24390 -&gt; AS7575 -&gt; AS132528 -&gt; AS38800; RIS count 1656; RIS agrees. measurement 229794094 (from TO); chain: AS24390 -&gt; AS7575 -&gt; AS132528 -&gt; AS38800; RIS count 1386; RIS agrees. measurement 236866386 (from TO); chain: AS24390 -&gt; AS7575 -&gt; AS132528 -&gt; AS38800; RIS count 1630; RIS agrees. measurement 244178579 (from TO); chain: AS24390 -&gt; AS7575 -&gt; AS132528 -&gt; AS38800; RIS count 1631; RIS agrees.</details>
         </div><div class="detour-card">
             <div class="headline">VU -&gt; WS
                 (AS38800): detours via Equinix Sydney (AS132528, Digicel Australia/Telstra-operated backbone)
@@ -1524,7 +1531,7 @@ Twelfth confirmation of AS139609(SISCC)&lt;-&gt;AS45891. `AS55885 -&gt; AS9471 -
                 (Sydney)</div>
             <div>RIS observation count: 670
                 &middot; measurement 213193748</div>
-            <details class="note"><summary>measurement 213193748 (from VU); chain: AS9249 -&gt; AS38442 -&gt; AS15830 -&gt; AS45495 -&gt; AS132254; RIS count 670; RIS agrees…</summary>measurement 213193748 (from VU); chain: AS9249 -&gt; AS38442 -&gt; AS15830 -&gt; AS45495 -&gt; AS132254; RIS count 670; RIS agrees. measurement 213193748 (from VU); chain: AS9249 -&gt; AS38442 -&gt; AS15830 -&gt; AS45495 -&gt; AS132254; RIS count 670; RIS agrees. measurement 228741136 (from VU); chain: AS9249 -&gt; AS38442 -&gt; AS15830 -&gt; AS45495 -&gt; AS132254; RIS count 570; RIS agrees. measurement 236242104 (from VU); chain: AS9249 -&gt; AS38442 -&gt; AS15830 -&gt; AS45495 -&gt; AS132254; RIS count 658; RIS agrees.</details>
+            <details class="note"><summary>measurement 213193748 (from VU); chain: AS9249 -&gt; AS38442 -&gt; AS15830 -&gt; AS45495 -&gt; AS132254; RIS count 670; RIS agrees…</summary>measurement 213193748 (from VU); chain: AS9249 -&gt; AS38442 -&gt; AS15830 -&gt; AS45495 -&gt; AS132254; RIS count 670; RIS agrees. measurement 213193748 (from VU); chain: AS9249 -&gt; AS38442 -&gt; AS15830 -&gt; AS45495 -&gt; AS132254; RIS count 670; RIS agrees. measurement 228741136 (from VU); chain: AS9249 -&gt; AS38442 -&gt; AS15830 -&gt; AS45495 -&gt; AS132254; RIS count 570; RIS agrees. measurement 236242104 (from VU); chain: AS9249 -&gt; AS38442 -&gt; AS15830 -&gt; AS45495 -&gt; AS132254; RIS count 658; RIS agrees. measurement 244171895 (from VU); chain: AS9249 -&gt; AS38442 -&gt; AS15830 -&gt; AS45495 -&gt; AS132254; RIS count 662; RIS agrees.</details>
         </div><div class="detour-card">
             <div class="headline">NU -&gt; VU
                 (AS132429): detours via Equinix Sydney
@@ -1908,7 +1915,7 @@ Twelfth confirmation of AS139609(SISCC)&lt;-&gt;AS45891. `AS55885 -&gt; AS9471 -
             <div>RIS observation count: 1665
                 &middot; measurement 213187776
                 &middot; vantage point NC</div>
-            <details class="note"><summary>measurement 213187776 (from NC); chain: AS45345 -&gt; AS18200 -&gt; AS17480; RIS count 1665; RIS agrees…</summary>measurement 213187776 (from NC); chain: AS45345 -&gt; AS18200 -&gt; AS17480; RIS count 1665; RIS agrees. measurement 213187776 (from NC); chain: AS45345 -&gt; AS18200 -&gt; AS17480; RIS count 1665; RIS agrees. measurement 213458821 (from NC); chain: AS45345 -&gt; AS18200 -&gt; AS17480; RIS count 1665; RIS agrees. measurement 213458821 (from NC); chain: AS45345 -&gt; AS18200 -&gt; AS17480; RIS count 1665; RIS agrees. measurement 217920678 (from NC); chain: AS141197 -&gt; AS18200 -&gt; AS17480; RIS count 1665; RIS agrees. measurement 228736777 (from PF); chain: AS6939 -&gt; AS18200 -&gt; AS17480; RIS count 1393; RIS agrees. measurement 228736777 (from PF); chain: AS6939 -&gt; AS18200 -&gt; AS17480; RIS count 1393; RIS agrees. measurement 228736777 (from PF); chain: AS6939 -&gt; AS18200 -&gt; AS17480; RIS count 1393; RIS agrees. measurement 229792917 (from NC); chain: AS45345 -&gt; AS18200 -&gt; AS17480; RIS count 1393; RIS agrees. measurement 229792917 (from NC); chain: AS141197 -&gt; AS18200 -&gt; AS17480; RIS count 1393; RIS agrees. measurement 229792917 (from NC); chain: AS45345 -&gt; AS18200 -&gt; AS17480; RIS count 1393; RIS agrees. measurement 236239563 (from CK); chain: AS10131 -&gt; AS9471 -&gt; AS3257 -&gt; AS174 -&gt; AS18200 -&gt; AS17480; RIS count 1648; RIS agrees. measurement 236242709 (from PW); chain: AS17893 -&gt; AS174 -&gt; AS18200 -&gt; AS17480; RIS count 1648; RIS agrees. measurement 236864952 (from NC); chain: AS45345 -&gt; AS18200 -&gt; AS17480; RIS count 1648; RIS agrees. measurement 236864952 (from NC); chain: AS141197 -&gt; AS18200 -&gt; AS17480; RIS count 1648; RIS agrees. measurement 236864952 (from NC); chain: AS45345 -&gt; AS18200 -&gt; AS17480; RIS count 1648; RIS agrees.</details>
+            <details class="note"><summary>measurement 213187776 (from NC); chain: AS45345 -&gt; AS18200 -&gt; AS17480; RIS count 1665; RIS agrees…</summary>measurement 213187776 (from NC); chain: AS45345 -&gt; AS18200 -&gt; AS17480; RIS count 1665; RIS agrees. measurement 213187776 (from NC); chain: AS45345 -&gt; AS18200 -&gt; AS17480; RIS count 1665; RIS agrees. measurement 213458821 (from NC); chain: AS45345 -&gt; AS18200 -&gt; AS17480; RIS count 1665; RIS agrees. measurement 213458821 (from NC); chain: AS45345 -&gt; AS18200 -&gt; AS17480; RIS count 1665; RIS agrees. measurement 217920678 (from NC); chain: AS141197 -&gt; AS18200 -&gt; AS17480; RIS count 1665; RIS agrees. measurement 228736777 (from PF); chain: AS6939 -&gt; AS18200 -&gt; AS17480; RIS count 1393; RIS agrees. measurement 228736777 (from PF); chain: AS6939 -&gt; AS18200 -&gt; AS17480; RIS count 1393; RIS agrees. measurement 228736777 (from PF); chain: AS6939 -&gt; AS18200 -&gt; AS17480; RIS count 1393; RIS agrees. measurement 229792917 (from NC); chain: AS45345 -&gt; AS18200 -&gt; AS17480; RIS count 1393; RIS agrees. measurement 229792917 (from NC); chain: AS141197 -&gt; AS18200 -&gt; AS17480; RIS count 1393; RIS agrees. measurement 229792917 (from NC); chain: AS45345 -&gt; AS18200 -&gt; AS17480; RIS count 1393; RIS agrees. measurement 236239563 (from CK); chain: AS10131 -&gt; AS9471 -&gt; AS3257 -&gt; AS174 -&gt; AS18200 -&gt; AS17480; RIS count 1648; RIS agrees. measurement 236242709 (from PW); chain: AS17893 -&gt; AS174 -&gt; AS18200 -&gt; AS17480; RIS count 1648; RIS agrees. measurement 236864952 (from NC); chain: AS45345 -&gt; AS18200 -&gt; AS17480; RIS count 1648; RIS agrees. measurement 236864952 (from NC); chain: AS141197 -&gt; AS18200 -&gt; AS17480; RIS count 1648; RIS agrees. measurement 236864952 (from NC); chain: AS45345 -&gt; AS18200 -&gt; AS17480; RIS count 1648; RIS agrees. measurement 244177657 (from NC); chain: AS45345 -&gt; AS18200 -&gt; AS17480; RIS count 1650; RIS agrees. measurement 244177657 (from NC); chain: AS141197 -&gt; AS18200 -&gt; AS17480; RIS count 1650; RIS agrees. measurement 244177657 (from NC); chain: AS45345 -&gt; AS18200 -&gt; AS17480; RIS count 1650; RIS agrees. measurement 244177806 (from NC); chain: AS45345 -&gt; AS18200 -&gt; AS17480; RIS count 1650; RIS agrees. measurement 244177806 (from NC); chain: AS45345 -&gt; AS18200 -&gt; AS17480; RIS count 1650; RIS agrees. measurement 244177806 (from NC); chain: AS45345 -&gt; AS18200 -&gt; AS17480; RIS count 1650; RIS agrees.</details>
         </div><div class="transit-card">
             <div class="headline">AS45345 (Nautile,
                 NC) -&gt; AS18200
@@ -1988,7 +1995,7 @@ Twelfth confirmation of AS139609(SISCC)&lt;-&gt;AS45891. `AS55885 -&gt; AS9471 -
             <div>RIS observation count: 667
                 &middot; measurement 213190028
                 &middot; vantage point NC</div>
-            <details class="note"><summary>measurement 213190028 (from NC); chain: AS56089 -&gt; AS18200 -&gt; AS45461; RIS count 667; RIS agrees…</summary>measurement 213190028 (from NC); chain: AS56089 -&gt; AS18200 -&gt; AS45461; RIS count 667; RIS agrees. measurement 213190028 (from NC); chain: AS45345 -&gt; AS18200 -&gt; AS45461; RIS count 667; RIS agrees. measurement 213190028 (from NC); chain: AS45345 -&gt; AS18200 -&gt; AS45461; RIS count 667; RIS agrees. measurement 213458978 (from NC); chain: AS45345 -&gt; AS18200 -&gt; AS45461; RIS count 667; RIS agrees. measurement 213458978 (from NC); chain: AS45345 -&gt; AS18200 -&gt; AS45461; RIS count 667; RIS agrees. measurement 213458978 (from NC); chain: AS45345 -&gt; AS18200 -&gt; AS45461; RIS count 667; RIS agrees. measurement 229792921 (from NC); chain: AS45345 -&gt; AS18200 -&gt; AS45461; RIS count 557; RIS agrees. measurement 229792921 (from NC); chain: AS45345 -&gt; AS18200 -&gt; AS45461; RIS count 557; RIS agrees. measurement 229792921 (from NC); chain: AS45345 -&gt; AS18200 -&gt; AS45461; RIS count 557; RIS agrees. measurement 236864946 (from NC); chain: AS45345 -&gt; AS18200 -&gt; AS45461; RIS count 658; RIS agrees. measurement 236864946 (from NC); chain: AS45345 -&gt; AS18200 -&gt; AS45461; RIS count 658; RIS agrees. measurement 236864946 (from NC); chain: AS45345 -&gt; AS18200 -&gt; AS45461; RIS count 658; RIS agrees.</details>
+            <details class="note"><summary>measurement 213190028 (from NC); chain: AS56089 -&gt; AS18200 -&gt; AS45461; RIS count 667; RIS agrees…</summary>measurement 213190028 (from NC); chain: AS56089 -&gt; AS18200 -&gt; AS45461; RIS count 667; RIS agrees. measurement 213190028 (from NC); chain: AS45345 -&gt; AS18200 -&gt; AS45461; RIS count 667; RIS agrees. measurement 213190028 (from NC); chain: AS45345 -&gt; AS18200 -&gt; AS45461; RIS count 667; RIS agrees. measurement 213458978 (from NC); chain: AS45345 -&gt; AS18200 -&gt; AS45461; RIS count 667; RIS agrees. measurement 213458978 (from NC); chain: AS45345 -&gt; AS18200 -&gt; AS45461; RIS count 667; RIS agrees. measurement 213458978 (from NC); chain: AS45345 -&gt; AS18200 -&gt; AS45461; RIS count 667; RIS agrees. measurement 229792921 (from NC); chain: AS45345 -&gt; AS18200 -&gt; AS45461; RIS count 557; RIS agrees. measurement 229792921 (from NC); chain: AS45345 -&gt; AS18200 -&gt; AS45461; RIS count 557; RIS agrees. measurement 229792921 (from NC); chain: AS45345 -&gt; AS18200 -&gt; AS45461; RIS count 557; RIS agrees. measurement 236864946 (from NC); chain: AS45345 -&gt; AS18200 -&gt; AS45461; RIS count 658; RIS agrees. measurement 236864946 (from NC); chain: AS45345 -&gt; AS18200 -&gt; AS45461; RIS count 658; RIS agrees. measurement 236864946 (from NC); chain: AS45345 -&gt; AS18200 -&gt; AS45461; RIS count 658; RIS agrees. measurement 244176989 (from NC); chain: AS45345 -&gt; AS18200 -&gt; AS45461; RIS count 661; RIS agrees. measurement 244176989 (from NC); chain: AS45345 -&gt; AS18200 -&gt; AS45461; RIS count 661; RIS agrees. measurement 244176989 (from NC); chain: AS45345 -&gt; AS18200 -&gt; AS45461; RIS count 661; RIS agrees.</details>
         </div><div class="transit-card">
             <div class="headline">AS139609 (Solomon Islands Submarine Cable Company,
                 SB) -&gt; AS45891
@@ -2036,7 +2043,7 @@ Twelfth confirmation of AS139609(SISCC)&lt;-&gt;AS45891. `AS55885 -&gt; AS9471 -
             <div>RIS observation count: 1669
                 &middot; measurement 213193707
                 &middot; vantage point NC</div>
-            <details class="note"><summary>measurement 213193707 (from NC); chain: AS45345 -&gt; AS18200 -&gt; AS56089; RIS count 1669; RIS agrees…</summary>measurement 213193707 (from NC); chain: AS45345 -&gt; AS18200 -&gt; AS56089; RIS count 1669; RIS agrees. measurement 213193707 (from NC); chain: AS45345 -&gt; AS18200 -&gt; AS56089; RIS count 1669; RIS agrees. measurement 213193707 (from NC); chain: AS45345 -&gt; AS18200 -&gt; AS56089; RIS count 1669; RIS agrees. measurement 228739351 (from NC); chain: AS45345 -&gt; AS18200 -&gt; AS56089; RIS count 1391; RIS agrees. measurement 228739351 (from NC); chain: AS45345 -&gt; AS18200 -&gt; AS56089; RIS count 1391; RIS agrees. measurement 228739351 (from NC); chain: AS45345 -&gt; AS18200 -&gt; AS56089; RIS count 1391; RIS agrees. measurement 235639630 (from NC); chain: AS45345 -&gt; AS18200 -&gt; AS56089; RIS count 1646; RIS agrees. measurement 235639630 (from NC); chain: AS45345 -&gt; AS18200 -&gt; AS56089; RIS count 1646; RIS agrees. measurement 235639630 (from NC); chain: AS45345 -&gt; AS18200 -&gt; AS56089; RIS count 1646; RIS agrees.</details>
+            <details class="note"><summary>measurement 213193707 (from NC); chain: AS45345 -&gt; AS18200 -&gt; AS56089; RIS count 1669; RIS agrees…</summary>measurement 213193707 (from NC); chain: AS45345 -&gt; AS18200 -&gt; AS56089; RIS count 1669; RIS agrees. measurement 213193707 (from NC); chain: AS45345 -&gt; AS18200 -&gt; AS56089; RIS count 1669; RIS agrees. measurement 213193707 (from NC); chain: AS45345 -&gt; AS18200 -&gt; AS56089; RIS count 1669; RIS agrees. measurement 228739351 (from NC); chain: AS45345 -&gt; AS18200 -&gt; AS56089; RIS count 1391; RIS agrees. measurement 228739351 (from NC); chain: AS45345 -&gt; AS18200 -&gt; AS56089; RIS count 1391; RIS agrees. measurement 228739351 (from NC); chain: AS45345 -&gt; AS18200 -&gt; AS56089; RIS count 1391; RIS agrees. measurement 235639630 (from NC); chain: AS45345 -&gt; AS18200 -&gt; AS56089; RIS count 1646; RIS agrees. measurement 235639630 (from NC); chain: AS45345 -&gt; AS18200 -&gt; AS56089; RIS count 1646; RIS agrees. measurement 235639630 (from NC); chain: AS45345 -&gt; AS18200 -&gt; AS56089; RIS count 1646; RIS agrees. measurement 243490798 (from NC); chain: AS45345 -&gt; AS18200 -&gt; AS56089; RIS count 1653; RIS agrees.</details>
         </div><div class="transit-card">
             <div class="headline">AS7131 (PTI Pacifica Inc.,
                 MP) -&gt; AS56200
@@ -2426,7 +2433,7 @@ Twelfth confirmation of AS139609(SISCC)&lt;-&gt;AS45891. `AS55885 -&gt; AS9471 -
             <div>Traceroute agreement: 1/2 probes
                 &middot; measurement 213206915
                 &middot; vantage point GU</div>
-            <details class="note"><summary>measurement 213206915 (from GU); chain: AS7131 -&gt; AS23676; RIS disagrees…</summary>measurement 213206915 (from GU); chain: AS7131 -&gt; AS23676; RIS disagrees. measurement 213207618 (from GU); chain: AS7131 -&gt; AS23676; RIS disagrees. measurement 213207619 (from GU); chain: AS7131 -&gt; AS23676; RIS disagrees. measurement 213207619 (from GU); chain: AS7131 -&gt; AS23676; RIS disagrees. measurement 229250592 (from GU); chain: AS7131 -&gt; AS23676; RIS disagrees. measurement 229250592 (from GU); chain: AS7131 -&gt; AS23676; RIS disagrees. measurement 236242711 (from GU); chain: AS7131 -&gt; AS23676; RIS disagrees. measurement 236242711 (from GU); chain: AS7131 -&gt; AS23676; RIS disagrees.</details>
+            <details class="note"><summary>measurement 213206915 (from GU); chain: AS7131 -&gt; AS23676; RIS disagrees…</summary>measurement 213206915 (from GU); chain: AS7131 -&gt; AS23676; RIS disagrees. measurement 213207618 (from GU); chain: AS7131 -&gt; AS23676; RIS disagrees. measurement 213207619 (from GU); chain: AS7131 -&gt; AS23676; RIS disagrees. measurement 213207619 (from GU); chain: AS7131 -&gt; AS23676; RIS disagrees. measurement 229250592 (from GU); chain: AS7131 -&gt; AS23676; RIS disagrees. measurement 229250592 (from GU); chain: AS7131 -&gt; AS23676; RIS disagrees. measurement 236242711 (from GU); chain: AS7131 -&gt; AS23676; RIS disagrees. measurement 236242711 (from GU); chain: AS7131 -&gt; AS23676; RIS disagrees. measurement 244171894 (from GU); chain: AS7131 -&gt; AS23676; RIS disagrees. measurement 244171894 (from GU); chain: AS7131 -&gt; AS23676; RIS disagrees.</details>
         </div><div class="candidate-card">
             <div class="headline">AS6939 (Hurricane Electric,
                 US) -&gt; AS23676
@@ -2590,7 +2597,7 @@ NU(AS55885) -&gt; AS38875: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS9246 -&gt;
             <div>Traceroute agreement: 2/2 probes
                 &middot; measurement 213196571
                 &middot; vantage point VU</div>
-            <details class="note"><summary>measurement 213196571 (from VU); chain: AS9249 -&gt; AS132797; RIS disagrees…</summary>measurement 213196571 (from VU); chain: AS9249 -&gt; AS132797; RIS disagrees. measurement 213196571 (from VU); chain: AS9249 -&gt; AS132797; RIS disagrees. measurement 229248163 (from VU); chain: AS9249 -&gt; AS132797; RIS disagrees. measurement 236242742 (from VU); chain: AS9249 -&gt; AS132797; RIS disagrees.</details>
+            <details class="note"><summary>measurement 213196571 (from VU); chain: AS9249 -&gt; AS132797; RIS disagrees…</summary>measurement 213196571 (from VU); chain: AS9249 -&gt; AS132797; RIS disagrees. measurement 213196571 (from VU); chain: AS9249 -&gt; AS132797; RIS disagrees. measurement 229248163 (from VU); chain: AS9249 -&gt; AS132797; RIS disagrees. measurement 236242742 (from VU); chain: AS9249 -&gt; AS132797; RIS disagrees. measurement 244175732 (from VU); chain: AS9249 -&gt; AS132797; RIS disagrees.</details>
         </div><div class="candidate-card">
             <div class="headline">AS132228 (Vanuatu Government,
                 VU) -&gt; AS133383
@@ -2598,7 +2605,7 @@ NU(AS55885) -&gt; AS38875: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS9246 -&gt;
             <div>Traceroute agreement: 2/2 probes
                 &middot; measurement 213197674
                 &middot; vantage point VU</div>
-            <details class="note"><summary>measurement 213197674 (from VU); chain: AS9249 -&gt; AS132228 -&gt; AS133383; RIS disagrees…</summary>measurement 213197674 (from VU); chain: AS9249 -&gt; AS132228 -&gt; AS133383; RIS disagrees. measurement 213197674 (from VU); chain: AS9249 -&gt; AS132228 -&gt; AS133383; RIS disagrees. measurement 229249276 (from VU); chain: AS9249 -&gt; AS132228 -&gt; AS133383; RIS disagrees. measurement 236245662 (from VU); chain: AS9249 -&gt; AS132228 -&gt; AS133383; RIS disagrees.</details>
+            <details class="note"><summary>measurement 213197674 (from VU); chain: AS9249 -&gt; AS132228 -&gt; AS133383; RIS disagrees…</summary>measurement 213197674 (from VU); chain: AS9249 -&gt; AS132228 -&gt; AS133383; RIS disagrees. measurement 213197674 (from VU); chain: AS9249 -&gt; AS132228 -&gt; AS133383; RIS disagrees. measurement 229249276 (from VU); chain: AS9249 -&gt; AS132228 -&gt; AS133383; RIS disagrees. measurement 236245662 (from VU); chain: AS9249 -&gt; AS132228 -&gt; AS133383; RIS disagrees. measurement 244176980 (from VU); chain: AS9249 -&gt; AS132228 -&gt; AS133383; RIS disagrees.</details>
         </div><div class="candidate-card">
             <div class="headline">AS141197 (Pacific Community,
                 NC) -&gt; AS136402
@@ -2664,7 +2671,7 @@ NU(AS55885) -&gt; AS150403: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS139609 -&
             <div>Traceroute agreement: 2/3 probes
                 &middot; measurement 213209267
                 &middot; vantage point GU</div>
-            <details class="note"><summary>measurement 213209267 (from GU); chain: AS7131 -&gt; AS395400; RIS disagrees…</summary>measurement 213209267 (from GU); chain: AS7131 -&gt; AS395400; RIS disagrees. measurement 213209267 (from GU); chain: AS7131 -&gt; AS395400; RIS disagrees. measurement 213209268 (from GU); chain: AS7131 -&gt; AS395400; RIS disagrees. measurement 213209280 (from GU); chain: AS7131 -&gt; AS395400; RIS disagrees. measurement 213209280 (from GU); chain: AS7131 -&gt; AS395400; RIS disagrees. measurement 229251973 (from GU); chain: AS7131 -&gt; AS395400; RIS disagrees. measurement 229251973 (from GU); chain: AS7131 -&gt; AS395400; RIS disagrees. measurement 236863491 (from GU); chain: AS7131 -&gt; AS395400; RIS disagrees. measurement 236863491 (from GU); chain: AS7131 -&gt; AS395400; RIS disagrees.</details>
+            <details class="note"><summary>measurement 213209267 (from GU); chain: AS7131 -&gt; AS395400; RIS disagrees…</summary>measurement 213209267 (from GU); chain: AS7131 -&gt; AS395400; RIS disagrees. measurement 213209267 (from GU); chain: AS7131 -&gt; AS395400; RIS disagrees. measurement 213209268 (from GU); chain: AS7131 -&gt; AS395400; RIS disagrees. measurement 213209280 (from GU); chain: AS7131 -&gt; AS395400; RIS disagrees. measurement 213209280 (from GU); chain: AS7131 -&gt; AS395400; RIS disagrees. measurement 229251973 (from GU); chain: AS7131 -&gt; AS395400; RIS disagrees. measurement 229251973 (from GU); chain: AS7131 -&gt; AS395400; RIS disagrees. measurement 236863491 (from GU); chain: AS7131 -&gt; AS395400; RIS disagrees. measurement 236863491 (from GU); chain: AS7131 -&gt; AS395400; RIS disagrees. measurement 244176963 (from GU); chain: AS7131 -&gt; AS395400; RIS disagrees. measurement 244176963 (from GU); chain: AS7131 -&gt; AS395400; RIS disagrees.</details>
         </div>
     </details>
 
@@ -2753,7 +2760,7 @@ NU(AS55885) -&gt; AS150403: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS139609 -&
     <h2>ASPA progress (draft-ietf-sidrops-aspa-profile, upstream-authorization adoption)</h2>
     <p class="section-intro">
         <strong>22 of 164</strong> in-scope ASNs
-        now publish an ASPA record (4298 total across the
+        now publish an ASPA record (4323 total across the
         whole internet, per Cloudflare Radar). Adoption is still early &mdash; absence
         means "not published yet," not "no real upstream." Per economy: how many of its
         own ASNs publish a record, and the distinct upstream ASNs those records declare,
@@ -2829,12 +2836,12 @@ NU(AS55885) -&gt; AS150403: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS139609 -&
     </p>
     <table>
         <thead><tr><th>CC</th><th>Name</th><th>ASNs</th><th>Probes</th><th>IPv4</th><th>IPv6</th></tr></thead>
-        <tbody><tr><td>CK</td><td>Cook Islands</td><td>1</td><td>1</td><td>0/0/1</td><td>&ndash;</td></tr><tr><td>FJ</td><td>Fiji</td><td>1</td><td>1</td><td>0/0/1</td><td>&ndash;</td></tr><tr><td>FM</td><td>Micronesia, Federated States of</td><td>1</td><td>3</td><td>0/0/3</td><td>0/0/1</td></tr><tr><td>GU</td><td>Guam</td><td>7</td><td>11</td><td>0/0/11</td><td>0/0/3</td></tr><tr><td>KI</td><td>Kiribati</td><td>1</td><td>2</td><td>0/0/2</td><td>0/0/2</td></tr><tr><td>MH</td><td>Marshall Islands</td><td>1</td><td>1</td><td>0/0/1</td><td>&ndash;</td></tr><tr><td>MP</td><td>Northern Mariana Islands</td><td>1</td><td>1</td><td>0/0/1</td><td>&ndash;</td></tr><tr><td>NC</td><td>New Caledonia</td><td>2</td><td>4</td><td>0/0/4</td><td>0/0/3</td></tr><tr><td>NR</td><td>Nauru</td><td>1</td><td>1</td><td>0/0/1</td><td>0/0/1</td></tr><tr><td>NU</td><td>Niue</td><td>1</td><td>1</td><td>0/0/1</td><td>&ndash;</td></tr><tr><td>PF</td><td>French Polynesia</td><td>2</td><td>7</td><td>0/0/7</td><td>0/0/2</td></tr><tr><td>PG</td><td>Papua New Guinea</td><td>1</td><td>1</td><td>0/0/1</td><td>&ndash;</td></tr><tr><td>PW</td><td>Palau</td><td>1</td><td>1</td><td>0/0/1</td><td>0/0/1</td></tr><tr><td>TO</td><td>Tonga</td><td>2</td><td>2</td><td>0/0/2</td><td>&ndash;</td></tr><tr><td>TV</td><td>Tuvalu</td><td>1</td><td>1</td><td>0/0/1</td><td>&ndash;</td></tr><tr><td>VU</td><td>Vanuatu</td><td>1</td><td>1</td><td>0/0/1</td><td>&ndash;</td></tr></tbody>
+        <tbody><tr><td>CK</td><td>Cook Islands</td><td>1</td><td>1</td><td>0/0/1</td><td>&ndash;</td></tr><tr><td>FJ</td><td>Fiji</td><td>1</td><td>1</td><td>0/0/1</td><td>&ndash;</td></tr><tr><td>FM</td><td>Micronesia, Federated States of</td><td>1</td><td>3</td><td>0/3/0</td><td>0/1/0</td></tr><tr><td>GU</td><td>Guam</td><td>7</td><td>11</td><td>1/3/7</td><td>0/1/2</td></tr><tr><td>KI</td><td>Kiribati</td><td>1</td><td>2</td><td>0/2/0</td><td>0/0/2</td></tr><tr><td>MH</td><td>Marshall Islands</td><td>1</td><td>1</td><td>0/0/1</td><td>&ndash;</td></tr><tr><td>MP</td><td>Northern Mariana Islands</td><td>1</td><td>1</td><td>0/0/1</td><td>&ndash;</td></tr><tr><td>NC</td><td>New Caledonia</td><td>2</td><td>4</td><td>1/0/3</td><td>2/0/1</td></tr><tr><td>NR</td><td>Nauru</td><td>1</td><td>1</td><td>0/1/0</td><td>0/1/0</td></tr><tr><td>NU</td><td>Niue</td><td>1</td><td>1</td><td>0/0/1</td><td>&ndash;</td></tr><tr><td>PF</td><td>French Polynesia</td><td>2</td><td>7</td><td>0/3/4</td><td>0/0/2</td></tr><tr><td>PG</td><td>Papua New Guinea</td><td>1</td><td>1</td><td>0/1/0</td><td>&ndash;</td></tr><tr><td>PW</td><td>Palau</td><td>1</td><td>1</td><td>0/0/1</td><td>0/0/1</td></tr><tr><td>TO</td><td>Tonga</td><td>2</td><td>2</td><td>1/0/1</td><td>&ndash;</td></tr><tr><td>TV</td><td>Tuvalu</td><td>1</td><td>1</td><td>0/0/1</td><td>&ndash;</td></tr><tr><td>VU</td><td>Vanuatu</td><td>1</td><td>1</td><td>0/0/1</td><td>&ndash;</td></tr></tbody>
     </table>
     <p>Not testable (no connected probe): AS, SB, WF, WS</p>
     <p>Where invalid traces died (last network reached; it or its upstream dropped the route):</p>
-    <ul><li>(no probe's path filtered the invalid prefix)</li></ul>
-    
+    <ul><li>IPv4 &mdash; AS140627: 1 probe(s)</li><li>IPv4 &mdash; AS18200: 1 probe(s)</li><li>IPv6 &mdash; AS45345: 1 probe(s)</li><li>IPv6 &mdash; AS18200: 1 probe(s)</li><li>IPv4 &mdash; AS38198: 1 probe(s)</li></ul>
+    <p>Valid and invalid traces left via different upstreams (a sign one of them drops the invalid route):</p><ul><li>PG probe 50365 (IPv4): valid via AS4826, invalid via AS7474</li></ul>
     <p class="section-intro">Measurements: {&#x27;v4&#x27;: [243496559, 243498458], &#x27;v6&#x27;: [243502733, 243504657]}.
         Detail: <code>outputs/reports/rov_cloudflare.txt</code></p>
 
@@ -2845,7 +2852,7 @@ NU(AS55885) -&gt; AS150403: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS139609 -&
         <strong>45 of 164</strong> in-scope ASNs
         have at least one RIS-observed IPv6-originated prefix.
         <strong>6 of 37</strong> connected
-        Atlas probes work over IPv6 (5 more are
+        Atlas probes work over IPv6 (6 more are
         IPv6-capable but tagged as not working).
     </p>
     <table>
@@ -3007,7 +3014,7 @@ NU(AS55885) -&gt; AS150403: `AS55885 -&gt; AS9471 -&gt; AS6939 -&gt; AS139609 -&
             <td>Equinix Sydney</td><td>Sydney</td>
             <td>AU</td><td><span class="bool-false">out-of-fishbowl</span></td>
             <td>9</td>
-            <td>36</td>
+            <td>37</td>
             <td>CK, FJ, NC, PF, PG, TO, WS</td>
         </tr><tr>
             <td>Fiji-IXP</td><td>Suva</td>

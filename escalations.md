@@ -884,3 +884,9 @@ Corridors `auto_classify.py`'s mechanical rules couldn't confidently resolve on 
 - flagged: 2026-11-23T15:13:40.847413+00:00
 - resolved: 2026-11-24 -- duplicate (owner: collapse the duplicates); tracked in the open AS45345 -> AS4638 entry for measurement 228735988 / probe 33674. Cause per the 2026-11-19 review: local forward path, return via Sydney.
 
+## AS17893 (PW) -> AS17480 (NC)
+- measurement: 244171896
+- reason: detour hub differs from the filed finding
+- detail: finding #47 is filed via Tokyo; this run left the region via Sydney (BBIX Tokyo, then Bundle-Ether42.273.bdr03-ipt-4edenpar-syd.au.as38195.net (router in Sydney)) -- not corroborated; relabel, keep, or retest is the owner's call
+- flagged: 2026-11-25T15:04:43.082178+00:00
+
