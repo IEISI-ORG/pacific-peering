@@ -251,3 +251,20 @@ def test_recollect_with_no_history_writes_nothing(monkeypatch, tmp_path):
     assert ipv6_fleet.recollect_last(now=NOW) is None
     assert not (tmp_path / "history.jsonl").exists()
     assert not (tmp_path / "ipv6_fleet.txt").exists()
+
+
+def test_recollect_writes_nothing_when_the_results_are_unchanged(monkeypatch, tmp_path):
+    # Thursday's nightly run re-collects every week; a normal week must not be rewritten.
+    _isolate(monkeypatch, tmp_path)
+    traces = [_trace(7018, "2606:4700:4700::1111", reached=True)]
+    week = ipv6_fleet.build_snapshot(
+        LISTING, ipv6_fleet.measured_access(traces, [7018, 63050, 1008229]), [501], NOW,
+        ipv6_fleet.per_anchor_results(traces),
+    )
+    history = tmp_path / "history.jsonl"
+    history.write_text(json.dumps(week) + "\n")
+    monkeypatch.setattr(ipv6_fleet, "refetch_parsed", lambda mids: traces)
+
+    assert ipv6_fleet.recollect_last(now=NOW) is None
+    assert history.read_text() == json.dumps(week) + "\n"
+    assert not (tmp_path / "ipv6_fleet.txt").exists()

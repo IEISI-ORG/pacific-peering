@@ -254,6 +254,11 @@ def run_weekly_check(fire: bool, now: datetime | None = None) -> dict:
     return snapshot
 
 
+def _content(snapshot: dict) -> dict:
+    """A snapshot as stored, minus its re-collect stamp, for an unchanged-results check."""
+    return {k: v for k, v in json.loads(json.dumps(snapshot)).items() if k != "recollected_at"}
+
+
 def recollect_last(now: datetime | None = None) -> dict | None:
     """Rebuild the newest snapshot from its own measurements' current results; spends no credits.
 
@@ -261,13 +266,13 @@ def recollect_last(now: datetime | None = None) -> dict | None:
     outage left every probe at no_result, though most results landed within the hour). The
     week's probe list, tags and economy counts are kept as recorded; only measured access and
     per-anchor results are re-read. The history line is replaced in place and the report is
-    rewritten against the snapshot before it.
+    rewritten against the snapshot before it. If the re-read results match what is stored,
+    nothing is written and None is returned, so the weekly Thursday run leaves normal weeks alone.
     """
     now = now or datetime.now(timezone.utc)
-    if not HISTORY_PATH.exists():
-        return None
-    lines = [line for line in HISTORY_PATH.read_text().splitlines() if line.strip()]
+    lines = [line for line in HISTORY_PATH.read_text().splitlines() if line.strip()] if HISTORY_PATH.exists() else []
     if not lines:
+        logger.info("Re-collect: no recorded snapshot")
         return None
     last = json.loads(lines[-1])
     previous = json.loads(lines[-2]) if len(lines) > 1 else None
@@ -283,6 +288,9 @@ def recollect_last(now: datetime | None = None) -> dict | None:
             for pid, info in last["probes"].items()
         },
     }
+    if _content(snapshot) == _content(last):
+        logger.info("Re-collect: the %s snapshot's results are unchanged; nothing written", last["date"])
+        return None
     report = render_report(snapshot, diff_snapshots(previous, snapshot))
     logger.info("IPv6 fleet check, re-collected:\n%s", report)
     HISTORY_PATH.write_text("".join(line + "\n" for line in lines[:-1]) + json.dumps(snapshot) + "\n")
@@ -301,8 +309,7 @@ def main() -> None:
     args = parser.parse_args()
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
     if args.recollect:
-        if recollect_last() is None:
-            logger.error("No recorded snapshot to re-collect")
+        recollect_last()
         return
     run_weekly_check(fire=args.fire)
 

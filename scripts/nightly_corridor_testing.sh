@@ -142,6 +142,23 @@ if [ "$_dow" = "3" ]; then
         || echo "Report regeneration failed (see above); continuing."
 fi
 
+# Thursday re-collect (owner, 2026-11-25): re-read Wednesday's IPv6 fleet and
+# ROV measurements a day later and replace that week's snapshot if results
+# landed after the run stopped waiting (2026-11-24: an Atlas-wide outage left
+# every probe at no_result/inconclusive, though most results arrived within
+# the hour). Read-only Atlas GETs, no credits; a normal week's results are
+# unchanged and nothing is written. Rebuild report.txt/html only if the ROV
+# history changed, since they carry its section. Same failure tolerance.
+if [ "$_dow" = "4" ]; then
+    echo "$(date +%A): re-collecting Wednesday's IPv6 fleet and ROV snapshots."
+    "$UV" run pacific-peering-ipv6-fleet --recollect || echo "IPv6 fleet re-collect failed (see above); continuing."
+    "$UV" run pacific-peering-rov-cloudflare --recollect || echo "Cloudflare ROV re-collect failed (see above); continuing."
+    if ! git diff --quiet -- outputs/reports/rov_cloudflare_history.jsonl; then
+        { "$UV" run pacific-peering-report-ascii && "$UV" run pacific-peering-report-html; } \
+            || echo "Report regeneration failed (see above); continuing."
+    fi
+fi
+
 # Everything this step can change that's git-tracked: findings_export.jsonl,
 # corridor_backlog.md, the ASCII/HTML reports, outputs/reports/probe_gaps.txt,
 # the geographic map, and escalations.md if anything needed a human look

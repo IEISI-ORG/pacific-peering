@@ -258,3 +258,25 @@ def test_recollect_with_no_history_writes_nothing(monkeypatch, tmp_path):
 
     assert rov.recollect_last(now=NOW) is None
     assert not (tmp_path / "h.jsonl").exists() and not (tmp_path / "rov.txt").exists()
+
+
+def test_recollect_writes_nothing_when_the_results_are_unchanged(monkeypatch, tmp_path):
+    # Thursday's nightly run re-collects every week; a normal week must not be rewritten.
+    history, report = tmp_path / "h.jsonl", tmp_path / "rov.txt"
+    monkeypatch.setattr(rov, "HISTORY_PATH", history)
+    monkeypatch.setattr(rov, "REPORT_PATH", report)
+    traces = [_trace(7018, V4_VALID, True), _trace(7018, V4_INVALID, False)]
+    paths = {V4_VALID: [45345, 13335], V4_INVALID: [45345]}
+
+    def path_of(t):
+        return paths[t["target"]]
+
+    probes = rov.probes_for_af(LISTING, 4)
+    verdicts = {4: rov.classify_measurements(traces, 4, probes, path_of=path_of)}
+    week = rov.build_snapshot(LISTING, verdicts, {4: [11, 12]}, {V4_VALID: "valid"}, NOW)
+    history.write_text(json.dumps(week) + "\n")
+    monkeypatch.setattr(rov, "refetch_parsed", lambda mids: traces)
+
+    assert rov.recollect_last(now=NOW, path_of=path_of) is None
+    assert history.read_text() == json.dumps(week) + "\n"
+    assert not report.exists()

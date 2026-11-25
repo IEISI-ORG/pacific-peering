@@ -373,17 +373,24 @@ def _listing_from_snapshot(snapshot: dict) -> dict[str, list[dict]]:
     return listing
 
 
+def _content(snapshot: dict) -> dict:
+    """A snapshot as stored, minus its re-collect stamp, for an unchanged-results check."""
+    return {k: v for k, v in json.loads(json.dumps(snapshot)).items() if k != "recollected_at"}
+
+
 def recollect_last(now: datetime | None = None, path_of: Callable[[dict], list[int]] | None = None) -> dict | None:
     """Rebuild the newest snapshot from its own measurements' current results; spends no credits.
 
     For a week whose results arrived after the run stopped waiting (2026-11-24: an Atlas-wide
     outage left every pair inconclusive, though most results landed within the hour). The week's
     probes and target RPKI states are kept as recorded; only the verdicts are re-read. The history
-    line is replaced in place and the report is rewritten against the snapshots before it.
+    line is replaced in place and the report is rewritten against the snapshots before it. If the re-read results match what is stored,
+    nothing is written and None is returned, so the weekly Thursday run leaves normal weeks alone.
     """
     now = now or datetime.now(timezone.utc)
     history = load_snapshots(HISTORY_PATH)
     if not history:
+        logger.info("Re-collect: no recorded snapshot")
         return None
     last, older = history[0], history[1:]
     listing = _listing_from_snapshot(last)
@@ -397,6 +404,9 @@ def recollect_last(now: datetime | None = None, path_of: Callable[[dict], list[i
         "date": last["date"],
         "recollected_at": now.isoformat(),
     }
+    if _content(snapshot) == _content(last):
+        logger.info("Re-collect: the %s snapshot's results are unchanged; nothing written", last["date"])
+        return None
     changes = diff_snapshots(older[0], snapshot, older=older[1:]) if older else diff_snapshots(None, snapshot)
     report = render_report(snapshot, changes)
     logger.info("Cloudflare ROV test, re-collected:\n%s", report)
@@ -417,8 +427,7 @@ def main() -> None:
     args = parser.parse_args()
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
     if args.recollect:
-        if recollect_last() is None:
-            logger.error("No recorded snapshot to re-collect")
+        recollect_last()
         return
     run_weekly_test(fire=args.fire)
 

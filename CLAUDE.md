@@ -44,6 +44,9 @@ each session:
   Globalping tests, no Atlas credits). Atlas has no connected SB probe, so every Globalping probe in the in-scope
   economies traces SB corridors (`outputs/reports/globalping_sb.txt` + `globalping_sb_history.jsonl`). Report
   only, never findings.
+  **Thursdays only**, it re-collects Wednesday's IPv6 fleet and ROV snapshots (`--recollect` on both, no
+  Atlas credits): if results landed after Wednesday's run stopped waiting, that week's history line and report
+  are replaced; a normal week is unchanged and nothing is written (since 2026-11-25, after the 11-24 Atlas outage).
   After the batch it drains the fleet-trace queue (`pacific-peering-fleet-trace --run-queued`): any
   target queued with `--enqueue IP --asn N --reason ...` is traced once from every connected probe
   and reported to `outputs/reports/fleet_traces.txt` (report only; usually the queue is empty).
