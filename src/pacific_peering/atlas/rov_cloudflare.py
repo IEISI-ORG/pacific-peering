@@ -46,6 +46,8 @@ targets are still RPKI valid/invalid; if Cloudflare ever changes them the
 run stops rather than recording meaningless verdicts. Results go to
 `outputs/reports/rov_cloudflare.txt` and `rov_cloudflare_history.jsonl`.
 `main()` only checks targets and prints the plan unless `--fire` is given.
+`--recollect` re-reads the newest snapshot's own measurements and replaces it,
+for a week whose results arrived late (no credits).
 """
 
 from __future__ import annotations
@@ -56,7 +58,7 @@ import logging
 from collections import Counter
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any
+from typing import Any, Callable
 
 from pacific_peering.analysis.auto_classify import KNOWN_PROXY_ASNS
 from pacific_peering.analysis.traceroute_topology import extract_as_sequence, resolve_traceroute_hops
@@ -292,6 +294,8 @@ def render_report(snapshot: dict, changes: list[str]) -> str:
         "(split: ...) = valid and invalid traces left via different upstreams -- a sign one of them drops the invalid route.",
         "via ASx = the carrier the trace left by; a verdict is compared with the last week via the same carrier.",
         f"Measurements: {snapshot['measurement_ids']}",
+        *([f"Re-collected {snapshot['recollected_at'][:10]} from the same measurements (results arrived late)."]
+          if snapshot.get("recollected_at") else []),
         "",
         "Changes since last snapshot:",
         *([f"  - {c}" for c in changes] or ["  (none)"]),
@@ -359,11 +363,63 @@ def run_weekly_test(fire: bool, now: datetime | None = None) -> dict | None:
     return snapshot
 
 
+def _listing_from_snapshot(snapshot: dict) -> dict[str, list[dict]]:
+    """The probe listing a snapshot was built from, as far as `build_snapshot` needs it."""
+    listing: dict[str, list[dict]] = {}
+    for pid, p in snapshot["probes"].items():
+        listing.setdefault(p["cc"], []).append(
+            {"id": int(pid), "status": "Connected", "asn_v4": p.get("asn_v4"), "asn_v6": p.get("asn_v6")}
+        )
+    return listing
+
+
+def recollect_last(now: datetime | None = None, path_of: Callable[[dict], list[int]] | None = None) -> dict | None:
+    """Rebuild the newest snapshot from its own measurements' current results; spends no credits.
+
+    For a week whose results arrived after the run stopped waiting (2026-11-24: an Atlas-wide
+    outage left every pair inconclusive, though most results landed within the hour). The week's
+    probes and target RPKI states are kept as recorded; only the verdicts are re-read. The history
+    line is replaced in place and the report is rewritten against the snapshots before it.
+    """
+    now = now or datetime.now(timezone.utc)
+    history = load_snapshots(HISTORY_PATH)
+    if not history:
+        return None
+    last, older = history[0], history[1:]
+    listing = _listing_from_snapshot(last)
+    measurement_ids = {int(key.removeprefix("v")): ids for key, ids in last["measurement_ids"].items()}
+    verdicts = {
+        af: classify_measurements(refetch_parsed(ids), af, probes_for_af(listing, af), path_of=path_of or as_path)
+        for af, ids in measurement_ids.items()
+    }
+    snapshot = {
+        **build_snapshot(listing, verdicts, measurement_ids, last["target_rpki"], now),
+        "date": last["date"],
+        "recollected_at": now.isoformat(),
+    }
+    changes = diff_snapshots(older[0], snapshot, older=older[1:]) if older else diff_snapshots(None, snapshot)
+    report = render_report(snapshot, changes)
+    logger.info("Cloudflare ROV test, re-collected:\n%s", report)
+    kept = [json.dumps(s) for s in reversed(older)]
+    HISTORY_PATH.write_text("".join(line + "\n" for line in kept) + json.dumps(snapshot) + "\n")
+    REPORT_PATH.write_text(report)
+    return snapshot
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    parser.add_argument("--fire", action="store_true", help="trace the targets (spends Atlas credits) and record")
+    mode = parser.add_mutually_exclusive_group()
+    mode.add_argument("--fire", action="store_true", help="trace the targets (spends Atlas credits) and record")
+    mode.add_argument(
+        "--recollect", action="store_true",
+        help="re-read the newest snapshot's measurements and replace it (no credits)",
+    )
     args = parser.parse_args()
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
+    if args.recollect:
+        if recollect_last() is None:
+            logger.error("No recorded snapshot to re-collect")
+        return
     run_weekly_test(fire=args.fire)
 
 

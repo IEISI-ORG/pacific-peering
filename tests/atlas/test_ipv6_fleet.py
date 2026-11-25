@@ -83,6 +83,16 @@ def test_diff_ignores_not_measured_weeks():
     assert not any("measured access" in c for c in ipv6_fleet.diff_snapshots(previous, current))
 
 
+def test_diff_ignores_no_result_weeks_in_both_directions():
+    # 2026-11-24: an Atlas-wide outage failed every measurement, so every probe read no_result.
+    # Neither that week nor the week after it should list access changes.
+    reached = _snapshot({7018: "reached", 63050: "no_reach", 1008229: "reached"})
+    outage = _snapshot({7018: "no_result", 63050: "no_result", 1008229: "no_result"})
+
+    assert not any("measured access" in c for c in ipv6_fleet.diff_snapshots(reached, outage))
+    assert not any("measured access" in c for c in ipv6_fleet.diff_snapshots(outage, reached))
+
+
 def _isolate(monkeypatch, tmp_path):
     monkeypatch.setattr(ipv6_fleet, "HISTORY_PATH", tmp_path / "history.jsonl")
     monkeypatch.setattr(ipv6_fleet, "REPORT_PATH", tmp_path / "ipv6_fleet.txt")
@@ -186,3 +196,58 @@ def test_diff_reports_per_service_reach_change_and_tolerates_old_snapshots():
     for p in old_style["probes"].values():
         del p["anchors"]  # pre-per-anchor snapshot shape
     assert ipv6_fleet.diff_snapshots(old_style, current) == []
+
+
+def test_recollect_rebuilds_the_newest_snapshot_from_its_own_measurements(monkeypatch, tmp_path):
+    # 2026-11-24: results landed after the run had given up; re-read them without firing anything.
+    _isolate(monkeypatch, tmp_path)
+
+    def _no_listing():
+        raise AssertionError("re-collect keeps that week's probes and tags; it must not re-read the listing")
+
+    def _fire(*args, **kwargs):
+        raise AssertionError("re-collect must not create measurements")
+
+    monkeypatch.setattr(ipv6_fleet, "load_probe_listing", _no_listing)
+    monkeypatch.setattr(ipv6_fleet, "run_starlink_anchor_traces", _fire)
+    previous = _snapshot({7018: "reached", 63050: "no_reach", 1008229: "reached"})
+    outage = _snapshot({7018: "no_result", 63050: "no_result", 1008229: "no_result"})
+    outage["measurement_ids"] = [501, 502]
+    outage["probes"]["1008229"]["ipv6_tags"] = ["system-ipv6-capable", "system-ipv6-works"]
+    history = tmp_path / "history.jsonl"
+    history.write_text(json.dumps(previous) + "\n" + json.dumps(outage) + "\n")
+    asked = []
+
+    def _refetch(mids):
+        asked.append(mids)
+        return [_trace(7018, "2606:4700:4700::1111", reached=True),
+                _trace(1008229, "2606:4700:4700::1111", reached=False)]
+
+    monkeypatch.setattr(ipv6_fleet, "refetch_parsed", _refetch)
+
+    snapshot = ipv6_fleet.recollect_last(now=NOW)
+
+    assert asked == [[501, 502]]
+    lines = history.read_text().splitlines()
+    assert len(lines) == 2 and json.loads(lines[0]) == previous
+    recorded = json.loads(lines[1])
+    assert recorded == snapshot
+    assert recorded["date"] == outage["date"] and recorded["measurement_ids"] == [501, 502]
+    assert recorded["recollected_at"] == NOW.isoformat()
+    assert {pid: p["access"] for pid, p in recorded["probes"].items()} == {
+        "7018": "reached", "63050": "no_result", "1008229": "no_reach"
+    }
+    assert recorded["probes"]["1008229"]["ipv6_tags"] == ["system-ipv6-capable", "system-ipv6-works"]
+    assert recorded["probes"]["7018"]["anchors"]["cloudflare"]["reached"] is True
+    report = (tmp_path / "ipv6_fleet.txt").read_text()
+    assert "Re-collected 2026-09-30 from the same measurements" in report
+    assert "probe 1008229 (KI) measured access reached -> no_reach" in report  # diffed against the week before
+    assert "Atlas tag system-ipv6-works added" in report
+
+
+def test_recollect_with_no_history_writes_nothing(monkeypatch, tmp_path):
+    _isolate(monkeypatch, tmp_path)
+
+    assert ipv6_fleet.recollect_last(now=NOW) is None
+    assert not (tmp_path / "history.jsonl").exists()
+    assert not (tmp_path / "ipv6_fleet.txt").exists()

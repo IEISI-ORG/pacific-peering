@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 from datetime import datetime, timezone
 
 from pacific_peering.atlas import rov_cloudflare as rov
@@ -201,3 +202,59 @@ def test_verdict_is_compared_with_the_last_week_on_the_same_carrier():
 def test_report_names_the_exit_carrier():
     report = rov.render_report(_spc_snap(_digicel(), "2026-10-27"), [])
     assert "filtered@AS45355 via AS45355" in report
+
+
+def test_recollect_rebuilds_the_newest_snapshot_from_its_own_measurements(monkeypatch, tmp_path):
+    # 2026-11-24: an Atlas-wide outage left every pair inconclusive; the results landed later.
+    history, report = tmp_path / "h.jsonl", tmp_path / "rov.txt"
+    monkeypatch.setattr(rov, "HISTORY_PATH", history)
+    monkeypatch.setattr(rov, "REPORT_PATH", report)
+
+    def _forbidden(*args, **kwargs):
+        raise AssertionError("re-collect must not fire, re-read the listing or re-check RPKI")
+
+    monkeypatch.setattr(rov, "run_starlink_anchor_traces", _forbidden)
+    monkeypatch.setattr(rov, "load_probe_listing", _forbidden)
+    monkeypatch.setattr(rov, "fetch_rpki_status", _forbidden)
+    older = _snap({7018: _v("filtered", 45345)})
+    previous = _snap({7018: _v("not_filtered"), 53098: _v("not_filtered")})
+    outage = rov.build_snapshot(LISTING, {4: {}, 6: {}}, {4: [11, 12], 6: [13, 14]}, {V4_VALID: "valid"}, NOW)
+    history.write_text("".join(json.dumps(s) + "\n" for s in (older, previous, outage)))
+    asked = []
+
+    def _refetch(mids):
+        asked.append(mids)
+        if mids == [11, 12]:
+            return [_trace(7018, V4_VALID, True), _trace(7018, V4_INVALID, False),
+                    _trace(53098, V4_VALID, True), _trace(53098, V4_INVALID, True)]
+        return []
+
+    monkeypatch.setattr(rov, "refetch_parsed", _refetch)
+    paths = {V4_VALID: [45345, 13335], V4_INVALID: [45345]}
+
+    snapshot = rov.recollect_last(now=NOW, path_of=lambda t: paths[t["target"]])
+
+    assert asked == [[11, 12], [13, 14]]
+    lines = history.read_text().splitlines()
+    assert len(lines) == 3 and [json.loads(x) for x in lines[:2]] == [older, previous]
+    recorded = json.loads(lines[2])
+    assert recorded == snapshot
+    assert recorded["date"] == outage["date"] and recorded["target_rpki"] == {V4_VALID: "valid"}
+    assert recorded["measurement_ids"] == {"v4": [11, 12], "v6": [13, 14]}
+    assert recorded["recollected_at"] == NOW.isoformat()
+    assert (recorded["probes"]["7018"]["v4"]["label"], recorded["probes"]["7018"]["v4"]["drop_asn"]) == (
+        "filtered", 45345)
+    assert recorded["probes"]["53098"]["v4"]["label"] == "not_filtered"
+    assert recorded["probes"]["7018"]["v6"]["label"] == "inconclusive"  # v6 still had nothing
+    assert "64237" in recorded["probes"] and recorded["probes"]["64237"].get("v6") is None
+    text = report.read_text()
+    assert "Re-collected 2026-09-30 from the same measurements" in text
+    assert "probe 7018 (NC) v4: not_filtered -> filtered" in text  # diffed against the week before
+
+
+def test_recollect_with_no_history_writes_nothing(monkeypatch, tmp_path):
+    monkeypatch.setattr(rov, "HISTORY_PATH", tmp_path / "h.jsonl")
+    monkeypatch.setattr(rov, "REPORT_PATH", tmp_path / "rov.txt")
+
+    assert rov.recollect_last(now=NOW) is None
+    assert not (tmp_path / "h.jsonl").exists() and not (tmp_path / "rov.txt").exists()

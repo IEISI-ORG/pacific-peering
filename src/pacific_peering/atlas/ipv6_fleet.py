@@ -20,7 +20,8 @@ IPv6 is *monitored*, not tested -- once a week, from the Wednesday nightly run
 
 Step 2 spends Atlas credits (2 measurements, one result per IPv6 probe
 each), so `main()` only prints the report unless `--fire` is given; a dry
-run writes nothing.
+run writes nothing. `--recollect` re-reads the newest snapshot's own
+measurements and replaces it, for a week whose results arrived late (no credits).
 """
 
 from __future__ import annotations
@@ -162,7 +163,10 @@ def diff_snapshots(previous: dict | None, current: dict) -> list[str]:
         changes.append(f"probe {pid} ({prev_p[pid]['cc']}) no longer listed with IPv6 (or not Connected)")
     for pid in sorted(set(prev_p) & set(cur_p), key=int):
         before, after = prev_p[pid], cur_p[pid]
-        if before["access"] != after["access"] and NOT_MEASURED not in (before["access"], after["access"]):
+        # A week with no data for the probe (dry run, or Atlas returned nothing -- the 2026-11-24
+        # outage failed every measurement) is a gap, not a change in either direction.
+        unmeasured = {NOT_MEASURED, NO_RESULT}
+        if before["access"] != after["access"] and not unmeasured & {before["access"], after["access"]}:
             changes.append(f"probe {pid} ({after['cc']}) measured access {before['access']} -> {after['access']}")
         # Snapshots from before 2026-09-24's per-anchor change have no "anchors".
         before_a, after_a = before.get("anchors", {}), after.get("anchors", {})
@@ -192,6 +196,8 @@ def render_report(snapshot: dict, changes: list[str]) -> str:
         f"IPv6 fleet check -- {snapshot['date']}",
         "Auto-generated weekly (Wednesday) by `pacific-peering-ipv6-fleet` (atlas/ipv6_fleet.py).",
         f"Anchor measurements: {', '.join(map(str, snapshot['measurement_ids'])) or 'none'}",
+        *([f"Re-collected {snapshot['recollected_at'][:10]} from the same measurements (results arrived late)."]
+          if snapshot.get("recollected_at") else []),
         "",
         "Changes since last snapshot:",
         *([f"  - {c}" for c in changes] or ["  (none)"]),
@@ -248,11 +254,56 @@ def run_weekly_check(fire: bool, now: datetime | None = None) -> dict:
     return snapshot
 
 
+def recollect_last(now: datetime | None = None) -> dict | None:
+    """Rebuild the newest snapshot from its own measurements' current results; spends no credits.
+
+    For a week whose results arrived after the run stopped waiting (2026-11-24: an Atlas-wide
+    outage left every probe at no_result, though most results landed within the hour). The
+    week's probe list, tags and economy counts are kept as recorded; only measured access and
+    per-anchor results are re-read. The history line is replaced in place and the report is
+    rewritten against the snapshot before it.
+    """
+    now = now or datetime.now(timezone.utc)
+    if not HISTORY_PATH.exists():
+        return None
+    lines = [line for line in HISTORY_PATH.read_text().splitlines() if line.strip()]
+    if not lines:
+        return None
+    last = json.loads(lines[-1])
+    previous = json.loads(lines[-2]) if len(lines) > 1 else None
+    traces = refetch_parsed(last["measurement_ids"]) if last["measurement_ids"] else []
+    probe_ids = [int(pid) for pid in last["probes"]]
+    access = measured_access(traces, probe_ids)
+    anchors = per_anchor_results(traces)
+    snapshot = {
+        **last,
+        "recollected_at": now.isoformat(),
+        "probes": {
+            pid: {**info, "access": access[int(pid)], "anchors": anchors.get(int(pid), {})}
+            for pid, info in last["probes"].items()
+        },
+    }
+    report = render_report(snapshot, diff_snapshots(previous, snapshot))
+    logger.info("IPv6 fleet check, re-collected:\n%s", report)
+    HISTORY_PATH.write_text("".join(line + "\n" for line in lines[:-1]) + json.dumps(snapshot) + "\n")
+    REPORT_PATH.write_text(report)
+    return snapshot
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    parser.add_argument("--fire", action="store_true", help="trace the anchors (spends Atlas credits) and record")
+    mode = parser.add_mutually_exclusive_group()
+    mode.add_argument("--fire", action="store_true", help="trace the anchors (spends Atlas credits) and record")
+    mode.add_argument(
+        "--recollect", action="store_true",
+        help="re-read the newest snapshot's measurements and replace it (no credits)",
+    )
     args = parser.parse_args()
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
+    if args.recollect:
+        if recollect_last() is None:
+            logger.error("No recorded snapshot to re-collect")
+        return
     run_weekly_check(fire=args.fire)
 
 
