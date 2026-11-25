@@ -4020,10 +4020,13 @@ added, none removed; unresolved 21 -> 12 (`daily_facts.escalation_summary` agree
   status-poll failure counts as still running, a results-read failure costs only that address, and probe metadata
   gets 5 attempts a minute apart. Reviewed by the code-reviewer agent; its M1, L1, L2, L3 and L5 were applied, and
   L4 (skip the wait on a ConnectTimeout) was skipped as harmless.
-- **Open for the owner (reviewer M2, existing design):** `complete` is per ASN. If an ASN has one address and it
-  ends up `not_measured`, the whole run counts as incomplete, and the next night re-fires the full sweep. If an
-  ASN has several addresses and loses one, that address waits a month. A `retry` mode (re-measure only the last
-  full run's unmeasured ASNs) would bound the cost. Not built.
-- **Tonight:** the full sweep re-runs with the fix. Last night's first-pass raw results (cached in
+- **Retry mode built (owner, 2026-11-26: "build the retry mode too"; reviewer M2).** Before: `complete` is per
+  ASN, and an incomplete full run didn't count, so one lost single-address ASN re-fired the whole sweep nightly.
+  Now the 30-day clock runs from the latest full run either way, and after an incomplete one `plan_run` returns
+  `retry` with only the ASNs no run since it has measured (new ASNs included, untestable excluded), then `skip`.
+  5 schedule tests (630 pass). Still ASN-level: if a multi-address ASN loses one address, that address waits for
+  the next full run.
+- **Live run (owner: "test it now"):** the full sweep was fired from the session at 09:47 local, so it doesn't
+  wait for tonight's cron. Outcome is recorded below. Last night's first-pass raw results (cached in
   `data/atlas/raw/`) are not re-used.
 

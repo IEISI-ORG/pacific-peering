@@ -52,7 +52,8 @@ each session:
   and reported to `outputs/reports/fleet_traces.txt` (report only; usually the queue is empty).
   Every night it also runs the offshore-hosting check (`pacific-peering-offshore-check --fire`), which
   schedules itself: a full ping sweep of all in-scope ASNs monthly, plus any newly added ASN, otherwise
-  nothing. Probes come from AU/NZ/US/JP/SG/HK/GB; ASNs whose addresses don't answer get a second chance
+  nothing. If a full sweep leaves ASNs unmeasured, later nights retry only those (`retry` mode, since
+  2026-11-26) instead of repeating the sweep. Probes come from AU/NZ/US/JP/SG/HK/GB; ASNs whose addresses don't answer get a second chance
   (cached-traceroute or nmap-sweep addresses, with rDNS) and then a RIS upstream screen. Flags go to
   `outputs/reports/offshore_check.txt` and `escalations.md`, never auto-excluded.
 

@@ -104,9 +104,32 @@ def test_schedule_new_asns_only_between_full_runs():
     assert oc.plan_run(REGISTRY, history + [_run("new", 1, measured=[3])], NOW) == ("skip", [])
 
 
-def test_incomplete_full_run_does_not_count():
+def test_incomplete_full_run_is_retried_for_its_unmeasured_asns_only():
     # 2026-09-24: Atlas refused ~160 pings; such a run must not block retries for a month.
-    assert oc.plan_run(REGISTRY, [_run("full", 1, measured=[1], unmeasured=[2, 3])], NOW) == ("full", [1, 2, 3])
+    # 2026-11-26 (owner: "build the retry mode"): retry only what it missed, not the whole sweep.
+    assert oc.plan_run(REGISTRY, [_run("full", 1, measured=[1], unmeasured=[2, 3])], NOW) == ("retry", [2, 3])
+
+
+def test_retries_continue_nightly_until_every_asn_is_measured():
+    history = [_run("full", 2, measured=[1], unmeasured=[2, 3]), _run("retry", 1, measured=[2], unmeasured=[3])]
+    assert oc.plan_run(REGISTRY, history, NOW) == ("retry", [3])
+    assert oc.plan_run(REGISTRY, history + [_run("retry", 0, measured=[3])], NOW) == ("skip", [])
+
+
+def test_retry_skips_untestable_and_includes_newly_added_asns():
+    history = [_run("full", 1, measured=[1], unmeasured=[3], untestable=[2])]
+    assert oc.plan_run({**REGISTRY, 4: "WS"}, history, NOW) == ("retry", [3, 4])
+
+
+def test_retry_only_counts_runs_since_the_latest_full():
+    # 3 measured last month does not cover this month's incomplete full.
+    history = [_run("full", 40, measured=[1, 2, 3]), _run("full", 1, measured=[1, 2], unmeasured=[3])]
+    assert oc.plan_run(REGISTRY, history, NOW) == ("retry", [3])
+
+
+def test_incomplete_full_run_a_month_old_starts_a_new_full():
+    history = [_run("full", 30, measured=[1], unmeasured=[2, 3]), _run("retry", 29, measured=[2, 3])]
+    assert oc.plan_run(REGISTRY, history, NOW) == ("full", [1, 2, 3])
 
 
 def test_unmeasured_asns_are_retried_between_full_runs():

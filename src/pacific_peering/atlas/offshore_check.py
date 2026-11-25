@@ -188,16 +188,27 @@ def load_history(path: Path = HISTORY_PATH) -> list[dict]:
 
 
 def plan_run(registry_asns: dict[int, str], history: list[dict], now: datetime) -> tuple[str, list[int]]:
-    """("full" | "new" | "skip", ASNs to check), per the monthly/new-ASN schedule."""
-    # A full run only counts if nothing in it was left unmeasured (e.g. Atlas
-    # refusals) -- otherwise one bad night would block retries for a month.
-    fulls = [h for h in history if h["mode"] == "full" and h.get("complete", True)]
-    if not fulls or (now - datetime.fromisoformat(fulls[-1]["run_at"])).days >= FULL_RECHECK_DAYS:
+    """("full" | "retry" | "new" | "skip", ASNs to check), per the monthly schedule.
+
+    A full run every FULL_RECHECK_DAYS, counted from the latest full run.
+    Between them, "new" checks ASNs never measured before. If the latest full
+    run left ASNs unmeasured (Atlas refusals 2026-09-24, a failed create),
+    "retry" re-measures only the ASNs that no run since it has measured,
+    nightly until none is left (owner, 2026-11-26: "build the retry mode").
+    It used to re-run the whole sweep (256 + ~96 pings) instead.
+    """
+    full_at = [i for i, h in enumerate(history) if h["mode"] == "full"]
+    if not full_at or (now - datetime.fromisoformat(history[full_at[-1]]["run_at"])).days >= FULL_RECHECK_DAYS:
         return "full", sorted(registry_asns)
-    seen = {int(a) for h in history for a in h.get("untestable", [])}
-    seen |= {int(a) for h in history for a, e in h.get("results", {}).items() if e["verdict"] != NOT_MEASURED}
-    new = sorted(a for a in registry_asns if a not in seen)
-    return ("new", new) if new else ("skip", [])
+    latest_full = history[full_at[-1]]
+    if not latest_full.get("complete", True):
+        mode, counted = "retry", history[full_at[-1]:]
+    else:
+        mode, counted = "new", history
+    seen = {int(a) for h in counted for a in h.get("untestable", [])}
+    seen |= {int(a) for h in counted for a, e in h.get("results", {}).items() if e["verdict"] != NOT_MEASURED}
+    todo = sorted(a for a in registry_asns if a not in seen)
+    return (mode, todo) if todo else ("skip", [])
 
 
 def _probe_info(
