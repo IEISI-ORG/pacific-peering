@@ -1,21 +1,10 @@
 IPv6 fleet check -- 2026-11-24
 Auto-generated weekly (Wednesday) by `pacific-peering-ipv6-fleet` (atlas/ipv6_fleet.py).
 Anchor measurements: 243493079, 243494654
+Re-collected 2026-11-25 from the same measurements (results arrived late).
 
 Changes since last snapshot:
-  - probe 6923 (GU) measured access reached -> no_result
-  - probe 7018 (NC) measured access reached -> no_result
-  - probe 7385 (GU) measured access reached -> no_result
-  - probe 7448 (FM) measured access reached -> no_result
-  - probe 7455 (PW) measured access reached -> no_result
-  - probe 7662 (GU) measured access reached -> no_result
-  - probe 33674 (NC) measured access reached -> no_result
-  - probe 53098 (PF) measured access no_reach -> no_result
-  - probe 63050 (NC) measured access no_reach -> no_result
-  - probe 1001562 (PF) measured access no_reach -> no_result
-  - probe 1008228 (KI) measured access reached -> no_result
   - probe 1008228 (KI) Atlas tag system-ipv6-works removed
-  - probe 1018134 (NR) measured access reached -> no_result
 
 Per economy (connected probes / with IPv6 ASN / Atlas ipv6-works tag):
   AS   0 /  0 /  0
@@ -41,16 +30,16 @@ Per economy (connected probes / with IPv6 ASN / Atlas ipv6-works tag):
 
 IPv6 probes (measured access this week, per anchor, vs Atlas tags):
   per anchor: ok <RTT> = reached; dark@<addr> = last hop that answered; - = no result
-  GU      6923  AS140627  no_result    cloudflare -                   google -                   tags: capable, stable-1d, stable-30d, stable-90d, works
-  NC      7018  AS45345   no_result    cloudflare -                   google -                   tags: capable, stable-1d, stable-30d, stable-90d, works
-  GU      7385  AS152735  no_result    cloudflare -                   google -                   tags: capable, stable-1d, stable-30d, stable-90d, works
-  FM      7448  AS139759  no_result    cloudflare -                   google -                   tags: capable, stable-1d, stable-30d, stable-90d, works
-  PW      7455  AS17893   no_result    cloudflare -                   google -                   tags: capable, stable-1d, stable-30d, stable-90d, works
-  GU      7662  AS141682  no_result    cloudflare -                   google -                   tags: capable, stable-1d, stable-30d, stable-90d, works
+  GU      6923  AS140627  reached      cloudflare ok 71.1ms           google ok 71.0ms           tags: capable, stable-1d, stable-30d, stable-90d, works
+  NC      7018  AS45345   reached      cloudflare ok 0.5ms            google ok 44.2ms           tags: capable, stable-1d, stable-30d, stable-90d, works
+  GU      7385  AS152735  reached      cloudflare ok 112.1ms          google ok 48.2ms           tags: capable, stable-1d, stable-30d, stable-90d, works
+  FM      7448  AS139759  reached      cloudflare ok 49.2ms           google ok 129.1ms          tags: capable, stable-1d, stable-30d, stable-90d, works
+  PW      7455  AS17893   reached      cloudflare ok 47.8ms           google ok 47.8ms           tags: capable, stable-1d, stable-30d, stable-90d, works
+  GU      7662  AS141682  reached      cloudflare ok 29.6ms           google ok 29.8ms           tags: capable, stable-1d, stable-30d, stable-90d, works
   NC     33674  AS45345   no_result    cloudflare -                   google -                   tags: capable, stable-1d, stable-30d, stable-90d, works
-  PF     53098  AS9471    no_result    cloudflare -                   google -                   tags: capable, doesnt-work, stable-1d, stable-30d
+  PF     53098  AS9471    no_reach     cloudflare dark@fc00:1::1      google dark@fc00:1::1      tags: capable, doesnt-work, stable-1d, stable-30d
   NC     63050  AS45345   no_result    cloudflare -                   google -                   tags: capable, doesnt-work, stable-1d, stable-30d, stable-90d
-  PF   1001562  AS9471    no_result    cloudflare -                   google -                   tags: capable, doesnt-work, stable-1d, stable-30d, stable-90d
+  PF   1001562  AS9471    no_reach     cloudflare dark@fc00:1::1      google dark@fc00:1::1      tags: capable, doesnt-work, stable-1d, stable-30d, stable-90d
   KI   1008228  AS14593   no_result    cloudflare -                   google -                   tags: capable
   KI   1008229  AS14593   no_result    cloudflare -                   google -                   tags: capable
-  NR   1018134  AS55722   no_result    cloudflare -                   google -                   tags: capable, stable-1d, stable-30d, works
+  NR   1018134  AS55722   reached      cloudflare -                   google ok 65.3ms           tags: capable, stable-1d, stable-30d, works
