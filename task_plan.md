@@ -3999,3 +3999,31 @@ added, none removed; unresolved 21 -> 12 (`daily_facts.escalation_summary` agree
   2026-12-07..09. When that run is in: if probe 23039 (AS17456) again reaches 103.142.152.1 locally, put
   retirement of #309 to the owner (two dates, before/after example of Guam traffic that now stays on-island);
   if the Tokyo detour is back, the 11-24 result was a temporary change and #309 stands.
+
+## Offshore check survives Atlas timeouts (owner, 2026-11-26: "fix the offshore check before tonight", "debug the errors carefully")
+
+- **Incident (cron, 2026-11-26 01:19-02:32 local):** the monthly full sweep pinged 256/256 addresses, then the
+  second chance (40 silent ASNs, 96 alternates) died on a create POST: `requests.exceptions.ReadTimeout` (30 s).
+  `_create_with_retry` caught only `HTTPError`, and nothing between it and `main()` caught it. So no history line,
+  report or escalations were written, and the shell printed "failed; continuing". The last complete full run is
+  10-25, so `plan_run` chooses `full` again tonight (dry run, 09:45: `mode=full`, 256 addresses).
+- **Atlas created the timed-out ping anyway:** 244221908 (AS139263 PF to 103.166.70.9), 16 participants, Stopped.
+  The log has 68 "Created" lines and Atlas lists 69 offshore-check pings since 16:20Z. All are Stopped, so none is
+  left running.
+- **Root cause:** create POSTs were the only Atlas call without timeout handling. Since 11-12, GETs retry
+  transient errors (`client._get_json`). Read timeouts on GETs show up several times a week in `logs/cron.log`
+  (11-18, 11-21, 11-23 twice in a row on 242222138). The nightly batch survives a create timeout because
+  `auto_classify` catches `RequestException` per corridor.
+- **Fix** (test-first, 16 new tests, 626 pass): a create failure other than a 4xx is looked up by exact
+  description, `start_time__gte` (POST time - 120 s), after 60 s. A measurement that is found is adopted; if Atlas
+  has no record, there is one re-POST; if the lookup fails, the address is left unmeasured. After the pings, a
+  status-poll failure counts as still running, a results-read failure costs only that address, and probe metadata
+  gets 5 attempts a minute apart. Reviewed by the code-reviewer agent; its M1, L1, L2, L3 and L5 were applied, and
+  L4 (skip the wait on a ConnectTimeout) was skipped as harmless.
+- **Open for the owner (reviewer M2, existing design):** `complete` is per ASN. If an ASN has one address and it
+  ends up `not_measured`, the whole run counts as incomplete, and the next night re-fires the full sweep. If an
+  ASN has several addresses and loses one, that address waits a month. A `retry` mode (re-measure only the last
+  full run's unmeasured ASNs) would bound the cost. Not built.
+- **Tonight:** the full sweep re-runs with the fix. Last night's first-pass raw results (cached in
+  `data/atlas/raw/`) are not re-used.
+

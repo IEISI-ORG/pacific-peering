@@ -11,6 +11,7 @@ import logging
 import time
 from dataclasses import dataclass
 from typing import Any
+from urllib.parse import urlencode
 
 import requests
 
@@ -257,6 +258,30 @@ def _get_json(url: str, timeout: float, max_retries: int = _GET_RETRIES) -> Any:
             logger.warning("Atlas GET %s failed (%s); retry %d/%d", url, exc, attempt + 1, max_retries)
             time.sleep(_GET_RETRY_DELAY * (attempt + 1))
     raise AssertionError("unreachable")
+
+
+def find_measurement_by_description(
+    description: str, started_since: int, timeout: float = _DEFAULT_TIMEOUT
+) -> int | None:
+    """The newest measurement with exactly `description` started at or after `started_since`, or None.
+
+    For a create POST that failed ambiguously (timeout, dropped connection):
+    on 2026-11-26 a ping POST timed out after 30 s, yet Atlas had made
+    244221908 and ran it. `description` matches exactly (a prefix finds
+    nothing). Atlas ignores `creation_time__gte` ("Unknown filter"), so this
+    filters on `start_time__gte`, which equals the creation time for a
+    one-off. Unauthenticated, so it sees public measurements only (all of
+    this project's are public).
+    """
+    query = urlencode({"description": description, "start_time__gte": started_since, "fields": "id"})
+    results = _get_json(f"{ATLAS_BASE_URL}/measurements/?{query}", timeout).get("results", [])
+    return max((m["id"] for m in results), default=None)
+
+
+def fetch_probes(probe_ids: list[int], fields: str, timeout: float = _DEFAULT_TIMEOUT) -> list[dict]:
+    """`fields` of each probe in `probe_ids` (one page: keep it under 500 ids), retrying transient failures."""
+    query = urlencode({"id__in": ",".join(map(str, probe_ids)), "fields": fields, "page_size": 500})
+    return _get_json(f"{ATLAS_BASE_URL}/probes/?{query}", timeout)["results"]
 
 
 def fetch_measurement_status(measurement_id: int, timeout: float = _DEFAULT_TIMEOUT) -> str:

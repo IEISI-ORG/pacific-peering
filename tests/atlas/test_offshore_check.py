@@ -4,6 +4,8 @@ from __future__ import annotations
 
 from datetime import datetime, timedelta, timezone
 
+import requests
+
 from pacific_peering.atlas import offshore_check as oc
 
 NOW = datetime(2026, 10, 1, 15, 0, tzinfo=timezone.utc)
@@ -153,6 +155,131 @@ def test_other_refusals_are_not_retried(monkeypatch):
     assert len(calls) == 1
 
 
+def _timeout_then(outcomes, calls):
+    """A create_ping_measurement stand-in that raises or returns each outcome in turn."""
+    outcomes = iter(outcomes)
+
+    def _create(specs, target, description):
+        calls.append(description)
+        outcome = next(outcomes)
+        if isinstance(outcome, Exception):
+            raise outcome
+        return outcome
+
+    return _create
+
+
+def test_create_timeout_adopts_the_measurement_atlas_made(monkeypatch):
+    # 2026-11-26 02:32: the POST for 103.166.70.9 timed out (30 s read) and the
+    # ReadTimeout killed the whole run, yet Atlas had created 244221908.
+    calls, lookups = [], []
+    monkeypatch.setattr(oc, "create_ping_measurement",
+                        _timeout_then([requests.exceptions.ReadTimeout("timed out")], calls))
+    monkeypatch.setattr(oc, "find_measurement_by_description",
+                        lambda d, started_since: lookups.append(d) or 244221908)
+    monkeypatch.setattr(oc.time, "sleep", lambda s: None)
+
+    assert oc._create_with_retry(139263, "PF", "103.166.70.9") == 244221908
+    assert len(calls) == 1  # no second POST, so no duplicate ping
+    assert lookups == ["pacific-peering offshore-check AS139263 PF to 103.166.70.9"]
+
+
+def test_create_timeout_retries_when_atlas_made_nothing(monkeypatch):
+    calls = []
+    monkeypatch.setattr(oc, "create_ping_measurement",
+                        _timeout_then([requests.exceptions.ConnectionError("reset"), 43], calls))
+    monkeypatch.setattr(oc, "find_measurement_by_description", lambda d, started_since: None)
+    monkeypatch.setattr(oc.time, "sleep", lambda s: None)
+
+    assert oc._create_with_retry(9249, "VU", "202.80.35.1") == 43
+    assert len(calls) == 2
+
+
+def test_create_timeout_gives_up_if_the_lookup_fails_too(monkeypatch):
+    calls = []
+    monkeypatch.setattr(oc, "create_ping_measurement",
+                        _timeout_then([requests.exceptions.ReadTimeout("timed out"), 43], calls))
+
+    def _lookup(d, started_since):
+        raise requests.exceptions.ReadTimeout("timed out")
+
+    monkeypatch.setattr(oc, "find_measurement_by_description", _lookup)
+    monkeypatch.setattr(oc.time, "sleep", lambda s: None)
+
+    # Unknown whether Atlas made it: skip the address rather than risk a duplicate.
+    assert oc._create_with_retry(9249, "VU", "202.80.35.1") is None
+    assert len(calls) == 1
+
+
+def test_create_timeouts_stop_after_the_retry_limit(monkeypatch):
+    calls = []
+    monkeypatch.setattr(oc, "create_ping_measurement",
+                        _timeout_then([requests.exceptions.ReadTimeout("timed out")] * 10, calls))
+    monkeypatch.setattr(oc, "find_measurement_by_description", lambda d, started_since: None)
+    monkeypatch.setattr(oc.time, "sleep", lambda s: None)
+
+    assert oc._create_with_retry(9249, "VU", "202.80.35.1") is None
+    assert len(calls) == oc.CREATE_TIMEOUT_RETRIES + 1
+
+
+def _server_error(status):
+    response = requests.Response()
+    response.status_code = status
+    response._content = b"<html>502 Bad Gateway</html>"
+    return requests.HTTPError(response=response)
+
+
+def test_lookup_waits_then_searches_from_before_the_post(monkeypatch):
+    events = []
+    monkeypatch.setattr(oc.time, "time", lambda: 1795624366.4)
+    monkeypatch.setattr(oc, "create_ping_measurement",
+                        _timeout_then([requests.exceptions.ReadTimeout("timed out")], []))
+    monkeypatch.setattr(oc.time, "sleep", lambda s: events.append(("sleep", s)))
+    monkeypatch.setattr(oc, "find_measurement_by_description",
+                        lambda d, started_since: events.append(("lookup", started_since)) or 244221908)
+
+    oc._create_with_retry(139263, "PF", "103.166.70.9")
+
+    assert events == [("sleep", oc.CREATE_LOOKUP_WAIT_S), ("lookup", 1795624366 - oc.CREATE_LOOKUP_SKEW_S)]
+
+
+def test_server_error_on_create_is_looked_up_like_a_timeout(monkeypatch):
+    # A 502/504 from Atlas's front end can hide a measurement the backend made.
+    calls = []
+    monkeypatch.setattr(oc, "create_ping_measurement", _timeout_then([_server_error(502)], calls))
+    monkeypatch.setattr(oc, "find_measurement_by_description", lambda d, started_since: 244221908)
+    monkeypatch.setattr(oc.time, "sleep", lambda s: None)
+
+    assert oc._create_with_retry(139263, "PF", "103.166.70.9") == 244221908
+    assert len(calls) == 1
+
+
+def test_unreadable_reply_to_a_create_is_looked_up(monkeypatch):
+    # A broken body or an unexpected 2xx shape: Atlas may well have made it.
+    for error in (requests.exceptions.ChunkedEncodingError("broken"), KeyError("measurements")):
+        calls = []
+        monkeypatch.setattr(oc, "create_ping_measurement", _timeout_then([error], calls))
+        monkeypatch.setattr(oc, "find_measurement_by_description", lambda d, started_since: 244221908)
+        monkeypatch.setattr(oc.time, "sleep", lambda s: None)
+
+        assert oc._create_with_retry(139263, "PF", "103.166.70.9") == 244221908
+        assert len(calls) == 1
+
+
+def test_resend_after_a_timeout_still_honours_the_concurrency_cap(monkeypatch):
+    calls = []
+    monkeypatch.setattr(oc, "create_ping_measurement", _timeout_then([
+        requests.exceptions.ReadTimeout("timed out"),
+        _refusal('{"detail":"You are not permitted to run more than 100 concurrent measurements."}'),
+        44,
+    ], calls))
+    monkeypatch.setattr(oc, "find_measurement_by_description", lambda d, started_since: None)
+    monkeypatch.setattr(oc.time, "sleep", lambda s: None)
+
+    assert oc._create_with_retry(9249, "VU", "202.80.35.1") == 44
+    assert len(calls) == 3
+
+
 def test_batches_do_not_overlap(monkeypatch, tmp_path):
     events = []
     counter = iter(range(1000, 2000))
@@ -223,3 +350,85 @@ def test_new_screen_flags_skip_seen_and_acknowledged():
 
 def test_hub_probes_include_sg_hk_gb():
     assert {s["value"] for s in oc.HUB_PROBE_SPECS} >= {"AU", "NZ", "US", "JP", "SG", "HK", "GB"}
+
+
+def test_status_poll_failure_keeps_waiting_instead_of_ending_the_run(monkeypatch):
+    # fetch_measurement_status already retries twice; on 2026-11-23 one
+    # measurement timed out twice in a row, one short of raising.
+    polls = iter([requests.exceptions.ReadTimeout("timed out"), "Stopped"])
+
+    def _status(mid):
+        outcome = next(polls)
+        if isinstance(outcome, Exception):
+            raise outcome
+        return outcome
+
+    monkeypatch.setattr(oc, "fetch_measurement_status", _status)
+    monkeypatch.setattr(oc.time, "sleep", lambda s: None)
+
+    oc._wait_until_done([244221908], max_wait_s=3600)  # returns, no exception
+
+
+def test_results_fetch_failure_leaves_only_that_address_unmeasured(monkeypatch, tmp_path):
+    counter = iter(range(1000, 2000))
+    monkeypatch.setattr(oc, "DEFAULT_RAW_DIR", tmp_path)
+    monkeypatch.setattr(oc, "_create_with_retry", lambda asn, cc, a: next(counter))
+    monkeypatch.setattr(oc, "_wait_until_done", lambda ids: None)
+    monkeypatch.setattr(oc, "wait_for_headroom", lambda n: True)
+
+    def _fetch(mid):
+        if mid == 1001:
+            raise requests.exceptions.ReadTimeout("timed out")
+        return [{"prb_id": 1, "min": 50.0}]
+
+    monkeypatch.setattr(oc, "fetch_raw_results", _fetch)
+
+    ids, raw = oc._measure([(1, "VU", "a"), (2, "VU", "b"), (3, "VU", "c")])
+
+    assert set(raw) == {"a", "c"}
+    assert ids == {"a": 1000, "b": 1001, "c": 1002}  # the id is kept, so the run can be re-judged
+
+
+def test_probe_info_keeps_trying_through_a_longer_outage(monkeypatch):
+    # After a whole sweep's pings, a probes-endpoint outage must not end the run.
+    attempts, sleeps = [], []
+
+    def _fetch(ids, fields):
+        attempts.append(ids)
+        if len(attempts) < oc.PROBE_INFO_ATTEMPTS:
+            raise requests.exceptions.ReadTimeout("timed out")
+        return [{"id": 7, "geometry": {"coordinates": [151.13, -33.79]}, "asn_v4": 4826, "country_code": "AU"}]
+
+    monkeypatch.setattr(oc, "fetch_probes", _fetch)
+    monkeypatch.setattr(oc.time, "sleep", sleeps.append)
+
+    locations, _, _ = oc._probe_info({7})
+    assert locations == {7: (-33.79, 151.13)}
+    assert sleeps == [oc.PROBE_INFO_RETRY_WAIT_S] * (oc.PROBE_INFO_ATTEMPTS - 1)
+
+
+def test_probe_info_raises_rather_than_judging_without_locations(monkeypatch):
+    # Missing locations would skip the physics check and read offshore as consistent.
+    def _fetch(ids, fields):
+        raise requests.exceptions.ReadTimeout("timed out")
+
+    monkeypatch.setattr(oc, "fetch_probes", _fetch)
+    monkeypatch.setattr(oc.time, "sleep", lambda s: None)
+
+    try:
+        oc._probe_info({7})
+    except requests.exceptions.ReadTimeout:
+        pass
+    else:
+        raise AssertionError("expected the last ReadTimeout to propagate")
+
+
+def test_probe_info_reads_locations_asns_and_countries(monkeypatch):
+    monkeypatch.setattr(oc, "fetch_probes", lambda ids, fields: [
+        {"id": 7, "geometry": {"coordinates": [151.13, -33.79]}, "asn_v4": 4826, "country_code": "AU"},
+        {"id": 8, "geometry": None, "asn_v4": None, "country_code": None},
+    ])
+
+    locations, asns, countries = oc._probe_info({7, 8})
+    assert locations == {7: (-33.79, 151.13)}
+    assert asns == {7: 4826, 8: None} and countries == {7: "AU", 8: None}

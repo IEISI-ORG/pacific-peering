@@ -11,7 +11,8 @@ the economy's capital / 100) has proven the address is *not* in that economy.
 
 Per address: `offshore` (some probe beat physics -- the probe, its RTT and the
 physical minimum are recorded), `consistent` (answered, nothing beat physics),
-`no_response`, or `not_measured` (Atlas refused the measurement). An ASN is
+`no_response`, or `not_measured` (Atlas refused it, a failed create left no
+measurement or couldn't be checked, or its results couldn't be read). An ASN is
 `offshore` if any of its tested addresses is. Flags are candidates for the
 owner, never auto-excluded: each new one is appended to `escalations.md`.
 
@@ -43,7 +44,13 @@ from pathlib import Path
 import requests
 
 from pacific_peering.atlas import offshore_alternates as alt
-from pacific_peering.atlas.client import create_ping_measurement, fetch_measurement_status, fetch_raw_results
+from pacific_peering.atlas.client import (
+    create_ping_measurement,
+    fetch_measurement_status,
+    fetch_probes,
+    fetch_raw_results,
+    find_measurement_by_description,
+)
 from pacific_peering.atlas.rate_limit import wait_for_headroom
 from pacific_peering.atlas.smoketest import DEFAULT_RAW_DIR
 from pacific_peering.atlas.targets import list_target_ips
@@ -94,6 +101,14 @@ BATCH_WAIT_S = 240.0
 CAP_RETRIES = 5
 CAP_RETRY_WAIT_S = 60
 _CONCURRENCY_CAP_TEXT = "concurrent measurements"
+CREATE_TIMEOUT_RETRIES = 1  # re-POSTs after a timed-out create that Atlas has no record of
+# Give a slow create time to land before looking for it. One that lands later
+# still (over ~90 s after the POST, with the 30 s timeout) gets a duplicate
+# ping: one extra ping, accepted as the cost of not losing the address.
+CREATE_LOOKUP_WAIT_S = 60
+CREATE_LOOKUP_SKEW_S = 120  # look back this far before the POST (clock skew with Atlas)
+PROBE_INFO_ATTEMPTS = 5  # probe metadata reads, each already retried twice by atlas.client
+PROBE_INFO_RETRY_WAIT_S = 60
 _TERMINAL_STATUSES = {"Stopped", "Failed", "No suitable probes", "Denied", "Archived"}
 
 # A flag needs probes on at least this many different networks (probe asn_v4)
@@ -194,12 +209,7 @@ def _probe_info(
     countries: dict[int, str | None] = {}
     ids = sorted(probe_ids)
     for i in range(0, len(ids), 400):
-        params: dict[str, str | int] = {
-            "id__in": ",".join(map(str, ids[i:i + 400])), "fields": "id,geometry,asn_v4,country_code", "page_size": 500,
-        }
-        response = requests.get("https://atlas.ripe.net/api/v2/probes/", params=params, timeout=30)
-        response.raise_for_status()
-        for p in response.json()["results"]:
+        for p in _fetch_probes_patiently(ids[i:i + 400]):
             coords = (p.get("geometry") or {}).get("coordinates")
             if coords:
                 locations[p["id"]] = (coords[1], coords[0])
@@ -208,22 +218,92 @@ def _probe_info(
     return locations, asns, countries
 
 
-def _create_with_retry(asn: int, cc: str, address: str) -> int | None:
-    """Create one ping; on Atlas's 100-concurrent-measurements cap, wait and retry."""
-    for attempt in range(CAP_RETRIES + 1):
+def _fetch_probes_patiently(ids: list[int]) -> list[dict]:
+    """Probe metadata, waiting out an outage of a few minutes, then raising.
+
+    This runs after the pings are spent, so giving up loses the whole run.
+    Judging without the metadata is worse: a probe with no location skips the
+    physics check, which would quietly turn "offshore" into "consistent".
+    """
+    for attempt in range(1, PROBE_INFO_ATTEMPTS + 1):
         try:
-            return create_ping_measurement(
-                list(HUB_PROBE_SPECS), address, f"pacific-peering offshore-check AS{asn} {cc} to {address}"
-            )
+            return fetch_probes(ids, "id,geometry,asn_v4,country_code")
+        except requests.RequestException as e:
+            if attempt == PROBE_INFO_ATTEMPTS:
+                raise
+            logger.warning("Probe metadata read failed (%s); attempt %d/%d, retrying in %ds",
+                           e, attempt, PROBE_INFO_ATTEMPTS, PROBE_INFO_RETRY_WAIT_S)
+            time.sleep(PROBE_INFO_RETRY_WAIT_S)
+    raise AssertionError("unreachable")
+
+
+def _create_with_retry(asn: int, cc: str, address: str) -> int | None:
+    """Create one ping, or return None to leave the address unmeasured.
+
+    On Atlas's 100-concurrent-measurements cap, wait and retry. Any other 4xx
+    is a refusal. Every other failure is ambiguous (a timeout, a dropped
+    connection, a 5xx from Atlas's front end, a reply that can't be read): on
+    2026-11-26 a 30 s read timeout killed the whole monthly run (nothing
+    recorded, so the next night re-fired the full sweep), yet Atlas had
+    created 244221908. So look the measurement up by its description first,
+    and re-POST only if Atlas has no record of it.
+    """
+    description = f"pacific-peering offshore-check AS{asn} {cc} to {address}"
+    cap_hits = resends = 0
+    while True:
+        started_since = int(time.time()) - CREATE_LOOKUP_SKEW_S
+        try:
+            return create_ping_measurement(list(HUB_PROBE_SPECS), address, description)
         except requests.HTTPError as e:
+            status = e.response.status_code if e.response is not None else None
             detail = e.response.text[:300] if e.response is not None else str(e)
-            if _CONCURRENCY_CAP_TEXT in detail and attempt < CAP_RETRIES:
-                logger.warning("Atlas concurrency cap hit for %s; retrying in %ds", address, CAP_RETRY_WAIT_S)
-                time.sleep(CAP_RETRY_WAIT_S)
-                continue
-            logger.error("Atlas refused ping to %s (AS%d): %s", address, asn, detail)
+            if status is not None and status < 500:
+                if _CONCURRENCY_CAP_TEXT in detail and cap_hits < CAP_RETRIES:
+                    cap_hits += 1
+                    logger.warning("Atlas concurrency cap hit for %s; retrying in %ds", address, CAP_RETRY_WAIT_S)
+                    time.sleep(CAP_RETRY_WAIT_S)
+                    continue
+                logger.error("Atlas refused ping to %s (AS%d): %s", address, asn, detail)
+                return None
+            failure: Exception = e
+        except (requests.RequestException, KeyError, IndexError) as e:
+            failure = e
+        known, found = _look_for_created(description, started_since, address, asn, failure)
+        if not known or found is not None:
+            return found
+        if resends == CREATE_TIMEOUT_RETRIES:
+            logger.error("Atlas create for %s (AS%d) failed %d time(s), none made; leaving it unmeasured",
+                         address, asn, resends + 1)
             return None
-    return None
+        resends += 1
+        logger.warning("Atlas has no record of a ping to %s; creating it again", address)
+
+
+def _look_for_created(
+    description: str, started_since: int, address: str, asn: int, failure: Exception
+) -> tuple[bool, int | None]:
+    """After an ambiguous create: (True, id) if Atlas made it, (True, None) if not, (False, None) if unknown."""
+    logger.warning("Atlas create for %s (AS%d) failed (%s: %s); checking in %ds whether Atlas made it",
+                   address, asn, type(failure).__name__, failure, CREATE_LOOKUP_WAIT_S)
+    time.sleep(CREATE_LOOKUP_WAIT_S)
+    try:
+        found = find_measurement_by_description(description, started_since=started_since)
+    except requests.RequestException as lookup_error:
+        logger.error("Lookup for %s failed too (%s); leaving it unmeasured rather than risk a duplicate",
+                     address, lookup_error)
+        return False, None
+    if found is not None:
+        logger.warning("Atlas made %d for %s despite the failed create; using it", found, address)
+    return True, found
+
+
+def _is_finished(measurement_id: int) -> bool:
+    """True once Atlas reports a terminal status; a failed status read counts as still running."""
+    try:
+        return fetch_measurement_status(measurement_id) in _TERMINAL_STATUSES
+    except requests.RequestException as e:
+        logger.warning("Status read for %d failed (%s); still waiting on it", measurement_id, e)
+        return False
 
 
 def _wait_until_done(measurement_ids: list[int], max_wait_s: float = BATCH_WAIT_S, poll_s: float = 20.0) -> None:
@@ -231,7 +311,7 @@ def _wait_until_done(measurement_ids: list[int], max_wait_s: float = BATCH_WAIT_
     pending = set(measurement_ids)
     while pending and time.monotonic() < deadline:
         time.sleep(poll_s)
-        pending = {m for m in pending if fetch_measurement_status(m) not in _TERMINAL_STATUSES}
+        pending = {m for m in pending if not _is_finished(m)}
     if pending:
         logger.warning("%d measurement(s) still running after %ds; using partial results", len(pending), max_wait_s)
 
@@ -259,7 +339,12 @@ def _measure(targets: list[tuple[int, str, str]]) -> tuple[dict[str, int | None]
             mid = ids[address]
             if mid is None:
                 continue
-            raw[address] = fetch_raw_results(mid)
+            try:
+                raw[address] = fetch_raw_results(mid)
+            except requests.RequestException as e:
+                # The id stays in `ids` and is recorded in the snapshot; nothing re-reads it automatically.
+                logger.error("Results read for %d (%s) failed (%s); leaving it unmeasured", mid, address, e)
+                continue
             (DEFAULT_RAW_DIR / f"{mid}.json").write_text(json.dumps(raw[address], indent=2) + "\n")
         logger.info("Offshore check: %d/%d addresses measured", min(i + BATCH_SIZE, len(targets)), len(targets))
     return ids, raw

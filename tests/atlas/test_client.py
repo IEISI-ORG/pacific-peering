@@ -332,3 +332,41 @@ def test_parsed_cache_records_the_source_address(monkeypatch, tmp_path):
 
     (parsed,) = json.loads((tmp_path / "parsed" / "236238083.json").read_text())
     assert parsed["source_address"] == "49.156.50.5"
+
+
+def test_find_measurement_by_description_matches_exactly_and_from_a_start_time(monkeypatch):
+    # 2026-11-26: a ping create POST timed out after 30 s, yet Atlas had made
+    # 244221908. Atlas ignores creation_time__gte ("Unknown filter"), so the
+    # lookup filters on start_time__gte, which is the creation time for a one-off.
+    calls = _scripted_get(monkeypatch, [_JsonResponse({"count": 1, "results": [{"id": 244221908}]})])
+
+    found = client.find_measurement_by_description(
+        "pacific-peering offshore-check AS139263 PF to 103.166.70.9", started_since=1795624300
+    )
+
+    assert found == 244221908
+    assert "description=pacific-peering+offshore-check+AS139263+PF+to+103.166.70.9" in calls[0]
+    assert "start_time__gte=1795624300" in calls[0]
+
+
+def test_find_measurement_by_description_returns_newest_or_none(monkeypatch):
+    _scripted_get(monkeypatch, [
+        _JsonResponse({"count": 2, "results": [{"id": 100}, {"id": 105}]}),
+        _JsonResponse({"count": 0, "results": []}),
+    ])
+
+    assert client.find_measurement_by_description("d", started_since=0) == 105
+    assert client.find_measurement_by_description("d", started_since=0) is None
+
+
+def test_fetch_probes_retries_a_read_timeout(monkeypatch):
+    # offshore_check._probe_info used a bare requests.get: one timeout after
+    # a whole sweep's pings would have ended the run with nothing recorded.
+    calls = _scripted_get(monkeypatch, [
+        requests.exceptions.ReadTimeout("timed out"),
+        _JsonResponse({"results": [{"id": 7, "asn_v4": 4826}]}),
+    ])
+
+    assert client.fetch_probes([7, 9], "id,asn_v4") == [{"id": 7, "asn_v4": 4826}]
+    assert len(calls) == 2
+    assert "id__in=7%2C9" in calls[0] and "fields=id%2Casn_v4" in calls[0]
