@@ -897,3 +897,9 @@ Corridors `auto_classify.py`'s mechanical rules couldn't confidently resolve on 
 - action: owner review; if confirmed, add to discovery/excluded_asns.py (offshore_hosted)
 - flagged: 2026-11-25T23:47:10.072243+00:00
 - resolved: 2026-11-26 -- AS45924 excluded as offshore_hosted (owner: "exclude AS45924 202.171.240.0/21 as offshore hosted"; chose the whole ASN, so its 202.1.52.0/24 (PNG Unitech, Lae, upstreamed only via Virtutel AS24516) leaves scope too); see discovery/excluded_asns.py. No findings targeted it. Registry and fishbowl rebuilt (163 ASNs, PG 41 -> 40).
+## AS9471 (PF) -> AS140504 (NR)
+- measurement: 244756495
+- reason: detour hub differs from the filed finding
+- detail: finding #160 is filed via Los Angeles; this run left the region via Tokyo (JPNAP Tokyo) -- not corroborated; relabel, keep, or retest is the owner's call
+- flagged: 2026-11-26T15:10:45.116563+00:00
+
