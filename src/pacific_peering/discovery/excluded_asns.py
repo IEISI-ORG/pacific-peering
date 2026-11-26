@@ -267,4 +267,29 @@ EXCLUDED_ASNS: tuple[ExcludedAsn, ...] = (
             "confirmed_detour) and their corroborations were removed."
         ),
     ),
+    ExcludedAsn(
+        asn=45924,
+        country_cc="PG",
+        name="Global Technologies Limited",
+        category="offshore_hosted",
+        note=(
+            "Registered in Papua New Guinea (APNIC 202.171.240.0/21 GLOBALNET, "
+            "country PG; 202.171.240.1 PTR locus.global.net.pg), but the /21 "
+            "answers from Australia. The 2026-11-26 offshore check (measurement "
+            "244393111) had 202.171.240.1 at 14.05ms from probe 1008961 "
+            "(AS134090, Melbourne) and 15.12ms from probe 1006084 (AS151660, "
+            "Melbourne) against a 31.6ms floor to Port Moresby, and 28.06ms "
+            "from probe 1015849 (AS64073, Tauranga) against 42.8ms. Earlier "
+            "runs: consistent 2026-09-24, unconfirmed 2026-10-25 (one network, "
+            "probe 1009052 AS140933 at 11.93ms vs 27.0ms). RIS 2026-11-26: the "
+            "/21 is mostly upstreamed via PNG DataCo AS17828 (297 of 368 paths "
+            "`6939 17828 45924`), the rest via Virtutel AS24516 (AU); its "
+            "more-specific 202.171.242.0/24 and 202.1.52.0/24 (registered to "
+            "PNG University of Technology, Lae) go only via AS24516. Neither "
+            "answered the ping sweep. The Unitech /24 leaves scope with the "
+            "ASN: the owner chose this over listing only the /21 in "
+            "atlas.targets.EXCLUDED_TARGET_PREFIXES. No findings targeted it. "
+            "Excluded at the owner's direction (2026-11-26)."
+        ),
+    ),
 )

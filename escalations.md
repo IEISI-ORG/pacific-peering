@@ -896,3 +896,4 @@ Corridors `auto_classify.py`'s mechanical rules couldn't confidently resolve on 
 - detail: 202.171.240.1: probe 1008961 14.05ms < 31.6ms minimum (measurement 244393111)
 - action: owner review; if confirmed, add to discovery/excluded_asns.py (offshore_hosted)
 - flagged: 2026-11-25T23:47:10.072243+00:00
+- resolved: 2026-11-26 -- AS45924 excluded as offshore_hosted (owner: "exclude AS45924 202.171.240.0/21 as offshore hosted"; chose the whole ASN, so its 202.1.52.0/24 (PNG Unitech, Lae, upstreamed only via Virtutel AS24516) leaves scope too); see discovery/excluded_asns.py. No findings targeted it. Registry and fishbowl rebuilt (163 ASNs, PG 41 -> 40).

@@ -4041,3 +4041,20 @@ added, none removed; unresolved 21 -> 12 (`daily_facts.escalation_summary` agree
   by AS45924. PTR `locus.global.net.pg`. The other two addresses (202.1.52.1, 202.171.242.1) don't answer.
   Escalated (`escalations.md`); nothing excluded.
 
+## AS45924 excluded as offshore-hosted (owner, 2026-11-26)
+
+- **Ruling** (owner: "exclude AS45924 202.171.240.0/21 as offshore hosted"). Offered the whole ASN or only the /21;
+  I first said a prefix-only exclusion needed new code, which was wrong (`atlas.targets.EXCLUDED_TARGET_PREFIXES`
+  has done this since 09-24), corrected it before committing, and the owner kept the whole ASN.
+  `ExcludedAsn(45924, "PG", offshore_hosted)`.
+- **Evidence:** 244393111 (11-26): 202.171.240.1 at 14.05/15.12ms from Melbourne (AS134090, AS151660) vs 31.6ms,
+  28.06ms from Tauranga (AS64073) vs 42.8ms. RIS 11-26: the /21 mostly `6939 17828 45924` (297/368), rest via
+  Virtutel AS24516; 202.171.242.0/24 and 202.1.52.0/24 (APNIC: PNG University of Technology, Lae) only via AS24516.
+  Neither /24 answered the sweep. No findings targeted AS45924 (one tested pair, 17828 -> 45924, no finding).
+- **Rebuilt:** registry 164 -> 163 (PG 41 -> 40; diffed against the pre-change copy, no other ASN moved), fishbowl
+  from cache (RIS path-count drift on 101 entries, no membership change; one RIS read timeout, AS38227 kept its
+  cached paths), backlog (0 candidates), probe-gap and summary reports.
+- **Side note, not escalated:** MH probe 64237 (Starlink AS14593), the only connected Marshall Islands probe, went
+  Disconnected at 2026-11-26 04:09Z, during PacNOG 38 in Majuro. MH is now in "zero connected probes" in
+  probe_gaps.txt. Check it again at the next daily check before acting.
+

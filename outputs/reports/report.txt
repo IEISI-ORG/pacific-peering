@@ -1,6 +1,6 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-11-25T15:19:05.366814+00:00                  
+                 Generated: 2026-11-26T10:33:41.379764+00:00                  
 ==============================================================================
 FOUND A BUG? Bugs very likely remain in both the code and the data.
 Please open an issue: https://github.com/IEISI-ORG/pacific-peering/issues/new
@@ -17,7 +17,7 @@ PATHWAYS (every corridor with a filed finding, of any kind):
   (full corridor-by-corridor detail -- every confirmed detour, confirmed local transit, and candidate peering entry -- is in the appendix at the end of this report, not repeated here)
 
 Economies in scope:            20
-ASNs in scope:                  164
+ASNs in scope:                  163
 ASNs with >=1 RIS neighbor:     120
 ASNs with >=1 IXP membership:   38
 ASNs with >=1 facility presence:22
@@ -39,11 +39,11 @@ NC   New Caledonia                    Melanesia       17    13     6     4
 NR   Nauru                            Micronesia       5     4     1     1
 NU   Niue                             Polynesia        2     2     0     0
 PF   French Polynesia                 Polynesia        6     5     1     1
-PG   Papua New Guinea                 Melanesia       41    28    10     4
+PG   Papua New Guinea                 Melanesia       40    27    10     4
 PW   Palau                            Micronesia       3     3     1     1
 SB   Solomon Islands                  Melanesia        9     8     1     0
 TO   Tonga                            Polynesia        5     4     1     0
-TV   Tuvalu                           Polynesia        3     0     0     0
+TV   Tuvalu                           Polynesia        3     1     0     0
 VU   Vanuatu                          Melanesia       11     8     2     1
 WF   Wallis and Futuna                Polynesia        1     1     0     0
 WS   Samoa                            Polynesia       10     6     2     1
@@ -150,7 +150,7 @@ Per-operator evidence summary, computed fresh from the current finding dataclass
 
 PEERINGDB DATA QUALITY
 ==============================================================================
-73 of 164 in-scope ASNs have a PeeringDB net record at all. 'Zero facilities'/'zero IXP memberships' elsewhere in this report can mean either of two very different things: this ASN was never on PeeringDB to begin with, or it IS registered and simply declared nothing. The two columns below are counted against ASNs that ARE on PeeringDB, not against every in-scope ASN, so they show the real gap, not a re-blend of the two. Known concrete cases: AS12684 (SES Astra) and AS3549 (the former Global Crossing backbone ASN) are both real, traceroute-confirmed carriers with zero PeeringDB facilities -- this is PeeringDB's own coverage gap, not a measurement gap in this project's findings.
+73 of 163 in-scope ASNs have a PeeringDB net record at all. 'Zero facilities'/'zero IXP memberships' elsewhere in this report can mean either of two very different things: this ASN was never on PeeringDB to begin with, or it IS registered and simply declared nothing. The two columns below are counted against ASNs that ARE on PeeringDB, not against every in-scope ASN, so they show the real gap, not a re-blend of the two. Known concrete cases: AS12684 (SES Astra) and AS3549 (the former Global Crossing backbone ASN) are both real, traceroute-confirmed carriers with zero PeeringDB facilities -- this is PeeringDB's own coverage gap, not a measurement gap in this project's findings.
 CC   Name                      ASNs  On PDB  w/ Facility  w/ IXP
 ------------------------------------------------------------------------------
 AS   American Samoa               2       1            0       1
@@ -162,7 +162,7 @@ MP   Northern Mariana Islands     2       1            1       1
 NC   New Caledonia               17      11            4       6
 NR   Nauru                        5       3            1       1
 PF   French Polynesia             6       3            1       1
-PG   Papua New Guinea            41      12            4      10
+PG   Papua New Guinea            40      12            4      10
 PW   Palau                        3       1            1       1
 SB   Solomon Islands              9       2            0       1
 TO   Tonga                        5       3            0       1
@@ -171,7 +171,7 @@ WS   Samoa                       10       3            1       2
 
 ASPA PROGRESS (draft-ietf-sidrops-aspa-profile, upstream-authorization adoption)
 ==============================================================================
-22 of 164 in-scope ASNs now publish an ASPA record (4323 total across the whole internet, per Cloudflare Radar). Adoption is still early -- absence means 'not published yet', not 'no real upstream'. Per-economy: how many of its own ASNs publish a record, and the distinct upstream ASNs those records declare, split by whether the declared provider is itself an in-scope Pacific ASN or an external carrier.
+22 of 163 in-scope ASNs now publish an ASPA record (4323 total across the whole internet, per Cloudflare Radar). Adoption is still early -- absence means 'not published yet', not 'no real upstream'. Per-economy: how many of its own ASNs publish a record, and the distinct upstream ASNs those records declare, split by whether the declared provider is itself an in-scope Pacific ASN or an external carrier.
 CC   Name                      ASNs  w/ ASPA  Upstr in-FB  Upstr ext
 ------------------------------------------------------------------------------
 CK   Cook Islands                 2        1            0          3
@@ -179,7 +179,7 @@ FJ   Fiji                        21        4            2          3
 GU   Guam                        11        1            1          0
 NC   New Caledonia               17        2            1          0
 NR   Nauru                        5        4            4          4
-PG   Papua New Guinea            41        4            1          1
+PG   Papua New Guinea            40        4            1          1
 TO   Tonga                        5        3            3          4
 VU   Vanuatu                     11        1            1          0
 WS   Samoa                       10        2            1          2
@@ -220,7 +220,7 @@ Measurements: {'v4': [243496559, 243498458], 'v6': [243502733, 243504657]}. Deta
 
 IPV6 COVERAGE (adoption signal only -- no IPv6 testing yet)
 ==============================================================================
-45 of 164 in-scope ASNs have >=1 RIS-observed IPv6-originated prefix. 6 of 37 connected Atlas probes work over IPv6 (6 more are IPv6-capable but tagged as not working). Adoption tracking only -- this project deliberately isn't testing IPv6 corridors yet; queued until adoption has advanced further (see TODO below).
+45 of 163 in-scope ASNs have >=1 RIS-observed IPv6-originated prefix. 6 of 37 connected Atlas probes work over IPv6 (6 more are IPv6-capable but tagged as not working). Adoption tracking only -- this project deliberately isn't testing IPv6 corridors yet; queued until adoption has advanced further (see TODO below).
 CC   Name                      ASNs  w/ IPv6
 ------------------------------------------------------------------------------
 AS   American Samoa               2        1
@@ -233,7 +233,7 @@ MP   Northern Mariana Islands     2        1
 NC   New Caledonia               17       12
 NR   Nauru                        5        2
 PF   French Polynesia             6        3
-PG   Papua New Guinea            41        2
+PG   Papua New Guinea            40        2
 PW   Palau                        3        1
 SB   Solomon Islands              9        2
 TO   Tonga                        5        3
@@ -290,13 +290,13 @@ CK   Cook Islands                     Polynesia        2       6       1        
 FJ   Fiji                             Melanesia       21      20       2         1
 NU   Niue                             Polynesia        2       1       1         1
 PF   French Polynesia                 Polynesia        6       9       6         1
-PG   Papua New Guinea                 Melanesia       41      10       1         1
+PG   Papua New Guinea                 Melanesia       40      10       1         1
 VU   Vanuatu                          Melanesia       11       5       1         1
 FM   Micronesia, Federated States of  Micronesia       6       6       3         0
 GU   Guam                             Micronesia      11      14       6         0
 NC   New Caledonia                    Melanesia       17      19       4         0
 
-APPENDIX: LOW DATA QUALITY ISSUES (8 known, resolved)
+APPENDIX: LOW DATA QUALITY ISSUES (9 known, resolved)
 ==============================================================================
 Known problems in this project's underlying sources (APNIC delegation, PeeringDB, ASPA, etc.) that have already been found, verified, and corrected for elsewhere in the pipeline -- kept visible here rather than left implicit, so the counts and tables earlier in this report can be trusted without re-deriving why they exclude what they exclude.
 
@@ -323,6 +323,9 @@ AS152655 (DIGICELPNG-AS-AP (Digicel (PNG) Ltd)) -- registered PG  [local company
 
 AS132462 (Bemobile Solomon Islands Ltd) -- registered SB  [local company whose announced space is hosted abroad]
     Registered in the Solomon Islands (APNIC aut-num and 103.21.248.0/22 to Bemobile Solomon Islands Ltd, Point Cruz, Honiara; last modified 2020-07-15; IRT contact marked invalid; bmobile.com.sb expired 2025-12-03), but the bmobile brand is dead (owner, 2026-11-24) and the space no longer runs in Honiara. SISCC-transited (AS139609) /24s dropped out on 2026-10-07; .248/.249/.251 came back via AS139609 from 2026-10-30 ~01:00Z until withdrawn 2026-11-16 07:54Z (RIS bgp-updates), not seen since. From 2026-08-08 the /22 is upstreamed only in Bangladesh (AS140889 Impex Bd Net, then AS45904 Banglalion from 2026-09-18), and every RIS path ends `38008 45904 132462` (AS38008 Aperture Science, HK): 326 of 326 bgp-state paths on 2026-11-23. The ALTDB AS-OPTIONS set covering it changed the same day the /22 appeared. 103.21.248.1 answers in 2.51ms from probe 1017873 (Alibaba HK) against a 61.1ms floor to Honiara (measurement 227412138), and Cloudflare Radar geolocates it to HK. Either hijacked or sold (owner); not a Solomon Islands network either way. Reported to APNIC 2026-10-27 (acknowledged 10-28, no outcome yet). Excluded at the owner's direction (2026-11-24); findings #15 (PG AS38008 -> AS132462, candidate_peering, AS38008 mislabelled as Telikom PNG) and #314 (NR -> AS132462, confirmed_detour) and their corroborations were removed.
+
+AS45924 (Global Technologies Limited) -- registered PG  [local company whose announced space is hosted abroad]
+    Registered in Papua New Guinea (APNIC 202.171.240.0/21 GLOBALNET, country PG; 202.171.240.1 PTR locus.global.net.pg), but the /21 answers from Australia. The 2026-11-26 offshore check (measurement 244393111) had 202.171.240.1 at 14.05ms from probe 1008961 (AS134090, Melbourne) and 15.12ms from probe 1006084 (AS151660, Melbourne) against a 31.6ms floor to Port Moresby, and 28.06ms from probe 1015849 (AS64073, Tauranga) against 42.8ms. Earlier runs: consistent 2026-09-24, unconfirmed 2026-10-25 (one network, probe 1009052 AS140933 at 11.93ms vs 27.0ms). RIS 2026-11-26: the /21 is mostly upstreamed via PNG DataCo AS17828 (297 of 368 paths `6939 17828 45924`), the rest via Virtutel AS24516 (AU); its more-specific 202.171.242.0/24 and 202.1.52.0/24 (registered to PNG University of Technology, Lae) go only via AS24516. Neither answered the ping sweep. The Unitech /24 leaves scope with the ASN: the owner chose this over listing only the /21 in atlas.targets.EXCLUDED_TARGET_PREFIXES. No findings targeted it. Excluded at the owner's direction (2026-11-26).
 
 APPENDIX: QUARANTINED ASNs AND FINDINGS (7 -- no proof of routing yet)
 ==============================================================================
@@ -415,7 +418,7 @@ GU      62689 AS7131    Connected     ASN registered Northern Mariana Islands bu
 GU      65337 AS14593   Connected     Starlink (AS14593): satellite egress via Starlink PoPs, not a local carrier; excluded from corridor candidacy
 KI    1008228 AS14593   Connected     Starlink (AS14593): satellite egress via Starlink PoPs, not a local carrier; excluded from corridor candidacy
 KI    1008229 AS14593   Connected     Starlink (AS14593): satellite egress via Starlink PoPs, not a local carrier; excluded from corridor candidacy
-MH      64237 AS14593   Connected     Starlink (AS14593): satellite egress via Starlink PoPs, not a local carrier; excluded from corridor candidacy
+MH      64237 AS14593   Disconnected  Starlink (AS14593): satellite egress via Starlink PoPs, not a local carrier; excluded from corridor candidacy
 PF      23002 AS2200    Connected     Renater (AS2200): backhauls straight to metropolitan France (~500ms), never touches Pacific transit
 TO      11691 AS24390   Connected     ASN registered Fiji but probe physically in Tonga (geo-audit): counts as a TO vantage point, not FJ; USP (AS24390, registered FJ): regional academic network via AARNet (Australia), not a local commercial carrier; valid source, path unverified
 
