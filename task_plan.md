@@ -4027,6 +4027,17 @@ added, none removed; unresolved 21 -> 12 (`daily_facts.escalation_summary` agree
   5 schedule tests (630 pass). Still ASN-level: if a multi-address ASN loses one address, that address waits for
   the next full run.
 - **Live run (owner: "test it now"):** the full sweep was fired from the session at 09:47 local, so it doesn't
-  wait for tonight's cron. Outcome is recorded below. Last night's first-pass raw results (cached in
-  `data/atlas/raw/`) are not re-used.
+  wait for tonight's cron. Last night's first-pass raw results (cached in `data/atlas/raw/`) are not re-used.
+- **Live run outcome (09:47-11:08 local, exit 0):** 349 pings (256 first pass, then 93 alternates for 39 silent
+  ASNs). History line `full`, `complete: true`, 120 ASNs: 103 consistent, 3 offshore, 2 unconfirmed, 12 no
+  response, plus 44 untestable. No create timed out, so the lookup path was not exercised live (tests cover it).
+  The six "still running after 240s; using partial results" warnings are routine (11 earlier in `cron.log`).
+  The plan for tonight is now `skip`.
+- **New offshore flag for the owner: AS45924 (PG, Global Technologies Limited), 202.171.240.1** (244393111).
+  Three probes on three networks beat physics: 1008961 (AS134090, Melbourne) 14.05ms vs 31.6ms minimum,
+  1006084 (AS151660, Melbourne) 15.12ms vs 31.5ms, 1015849 (AS64073, Tauranga NZ) 28.06ms vs 42.8ms. It was
+  consistent on 09-24 and unconfirmed on 10-25 (one network: 1009052, AS140933, 11.93ms vs 27.0ms), so the move
+  looks like it happened around October. WHOIS: 202.171.240.0/21 GLOBALNET "Papua New Guinea" PG, originated only
+  by AS45924. PTR `locus.global.net.pg`. The other two addresses (202.1.52.1, 202.171.242.1) don't answer.
+  Escalated (`escalations.md`); nothing excluded.
 

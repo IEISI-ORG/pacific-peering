@@ -890,3 +890,9 @@ Corridors `auto_classify.py`'s mechanical rules couldn't confidently resolve on 
 - detail: finding #47 is filed via Tokyo; this run left the region via Sydney (BBIX Tokyo, then Bundle-Ether42.273.bdr03-ipt-4edenpar-syd.au.as38195.net (router in Sydney)) -- not corroborated; relabel, keep, or retest is the owner's call
 - flagged: 2026-11-25T15:04:43.082178+00:00
 
+
+## AS45924 (PG) -- possible offshore-hosted address space
+- reason: offshore-hosting check (atlas/offshore_check.py)
+- detail: 202.171.240.1: probe 1008961 14.05ms < 31.6ms minimum (measurement 244393111)
+- action: owner review; if confirmed, add to discovery/excluded_asns.py (offshore_hosted)
+- flagged: 2026-11-25T23:47:10.072243+00:00
