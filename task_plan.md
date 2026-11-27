@@ -4058,3 +4058,28 @@ added, none removed; unresolved 21 -> 12 (`daily_facts.escalation_summary` agree
   Disconnected at 2026-11-26 04:09Z, during PacNOG 38 in Majuro. MH is now in "zero connected probes" in
   probe_gaps.txt. Check it again at the next daily check before acting.
 
+
+## #159/#160/#161 relabelled to Tokyo; new NTA probe in Majuro (owner, 2026-11-28: "relabel #159, #160 and #161 to Tokyo")
+
+- **Relabel test, first pass: failed on "all runs reach the target".** Every run since 10-02 (#159 CK 22761,
+  #160 PF 30712/52614/53098/54473, #161 TV 7588) targets 103.20.124.1 and goes HE -> JPNAP Tokyo (210.173.176.197)
+  -> AS3605 Guam Cablevision (198.81.233.103, 202.128.5.115) -> dark; no AS140504 hop, the same as #303. The 09-16
+  runs (43.230.6.1 / 103.49.173.1) went HE -> 72.234.202.x (Hawaii) instead. Owner chose retest first.
+- **Retest** (3 one-off ICMP traceroutes, one probe each, ~180 credits; scratch `retest_159_161/` in the session
+  scratchpad): 245395829 (CK 22761), 245395828 (PF 30712), 245395830 (TV 7588) to 103.49.173.1. All reach it:
+  HE -> JPNAP Tokyo -> AS3605 198.81.233.103 -> 202.128.5.115 -> 202.128.10.218 -> 103.49.173.1 (PF 263.8 ms, TV
+  314.7 ms, CK 450.3 ms; CK's RTTs are inflated from hop 3, 293.8 ms on the island's first link, path unchanged).
+- **Rehearsed** on two copies of the working tree (`rehearse.py`): Tokyo -> all 3 corroborate; Los Angeles control
+  -> all 3 escalate "detour hub differs". Applied: `detour_hub` -> Tokyo and `detour_ix_name` -> "JPNAP Tokyo, then
+  AS3605 (Guam Cablevision) in Guam" (was the SES Astra satellite text; SES appears on no run since October). Dump diff
+  3 rows. Then classified the 3 retests against the live DB (`live.py`): all confirmed_detour, no escalations,
+  reverification attempts stamped. Backup `data/analysis/findings.db.bak-20261128-pre-159-161-relabel`. Report hubs
+  Los Angeles 42 -> 39, Tokyo 18 -> 21. The 3 open hub-mismatch escalations are marked resolved.
+- **New MH probe 52382** ("Port Authority", AS24439 NTA, behind NAT on 117.103.88.0/21, IPv6 via Starlink AS14593),
+  Connected since 11-27 04:02Z: the first Atlas vantage on NTA. Egress 245284784 to 1.1.1.1: NTA 117.103.94.174 and
+  64.86.76.151 (~1 ms) -> NTA 64.86.76.154 (35 ms) -> Tata `ix-ge-100-0-0-65.qhar1.pv4-piti` (34.6 ms) -> Tata
+  `tcore1.tv2-tokyo` (67.7 ms) -> Cloudflare 1.1.1.1 (66.8 ms). The way out uses the same Piti router as the way in
+  (docs/mh_tata_piti_dependency.md); Majuro -> Piti about 34 ms. Probe 64237 (was Starlink) showed AS24439 briefly
+  and has been Disconnected since 11-26 22:55Z; its ASN-change escalation stays open until it reconnects.
+  Owner asked for a PacNOG list update and thanks: drafted as a reply in the 7 Nov thread (tcsweetser, plain text),
+  waiting for the owner's send.

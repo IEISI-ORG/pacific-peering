@@ -765,6 +765,7 @@ Corridors `auto_classify.py`'s mechanical rules couldn't confidently resolve on 
 - reason: detour hub differs from the filed finding
 - detail: finding #159 is filed via Los Angeles; this run left the region via Tokyo (JPNAP Tokyo) -- not corroborated; relabel, keep, or retest is the owner's call
 - flagged: 2026-11-16T15:07:11.845403+00:00
+- resolved: 2026-11-28 -- relabelled Los Angeles -> Tokyo (owner: "relabel #159, #160 and #161 to Tokyo"; retest first). Runs since 10-02 to 103.20.124.1 all left via JPNAP Tokyo to AS3605 Guam Cablevision and went dark before AS140504; retests to 103.49.173.1 on 11-27 (245395829 CK 22761, 245395828 PF 30712, 245395830 TV 7588) reach AS140504 via HE -> JPNAP Tokyo -> AS3605 -> 103.49.173.1. Rehearsed: Tokyo corroborates all 3, LA control escalates all 3. detour_ix_name now names the Guam path (was SES Astra). Backup data/analysis/findings.db.bak-20261128-pre-159-161-relabel.
 
 ## AS23917 (TV) -> AS9246 (GU)
 - measurement: 238725340
@@ -902,6 +903,7 @@ Corridors `auto_classify.py`'s mechanical rules couldn't confidently resolve on 
 - reason: detour hub differs from the filed finding
 - detail: finding #160 is filed via Los Angeles; this run left the region via Tokyo (JPNAP Tokyo) -- not corroborated; relabel, keep, or retest is the owner's call
 - flagged: 2026-11-26T15:10:45.116563+00:00
+- resolved: 2026-11-28 -- relabelled Los Angeles -> Tokyo (owner: "relabel #159, #160 and #161 to Tokyo"; retest first). Runs since 10-02 to 103.20.124.1 all left via JPNAP Tokyo to AS3605 Guam Cablevision and went dark before AS140504; retests to 103.49.173.1 on 11-27 (245395829 CK 22761, 245395828 PF 30712, 245395830 TV 7588) reach AS140504 via HE -> JPNAP Tokyo -> AS3605 -> 103.49.173.1. Rehearsed: Tokyo corroborates all 3, LA control escalates all 3. detour_ix_name now names the Guam path (was SES Astra). Backup data/analysis/findings.db.bak-20261128-pre-159-161-relabel.
 
 
 ## Probe 64237 (MH, AS24439) -- metadata changed
@@ -914,4 +916,5 @@ Corridors `auto_classify.py`'s mechanical rules couldn't confidently resolve on 
 - reason: detour hub differs from the filed finding
 - detail: finding #161 is filed via Los Angeles; this run left the region via Tokyo (JPNAP Tokyo) -- not corroborated; relabel, keep, or retest is the owner's call
 - flagged: 2026-11-27T15:07:03.246639+00:00
+- resolved: 2026-11-28 -- relabelled Los Angeles -> Tokyo (owner: "relabel #159, #160 and #161 to Tokyo"; retest first). Runs since 10-02 to 103.20.124.1 all left via JPNAP Tokyo to AS3605 Guam Cablevision and went dark before AS140504; retests to 103.49.173.1 on 11-27 (245395829 CK 22761, 245395828 PF 30712, 245395830 TV 7588) reach AS140504 via HE -> JPNAP Tokyo -> AS3605 -> 103.49.173.1. Rehearsed: Tokyo corroborates all 3, LA control escalates all 3. detour_ix_name now names the Guam path (was SES Astra). Backup data/analysis/findings.db.bak-20261128-pre-159-161-relabel.
 

@@ -1,6 +1,6 @@
 ==============================================================================
                   PACIFIC PEERING — REGIONAL ROUTING REPORT                   
-                 Generated: 2026-11-27T15:23:01.279734+00:00                  
+                 Generated: 2026-11-27T21:33:18.243083+00:00                  
 ==============================================================================
 FOUND A BUG? Bugs very likely remain in both the code and the data.
 Please open an issue: https://github.com/IEISI-ORG/pacific-peering/issues/new
@@ -111,9 +111,9 @@ City           Entries  Share Carriers Subregions reached
 ------------------------------------------------------------------------------
 Sydney             115    60%       25 Melanesia, Micronesia, Polynesia
     Dependent economies: AS, CK, FJ, KI, NC, NR, NU, PG, SB, TO, VU, WS
-Los Angeles         42    22%        9 Melanesia, Micronesia, Polynesia
+Los Angeles         39    20%        8 Melanesia, Micronesia, Polynesia
     Dependent economies: FJ, FM, GU, KI, MH, NR, PF, PW, WF
-Tokyo               18     9%        8 Melanesia, Micronesia, Polynesia
+Tokyo               21    11%        9 Melanesia, Micronesia, Polynesia
     Dependent economies: AS, GU, KI, MH, NC, NR, PW, SB, WF
 Portland             9     5%        3 Polynesia
     Dependent economies: AS, TO
@@ -171,7 +171,7 @@ WS   Samoa                       10       3            1       2
 
 ASPA PROGRESS (draft-ietf-sidrops-aspa-profile, upstream-authorization adoption)
 ==============================================================================
-22 of 163 in-scope ASNs now publish an ASPA record (4344 total across the whole internet, per Cloudflare Radar). Adoption is still early -- absence means 'not published yet', not 'no real upstream'. Per-economy: how many of its own ASNs publish a record, and the distinct upstream ASNs those records declare, split by whether the declared provider is itself an in-scope Pacific ASN or an external carrier.
+22 of 163 in-scope ASNs now publish an ASPA record (4363 total across the whole internet, per Cloudflare Radar). Adoption is still early -- absence means 'not published yet', not 'no real upstream'. Per-economy: how many of its own ASNs publish a record, and the distinct upstream ASNs those records declare, split by whether the declared provider is itself an in-scope Pacific ASN or an external carrier.
 CC   Name                      ASNs  w/ ASPA  Upstr in-FB  Upstr ext
 ------------------------------------------------------------------------------
 CK   Cook Islands                 2        1            0          3
@@ -943,16 +943,16 @@ FM -> WS (AS139679): detours via AS4637 (Telstra Global), via AS132528 and AS388
 TO -> WS (AS139679): detours via Equinix Sydney (Sydney)
     RIS observation count: 329  [measurement 213460819]
     measurement 213460819 (from TO); chain: AS24390 -> AS7575 -> AS132528 -> AS38800 -> AS38227; RIS count 329; RIS agrees. measurement 229801481 (from TO); chain: AS24390 -> AS7575 -> AS132528 -> AS38800 -> AS38227; RIS count 276; RIS agrees. measurement 236874452 (from TO); chain: AS24390 -> AS7575 -> AS132528 -> AS38800 -> AS38227; RIS count 325; RIS agrees. measurement 244759113 (from TO); chain: AS24390 -> AS7575 -> AS132528 -> AS38800 -> AS38227; RIS count 325; RIS agrees.
-CK -> NR (AS140504): detours via AS12684 (SES ASTRA S.A.) -- satellite operator, international transit (Los Angeles)
+CK -> NR (AS140504): detours via JPNAP Tokyo, then AS3605 (Guam Cablevision) in Guam (Tokyo)
     RIS observation count: 616  [measurement 211765425]
     Cook Islands (AS10131) -> a distinct Nauru ASN (AS140504) -- a fresh CK<->NR pair, a second independent confirmation of the AS140504<->AS12684 (SES Astra) relationship (after PF). Fired directly at the address already confirmed to reach SES Astra in the PF retry, rather than starting from a fresh address and possibly needing the retry policy again. Result: `AS10131 -> AS9471 (ONATI) -> AS6939 (Hurricane Electric) -> AS36149 (Hawaiian Telcom) -> AS12684`, **fully contiguous this time** (the PF entry had a real gap before AS12684) -- the cleanest confirmation yet of this relationship. RIS agrees with the identical exact match (616). Kept `detour_hub` as Los Angeles, matching the PF entry's verified attribution (from AS36149's own real PeeringDB facility list, since AS12684 itself has zero registered facilities).
-PF -> NR (AS140504): detours via AS12684 (SES ASTRA S.A.) -- satellite operator, international transit (Los Angeles)
+PF -> NR (AS140504): detours via JPNAP Tokyo, then AS3605 (Guam Cablevision) in Guam (Tokyo)
     RIS observation count: 616  [measurement 211706787]
     ONATI (AS9471, French Polynesia) -> a distinct Nauru ASN (AS140504) -- the exact lead flagged in an earlier VU-sourced tranche this session. First address dead-ended the same way as that prior attempt: all 3 probes resolved to AS36149 (Hawaiian Telcom) with `ris_agrees: False`. Applied the standing retry policy against a different cached prefix. **The retry reached AS140504's real relationship directly**: all 3 probes `AS9471 -> AS6939 (Hurricane Electric) -> AS36149 (Hawaiian Telcom) -> [gap] -> AS12684`, BGP-resolved and RIS-agreeing with an *exact* match (616) -- the second entry in AS140504's own two-relationship RIS neighbor list (`{132528: 1032, 12684: 616}`), leaving only AS132528 as the still-untested one. Checked AS12684's holder identity directly: **SES ASTRA S.A.**, a major geostationary satellite operator -- the same carrier flagged, but never confirmed, in an earlier Cook Islands tranche (that attempt stalled at generic transit and never got close enough to confirm or deny the relationship; a direct-source test was later ruled out entirely, since AS12684 has zero connected Atlas probes, all five ever registered against it Abandoned). **This is the first traceroute-confirmed SES Astra relationship this project has recorded**, closing that open thread from the other direction instead. Hub attribution: checked AS12684's own PeeringDB record directly first -- zero registered facilities at all (expected for a satellite operator with no physical colocation), so attributed the hub from AS36149's own verified facility list instead (CoreSite LA1/LA2, Los Angeles) -- the immediately preceding carrier in the resolved chain. **Caught a real query bug before trusting any of this**: an initial PeeringDB facility lookup using `asn=` as the netfac filter silently returned unfiltered, unrelated global data for both AS12684 and AS36149 -- re-queried using each network's actual `net_id` (via `/api/net?asn=`) and got correct, small, verifiable facility lists instead.
 TO -> NR (AS140504): detours via xe-0-0-2.pe1.bkvl.nsw.aarnet.net.au (router in Sydney, no IXP crossing) (Sydney)
     RIS observation count: 1115  [measurement 228277659]
     measurement 228277659 (from TO); chain: AS24390 -> AS7575 -> AS3605; RIS count 1115; RIS agrees. measurement 234928955 (from TO); chain: AS24390 -> AS7575 -> AS3605; RIS count 1313; RIS agrees. measurement 234931334 (from TO); chain: AS24390 -> AS7575 -> AS3605; RIS count 1313; RIS agrees. measurement 234932312 (from TO); chain: AS24390 -> AS7575 -> AS3605; RIS count 1313; RIS agrees.
-TV -> NR (AS140504): detours via AS12684 (SES ASTRA S.A.) -- satellite operator, international transit (Los Angeles)
+TV -> NR (AS140504): detours via JPNAP Tokyo, then AS3605 (Guam Cablevision) in Guam (Tokyo)
     RIS observation count: 1347  [measurement 212088551]
     Tuvalu (AS23917) -> AS140504 -- a fresh TV<->NR pair, a third independent confirmation of the AS140504<->AS12684 (SES Astra) relationship (after PF, CK). First address (103.20.124.1) dead-ended the same way as every prior first attempt: resolved only as far as AS36149 (Hawaiian Telcom), `ris_agrees: False`. Applied the standing retry policy against a different cached prefix (103.49.173.1, from `list_target_ips`). **The retry reached the target address directly** -- the first time this project has actually landed on AS140504's own address rather than dead-ending near it: `AS23917 -> AS9241 (FINTEL) -> AS6939 (Hurricane Electric) -> AS36149 (Hawaiian Telcom) -> [one-hop silent gap, the satellite leg] -> 103.49.173.1 (target)`. `analyze_measurement`'s automated check reads `ris_agrees: False` because it compares the last *resolved* ASN (AS36149, not a registered neighbor of AS140504) rather than the satellite hop sitting silently in the gap -- checked RIS directly instead: AS140504's real neighbor list is `{12684: 1347, 132528: 521}` (1,868 total observations, counts naturally shifted from the PF/CK entries' snapshot since RIS data is always current-state, not a fixed historical record) -- AS12684 remains dominant, an exact match for the gap this traceroute shows. Kept `detour_hub` as Los Angeles, matching the PF/CK entries' verified attribution.
 GU -> GU (AS140627): detours via BBIX Tokyo (Tokyo)
