@@ -903,3 +903,15 @@ Corridors `auto_classify.py`'s mechanical rules couldn't confidently resolve on 
 - detail: finding #160 is filed via Los Angeles; this run left the region via Tokyo (JPNAP Tokyo) -- not corroborated; relabel, keep, or retest is the owner's call
 - flagged: 2026-11-26T15:10:45.116563+00:00
 
+
+## Probe 64237 (MH, AS24439) -- metadata changed
+- reason: probe watch (atlas/probe_watch.py)
+- detail: asn_v4 14593 -> 24439; egress trace: not traced yet (not Connected, or no resolvable result) -- retried nightly until it resolves
+- action: owner review -- check the path before trusting this probe's next results, or changing any exclusion
+- flagged: 2026-11-27T15:00:38.099042+00:00
+## AS23917 (TV) -> AS140504 (NR)
+- measurement: 245285362
+- reason: detour hub differs from the filed finding
+- detail: finding #161 is filed via Los Angeles; this run left the region via Tokyo (JPNAP Tokyo) -- not corroborated; relabel, keep, or retest is the owner's call
+- flagged: 2026-11-27T15:07:03.246639+00:00
+
