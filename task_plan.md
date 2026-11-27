@@ -4085,3 +4085,10 @@ added, none removed; unresolved 21 -> 12 (`daily_facts.escalation_summary` agree
   52382 on NTA, its first trace (same Piti router out as in, Majuro -> Piti ~34 ms, one trace only), IPv6 via
   Starlink, thanks to the probe's unknown host (asked to identify themselves), MINTA, Fred/PITA. **Watch:** replies,
   especially from the probe's host.
+- **64237 recheck (owner: "check 64237 status again", 11-27 21:43Z): still Disconnected since 11-26 22:55Z.**
+  Connection events (built-in 7000): Starlink 150.228.174.0/23 until 11-26 04:09Z, then NTA 117.103.88.0/21
+  from 21:29Z to 22:55Z (52382 first connected at 22:49Z). It is a different site from 52382: CGNAT 100.126.2.219
+  behind 117.103.93.86, NTA 10.10.143.254 -> 117.103.93.94. Its built-in traceroutes from that window (5001 k-root,
+  5004 f-root, 5005 i-root, 5051, 5151) all go NTA 64.86.76.151 (~3 ms) -> 64.86.76.154 (37 ms) -> Tata
+  `qhar1.pv4-piti` 180.87.60.184, then Tokyo, LA or Asia. So two NTA sites (six traces) leave through the same Piti
+  router. Probe-watch escalation left open: its own egress trace still fires when the probe reconnects.
