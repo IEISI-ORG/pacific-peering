@@ -4081,5 +4081,7 @@ added, none removed; unresolved 21 -> 12 (`daily_facts.escalation_summary` agree
   `tcore1.tv2-tokyo` (67.7 ms) -> Cloudflare 1.1.1.1 (66.8 ms). The way out uses the same Piti router as the way in
   (docs/mh_tata_piti_dependency.md); Majuro -> Piti about 34 ms. Probe 64237 (was Starlink) showed AS24439 briefly
   and has been Disconnected since 11-26 22:55Z; its ASN-change escalation stays open until it reconnects.
-  Owner asked for a PacNOG list update and thanks: drafted as a reply in the 7 Nov thread (tcsweetser, plain text),
-  waiting for the owner's send.
+  **PacNOG list update SENT** by the owner 2026-11-27 21:38Z (tcsweetser, reply in the 7 Nov thread, plain text):
+  52382 on NTA, its first trace (same Piti router out as in, Majuro -> Piti ~34 ms, one trace only), IPv6 via
+  Starlink, thanks to the probe's unknown host (asked to identify themselves), MINTA, Fred/PITA. **Watch:** replies,
+  especially from the probe's host.
